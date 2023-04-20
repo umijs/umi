@@ -1,5 +1,9 @@
 export default {
-  plugins: ['@umijs/plugins/dist/antd'],
+  plugins: ['@umijs/plugins/dist/antd', '@umijs/plugins/dist/locale'],
+  locale: {
+    title: true,
+    default: 'zh-CN',
+  },
   antd: {
     // valid for antd5.0 only
     theme: {

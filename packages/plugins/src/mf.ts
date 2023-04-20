@@ -2,12 +2,14 @@ import { existsSync, opendirSync } from 'fs';
 import { join } from 'path';
 import type { IApi } from 'umi';
 import { lodash, winPath } from 'umi/plugin-utils';
+import { TEMPLATES_DIR } from './constants';
 import { toRemotesCodeString } from './utils/mfUtils';
 
 const { isEmpty } = lodash;
 
 const mfSetupPathFileName = '_mf_setup-public-path.js';
 const mfAsyncEntryFileName = 'asyncEntry.ts';
+const MF_TEMPLATES_DIR = join(TEMPLATES_DIR, 'mf');
 
 export default function mf(api: IApi) {
   api.describe({
@@ -122,7 +124,7 @@ export default function mf(api: IApi) {
       context: {
         remoteCodeString: toRemotesCodeString(remotes),
       },
-      tplPath: join(__dirname, '../tpls/mf-runtime.ts.tpl'),
+      tplPath: winPath(join(MF_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
 
     if (api.env === 'development' && api.config.mfsu) {

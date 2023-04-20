@@ -1,9 +1,12 @@
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge, Mustache, semver } from 'umi/plugin-utils';
+import { deepmerge, Mustache, semver, winPath } from 'umi/plugin-utils';
+import { TEMPLATES_DIR } from './constants';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
+
+const ANTD_TEMPLATES_DIR = join(TEMPLATES_DIR, 'antd');
 
 export default (api: IApi) => {
   let pkgPath: string;
@@ -196,7 +199,7 @@ export default (api: IApi) => {
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
       },
-      tplPath: join(__dirname, '../tpls/antd-runtime.ts.tpl'),
+      tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
 
     api.writeTmpFile({

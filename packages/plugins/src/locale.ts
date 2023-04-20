@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { TEMPLATES_DIR } from './constants';
 import {
   exactLocalePaths,
   getAntdLocale,
@@ -13,6 +14,7 @@ import {
 } from './utils/localeUtils';
 import { withTmpPath } from './utils/withTmpPath';
 
+const LOCALE_TEMPLATES_DIR = join(TEMPLATES_DIR, 'locale');
 interface ILocaleConfig {
   default?: string;
   baseNavigator?: boolean;
@@ -106,7 +108,7 @@ export default (api: IApi) => {
 
   api.onGenerateFiles(async () => {
     const localeTpl = readFileSync(
-      join(__dirname, '../libs/locale/locale.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'locale.tpl'),
       'utf-8',
     );
     // moment2dayjs
@@ -176,7 +178,7 @@ export default (api: IApi) => {
     });
 
     const localeExportsTpl = readFileSync(
-      join(__dirname, '../libs/locale/localeExports.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'localeExports.tpl'),
       'utf-8',
     );
     const localeDirName = 'locales';
@@ -209,7 +211,7 @@ export default (api: IApi) => {
     });
     // runtime.tsx
     const runtimeTpl = readFileSync(
-      join(__dirname, '../libs/locale/runtime.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'runtime.tpl'),
       'utf-8',
     );
     api.writeTmpFile({
@@ -221,7 +223,7 @@ export default (api: IApi) => {
 
     // SelectLang.tsx
     const selectLang = readFileSync(
-      join(__dirname, '../libs/locale/SelectLang.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'SelectLang.tpl'),
       'utf-8',
     );
 
