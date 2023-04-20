@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@umijs/renderer-vue": "workspace:*",
+    "@vitejs/plugin-vue-jsx": "3.0.1",
+    "@vue/babel-plugin-jsx": "1.1.1",
     "vue": "3.2.45",
     "vue-loader": "17.0.1",
     "vue-router": "4.1.6"

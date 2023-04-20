@@ -1,6 +1,7 @@
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import type { IApi } from 'umi';
 // @ts-ignore
-import vuePlugin from '../../../compiled/@vitejs/plugin-vue';
+import vue from '../../../compiled/@vitejs/plugin-vue';
 
 export default (api: IApi) => {
   api.describe({
@@ -8,7 +9,8 @@ export default (api: IApi) => {
   });
 
   api.modifyViteConfig((config) => {
-    config.plugins?.push(vuePlugin(api.config.vue));
+    config.plugins?.push(vue(api.config.vue));
+    config.plugins?.push(vueJsx(api.config?.vue?.pluginJsx));
     return config;
   });
 };
