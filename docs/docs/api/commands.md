@@ -17,6 +17,7 @@ Commands:
 
     build     build app for production
     config    umi config cli
+    cache     run the script commands, manage umi cache
     dev       dev server for development
     help      show commands help
     lint      lint source code using eslint and stylelint

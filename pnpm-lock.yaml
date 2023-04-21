@@ -2377,6 +2377,9 @@ importers:
       '@types/multer':
         specifier: 1.4.7
         version: 1.4.7
+      '@types/treeify':
+        specifier: 1.0.0
+        version: 1.0.0
       body-parser:
         specifier: 1.20.0
         version: 1.20.0
@@ -2395,6 +2398,9 @@ importers:
       sirv:
         specifier: 2.0.2
         version: 2.0.2
+      treeify:
+        specifier: 1.1.0
+        version: 1.1.0
       vite:
         specifier: 4.2.0
         version: 4.2.0(@types/node@18.11.18)(less@4.1.3)
@@ -13288,6 +13294,10 @@ packages:
   /@types/tough-cookie@4.0.2:
     resolution: {integrity: sha512-Q5vtl1W5ue16D+nIaW8JWebSSraJVlK+EthKn7e7UcD4KWsaSJ8BqGPXNaPghgtcn/fhvrN17Tv8ksUsQpiplw==}
     dev: false
+
+  /@types/treeify@1.0.0:
+    resolution: {integrity: sha512-ONpcZAEYlbPx4EtJwfTyCDQJGUpKf4sEcuySdCVjK5Fj/3vHp5HII1fqa1/+qrsLnpYELCQTfVW/awsGJePoIg==}
+    dev: true
 
   /@types/triple-beam@1.3.2:
     resolution: {integrity: sha512-txGIh+0eDFzKGC25zORnswy+br1Ha7hj5cMVwKIU7+s0U2AxxJru/jZSMU6OC9MJWP6+pc/hc6ZjyZShpsyY2g==}
@@ -37352,6 +37362,11 @@ packages:
 
   /tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
+    dev: true
+
+  /treeify@1.1.0:
+    resolution: {integrity: sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==}
+    engines: {node: '>=0.6'}
     dev: true
 
   /treeverse@2.0.0:
