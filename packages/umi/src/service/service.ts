@@ -4,6 +4,12 @@ import { dirname, join } from 'path';
 import { DEFAULT_CONFIG_FILES, FRAMEWORK_NAME } from '../constants';
 import { getCwd } from './cwd';
 
+let defaultConfigFiles = DEFAULT_CONFIG_FILES;
+
+if (process.env.DEFAULT_CONFIG_FILES) {
+  defaultConfigFiles = process.env.DEFAULT_CONFIG_FILES.split(',');
+}
+
 export class Service extends CoreService {
   constructor(opts?: any) {
     process.env.UMI_DIR = dirname(require.resolve('../../package'));
@@ -17,7 +23,7 @@ export class Service extends CoreService {
       ...opts,
       env: process.env.NODE_ENV,
       cwd,
-      defaultConfigFiles: opts?.defaultConfigFiles || DEFAULT_CONFIG_FILES,
+      defaultConfigFiles: opts?.defaultConfigFiles || defaultConfigFiles,
       frameworkName: opts?.frameworkName || FRAMEWORK_NAME,
       presets: [require.resolve('@umijs/preset-umi'), ...(opts?.presets || [])],
       plugins: [
