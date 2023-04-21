@@ -45,6 +45,8 @@ export default (api: IApi) => {
             appConfig: zod
               .record(zod.any())
               .describe('Only antd@5.1.0 is supported'),
+            // DatePicker & Calendar use moment version
+            momentPicker: zod.boolean().describe('Only antd@5.x is supported'),
           })
           .deepPartial();
       },
@@ -89,9 +91,10 @@ export default (api: IApi) => {
     // antd import
     memo.alias.antd = pkgPath;
 
-    // moment > dayjs
+    // dayjs > moment
     if (antd.dayjs) {
-      memo.alias.moment = dirname(require.resolve('dayjs/package.json'));
+      // @ant-design/moment-webpack-plugin
+      console.log('2333');
     }
 
     // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
