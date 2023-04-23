@@ -10,12 +10,7 @@ export default function Page() {
 
   return (
     <Wrapper>
-      <h2>User Config</h2>
-      <CodeBlock code={data.userConfig} />
-      <h2>Config</h2>
       <CodeBlock code={data.config} />
-      <h2>Default Config</h2>
-      <CodeBlock code={data.defaultConfig} />
     </Wrapper>
   );
 }

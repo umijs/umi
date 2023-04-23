@@ -20,6 +20,9 @@ export default {
       'ant-design:right-square-outlined',
       'ant-design:bars-outlined',
       'ant-design:pie-chart-outlined',
+      'ant-design:bug-outlined',
+      'ant-design:bulb-outlined',
+      'ant-design:star-outlined',
     ],
   },
 };
