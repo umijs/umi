@@ -1,4 +1,5 @@
-import { t, traverse } from '@umijs/utils';
+import * as traverse from '@umijs/bundler-utils/compiled/babel/traverse';
+import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { parse } from '../utils/parse';
 import {
   findArrayElements,

@@ -1,28 +1,8 @@
-// @ts-ignore
-export * from '@@/core/umiExports';
-export {
-  ApplyPluginsType,
-  createBrowserHistory,
-  createHashHistory,
-  createMemoryHistory,
-  dynamic,
-  isBrowser,
-  Link,
-  matchPath,
-  MemoryRouter,
-  NavLink,
-  Plugin,
-  Prompt,
-  Redirect,
-  Route,
-  Router,
-  StaticRouter,
-  Switch,
-  useHistory,
-  useLocation,
-  useParams,
-  useRouteMatch,
-  withRouter,
-  __RouterContext,
-} from '@umijs/runtime';
-export type { MemoryHistory } from '@umijs/runtime';
+import { IServicePluginAPI, PluginAPI } from '@umijs/core';
+
+export { run } from './cli/cli';
+export { RUNTIME_TYPE_FILE_NAME } from './constants';
+export { defineConfig } from './defineConfig';
+export { defineMock } from './defineMock';
+export * from './service/service';
+export type IApi = PluginAPI & IServicePluginAPI;

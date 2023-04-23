@@ -1,10 +1,13 @@
 // @ts-ignore
 import { IConfigFromPlugins } from '@@/core/pluginConfig';
-import { IConfig } from '@umijs/types';
+import type { IConfig } from '@umijs/preset-umi';
 
-// IConfig types is prior to IConfigFromPlugins in the same key.
-export function defineConfig(
-  config: IConfigFromPlugins | IConfig,
-): IConfigFromPlugins | IConfig {
+type ConfigType = IConfigFromPlugins & IConfig;
+/**
+ * 通过方法的方式配置umi，能带来更好的 typescript 体验
+ * @param  {ConfigType} config
+ * @returns ConfigType
+ */
+export function defineConfig(config: ConfigType): ConfigType {
   return config;
 }

@@ -1,0 +1,36 @@
+{
+  "name": "@umijs/renderer-vue",
+  "version": "4.0.66",
+  "description": "@umijs/renderer-vue",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/renderer-vue#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "umi-scripts father build",
+    "build:deps": "umi-scripts bundleDeps",
+    "dev": "umi-scripts father dev"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.21.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.2.31",
+    "vue-router": ">=4.0.12"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
+}

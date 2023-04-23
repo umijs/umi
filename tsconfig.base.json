@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "es2019",
+    "jsx": "react",
+    "lib": ["dom", "dom.iterable", "esnext"]
+  },
+  "exclude": [
+    "**/node_modules",
+    "**/examples",
+    "**/dist",
+    "**/fixtures",
+    "**/*.test.ts",
+    "**/*.e2e.ts",
+    "**/templates",
+    "ui"
+  ]
+}

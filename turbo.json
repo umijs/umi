@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "baseBranch": "origin/master",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "build:extra": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false
+    },
+    "test": {
+      "outputs": [".jest-cache/**"]
+    }
+  },
+  "globalDependencies": [
+    "tsconfig.base.json",
+    "tsconfig.json",
+    "jest.config.ts",
+    ".father.base.ts"
+  ]
+}

@@ -34,7 +34,7 @@ test('normal', async () => {
   }
   const g = new NormalGenerator({
     args: { _: [], $0: '' },
-    cwd,
+    baseDir: cwd,
   });
   await g.run();
   expect(readFileSync(target, 'utf-8').trim()).toEqual(`alert('bar');`);

@@ -1,5 +1,5 @@
 export default {
   targets: {
-    ie: 10,
+    ie: 8,
   },
 };

@@ -1,59 +1,38 @@
-export const files = [
-  'webpack/lib/Chunk',
-  'webpack/lib/Compilation',
-  'webpack/lib/dependencies/ConstDependency',
-  'webpack/lib/javascript/JavascriptParserHelpers',
-  'webpack/lib/LibraryTemplatePlugin',
-  'webpack/lib/LoaderTargetPlugin',
-  'webpack/lib/node/NodeTargetPlugin',
-  'webpack/lib/node/NodeTemplatePlugin',
-  'webpack/lib/ModuleFilenameHelpers',
-  'webpack/lib/NormalModule',
-  'webpack/lib/RequestShortener',
-  'webpack/lib/RuntimeGlobals',
-  'webpack/lib/RuntimeModule',
-  'webpack/lib/optimize/LimitChunkCountPlugin',
-  'webpack/lib/ParserHelpers',
-  'webpack/lib/SingleEntryPlugin',
-  'webpack/lib/Template',
-  'webpack/lib/webworker/WebWorkerTemplatePlugin',
-];
+// MIT: copy from https://github.com/vercel/next.js/blob/canary/packages/next/build/webpack/require-hook.ts
+// sync injects a hook for webpack and webpack/... requires to use the internal ncc webpack version
+// this is in order for userland plugins to attach to the same webpack instance as umi
+// the individual compiled modules are as defined for the compilation in bundles/webpack/packages/*
 
-export function getFileName(filePath: string) {
-  return filePath.split('/').slice(-1)[0];
-}
+// @ts-ignore
+import deepImports from '@umijs/bundler-webpack/compiled/webpack/deepImports.json';
+import { join } from 'path';
 
-let inited = false;
+const PKG_ROOT = join(__dirname, '../');
+const resolve = (p: string) => join(PKG_ROOT, p);
 
-export function init() {
-  // Allow run once
-  if (inited) return;
-  inited = true;
+const hookPropertyMap = new Map([
+  ['webpack', resolve('compiled/webpack')],
+  ['webpack/package', resolve('compiled/webpack/package')],
+  ['webpack/package.json', resolve('compiled/webpack/package')],
+  ['webpack/lib/webpack', resolve('compiled/webpack')],
+  ['webpack/lib/webpack.js', resolve('compiled/webpack')],
+]);
 
-  const filesMap = files.map((file) => {
-    const fileName = getFileName(file);
-    return [file, `@umijs/deps/compiled/webpack/${fileName}`];
-  });
+deepImports.forEach((item: string) => {
+  const name = item.split('/').pop();
+  hookPropertyMap.set(item, resolve(`compiled/webpack/${name}`));
+  hookPropertyMap.set(`${item}.js`, resolve(`compiled/webpack/${name}`));
+});
 
-  const hookPropertyMap = new Map(
-    [
-      ['webpack', '@umijs/deps/compiled/webpack'],
-      ['webpack/package.json', '@umijs/deps/compiled/webpack/pkgInfo'],
-      ...filesMap,
-      // ['webpack-sources', '@umijs/deps/compiled/webpack/sources'],
-    ].map(([request, replacement]) => [request, require.resolve(replacement)]),
-  );
-
-  const mod = require('module');
-  const resolveFilename = mod._resolveFilename;
-  mod._resolveFilename = function (
-    request: string,
-    parent: any,
-    isMain: boolean,
-    options: any,
-  ) {
-    const hookResolved = hookPropertyMap.get(request);
-    if (hookResolved) request = hookResolved;
-    return resolveFilename.call(mod, request, parent, isMain, options);
-  };
-}
+const mod = require('module');
+const resolveFilename = mod._resolveFilename;
+mod._resolveFilename = function (
+  request: string,
+  parent: any,
+  isMain: boolean,
+  options: any,
+) {
+  const hookResolved = hookPropertyMap.get(request);
+  if (hookResolved) request = hookResolved;
+  return resolveFilename.call(mod, request, parent, isMain, options);
+};

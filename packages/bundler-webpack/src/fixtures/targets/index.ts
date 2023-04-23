@@ -1,7 +1,2 @@
-class A {
-  render() {
-    return 'a';
-  }
-}
-
-export default A;
+const foo = 'foo';
+alert(foo);

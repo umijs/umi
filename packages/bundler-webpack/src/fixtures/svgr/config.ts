@@ -1,5 +1,6 @@
 export default {
-  externals: {
-    react: 'React',
+  alias: {
+    react: require.resolve('./react.ts'),
   },
+  svgr: {},
 };

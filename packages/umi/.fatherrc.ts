@@ -1,6 +1,12 @@
-export default {
-  cjs: { type: 'babel', lazy: true },
-  esm: { type: 'rollup' },
-  disableTypeCheck: false,
-  extraExternals: ['@@/core/umiExports'],
-};
+import { defineConfig } from 'father';
+
+export default defineConfig({
+  extends: '../../.fatherrc.base.ts',
+  cjs: {
+    ignores: ['src/client/**'],
+  },
+  esm: {
+    input: 'src/client',
+    output: 'client/client',
+  },
+});

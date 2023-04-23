@@ -1,46 +1,62 @@
 {
   "name": "umi",
-  "version": "3.5.20",
+  "version": "4.0.66",
   "description": "umi",
-  "main": "index.js",
-  "types": "types.d.ts",
-  "files": [
-    "lib",
-    "dist",
-    "types.d.ts",
-    "bin"
-  ],
-  "sideEffects": false,
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi"
   },
-  "keywords": [
-    "umi"
-  ],
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
   "license": "MIT",
-  "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@umijs/bundler-webpack": "3.5.20",
-    "@umijs/core": "3.5.20",
-    "@umijs/deps": "3.5.20",
-    "@umijs/preset-built-in": "3.5.20",
-    "@umijs/runtime": "3.5.20",
-    "@umijs/types": "3.5.20",
-    "@umijs/utils": "3.5.20",
-    "react": "16.x",
-    "react-dom": "16.x",
-    "v8-compile-cache": "2.3.0"
-  },
+  "main": "dist/index.js",
+  "types": "index.d.ts",
   "bin": {
     "umi": "bin/umi.js"
   },
-  "module": "dist/index.esm.js"
+  "files": [
+    "bin",
+    "client",
+    "dist",
+    "eslint.js",
+    "index.d.ts",
+    "index.esm.js",
+    "plugin-utils.d.ts",
+    "plugin-utils.js",
+    "plugin.js",
+    "prettier.js",
+    "stylelint.js",
+    "test-setup.js",
+    "test.d.ts",
+    "test.js"
+  ],
+  "scripts": {
+    "build": "umi-scripts father build",
+    "build:deps": "umi-scripts bundleDeps",
+    "dev": "umi-scripts father dev",
+    "test": "umi-scripts jest-turbo"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.21.0",
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/bundler-webpack": "workspace:*",
+    "@umijs/core": "workspace:*",
+    "@umijs/lint": "workspace:*",
+    "@umijs/preset-umi": "workspace:*",
+    "@umijs/renderer-react": "workspace:*",
+    "@umijs/server": "workspace:*",
+    "@umijs/test": "workspace:*",
+    "@umijs/utils": "workspace:*",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "prettier-plugin-packagejson": "2.4.3"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
 }

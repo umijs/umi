@@ -7,9 +7,6 @@ assignees: ''
 ---
 
 <!--
-⚠️ ⚠️ ⚠️ 注意：讨论和提问请到讨论区（https://github.com/umijs/umi/discussions），否则会被直接关掉。 ⚠️ ⚠️ ⚠️
--->
-<!--
 感谢您向我们反馈问题，为了高效的解决问题，我们期望你能提供以下信息：
 -->
 
@@ -20,10 +17,10 @@ assignees: ''
 
 ## Mini Showcase Repository(REQUIRED)
 
-> Please provide a repository using `yarn create @umijs/umi-app` then upload to your GitHub 请提供一个可复现的仓库，使用 `yarn create @umijs/umi-app` 创建，并上传到你的 GitHub 仓库
+> Please provide a [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) then upload to your GitHub. 请提供 [最小重现](https://stackoverflow.com/help/minimal-reproducible-example)，并上传到你的 GitHub 仓库
 
 <!-- 为节约大家的时间，无复现步骤的 ISSUE 会被关闭，提供之后再 REOPEN -->
-<!-- https://github.com/YOUR_REPOSITORY_URL -->
+<!-- YOUR_REPOSITORY_URL on github or stackbliz -->
 
 ## How To Reproduce
 

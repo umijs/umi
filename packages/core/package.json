@@ -1,32 +1,49 @@
 {
   "name": "@umijs/core",
-  "version": "3.5.20",
-  "description": "@umijs/core",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "lib"
-  ],
+  "version": "4.0.66",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi"
   },
-  "keywords": [
-    "umi"
-  ],
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
   "license": "MIT",
-  "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "compiled"
+  ],
+  "scripts": {
+    "build": "umi-scripts father build",
+    "build:deps": "umi-scripts bundleDeps",
+    "dev": "umi-scripts father dev",
+    "test": "umi-scripts jest-turbo"
+  },
+  "dependencies": {
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "dotenv": "16.0.0",
+    "dotenv-expand": "8.0.3",
+    "just-diff": "5.2.0"
+  },
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@umijs/ast": "3.5.20",
-    "@umijs/babel-preset-umi": "3.5.20",
-    "@umijs/deps": "3.5.20",
-    "@umijs/utils": "3.5.20"
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "compiledConfig": {
+    "deps": [
+      "dotenv",
+      "just-diff"
+    ],
+    "externals": {
+      "dotenv": "$$LOCAL",
+      "just-diff": "$$LOCAL",
+      "tapable": "@umijs/bundler-utils/compiled/tapable"
+    }
   }
 }

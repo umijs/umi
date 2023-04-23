@@ -1,19 +1,16 @@
-**/node_modules/**
-package.json
-
-# fixtures
-**/fixtures/**
-
-# templates
-**/templates/**
-
-# docs
-# **/*.md
-
-# coverage
-/coverage
-/dist
-/.umi
-
-# deps
-/packages/deps
+node_modules
+.umi
+.umi-production
+dist
+.mfsu
+*.d.ts
+compiled
+*.js
+fixtures
+*.md
+*.yaml
+*.less
+/packages/plugin-docs/client/theme-doc/tailwind.out.css
+.turbo
+/packages/renderer-vue/src/index.ts
+/packages/mfsu/fixtures/resolvesContexts/

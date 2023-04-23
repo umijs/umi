@@ -1,4 +1,4 @@
-import { t } from '@umijs/utils';
+import * as t from '@umijs/bundler-utils/compiled/babel/types';
 
 interface IResolver<U> {
   is(src: any): boolean;
@@ -36,7 +36,7 @@ const NullResolver: IResolver<t.NullLiteral> = {
   is(src) {
     return t.isNullLiteral(src);
   },
-  get(src) {
+  get() {
     return null;
   },
 };
@@ -45,7 +45,7 @@ const UndefinedResolver: IResolver<t.Identifier> = {
   is(src) {
     return t.isIdentifier(src) && src.name === 'undefined';
   },
-  get(src) {
+  get() {
     return undefined;
   },
 };
@@ -99,7 +99,7 @@ const FunctionResolver: IResolver<t.FunctionExpression> = {
   is(src) {
     return t.isFunctionExpression(src);
   },
-  get(src) {
+  get() {
     return function () {};
   },
 };
@@ -108,7 +108,7 @@ const ArrowFunctionResolver: IResolver<t.ArrowFunctionExpression> = {
   is(src) {
     return t.isArrowFunctionExpression(src);
   },
-  get(src) {
+  get() {
     return () => {};
   },
 };
@@ -144,6 +144,7 @@ export function findObjectLiteralProperties(node: t.ObjectExpression) {
         resolver.is(p.value),
       );
       if (resolver) {
+        // @ts-ignore
         target[p.key.name] = resolver.get(p.value as any);
       }
     }
@@ -156,12 +157,14 @@ export function findObjectMembers(node: t.ObjectExpression) {
   node.properties.forEach((p) => {
     if (t.isObjectMember(p) && t.isIdentifier(p.key)) {
       if (t.isObjectMethod(p)) {
+        // @ts-ignore
         target[(p.key as any).name] = () => {};
       } else {
         const resolver = NODE_RESOLVERS.find((resolver) =>
           resolver.is(p.value),
         );
         if (resolver) {
+          // @ts-ignore
           target[(p.key as any).name] = resolver.get(p.value as any);
         }
       }
@@ -189,12 +192,14 @@ export function findClassStaticProperty(node: t.Class) {
   body.body.forEach((p) => {
     if (isStaticNode(p) && t.isIdentifier(p.key)) {
       if (t.isMethod(p) || t.isTSDeclareMethod(p)) {
+        // @ts-ignore
         target[(p.key as t.Identifier).name] = () => {};
       } else {
         const resolver = NODE_RESOLVERS.find((resolver) =>
           resolver.is(p.value),
         );
         if (resolver) {
+          // @ts-ignore
           target[(p.key as t.Identifier).name] = resolver.get(p.value as any);
         }
       }

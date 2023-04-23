@@ -1,24 +1,30 @@
-import { defineConfig } from 'umi';
-
-const proxyMap = {
-  dev: {
-    '/api': {
-      target: 'http://jsonplaceholder.typicode.com/',
+export default {
+  // 1
+  // proxy: {
+  //   '/api': {
+  //     target: 'https://jsonplaceholder.typicode.com/',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^/api': '' },
+  //   },
+  // },
+  // vite: {},
+  // 2
+  // proxy: {
+  //   context: ['/api', '/foooo'],
+  //   target: 'https://jsonplaceholder.typicode.com/',
+  //   changeOrigin: true,
+  //   pathRewrite: { '^/api': '' },
+  // },
+  // 3
+  proxy: [
+    {
+      context: ['/api', '/foooo'],
+      target: 'https://jsonplaceholder.typicode.com/',
       changeOrigin: true,
-      pathRewrite: { '^/api': '' },
+      onProxyReq: (proxyReq) => {
+        console.log(proxyReq);
+      },
+      pathRewrite: { '^/api': '', '^/foooo': '' },
     },
-  },
-  test: {
-    '/api': {
-      target: 'http://jsonplaceholder.typicode.com/',
-      changeOrigin: true,
-      pathRewrite: { '^/api': '' },
-    },
-  },
+  ],
 };
-
-const { APP_ENV = 'dev' } = process.env;
-
-export default defineConfig({
-  proxy: proxyMap[APP_ENV],
-});

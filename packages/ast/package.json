@@ -1,29 +1,32 @@
 {
   "name": "@umijs/ast",
-  "version": "3.5.20",
+  "version": "4.0.66",
   "description": "@umijs/ast",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "lib"
-  ],
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/ast#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi"
   },
-  "keywords": [
-    "umi"
-  ],
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
   "license": "MIT",
-  "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/ast#readme",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "umi-scripts father build",
+    "build:deps": "umi-scripts bundleDeps",
+    "dev": "umi-scripts father dev",
+    "test": "umi-scripts jest-turbo"
+  },
+  "dependencies": {
+    "@umijs/bundler-utils": "workspace:*"
+  },
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@umijs/utils": "3.5.20"
-  }
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
 }

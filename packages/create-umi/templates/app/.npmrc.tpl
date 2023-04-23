@@ -1,0 +1,2 @@
+registry={{{ registry }}}
+{{{ extraNpmrc }}}

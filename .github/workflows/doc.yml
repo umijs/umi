@@ -1,0 +1,63 @@
+name: doc
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+  pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+    paths:
+      - 'docs/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'pnpm'
+
+      # We use week in the turbo cache key to keep the cache from infinitely growing
+      - name: Get cache expires mark
+        id: get-week
+        run: echo "WEEK=$(date +%U)" >> $GITHUB_OUTPUT
+
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ steps.get-week.outputs.WEEK }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-
+            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ steps.get-week.outputs.WEEK }}-
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - run: pnpm doc:build

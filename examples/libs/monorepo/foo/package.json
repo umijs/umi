@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "umi dev"
+  },
+  "dependencies": {
+    "antd": "4.16.13"
+  }
+}

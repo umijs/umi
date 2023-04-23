@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Umi Loading...</title>
+    <style data-basic>
+      body {
+        font-family: sans-serif;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      #loading {
+        position: relative;
+        padding-left: 96px;
+        padding-top: 12px;
+      }
+
+      #loading::before {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        content: '';
+        display: inline-block;
+        width: 68px;
+        height: 66px;
+        background: 0 center / 408px 66px;
+        background-image: url('data:image/png;base64,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');
+        transform: translateY(-50%);
+      }
+
+      #loading h3 {
+        margin: 0 0 2px;
+        color: #666;
+        font-size: 20px;
+        font-weight: normal;
+      }
+
+      #loading small {
+        color: #888;
+        font-size: 12px;
+      }
+
+      #loading small::after {
+        content: 'from source';
+      }
+
+      #loading p {
+        box-sizing: border-box;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: #333;
+      }
+
+      #loading p:empty {
+        display: none;
+      }
+
+      #loading p span {
+        font-family: sans-serif;
+        padding: 0 6px 0 2px;
+        color: #666;
+        font-size: 14px;
+        vertical-align: bottom;
+      }
+
+      #loading p.summary {
+        margin: 8px 0;
+        height: 28px;
+        font-size: 24px;
+      }
+
+      #loading p.detail {
+        margin: 2px 0;
+        height: 40px;
+        font-size: 16px;
+      }
+
+      code.progress-details {
+        margin-top: 20px;
+        font-size: 13px;
+        color: #999999;
+        max-width: calc(100vw - 500px);
+        text-align: center;
+        white-space: pre-wrap;
+      }
+
+      @keyframes fade-in-out {
+        0% {
+          opacity: 0.4;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+    </style>
+    <style data-mfsu>
+      #loading[data-mfsu]::after {
+        position: absolute;
+        top: 0;
+        left: 64px;
+        content: '';
+        width: 20px;
+        height: 22px;
+        background: center / 20px 22px;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAuCAMAAABteatCAAABKVBMVEUAAAADAgAAAAAAAAAAAAAAAAAAAAAIBwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMCgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASDwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+2SgAAAD81ycWEwPxzSXOsCBBOAoqIwbjwiOWgBd2ZBJdTw741Ca1mhyhihlHPAswKQcbFwT00CbgvyLWtyG5nh2GchV7aRNYSw1VSA3zzybpxyTmxCTLrR+QehaMdxZvXxFmVxBjVQ85MQglIAXqxyTSsyG/ox6zmRyrkhqpkBqmjhqdhhiBbhRQRAxMQQyKBhJVAAAAM3RSTlMA/vrcEO3F/nA4BvfUqYx4aFAjBP7x6uOugCEdCrSllohUSj0yLRQC/se/k2FWJ7qamFjVvxppAAAB4klEQVQ4y42U10IaQRhG2QVBAaVIMxQNCthT9iwdkSoEEkss6e39HyIaQ4Zhdjee63PxH/h2XCqF4EbU9QQ8bsAb9vxXzNI7iYGeivgdvQ12h8ag09VgaXPF3sujjYwHzq96gNvu3OgSY2PGx1bf7txMkJ+mITBHNufmuKsYMm//nit5y8TODJXzKWTnvW2dL4YFpz5y63NeOkHLyvum8ao05/m91EwLr6mxJR24Sf+DhTeGkOQd4ruw8FpoYcnbCfBd1cwb9CPJKya5Vr32lEBe8kovuG0r3qBLfNslsUW5oXiVWxI7shdB+6R473okj2XvOM6l4g3vYK24OJmJGlK93gU9e5QRYor6wLCg/fWXBvGXs54QmjQZ6c5LMfOCDuX3VcOOsz8z3wvfjyYUBOrjhp1qXgHux//vIAFarVOx8honGkvLsz2u51cD4JucLg6t8sZHYM0jvRCH+yyeazbLsPrMtUg6lISm8D7XwWv5CBTitMRPXgN3xGVFOsnEVBpUPEFqbdGgiwYZ/z71itqgkqM/fPyO1QZ5vLHqv4bnLlvCaCO1QSWi0bl/kUSDDSsBfqgNKtEEN2qDStFN90JpUMnsUZ4+NPidvVIKUBtUDkA0OBBCNDjxWjQ4o4sGR34DhGGszb2iUaMAAAAASUVORK5CYII=');
+        animation: fade-in-out alternate infinite 1s;
+      }
+
+      #loading[data-mfsu] small::after {
+        content: 'Umi with MFSU';
+      }
+
+      #loading[data-mfsu]:hover p.summary,
+      #loading[data-mfsu]:not(:hover) p.detail {
+        display: none;
+      }
+    </style>
+    <style data-progress>
+      #loading[data-percent^='2']:not([data-percent='2'])::before,
+      #loading[data-percent^='3']:not([data-percent='3'])::before {
+        background-position-x: -68px;
+      }
+
+      #loading[data-percent^='4']:not([data-percent='4'])::before,
+      #loading[data-percent^='5']:not([data-percent='5'])::before {
+        background-position-x: -136px;
+      }
+
+      #loading[data-percent^='6']:not([data-percent='6'])::before,
+      #loading[data-percent^='7']:not([data-percent='7'])::before {
+        background-position-x: -204px;
+      }
+
+      #loading[data-percent^='8']:not([data-percent='8'])::before,
+      #loading[data-percent^='9']:not([data-percent='9'])::before {
+        background-position-x: -272px;
+      }
+
+      #loading[data-percent='99']::before,
+      #loading[data-percent='100']::before {
+        background-position-x: -340px !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="loading">
+      <h3>Bundling...</h3>
+      <small></small>
+      <p class="summary"></p>
+      <p class="detail"></p>
+    </div>
+    <code class="progress-details"></code>
+
+    <script>
+      const loading = document.getElementById('loading');
+      const progressDetails = document.querySelector('.progress-details');
+      const summary = loading.querySelector('.summary');
+      const detail = loading.querySelector('.detail');
+
+      function check(data) {
+        renderStatus(data);
+        if (
+          data.bundleStatus.done &&
+          (!data.mfsuBundleStatus || data.mfsuBundleStatus.done)
+        ) {
+          location.reload();
+        } else {
+          setTimeout(loadData, 300);
+        }
+      }
+
+      function renderStatus(data) {
+        const hasMFSU = Boolean(data.mfsuBundleStatus);
+        const hasProgressDetails = Boolean(
+          data.bundleStatus.progresses[0].details,
+        );
+
+        if (hasProgressDetails) {
+          const details = data.bundleStatus.progresses[0].details;
+          if (details.length) {
+            progressDetails.innerHTML = details.join('<br />');
+          }
+        }
+
+        const srcPercent = Math.floor(
+          (data.bundleStatus.done
+            ? 1
+            : data.bundleStatus.progresses[0].percent || 0) * 100,
+        );
+        const mfsuPrecent =
+          hasMFSU &&
+          Math.floor(
+            (data.mfsuBundleStatus.done
+              ? 1
+              : data.mfsuBundleStatus.percent || 0) * 100,
+          );
+        const totalPercent = hasMFSU
+          ? Math.floor((srcPercent + mfsuPrecent) / 2)
+          : srcPercent;
+        const summaryText = totalPercent + '<span>%</span>';
+        let detailText = summaryText;
+
+        if (hasMFSU) {
+          loading.setAttribute('data-mfsu', '');
+          detailText = [
+            srcPercent + '<span>% for src</span>',
+            '<br />',
+            mfsuPrecent + '<span>% for deps</span>',
+          ].join('\n');
+          detail.innerHTML = detailText;
+        }
+
+        loading.setAttribute('data-percent', totalPercent);
+        summary.innerHTML = summaryText;
+      }
+
+      function loadData() {
+        fetch('/__umi/api/bundle-status')
+          .then((res) => res.json())
+          .then(check);
+      }
+
+      loadData();
+    </script>
+  </body>
+</html>

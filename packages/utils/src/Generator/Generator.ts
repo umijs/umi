@@ -1,26 +1,52 @@
 import { copyFileSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dirname, join, relative } from 'path';
-import { chalk, glob, mkdirp, Mustache, prompts, yargs } from '../index';
+import chalk from '../../compiled/chalk';
+import fsExtra from '../../compiled/fs-extra';
+import glob from '../../compiled/glob';
+import Mustache from '../../compiled/mustache';
+import prompts from '../../compiled/prompts';
+import yParser from '../../compiled/yargs-parser';
 
-interface IOpts {
-  cwd: string;
-  args: yargs.Arguments;
+export interface IGeneratorOpts {
+  baseDir: string;
+  args: yParser.Arguments;
+  slient?: boolean;
+}
+
+interface IGeneratorBaseOpts {
+  context: Record<string, any>;
+  target: string;
+}
+
+interface IGeneratorCopyTplOpts extends IGeneratorBaseOpts {
+  templatePath: string;
+}
+
+interface IGeneratorCopyDirectoryOpts extends IGeneratorBaseOpts {
+  path: string;
 }
 
 class Generator {
-  cwd: string;
-  args: yargs.Arguments;
+  baseDir: string;
+  args: yParser.Arguments;
+  slient: boolean;
   prompts: any;
 
-  constructor({ cwd, args }: IOpts) {
-    this.cwd = cwd;
+  constructor({ baseDir, args, slient }: IGeneratorOpts) {
+    this.baseDir = baseDir;
     this.args = args;
+    this.slient = !!slient;
+
     this.prompts = {};
   }
 
   async run() {
     const questions = this.prompting();
-    this.prompts = await prompts(questions);
+    this.prompts = await prompts(questions, {
+      onCancel() {
+        process.exit(1);
+      },
+    });
     await this.writing();
   }
 
@@ -30,15 +56,19 @@ class Generator {
 
   async writing() {}
 
-  copyTpl(opts: { templatePath: string; target: string; context: object }) {
+  copyTpl(opts: IGeneratorCopyTplOpts) {
     const tpl = readFileSync(opts.templatePath, 'utf-8');
     const content = Mustache.render(tpl, opts.context);
-    mkdirp.sync(dirname(opts.target));
-    console.log(`${chalk.green('Write:')} ${relative(this.cwd, opts.target)}`);
+    fsExtra.mkdirpSync(dirname(opts.target));
+    if (!this.slient) {
+      console.log(
+        `${chalk.green('Write:')} ${relative(this.baseDir, opts.target)}`,
+      );
+    }
     writeFileSync(opts.target, content, 'utf-8');
   }
 
-  copyDirectory(opts: { path: string; context: object; target: string }) {
+  copyDirectory(opts: IGeneratorCopyDirectoryOpts) {
     const files = glob.sync('**/*', {
       cwd: opts.path,
       dot: true,
@@ -54,9 +84,11 @@ class Generator {
           context: opts.context,
         });
       } else {
-        console.log(`${chalk.green('Copy: ')} ${file}`);
+        if (!this.slient) {
+          console.log(`${chalk.green('Copy: ')} ${file}`);
+        }
         const absTarget = join(opts.target, file);
-        mkdirp.sync(dirname(absTarget));
+        fsExtra.mkdirpSync(dirname(absTarget));
         copyFileSync(absFile, absTarget);
       }
     });

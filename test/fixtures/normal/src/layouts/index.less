@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  --gutter: 16px;
+  width: 1024px;
+  max-width: calc(100% - var(--gutter) * 2);
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.menuTitle {
+  font-size: 1.5rem;
+}
+
+.menu {
+  font-size: 1rem;
+}
+
+.ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  //background-color: #333;
+}
+
+.li {
+  margin: 0 0.7rem;
+  float: left;
+}
+
+.divider {
+  width: 100%;
+  border-bottom: solid 1px;
+}

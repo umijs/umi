@@ -1,0 +1,10 @@
+{
+  "extends": "./.umi/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["*"],
+      "umi": [".umi/exports.ts"]
+    }
+  },
+  "exclude": [".umi"]
+}

@@ -1,15 +1,28 @@
 #!/usr/bin/env node
 
-require('v8-compile-cache');
+// disable since it's conflicted with typescript cjs + dynamic import
+// require('v8-compile-cache');
 
-const resolveCwd = require('@umijs/deps/compiled/resolve-cwd');
-
-const { name, bin } = require('../package.json');
-const localCLI = resolveCwd.silent(`${name}/${bin['umi']}`);
-if (!process.env.USE_GLOBAL_UMI && localCLI && localCLI !== __filename) {
-  const debug = require('@umijs/utils').createDebug('umi:cli');
-  debug('Using local install of umi');
-  require(localCLI);
-} else {
-  require('../lib/cli');
+// patch console for debug
+// ref: https://remysharp.com/2014/05/23/where-is-that-console-log
+if (process.env.DEBUG_CONSOLE) {
+  ['log', 'warn', 'error'].forEach((method) => {
+    const old = console[method];
+    console[method] = function () {
+      let stack = new Error().stack.split(/\n/);
+      // Chrome includes a single "Error" line, FF doesn't.
+      if (stack[0].indexOf('Error') === 0) {
+        stack = stack.slice(1);
+      }
+      const args = [].slice.apply(arguments).concat([stack[1].trim()]);
+      return old.apply(console, args);
+    };
+  });
 }
+
+require('../dist/cli/cli')
+  .run()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
