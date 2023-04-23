@@ -4,6 +4,7 @@ import { x as unpack } from '@umijs/utils/compiled/tar';
 export enum ERegistry {
   npm = 'https://registry.npmjs.com/',
   taobao = 'https://registry.npmmirror.com/',
+  custom = 'custom',
 }
 
 export type UmiTemplate = `@umijs/${string}-template`;

@@ -151,8 +151,20 @@ export default async ({
           value: ERegistry.taobao,
           hint: 'recommended for China',
         },
+        { label: '自定义', value: ERegistry.custom },
       ],
       initialValue: ERegistry.npm,
+    })) as ERegistry;
+  };
+  const customRegistry = async () => {
+    registry = (await text({
+      message: `Specific your registry`,
+      placeholder: ERegistry.npm,
+      validate: (value) => {
+        if (!value?.length) {
+          return 'Please input registry url';
+        }
+      },
     })) as ERegistry;
   };
   const internalTemplatePrompts = async () => {
@@ -171,6 +183,15 @@ export default async ({
     await selectRegistry();
     if (isCancel(registry)) {
       exitPrompt();
+    }
+    /**
+     * 如果用户选择了自定义，则接受用户输入
+     */
+    if (registry === ERegistry.custom) {
+      await customRegistry();
+      if (isCancel(registry)) {
+        exitPrompt();
+      }
     }
 
     // plugin extra questions
