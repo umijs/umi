@@ -1,6 +1,14 @@
+import { join } from 'path';
+import { Service } from 'umi';
 import plugin from './antd';
 
+process.env.APP_ROOT = join(__dirname, '../../core/fixtures/service/umi-env');
+console.log(process.env.APP_ROOT);
+
 test('momentPicker', async () => {
+  const appData = (await new Service().run({ name: 'appData' })) as any;
+  console.log(appData.config);
+
   await executePlugin({});
 });
 
@@ -45,6 +53,7 @@ async function executePlugin(mfConfig: any) {
     modifyConfig() {},
     addExtraBabelPlugins() {},
     addRuntimePlugin() {},
+    addEntryImportsAhead() {},
   };
 
   plugin(api as any);

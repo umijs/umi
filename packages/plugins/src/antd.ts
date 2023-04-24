@@ -1,3 +1,4 @@
+import AntdMomentWebpackPlugin from '@ant-design/moment-webpack-plugin';
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -164,8 +165,11 @@ export default (api: IApi) => {
   });
 
   // Webpack
-  api.modifyWebpackConfig((memo, { webpack, env }) => {
-    console.log('chain!', memo);
+  api.modifyWebpackConfig((memo) => {
+    if (api.config.antd.momentPicker) {
+      memo.plugins = memo.plugins || [];
+      memo.plugins.push(new AntdMomentWebpackPlugin());
+    }
     return memo;
   });
 
