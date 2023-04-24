@@ -1,3 +1,4 @@
+import { innerPluginList } from '@/contants';
 import type { IAppData } from '@/hooks/useAppData';
 import { getRegisterTime } from '@/utils/getPluginRegisterTime';
 import { Input, List, Switch, Tag } from 'antd';
@@ -77,14 +78,6 @@ const ListContainer = styled.div`
     }
   }
 `;
-
-const innerPluginList = [
-  '@umijs/core',
-  '@umijs/preset-umi',
-  'virtual:',
-  '@umijs/plugin-run',
-  '@umijs/did-you-know',
-];
 
 export const PluginList: FC<IProps> = ({ plugins }) => {
   const [showUmiPlugin, setShowUmiPlugin] = useState(false);
