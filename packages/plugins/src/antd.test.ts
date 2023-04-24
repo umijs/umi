@@ -1,30 +1,35 @@
-// import { PluginAPI } from '../../server/dist/server';
-// packages/core/src/service/service.ts#L541
-import { existsSync } from 'fs';
+import { existsSync } from 'fs-extra';
 import { join } from 'path';
-import { Service } from 'umi/dist/service/service';
+// import { Env, Service } from '../../core';
+import { Service } from 'umi';
 
-const base = join(__dirname, '../../fixtures/service');
+const base = join(__dirname, '../fixtures/service');
+
+process.env.APP_ROOT = base;
 
 function buildService(opts: { name: string }) {
   const cwd = join(base, opts.name);
   const pluginPath = join(cwd, 'plugin.ts');
 
-  console.log(pluginPath);
+  const plugins = [
+    (existsSync(pluginPath) && pluginPath) as string,
+    // antd plugin
+    join(__dirname, './antd.ts'),
+  ].filter(Boolean);
 
   return new Service({
     cwd,
     env: 'development',
     defaultConfigFiles: ['.umirc.ts', 'config/config.ts'],
-    plugins: [(existsSync(pluginPath) && pluginPath) as string].filter(Boolean),
+    plugins,
   });
 }
+
 describe('antd plugin', () => {
   it('config moment to add webpack plugin', async () => {
     const service = buildService({ name: 'umi-env' });
-    const userConfig = await service.run({
-      name: 'WhatToSetToGetWebPackConfig?',
-    });
+    const userConfig = await service.run({ name: 'userConfig' });
+
     console.log(userConfig);
   });
 });
