@@ -164,7 +164,7 @@ export default (api: IApi) => {
   });
 
   // Webpack
-  api.chainWebpack((memo, { webpack, env }) => {
+  api.modifyWebpackConfig((memo, { webpack, env }) => {
     console.log('chain!', memo);
     return memo;
   });

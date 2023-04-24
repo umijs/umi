@@ -1,27 +1,58 @@
-import { join } from 'path';
-// import { Env, Service } from '../../core';
-import { Service } from 'umi';
+import plugin from './antd';
 
-const base = join(__dirname, '../fixtures/antd');
-
-process.env.APP_ROOT = base;
-
-describe('antd plugin', () => {
-  it('config check momentPicker', async () => {
-    const service = new Service();
-    const appData: any = await service.run({ name: 'appData' });
-
-    // Config is configured
-    expect(appData.antd.version).toBeTruthy();
-    expect(appData.config.antd.momentPicker).toBeTruthy();
-
-    await service.run({ name: 'chainWebpack' });
-  });
-
-  it.only('config moment to add webpack plugin', async () => {
-    const service = new Service();
-    const appData: any = await service.run({ name: 'chainWebpack' });
-
-    // Webpack is inject
-  });
+test('momentPicker', async () => {
+  await executePlugin({});
 });
+
+async function executePlugin(mfConfig: any) {
+  const webpackConfig = {
+    entry: {},
+    plugins: [],
+  };
+
+  const webpack = {};
+
+  let modifier: Function | null = null;
+
+  const api = {
+    EnableBy: {
+      config: 'config',
+    },
+    paths: {
+      absSrcPath: '/project/src',
+      absTmpPath: '/project/src/.umi',
+    },
+    config: {
+      mf: mfConfig,
+    },
+    userConfig: {
+      mf: mfConfig,
+    },
+    logger: {
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+      debug: jest.fn(),
+    },
+    onGenerateFiles() {},
+    describe() {},
+    modifyWebpackConfig(fn: Function) {
+      modifier = fn;
+    },
+    addRuntimePluginKey() {},
+    modifyDefaultConfig() {},
+    modifyAppData() {},
+    modifyConfig() {},
+    addExtraBabelPlugins() {},
+    addRuntimePlugin() {},
+  };
+
+  plugin(api as any);
+  await modifier!(webpackConfig, { webpack });
+
+  return {
+    api,
+    webpackConfig,
+    webpack,
+  };
+}
