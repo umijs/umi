@@ -92,9 +92,9 @@ export default (api: IApi) => {
     memo.alias.antd = pkgPath;
 
     // dayjs > moment
-    if (antd.dayjs) {
+    if (antd.momentPicker) {
       // @ant-design/moment-webpack-plugin
-      console.log('2333');
+      console.log('Hello Moment');
     }
 
     // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
@@ -160,6 +160,12 @@ export default (api: IApi) => {
       }
     }
 
+    return memo;
+  });
+
+  // Webpack
+  api.chainWebpack((memo, { webpack, env }) => {
+    console.log('chain!', memo);
     return memo;
   });
 
