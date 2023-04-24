@@ -1,3 +1,4 @@
+import { useAppData } from '@/hooks/useAppData';
 import { state as globalState } from '@/models/global';
 import { Icon, NavLink, styled, useSnapshot } from 'umi';
 
@@ -23,10 +24,13 @@ const Wrapper = styled.div`
 `;
 
 export function Menu() {
+  const {
+    ui: { uiMenusAdded = [] },
+  } = useAppData().data || { ui: {} };
   const { menus } = useSnapshot(globalState);
   return (
     <Wrapper>
-      {menus.map((menu) => (
+      {menus.concat(uiMenusAdded).map((menu) => (
         <div key={menu.name}>
           <NavLink
             to={menu.path}

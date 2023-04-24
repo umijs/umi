@@ -103,6 +103,14 @@ export interface IAppData {
   prepare: {
     buildResult: BuildResult;
   };
+  ui: {
+    uiMenusAdded: {
+      path: string;
+      url: string;
+      icon: string;
+      name: string;
+    }[];
+  };
 }
 
 export function useAppData() {

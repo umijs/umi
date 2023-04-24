@@ -111,6 +111,10 @@ export type IApi = PluginAPI &
     addRuntimePlugin: IAdd<null, string>;
     addRuntimePluginKey: IAdd<null, string>;
     addTmpGenerateWatcherPaths: IAdd<null, string>;
+    addUiMenu: IAdd<
+      null,
+      { icon: string; path: string; title: string; url: string }[]
+    >;
     chainWebpack: {
       (fn: {
         (

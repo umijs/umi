@@ -1,3 +1,4 @@
+import { PluginContainer } from '@/components/PluginContainer';
 import { globalCSS } from '@/utils/globalCSS';
 import { createGlobalStyle } from 'umi';
 
@@ -39,3 +40,18 @@ export const reactQuery = {
     },
   },
 };
+
+export async function patchClientRoutes({ routes }) {
+  const {
+    ui: { uiMenusAdded = [] },
+  } = (await fetch('/__umi/api/app-data').then((res) => res.json())) || {
+    ui: {},
+  };
+
+  routes[0].routes?.unshift(
+    ...uiMenusAdded.map((menu: any) => ({
+      path: menu.path,
+      element: <PluginContainer url={menu.url} name={menu.name} />,
+    })),
+  );
+}

@@ -88,6 +88,20 @@ export default (api: IApi) => {
     ];
   });
 
+  api.modifyAppData(async (memo) => {
+    const uiMenusAdded: { url: string; icon: string; name: string }[] =
+      (await api.applyPlugins({
+        key: 'addUiMenu',
+        initialValue: [],
+      })) ?? [];
+    Object.assign(memo, {
+      ui: {
+        uiMenusAdded,
+      },
+    });
+    return memo;
+  });
+
   api.onGenerateFiles(({ isFirstTime }) => {
     if (!isFirstTime) return;
     api.writeTmpFile({
@@ -111,7 +125,6 @@ uiBtn.addEventListener('click', () => {
       `,
     });
   });
-
   api.addEntryImports(() => {
     return [{ source: '@@/core/ui' }];
   });
