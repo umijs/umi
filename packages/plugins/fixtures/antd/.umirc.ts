@@ -2,7 +2,10 @@ import { join } from "path"
 
 // .umirc.ts
 export default {
-  plugins: [join(__dirname, '../../src/antd.ts')],
+  plugins: [
+    // antd
+    join(__dirname, '../../src/antd.ts'),
+  ],
   antd: {
     momentPicker: true,
   }
