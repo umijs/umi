@@ -1,5 +1,5 @@
 {
-  "name": "@example/mfsu-e2e",
+  "name": "@example/plugin-antd-e2e",
   "private": true,
   "author": "pshu <pishu.spf@antfin.com>",
   "scripts": {
@@ -16,7 +16,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "antd": "5.x",
     "lodash.uppercase": "^4.3.0",
+    "moment": "^2.29.4",
     "umi": "workspace:*"
   },
   "devDependencies": {

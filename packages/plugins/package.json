@@ -26,6 +26,7 @@
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/antd-theme-variable": "^1.0.0",
     "@ant-design/icons": "^4.7.0",
+    "@ant-design/moment-webpack-plugin": "^0.0.3",
     "@ant-design/pro-components": "^2.0.1",
     "@tanstack/react-query": "^4.24.10",
     "@tanstack/react-query-devtools": "^4.24.10",
