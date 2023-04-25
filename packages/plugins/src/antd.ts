@@ -1,3 +1,4 @@
+// @ts-ignore
 import AntdMomentWebpackPlugin from '@ant-design/moment-webpack-plugin';
 import assert from 'assert';
 import { dirname, join } from 'path';
