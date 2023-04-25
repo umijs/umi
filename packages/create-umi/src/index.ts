@@ -99,6 +99,7 @@ export default async ({
   let pluginName = `umi-plugin-${name || 'demo'}`;
 
   const target = name ? join(cwd, name) : cwd;
+  const customRegistry = await detectUserRegistry();
 
   const { isCancel, text, select, intro, outro } = clackPrompts;
   const exitPrompt = () => {
@@ -143,28 +144,21 @@ export default async ({
       message: 'Pick Npm Registry',
       options: [
         {
-          label: 'npm',
+          label: 'Npm',
           value: ERegistry.npm,
         },
         {
-          label: 'taobao',
+          label: 'Taobao',
           value: ERegistry.taobao,
           hint: 'recommended for China',
         },
-        { label: '自定义', value: ERegistry.custom },
-      ],
+        customRegistry && {
+          label: 'Your npm config',
+          value: customRegistry,
+          hint: customRegistry,
+        },
+      ].filter(Boolean) as Parameters<typeof select>[0]['options'],
       initialValue: ERegistry.npm,
-    })) as ERegistry;
-  };
-  const customRegistry = async () => {
-    registry = (await text({
-      message: `Specific your registry`,
-      placeholder: ERegistry.npm,
-      validate: (value) => {
-        if (!value?.length) {
-          return 'Please input registry url';
-        }
-      },
     })) as ERegistry;
   };
   const internalTemplatePrompts = async () => {
@@ -183,15 +177,6 @@ export default async ({
     await selectRegistry();
     if (isCancel(registry)) {
       exitPrompt();
-    }
-    /**
-     * 如果用户选择了自定义，则接受用户输入
-     */
-    if (registry === ERegistry.custom) {
-      await customRegistry();
-      if (isCancel(registry)) {
-        exitPrompt();
-      }
     }
 
     // plugin extra questions
@@ -402,5 +387,34 @@ async function getPnpmMajorVersion() {
     return parseInt(stdout.trim().split('.')[0], 10);
   } catch (e) {
     throw new Error('Please install pnpm first', { cause: e });
+  }
+}
+
+async function detectUserRegistry() {
+  const isChinaRegistry = (registry: string) => {
+    return [
+      'registry.npm.taobao.org',
+      'registry.npmmirror.com',
+      'r.cnpmjs.org',
+      // What's this? https://cnodejs.org/topic/61405b76fe0c5109a7aea0ed
+      'registry.nlark.com',
+    ].some((i) => registry.includes(i));
+  };
+  const isNpmRegistry = (registry: string) => {
+    return [
+      'registry.npmjs.org',
+      'registry.npmjs.com',
+      'registry.yarnpkg.com',
+    ].some((i) => registry.includes(i));
+  };
+
+  try {
+    const { stdout } = await execa.execa('npm', ['config', 'get', 'registry']);
+    const registry = stdout.trim();
+    const hasCustomRegistry =
+      !isChinaRegistry(registry) && !isNpmRegistry(registry);
+    return hasCustomRegistry ? registry : undefined;
+  } catch {
+    return;
   }
 }
