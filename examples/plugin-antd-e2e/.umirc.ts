@@ -6,4 +6,5 @@ export default {
   antd: {
     momentPicker: true,
   },
+  mfsu: false,
 };
