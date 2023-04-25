@@ -982,6 +982,9 @@ importers:
 
   examples/plugin-antd-e2e:
     dependencies:
+      antd:
+        specifier: 5.x
+        version: 5.3.0(moment@2.29.4)(react-dom@18.1.0)(react@18.1.0)
       lodash.uppercase:
         specifier: ^4.3.0
         version: 4.3.0
@@ -1261,7 +1264,7 @@ importers:
         version: link:../../packages/plugins
       antd:
         specifier: ^5.3.0
-        version: 5.3.0(react-dom@18.1.0)(react@18.1.0)
+        version: 5.3.0(moment@2.29.4)(react-dom@18.1.0)(react@18.1.0)
       umi:
         specifier: workspace:*
         version: link:../../packages/umi
@@ -1413,7 +1416,7 @@ importers:
         version: 1.9.3(react-redux@8.0.5)(react@18.1.0)
       react-redux:
         specifier: ^8.0.5
-        version: 8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@17.0.2)(react@17.0.2)(redux@4.2.1)
+        version: 8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@18.1.0)(react@18.1.0)(redux@4.2.1)
       umi:
         specifier: workspace:*
         version: link:../../packages/umi
@@ -1425,7 +1428,7 @@ importers:
         version: 2.2.0
       react-redux:
         specifier: ^8.0.5
-        version: 8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@17.0.2)(react@17.0.2)(redux@4.2.1)
+        version: 8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@18.1.0)(react@18.1.0)(redux@4.2.1)
       umi:
         specifier: workspace:*
         version: link:../../packages/umi
@@ -2757,7 +2760,7 @@ importers:
         version: 18.0.10
       antd:
         specifier: ^5.2.3
-        version: 5.3.0(react-dom@18.1.0)(react@18.1.0)
+        version: 5.3.0(moment@2.29.4)(react-dom@18.1.0)(react@18.1.0)
       rc-virtual-list:
         specifier: ^3.4.13
         version: 3.4.13(react-dom@18.1.0)(react@18.1.0)
@@ -12092,7 +12095,7 @@ packages:
     dependencies:
       immer: 9.0.19
       react: 18.1.0
-      react-redux: 8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@17.0.2)(react@17.0.2)(redux@4.2.1)
+      react-redux: 8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@18.1.0)(react@18.1.0)(redux@4.2.1)
       redux: 4.2.1
       redux-thunk: 2.4.2(redux@4.2.1)
       reselect: 4.1.7
@@ -16335,7 +16338,7 @@ packages:
       scroll-into-view-if-needed: 2.2.29
     dev: false
 
-  /antd@5.3.0(react-dom@18.1.0)(react@18.1.0):
+  /antd@5.3.0(moment@2.29.4)(react-dom@18.1.0)(react@18.1.0):
     resolution: {integrity: sha512-+l8K2AQ+yvIOq9hzWtha3nG3ydFfwN6+fUmSGCqyThFrLPI2Y3IUPXdAXP4aQcYAnu1Q0sLwsTgHRvE2AXfZUw==}
     peerDependencies:
       react: '>=16.9.0'
@@ -16374,7 +16377,7 @@ packages:
       rc-motion: 2.6.2(react-dom@18.1.0)(react@18.1.0)
       rc-notification: 5.0.2(react-dom@18.1.0)(react@18.1.0)
       rc-pagination: 3.2.0(react-dom@18.1.0)(react@18.1.0)
-      rc-picker: 3.2.4(dayjs@1.11.7)(react-dom@18.1.0)(react@18.1.0)
+      rc-picker: 3.2.4(dayjs@1.11.7)(moment@2.29.4)(react-dom@18.1.0)(react@18.1.0)
       rc-progress: 3.4.1(react-dom@18.1.0)(react@18.1.0)
       rc-rate: 2.9.2(react-dom@18.1.0)(react@18.1.0)
       rc-resize-observer: 1.2.0(react-dom@18.1.0)(react@18.1.0)
@@ -32383,7 +32386,7 @@ packages:
       shallowequal: 1.1.0
     dev: false
 
-  /rc-picker@3.2.4(dayjs@1.11.7)(react-dom@18.1.0)(react@18.1.0):
+  /rc-picker@3.2.4(dayjs@1.11.7)(moment@2.29.4)(react-dom@18.1.0)(react@18.1.0):
     resolution: {integrity: sha512-AydqPVS12u+46P6DwF0iMi4p5UAAnb64drcA/zUgNXkkB6rQhUwtYP7E75YM0WylT54F3sLhe+WttZynxtsU+Q==}
     engines: {node: '>=8.x'}
     peerDependencies:
@@ -32407,6 +32410,7 @@ packages:
       '@babel/runtime': 7.21.0
       classnames: 2.3.2
       dayjs: 1.11.7
+      moment: 2.29.4
       rc-trigger: 5.3.4(react-dom@18.1.0)(react@18.1.0)
       rc-util: 5.28.0(react-dom@18.1.0)(react@18.1.0)
       react: 18.1.0
@@ -34050,6 +34054,7 @@ packages:
       react-is: 18.2.0
       redux: 4.2.1
       use-sync-external-store: 1.2.0(react@17.0.2)
+    dev: true
 
   /react-redux@8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@18.1.0)(react@18.1.0)(redux@4.2.1):
     resolution: {integrity: sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==}
@@ -38376,6 +38381,7 @@ packages:
         optional: true
     dependencies:
       react: 17.0.2
+    dev: true
 
   /use-sync-external-store@1.2.0(react@18.1.0):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}

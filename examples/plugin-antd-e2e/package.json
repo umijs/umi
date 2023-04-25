@@ -16,6 +16,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "antd": "5.x",
     "lodash.uppercase": "^4.3.0",
     "moment": "^2.29.4",
     "umi": "workspace:*"

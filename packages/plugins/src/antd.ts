@@ -25,6 +25,7 @@ export default (api: IApi) => {
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
+  const day2MomentAvailable = semver.gte(antdVersion, '5.0.0');
 
   api.describe({
     config: {
@@ -91,12 +92,6 @@ export default (api: IApi) => {
 
     // antd import
     memo.alias.antd = pkgPath;
-
-    // dayjs > moment
-    if (antd.momentPicker) {
-      // @ant-design/moment-webpack-plugin
-      console.log('Hello Moment');
-    }
 
     // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
     if (antdVersion.startsWith('5')) {
@@ -165,10 +160,15 @@ export default (api: IApi) => {
   });
 
   // Webpack
-  api.modifyWebpackConfig((memo) => {
+  api.chainWebpack((memo) => {
     if (api.config.antd.momentPicker) {
-      memo.plugins = memo.plugins || [];
-      memo.plugins.push(new AntdMomentWebpackPlugin());
+      if (day2MomentAvailable) {
+        memo.plugin('antd-moment-webpack-plugin').use(AntdMomentWebpackPlugin);
+      } else {
+        api.logger.warn(
+          `MomentPicker is only available in version 5.0.0 and above, but you are using version ${antdVersion}`,
+        );
+      }
     }
     return memo;
   });
