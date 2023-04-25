@@ -104,11 +104,15 @@ export interface IAppData {
     buildResult: BuildResult;
   };
   ui: {
-    uiMenusAdded: {
-      path: string;
-      url: string;
-      icon: string;
+    modules: {
       name: string;
+      menus?: {
+        path: string;
+        url: string;
+        icon: string;
+        name: string;
+      }[];
+      [key: string]: any;
     }[];
   };
 }

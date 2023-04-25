@@ -1,7 +1,7 @@
 import { isLocalDev } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
-import { IApi } from '../../types';
+import { IApi, IUIModule } from '../../types';
 // @ts-ignore
 import sirv from '../../../compiled/sirv';
 
@@ -89,14 +89,14 @@ export default (api: IApi) => {
   });
 
   api.modifyAppData(async (memo) => {
-    const uiMenusAdded: { url: string; icon: string; name: string }[] =
+    const uiModules: IUIModule =
       (await api.applyPlugins({
-        key: 'addUiMenu',
+        key: 'addUIModules',
         initialValue: [],
       })) ?? [];
     Object.assign(memo, {
       ui: {
-        uiMenusAdded,
+        modules: uiModules,
       },
     });
     return memo;

@@ -43,7 +43,7 @@ export default (api: IApi) => {
     'addHTMLScripts',
     'addTmpGenerateWatcherPaths',
     'addOnDemandDeps',
-    'addUiMenu',
+    'addUIModules',
     'chainWebpack',
     'modifyEntry',
     'modifyHTMLFavicon',

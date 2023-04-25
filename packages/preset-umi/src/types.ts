@@ -81,6 +81,17 @@ export interface IOnGenerateFiles {
   files?: IFileInfo | null;
   isFirstTime?: boolean;
 }
+export interface IUIMenu {
+  path: string;
+  url: string;
+  icon: string;
+  name: string;
+}
+export interface IUIModule {
+  name: string;
+  menus?: IUIMenu[];
+  [key: string]: any;
+}
 export type GenerateFilesFn = (opts: IOnGenerateFiles) => Promise<void>;
 export type OnConfigChangeFn = (opts: {
   generate: GenerateFilesFn;
@@ -111,10 +122,7 @@ export type IApi = PluginAPI &
     addRuntimePlugin: IAdd<null, string>;
     addRuntimePluginKey: IAdd<null, string>;
     addTmpGenerateWatcherPaths: IAdd<null, string>;
-    addUiMenu: IAdd<
-      null,
-      { icon: string; path: string; title: string; url: string }[]
-    >;
+    addUIModules: IAdd<null, IUIModule[]>;
     chainWebpack: {
       (fn: {
         (
