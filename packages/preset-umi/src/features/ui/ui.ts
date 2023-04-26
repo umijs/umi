@@ -94,11 +94,9 @@ export default (api: IApi) => {
         key: 'addUIModules',
         initialValue: [],
       })) ?? [];
-    Object.assign(memo, {
-      ui: {
-        modules: uiModules,
-      },
-    });
+    memo.ui = {
+      modules: uiModules,
+    };
     return memo;
   });
 
