@@ -14,9 +14,6 @@ test('test react plugin & transform umi babel to vite babel', () => {
         expect.objectContaining({
           name: 'vite:react-refresh',
         }),
-        expect.objectContaining({
-          name: 'vite:react-jsx',
-        }),
       ]),
     ]),
   );

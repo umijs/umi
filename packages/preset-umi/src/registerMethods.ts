@@ -43,6 +43,7 @@ export default (api: IApi) => {
     'addHTMLScripts',
     'addTmpGenerateWatcherPaths',
     'addOnDemandDeps',
+    'addUIModules',
     'chainWebpack',
     'modifyEntry',
     'modifyHTMLFavicon',
@@ -122,7 +123,6 @@ export default (api: IApi) => {
         const transformIEAR = transformModule.default;
         content = transformIEAR({ content, path: absPath }, api);
       }
-
       if (!existsSync(absPath)) {
         writeFileSync(absPath, content!, 'utf-8');
       } else {

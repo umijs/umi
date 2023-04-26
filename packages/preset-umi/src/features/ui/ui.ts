@@ -1,7 +1,7 @@
 import { isLocalDev } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
-import { IApi } from '../../types';
+import { IApi, IUIModule } from '../../types';
 // @ts-ignore
 import sirv from '../../../compiled/sirv';
 
@@ -88,6 +88,20 @@ export default (api: IApi) => {
     ];
   });
 
+  api.modifyAppData(async (memo) => {
+    const uiModules: IUIModule =
+      (await api.applyPlugins({
+        key: 'addUIModules',
+        initialValue: [],
+      })) ?? [];
+    Object.assign(memo, {
+      ui: {
+        modules: uiModules,
+      },
+    });
+    return memo;
+  });
+
   api.onGenerateFiles(({ isFirstTime }) => {
     if (!isFirstTime) return;
     api.writeTmpFile({
@@ -111,7 +125,6 @@ uiBtn.addEventListener('click', () => {
       `,
     });
   });
-
   api.addEntryImports(() => {
     return [{ source: '@@/core/ui' }];
   });

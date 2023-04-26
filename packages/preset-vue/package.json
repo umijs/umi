@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-vue",
-  "version": "4.0.66",
+  "version": "4.0.0-canary.20230424.1",
   "description": "@umijs/preset-vue",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-vue#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -30,7 +30,7 @@
     "vue-router": "4.1.6"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "4.0.0",
+    "@vitejs/plugin-vue": "4.1.0",
     "umi": "workspace:*"
   },
   "publishConfig": {

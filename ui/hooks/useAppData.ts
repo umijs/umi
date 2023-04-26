@@ -103,6 +103,18 @@ export interface IAppData {
   prepare: {
     buildResult: BuildResult;
   };
+  ui: {
+    modules: {
+      name: string;
+      menus?: {
+        path: string;
+        url: string;
+        icon: string;
+        name: string;
+      }[];
+      [key: string]: any;
+    }[];
+  };
 }
 
 export function useAppData() {

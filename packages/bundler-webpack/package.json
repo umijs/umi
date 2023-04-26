@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "4.0.66",
+  "version": "4.0.0-canary.20230424.1",
   "description": "@umijs/bundler-webpack",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -41,7 +41,7 @@
     "cors": "^2.8.5",
     "css-loader": "6.7.1",
     "es5-imcompatible-versions": "^0.1.78",
-    "fork-ts-checker-webpack-plugin": "7.3.0",
+    "fork-ts-checker-webpack-plugin": "8.0.0",
     "jest-worker": "29.4.3",
     "lightningcss": "1.19.0",
     "node-libs-browser": "2.2.1",

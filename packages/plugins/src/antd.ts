@@ -1,3 +1,5 @@
+// @ts-ignore
+import AntdMomentWebpackPlugin from '@ant-design/moment-webpack-plugin';
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -24,6 +26,7 @@ export default (api: IApi) => {
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
+  const day2MomentAvailable = semver.gte(antdVersion, '5.0.0');
 
   api.describe({
     config: {
@@ -45,6 +48,8 @@ export default (api: IApi) => {
             appConfig: zod
               .record(zod.any())
               .describe('Only antd@5.1.0 is supported'),
+            // DatePicker & Calendar use moment version
+            momentPicker: zod.boolean().describe('Only antd@5.x is supported'),
           })
           .deepPartial();
       },
@@ -88,11 +93,6 @@ export default (api: IApi) => {
 
     // antd import
     memo.alias.antd = pkgPath;
-
-    // moment > dayjs
-    if (antd.dayjs) {
-      memo.alias.moment = dirname(require.resolve('dayjs/package.json'));
-    }
 
     // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
     if (antdVersion.startsWith('5')) {
@@ -157,6 +157,20 @@ export default (api: IApi) => {
       }
     }
 
+    return memo;
+  });
+
+  // Webpack
+  api.chainWebpack((memo) => {
+    if (api.config.antd.momentPicker) {
+      if (day2MomentAvailable) {
+        memo.plugin('antd-moment-webpack-plugin').use(AntdMomentWebpackPlugin);
+      } else {
+        api.logger.warn(
+          `MomentPicker is only available in version 5.0.0 and above, but you are using version ${antdVersion}`,
+        );
+      }
+    }
     return memo;
   });
 
