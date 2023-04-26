@@ -104,7 +104,19 @@ export default {
 
 配置 `antd` 的 App 包裹组件，请注意 `antd@5.1.0 ~ 5.2.3` 仅能通过 `appConfig: {}` 启用，只有 `antd >=5.3.0` 才支持更多 App 配置项目。
 
-**注意：该配置项仅 antd v5.1.0 及以上可用**
+#### proxyStaticMethod
+
+- Type: `boolean`
+
+当配置 `appConfig` 时，会自动替换静态方法（如 Modal、message、notification）为 App 内的 `useApp` 实体从而可以使用 ConfigProvider 提供的主题能力。请优先考虑使用 App 组件。
+
+#### momentPicker
+
+- Type: `boolean`
+
+使用 `@ant-design/moment-webpack-plugin` 插件，将 v5 的 dayJS 替换为 momentJS。除非你需要使用 momentJS（如升级版本做兼容），否则不建议开启。
+
+**注意：该配置项仅 antd v5.0.0 及以上可用**
 
 ### 运行时配置
 

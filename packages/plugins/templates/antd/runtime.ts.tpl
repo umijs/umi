@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
+import { AppProxy } from './appStatic';
 
 let cacheAntdConfig = null;
 
@@ -71,6 +72,13 @@ export function innerProvider(container: any) {
   const {
     appConfig: finalAppConfig = {},
   } = getAntdConfig();
-  return <App {...finalAppConfig}>{container}</App>;
+  return (
+    <App {...finalAppConfig}>
+      {container}
+      {{#proxyStaticMethod}}
+        <AppProxy />
+      {{/proxyStaticMethod}}
+    </App>
+  );
 }
 {{/appConfig}}

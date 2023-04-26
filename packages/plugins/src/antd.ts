@@ -48,6 +48,8 @@ export default (api: IApi) => {
             appConfig: zod
               .record(zod.any())
               .describe('Only antd@5.1.0 is supported'),
+            // Only `appConfig` enabled can open this
+            proxyStaticMethod: zod.boolean(),
             // DatePicker & Calendar use moment version
             momentPicker: zod.boolean().describe('Only antd@5.x is supported'),
           })
@@ -62,7 +64,13 @@ export default (api: IApi) => {
     },
   });
 
-  api.addRuntimePluginKey(() => ['antd']);
+  api.addRuntimePluginKey(() => [
+    'antd',
+    'AppProxy',
+    'message',
+    'notification',
+    'Modal',
+  ]);
 
   function checkPkgPath() {
     if (!pkgPath) {
@@ -155,6 +163,10 @@ export default (api: IApi) => {
           `versions [5.1.0 ~ 5.3.0) only allows antd.appConfig to be set to \`{}\``,
         );
       }
+    } else if (antd.proxyStaticMethod) {
+      api.logger.warn(
+        `antd.proxyStaticMethod is only available when antd.appConfig is set`,
+      );
     }
 
     return memo;
@@ -212,8 +224,15 @@ export default (api: IApi) => {
           withConfigProvider && JSON.stringify(api.config.antd.configProvider),
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
+        proxyStaticMethod: !!api.config.antd.proxyStaticMethod,
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
+    });
+
+    api.writeTmpFile({
+      path: `appStatic.tsx`,
+      context: {},
+      tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'appStatic.ts.tpl')),
     });
 
     api.writeTmpFile({
@@ -257,13 +276,20 @@ export type IRuntimeConfig = {
   });
 
   api.addRuntimePlugin(() => {
+    const tmpFileList = [];
+
     if (
       api.config.antd.configProvider ||
       (appComponentAvailable && api.config.antd.appConfig)
     ) {
-      return [withTmpPath({ api, path: 'runtime.tsx' })];
+      tmpFileList.push(withTmpPath({ api, path: 'runtime.tsx' }));
+
+      // 如果配置了静态导出能力，会抽一个通用组件来转发静态化
+      if (api.config.antd.proxyStaticMethod) {
+        tmpFileList.push(withTmpPath({ api, path: 'appStatic.tsx' }));
+      }
     }
-    return [];
+    return tmpFileList;
   });
 
   api.addEntryImportsAhead(() => {
