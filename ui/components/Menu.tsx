@@ -24,9 +24,7 @@ const Wrapper = styled.div`
 `;
 
 export function Menu() {
-  const {
-    ui: { modules = [] },
-  } = useAppData().data || { ui: {} };
+  const { modules = [] } = useAppData()?.data?.ui || {};
   const { menus } = useSnapshot(globalState);
   const uiMenusAdded = modules.map((module) => module.menus || []).flat();
 

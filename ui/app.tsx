@@ -58,13 +58,12 @@ export const reactQuery = {
 };
 
 export async function patchClientRoutes({ routes }) {
-  const {
-    ui: { modules = [] },
-  } = (await fetch('/__umi/api/app-data').then(
-    (res) => res.json() as Promise<IAppData>,
-  )) ?? {
-    ui: {},
-  };
+  const { modules = [] } =
+    (
+      await fetch('/__umi/api/app-data').then(
+        (res) => res.json() as Promise<IAppData>,
+      )
+    )?.ui || {};
   const uiMenusAdded = modules.map((module) => module.menus || []).flat();
 
   routes[0].routes?.unshift(
