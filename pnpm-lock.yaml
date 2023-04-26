@@ -532,6 +532,9 @@ importers:
       react-router-dom:
         specifier: ^6.3.0
         version: 6.3.0(react-dom@18.1.0)(react@18.1.0)
+      styled-components:
+        specifier: 6.0.0-beta.9
+        version: 6.0.0-beta.9(react-dom@18.1.0)(react@18.1.0)(tslib@2.4.1)
       umi:
         specifier: workspace:*
         version: link:../../packages/umi
