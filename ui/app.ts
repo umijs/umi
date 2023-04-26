@@ -13,8 +13,9 @@ ${globalCSS}
     --text-color: #9a9a9a;
     --accent-color: #ffffff;
     --subtle-color: #303234;
-    --border-color: #fff;
+    --border-color: #9a9a9a;
     --second-text-color: #ddd;
+    --card-bg-color: #27212d;
   }
 
   --bg-color: #fff;
@@ -25,6 +26,7 @@ ${globalCSS}
   --subtle-color: #e8e8e8;
   --border-color: #ddd;
   --second-text-color: #666;
+  --card-bg-color: #f8f8f8;
 }
 
 html, body, #root {

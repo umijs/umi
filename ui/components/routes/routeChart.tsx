@@ -1,6 +1,9 @@
+import { modeColorMap } from '@/contants';
+import { state as globalState } from '@/models/global';
 import { IIRoute } from '@/utils/realizeRoutes';
 import G6 from '@antv/g6';
 import { FC, useEffect } from 'react';
+import { useSnapshot } from 'umi';
 
 interface IProps {
   routes: IIRoute[];
@@ -31,7 +34,11 @@ const colorList = [
 ];
 
 export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
+  const { mode } = useSnapshot(globalState);
+
   useEffect(() => {
+    const { stroke } = modeColorMap[mode];
+
     const container = document.getElementById('route-container');
     const width = container!.scrollWidth;
     const height = window.innerHeight - 32;
@@ -49,7 +56,7 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
         style: {
           radius: 5,
           fill: '#dbedff',
-          stroke: '#fff',
+          stroke: stroke,
           cursor: 'pointer',
         },
         anchorPoints: [
@@ -60,7 +67,7 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
       defaultEdge: {
         type: 'cubic-horizontal',
         style: {
-          stroke: '#fff',
+          stroke: stroke,
           lineDash: [10, 5],
           endArrow: {
             path: 'M 0,0 L 4,2 L 4,-2 Z',
@@ -133,7 +140,7 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
     return () => {
       window.removeEventListener('resize', resizeCb);
     };
-  }, [routes]);
+  }, [routes, mode]);
 
   return (
     <div>

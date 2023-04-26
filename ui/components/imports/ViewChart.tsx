@@ -1,7 +1,10 @@
+import { modeColorMap } from '@/contants';
+import { state as globalState } from '@/models/global';
 import type { Edge, Item } from '@antv/g6';
 import G6 from '@antv/g6';
 import type { Metafile } from '@umijs/bundler-utils/compiled/esbuild';
 import { FC, useEffect, useMemo, useRef } from 'react';
+import { useSnapshot } from 'umi';
 
 interface IProps {
   metaFile: Metafile;
@@ -10,10 +13,12 @@ interface IProps {
 const ACTIVE_COLOR = '#117cf3';
 
 export const ViewChart: FC<IProps> = ({ metaFile }) => {
+  const { mode } = useSnapshot(globalState);
   const selectedNode = useRef<null | Item>(null);
 
   // 获取图标的 nodes 和 edges
   const G6Data = useMemo(() => {
+    const { shadowColor, fill } = modeColorMap[mode];
     const { inputs } = metaFile;
     const files = Object.keys(inputs);
     // 获取 nodes
@@ -65,8 +70,8 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
           labelCfg: {
             position: 'bottom',
             style: {
-              fill: '#fff',
-              shadowColor: 'blue',
+              fill,
+              shadowColor,
               shadowBlur: 10,
             },
           },
@@ -113,7 +118,7 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
       nodes,
       edges,
     };
-  }, [metaFile]);
+  }, [metaFile, mode]);
 
   useEffect(() => {
     const container = document.getElementById('container');
