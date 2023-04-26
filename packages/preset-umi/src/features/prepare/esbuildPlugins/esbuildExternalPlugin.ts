@@ -11,6 +11,13 @@ export function esbuildExternalPlugin(opts: {
     name: 'esbuildExternalPlugin',
     setup(build) {
       build.onResolve({ filter: /.*/ }, (args) => {
+        // don't handle special files
+        if (args.path.includes('_UMI_PREPARE_EXTERNAL_')) {
+          return {
+            external: true,
+          };
+        }
+
         // only handle js/ts file
         if (!isSource(args.path)) {
           return {
