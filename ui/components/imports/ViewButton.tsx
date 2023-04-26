@@ -12,10 +12,11 @@ const Wrapper = styled.div`
 
   .view {
     display: inline-block;
-    border: 1px solid var(--text-color);
+    border: 1px solid var(--border-color);
     padding: 0.25rem 0.75rem;
     position: relative;
     cursor: pointer;
+    color: var(--second-text-color);
 
     &.active {
       cursor: unset;

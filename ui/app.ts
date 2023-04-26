@@ -6,12 +6,25 @@ export const styledComponents = {
 ${globalCSS}
 
 :root {
-  --bg-color: #151515;
-  --bg-hover-color: #1c1c1d;
+  &.dark {
+    --bg-color: #151515;
+    --bg-hover-color: #1c1c1d;
+    --highlight-color: #117cf3;
+    --text-color: #9a9a9a;
+    --accent-color: #ffffff;
+    --subtle-color: #303234;
+    --border-color: #fff;
+    --second-text-color: #ddd;
+  }
+
+  --bg-color: #fff;
+  --bg-hover-color: #fefefe;
   --highlight-color: #117cf3;
-  --text-color: #9a9a9a;
-  --accent-color: #ffffff;
-  --subtle-color: #303234;
+  --text-color: #333;
+  --accent-color: #000;
+  --subtle-color: #e8e8e8;
+  --border-color: #ddd;
+  --second-text-color: #666;
 }
 
 html, body, #root {

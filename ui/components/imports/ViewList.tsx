@@ -16,7 +16,7 @@ const SwitchContainer = styled.div`
 
     .ant-switch {
       margin-right: 0.5rem;
-      background: var(--text-color);
+      background: var(--border-color);
 
       &-checked {
         background: var(--highlight-color);
@@ -30,7 +30,7 @@ const SearchContainer = styled.div`
 
   .ant-input-affix-wrapper {
     background: var(--bg-color);
-    border-color: var(--text-color);
+    border-color: var(--border-color);
   }
 
   .ant-input {
@@ -40,7 +40,7 @@ const SearchContainer = styled.div`
 
   .search-icon {
     margin-right: 0.5rem;
-    color: var(--text-color);
+    color: var(--second-text-color);
   }
 `;
 
@@ -49,7 +49,7 @@ const ListContainer = styled.div`
 
   .ant-list-item {
     color: var(--text-color);
-    border-color: var(--text-color);
+    border-color: var(--border-color);
     padding-left: 1rem;
   }
 `;
