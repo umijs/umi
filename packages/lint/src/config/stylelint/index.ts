@@ -37,18 +37,8 @@ module.exports = {
     // and it will cause an unexpected font rendering on the devices that have no PingFangSC font
     'declaration-property-value-disallowed-list': [
       {
-        'font-family': [
-          'PingFangSC',
-          "'PingFangSC'",
-          'PingFangSC-Regular',
-          "'PingFangSC-Regular'",
-          'PingFangSC-Medium',
-          "'PingFangSC-Medium'",
-          'PingFangSC-Semibold',
-          "'PingFangSC-Semibold'",
-          'PingFangSC-Bold',
-          "'PingFangSC-Bold'",
-        ],
+        'font-family':
+          '/^(\'|")?PingFangSC(-(Regular|Medium|Semibold|Bold))?\\1$/',
       },
       {
         message:
