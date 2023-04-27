@@ -78,9 +78,6 @@ export default (api: IApi) => {
                   // TODO Actually, it should be vite mode, but here it is written as vue only
                   // Required in Vite https://vitejs.dev/guide/features.html#typescript
                   isolatedModules: true,
-                  // For `<script setup>`
-                  // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
-                  preserveValueImports: true,
                 }
               : {}),
 
@@ -103,7 +100,8 @@ export default (api: IApi) => {
             `${baseUrl}**/*.d.ts`,
             `${baseUrl}**/*.ts`,
             `${baseUrl}**/*.tsx`,
-          ],
+            api.appData.framework === 'vue' && `${baseUrl}**/*.vue`,
+          ].filter(Boolean),
         },
         null,
         2,
