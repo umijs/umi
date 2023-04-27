@@ -35,20 +35,26 @@ module.exports = {
     // disallowed set single font-family as PingFangSC
     // in most cases, this font-family rule is copied unconsciously from Sketch
     // and it will cause an unexpected font rendering on the devices that have no PingFangSC font
-    'declaration-property-value-disallowed-list': {
-      'font-family': [
-        'PingFangSC',
-        "'PingFangSC'",
-        'PingFangSC-Regular',
-        "'PingFangSC-Regular'",
-        'PingFangSC-Medium',
-        "'PingFangSC-Medium'",
-        'PingFangSC-Semibold',
-        "'PingFangSC-Semibold'",
-        'PingFangSC-Bold',
-        "'PingFangSC-Bold'",
-      ],
-    },
+    'declaration-property-value-disallowed-list': [
+      {
+        'font-family': [
+          'PingFangSC',
+          "'PingFangSC'",
+          'PingFangSC-Regular',
+          "'PingFangSC-Regular'",
+          'PingFangSC-Medium',
+          "'PingFangSC-Medium'",
+          'PingFangSC-Semibold',
+          "'PingFangSC-Semibold'",
+          'PingFangSC-Bold',
+          "'PingFangSC-Bold'",
+        ],
+      },
+      {
+        message:
+          'Unexpected value for property "font-family", which will cause some devices to render the wrong font, please delete this "font-family" css rule, see also: https://github.com/umijs/umi/pull/11001',
+      },
+    ],
   },
   customSyntax: require.resolve('../../../compiled/postcss-less'),
   ignoreFiles: ['node_modules'],
