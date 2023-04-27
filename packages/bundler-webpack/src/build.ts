@@ -23,6 +23,7 @@ type IOpts = {
   extraBabelPresets?: any[];
   clean?: boolean;
   watch?: boolean;
+  disableCopy?: boolean;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export async function build(opts: IOpts): Promise<webpack.Stats> {
@@ -56,6 +57,7 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
         }
       : undefined,
     pkg: opts.pkg,
+    disableCopy: opts.disableCopy,
   });
   let isFirstCompile = true;
   return new Promise((resolve, reject) => {
