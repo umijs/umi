@@ -23,6 +23,8 @@ export default {
       'ant-design:bug-outlined',
       'ant-design:bulb-outlined',
       'ant-design:star-outlined',
+      'local:sun',
+      'local:moon',
     ],
   },
 };

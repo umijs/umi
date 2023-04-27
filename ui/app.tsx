@@ -8,12 +8,27 @@ export const styledComponents = {
 ${globalCSS}
 
 :root {
-  --bg-color: #151515;
-  --bg-hover-color: #1c1c1d;
+  &.dark {
+    --bg-color: #151515;
+    --bg-hover-color: #1c1c1d;
+    --highlight-color: #117cf3;
+    --text-color: #9a9a9a;
+    --accent-color: #ffffff;
+    --subtle-color: #303234;
+    --border-color: #9a9a9a;
+    --second-text-color: #ddd;
+    --card-bg-color: #27212d;
+  }
+
+  --bg-color: #fff;
+  --bg-hover-color: #fefefe;
   --highlight-color: #117cf3;
-  --text-color: #9a9a9a;
-  --accent-color: #ffffff;
-  --subtle-color: #303234;
+  --text-color: #333;
+  --accent-color: #000;
+  --subtle-color: #e8e8e8;
+  --border-color: #ddd;
+  --second-text-color: #666;
+  --card-bg-color: #f8f8f8;
 }
 
 html, body, #root {
@@ -43,13 +58,12 @@ export const reactQuery = {
 };
 
 export async function patchClientRoutes({ routes }) {
-  const {
-    ui: { modules = [] },
-  } = (await fetch('/__umi/api/app-data').then(
-    (res) => res.json() as Promise<IAppData>,
-  )) ?? {
-    ui: {},
-  };
+  const { modules = [] } =
+    (
+      await fetch('/__umi/api/app-data').then(
+        (res) => res.json() as Promise<IAppData>,
+      )
+    )?.ui || {};
   const uiMenusAdded = modules.map((module) => module.menus || []).flat();
 
   routes[0].routes?.unshift(

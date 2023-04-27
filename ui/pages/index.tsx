@@ -107,7 +107,7 @@ const Wrapper = styled.div`
         .card-content {
           cursor: pointer;
           padding: 2rem 4rem;
-          background: #27212d;
+          background: var(--card-bg-color);
           border-radius: 5%;
 
           div {
