@@ -534,10 +534,7 @@ importers:
         version: 6.3.0(react-dom@18.1.0)(react@18.1.0)
       styled-components:
         specifier: 6.0.0-beta.9
-        version: 6.0.0-beta.9(react-dom@18.1.0)(react@18.1.0)(tslib@2.4.1)
-      umi:
-        specifier: workspace:*
-        version: link:../../packages/umi
+        version: 6.0.0-beta.9(react-dom@18.1.0)(react@18.1.0)
       valtio:
         specifier: 1.10.3
         version: 1.10.3(react@18.1.0)
@@ -2306,7 +2303,7 @@ importers:
         version: 4.2.1
       styled-components:
         specifier: 6.0.0-beta.9
-        version: 6.0.0-beta.9(react-dom@18.1.0)(react@18.1.0)(tslib@2.4.1)
+        version: 6.0.0-beta.9(react-dom@18.1.0)(react@18.1.0)
       tslib:
         specifier: ^2
         version: 2.4.1
@@ -14728,7 +14725,7 @@ packages:
       react-intl: 3.12.1(react@17.0.2)
       react-redux: 8.0.5(@types/react-dom@18.0.10)(@types/react@18.0.26)(react-dom@17.0.2)(react@17.0.2)(redux@4.2.1)
       redux: 4.2.1
-      styled-components: 6.0.0-beta.9(react-dom@17.0.2)(react@17.0.2)(tslib@2.4.1)
+      styled-components: 6.0.0-beta.9(react-dom@17.0.2)(react@17.0.2)
       tslib: 2.4.1
       warning: 4.0.3
     transitivePeerDependencies:
@@ -37024,14 +37021,13 @@ packages:
       inline-style-parser: 0.1.1
     dev: true
 
-  /styled-components@6.0.0-beta.9(react-dom@17.0.2)(react@17.0.2)(tslib@2.4.1):
+  /styled-components@6.0.0-beta.9(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-RYtmvWZForwSd24aZgi3iGZM/6HvJkP7zobHK+bwC01vI6QhHK5MX9ayXEnJWaFY7DoEWoAnar5ACiGVkTCoCQ==}
     engines: {node: '>= 14'}
     peerDependencies:
       babel-plugin-styled-components: '>= 2'
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
-      tslib: ^2.0.0
     peerDependenciesMeta:
       babel-plugin-styled-components:
         optional: true
@@ -37062,19 +37058,18 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
       shallowequal: 1.1.0
       stylis: 4.1.3
-      tslib: 2.4.1
+      tslib: 2.5.0
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /styled-components@6.0.0-beta.9(react-dom@18.1.0)(react@18.1.0)(tslib@2.4.1):
+  /styled-components@6.0.0-beta.9(react-dom@18.1.0)(react@18.1.0):
     resolution: {integrity: sha512-RYtmvWZForwSd24aZgi3iGZM/6HvJkP7zobHK+bwC01vI6QhHK5MX9ayXEnJWaFY7DoEWoAnar5ACiGVkTCoCQ==}
     engines: {node: '>= 14'}
     peerDependencies:
       babel-plugin-styled-components: '>= 2'
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
-      tslib: ^2.0.0
     peerDependenciesMeta:
       babel-plugin-styled-components:
         optional: true
@@ -37105,7 +37100,7 @@ packages:
       react-dom: 18.1.0(react@18.1.0)
       shallowequal: 1.1.0
       stylis: 4.1.3
-      tslib: 2.4.1
+      tslib: 2.5.0
     transitivePeerDependencies:
       - supports-color
     dev: false

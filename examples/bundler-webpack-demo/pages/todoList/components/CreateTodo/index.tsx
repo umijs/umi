@@ -1,13 +1,18 @@
-import { Button, Input, Space } from 'antd';
+import { Button, Input, message, Space } from 'antd';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { addTodo } from '../../store';
 
-const CreateTodo = () => {
-  const [value, setValue] = useState<string | undefined>();
+const SpaceCompact = styled(Space.Compact)`
+  width: 100%;
+`;
 
-  const onClick: () => void = () => {
+const CreateTodo = () => {
+  const [value, setValue] = useState('');
+
+  const onClick = () => {
     if (!value) {
-      alert('请输入待办事项');
+      message.error('请输入待办事项');
       return;
     }
     addTodo(value);
@@ -15,7 +20,7 @@ const CreateTodo = () => {
   };
 
   return (
-    <Space.Compact style={{ width: '100%' }}>
+    <SpaceCompact>
       <Input
         placeholder="请输入待办事项"
         value={value}
@@ -26,7 +31,7 @@ const CreateTodo = () => {
       <Button type="primary" onClick={onClick}>
         添加任务
       </Button>
-    </Space.Compact>
+    </SpaceCompact>
   );
 };
 export default CreateTodo;
