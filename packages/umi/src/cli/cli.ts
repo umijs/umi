@@ -1,5 +1,5 @@
 import { logger, printHelp, setNoDeprecation, yParser } from '@umijs/utils';
-import { DEV_COMMAND } from '../constants';
+import { DEV_COMMAND, FRAMEWORK_NAME } from '../constants';
 import { Service } from '../service/service';
 import { dev } from './dev';
 import {
@@ -36,7 +36,8 @@ export async function run(opts?: IOpts) {
     process.env.NODE_ENV = 'production';
   }
   if (opts?.presets) {
-    process.env.UMI_PRESETS = opts.presets.join(',');
+    process.env[`${FRAMEWORK_NAME}_PRESETS`.toUpperCase()] =
+      opts.presets.join(',');
   }
   if (command === DEV_COMMAND) {
     dev();

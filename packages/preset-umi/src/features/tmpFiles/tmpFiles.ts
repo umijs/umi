@@ -40,8 +40,9 @@ export default (api: IApi) => {
     );
 
     // tsconfig.json
+    const frameworkName = api.service.frameworkName;
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
-    const umiTempDir = `${srcPrefix}.umi`;
+    const umiTempDir = `${srcPrefix}.${frameworkName}`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
     const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
     const isTslibInstalled = !!api.appData.typescript.tslibVersion;
@@ -99,7 +100,7 @@ export default (api: IApi) => {
             },
           },
           include: [
-            `${baseUrl}.umirc.ts`,
+            `${baseUrl}.${frameworkName}rc.ts`,
             `${baseUrl}**/*.d.ts`,
             `${baseUrl}**/*.ts`,
             `${baseUrl}**/*.tsx`,

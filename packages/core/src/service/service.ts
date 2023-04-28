@@ -273,7 +273,7 @@ export class Service {
     this.pkg = pkg;
     this.pkgPath = pkgPath || join(this.cwd, 'package.json');
 
-    const prefix = this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME;
+    const prefix = this.frameworkName;
     const specifiedEnv = process.env[`${prefix}_ENV`.toUpperCase()];
     // https://github.com/umijs/umi/pull/9105
     // assert(
@@ -416,7 +416,7 @@ export class Service {
     const paths = getPaths({
       cwd: this.cwd,
       env: this.env,
-      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
+      prefix: this.frameworkName,
     });
     return paths;
   }
@@ -673,6 +673,10 @@ export class Service {
       );
       console.log();
     }
+  }
+
+  get frameworkName() {
+    return this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME;
   }
 }
 

@@ -527,6 +527,16 @@ importers:
         specifier: workspace:*
         version: link:../../packages/umi
 
+  examples/cli-custom:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+    devDependencies:
+      '@example/cli-custom':
+        specifier: link:./
+        version: 'link:'
+
   examples/client-loader:
     dependencies:
       express:
