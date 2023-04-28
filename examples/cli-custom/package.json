@@ -10,12 +10,9 @@
   "scripts": {
     "build": "father build",
     "dev": "father dev",
-    "test": "imu eat"
+    "test": "node bin/imu.js eat"
   },
   "dependencies": {
     "umi": "workspace:*"
-  },
-  "devDependencies": {
-    "@example/cli-custom": "link:./"
   }
 }
