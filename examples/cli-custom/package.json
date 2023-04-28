@@ -1,0 +1,21 @@
+{
+  "name": "@example/cli-custom",
+  "private": true,
+  "bin": {
+    "imu": "bin/imu.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "father build",
+    "dev": "father dev",
+    "test": "imu eat"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  },
+  "devDependencies": {
+    "@example/cli-custom": "link:./"
+  }
+}
