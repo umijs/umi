@@ -7,7 +7,6 @@ import { getPluginManager } from '../core/plugin';
 import EventEmitter from '{{{EventEmitterPkg}}}';
 // @ts-ignore
 import warning from '{{{ warningPkgPath }}}';
-import { Locale } from 'antd/es/locale';
 
 export {
   createIntl,
@@ -80,7 +79,7 @@ export const addLocale = (
   messages: Object,
   extraLocales: {
     momentLocale:string;
-    antd:Locale
+    antd: import('antd/es/locale').Locale
   },
 ) => {
   if (!name) {
