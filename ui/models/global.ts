@@ -23,11 +23,6 @@ export const state: State = proxy({
       icon: 'cluster-outlined',
     },
     {
-      name: 'Doctor',
-      path: '/doctor',
-      icon: 'medicine-box-outlined',
-    },
-    {
       name: 'Plugins',
       path: '/plugins',
       icon: 'api-outlined',

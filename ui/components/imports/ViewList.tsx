@@ -1,5 +1,5 @@
 import type { Metafile } from '@umijs/bundler-utils/compiled/esbuild';
-import { Input, List, Switch } from 'antd';
+import { Empty, Input, List, Switch } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { FC, useMemo, useState } from 'react';
 import { Icon, styled } from 'umi';
@@ -51,6 +51,10 @@ const ListContainer = styled.div`
     color: var(--text-color);
     border-color: var(--border-color);
     padding-left: 1rem;
+  }
+
+  .ant-empty-description {
+    color: var(--empty-text-color);
   }
 `;
 
@@ -115,20 +119,24 @@ export const ViewList: FC<IProps> = ({ metaFile }) => {
         />
       </SearchContainer>
       <ListContainer>
-        <List bordered>
-          <VirtualList
-            data={importsList}
-            height={ContainerHeight}
-            itemHeight={ItemHeight}
-            itemKey={(item) => item}
-          >
-            {(item: string, index) => (
-              <List.Item>
-                <div>{item}</div>
-              </List.Item>
-            )}
-          </VirtualList>
-        </List>
+        {importsList?.length ? (
+          <List bordered>
+            <VirtualList
+              data={importsList}
+              height={ContainerHeight}
+              itemHeight={ItemHeight}
+              itemKey={(item) => item}
+            >
+              {(item: string, index) => (
+                <List.Item>
+                  <div>{item}</div>
+                </List.Item>
+              )}
+            </VirtualList>
+          </List>
+        ) : (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Data" />
+        )}
       </ListContainer>
     </div>
   );

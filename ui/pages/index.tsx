@@ -21,12 +21,6 @@ const cardList = [
     icon: 'right-square-outlined',
     color: '#fffb8f',
   },
-  {
-    name: 'Doctor',
-    path: '/doctor',
-    icon: 'medicine-box-outlined',
-    color: '#ffa39e',
-  },
 ];
 
 const cardColorStr = cardList

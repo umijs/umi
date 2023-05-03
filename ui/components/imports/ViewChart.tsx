@@ -12,6 +12,37 @@ interface IProps {
 
 const ACTIVE_COLOR = '#117cf3';
 
+const getNodeShape = (isUmi: boolean, fileType: string) => {
+  let type, color;
+  switch (fileType) {
+    case 'tsx':
+    case 'jsx':
+      if (isUmi) {
+        type = 'circle';
+        color = '#BDD2FD';
+        break;
+      }
+      type = 'circle';
+      color = '#FBE5A2';
+      break;
+    case 'ts':
+    case 'js':
+      if (isUmi) {
+        type = 'diamond';
+        color = '#BDEFDB';
+        break;
+      }
+      type = 'diamond';
+      color = '#FF9D4D';
+      break;
+    default:
+      color = '#dfaefd';
+      type = 'diamond';
+  }
+
+  return { type, color };
+};
+
 export const ViewChart: FC<IProps> = ({ metaFile }) => {
   const { mode } = useSnapshot(globalState);
   const selectedNode = useRef<null | Item>(null);
@@ -21,36 +52,17 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
     const { shadowColor, fill } = modeColorMap[mode];
     const { inputs } = metaFile;
     const files = Object.keys(inputs);
+    console.log('files', files);
     // 获取 nodes
     const [nodes, filesMap] = files.reduce(
       (acc, file, currentIndex) => {
         const [nodes, filesMap] = acc;
         const id = String(currentIndex);
         // 文件类型对应不同的颜色和 shape
+        const isUmi = file.startsWith('.umi/');
         const fileType = file.split('.').slice(-1)[0];
 
-        let type, color;
-        switch (fileType) {
-          case 'tsx':
-            type = 'circle';
-            color = '#BDD2FD';
-            break;
-          case 'jsx':
-            type = 'circle';
-            color = '#FBE5A2';
-            break;
-          case 'ts':
-            type = 'diamond';
-            color = '#BDEFDB';
-            break;
-          case 'js':
-            type = 'diamond';
-            color = '#FF9D4D';
-            break;
-          default:
-            color = '#ecfdf5';
-            type = 'diamond';
-        }
+        const { type, color } = getNodeShape(isUmi, fileType);
 
         const node = {
           id,
@@ -94,8 +106,8 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
         .map(({ path }) => {
           const pId = filesMap[path];
           return {
-            source: pId,
-            target: id,
+            source: id,
+            target: pId,
             stateStyles: {
               selected: {
                 stroke: ACTIVE_COLOR,

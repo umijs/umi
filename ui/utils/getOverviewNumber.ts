@@ -38,5 +38,5 @@ export const getOverviewNumber = (data: IAppData) => {
   }, [] as string[]);
   const importsNumber = new Set(list).size;
 
-  return [routesNumber, pluginsNumber, importsNumber, 0];
+  return [routesNumber, pluginsNumber, importsNumber];
 };
