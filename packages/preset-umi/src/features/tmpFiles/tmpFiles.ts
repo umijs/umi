@@ -94,6 +94,11 @@ export default (api: IApi) => {
                     '@fs/*': ['*'],
                   }
                 : {}),
+              ...(api.appData.umi.importSource === '@alipay/bigfish'
+                ? {
+                    '@alipay/bigfish/antd': ['node_modules/antd'],
+                  }
+                : {}),
             },
           },
           include: [
