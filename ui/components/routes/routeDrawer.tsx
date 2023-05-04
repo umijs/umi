@@ -67,6 +67,7 @@ export const RouteDrawer: React.FC<{
         open={open}
         width={600}
         onClose={onClose}
+        mask={false}
       >
         <Wrapper>
           <div className="info-item">

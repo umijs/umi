@@ -63,6 +63,10 @@ const ListContainer = styled.div`
     }
   }
 
+  .ant-empty-description {
+    color: var(--empty-text-color);
+  }
+
   .item-content {
     &-title {
       font-weight: 600;

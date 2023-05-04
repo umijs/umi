@@ -8,6 +8,8 @@ export const styledComponents = {
 ${globalCSS}
 
 :root {
+  --empty-text-color: #999;
+
   &.dark {
     --bg-color: #151515;
     --bg-hover-color: #1c1c1d;

@@ -50,6 +50,7 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
       modes: {
         default: ['drag-canvas', 'zoom-canvas'],
       },
+      animate: false,
       defaultNode: {
         size: [108, 48],
         type: 'rect',
