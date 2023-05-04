@@ -79,7 +79,7 @@ export const addLocale = (
   messages: Object,
   extraLocales: {
     momentLocale:string;
-    antd:string
+    antd: import('antd/es/locale').Locale
   },
 ) => {
   if (!name) {
