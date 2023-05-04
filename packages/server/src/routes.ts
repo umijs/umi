@@ -1,9 +1,9 @@
-import { IRoute, IRoutesById } from './types';
+import { IRoute, IRouteCustom, IRoutesById } from './types';
 
 export function createServerRoutes(opts: {
   routesById: IRoutesById;
   parentId?: string;
-  createRoute?: (opts: { route: IRoute }) => any;
+  createRoute?: (opts: { route: IRoute }) => IRouteCustom;
 }) {
   const { routesById, parentId, createRoute } = opts;
   const createRouteFn = createRoute || createServerRoute;
