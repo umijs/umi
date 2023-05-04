@@ -30,13 +30,6 @@ const devTool = [
   'nosources-cheap-module-source-map',
 ];
 
-const DevToolValues: string[] = [
-  ...devTool,
-  ...devTool.map((item) => `#${item}`),
-  ...devTool.map((item) => `@${item}`),
-  ...devTool.map((item) => `#@${item}`),
-];
-
 export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
   return {
     alias: ({ zod }) => zod.record(zod.string(), zod.any()),
@@ -84,8 +77,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         Transpiler.swc,
         Transpiler.none,
       ]),
-    devtool: ({ zod }) =>
-      zod.union([zod.enum(DevToolValues as any), zod.boolean()]),
+    devtool: ({ zod }) => zod.union([zod.enum(devTool as any), zod.boolean()]),
     esm: ({ zod }) => zod.object({}),
     externals: ({ zod }) =>
       zod.union([
