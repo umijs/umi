@@ -15,7 +15,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
-    "styled-components": "6.0.0-beta.9",
+    "styled-components": "6.0.0-rc.0",
     "valtio": "1.10.3"
   }
 }
