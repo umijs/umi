@@ -38,6 +38,7 @@ type IOpts = {
   srcCodeCache?: any;
   startBuildWorker?: (deps: any[]) => Worker;
   onBeforeMiddleware?: Function;
+  disableCopy?: boolean;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function ensureSerializableValue(obj: any) {
@@ -154,6 +155,7 @@ export async function setup(opts: IOpts) {
         }
       : undefined,
     pkg: opts.pkg,
+    disableCopy: opts.disableCopy,
   });
 
   const depConfig = await configModule.getConfig({
