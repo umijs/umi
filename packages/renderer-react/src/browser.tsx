@@ -49,11 +49,16 @@ function BrowserRoutes(props: {
           location: opts.location,
           action: opts.action,
           basename: props.basename,
+          isFirst: Boolean(opts.isFirst),
         },
       });
     }
     history.listen(onRouteChange);
-    onRouteChange({ location: state.location, action: state.action });
+    onRouteChange({
+      location: state.location,
+      action: state.action,
+      isFirst: true,
+    });
   }, [history, props.routes, props.clientRoutes]);
   return (
     <Router

@@ -65,5 +65,6 @@ describe('Basic Test', () => {
   it('display included Icon components', () => {
     cy.get('span.local\\:rice');
     cy.get('span.ant-design\\:fire-twotone');
+    cy.get('span.local\\:logo\\/umi');
   });
 });

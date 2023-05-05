@@ -5,6 +5,7 @@ import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import {
   ETempDir,
+  IFile,
   processGenerateFiles,
   promptsExitWhenCancel,
   tryEject,
@@ -27,11 +28,11 @@ export default (api: IApi) => {
         await tryEject(ETempDir.Page, api.paths.cwd);
         return;
       }
-
       return new PageGenerator({
         args,
         absPagesPath: api.paths.absPagesPath,
         appCwd: api.paths.cwd,
+        importSource: api.appData.umi.importSource,
         useStyledComponents: !!api.userConfig.styledComponents,
       }).run();
     },
@@ -46,6 +47,7 @@ export class PageGenerator {
   private isDirMode = false;
   private dir = '';
   private name = '';
+  private importSource = '';
   private needEnsureDirMode = false;
   private prompts = promptsExitWhenCancel;
   private paths: string[] = [];
@@ -55,10 +57,12 @@ export class PageGenerator {
       args: IArgsPage;
       absPagesPath: string;
       appCwd: string;
-      useStyledComponents: boolean;
+      importSource?: string;
+      useStyledComponents?: boolean;
     },
   ) {
     this.isDirMode = !!options.args.dir;
+    this.importSource = options.importSource || 'umi';
     const [_, ...inputPaths] = options.args._;
 
     if (inputPaths.length > 0) {
@@ -163,7 +167,7 @@ export class PageGenerator {
     const { absPagesPath, args, appCwd, useStyledComponents } = this.options;
     const { _, dir: _dir, eject: _eject, fallback, ...restVars } = args;
 
-    const filesMap = [
+    const filesMap: IFile[] = [
       {
         from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
         fromFallback: join(
@@ -186,7 +190,6 @@ export class PageGenerator {
         exts: ['.less.tpl', '.less'],
       });
     }
-
     await processGenerateFiles({
       filesMap,
       baseDir: this.options.appCwd,
@@ -197,6 +200,7 @@ export class PageGenerator {
         color: randomColor(),
         name: this.name,
         cssExt: '.less',
+        importSource: this.importSource,
         ...restVars,
       },
     });
@@ -219,6 +223,7 @@ export class PageGenerator {
         fallback,
       },
       templateVars: {
+        importSource: this.importSource,
         color: randomColor(),
         name: 'index',
         cssExt: '.less',

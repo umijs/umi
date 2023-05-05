@@ -4,13 +4,12 @@ import { withTmpPath } from './utils/withTmpPath';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            loading: Joi.string(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod
+          .object({
+            loading: zod.string(),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,

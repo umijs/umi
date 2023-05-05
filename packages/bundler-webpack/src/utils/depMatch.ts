@@ -1,5 +1,6 @@
-import { pkgUp, semver, winPath } from '@umijs/utils';
+import { semver, winPath } from '@umijs/utils';
 import { dirname } from 'path';
+import { pkgUpContainsName } from './pkgUpContainsName';
 
 const cache = new Map<string, boolean>();
 
@@ -16,7 +17,7 @@ export function isMatch(opts: {
   if (cache.has(dir)) {
     return !!cache.get(dir);
   } else {
-    const pkgPath = pkgUp.pkgUpSync({ cwd: opts.path });
+    const pkgPath = pkgUpContainsName(opts.path);
 
     let ret;
     if (!pkgPath) {

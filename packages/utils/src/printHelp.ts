@@ -1,7 +1,6 @@
 import * as logger from './logger';
 
-// TODO: 先注释，因为这里要考虑比如 @alipay/bigfish 不应该走这个提示
-// const FEEDBACK_MESSAGE = '如果你需要进交流群，请访问 https://fb.umijs.org';
+const FEEDBACK_MESSAGE = '如果你需要进交流群，请访问 https://fb.umijs.org 。';
 
 export function exit() {
   const loggerPath = logger.getLatestLogFilePath();
@@ -12,7 +11,18 @@ export function exit() {
   logger.fatal(
     'Consider reporting a GitHub issue on https://github.com/umijs/umi/issues',
   );
-  // logger.fatal(FEEDBACK_MESSAGE);
+  const binFile = process.argv[1];
+  const isUmi = binFile.endsWith('bin/umi.js');
+  const isMax = binFile.endsWith('bin/max.js');
+  if (process.env.FATAL_GUIDE_MESSAGE !== 'none' && (isUmi || isMax)) {
+    logger.fatal(FEEDBACK_MESSAGE);
+  }
+  if (
+    process.env.FATAL_GUIDE_MESSAGE &&
+    process.env.FATAL_GUIDE_MESSAGE !== 'none'
+  ) {
+    logger.fatal(process.env.FATAL_GUIDE_MESSAGE);
+  }
 }
 
 export function runtime(e: Error) {

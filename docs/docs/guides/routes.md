@@ -409,11 +409,13 @@ export default {
 ```jsx
 import { Link } from 'umi';
 
-export default () => (
-  <div>
-    <Link to="/users">Users Page</Link>
-  </div>
-);
+export default function Page() {
+  return (
+    <div>
+      <Link to="/users">Users Page</Link>
+    </div>
+  )
+}
 ```
 
 然后点击 `Users Page` 就会跳转到 `/users` 地址。

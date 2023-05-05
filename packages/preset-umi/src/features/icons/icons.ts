@@ -3,6 +3,7 @@ import {
   importLazy,
   installWithNpmClient,
   logger,
+  winPath,
 } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
@@ -18,15 +19,17 @@ export default (api: IApi) => {
 
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.object({
-          // don't support tnpm
-          autoInstall: Joi.object(),
-          defaultComponentConfig: Joi.object(),
-          // e.g. alias: { home: 'fa:home' }
-          alias: Joi.object(),
-          include: Joi.array().items(Joi.string()),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            // don't support tnpm
+            autoInstall: zod.object({}),
+            defaultComponentConfig: zod.object({}),
+            // e.g. alias: { home: 'fa:home' }
+            alias: zod.object({}),
+            include: zod.array(zod.string()),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,
@@ -133,10 +136,10 @@ export default (api: IApi) => {
     }
     const localIconDir = getLocalIconDir();
     const localIcons: string[] = [];
+
     if (fs.existsSync(localIconDir)) {
       localIcons.push(
-        ...fs
-          .readdirSync(localIconDir)
+        ...readIconsFromDir(localIconDir)
           .filter((file) => file.endsWith('.svg'))
           .map((file) => file.replace(/\.svg$/, '')),
       );
@@ -378,7 +381,7 @@ function normalizeRotate(rotate: number | string) {
 }
 
 function camelCase(str: string) {
-  return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
+  return str.replace(/\\//g, '-').replace(/-([a-zA-Z]|[1-9])/g, (g) => g[1].toUpperCase());
 }
 
 function normalizeIconName(name: string) {
@@ -428,3 +431,23 @@ function normalizeIconName(name: string) {
     return path.join(api.paths.absSrcPath, 'icons');
   }
 };
+
+function readIconsFromDir(dir: string) {
+  const icons: string[] = [];
+  const prefix = winPath(path.join(dir, './'));
+
+  const collect = (p: string) => {
+    if (fs.statSync(p).isDirectory()) {
+      const files = fs.readdirSync(p);
+      files.forEach((name) => {
+        collect(path.join(p, name));
+      });
+    } else {
+      const prunePath = winPath(p).replace(prefix, '');
+      icons.push(prunePath);
+    }
+  };
+  collect(dir);
+
+  return icons;
+}

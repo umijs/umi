@@ -1,12 +1,23 @@
 // @ts-ignore
-import { history, Icon, useAccess, useIntl, useModel } from '@umijs/max';
+import {
+  FormattedMessage,
+  history,
+  Icon,
+  useAccess,
+  useIntl,
+  useModel,
+} from '@umijs/max';
 // @ts-ignore
 import { TestDecorator } from '@/components/decorator';
 import { Button, DatePicker, Input } from 'antd';
 import styles from './index.less';
 console.log(TestDecorator);
 
-const icons = ['local:rice', 'ant-design:fire-twotone'];
+const includedIcons = [
+  'local:rice',
+  'local:logo/umi',
+  'ant-design:fire-twotone',
+];
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
@@ -21,6 +32,7 @@ export default function HomePage() {
       <Input />
       <DatePicker />
       <div>{intl.formatMessage({ id: 'HELLO' })}</div>
+      <FormattedMessage id="World" />
       <Button
         type="primary"
         onClick={() => {
@@ -37,9 +49,11 @@ export default function HomePage() {
 
       <h2> Icons</h2>
       <div>
-        {icons.map((i) => (
-          <Icon key={i} icon={i} className={i} />
-        ))}
+        {includedIcons.map((i) => {
+          return <Icon icon={i} className={i} key={i} />;
+        })}
+        <Icon icon="local:logo/foo/smile" />
+        <Icon icon="local:logo/heart-Upper-CASE" />
       </div>
     </div>
   );

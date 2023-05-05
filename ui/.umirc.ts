@@ -4,7 +4,8 @@ export default {
     '@umijs/plugins/dist/styled-components',
     '@umijs/plugins/dist/react-query',
   ],
-
+  publicPath: '/__umi_ui/entry/',
+  base: '/__umi_ui/entry',
   styledComponents: {},
   reactQuery: {},
   valtio: {},
@@ -19,6 +20,11 @@ export default {
       'ant-design:right-square-outlined',
       'ant-design:bars-outlined',
       'ant-design:pie-chart-outlined',
+      'ant-design:bug-outlined',
+      'ant-design:bulb-outlined',
+      'ant-design:star-outlined',
+      'local:sun',
+      'local:moon',
     ],
   },
 };

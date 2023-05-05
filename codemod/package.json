@@ -15,7 +15,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm tsc",
+    "build": "father build",
+    "dev": "father dev",
+    "doctor": "father doctor",
+    "release": "father doctor && esno ../scripts/release.ts --pkg codemod",
     "test": "jest"
   },
   "dependencies": {

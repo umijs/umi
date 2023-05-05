@@ -177,7 +177,9 @@ Object.keys(exported).forEach(function (key) {
         code.includes('"node:') &&
         opts.pkgName && // skip local file bundle like babel/bundle.js
         opts.pkgName !== 'stylelint-declaration-block-no-ignored-properties' &&
-        opts.pkgName !== 'vite'
+        opts.pkgName !== 'vite' &&
+        opts.pkgName !== 'https-proxy-agent' &&
+        opts.pkgName !== 'socks-proxy-agent'
       ) {
         throw new Error(`${opts.pkgName} has "node:"`);
       }

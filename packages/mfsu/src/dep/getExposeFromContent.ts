@@ -1,8 +1,8 @@
+import { isJavaScriptFile, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { basename } from 'path';
 import { Dep } from './dep';
 import { getModuleExports } from './getModuleExports';
-import { winPath } from '@umijs/utils';
 
 export async function getExposeFromContent(opts: {
   dep: Dep;
@@ -19,6 +19,16 @@ export async function getExposeFromContent(opts: {
     return `import '${importPath}';`;
   }
 
+  // wasm
+  // export default   is for normal use to get a link
+  // export namespace is for experiments asyncWebAssembly or syncWebAssembly
+  if (opts.filePath?.endsWith('.wasm')) {
+    return `
+import _ from '${importPath}';
+export default _; 
+export * from '${importPath}';`.trim();
+  }
+
   // Support Assets Files
   if (
     opts.filePath &&
@@ -32,7 +42,7 @@ export default _;`.trim();
   }
 
   assert(
-    /(js|jsx|mjs|ts|tsx)$/.test(opts.filePath),
+    isJavaScriptFile(opts.filePath),
     `file type not supported for ${basename(opts.filePath)}.`,
   );
   const { exports, isCJS } = await getModuleExports({

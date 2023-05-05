@@ -2,32 +2,37 @@ import { existsSync, opendirSync } from 'fs';
 import { join } from 'path';
 import type { IApi } from 'umi';
 import { lodash, winPath } from 'umi/plugin-utils';
+import { TEMPLATES_DIR } from './constants';
 import { toRemotesCodeString } from './utils/mfUtils';
 
 const { isEmpty } = lodash;
 
 const mfSetupPathFileName = '_mf_setup-public-path.js';
 const mfAsyncEntryFileName = 'asyncEntry.ts';
+const MF_TEMPLATES_DIR = join(TEMPLATES_DIR, 'mf');
 
 export default function mf(api: IApi) {
   api.describe({
     key: 'mf',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          name: Joi.string(),
-          remotes: Joi.array().items(
-            Joi.object({
-              aliasName: Joi.string(),
-              name: Joi.string().required(),
-              entry: Joi.string(),
-              entries: Joi.object(),
-              keyResolver: Joi.string(),
-            }),
-          ),
-          shared: Joi.object(),
-          library: Joi.object(),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            name: zod.string(),
+            remotes: zod.array(
+              zod.object({
+                aliasName: zod.string().optional(),
+                //  string 上没有 required
+                name: zod.string(),
+                entry: zod.string().optional(),
+                entries: zod.object({}).optional(),
+                keyResolver: zod.string().optional(),
+              }),
+            ),
+            shared: zod.record(zod.any()),
+            library: zod.record(zod.any()),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,
@@ -119,7 +124,7 @@ export default function mf(api: IApi) {
       context: {
         remoteCodeString: toRemotesCodeString(remotes),
       },
-      tplPath: join(__dirname, '../tpls/mf-runtime.ts.tpl'),
+      tplPath: winPath(join(MF_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
 
     if (api.env === 'development' && api.config.mfsu) {

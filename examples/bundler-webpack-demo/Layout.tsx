@@ -23,6 +23,9 @@ export default function Layout() {
           <li>
             <Link to="/bar">Bar</Link>
           </li>
+          <li>
+            <Link to="/todolist">Todo List</Link>
+          </li>
         </ul>
       </div>
       <div>

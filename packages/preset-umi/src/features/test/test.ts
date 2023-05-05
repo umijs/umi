@@ -9,8 +9,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'test',
     config: {
-      schema(Joi) {
-        return Joi.object();
+      schema({ zod }) {
+        return zod.object({});
       },
     },
     enableBy() {

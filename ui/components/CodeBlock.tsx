@@ -1,10 +1,11 @@
 import { styled } from 'umi';
 
 const Wrapper = styled.pre`
-  background: #1c1c1c;
+  background: var(--bg-color);
   font-size: 0.88rem;
   font-family: 'MonoLisa', sans-serif;
   padding: 16px;
+  color: var(--text-color);
 `;
 
 export function CodeBlock(props: { code: string | object }) {

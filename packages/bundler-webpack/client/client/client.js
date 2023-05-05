@@ -114,7 +114,8 @@ socket.addEventListener('close', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_r
     }
   }, _callee2);
 })));
-ErrorOverlay.startReportingRuntimeErrors({
+var enableErrorOverlay = process.env.ERROR_OVERLAY !== 'none';
+enableErrorOverlay && ErrorOverlay.startReportingRuntimeErrors({
   onError: function onError() {
     hadRuntimeError = true;
   },
@@ -126,7 +127,7 @@ if (module.hot && typeof module.hot.dispose === 'function') {
   // @ts-ignore
   module.hot.dispose(function () {
     // TODO: why do we need this?
-    ErrorOverlay.stopReportingRuntimeErrors();
+    enableErrorOverlay && ErrorOverlay.stopReportingRuntimeErrors();
   });
 }
 
@@ -144,7 +145,7 @@ function handleSuccess() {
   if (isHotUpdate) {
     tryApplyUpdates(function onHotUpdateSuccess() {
       // Only dismiss it when we're sure it's a hot update.
-      // Otherwise it would flicker right before the reload.
+      // Otherwise, it would flicker right before the reload.
       tryDismissErrorOverlay();
     });
   }
@@ -173,7 +174,7 @@ function handleWarnings(warnings) {
   if (isHotUpdate) {
     tryApplyUpdates(function onSuccessfulHotUpdate() {
       // Only dismiss it when we're sure it's a hot update.
-      // Otherwise it would flicker right before the reload.
+      // Otherwise, it would flicker right before the reload.
       tryDismissErrorOverlay();
     });
   }
@@ -187,7 +188,7 @@ function handleErrors(errors) {
   });
 
   // Only show the first error.
-  ErrorOverlay.reportBuildError(formatted.errors[0]);
+  enableErrorOverlay && ErrorOverlay.reportBuildError(formatted.errors[0]);
 
   // Also log them to the console.
   if (typeof console !== 'undefined' && typeof console.error === 'function') {
@@ -198,7 +199,7 @@ function handleErrors(errors) {
 }
 function tryDismissErrorOverlay() {
   if (!hasCompileErrors) {
-    ErrorOverlay.dismissBuildError();
+    enableErrorOverlay && ErrorOverlay.dismissBuildError();
   }
 }
 

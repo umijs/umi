@@ -13,23 +13,23 @@
   },
   "license": "MIT",
   "main": "dist/plugin.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "umi build",
-    "dev": "umi dev --ui",
-    "setup": "umi setup"
-  },
-  "dependencies": {
-    "@antv/g6": "^4.8.7",
-    "antd": "^5.2.3",
-    "rc-virtual-list": "^3.4.13"
+    "check:packageFiles": "umi-scripts checkPackageFiles",
+    "release": "tsx ../scripts/release.ts --pkg ui",
+    "setup": "umi setup",
+    "ui:build": "umi build",
+    "ui:dev": "umi dev --ui"
   },
   "devDependencies": {
+    "@antv/g6": "^4.8.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@umijs/bundler-utils": "workspace:*",
-    "@umijs/plugins": "workspace:*",
-    "typescript": "^4",
-    "umi": "workspace:*"
+    "antd": "^5.2.3",
+    "rc-virtual-list": "^3.4.13",
+    "typescript": "^4"
   },
   "packageManager": "pnpm@7.3.0",
   "publishConfig": {

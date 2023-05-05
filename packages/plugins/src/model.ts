@@ -9,13 +9,12 @@ import { withTmpPath } from './utils/withTmpPath';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            extraModels: Joi.array().items(Joi.string()),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod
+          .object({
+            extraModels: zod.array(zod.string()),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,

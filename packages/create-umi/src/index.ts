@@ -13,8 +13,13 @@ import {
 } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
+import { ERegistry, unpackTemplate, type UmiTemplate } from './template';
 
-interface IArgs extends yParser.Arguments {
+interface ITemplateArgs {
+  template?: UmiTemplate;
+}
+
+interface IArgs extends yParser.Arguments, ITemplateArgs {
   default?: boolean;
   git?: boolean;
   install?: boolean;
@@ -46,11 +51,6 @@ enum ENpmClient {
   tnpm = 'tnpm',
   yarn = 'yarn',
   pnpm = 'pnpm',
-}
-
-enum ERegistry {
-  npm = 'https://registry.npmjs.com/',
-  taobao = 'https://registry.npmmirror.com',
 }
 
 enum ETemplate {
@@ -98,15 +98,14 @@ export default async ({
   // plugin params
   let pluginName = `umi-plugin-${name || 'demo'}`;
 
+  const target = name ? join(cwd, name) : cwd;
+
   const { isCancel, text, select, intro, outro } = clackPrompts;
   const exitPrompt = () => {
     outro(chalk.red('Exit create-umi'));
     process.exit(1);
   };
-
-  const useDefaultData = args.default;
-  if (!useDefaultData) {
-    intro(chalk.bgHex('#19BDD2')(' create-umi '));
+  const selectAppTemplate = async () => {
     appTemplate = (await select({
       message: 'Pick Umi App Template',
       options: [
@@ -125,9 +124,8 @@ export default async ({
       ],
       initialValue: ETemplate.app,
     })) as ETemplate;
-    if (isCancel(appTemplate)) {
-      exitPrompt();
-    }
+  };
+  const selectNpmClient = async () => {
     npmClient = (await select({
       message: 'Pick Npm Client',
       options: [
@@ -139,9 +137,8 @@ export default async ({
       ],
       initialValue: ENpmClient.pnpm,
     })) as ENpmClient;
-    if (isCancel(npmClient)) {
-      exitPrompt();
-    }
+  };
+  const selectRegistry = async () => {
     registry = (await select({
       message: 'Pick Npm Registry',
       options: [
@@ -157,9 +154,25 @@ export default async ({
       ],
       initialValue: ERegistry.npm,
     })) as ERegistry;
+  };
+  const internalTemplatePrompts = async () => {
+    intro(chalk.bgHex('#19BDD2')(' create-umi '));
+
+    await selectAppTemplate();
+    if (isCancel(appTemplate)) {
+      exitPrompt();
+    }
+
+    await selectNpmClient();
+    if (isCancel(npmClient)) {
+      exitPrompt();
+    }
+
+    await selectRegistry();
     if (isCancel(registry)) {
       exitPrompt();
     }
+
     // plugin extra questions
     const isPlugin = appTemplate === ETemplate.plugin;
     if (isPlugin) {
@@ -176,10 +189,38 @@ export default async ({
         exitPrompt();
       }
     }
-    outro(chalk.green(`You're all set!`));
-  }
 
-  const target = name ? join(cwd, name) : cwd;
+    outro(chalk.green(`You're all set!`));
+  };
+
+  // --default
+  const useDefaultData = !!args.default;
+  // --template
+  const useExternalTemplate = !!args.template;
+
+  switch (true) {
+    case useExternalTemplate:
+      await selectNpmClient();
+      if (isCancel(npmClient)) {
+        exitPrompt();
+      }
+      await selectRegistry();
+      if (isCancel(registry)) {
+        exitPrompt();
+      }
+      await unpackTemplate({
+        template: args.template!,
+        dest: target,
+        registry,
+      });
+      break;
+    // TODO: init template from git
+    // case: useGitTemplate
+    default:
+      if (!useDefaultData) {
+        await internalTemplatePrompts();
+      }
+  }
 
   const version = pkg.version;
 
@@ -193,28 +234,42 @@ export default async ({
   // now husky is not supported in monorepo
   const withHusky = shouldInitGit && !inMonorepo;
 
+  // pnpm
+  let pnpmExtraNpmrc: string = '';
   const isPnpm = npmClient === ENpmClient.pnpm;
-  const generator = new BaseGenerator({
-    path: join(__dirname, '..', 'templates', appTemplate),
-    target,
-    slient: true,
-    data: useDefaultData
-      ? defaultData
-      : ({
-          version: version.includes('-canary.') ? version : `^${version}`,
-          npmClient,
-          registry,
-          author,
-          email,
-          withHusky,
-          // suppress pnpm v7 warning
-          // No need when `pnpm` > v7.13.5 , but we are forward compatible
-          // https://pnpm.io/npmrc#strict-peer-dependencies
-          extraNpmrc: isPnpm ? `strict-peer-dependencies=false` : '',
-          pluginName,
-        } satisfies ITemplateParams),
-  });
-  await generator.run();
+  let pnpmMajorVersion: number | undefined;
+  if (isPnpm) {
+    pnpmMajorVersion = await getPnpmMajorVersion();
+    if (pnpmMajorVersion === 7) {
+      // suppress pnpm v7 warning ( 7.0.0 < pnpm < 7.13.5 )
+      // https://pnpm.io/npmrc#strict-peer-dependencies
+      pnpmExtraNpmrc = `strict-peer-dependencies=false`;
+    }
+  }
+
+  const injectInternalTemplateFiles = async () => {
+    const generator = new BaseGenerator({
+      path: join(__dirname, '..', 'templates', appTemplate),
+      target,
+      slient: true,
+      data: useDefaultData
+        ? defaultData
+        : ({
+            version: version.includes('-canary.') ? version : `^${version}`,
+            npmClient,
+            registry,
+            author,
+            email,
+            withHusky,
+            extraNpmrc: isPnpm ? pnpmExtraNpmrc : '',
+            pluginName,
+          } satisfies ITemplateParams),
+    });
+    await generator.run();
+  };
+  if (!useExternalTemplate) {
+    await injectInternalTemplateFiles();
+  }
 
   const context: IContext = {
     inMonorepo,
@@ -239,10 +294,29 @@ export default async ({
   }
 
   // install deps
+  const isPnpm8 = pnpmMajorVersion === 8;
   if (!useDefaultData && args.install !== false) {
-    installWithNpmClient({ npmClient, cwd: target });
+    if (isPnpm8) {
+      await installWithPnpm8(target);
+    } else {
+      installWithNpmClient({ npmClient, cwd: target });
+    }
   } else {
     logger.info(`Skip install deps`);
+    if (isPnpm8) {
+      logger.warn(
+        chalk.yellow(
+          `You current using pnpm v8, it will install minimal version of dependencies`,
+        ),
+      );
+      logger.warn(
+        chalk.green(
+          `Recommended that you run ${chalk.bold.cyan(
+            'pnpm up -L',
+          )} to install latest version of dependencies`,
+        ),
+      );
+    }
   }
 };
 
@@ -291,5 +365,21 @@ async function removeHusky(opts: IContext) {
   const dir = join(opts.target, './.husky');
   if (existsSync(dir)) {
     await fsExtra.remove(dir);
+  }
+}
+
+// pnpm v8 will install minimal version of the dependencies
+// so we upgrade all deps to the latest version
+// https://pnpm.io/npmrc#resolution-mode
+async function installWithPnpm8(cwd: string) {
+  await execa.execa('pnpm', ['up', '-L'], { cwd, stdio: 'inherit' });
+}
+
+async function getPnpmMajorVersion() {
+  try {
+    const { stdout } = await execa.execa('pnpm', ['--version']);
+    return parseInt(stdout.trim().split('.')[0], 10);
+  } catch (e) {
+    throw new Error('Please install pnpm first', { cause: e });
   }
 }

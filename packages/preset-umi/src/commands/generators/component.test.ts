@@ -1,5 +1,5 @@
-import { join, normalize } from 'path';
 import { generateFile } from '@umijs/utils';
+import { join, normalize } from 'path';
 import { ComponentGenerator } from './component';
 
 jest.mock('@umijs/utils', () => {
@@ -20,19 +20,9 @@ afterEach(() => {
 test('generate component with single name', async () => {
   await runGeneratorWith('foo');
 
-  expect(generateFile).toBeCalledTimes(2);
-  expect(generateFile).toHaveBeenNthCalledWith(
-    1,
+  expect(generateFile).toBeCalledWith(
     expect.objectContaining({
-      target: normalize('/my/src/path/components/Foo/index.ts'),
-      baseDir: normalize('/my'),
-      data: { compName: 'Foo' },
-    }),
-  );
-  expect(generateFile).toHaveBeenNthCalledWith(
-    2,
-    expect.objectContaining({
-      target: normalize('/my/src/path/components/Foo/Foo.tsx'),
+      target: normalize('/my/src/path/components/Foo'),
       baseDir: normalize('/my'),
       data: { compName: 'Foo' },
     }),
@@ -41,18 +31,9 @@ test('generate component with single name', async () => {
 
 test('test generate nested named component foo/bar/qux', async () => {
   await runGeneratorWith('foo/bar/qux');
-  expect(generateFile).toBeCalledTimes(2);
-  expect(generateFile).toHaveBeenNthCalledWith(
-    1,
+  expect(generateFile).toBeCalledWith(
     expect.objectContaining({
-      target: normalize('/my/src/path/components/foo/bar/Qux/index.ts'),
-      data: { compName: 'Qux' },
-    }),
-  );
-  expect(generateFile).toHaveBeenNthCalledWith(
-    2,
-    expect.objectContaining({
-      target: normalize('/my/src/path/components/foo/bar/Qux/Qux.tsx'),
+      target: normalize('/my/src/path/components/foo/bar/Qux'),
       data: { compName: 'Qux' },
     }),
   );
@@ -61,22 +42,9 @@ test('test generate nested named component foo/bar/qux', async () => {
 test('test generate nested named component foo/subPath/tailName', async () => {
   await runGeneratorWith('foo/subPath/tailName');
 
-  expect(generateFile).toBeCalledTimes(2);
-  expect(generateFile).toHaveBeenNthCalledWith(
-    1,
+  expect(generateFile).toBeCalledWith(
     expect.objectContaining({
-      target: normalize(
-        '/my/src/path/components/foo/subPath/TailName/index.ts',
-      ),
-      data: { compName: 'TailName' },
-    }),
-  );
-  expect(generateFile).toHaveBeenNthCalledWith(
-    2,
-    expect.objectContaining({
-      target: normalize(
-        '/my/src/path/components/foo/subPath/TailName/TailName.tsx',
-      ),
+      target: normalize('/my/src/path/components/foo/subPath/TailName'),
       data: { compName: 'TailName' },
     }),
   );
@@ -87,20 +55,10 @@ describe('using custom template', () => {
     const mockProjectPath = join(__dirname, '../../../fixtures/');
     await runGeneratorWith('foo', mockProjectPath);
 
-    expect(generateFile).toBeCalledTimes(2);
-    expect(generateFile).toHaveBeenNthCalledWith(
-      1,
+    expect(generateFile).toBeCalledWith(
       expect.objectContaining({
-        target: normalize('/my/src/path/components/Foo/index.ts'),
-        path: join(mockProjectPath, 'templates/component/index.ts.tpl'),
-        data: { compName: 'Foo' },
-      }),
-    );
-    expect(generateFile).toHaveBeenNthCalledWith(
-      2,
-      expect.objectContaining({
-        target: normalize('/my/src/path/components/Foo/Foo.tsx'),
-        path: join(mockProjectPath, 'templates/component/component.tsx.tpl'),
+        target: normalize('/my/src/path/components/Foo'),
+        path: join(mockProjectPath, 'templates/component'),
         data: { compName: 'Foo' },
       }),
     );
@@ -111,20 +69,10 @@ describe('using custom template', () => {
     const userDefinedArgs = { foo: 'bar', count: 1 };
     await runGeneratorWith('foo', mockProjectPath, userDefinedArgs);
 
-    expect(generateFile).toBeCalledTimes(2);
-    expect(generateFile).toHaveBeenNthCalledWith(
-      1,
+    expect(generateFile).toBeCalledWith(
       expect.objectContaining({
-        target: normalize('/my/src/path/components/Foo/index.ts'),
-        path: join(mockProjectPath, 'templates/component/index.ts.tpl'),
-        data: { compName: 'Foo', ...userDefinedArgs },
-      }),
-    );
-    expect(generateFile).toHaveBeenNthCalledWith(
-      2,
-      expect.objectContaining({
-        target: normalize('/my/src/path/components/Foo/Foo.tsx'),
-        path: join(mockProjectPath, 'templates/component/component.tsx.tpl'),
+        target: normalize('/my/src/path/components/Foo'),
+        path: join(mockProjectPath, 'templates/component'),
         data: { compName: 'Foo', ...userDefinedArgs },
       }),
     );

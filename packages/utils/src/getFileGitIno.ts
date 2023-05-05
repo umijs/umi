@@ -1,5 +1,5 @@
 import type { SpawnOptions } from 'child_process';
-import crossSpawn from 'cross-spawn';
+import crossSpawn from '../compiled/cross-spawn';
 import { execa } from '../compiled/execa';
 
 const promisifySpawn = (

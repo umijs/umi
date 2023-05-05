@@ -276,7 +276,7 @@ api.addBeforeMiddlewares(() => {
 ### addEntryCode
 在入口文件的最后面添加代码（render 后）。传入的 fn 不需要参数，且需要返回一个 string 或者 string 数组。
 ```ts
-api.addEntryCode(() => `console.log('I am after render!)`);
+api.addEntryCode(() => `console.log('I am after render!')`);
 ```
 
 ### addEntryCodeAhead

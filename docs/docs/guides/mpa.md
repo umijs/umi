@@ -109,12 +109,24 @@ export const config = {
   }
 ```
 
+### 按需启动
+
+支持通过设置 `env.MPA_FILTER` 来指定需要启动的页面，以提高构建速度
+
+```text
+# file .env
+# 只会启动 bar、foo 这两个页面
+MPA_FILTER=bar,foo
+```
+
 ## 渲染
 
 默认渲染方式为 react，入口文件只需导出 react 组件，即可进行渲染，无需自行写 `ReactDOM.render` 逻辑。
 
 ```tsx
-export default () => <div>Hello</div>;
+export default function Page() {
+  return <div>Hello</div>
+}
 ```
 
 默认启用 React 18，如果需要 React 17 的渲染方式，请在项目中安装 react 17 的依赖，框架会自动适配 react 版本。

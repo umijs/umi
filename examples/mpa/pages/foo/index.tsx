@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export default () => <div>Hello Foo</div>;
-
+export default () => {
+  // for testing hooks in mpa with mfsu
+  const [name] = useState('Foo');
+  return <div>Hello {name}</div>;
+};
 export const config = {
   title: 'fooooooo',
   layout: '@/layouts/foo',

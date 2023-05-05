@@ -22,6 +22,8 @@ export default {
     // shortcut of `configProvider.theme`
     // use to configure theme token, antd v5 only
     theme: {},
+    // antd <App /> valid for version 5.1.0 or higher, default: undefined
+    appConfig: {}
   },
 };
 ```
@@ -96,9 +98,17 @@ export default {
 
 **注意：该配置项仅 antd v5 可用**
 
+#### appConfig
+
+- Type: `object`
+
+配置 `antd` 的 App 包裹组件，请注意 `antd@5.1.0 ~ 5.2.3` 仅能通过 `appConfig: {}` 启用，只有 `antd >=5.3.0` 才支持更多 App 配置项目。
+
+**注意：该配置项仅 antd v5.1.0 及以上可用**
+
 ### 运行时配置
 
-在 app.ts(x) 文件中你可以对 antd 进行更丰富的配置，比如配置 antd5 的预设算法：
+在 app.ts(x) 文件中可以对 antd 进行更丰富的配置，比如配置 antd5 的预设算法和 message 最大显示数：
 
 ```ts
 // app.ts
@@ -106,8 +116,16 @@ import { RuntimeAntdConfig } from 'umi';
 import { theme } from 'antd';
 
 export const antd: RuntimeAntdConfig = (memo) => {
-  memo.theme ||= {};
-  memo.theme.algorithm = theme.darkAlgorithm;
+  memo.theme ??= {};
+  memo.theme.algorithm = theme.darkAlgorithm; // 配置 antd5 的预设 dark 算法
+
+  memo.appConfig = {
+    message: {
+      // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
+      maxCount: 3,
+    }
+  }
+
   return memo;
 };
 ```

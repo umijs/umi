@@ -18,9 +18,9 @@
     "dist"
   ],
   "devDependencies": {
-    "father": "^4.0.0",
+    "father": "^4.1.8",
     "umi": "{{{ version }}}",
-    "@types/node": "^18.0.0",
-    "typescript": "^4.0.0"
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.3"
   }
 }

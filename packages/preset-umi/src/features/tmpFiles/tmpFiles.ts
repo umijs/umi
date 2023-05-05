@@ -17,8 +17,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'tmpFiles',
     config: {
-      schema(Joi) {
-        return Joi.boolean();
+      schema({ zod }) {
+        return zod.boolean();
       },
     },
   });
@@ -40,9 +40,12 @@ export default (api: IApi) => {
     );
 
     // tsconfig.json
+    const frameworkName = api.service.frameworkName;
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
-    const umiTempDir = `${srcPrefix}.umi`;
+    const umiTempDir = `${srcPrefix}.${frameworkName}`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
+    const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
+    const isTslibInstalled = !!api.appData.typescript.tslibVersion;
 
     api.writeTmpFile({
       noPluginDir: true,
@@ -56,8 +59,12 @@ export default (api: IApi) => {
           compilerOptions: {
             target: 'esnext',
             module: 'esnext',
-            moduleResolution: 'node',
-            importHelpers: true,
+            lib: ['dom', 'dom.iterable', 'esnext'],
+            allowJs: true,
+            skipLibCheck: true,
+            moduleResolution: isTs5 ? 'bundler' : 'node',
+            importHelpers: isTslibInstalled,
+            noEmit: true,
             jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
             esModuleInterop: true,
             sourceMap: true,
@@ -72,9 +79,6 @@ export default (api: IApi) => {
                   // TODO Actually, it should be vite mode, but here it is written as vue only
                   // Required in Vite https://vitejs.dev/guide/features.html#typescript
                   isolatedModules: true,
-                  // For `<script setup>`
-                  // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
-                  preserveValueImports: true,
                 }
               : {}),
 
@@ -93,11 +97,12 @@ export default (api: IApi) => {
             },
           },
           include: [
-            `${baseUrl}.umirc.ts`,
+            `${baseUrl}.${frameworkName}rc.ts`,
             `${baseUrl}**/*.d.ts`,
             `${baseUrl}**/*.ts`,
             `${baseUrl}**/*.tsx`,
-          ],
+            api.appData.framework === 'vue' && `${baseUrl}**/*.vue`,
+          ].filter(Boolean),
         },
         null,
         2,
@@ -370,7 +375,8 @@ export default function EmptyRoute() {
       headerImports.push(`import clientLoaders from './loaders.js';`);
     }
     // routeProps is enabled for conventional routes
-    if (!api.userConfig.routes) {
+    // e.g. dumi 需要用到约定式路由但又不需要 routeProps
+    if (!api.userConfig.routes && api.isPluginEnable('routeProps')) {
       // routeProps":"routeProps['foo']" > ...routeProps['foo']
       routesString = routesString.replace(
         /"routeProps":"(routeProps\[.*?)"/g,

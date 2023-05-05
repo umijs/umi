@@ -1,5 +1,5 @@
 import { getMarkup } from '@umijs/server';
-import { lodash, logger, winPath } from '@umijs/utils';
+import { lodash, logger, Mustache, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { dirname, join, relative } from 'path';
 import type { IApi, IRoute } from '../../types';
@@ -119,13 +119,15 @@ export default (api: IApi) => {
 
   api.describe({
     config: {
-      schema: (Joi) =>
-        Joi.object({
-          extraRoutePaths: Joi.alternatives(
-            Joi.function(),
-            Joi.array().items(Joi.string()),
-          ),
-        }),
+      schema: ({ zod }) =>
+        zod
+          .object({
+            extraRoutePaths: zod.union([
+              zod.function(),
+              zod.array(zod.string()),
+            ]),
+          })
+          .deepPartial(),
     },
     enableBy: api.EnableBy.config,
   });
@@ -136,16 +138,8 @@ export default (api: IApi) => {
 
   // export routes to html files
   api.modifyExportHTMLFiles(async (_defaultFiles, opts) => {
-    const {
-      publicPath,
-      exportStatic: { extraRoutePaths = [] },
-    } = api.config;
-    const extraHtmlData = getExportHtmlData(
-      await getRoutesFromUserExtraPaths(extraRoutePaths),
-    );
-    const htmlData = getExportHtmlData(api.appData.routes).concat(
-      extraHtmlData,
-    );
+    const { publicPath } = api.config;
+    const htmlData = api.appData.exportHtmlData;
     const htmlFiles: { path: string; content: string }[] = [];
 
     for (const { file, route, prerender } of htmlData) {
@@ -224,5 +218,47 @@ export default (api: IApi) => {
     }
 
     return htmlFiles;
+  });
+
+  api.onGenerateFiles(async () => {
+    const {
+      exportStatic: { extraRoutePaths = [] },
+    } = api.config;
+    const extraHtmlData = getExportHtmlData(
+      await getRoutesFromUserExtraPaths(extraRoutePaths),
+    );
+    const htmlData = getExportHtmlData(api.appData.routes).concat(
+      extraHtmlData,
+    );
+
+    api.appData.exportHtmlData = htmlData;
+
+    api.writeTmpFile({
+      path: 'core/exportStaticRuntimePlugin.ts',
+      content: Mustache.render(
+        `
+export function modifyClientRenderOpts(memo: any) {
+  const { history, hydrate } = memo;
+
+  return {
+    ...memo,
+    hydrate: hydrate && !{{{ ignorePaths }}}.includes(history.location.pathname),
+  };
+}
+      `.trim(),
+        {
+          ignorePaths: JSON.stringify(
+            htmlData
+              .filter(({ prerender }) => prerender === false)
+              .map(({ route }) => route.path),
+          ),
+        },
+      ),
+      noPluginDir: true,
+    });
+  });
+
+  api.addRuntimePlugin(() => {
+    return [`@@/core/exportStaticRuntimePlugin.ts`];
   });
 };
