@@ -30,20 +30,20 @@ export { webpack, IConfig };
 
 export type IScript =
   | Partial<{
-    async: boolean;
-    charset: string;
-    content: string;
-    crossOrigin: string | null;
-    defer: boolean;
-    src: string;
-    type: string;
-  }>
+      async: boolean;
+      charset: string;
+      content: string;
+      crossOrigin: string | null;
+      defer: boolean;
+      src: string;
+      type: string;
+    }>
   | string;
 export type IStyle =
   | Partial<{
-    content: string;
-    type: string;
-  }>
+      content: string;
+      type: string;
+    }>
   | string;
 export type ILink = Partial<{
   as: string;
