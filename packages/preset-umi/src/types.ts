@@ -148,10 +148,7 @@ export type IApi = PluginAPI &
     modifyRendererPath: IModify<string, {}>;
     modifyRoutes: IModify<Record<string, IRoute>, {}>;
     modifyServerRendererPath: IModify<string, {}>;
-    modifyTSConfig: IModify<
-      Record<string, any>,
-      { config: Record<string, any> }
-    >;
+    modifyTSConfig: IModify<Record<string, any>, {}>;
     modifyViteConfig: IModify<
       ViteInlineConfig,
       {

@@ -105,7 +105,6 @@ export default (api: IApi) => {
       key: 'modifyTSConfig',
       type: api.ApplyPluginsType.modify,
       initialValue: umiTsConfig,
-      args: { config: api.config },
     });
 
     api.writeTmpFile({
