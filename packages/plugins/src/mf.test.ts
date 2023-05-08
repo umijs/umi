@@ -117,6 +117,7 @@ async function executePlugin(mfConfig: any) {
     modifyWebpackConfig(fn: Function) {
       modifier = fn;
     },
+    register() {},
     addRuntimePluginKey() {},
     modifyDefaultConfig() {},
   };
