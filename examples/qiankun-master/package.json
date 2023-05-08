@@ -2,8 +2,8 @@
   "name": "@example/qiankun-master",
   "private": true,
   "scripts": {
-    "dev": "cross-env PORT=8888 max dev",
-    "preview": "max preview --port 8888",
+    "dev": "cross-env PORT=8889 max dev",
+    "preview": "max preview --port 8889",
     "setup": "max setup",
     "start": "npm run dev"
   },
