@@ -47,66 +47,70 @@ export default (api: IApi) => {
     const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
     const isTslibInstalled = !!api.appData.typescript.tslibVersion;
 
+    // x 1、basic config
+    // x 2、alias
+    // 3、language service platform
+    // 4、typing
+    let umiTsConfig = {
+      compilerOptions: {
+        target: 'esnext',
+        module: 'esnext',
+        lib: ['dom', 'dom.iterable', 'esnext'],
+        allowJs: true,
+        skipLibCheck: true,
+        moduleResolution: isTs5 ? 'bundler' : 'node',
+        importHelpers: isTslibInstalled,
+        noEmit: true,
+        jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
+        esModuleInterop: true,
+        sourceMap: true,
+        baseUrl,
+        strict: true,
+        resolveJsonModule: true,
+        allowSyntheticDefaultImports: true,
+
+        // Supported by vue only
+        ...(api.appData.framework === 'vue'
+          ? {
+              // TODO Actually, it should be vite mode, but here it is written as vue only
+              // Required in Vite https://vitejs.dev/guide/features.html#typescript
+              isolatedModules: true,
+            }
+          : {}),
+
+        paths: {
+          '@/*': [`${srcPrefix}*`],
+          '@@/*': [`${umiTempDir}/*`],
+          [`${api.appData.umi.importSource}`]: [umiDir],
+          [`${api.appData.umi.importSource}/typings`]: [
+            `${umiTempDir}/typings`,
+          ],
+          ...(api.config.vite
+            ? {
+                '@fs/*': ['*'],
+              }
+            : {}),
+        },
+      },
+      include: [
+        `${baseUrl}.${frameworkName}rc.ts`,
+        `${baseUrl}**/*.d.ts`,
+        `${baseUrl}**/*.ts`,
+        `${baseUrl}**/*.tsx`,
+        api.appData.framework === 'vue' && `${baseUrl}**/*.vue`,
+      ].filter(Boolean),
+    };
+
+    umiTsConfig = await api.applyPlugins({
+      key: 'modifyTSConfig',
+      type: api.ApplyPluginsType.modify,
+      initialValue: umiTsConfig,
+    });
+
     api.writeTmpFile({
       noPluginDir: true,
       path: 'tsconfig.json',
-      // x 1、basic config
-      // x 2、alias
-      // 3、language service platform
-      // 4、typing
-      content: JSON.stringify(
-        {
-          compilerOptions: {
-            target: 'esnext',
-            module: 'esnext',
-            lib: ['dom', 'dom.iterable', 'esnext'],
-            allowJs: true,
-            skipLibCheck: true,
-            moduleResolution: isTs5 ? 'bundler' : 'node',
-            importHelpers: isTslibInstalled,
-            noEmit: true,
-            jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
-            esModuleInterop: true,
-            sourceMap: true,
-            baseUrl,
-            strict: true,
-            resolveJsonModule: true,
-            allowSyntheticDefaultImports: true,
-
-            // Supported by vue only
-            ...(api.appData.framework === 'vue'
-              ? {
-                  // TODO Actually, it should be vite mode, but here it is written as vue only
-                  // Required in Vite https://vitejs.dev/guide/features.html#typescript
-                  isolatedModules: true,
-                }
-              : {}),
-
-            paths: {
-              '@/*': [`${srcPrefix}*`],
-              '@@/*': [`${umiTempDir}/*`],
-              [`${api.appData.umi.importSource}`]: [umiDir],
-              [`${api.appData.umi.importSource}/typings`]: [
-                `${umiTempDir}/typings`,
-              ],
-              ...(api.config.vite
-                ? {
-                    '@fs/*': ['*'],
-                  }
-                : {}),
-            },
-          },
-          include: [
-            `${baseUrl}.${frameworkName}rc.ts`,
-            `${baseUrl}**/*.d.ts`,
-            `${baseUrl}**/*.ts`,
-            `${baseUrl}**/*.tsx`,
-            api.appData.framework === 'vue' && `${baseUrl}**/*.vue`,
-          ].filter(Boolean),
-        },
-        null,
-        2,
-      ),
+      content: JSON.stringify(umiTsConfig, null, 2),
     });
 
     // typings.d.ts
