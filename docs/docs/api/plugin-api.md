@@ -475,6 +475,18 @@ api.modifyRoutes((memo) => {
   return memo;
 })
 ```
+
+### modifyTSConfig
+
+修改临时目录下的 tsconfig 文件内容。
+
+```ts
+api.modifyTSConfig((memo) => {
+  memo.compilerOptions.paths['foo'] = ['bar'];
+  return memo;
+});
+```
+
 ### modifyViteConfig
 修改 vite 最终配置。 传入的 fn 接收 vite 的 Config 对象作为第一个参数并且返回它。另外 fn 还可以接收 `{ env }` 作为第二个参数，可以通过该参数获取当前的环境。
 ```ts
