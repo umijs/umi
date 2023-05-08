@@ -53,7 +53,7 @@ export default function mf(api: IApi) {
     }
 
     if (!isEmpty(remotes)) {
-      if (!api.config.mfsu) {
+      if (api.env === 'production' || !api.config.mfsu) {
         changeUmiEntry(config);
       }
     }
