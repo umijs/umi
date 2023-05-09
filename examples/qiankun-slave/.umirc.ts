@@ -9,4 +9,5 @@ export default {
     { path: '/count', component: 'count' },
     { path: '/nav', component: 'nav' },
   ],
+  hash: false,
 };

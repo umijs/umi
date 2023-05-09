@@ -10,6 +10,10 @@ export default {
           name: 'slave-app2',
           entry: 'http://127.0.0.1:7002', // your slave app address
         },
+        {
+          name: 'slave-mf',
+          entry: 'http://127.0.0.1:8000', // your slave app address
+        },
       ],
     },
     slave: {},
@@ -21,6 +25,10 @@ export default {
     {
       path: '/slave/*',
       microApp: 'slave',
+    },
+    {
+      path: '/slave-mf/*',
+      microApp: 'slave-mf',
     },
     {
       path: '/animal',

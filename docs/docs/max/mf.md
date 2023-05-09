@@ -4,6 +4,10 @@ import { Tabbed, Message } from 'umi';
 
 在 Umi 项目使用 Module Federation 功能。
 
+<Message emoji="🚨" type="warning">
+Module Federation 功能需要浏览器支持 `Top Level Await` 特性。在生产环境中使用请注意浏览器是否支持([浏览器支持情况](https://caniuse.com/?search=top%20level%20await))。
+</Message>
+
 ## 配置
 
 ### 使用远端模块配置

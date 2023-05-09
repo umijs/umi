@@ -12,6 +12,11 @@ const shared = {
 };
 
 export default defineConfig({
+  publicPath: 'http://localhost:8000/',
+  qiankun: {
+    slave: {},
+  },
+  base: '/',
   mf: {
     name: 'hostUser',
     remotes: [
@@ -31,4 +36,6 @@ export default defineConfig({
     ],
     shared,
   },
+  // dont use in production!!! just for tests
+  hash: false,
 });

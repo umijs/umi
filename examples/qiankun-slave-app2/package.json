@@ -2,7 +2,9 @@
   "name": "@example/qiankun-slave-app2",
   "private": true,
   "scripts": {
+    "build": "max build",
     "dev": "max dev",
+    "preview": "max preview --port 7002",
     "setup": "max setup",
     "start": "npm run dev"
   },
