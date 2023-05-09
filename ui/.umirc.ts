@@ -23,6 +23,7 @@ export default {
       'ant-design:bug-outlined',
       'ant-design:bulb-outlined',
       'ant-design:star-outlined',
+      'ant-design:info-circle-outlined',
       'local:sun',
       'local:moon',
     ],

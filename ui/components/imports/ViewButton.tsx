@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Icon, styled } from 'umi';
 
 interface IProps {
-  options: { icon: string; value: string }[];
+  options: { icon?: string; value: string; str?: string }[];
   onChange: (v: string) => void;
   value: string;
 }
@@ -48,7 +48,11 @@ export const ViewButton: FC<IProps> = ({ value, options = [], onChange }) => {
             className={value === opt.value ? 'view active' : 'view'}
             onClick={() => onChange(opt.value)}
           >
-            <Icon width="24" height="24" icon={`ant-design:${opt.icon}`} />
+            {opt.icon ? (
+              <Icon width="24" height="24" icon={`ant-design:${opt.icon}`} />
+            ) : (
+              opt.str
+            )}
           </span>
         );
       })}
