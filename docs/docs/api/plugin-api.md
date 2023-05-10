@@ -36,7 +36,7 @@ api.describe({
     schema(joi){
       return joi.string();
     },
-    onChange: api.ConfigCHangeType.regenerateTmpFiles,
+    onChange: api.ConfigChangeType.regenerateTmpFiles,
   },
   enableBy: api.EnableBy.config,
 })
