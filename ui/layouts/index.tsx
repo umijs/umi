@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   height: 100%;
   aside {
     min-width: 200px;
-    border-right: 1px solid var(--subtle-color);
+    // border-right: 1px solid var(--subtle-color);
   }
   main {
     flex: 1;

@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1rem;
-  border-bottom: 1px solid var(--subtle-color);
+  // border-bottom: 1px solid var(--subtle-color);
 
   .logo-left {
     display: flex;

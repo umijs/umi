@@ -12,7 +12,9 @@ ${globalCSS}
 
   &.dark {
     --bg-color: #151515;
-    --bg-hover-color: #1c1c1d;
+    --bg-hover-color: #333;
+    --bg-active-color: #117cf3;
+    --bg-active-text-color: #fff;
     --highlight-color: #117cf3;
     --text-color: #9a9a9a;
     --accent-color: #ffffff;
@@ -23,7 +25,9 @@ ${globalCSS}
   }
 
   --bg-color: #fff;
-  --bg-hover-color: #fefefe;
+  --bg-hover-color: #f4f4f4;
+  --bg-active-color: #e6f4ff;
+  --bg-active-text-color: #117cf3;
   --highlight-color: #117cf3;
   --text-color: #333;
   --accent-color: #000;
