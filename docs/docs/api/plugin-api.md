@@ -32,7 +32,6 @@ e.g.
 api.describe({
   key: 'foo',
   config: {
-    default: 'Hello, Umi!',
     schema(joi){
       return joi.string();
     },
@@ -41,7 +40,7 @@ api.describe({
   enableBy: api.EnableBy.config,
 })
 ```
-这个例子中，插件的 `key` 为 `foo`，因此配置中的键名为 `foo`，配置的类型是字符串，默认值为 "Hello, Umi!"，当配置 `foo` 发生变化时，dev 只会重新生成临时文件。该插件只有在用户配置了 `foo` 之后才会启用。
+这个例子中，插件的 `key` 为 `foo`，因此配置中的键名为 `foo`，配置的类型是字符串，当配置 `foo` 发生变化时，dev 只会重新生成临时文件。该插件只有在用户配置了 `foo` 之后才会启用。
 
 ### isPluginEnable
 ```ts
