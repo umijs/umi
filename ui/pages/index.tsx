@@ -7,19 +7,22 @@ const cardList = [
     name: 'Routes',
     path: '/routes',
     icon: 'cluster-outlined',
-    color: '#91caff',
+    textColor: '#4096ff',
+    color: 'rgba(64, 150, 255, .2)',
   },
   {
     name: 'Plugins',
     path: '/plugins',
     icon: 'api-outlined',
-    color: '#b7eb8f',
+    textColor: '#73d13d',
+    color: 'rgba(115, 209, 61, .2)',
   },
   {
     name: 'Imports',
     path: '/imports',
     icon: 'right-square-outlined',
-    color: '#fffb8f',
+    textColor: '#f759ab',
+    color: 'rgba(247, 89, 171, .2)',
   },
 ];
 
@@ -27,7 +30,10 @@ const cardColorStr = cardList
   .map((item) => {
     return `
     .card-item-${item.name}:hover {
-      color: ${item.color}
+      color: ${item.textColor};
+      .card-content {
+        background: ${item.color};
+      }
     }
   `;
   })

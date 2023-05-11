@@ -1,7 +1,7 @@
 import { innerPluginList } from '@/contants';
 import type { IAppData } from '@/hooks/useAppData';
 import { getRegisterTime } from '@/utils/getPluginRegisterTime';
-import { Input, List, Switch, Tag } from 'antd';
+import { Input, List, Popover, Switch, Tag } from 'antd';
 import { FC, useMemo, useState } from 'react';
 import { Icon, styled } from 'umi';
 
@@ -102,10 +102,16 @@ export const PluginList: FC<IProps> = ({ plugins }) => {
       })
       .map((k) => {
         const plugin = plugins[k];
-        const totalTime = getRegisterTime(plugin);
+        const { totalTime, detail } = getRegisterTime(plugin);
+        const detailTxt = Object.keys(detail).map((k) => (
+          <div key={k}>
+            {k}: {detail[k]}ms
+          </div>
+        ));
         return {
           name: k,
           totalTime,
+          detailTxt,
           ...plugin,
         };
       })
@@ -146,7 +152,27 @@ export const PluginList: FC<IProps> = ({ plugins }) => {
                   <span className="item-content-title-name">{item.name}</span>
                   <Tag color="blue">{item.key}</Tag>
                   {item.totalTime ? (
-                    <Tag color="red">{item.totalTime}ms</Tag>
+                    <Tag color="red">
+                      <Popover content={item.detailTxt}>
+                        <div
+                          style={{
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          {item.totalTime}ms
+                          <Icon
+                            width="14"
+                            height="14"
+                            icon="ant-design:info-circle-outlined"
+                            style={{
+                              marginLeft: '.25rem',
+                            }}
+                          />
+                        </div>
+                      </Popover>
+                    </Tag>
                   ) : null}
                 </div>
                 {item.path ? (
