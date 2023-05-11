@@ -134,12 +134,15 @@ export async function getRoutes(opts: {
   }
 
   // layout routes
-  const absLayoutPath = tryPaths([
-    join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
-    join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
-    join(opts.api.paths.absSrcPath, 'layouts/index.jsx'),
-    join(opts.api.paths.absSrcPath, 'layouts/index.js'),
-  ]);
+  const absLayoutPath =
+    opts.api.config?.conventionLayout === false
+      ? false
+      : tryPaths([
+          join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.jsx'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.js'),
+        ]);
 
   const layouts = await opts.api.applyPlugins({
     key: 'addLayouts',
