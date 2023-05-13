@@ -640,15 +640,18 @@ export default {
 - 类型：`string[]`
 - 默认值：`null`
 
-支持配置多个 favicon 文件。配置 favicons 路径，可以是绝对路径，也可以是基于项目根目录的相对路径。
+默认情况下，站点将使用约定 [`favicon`](../guides/directory-structure#favicon) 来创建图标的 meta 头标签。
 
-比如：
+通过如下方式自定义：
 
 ```js
-favicons: ['/assets/favicon.ico']
+favicons: [
+  // 完整地址
+  'https://domain.com/favicon.ico',
+  // 此时将指向 `/favicon.png` ，确保你的项目含有 `public/favicon.png`
+  '/favicon.png'
+]
 ```
-
-HTML 中会生成 `<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />`。
 
 ## forkTSChecker
 
