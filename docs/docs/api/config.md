@@ -235,6 +235,13 @@ depPerChunk 和 bigVendors 类似，不同的是把依赖按 package name + vers
 
 granularChunks 在 bigVendors 和 depPerChunk 之间取了中间值，同时又能在缓存效率上有更好的利用。无特殊场景，建议用 granularChunks 策略。
 
+## conventionLayout
+
+- 类型：`boolean`
+- 默认值：`undefined`
+
+`src/layouts/index.[tsx|vue|jsx|js]` 为约定式布局，默认开启。可通过配置 `conventionLayout: false` 关闭该默认行为。
+
 ## conventionRoutes
 
 - 类型：`{ base: string; exclude: RegExp[] }`
