@@ -19,7 +19,7 @@ import 'zx/globals';
 
   // commit and tag and push
   await $`git commit -am "release: ${pkgName}@${newVersion}"`;
-  await $`git tag ${pkgName}v${newVersion}`;
+  await $`git tag ${pkgName}@${newVersion}`;
   await $`git push origin ${branch} --tags`;
 })().catch((e) => {
   console.error(e);
