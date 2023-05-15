@@ -8,7 +8,11 @@ import 'zx/globals';
   assert(pkgName, `pkg name is required, specify with --pkg=xxx`);
   const pkgPath = path.join(__dirname, '..', pkgName);
   assert(fs.existsSync(pkgPath), `pkg ${pkgName} not exists`);
-  await $`cd ${pkgPath} && npm run build`;
+  try {
+    await $`cd ${pkgPath} && npm run build`;
+  } catch (e) {
+    await $`cd ${pkgPath} && npm run ui:build`;
+  }
   await $`cd ${pkgPath} && npm version patch`;
   const newVersion = require(path.join(pkgPath, 'package.json')).version;
   await $`cd ${pkgPath} && pnpm publish --no-git-checks`;
