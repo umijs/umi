@@ -19,6 +19,7 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
   return {
     analyze: ({ zod }) => zod.object({}),
     base: ({ zod }) => zod.string(),
+    conventionLayout: ({ zod }) => zod.boolean(),
     conventionRoutes: ({ zod }) =>
       zod.object({
         base: zod.string().optional(),
