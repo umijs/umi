@@ -497,10 +497,25 @@ export function getRightRenderContent (opts: {
     ],
   };
   // antd@5 和  4.24 之后推荐使用 menu，性能更好
-  const dropdownProps =
-    version.startsWith("5.") || version.startsWith("4.24.")
-      ? { menu: langMenu }
-      : { overlay: <Menu {...langMenu} /> };
+  let dropdownProps;
+  if (version.startsWith("5.") || version.startsWith("4.24.")) {
+    dropdownProps = { menu: langMenu };
+  } else if (version.startsWith("3.")) {
+    dropdownProps = {
+      overlay: (
+        <Menu>
+          {langMenu.items.map((item) => (
+            <Menu.Item key={item.key} onClick={item.onClick}>
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu>
+      ),
+    };
+  } else { // 需要 antd 4.20.0 以上版本
+    dropdownProps = { overlay: <Menu {...langMenu} /> };
+  }
+
 
   return (
     <div className="umi-plugin-layout-right anticon">
