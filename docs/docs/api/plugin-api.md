@@ -406,7 +406,7 @@ api.modifyAppData((memo) => {
 ### modifyConfig
 修改配置，相较于用户的配置，这份是最终传给 Umi 使用的配置。传入的 fn 接收 config 作为第一个参数，并且返回它。另外 fn 可以接收 `{ paths }` 作为第二个参数。`paths` 保存了 Umi 的各个路径。
 ```ts
-api.modifyConfig((memo, { path }) => {
+api.modifyConfig((memo, { paths }) => {
   memo.alias = {
     ...memo.alias,
     '@': paths.absSrcPath
