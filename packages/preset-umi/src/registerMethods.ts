@@ -11,6 +11,7 @@ export default (api: IApi) => {
     'onGenerateFiles',
     'onBeforeCompiler',
     'onBuildComplete',
+    'onSSRHtmlComplete',
     'onBuildHtmlComplete',
     'onPatchRoute',
     'onPkgJSONChanged',

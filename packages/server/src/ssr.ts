@@ -90,6 +90,12 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
 
 export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
+  const { PluginManager, getPlugins, getValidKeys } = opts;
+
+  const pluginManager = PluginManager.create({
+    plugins: getPlugins(),
+    validKeys: getValidKeys(),
+  });
 
   return async (url: string) => {
     const jsx = await jsxGeneratorDeferrer(url);
@@ -103,7 +109,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
           chunks.push(Buffer.from(chunk));
           next();
         };
-        writable.on('finish', () => {
+        writable.on('finish', async () => {
           let html = Buffer.concat(chunks).toString('utf8');
 
           // append helmet tags to head
@@ -122,6 +128,14 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
                 .join('\n'),
             );
           }
+
+          html = await pluginManager.applyPlugins({
+            key: 'onSSRHtmlComplete',
+            args: {
+              html,
+              jsx,
+            },
+          });
 
           resolve(html);
         });

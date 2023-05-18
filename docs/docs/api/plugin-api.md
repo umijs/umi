@@ -527,6 +527,17 @@ build 完成时。传入的 fn 接收 `{ isFirstCompile: boolean, stats, time: n
 ### onBuildHtmlComplete
 build 完成且 html 完成构建之后。
 
+### onSSRHtmlComplete
+ssr 打开的时候，编译完 html 发生
+
+```ts
+// eg:
+api.onSSRHtmlComplete(({ html }) => {
+  const newHtml = html.replace("antd","ant design");
+  return newHtml
+})
+```
+
 ### onCheck
 检查时，在 onStart 之前执行。传入的 fn 不接收任何参数
 
