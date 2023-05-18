@@ -1,4 +1,4 @@
-import { App, Button, Space, version } from 'antd';
+import { App, Button, Layout, Space, version } from 'antd';
 import React, { useState } from 'react';
 import { getLocale, setLocale, useIntl } from 'umi';
 
@@ -25,7 +25,8 @@ export default function Page() {
   };
 
   return (
-    <>
+    <Layout>
+      {Math.random()}
       <h1>with antd@{version}</h1>
       <Space>
         <Button onClick={sayHai}>Say Hai</Button>
@@ -34,14 +35,16 @@ export default function Page() {
         </Button>
       </Space>
       locale:{locale}
-      <Button
-        onClick={() => {
-          setIsZh(!isZh);
-          setLocale(isZh ? 'en-US' : 'zh-CN', false);
-        }}
-      >
-        {msg}
-      </Button>
-    </>
+      <Space>
+        <Button
+          onClick={() => {
+            setIsZh(!isZh);
+            setLocale(isZh ? 'en-US' : 'zh-CN', false);
+          }}
+        >
+          {msg}
+        </Button>
+      </Space>
+    </Layout>
   );
 }

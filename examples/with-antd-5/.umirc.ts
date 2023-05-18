@@ -11,6 +11,9 @@ export default {
         colorPrimary: '#1DA57A',
       },
     },
+    dark: true,
+    compact: true,
+    import: true,
     /**
      * antd@5.1.0 ~ 5.2.3 仅支持 appConfig: {}, 来启用 <App /> 组件;
      * antd@5.3.0 及以上才支持 appConfig: { // ... } 来添加更多 App 配置项;

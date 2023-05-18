@@ -40,6 +40,9 @@ export function rootContainer(rawContainer) {
   } = getAntdConfig();
   let container = rawContainer;
 {{#configProvider}}
+
+{{^isAntd5}}
+  // It is only necessary in Ant Design version 4.x
   if (finalConfigProvider.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfigProvider.prefixCls
@@ -51,7 +54,7 @@ export function rootContainer(rawContainer) {
       prefixCls: `${finalConfigProvider.prefixCls}-notification`
     });
   }
-
+{{/isAntd5}}
   if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
     ConfigProvider.config({

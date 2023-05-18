@@ -23,6 +23,8 @@ export default (api: IApi) => {
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
 
+  const isAntd5 = antdVersion.startsWith('5');
+
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
@@ -95,30 +97,39 @@ export default (api: IApi) => {
     memo.alias.antd = pkgPath;
 
     // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
-    if (antdVersion.startsWith('5')) {
+    if (isAntd5) {
       const theme = require('@ant-design/antd-theme-variable');
       memo.theme = {
         ...theme,
         ...memo.theme,
       };
       if (memo.antd?.import) {
-        const errorMessage = `Can't set antd.import while using antd5 (${antdVersion})`;
-
-        api.logger.fatal(
-          'please change config antd.import to false, then start server again',
+        // 只是在 antd@5 的时候，这个配置无效，不应该直接报错退出
+        api.logger.warn(
+          `The configuration antd.import is invalid in Ant Design version 5.x .`,
         );
-
-        throw Error(errorMessage);
       }
     }
 
     // dark mode & compact mode
     if (antd.dark || antd.compact) {
-      const { getThemeVariables } = require('antd/dist/theme');
-      memo.theme = {
-        ...getThemeVariables(antd),
-        ...memo.theme,
-      };
+      if (isAntd5) {
+        api.logger.warn(
+          `The configurations antd.dark and antd.compact is invalid. Please use the custom theme approach provided by Ant Design version 5 for configuration during runtime - src/app.ts.`,
+        );
+        api.logger.warn(
+          `https://ant.design/docs/react/customize-theme#algorithm`,
+        );
+        api.logger.warn(
+          `\nimport { theme } from 'antd';\nconst { darkAlgorithm, compactAlgorithm } = theme;\nexport const antd = (memo) => {\n\tmemo.theme ??= {};\n\tmemo.theme.algorithm = [darkAlgorithm, compactAlgorithm];\n\treturn memo;\n};`,
+        );
+      } else {
+        const { getThemeVariables } = require(`${pkgPath}/dist/theme`);
+        memo.theme = {
+          ...getThemeVariables(antd),
+          ...memo.theme,
+        };
+      }
     }
 
     // antd theme
@@ -129,10 +140,7 @@ export default (api: IApi) => {
 
     // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
     if (antd.theme) {
-      assert(
-        antdVersion.startsWith('5'),
-        `antd.theme is only valid when antd is 5`,
-      );
+      assert(isAntd5, `antd.theme is only valid when antd is 5`);
       antd.configProvider ??= {};
       // priority: antd.theme > antd.configProvider.theme
       antd.configProvider.theme = deepmerge(
@@ -177,22 +185,14 @@ export default (api: IApi) => {
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
     // only enable style for non-antd@5
-    const style = antdVersion.startsWith('5')
-      ? false
-      : api.config.antd.style || 'less';
-
-    return api.config.antd.import && !api.appData.vite
+    return api.config.antd?.import && !api.appData.vite && !isAntd5
       ? [
           [
             require.resolve('babel-plugin-import'),
             {
               libraryName: 'antd',
               libraryDirectory: 'es',
-              ...(style
-                ? {
-                    style: style === 'less' || 'css',
-                  }
-                : {}),
+              style: api.config.antd?.style === 'less' || 'css',
             },
             'antd',
           ],
@@ -208,6 +208,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
+        isAntd5,
         configProvider:
           withConfigProvider && JSON.stringify(api.config.antd.configProvider),
         appConfig:
@@ -267,7 +268,6 @@ export type IRuntimeConfig = {
   });
 
   api.addEntryImportsAhead(() => {
-    const isAntd5 = antdVersion.startsWith('5');
     const style = api.config.antd.style || 'less';
     const imports: Awaited<
       ReturnType<Parameters<IApi['addEntryImportsAhead']>[0]['fn']>
