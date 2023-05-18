@@ -16,12 +16,19 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.modifyBabelPresetOpts((memo) => {
-    if (api.env === 'development') {
-      memo.pluginStyledComponents = {
-        ...api.config.styledComponents.babelPlugin,
-      };
-    }
+  // dev:  displayName
+  // prod: minify
+  api.modifyConfig((memo) => {
+    const pluginConfig = {
+      // https://github.com/styled-components/babel-plugin-styled-components/blob/f8e9fb480d1645be8be797d73e49686bdf98975b/src/utils/options.js#L11
+      topLevelImportPaths: ['umi', '@umijs/max', '@alipay/bigfish'],
+      ...(api.config.styledComponents?.babelPlugin || {}),
+      ...(api.userConfig.styledComponents?.babelPlugin || {}),
+    };
+    memo.extraBabelPlugins = [
+      ...(memo.extraBabelPlugins || []),
+      [require.resolve('babel-plugin-styled-components'), pluginConfig],
+    ];
     return memo;
   });
 

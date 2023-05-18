@@ -534,7 +534,7 @@ importers:
         version: 6.3.0(react-dom@18.1.0)(react@18.1.0)
       styled-components:
         specifier: 6.0.0-rc.0
-        version: 6.0.0-rc.0(react-dom@18.1.0)(react@18.1.0)
+        version: 6.0.0-rc.0(babel-plugin-styled-components@2.1.1)(react-dom@18.1.0)(react@18.1.0)
       valtio:
         specifier: 1.10.3
         version: 1.10.3(react@18.1.0)
@@ -1657,9 +1657,6 @@ importers:
       '@umijs/utils':
         specifier: workspace:*
         version: link:../utils
-      babel-plugin-styled-components:
-        specifier: 2.1.1
-        version: 2.1.1
       core-js:
         specifier: 3.28.0
         version: 3.28.0
@@ -2268,6 +2265,9 @@ importers:
       babel-plugin-import:
         specifier: ^1.13.6
         version: 1.13.6
+      babel-plugin-styled-components:
+        specifier: 2.1.1
+        version: 2.1.1(styled-components@6.0.0-rc.0)
       dayjs:
         specifier: ^1.11.7
         version: 1.11.7
@@ -2309,7 +2309,7 @@ importers:
         version: 4.2.1
       styled-components:
         specifier: 6.0.0-rc.0
-        version: 6.0.0-rc.0(react-dom@18.1.0)(react@18.1.0)
+        version: 6.0.0-rc.0(babel-plugin-styled-components@2.1.1)(react-dom@18.1.0)(react@18.1.0)
       tslib:
         specifier: ^2
         version: 2.4.1
@@ -17268,7 +17268,7 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /babel-plugin-styled-components@2.1.1:
+  /babel-plugin-styled-components@2.1.1(styled-components@6.0.0-rc.0):
     resolution: {integrity: sha512-c8lJlszObVQPguHkI+akXv8+Jgb9Ccujx0EetL7oIvwU100LxO6XAGe45qry37wUL40a5U9f23SYrivro2XKhA==}
     peerDependencies:
       styled-components: '>= 2'
@@ -17278,6 +17278,7 @@ packages:
       babel-plugin-syntax-jsx: 6.18.0
       lodash: 4.17.21
       picomatch: 2.3.1
+      styled-components: 6.0.0-rc.0(babel-plugin-styled-components@2.1.1)(react-dom@18.1.0)(react@18.1.0)
     dev: false
 
   /babel-plugin-syntax-jsx@6.18.0:
@@ -37283,7 +37284,7 @@ packages:
       - supports-color
     dev: true
 
-  /styled-components@6.0.0-rc.0(react-dom@18.1.0)(react@18.1.0):
+  /styled-components@6.0.0-rc.0(babel-plugin-styled-components@2.1.1)(react-dom@18.1.0)(react@18.1.0):
     resolution: {integrity: sha512-3+Lnu1NC5JuieYi8dV/nhmlK7/yzqZW43u4P7WgIJfu5Dq5AiPU3t4efu0nWLmlMEmWrSXdrinxfbDnqnpP6hg==}
     engines: {node: '>= 14'}
     peerDependencies:
@@ -37309,6 +37310,7 @@ packages:
       '@babel/preset-typescript': 7.21.0(@babel/core@7.21.0)
       '@babel/traverse': 7.21.2
       '@emotion/unitless': 0.8.0
+      babel-plugin-styled-components: 2.1.1(styled-components@6.0.0-rc.0)
       css-to-react-native: 3.2.0
       react: 18.1.0
       react-dom: 18.1.0(react@18.1.0)
