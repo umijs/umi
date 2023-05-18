@@ -26,7 +26,7 @@ export default (api: IApi) => {
 
       h.addDevDeps({
         prettier: '^2',
-        'prettier-plugin-organize-imports': '^2',
+        'prettier-plugin-organize-imports': '^3.2.2',
         'prettier-plugin-packagejson': '^2',
       });
 
