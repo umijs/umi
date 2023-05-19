@@ -71,10 +71,22 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build 
-          --filter ./examples/max... 
-          --filter ./examples/test-test/... 
+        run: pnpm umi-scripts turbo build
+          --filter ./examples/max...
+          --filter ./examples/test-test/...
+          --filter ./examples/route-props/...
           --filter ./packages/umi/...
+
+      - name: e2e:example:route-props
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/route-props
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
       - name: e2e:example:max
         uses: cypress-io/github-action@v4
