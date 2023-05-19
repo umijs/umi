@@ -139,6 +139,11 @@ export default (api: IApi) => {
         antd.configProvider.theme || {},
         antd.theme,
       );
+      if (antd.configProvider.theme.algorithm) {
+        api.logger.error(
+          `When configure 'algorithm' in the configuration file, an exception occurs. Please configure 'algorithm' in the runtime configuration instead. https://github.com/umijs/umi/issues/11156`,
+        );
+      }
     }
 
     if (antd.appConfig) {
