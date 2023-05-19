@@ -114,15 +114,7 @@ export default (api: IApi) => {
     // dark mode & compact mode
     if (antd.dark || antd.compact) {
       if (isAntd5) {
-        api.logger.warn(
-          `The configurations antd.dark and antd.compact is invalid. Please use the custom theme approach provided by Ant Design version 5 for configuration during runtime - src/app.ts.`,
-        );
-        api.logger.warn(
-          `https://ant.design/docs/react/customize-theme#algorithm`,
-        );
-        api.logger.warn(
-          `\nimport { theme } from 'antd';\nconst { darkAlgorithm, compactAlgorithm } = theme;\nexport const antd = (memo) => {\n\tmemo.theme ??= {};\n\tmemo.theme.algorithm = [darkAlgorithm, compactAlgorithm];\n\treturn memo;\n};`,
-        );
+        // 在运行时修改使用这些配置
       } else {
         const { getThemeVariables } = require(`${pkgPath}/dist/theme`);
         memo.theme = {
@@ -192,7 +184,8 @@ export default (api: IApi) => {
             {
               libraryName: 'antd',
               libraryDirectory: 'es',
-              style: api.config.antd?.style === 'less' || 'css',
+              // style 的值为 true 或 css
+              style: api.config.antd?.style === 'css' ? 'css' : true,
             },
             'antd',
           ],
@@ -202,17 +195,26 @@ export default (api: IApi) => {
 
   // antd config provider & app component
   api.onGenerateFiles(() => {
-    const withConfigProvider = !!api.config.antd.configProvider;
-    const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
+    const {
+      configProvider,
+      appConfig,
+      dark = false,
+      compact = false,
+    } = api.config.antd;
+    const withAppConfig = appConfigAvailable && !!appConfig;
+    // 当 antd@5 时，dark 和 compact 通过 ConfigProvider 的 theme 实现
+    const withConfigProvider =
+      !!configProvider || (isAntd5 && (dark || compact)) || withAppConfig;
 
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
         isAntd5,
         configProvider:
-          withConfigProvider && JSON.stringify(api.config.antd.configProvider),
-        appConfig:
-          appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
+          withConfigProvider && JSON.stringify(configProvider || {}),
+        appConfig: appComponentAvailable && JSON.stringify(appConfig),
+        dark,
+        compact,
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
@@ -232,9 +234,12 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
-type AntdConfig = Prettify<{}
+export type AntdConfig = Prettify<{
+  compact?: boolean;
+  dark?: boolean;
+}
 {{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
-{{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
+{{#withAppConfig}}  & { appConfig?: AppConfig }{{/withAppConfig}}
 >;
 
 export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
@@ -255,20 +260,39 @@ export type IRuntimeConfig = {
 };
       `,
     });
+    if (isAntd5) {
+      api.writeTmpFile({
+        path: 'index.tsx',
+        content: `import React from 'react';
+import { AntdContext, AntdContextSetter } from './context';
+        
+export function useAntdConfig() {
+  return React.useContext(AntdContext);
+}
+        
+export function useAntdConfigSetter() {
+  return React.useContext(AntdContextSetter);
+}`,
+      });
+      api.writeTmpFile({
+        path: 'context.tsx',
+        content: `import React from 'react';
+import { AntdConfig } from './types.d';
+        
+export const AntdContext = React.createContext<AntdConfig>({});
+export const AntdContextSetter = React.createContext((data:AntdConfig)=>{
+  console.error('To use this feature, please enable one of the three configurations: antd.dark, antd.compact, antd.configProvider,or antd.appConfig,');
+});
+`,
+      });
+    }
   });
 
   api.addRuntimePlugin(() => {
-    if (
-      api.config.antd.configProvider ||
-      (appComponentAvailable && api.config.antd.appConfig)
-    ) {
-      return [withTmpPath({ api, path: 'runtime.tsx' })];
-    }
-    return [];
+    return [withTmpPath({ api, path: 'runtime.tsx' })];
   });
 
   api.addEntryImportsAhead(() => {
-    const style = api.config.antd.style || 'less';
     const imports: Awaited<
       ReturnType<Parameters<IApi['addEntryImportsAhead']>[0]['fn']>
     > = [];
@@ -279,7 +303,10 @@ export type IRuntimeConfig = {
     } else if (!api.config.antd.import || api.appData.vite) {
       // import antd@4 style if antd.import is not configured
       imports.push({
-        source: style === 'less' ? 'antd/dist/antd.less' : 'antd/dist/antd.css',
+        source:
+          api.config.antd?.style === 'css'
+            ? 'antd/dist/antd.css'
+            : 'antd/dist/antd.less',
       });
     }
 

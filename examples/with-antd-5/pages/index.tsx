@@ -1,8 +1,18 @@
-import { App, Button, Layout, Space, version } from 'antd';
+import { App, Button, Layout, Space, Switch, theme, version } from 'antd';
 import React, { useState } from 'react';
-import { getLocale, setLocale, useIntl } from 'umi';
+import {
+  getLocale,
+  setLocale,
+  useAntdConfig,
+  useAntdConfigSetter,
+  useIntl,
+} from 'umi';
 
+const { defaultAlgorithm } = theme;
 export default function Page() {
+  const setAntdConfig = useAntdConfigSetter();
+  const antdConfig = useAntdConfig();
+  console.log(antdConfig);
   const [isZh, setIsZh] = useState(true);
   // 若要使用 useApp hook，须先在 antd 插件中配置 appConfig
   const { message, modal } = App.useApp();
@@ -44,6 +54,28 @@ export default function Page() {
         >
           {msg}
         </Button>
+      </Space>
+      <Space>
+        isDarkTheme
+        <Switch
+          checked={antdConfig?.dark}
+          onChange={() => {
+            setAntdConfig({
+              dark: !antdConfig?.dark,
+            });
+          }}
+        ></Switch>
+      </Space>
+      <Space>
+        isCompactTheme
+        <Switch
+          checked={antdConfig?.compact}
+          onChange={() => {
+            setAntdConfig({
+              compact: !antdConfig?.compact,
+            });
+          }}
+        ></Switch>
       </Space>
     </Layout>
   );

@@ -11,7 +11,7 @@ export default {
         colorPrimary: '#1DA57A',
       },
     },
-    dark: true,
+    dark: false,
     compact: true,
     import: true,
     /**
