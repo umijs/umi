@@ -130,7 +130,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
           }
 
           html = await pluginManager.applyPlugins({
-            key: 'onSSRHtmlComplete',
+            key: 'modifySSRHtmlComplete',
             args: {
               html,
               jsx,
