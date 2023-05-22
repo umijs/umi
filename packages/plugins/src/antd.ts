@@ -23,6 +23,7 @@ export default (api: IApi) => {
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
 
+  const isV5 = antdVersion.startsWith('5');
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
@@ -50,6 +51,7 @@ export default (api: IApi) => {
               .describe('Only antd@5.1.0 is supported'),
             // DatePicker & Calendar use moment version
             momentPicker: zod.boolean().describe('Only antd@5.x is supported'),
+            styleProvider: zod.record(zod.any()),
           })
           .deepPartial();
       },
@@ -177,9 +179,7 @@ export default (api: IApi) => {
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
     // only enable style for non-antd@5
-    const style = antdVersion.startsWith('5')
-      ? false
-      : api.config.antd.style || 'less';
+    const style = isV5 ? false : api.config.antd.style || 'less';
 
     return api.config.antd.import && !api.appData.vite
       ? [
@@ -205,6 +205,11 @@ export default (api: IApi) => {
     const withConfigProvider = !!api.config.antd.configProvider;
     const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
 
+    const cssinjs = dirname(
+      require.resolve('@ant-design/cssinjs/package.json'),
+    );
+    console.log('cssinjs:', cssinjs);
+
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
@@ -212,6 +217,7 @@ export default (api: IApi) => {
           withConfigProvider && JSON.stringify(api.config.antd.configProvider),
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
+        hackStyleProvider: isV5 && !!api.config.targets.ie && cssinjs,
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
