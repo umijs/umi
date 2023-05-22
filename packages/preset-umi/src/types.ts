@@ -220,7 +220,7 @@ export type IApi = PluginAPI &
       isWatch: boolean;
       result: ESBuildBuildResult;
     }>;
-    modifySSRHtmlComplete: IEvent<{}>;
+    modifySSRHtmlOnComplete: IEvent<{}>;
     restartServer: () => void;
     writeTmpFile: (opts: {
       content?: string;

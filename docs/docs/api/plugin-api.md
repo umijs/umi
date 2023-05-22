@@ -527,12 +527,12 @@ build 完成时。传入的 fn 接收 `{ isFirstCompile: boolean, stats, time: n
 ### onBuildHtmlComplete
 build 完成且 html 完成构建之后。
 
-### modifySSRHtmlComplete
+### modifySSRHtmlOnComplete
 ssr 打开的时候，编译完 html 发生
 
 ```ts
 // eg:
-api.modifySSRHtmlComplete(({ html }) => {
+api.modifySSRHtmlOnComplete(({ html }) => {
   const newHtml = html.replace("antd","ant design");
   return newHtml
 })
