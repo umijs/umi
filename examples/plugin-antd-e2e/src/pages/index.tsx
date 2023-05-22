@@ -1,4 +1,4 @@
-import { DatePicker, version } from 'antd';
+import { Button, DatePicker, Modal, version } from 'antd';
 import moment from 'moment';
 
 const fileName = 'favicon';
@@ -18,6 +18,17 @@ export default function HomePage() {
           console.log(val);
         }}
       />
+      <Button
+        type="primary"
+        onClick={() => {
+          Modal.confirm({
+            title: 'Confirm',
+            content: 'Bla bla ...',
+          });
+        }}
+      >
+        Confirm Me
+      </Button>
     </div>
   );
 }
