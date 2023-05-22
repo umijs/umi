@@ -8,6 +8,7 @@ export default {
     theme: {
       token: {
         colorPrimary: 'green',
+        borderRadius: 2,
       },
     },
   },
