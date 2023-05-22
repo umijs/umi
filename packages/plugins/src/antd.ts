@@ -208,7 +208,6 @@ export default (api: IApi) => {
     const cssinjs = dirname(
       require.resolve('@ant-design/cssinjs/package.json'),
     );
-    console.log('cssinjs:', cssinjs);
 
     api.writeTmpFile({
       path: `runtime.tsx`,
