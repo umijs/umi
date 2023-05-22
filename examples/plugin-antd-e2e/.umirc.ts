@@ -5,6 +5,12 @@ export default {
   plugins: [join(__dirname, '../../packages/plugins/src/antd')],
   antd: {
     momentPicker: true,
+    theme: {
+      token: {
+        colorPrimary: 'green',
+        borderRadius: 2,
+      },
+    },
   },
   mfsu: false,
 };

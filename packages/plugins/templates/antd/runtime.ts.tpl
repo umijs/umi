@@ -58,6 +58,14 @@ export function rootContainer(rawContainer) {
       iconPrefixCls: finalConfigProvider.iconPrefixCls,
     });
   };
+
+  if (finalConfigProvider.theme) {
+    // Pass config theme to static method
+    ConfigProvider.config({
+      theme: finalConfigProvider.theme,
+    });
+  }
+
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
 
