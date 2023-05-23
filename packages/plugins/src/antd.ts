@@ -204,11 +204,33 @@ export default (api: IApi) => {
   api.onGenerateFiles(() => {
     const withConfigProvider = !!api.config.antd.configProvider;
     const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
+    const styleProvider = api.config.antd.styleProvider;
 
+    // Hack StyleProvider
     const cssinjs = dirname(
       require.resolve('@ant-design/cssinjs/package.json'),
     );
+    const ieTarget = !!api.config.targets.ie;
 
+    let styleProviderConfig: false | any = false;
+
+    if (isV5 && cssinjs && (ieTarget || styleProvider)) {
+      styleProviderConfig = {
+        cssinjs,
+      };
+
+      if (ieTarget) {
+        styleProviderConfig.hashPriority = 'high';
+        styleProviderConfig.legacyTransformer = true;
+      }
+
+      styleProviderConfig = {
+        ...styleProviderConfig,
+        ...styleProvider,
+      };
+    }
+
+    // Template
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
@@ -216,7 +238,7 @@ export default (api: IApi) => {
           withConfigProvider && JSON.stringify(api.config.antd.configProvider),
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
-        hackStyleProvider: isV5 && !!api.config.targets.ie && cssinjs,
+        styleProvider: styleProviderConfig,
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });

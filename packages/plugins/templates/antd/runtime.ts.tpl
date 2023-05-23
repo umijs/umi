@@ -11,12 +11,14 @@ import {
   notification,
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
-{{#hackStyleProvider}}
+{{#styleProvider}}
 import {
   StyleProvider,
+  {{#styleProvider.legacyTransformer}}
   legacyLogicalPropertiesTransformer
-} from '{{{hackStyleProvider}}}';
-{{/hackStyleProvider}}
+  {{/styleProvider.legacyTransformer}}
+} from '{{{styleProvider.cssinjs}}}';
+{{/styleProvider}}
 import { getPluginManager } from '../core/plugin';
 
 let cacheAntdConfig = null;
@@ -75,16 +77,20 @@ export function rootContainer(rawContainer) {
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
 
-{{#hackStyleProvider}}
+{{#styleProvider}}
   container = (
     <StyleProvider
+      {{#styleProvider.hashPriority}}
       hashPriority="high"
+      {{/styleProvider.hashPriority}}
+      {{#styleProvider.legacyTransformer}}
       transformers={[legacyLogicalPropertiesTransformer]}
+      {{/styleProvider.legacyTransformer}}
     >
       {container}
     </StyleProvider>
   );
-{{/hackStyleProvider}}
+{{/styleProvider}}
 
   return container;
 }
