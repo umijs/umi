@@ -13,4 +13,8 @@ export default {
     },
   },
   mfsu: false,
+  targets: {
+    ie: 11,
+  },
+  legacy: {},
 };
