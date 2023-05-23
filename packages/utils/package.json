@@ -43,6 +43,7 @@
     "@types/signale": "1.4.1",
     "@types/yargs": "15.0.12",
     "@types/yargs-parser": "15.0.0",
+    "@umijs/babel-preset-umi": "3.3.14",
     "address": "1.1.2",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
