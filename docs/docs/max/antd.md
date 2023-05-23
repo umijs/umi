@@ -125,7 +125,7 @@ export default {
 
 - Type: `object`
 
-配置 `antd` 的 `StyleProvider` 组件，该组件用于兼容低版本浏览器，如 IE11。
+配置 `antd` 的 `StyleProvider` 组件，该组件用于兼容低版本浏览器，如 IE11。当你的项目配置了 `legacy` 或者 `targets` 包含 `ie` 时，会自动进行降级处理，不需要手动配置。
 
 **注意：该配置项仅 antd v5 及以上可用**
 
