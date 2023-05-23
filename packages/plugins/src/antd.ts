@@ -207,10 +207,14 @@ export default (api: IApi) => {
     const styleProvider = api.config.antd.styleProvider;
 
     // Hack StyleProvider
-    const cssinjs = dirname(
-      require.resolve('@ant-design/cssinjs/package.json'),
-    );
-    const ieTarget = !!api.config.targets.ie;
+    const cssinjs =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: '@ant-design/cssinjs',
+      }) || dirname(require.resolve('@ant-design/cssinjs/package.json'));
+
+    const ieTarget = !!api.config.targets.ie || !!api.config.legacy;
 
     let styleProviderConfig: false | any = false;
 
