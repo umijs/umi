@@ -30,4 +30,11 @@ describe('Basic Test', () => {
       '2px',
     );
   });
+
+  it('ie11 legacy is working', () => {
+    cy.visit('/');
+
+    cy.get('.ant-tag').should('have.css', 'margin-right', '8px');
+    cy.get('.ant-tag').should('have.css', 'margin-left', '33px');
+  });
 });
