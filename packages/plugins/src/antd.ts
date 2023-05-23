@@ -207,31 +207,34 @@ export default (api: IApi) => {
     const styleProvider = api.config.antd.styleProvider;
 
     // Hack StyleProvider
-    const cssinjs =
-      resolveProjectDep({
-        pkg: api.pkg,
-        cwd: api.cwd,
-        dep: '@ant-design/cssinjs',
-      }) || dirname(require.resolve('@ant-design/cssinjs/package.json'));
 
     const ieTarget = !!api.config.targets.ie || !!api.config.legacy;
 
-    let styleProviderConfig: false | any = false;
+    let styleProviderConfig: any = false;
 
-    if (isV5 && cssinjs && (ieTarget || styleProvider)) {
-      styleProviderConfig = {
-        cssinjs,
-      };
+    if (isV5 && (ieTarget || styleProvider)) {
+      const cssinjs =
+        resolveProjectDep({
+          pkg: api.pkg,
+          cwd: api.cwd,
+          dep: '@ant-design/cssinjs',
+        }) || dirname(require.resolve('@ant-design/cssinjs/package.json'));
 
-      if (ieTarget) {
-        styleProviderConfig.hashPriority = 'high';
-        styleProviderConfig.legacyTransformer = true;
+      if (cssinjs) {
+        styleProviderConfig = {
+          cssinjs,
+        };
+
+        if (ieTarget) {
+          styleProviderConfig.hashPriority = 'high';
+          styleProviderConfig.legacyTransformer = true;
+        }
+
+        styleProviderConfig = {
+          ...styleProviderConfig,
+          ...styleProvider,
+        };
       }
-
-      styleProviderConfig = {
-        ...styleProviderConfig,
-        ...styleProvider,
-      };
     }
 
     // Template
