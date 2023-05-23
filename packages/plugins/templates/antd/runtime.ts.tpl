@@ -81,7 +81,7 @@ export function rootContainer(rawContainer) {
   container = (
     <StyleProvider
       {{#styleProvider.hashPriority}}
-      hashPriority="high"
+      hashPriority="{{{styleProviderConfig.hashPriority}}}"
       {{/styleProvider.hashPriority}}
       {{#styleProvider.legacyTransformer}}
       transformers={[legacyLogicalPropertiesTransformer]}
