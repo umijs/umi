@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "3.3.14",
+  "version": "3.3.15",
   "description": "@umijs/utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -43,7 +43,7 @@
     "@types/signale": "1.4.1",
     "@types/yargs": "15.0.12",
     "@types/yargs-parser": "15.0.0",
-    "@umijs/babel-preset-umi": "3.3.14",
+    "@umijs/babel-preset-umi": "3.3.15",
     "address": "1.1.2",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
