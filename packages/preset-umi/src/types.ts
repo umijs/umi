@@ -145,6 +145,12 @@ export type IApi = PluginAPI &
     >;
     modifyHTML: IModify<CheerioAPI, { path: string }>;
     modifyHTMLFavicon: IModify<string[], {}>;
+    modifyHTMLOnComplete: IModify<
+      string,
+      {
+        path: string;
+      }
+    >;
     modifyRendererPath: IModify<string, {}>;
     modifyRoutes: IModify<Record<string, IRoute>, {}>;
     modifyServerRendererPath: IModify<string, {}>;
@@ -220,7 +226,6 @@ export type IApi = PluginAPI &
       isWatch: boolean;
       result: ESBuildBuildResult;
     }>;
-    modifySSRHtmlOnComplete: IEvent<{}>;
     restartServer: () => void;
     writeTmpFile: (opts: {
       content?: string;

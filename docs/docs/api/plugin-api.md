@@ -426,6 +426,19 @@ api.modifyHTML(($, { path }) => {
   return $;
 })
 ```
+### modifyHTMLOnComplete
+编译完 html 发生, 在返回 html 的最后一步。与 modifyHTML 相比，modifyHTMLOnComplete 发生事件更加靠后，在各类插件处理完 html 之后才会返回。
+
+```ts
+// eg:
+api.modifyHTMLOnComplete((html, { path }) => {
+  if (path.indexOf("index.html") === -1) {
+    return html;
+  }
+  const newHtml = html.replace("antd", "ant design");
+  return newHtml;
+});
+```
 
 ### modifyHTMLFavicon
 修改 HTML 的 favicon 路径。 传入的 fn 接收原本的 favicon 路径(string 类型)并且返回它。 
@@ -527,16 +540,6 @@ build 完成时。传入的 fn 接收 `{ isFirstCompile: boolean, stats, time: n
 ### onBuildHtmlComplete
 build 完成且 html 完成构建之后。
 
-### modifySSRHtmlOnComplete
-ssr 打开的时候，编译完 html 发生
-
-```ts
-// eg:
-api.modifySSRHtmlOnComplete(({ html }) => {
-  const newHtml = html.replace("antd","ant design");
-  return newHtml
-})
-```
 
 ### onCheck
 检查时，在 onStart 之前执行。传入的 fn 不接收任何参数

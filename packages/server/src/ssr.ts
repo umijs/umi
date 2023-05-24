@@ -3,7 +3,6 @@ import { renderToPipeableStream } from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type { IRoutesById } from './types';
-
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
 }
@@ -90,12 +89,6 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
 
 export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
-  const { PluginManager, getPlugins, getValidKeys } = opts;
-
-  const pluginManager = PluginManager.create({
-    plugins: getPlugins(),
-    validKeys: getValidKeys(),
-  });
 
   return async (url: string) => {
     const jsx = await jsxGeneratorDeferrer(url);
@@ -128,14 +121,6 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
                 .join('\n'),
             );
           }
-
-          html = await pluginManager.applyPlugins({
-            key: 'modifySSRHtmlOnComplete',
-            args: {
-              html,
-              jsx,
-            },
-          });
 
           resolve(html);
         });

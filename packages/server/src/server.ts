@@ -28,6 +28,10 @@ export interface IOpts {
   esmScript?: boolean;
   modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
   historyType?: 'hash' | 'browser';
+  modifyHTMLOnComplete?: (
+    html: string,
+    args: { path?: string },
+  ) => Promise<string>;
 }
 
 export async function getMarkup(
@@ -157,6 +161,11 @@ export async function getMarkup(
     .join('\n');
   if (opts.modifyHTML) {
     markup = await opts.modifyHTML(markup, { path: opts.path });
+  }
+
+  // 在 modifyHTML 之后执行，生成最后的html来进行修改
+  if (opts.modifyHTMLOnComplete) {
+    markup = await opts.modifyHTMLOnComplete(markup, { path: opts.path });
   }
   return markup;
 }
