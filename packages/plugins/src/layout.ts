@@ -270,7 +270,17 @@ const { formatMessage } = useIntl();
         }
         return defaultDom;
       }}
-      itemRender={(route) => <Link to={route.path}>{route.breadcrumbName}</Link>}
+      itemRender={(route, _, routes) => {
+        const { breadcrumbName, title, path } = route;
+        const label = title || breadcrumbName
+        const last = routes[routes.length - 1]
+        if (last) {
+          if (last.path === path || last.linkPath === path) {
+            return <span>{label}</span>;
+          }
+        }
+        return <Link to={path}>{label}</Link>;
+      }}
       disableContentMargin
       fixSiderbar
       fixedHeader
