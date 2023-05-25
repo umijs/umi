@@ -277,13 +277,7 @@ TODO
 
 ### location 中的 query 找不到？
 
-location 中的 query 不再支持了，后续推荐用 [search](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
-
-```diff
-- const { query } = history.location;
-+ import { parse } from 'query-string';
-+ const query = parse(history.location.search);
-```
+location 中的 query 不再支持了，请查阅 [query 信息](https://umijs.org/docs/guides/routes#query-%E4%BF%A1%E6%81%AF)
 
 ### \*.d 文件找不到，或者它的引用找不到
 
