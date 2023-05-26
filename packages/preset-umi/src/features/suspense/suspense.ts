@@ -14,23 +14,25 @@ export default (api: IApi) => {
     },
   });
 
-  api.writeTmpFile({
-    noPluginDir: true,
-    path: 'core/suspense.ts',
-    content: `
-import React, { Suspense } from 'react';
+  api.onGenerateFiles(() => {
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'core/suspense.ts',
+      content: `
+  import React, { Suspense } from 'react';
 
-const LoadingOnlySuspense: typeof Suspense = (props) => {
-  // TODO: implement
-  return props.children;
-}
+  const LoadingOnlySuspense: typeof Suspense = (props) => {
+    // TODO: implement
+    return props.children;
+  }
 
-export function modifyClientRenderOpts(memo: any) {
-  memo.suspenseComponent = LoadingOnlySuspense;
+  export function modifyClientRenderOpts(memo: any) {
+    memo.suspenseComponent = LoadingOnlySuspense;
 
-  return memo;
-}
-    `,
+    return memo;
+  }
+      `,
+    });
   });
 
   api.addRuntimePlugin(() => ['@@/core/suspense.ts']);
