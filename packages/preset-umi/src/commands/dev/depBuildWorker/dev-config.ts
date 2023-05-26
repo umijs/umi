@@ -54,7 +54,7 @@ export default (api: IApi) => {
         },
       });
       const opts: any = {
-        config: api.config,
+        config: { ...api.config, forkTSChecker: false },
         pkg: api.pkg,
         cwd: api.cwd,
         rootDir: process.cwd(),
