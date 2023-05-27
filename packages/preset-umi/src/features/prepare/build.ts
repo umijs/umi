@@ -1,5 +1,9 @@
 import { esbuildWatchRebuildPlugin } from '@umijs/bundler-utils';
-import esbuild, { BuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
+import esbuild, {
+  BuildContext,
+  BuildOptions,
+  BuildResult,
+} from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import path from 'path';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
@@ -15,7 +19,7 @@ export async function build(opts: {
   config: { alias?: any; cwd: string };
   plugins?: esbuild.Plugin[];
   write?: boolean;
-}) {
+}): Promise<[BuildResult | void, BuildContext | undefined]> {
   const outdir = path.join(path.dirname(opts.entryPoints[0]), 'out');
   const alias = opts.config?.alias || {};
   const buildOptions: BuildOptions = {
@@ -65,8 +69,8 @@ export async function build(opts: {
   };
   if (opts.watch) {
     const ctx = await esbuild.context(buildOptions);
-    return await ctx.watch();
+    return [await ctx.watch(), ctx];
   } else {
-    return await esbuild.build(buildOptions);
+    return [await esbuild.build(buildOptions), undefined];
   }
 }

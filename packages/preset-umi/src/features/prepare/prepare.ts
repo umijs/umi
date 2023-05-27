@@ -87,7 +87,7 @@ export default (api: IApi) => {
         });
       }
 
-      const buildResult = await build({
+      const [buildResult, ctx] = await build({
         entryPoints,
         watch: watch && {
           async onRebuildSuccess({ result }) {
@@ -113,8 +113,11 @@ export default (api: IApi) => {
 
       if (watch) {
         addUnWatch(() => {
-          buildResult.stop?.();
+          ctx?.dispose();
         });
+      }
+      if (!buildResult) {
+        return;
       }
       const fileImports = await parseProjectImportSpecifiers(buildResult);
       updateAppdata({ buildResult, fileImports });
