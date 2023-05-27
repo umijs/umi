@@ -1,4 +1,5 @@
-import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import { esbuildWatchRebuildPlugin } from '@umijs/bundler-utils';
+import esbuild, { BuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import path from 'path';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
@@ -17,7 +18,7 @@ export async function build(opts: {
 }) {
   const outdir = path.join(path.dirname(opts.entryPoints[0]), 'out');
   const alias = opts.config?.alias || {};
-  return await esbuild.build({
+  const buildOptions: BuildOptions = {
     // 需要指定 absWorkingDir 兼容 APP_ROOT 的情况
     absWorkingDir: opts.config.cwd,
     format: 'esm',
@@ -30,17 +31,6 @@ export async function build(opts: {
       '.jsx': 'tsx',
       '.ts': 'ts',
       '.tsx': 'tsx',
-    },
-    watch: !!opts.watch && {
-      onRebuild(err, result) {
-        if (err) {
-          logger.error(`[icons] build failed: ${err}`);
-        } else {
-          if (opts.watch) {
-            opts.watch.onRebuildSuccess({ result: result! });
-          }
-        }
-      },
     },
     // do I need this?
     // incremental: true,
@@ -59,7 +49,24 @@ export async function build(opts: {
       // if we resolve externals first, we will get { external: true }
       esbuildExternalPlugin({ alias }),
       esbuildAliasPlugin({ alias }),
+      esbuildWatchRebuildPlugin({
+        onRebuild(err, result) {
+          if (err) {
+            logger.error(`[icons] build failed: ${err}`);
+          } else {
+            if (opts.watch) {
+              opts.watch.onRebuildSuccess({ result: result! });
+            }
+          }
+        },
+      }),
       ...(opts.plugins || []),
     ],
-  });
+  };
+  if (opts.watch) {
+    const ctx = await esbuild.context(buildOptions);
+    return await ctx.watch();
+  } else {
+    return await esbuild.build(buildOptions);
+  }
 }
