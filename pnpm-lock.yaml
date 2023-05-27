@@ -2341,6 +2341,9 @@ importers:
       '@umijs/babel-preset-umi':
         specifier: workspace:*
         version: link:../babel-preset-umi
+      '@umijs/bundler-esbuild':
+        specifier: workspace:*
+        version: link:../bundler-esbuild
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils

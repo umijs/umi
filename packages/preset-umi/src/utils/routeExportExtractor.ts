@@ -1,6 +1,6 @@
 import esbuild, { BuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import { join, resolve } from 'path';
-import type { IApi } from 'umi';
+import type { IApi } from '../types';
 
 interface IRouteExportExtractor {
   api: IApi;
@@ -31,14 +31,13 @@ export function setupRouteExportExtractor(
     });
   });
 
-  api.onBeforeCompiler(
-    async () =>
-      await setupExportExtractBuilder({
-        api,
-        entryFile,
-        outFile,
-      }),
-  );
+  api.onBeforeCompiler(async () => {
+    await setupExportExtractBuilder({
+      api,
+      entryFile,
+      outFile,
+    });
+  });
 }
 
 function generateRouteExportTmpFile(opts: IRouteExportExtractorGenTmpFileOpts) {
@@ -109,9 +108,9 @@ async function setupExportExtractBuilder(
   };
   if (api.env === 'development') {
     const ctx = await esbuild.context(buildOptions);
-    return await ctx.watch();
+    await ctx.watch();
   } else {
-    return await esbuild.build(buildOptions);
+    await esbuild.build(buildOptions);
   }
 }
 

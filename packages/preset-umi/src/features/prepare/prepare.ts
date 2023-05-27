@@ -119,6 +119,7 @@ export default (api: IApi) => {
       if (!buildResult) {
         return;
       }
+
       const fileImports = await parseProjectImportSpecifiers(buildResult);
       updateAppdata({ buildResult, fileImports });
       await api.applyPlugins({

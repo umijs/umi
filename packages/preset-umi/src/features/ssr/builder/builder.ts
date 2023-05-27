@@ -1,4 +1,4 @@
-import { esbuildWatchRebuildPlugin } from '@umijs/bundler-utils';
+import { esbuildWatchRebuildPlugin } from '@umijs/bundler-esbuild/dist/plugins/watchRebuild';
 import esbuild, { BuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import { aliasUtils, isMonorepo, logger } from '@umijs/utils';
 import { resolve } from 'path';

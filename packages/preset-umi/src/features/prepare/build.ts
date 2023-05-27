@@ -1,4 +1,4 @@
-import { esbuildWatchRebuildPlugin } from '@umijs/bundler-utils';
+import { esbuildWatchRebuildPlugin } from '@umijs/bundler-esbuild/dist/plugins/watchRebuild';
 import esbuild, {
   BuildContext,
   BuildOptions,
@@ -69,8 +69,10 @@ export async function build(opts: {
   };
   if (opts.watch) {
     const ctx = await esbuild.context(buildOptions);
-    return [await ctx.watch(), ctx];
+    await ctx.watch();
+    return [undefined, ctx];
   } else {
-    return [await esbuild.build(buildOptions), undefined];
+    const result = await esbuild.build(buildOptions);
+    return [result, undefined];
   }
 }

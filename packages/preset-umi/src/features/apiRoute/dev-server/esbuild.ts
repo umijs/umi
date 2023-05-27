@@ -1,4 +1,4 @@
-import { esbuildWatchRebuildPlugin } from '@umijs/bundler-utils';
+import { esbuildWatchRebuildPlugin } from '@umijs/bundler-esbuild/dist/plugins/watchRebuild';
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import { join, resolve } from 'path';
