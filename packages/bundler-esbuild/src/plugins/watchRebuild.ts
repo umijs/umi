@@ -5,7 +5,7 @@ import type {
   Plugin,
 } from '@umijs/bundler-utils/compiled/esbuild';
 
-//fork from esbuild https://github.com/evanw/esbuild/blob/main/lib/shared/common.ts#L1640
+// Fork from esbuild https://github.com/evanw/esbuild/blob/main/lib/shared/common.ts#L1640
 function failureErrorWithLog(
   text: string,
   errors: Message[],
@@ -32,24 +32,26 @@ function failureErrorWithLog(
   return error;
 }
 
-export default (options: {
+export function esbuildWatchRebuildPlugin(options: {
   onRebuild: (error: BuildFailure | null, result: BuildResult | null) => void;
-}): Plugin => ({
-  name: 'watch-rebuild-plugin',
-  setup(build) {
-    let count = 0;
-    build.onEnd((result) => {
-      if (count++ === 0) {
-        return;
-      }
-      if (result.errors.length > 0) {
-        options.onRebuild(
-          failureErrorWithLog('Build failed', result.errors, result.warnings),
-          null,
-        );
-        return;
-      }
-      options.onRebuild(null, result);
-    });
-  },
-});
+}): Plugin {
+  return {
+    name: 'watch-rebuild-plugin',
+    setup(build) {
+      let count = 0;
+      build.onEnd((result) => {
+        if (count++ === 0) {
+          return;
+        }
+        if (result.errors.length > 0) {
+          options.onRebuild(
+            failureErrorWithLog('Build failed', result.errors, result.warnings),
+            null,
+          );
+          return;
+        }
+        options.onRebuild(null, result);
+      });
+    },
+  };
+}

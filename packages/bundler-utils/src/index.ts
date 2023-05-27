@@ -45,7 +45,6 @@ export function isDepPath(path: string) {
   );
 }
 
-export * from './esbuild-plugins';
 export * from './https';
 export * from './proxy';
 export * from './types';
