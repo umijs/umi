@@ -108,6 +108,7 @@ async function setupExportExtractBuilder(
   };
   if (api.env === 'development') {
     const ctx = await esbuild.context(buildOptions);
+    await ctx.rebuild();
     await ctx.watch();
   } else {
     await esbuild.build(buildOptions);

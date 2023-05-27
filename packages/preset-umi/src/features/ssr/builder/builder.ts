@@ -59,6 +59,7 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
   };
   if (watch) {
     const ctx = await esbuild.context(buildOptions);
+    await ctx.rebuild();
     await ctx.watch();
   } else {
     await esbuild.build(buildOptions);
