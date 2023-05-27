@@ -116,9 +116,6 @@ export default (api: IApi) => {
           ctx?.dispose();
         });
       }
-      if (!buildResult) {
-        return;
-      }
 
       const fileImports = await parseProjectImportSpecifiers(buildResult);
       updateAppdata({ buildResult, fileImports });

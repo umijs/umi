@@ -10,7 +10,7 @@ test('build', async () => {
       cwd: path.join(fixtures, 'normal'),
     },
   });
-  const text = res?.outputFiles![0].text;
+  const text = res.outputFiles![0].text;
   expect(text).toContain(`import "foo"`);
   expect(text).toContain(`import "foo/bar"`);
   expect(text).toContain(`import "foo/bar.ts"`);

@@ -19,7 +19,7 @@ export async function build(opts: {
   config: { alias?: any; cwd: string };
   plugins?: esbuild.Plugin[];
   write?: boolean;
-}): Promise<[BuildResult | void, BuildContext | undefined]> {
+}): Promise<[BuildResult, BuildContext | undefined]> {
   const outdir = path.join(path.dirname(opts.entryPoints[0]), 'out');
   const alias = opts.config?.alias || {};
   const buildOptions: BuildOptions = {
@@ -69,8 +69,9 @@ export async function build(opts: {
   };
   if (opts.watch) {
     const ctx = await esbuild.context(buildOptions);
+    const result = await ctx.rebuild();
     await ctx.watch();
-    return [undefined, ctx];
+    return [result, ctx];
   } else {
     const result = await esbuild.build(buildOptions);
     return [result, undefined];
