@@ -14,7 +14,7 @@ interface IOpts {
 export async function addDependenceCssModulesDetector(opts: IOpts) {
   const { config, cwd, userConfig } = opts;
 
-  if (!userConfig.dependenciesCssModuleCheck) return;
+  if (!userConfig.checkDepCssModules) return;
 
   const matchers = opts.extraBabelIncludes.map(function (p): RegExp {
     if (lodash.isRegExp(p)) {
