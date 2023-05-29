@@ -17,7 +17,7 @@ import { addCompressPlugin } from './compressPlugin';
 import { addCopyPlugin } from './copyPlugin';
 import { addCSSRules } from './cssRules';
 import { addDefinePlugin } from './definePlugin';
-import { addLessDetectInDeps } from './detectCssModuleInDep';
+import { addDependenceCssModulesDetector } from './detectCssModulesInDependence';
 import { addDetectDeadCodePlugin } from './detectDeadCodePlugin';
 import { addFastRefreshPlugin } from './fastRefreshPlugin';
 import { addForkTSCheckerPlugin } from './forkTSCheckerPlugin';
@@ -136,23 +136,23 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   config.resolve
     .set('symlinks', true)
     .modules
-      .add('node_modules')
-      .end()
+    .add('node_modules')
+    .end()
     .alias
-      .merge(userConfig.alias || {})
-      .end()
+    .merge(userConfig.alias || {})
+    .end()
     .extensions
-      .merge([
-        '.ts',
-        '.tsx',
-        '.js',
-        '.jsx',
-        '.mjs',
-        '.cjs',
-        '.json',
-        '.wasm'
-      ])
-      .end();
+    .merge([
+      '.ts',
+      '.tsx',
+      '.js',
+      '.jsx',
+      '.mjs',
+      '.cjs',
+      '.json',
+      '.wasm'
+    ])
+    .end();
 
   // externals
   config.externals(userConfig.externals || []);
@@ -212,7 +212,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // disable for performance
   // await addNodePrefixPlugin(applyOpts);
   // prevent runtime error due to css module in node modules.
-  await addLessDetectInDeps(applyOpts);
+  await addDependenceCssModulesDetector(applyOpts);
   // runtimePublicPath
   if (userConfig.runtimePublicPath) {
     config.plugin('runtimePublicPath').use(RuntimePublicPathPlugin);

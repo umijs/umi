@@ -11,7 +11,7 @@ interface IOpts {
   extraBabelIncludes: Array<string | RegExp>;
 }
 
-export async function addLessDetectInDeps(opts: IOpts) {
+export async function addDependenceCssModulesDetector(opts: IOpts) {
   const { config, cwd, userConfig } = opts;
 
   if (!userConfig.dependenciesCssModuleCheck) return;
@@ -53,12 +53,12 @@ export async function addLessDetectInDeps(opts: IOpts) {
   });
 
   config
-    .plugin('dep-css-module-detector')
+    .plugin('dep-css-modules-detector')
     .use(DetectCSsModulePlugin, [matchers]);
 }
 
 class DetectCSsModulePlugin {
-  static PLUGIN_NAME = 'depCssModuleDetector';
+  static PLUGIN_NAME = 'depCssModulesDetector';
   static ERROR_NAME = 'USE CSS-MODULES IN NODE_MODULES';
 
   constructor(readonly skipMatcher: Array<RegExp> = []) {}
