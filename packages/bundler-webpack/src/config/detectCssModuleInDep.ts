@@ -52,11 +52,13 @@ export async function addLessDetectInDeps(opts: IOpts) {
     }
   });
 
-  config.plugin('less-detector').use(DetectCSsModulePlugin, [matchers]);
+  config
+    .plugin('dep-css-module-detector')
+    .use(DetectCSsModulePlugin, [matchers]);
 }
 
 class DetectCSsModulePlugin {
-  static PLUGIN_NAME = 'lessDetector';
+  static PLUGIN_NAME = 'depCssModuleDetector';
   static ERROR_NAME = 'USE CSS-MODULES IN NODE_MODULES';
 
   constructor(readonly skipMatcher: Array<RegExp> = []) {}
