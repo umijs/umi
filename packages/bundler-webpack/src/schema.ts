@@ -70,6 +70,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         })
         .deepPartial(),
     define: ({ zod }) => zod.record(zod.string(), zod.any()),
+    dependenciesCssModuleCheck: ({ zod }) => zod.boolean().default(false),
     depTranspiler: ({ zod }) =>
       zod.enum([
         Transpiler.babel,

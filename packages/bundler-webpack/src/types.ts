@@ -104,6 +104,7 @@ export interface IConfig {
   babelLoaderCustomize?: string;
   analyze?: BundleAnalyzerPlugin.Options;
   esbuildMinifyIIFE?: boolean;
+  dependenciesCssModuleCheck?: boolean;
   [key: string]: any;
 }
 
