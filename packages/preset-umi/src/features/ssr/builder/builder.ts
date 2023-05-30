@@ -1,4 +1,5 @@
-import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import { esbuildWatchRebuildPlugin } from '@umijs/bundler-esbuild/dist/plugins/watchRebuild';
+import esbuild, { BuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import { aliasUtils, isMonorepo, logger } from '@umijs/utils';
 import { resolve } from 'path';
 import { IApi } from '../../../types';
@@ -27,7 +28,7 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
   // currently esbuild not support circle alias
   const alias = aliasUtils.parseCircleAlias({ alias: api.config.alias });
 
-  await esbuild.build({
+  const buildOptions: BuildOptions = {
     alias,
     format: 'cjs',
     platform: 'node',
@@ -35,17 +36,6 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
     bundle: true,
     logLevel: 'silent',
     inject: [resolve(api.paths.absTmpPath, 'ssr/react-shim.js')],
-    watch: watch
-      ? {
-          onRebuild(err) {
-            logger.event('[SSR] Rebuilt');
-            delete require.cache[absServerBuildPath(api)];
-            if (err) {
-              logger.error(err);
-            }
-          },
-        }
-      : false,
     loader,
     entryPoints: [resolve(api.paths.absTmpPath, 'umi.server.ts')],
     plugins: [
@@ -54,10 +44,26 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
       cssLoader({ cwd: api.cwd }),
       svgLoader({ cwd: api.cwd }),
       assetsLoader({ cwd: api.cwd }),
+      esbuildWatchRebuildPlugin({
+        onRebuild(err) {
+          logger.event('[SSR] Rebuilt');
+          delete require.cache[absServerBuildPath(api)];
+          if (err) {
+            logger.error(err);
+          }
+        },
+      }),
     ],
     outfile: absServerBuildPath(api),
     external: getExternal(),
-  });
+  };
+  if (watch) {
+    const ctx = await esbuild.context(buildOptions);
+    await ctx.rebuild();
+    await ctx.watch();
+  } else {
+    await esbuild.build(buildOptions);
+  }
   const diff = new Date().getTime() - now;
   logger.info(`[SSR] Compiled in ${diff}ms`);
 }

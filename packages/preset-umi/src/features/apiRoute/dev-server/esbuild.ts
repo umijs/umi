@@ -1,3 +1,4 @@
+import { esbuildWatchRebuildPlugin } from '@umijs/bundler-esbuild/dist/plugins/watchRebuild';
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import { join, resolve } from 'path';
@@ -11,7 +12,7 @@ export default async function (api: IApi, apiRoutes: IRoute[]) {
     join(api.paths.absTmpPath, 'api', r.file),
   );
 
-  await esbuild.build({
+  const ctx = await esbuild.context({
     format: 'cjs',
     platform: 'node',
     bundle: true,
@@ -20,17 +21,19 @@ export default async function (api: IApi, apiRoutes: IRoute[]) {
       resolve(api.paths.absTmpPath, 'api/_middlewares.ts'),
     ],
     outdir: resolve(api.paths.cwd, OUTPUT_PATH),
-    plugins: [esbuildIgnorePathPrefixPlugin()],
-    watch: {
-      onRebuild(error) {
-        if (error) logger.error('Compile api routes failed: ', error);
-
-        // Reload API route modules
-        Object.keys(require.cache).forEach((modulePath) => {
-          if (modulePath.startsWith(join(api.paths.cwd, OUTPUT_PATH)))
-            delete require.cache[modulePath];
-        });
-      },
-    },
+    plugins: [
+      esbuildIgnorePathPrefixPlugin(),
+      esbuildWatchRebuildPlugin({
+        onRebuild(error) {
+          if (error) logger.error('Compile api routes failed: ', error);
+          // Reload API route modules
+          Object.keys(require.cache).forEach((modulePath) => {
+            if (modulePath.startsWith(join(api.paths.cwd, OUTPUT_PATH)))
+              delete require.cache[modulePath];
+          });
+        },
+      }),
+    ],
   });
+  await ctx.watch();
 }
