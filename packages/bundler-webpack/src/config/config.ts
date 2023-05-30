@@ -17,6 +17,7 @@ import { addCompressPlugin } from './compressPlugin';
 import { addCopyPlugin } from './copyPlugin';
 import { addCSSRules } from './cssRules';
 import { addDefinePlugin } from './definePlugin';
+import { addDependenceCssModulesDetector } from './detectCssModulesInDependence';
 import { addDetectDeadCodePlugin } from './detectDeadCodePlugin';
 import { addFastRefreshPlugin } from './fastRefreshPlugin';
 import { addForkTSCheckerPlugin } from './forkTSCheckerPlugin';
@@ -210,6 +211,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // remove node: prefix
   // disable for performance
   // await addNodePrefixPlugin(applyOpts);
+  // prevent runtime error due to css module in node modules.
+  await addDependenceCssModulesDetector(applyOpts);
   // runtimePublicPath
   if (userConfig.runtimePublicPath) {
     config.plugin('runtimePublicPath').use(RuntimePublicPathPlugin);

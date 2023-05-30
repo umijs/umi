@@ -38,6 +38,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
     babelLoaderCustomize: ({ zod }) => zod.string(),
     cacheDirectoryPath: ({ zod }) => zod.string(),
     chainWebpack: ({ zod }) => zod.function(),
+    checkDepCssModules: ({ zod }) => zod.boolean().default(false),
     copy: ({ zod }) =>
       zod.array(
         zod.union([
