@@ -42,7 +42,7 @@ export default (api: IApi) => {
     // tsconfig.json
     const frameworkName = api.service.frameworkName;
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
-    const umiTempDir = `${srcPrefix}.${frameworkName}`;
+    const umiTempDir = `${srcPrefix}${basename(api.paths.absTmpPath)}`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
     const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
     const isTslibInstalled = !!api.appData.typescript.tslibVersion;
