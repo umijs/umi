@@ -1,0 +1,24 @@
+.using-normal {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+
+.using-normal ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.using-normal li {
+}
+
+:global(.dark) .using-normal li {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.using-normal li img {
+  width: 224px;
+  height: 73px;
+}
