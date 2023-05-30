@@ -1,6 +1,6 @@
-import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import esbuild, { BuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import { join, resolve } from 'path';
-import type { IApi } from 'umi';
+import type { IApi } from '../types';
 
 interface IRouteExportExtractor {
   api: IApi;
@@ -31,14 +31,13 @@ export function setupRouteExportExtractor(
     });
   });
 
-  api.onBeforeCompiler(
-    async () =>
-      await setupExportExtractBuilder({
-        api,
-        entryFile,
-        outFile,
-      }),
-  );
+  api.onBeforeCompiler(async () => {
+    await setupExportExtractBuilder({
+      api,
+      entryFile,
+      outFile,
+    });
+  });
 }
 
 function generateRouteExportTmpFile(opts: IRouteExportExtractorGenTmpFileOpts) {
@@ -74,12 +73,11 @@ async function setupExportExtractBuilder(
   opts: IRouteExportExtractorSetupBuilderOpts,
 ) {
   const { api, entryFile, outFile } = opts;
-  await esbuild.build({
+  const buildOptions: BuildOptions = {
     format: 'esm',
     platform: 'browser',
     target: 'esnext',
     loader,
-    watch: api.env === 'development' && {},
     bundle: true,
     logLevel: 'error',
     entryPoints: [join(api.paths.absTmpPath, entryFile)],
@@ -107,7 +105,14 @@ async function setupExportExtractBuilder(
         },
       },
     ],
-  });
+  };
+  if (api.env === 'development') {
+    const ctx = await esbuild.context(buildOptions);
+    await ctx.rebuild();
+    await ctx.watch();
+  } else {
+    await esbuild.build(buildOptions);
+  }
 }
 
 const loader: { [ext: string]: esbuild.Loader } = {

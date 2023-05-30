@@ -18,9 +18,7 @@ export const lessLoader = (opts: {
         const filePath = join(args.resolveDir, args.path);
         return {
           path: filePath,
-          watchFiles: !!build.initialOptions.watch
-            ? [filePath, ...getLessImports(filePath)]
-            : undefined,
+          watchFiles: [filePath, ...getLessImports(filePath)],
         };
       });
 

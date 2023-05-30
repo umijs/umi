@@ -29,6 +29,7 @@
     "@svgr/core": "6.5.1",
     "@umijs/ast": "workspace:*",
     "@umijs/babel-preset-umi": "workspace:*",
+    "@umijs/bundler-esbuild": "workspace:*",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
