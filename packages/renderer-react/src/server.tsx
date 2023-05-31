@@ -13,12 +13,16 @@ export async function getClientRootComponent(opts: {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
+  suspenseComponent?: Parameters<
+    typeof createClientRoutes
+  >[0]['suspenseComponent'];
 }) {
   const basename = '/';
   const components = { ...opts.routeComponents };
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: components,
+    suspenseComponent: opts.suspenseComponent,
   });
   let rootContainer = (
     <StaticRouter basename={basename} location={opts.location}>

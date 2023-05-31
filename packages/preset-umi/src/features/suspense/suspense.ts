@@ -31,6 +31,12 @@ export default (api: IApi) => {
 
     return memo;
   }
+
+  export function modifyServerRenderOpts(memo: any) {
+    memo.suspenseComponent = LoadingOnlySuspense;
+
+    return memo;
+  }
       `,
     });
   });

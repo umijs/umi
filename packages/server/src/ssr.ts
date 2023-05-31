@@ -72,14 +72,18 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
 
     const manifest =
       typeof opts.manifest === 'function' ? opts.manifest() : opts.manifest;
-    const context = {
-      routes,
-      routeComponents,
-      pluginManager,
-      location: url,
-      manifest,
-      loaderData,
-    };
+    const context = PluginManager.applyPlugins({
+      type: 'modify',
+      key: 'modifyServerRenderOpts',
+      initialValue: {
+        routes,
+        routeComponents,
+        pluginManager,
+        location: url,
+        manifest,
+        loaderData,
+      },
+    });
 
     return {
       element: (await opts.getClientRootComponent(context)) as ReactElement,
