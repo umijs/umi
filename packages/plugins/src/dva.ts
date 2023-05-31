@@ -7,7 +7,7 @@ import { Model, ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
-  const pkgPath = join(__dirname, '../libs/dva.ts');
+  const pkgPath = join(__dirname, '../libs/dva.tsx');
 
   api.describe({
     config: {
