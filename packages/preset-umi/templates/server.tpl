@@ -50,8 +50,7 @@ const createOpts = {
   getClientRootComponent,
   helmetContext,
   createHistory,
-  },
-});
+};
 const requestHandler = createRequestHandler(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
