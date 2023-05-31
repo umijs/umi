@@ -51,11 +51,30 @@ import lang_{{lang}}{{country}}{{index}} from "{{{path}}}";
 {{/paths}}
 {{/LocaleList}}
 
+const flattenMessages=(
+  nestedMessages: Record<string, any>,
+  prefix = '',
+) => {
+  return Object.keys(nestedMessages).reduce(
+    (messages: Record<string, any>, key) => {
+      const value = nestedMessages[key];
+      const prefixedKey = prefix ? `${prefix}.${key}` : key;
+      if (typeof value === 'string') {
+        messages[prefixedKey] = value;
+      } else {
+        Object.assign(messages, flattenMessages(value, prefixedKey));
+      }
+      return messages;
+    },
+    {},
+  );
+}
+
 export const localeInfo: {[key: string]: any} = {
   {{#LocaleList}}
   '{{name}}': {
     messages: {
-      {{#paths}}...lang_{{lang}}{{country}}{{index}},{{/paths}}
+      {{#paths}}...flattenMessages(lang_{{lang}}{{country}}{{index}}),{{/paths}}
     },
     locale: '{{locale}}',
     {{#Antd}}antd: {
