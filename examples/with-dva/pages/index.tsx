@@ -1,6 +1,7 @@
 import React from 'react';
 // @ts-ignore
 import { connect, getDvaApp } from 'umi';
+import Foo from '../Foo';
 // @ts-ignore
 import styles from './index.less';
 
@@ -15,6 +16,7 @@ function mapStateToProps(state: any) {
 export default connect(mapStateToProps)(function Page(props: any) {
   return (
     <div>
+      <Foo name="hahaha" />
       <h1 className={styles.title}>Count {props.count.num}</h1>
       <h1 className={styles.title}>Count {props.bar.num}</h1>
       <div>
