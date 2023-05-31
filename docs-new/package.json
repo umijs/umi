@@ -1,12 +1,12 @@
 {
-  "name": "UmiJS",
+  "name": "@umijs/docs-new",
   "version": "0.0.1",
   "description": "插件化的企业级前端应用框架",
   "scripts": {
     "start": "npm run dev",
     "dev": "dumi dev",
     "build": "dumi build",
-    "prepare": "husky install && dumi setup"
+    "prepare": "dumi setup"
   },
   "authors": [],
   "license": "MIT",

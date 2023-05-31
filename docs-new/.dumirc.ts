@@ -14,6 +14,10 @@ export default defineConfig({
           title: 'Blog',
           link: '/blog/umi-4-rc',
         },
+        {
+          link: 'https://v3.umijs.org',
+          title: 'v3.x',
+        },
       ]
     },
   },

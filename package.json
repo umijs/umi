@@ -28,6 +28,8 @@
     "doc:deps-extra": "umi-scripts turbo build:extra --filter @umijs/plugin-docs...",
     "doc:deps-ts": "umi-scripts turbo build --filter @umijs/plugin-docs...",
     "doc:dev": "umi dev",
+    "docs-new:build": "pnpm --filter @umijs/docs-new build",
+    "docs-new:dev": "pnpm --filter @umijs/docs-new dev",
     "format": "prettier --cache --write .",
     "format:docs": "prettier --cache 'docs/**/*.{md,mdx}' --write --ignore-path .gitignore --ignore-unknown",
     "format:plugin-docs": "prettier --cache 'packages/plugin-docs/**/*' --write --ignore-unknown",
