@@ -7,7 +7,7 @@ export default function (api: IApi) {
     config: {
       schema: ({ zod }) => zod.boolean(),
     },
-    enableBy: ({ env, userConfig }) => {
+    enableBy: ({ env }) => {
       if (
         env === 'production' ||
         process.env.HMR === 'none' ||
@@ -16,7 +16,7 @@ export default function (api: IApi) {
         return false;
       }
 
-      return !!userConfig.hmrGuardian;
+      return api.config.hmrGuardian;
     },
   });
 
