@@ -1,6 +1,6 @@
 import { winPath } from '@umijs/utils';
 import { resolve } from 'path';
-import { IApi } from 'umi';
+import { IApi } from '@umijs/types';
 import { getMfsuPath, normalizeReqPath } from './mfsu';
 
 test('functions: get mfsu path', () => {
