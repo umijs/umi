@@ -208,7 +208,7 @@ export default (api: IApi) => {
 
     // Hack StyleProvider
 
-    const ieTarget = !!api.config.targets.ie || !!api.config.legacy;
+    const ieTarget = !!api.config.targets?.ie || !!api.config.legacy;
 
     let styleProviderConfig: any = false;
 
