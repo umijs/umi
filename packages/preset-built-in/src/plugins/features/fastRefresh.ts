@@ -1,10 +1,9 @@
-import { BundlerConfigType, IApi, utils } from 'umi';
-
-const { createDebug } = utils;
-
-const debug = createDebug('umi:preset-build-in:fastRefresh');
+import { BundlerConfigType, IApi } from '@umijs/types';
 
 export default (api: IApi) => {
+  const { createDebug } = api.utils;
+  const debug = createDebug('umi:preset-build-in:fastRefresh');
+
   /**
    * enable by default, back up using view rerender
    * ssr can't work with fastRefresh
