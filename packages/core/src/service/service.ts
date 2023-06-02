@@ -431,16 +431,12 @@ export class Service {
     const resolveMode = this.commands[this.name].configResolveMode;
     const config = await this.applyPlugins({
       key: 'modifyConfig',
-      // why clone deep?
-      // user may change the config in modifyConfig
-      // e.g. memo.alias = xxx
-      initialValue: lodash.cloneDeep(
+      initialValue:
         resolveMode === 'strict'
           ? this.configManager!.getConfig({
               schemas: this.configSchemas,
             }).config
           : this.configManager!.getUserConfig().config,
-      ),
       args: { paths: this.paths },
     });
     const defaultConfig = await this.applyPlugins({

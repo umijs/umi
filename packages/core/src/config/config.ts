@@ -162,11 +162,22 @@ export class Config {
     return ret;
   }
 
+  static configCache: Map<string, any> = new Map();
   static getUserConfig(opts: { configFiles: string[] }) {
+    const { configFiles } = opts;
+    const key = JSON.stringify(configFiles);
+    const cache = Config.configCache.get(key);
+    if (cache) {
+      // why clone deep?
+      // user may change the config in modifyConfig
+      // e.g. memo.alias = xxx
+      return lodash.cloneDeep(cache);
+    }
+
     let config = {};
     let files: string[] = [];
 
-    for (const configFile of opts.configFiles) {
+    for (const configFile of configFiles) {
       if (existsSync(configFile)) {
         register.register({
           implementor: esbuild,
@@ -196,10 +207,12 @@ export class Config {
       }
     }
 
-    return {
+    const ret = {
       config,
       files,
     };
+    Config.configCache.set(key, ret);
+    return lodash.cloneDeep(ret);
   }
 
   static validateConfig(opts: { config: any; schemas: ISchema }) {
