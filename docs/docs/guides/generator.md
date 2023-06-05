@@ -7,9 +7,9 @@ Umi 中内置了众多微生成器，协助你在开发中快速的完成一些�
 下面的命令会列出目前所有可用的生成器，可以通过交互式方式来选择你使用的功能，都有详细的提示。
 
 ```bash
-$ umi generate
+$ pnpm umi generate
 # 或者
-$ umi g
+$ pnpm umi g
 ```
 
 你也可以通过 `umi g <generatorName>` 的形式来使用对应的生成器。
