@@ -1,8 +1,6 @@
-import { execa } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
-import { winPath } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -10,50 +8,39 @@ export default (api: IApi) => {
     config: {
       schema({ zod }) {
         return zod.object({
-          watch: zod.array(zod.any()),
+          // 这个配置无用了，保留可选
+          watch: zod.optional(zod.array(zod.any())),
         });
       },
     },
     enableBy: api.EnableBy.config,
   });
 
-  const outputPath = 'uno.css';
-
   api.onBeforeCompiler(async () => {
     if (process.env.IS_UMI_BUILD_WORKER) return;
 
-    /** 由于 @unocss/cli 对设置文件进行了检查，因此加入需要 unocss.config.ts 设置的提示
-     * https://github.com/antfu/unocss/blob/main/packages/cli/src/index.ts#L93 */
-    if (!existsSync(join(api.paths.cwd, 'unocss.config.ts')))
+    // 不再使用 unocss cli 的方式，所以如果存在 unocss.config.ts 应该引导用户使用新的方式
+    if (existsSync(join(api.paths.cwd, 'unocss.config.ts')))
       api.logger.warn(
-        '请在项目目录中添加 unocss.config.ts 文件，并配置需要的 unocss presets，否则插件将没有效果！',
+        '请查看最新的文档，修改 unocss 的接入方式，主要是将 unocss.config.ts 修改为 uno.config.ts！移除 @unocss/cli。',
       );
+  });
 
-    const generatedPath = join(api.paths.absTmpPath, outputPath);
-    const binPath = join(api.cwd, 'node_modules/.bin/unocss');
-    const watchDirs = api.config.unocss.watch || [];
+  api.modifyConfig((memo) => {
+    // fix mfsu error
+    memo.alias['uno.css'] = '/__uno.css';
+    return memo;
+  });
 
-    /** 透过子进程建立 unocss 服务，将生成的 css 写入 generatedPath */
-    const isDev = api.env === 'development';
-    const args = [
-      ...watchDirs,
-      '--out-file',
-      generatedPath,
-      isDev ? '--watch' : '',
-    ].filter(Boolean);
-
-    const execaRes = execa.execa(binPath, args, {
-      cwd: api.cwd,
-      stdio: isDev ? 'pipe' : 'inherit',
-    });
-    if (!isDev) {
-      await execaRes;
-    }
+  api.chainWebpack(async (memo) => {
+    const { default: UnoCSS } = await import('@unocss/webpack');
+    memo.plugin('uno-css').use(UnoCSS);
+    memo.optimization.realContentHash(true);
+    return memo;
   });
 
   /** 将生成的 css 文件加入到 import 中 */
   api.addEntryImports(() => {
-    const generatedPath = winPath(join(api.paths.absTmpPath, outputPath));
-    return [{ source: generatedPath }];
+    return [{ source: 'uno.css' }];
   });
 };

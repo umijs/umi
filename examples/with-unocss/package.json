@@ -8,8 +8,9 @@
   },
   "dependencies": {
     "@umijs/plugins": "workspace:*",
-    "@unocss/cli": "^0.33.0",
-    "umi": "workspace:*",
+    "umi": "workspace:*"
+  },
+  "devDependencies": {
     "unocss": "^0.34.1"
   }
 }

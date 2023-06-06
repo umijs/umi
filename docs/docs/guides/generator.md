@@ -317,6 +317,19 @@ info  - Write tailwind.config.js
 info  - Write tailwind.css
 ```
 
+### Uno CSS 配置生成器
+
+为项目开启 [UnoCSS](https://github.com/unocss/unocss) 配置，命令执行后，`umi` 会生成 Uno CSS 和安装相应的的依赖。
+
+```bash
+$umi g unocss
+info  - Update package.json for devDependencies
+set config:unocss on /.umirc.ts
+set config:plugins on /.umirc.ts
+info  - Update .umirc.ts
+info  - Write uno.config.ts
+```
+
 ### DvaJS 配置生成器
 
 为项目开启 [Dva](https://dvajs.com/) 配置，命令执行后，`umi` 会生成 Dva 

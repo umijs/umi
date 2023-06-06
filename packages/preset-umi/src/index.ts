@@ -71,6 +71,7 @@ export default () => {
       require.resolve('./commands/generators/tsconfig'),
       require.resolve('./commands/generators/jest'),
       require.resolve('./commands/generators/tailwindcss'),
+      require.resolve('./commands/generators/unocss'),
       require.resolve('./commands/generators/dva'),
       require.resolve('./commands/generators/component'),
       require.resolve('./commands/generators/mock'),

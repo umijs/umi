@@ -99,46 +99,4 @@ Umi 提供了内置的 [Tailwindcss](https://tailwindcss.com/)
 
 ## 使用 UnoCSS
 
-与 Tailwindcss 相同，Umi 也提供了内置的 [UnoCSS](https://github.com/unocss/unocss) 插件，可以按照相同方式开启。
-
-1. 安装 `plugin-unocss`
-2. 安装 `unocss` 及 `@unocss/cli`
-
-```bash
-pnpm i unocss @unocss/cli
-```
-
-3. 在 Umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
-
-```js
-// .umirc.ts
-
-export default {
-  plugins: [
-    require.resolve('@umijs/plugins/dist/unocss')
-  ],
-  unocss: {
-    // 检测 className 的文件范围，若项目不包含 src 目录，可使用 `pages/**/*.tsx`
-    watch: ['src/**/*.tsx']
-  },
-};
-```
-
-4. 在项目目录下加入 `unocss.config.ts`
-   配置文件，并加入项目需要的 [UnoCSS Presets](https://github.com/unocss/unocss#presets)
-
-```js
-// unocss.config.ts
-
-import {defineConfig, presetAttributify, presetUno} from 'unocss';
-
-export function createConfig({strict = true, dev = true} = {}) {
-  return defineConfig({
-    envMode: dev ? 'dev' : 'build', presets: [presetAttributify({strict}), presetUno()],
-  });
-}
-
-export default createConfig(); 
-```
-
-5. 启动项目进行开发，插件会监听设置文件中的 `unocss.watch` 字段，动态生成样式文件并自动套用
+与 Tailwindcss 相同，Umi 也提供了内置的 [UnoCSS](https://github.com/unocss/unocss) 插件，同样可以使用可以[微生成器](./generator#uno-css-配置生成器) 开启。
