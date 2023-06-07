@@ -24,6 +24,11 @@ export function createHistory(opts: any) {
     replace(to, state) {
       h.replace(patchTo(to, h), state);
     },
+{{#reactRouter5Compat}}
+    goBack(){
+      h.back();
+    },
+{{/reactRouter5Compat}}
     get location() {
       return h.location;
     },
@@ -32,7 +37,7 @@ export function createHistory(opts: any) {
     }
   }
 
-  return h;
+  return history;
 }
 
 // Patch `to` to support basename

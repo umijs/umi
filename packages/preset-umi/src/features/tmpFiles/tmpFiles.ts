@@ -505,7 +505,9 @@ if (process.env.NODE_ENV === 'development') {
     // history.ts
     // only react generates because the preset-vue override causes vite hot updates to fail
     if (api.appData.framework === 'react') {
-      const historyPath = api.config.historyWithQuery
+      const { historyWithQuery = false, reactRouter5Compat = false } =
+        api.config;
+      const historyPath = historyWithQuery
         ? winPath(dirname(require.resolve('@umijs/history/package.json')))
         : rendererPath;
       api.writeTmpFile({
@@ -514,6 +516,7 @@ if (process.env.NODE_ENV === 'development') {
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
           historyPath,
+          reactRouter5Compat,
         },
       });
       api.writeTmpFile({
@@ -522,6 +525,7 @@ if (process.env.NODE_ENV === 'development') {
         tplPath: join(TEMPLATES_DIR, 'historyIntelli.tpl'),
         context: {
           historyPath,
+          reactRouter5Compat,
         },
       });
     }

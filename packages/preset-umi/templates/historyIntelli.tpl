@@ -71,9 +71,17 @@ type UmiTo = UmiPathname | UmiPath
 
 type UmiPush = (to: UmiTo, state?: any) => void
 type UmiReplace = (to: UmiTo, state?: any) => void
+{{#reactRouter5Compat}}
+type UmiGoBack = () => void
+{{/reactRouter5Compat}}
+
+
 export interface UmiHistory extends History {
   push: UmiPush
   replace: UmiReplace
+{{#reactRouter5Compat}}
+  goBack: UmiGoBack
+{{/reactRouter5Compat}}
 }
 
 // --- type utils ---
