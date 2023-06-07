@@ -70,14 +70,28 @@ export const RouteDrawer: React.FC<{
         mask={false}
       >
         <Wrapper>
+          {info.name ? (
+            <div className="info-item">
+              <h3>Name</h3>
+              <div className="label">{info.absPath}</div>
+            </div>
+          ) : null}
           <div className="info-item">
             <h3>RoutePath</h3>
             <div className="label">{info.absPath}</div>
           </div>
-          <div className="info-item">
-            <h3>FilePath</h3>
-            <div className="label">{info.__absFile || info.file}</div>
-          </div>
+          {info.__absFile || info.file ? (
+            <div className="info-item">
+              <h3>FilePath</h3>
+              <div className="label">{info.__absFile || info.file}</div>
+            </div>
+          ) : null}
+          {info.redirect ? (
+            <div className="info-item">
+              <h3>Redirect</h3>
+              <div className="label">{info.redirect}</div>
+            </div>
+          ) : null}
           <div className="info-item">
             <h3>CodeContent</h3>
             <div className="code-label">

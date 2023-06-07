@@ -5,7 +5,7 @@ export interface IIRoute extends PartialIRoute {
   children: IIRoute[];
 }
 
-export const FAKE_ID = '__FEAKE_LAYOUT__';
+export const FAKE_ID = '__FAKE_LAYOUT__';
 
 // 通过对象引用建立route间关系
 export const realizeRoutes = (routes: IAppData['routes']): IIRoute[] => {
@@ -55,6 +55,8 @@ export const realizeRoutes = (routes: IAppData['routes']): IIRoute[] => {
     return [
       {
         id: FAKE_ID,
+        path: FAKE_ID,
+        absPath: FAKE_ID,
         isLayout: true,
         children: relations,
       },
