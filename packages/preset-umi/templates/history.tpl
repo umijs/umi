@@ -16,6 +16,12 @@ export function createHistory(opts: any) {
     basename = opts.basename;
   }
 
+{{#reactRouter5Compat}}
+  h.goBack = function() {
+    h.back();
+  };
+{{/reactRouter5Compat}}
+
   history = {
     ...h,
     push(to, state) {
@@ -24,11 +30,6 @@ export function createHistory(opts: any) {
     replace(to, state) {
       h.replace(patchTo(to, h), state);
     },
-{{#reactRouter5Compat}}
-    goBack(){
-      h.back();
-    },
-{{/reactRouter5Compat}}
     get location() {
       return h.location;
     },
@@ -37,7 +38,7 @@ export function createHistory(opts: any) {
     }
   }
 
-  return history;
+  return h;
 }
 
 // Patch `to` to support basename
