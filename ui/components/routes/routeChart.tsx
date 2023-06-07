@@ -98,11 +98,8 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
     });
 
     graph.node((node) => {
-      const { depth, id, absPath } = node;
-      // absPath 为空的话就取id, 适配 @@/global-layout
-      const label =
-        ((absPath as string) || '').split('/').slice(-1)[0] ||
-        id.split('/').slice(-1)[0];
+      const { depth, absPath } = node;
+      const label = ((absPath as string) || '').split('/').slice(-1)[0] || '/';
       const { color, backgroud } =
         colorList[(depth as number) % colorList.length];
 

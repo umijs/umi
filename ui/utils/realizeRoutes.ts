@@ -55,8 +55,8 @@ export const realizeRoutes = (routes: IAppData['routes']): IIRoute[] => {
     return [
       {
         id: FAKE_ID,
-        path: FAKE_ID,
-        absPath: FAKE_ID,
+        path: '',
+        absPath: '',
         isLayout: true,
         children: relations,
       },
