@@ -24,9 +24,15 @@ export default (api: IApi) => {
       const h = new GeneratorHelper(api);
 
       h.addDevDeps({
-        '@umijs/plugins': getUmiJsPlugin(),
         unocss: '^0.34.1',
       });
+
+      // max preset 内置了 unocss plugin
+      if (api.appData?.umi?.cliName !== 'max') {
+        h.addDevDeps({
+          '@umijs/plugins': getUmiJsPlugin(),
+        });
+      }
 
       h.setUmirc('unocss', {});
       h.appendInternalPlugin('@umijs/plugins/dist/unocss');

@@ -16,6 +16,7 @@ export default () => {
       require.resolve('@umijs/plugins/dist/request'),
       require.resolve('@umijs/plugins/dist/styled-components'),
       require.resolve('@umijs/plugins/dist/tailwindcss'),
+      require.resolve('@umijs/plugins/dist/unocss'),
       require.resolve('@umijs/plugins/dist/valtio'),
       require.resolve('./plugins/maxAlias'),
       require.resolve('./plugins/maxAppData'),

@@ -18,12 +18,18 @@ export default (api: IApi) => {
 
   api.onBeforeCompiler(async () => {
     if (process.env.IS_UMI_BUILD_WORKER) return;
+    if (!!api.userConfig?.unocss?.watch) {
+      api.logger.warn(
+        'unocss?.watch 配置不再必要，请参考升级文档 https://umijs.org/docs/max/unocss#%E5%8D%87%E7%BA%A7%E6%8C%87%E5%8D%97-4070',
+      );
+    }
 
     // 不再使用 unocss cli 的方式，所以如果存在 unocss.config.ts 应该引导用户使用新的方式
-    if (existsSync(join(api.paths.cwd, 'unocss.config.ts')))
+    if (existsSync(join(api.paths.cwd, 'unocss.config.ts'))) {
       api.logger.warn(
-        '请查看最新的文档，修改 unocss 的接入方式，主要是将 unocss.config.ts 修改为 uno.config.ts！移除 @unocss/cli。',
+        '请修改 unocss 的接入方式，主要是将 unocss.config.ts 修改为 uno.config.ts！移除 @unocss/cli。请参考升级文档 https://umijs.org/docs/max/unocss#%E5%8D%87%E7%BA%A7%E6%8C%87%E5%8D%97-4070',
       );
+    }
   });
 
   api.modifyConfig((memo) => {
