@@ -39,8 +39,9 @@ info  - Write uno.config.ts
 
 ## 升级指南 4.0.70+
 
-4.0.70 之前内置的 unocss 插件使用的是执行 `@unocss/cli` 子进程的方式实现的。我们意识到这可能会带来一些异步执行异常，因此我们将接入方式修改为使用 [`@unocss/webpack`](https://unocss.dev/integrations/webpack) 的方式。
-因此如果你使用了之前的插件，请参照以下的步骤，升级到最新方式。
+Umi 小于 `4.0.70` 版本的 unocss 功能是由 `@unocss/cli` 进程侧载监听文件变化的方式运行的。这在与 Turborepo 一起使用时存在不兼容的问题，故修改为借助 [`@unocss/webpack`](https://unocss.dev/integrations/webpack) 来支持 unocss 。
+
+如果你有在 < `4.0.70` 版本使用到 unocss 功能，请按以下方式迁移升级：
 
 ### 使用微生成器升级
 
