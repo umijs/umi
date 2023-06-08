@@ -50,7 +50,7 @@ export default function HomePage() {
       <h2> Icons</h2>
       <div>
         {includedIcons.map((i) => {
-          return <Icon icon={i} className={i} key={i} />;
+          return <Icon spin icon={i} className={i} key={i} />;
         })}
         <Icon icon="local:logo/foo/smile" />
         <Icon icon="local:logo/heart-Upper-CASE" />

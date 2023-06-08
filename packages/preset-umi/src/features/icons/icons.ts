@@ -319,7 +319,7 @@ interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
 }
 
 export const Icon = React.forwardRef<HTMLSpanElement, IUmiIconProps>((props, ref) => {
-  const { icon, hover, style, className = '' , rotate, flip, ...extraProps } = props;
+  const { icon, hover, style, className = '' , rotate, spin, flip, ...extraProps } = props;
   const iconName = normalizeIconName(alias[icon] || icon);
   const Component = iconsMap[iconName];
   if (!Component) {
@@ -327,7 +327,7 @@ export const Icon = React.forwardRef<HTMLSpanElement, IUmiIconProps>((props, ref
     return null;
   }
   const HoverComponent = hover ? iconsMap[normalizeIconName(alias[hover] || hover)] : null;
-  const cls = props.spin ? 'umiIconLoadingCircle' : undefined;
+  const cls = spin ? 'umiIconLoadingCircle' : undefined;
   const svgStyle = {};
   const transform: string[] = [];
   if (rotate) {
