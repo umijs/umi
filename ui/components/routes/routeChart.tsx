@@ -1,5 +1,6 @@
 import { modeColorMap } from '@/contants';
 import { state as globalState } from '@/models/global';
+import { superLongTextHandle } from '@/utils/g6LongText';
 import { IIRoute } from '@/utils/realizeRoutes';
 import G6 from '@antv/g6';
 import { FC, useEffect } from 'react';
@@ -107,8 +108,9 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
         style: {
           fill: backgroud,
           stroke: color,
+          fontSize: 12,
         },
-        label,
+        label: superLongTextHandle(label, 96, 12),
         labelCfg: {
           position: 'center',
           offset: 5,
