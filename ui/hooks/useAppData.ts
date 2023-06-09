@@ -111,6 +111,8 @@ export interface IAppData {
         url: string;
         icon: string;
         name: string;
+        renderType?: string; // 可以选择配置 qiankun，默认 iframe
+        meta?: any; // 配置乾坤后可以传递的props，比如 yuyanId?
       }[];
       [key: string]: any;
     }[];

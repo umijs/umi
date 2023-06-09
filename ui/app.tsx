@@ -1,7 +1,7 @@
 import { PluginContainer } from '@/components/PluginContainer';
 import { IAppData } from '@/hooks/useAppData';
 import { globalCSS } from '@/utils/globalCSS';
-import { createGlobalStyle } from 'umi';
+import { createGlobalStyle, MicroApp } from 'umi';
 
 export const styledComponents = {
   GlobalStyle: createGlobalStyle`
@@ -46,6 +46,10 @@ body {
   color: var(--text-color);
 }
 
+#root-master, .qiankun-micro-app-container, #__qiankun_microapp_wrapper_for_qiankun__ {
+  height: 100%;
+}
+
 a {
   color: var(--text-color);
   text-decoration: none;
@@ -73,9 +77,54 @@ export async function patchClientRoutes({ routes }) {
   const uiMenusAdded = modules.map((module) => module.menus || []).flat();
 
   routes[0].routes?.unshift(
-    ...uiMenusAdded.map((menu: any) => ({
-      path: menu.path,
-      element: <PluginContainer url={menu.url} name={menu.name} />,
-    })),
+    ...uiMenusAdded.map((menu) => {
+      const { renderType } = menu;
+
+      if (renderType === 'qiankun') {
+        return {
+          path: `${menu.path}/*`,
+          // 防止 fixed 定位影响到外部布局
+          element: (
+            <div style={{ transform: 'scale(1)', height: '100%' }}>
+              <MicroApp
+                name={menu.name}
+                base={`/__umi_ui/entry/${menu.path}`}
+              />
+            </div>
+          ),
+        };
+      }
+
+      return {
+        path: `${menu.path}/*`,
+        element: <PluginContainer url={menu.url} name={menu.name} />,
+      };
+    }),
   );
+}
+
+export async function qiankun() {
+  const umiInfo = await fetch('/__umi/api/app-data').then(
+    (res) => res.json() as Promise<IAppData>,
+  );
+
+  const modules = umiInfo?.ui?.modules || [];
+
+  // 提供给子应用 umi 的信息和自定义属性
+  const uiMenusQiankunAdded = modules
+    .map((module) => module.menus || [])
+    .flat()
+    .filter((module) => module.renderType === 'qiankun')
+    .map(({ name, meta, url }) => ({
+      name,
+      entry: url,
+      props: {
+        ...meta,
+        umiInfo,
+      },
+    }));
+
+  return {
+    apps: uiMenusQiankunAdded,
+  };
 }
