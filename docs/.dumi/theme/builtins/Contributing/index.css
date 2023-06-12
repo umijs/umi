@@ -1,0 +1,19 @@
+.contributing-normal {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+
+.contributing-normal p {
+  font-size: 18px;
+  color: #4a5e71;
+  margin-bottom: 16px;
+}
+
+[data-prefers-color="dark"] .contributing-normal p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.contributing-normal p a {
+  color: #0273dc;
+  text-decoration: none;
+}

@@ -228,7 +228,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
 
-  docs-new:
+  docs:
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.6.3
