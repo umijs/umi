@@ -1,5 +1,6 @@
 import { modeColorMap } from '@/contants';
 import { state as globalState } from '@/models/global';
+import { superLongTextHandle } from '@/utils/g6LongText';
 import { IIRoute } from '@/utils/realizeRoutes';
 import G6 from '@antv/g6';
 import { FC, useEffect } from 'react';
@@ -98,8 +99,8 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
     });
 
     graph.node((node) => {
-      const { id, depth } = node;
-      const label = id.split('/').slice(-1)[0];
+      const { depth, absPath } = node;
+      const label = ((absPath as string) || '').split('/').slice(-1)[0] || '/';
       const { color, backgroud } =
         colorList[(depth as number) % colorList.length];
 
@@ -107,8 +108,9 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
         style: {
           fill: backgroud,
           stroke: color,
+          fontSize: 12,
         },
-        label,
+        label: superLongTextHandle(label, 96, 12),
         labelCfg: {
           position: 'center',
           offset: 5,

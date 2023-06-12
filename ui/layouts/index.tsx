@@ -5,7 +5,6 @@ import { Helmet, Outlet, styled } from 'umi';
 
 const Wrapper = styled.div`
   display: flex;
-  border: 1px solid var(--subtle-color);
   height: 100%;
   aside {
     min-width: 200px;
