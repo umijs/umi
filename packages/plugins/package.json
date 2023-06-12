@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugins",
-  "version": "4.0.0-canary.20230517.1",
+  "version": "4.0.0-canary.20230612.1",
   "description": "@umijs/plugins",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/plugins#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -25,6 +25,7 @@
   "dependencies": {
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/antd-theme-variable": "^1.0.0",
+    "@ant-design/cssinjs": "^1.9.1",
     "@ant-design/icons": "^4.7.0",
     "@ant-design/moment-webpack-plugin": "^0.0.3",
     "@ant-design/pro-components": "^2.0.1",

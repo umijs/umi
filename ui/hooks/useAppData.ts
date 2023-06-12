@@ -2,6 +2,8 @@ import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
 import { useQuery } from 'umi';
 
 export interface IRoute {
+  name?: string;
+  redirect?: string;
   path: string;
   id: string;
   parentId?: string;

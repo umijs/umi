@@ -11,6 +11,14 @@ import {
   notification,
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
+{{#styleProvider}}
+import {
+  StyleProvider,
+  {{#styleProvider.legacyTransformer}}
+  legacyLogicalPropertiesTransformer
+  {{/styleProvider.legacyTransformer}}
+} from '{{{styleProvider.cssinjs}}}';
+{{/styleProvider}}
 import { getPluginManager } from '../core/plugin';
 
 let cacheAntdConfig = null;
@@ -58,8 +66,31 @@ export function rootContainer(rawContainer) {
       iconPrefixCls: finalConfigProvider.iconPrefixCls,
     });
   };
+
+  if (finalConfigProvider.theme) {
+    // Pass config theme to static method
+    ConfigProvider.config({
+      theme: finalConfigProvider.theme,
+    });
+  }
+
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
+
+{{#styleProvider}}
+  container = (
+    <StyleProvider
+      {{#styleProvider.hashPriority}}
+      hashPriority="{{{styleProviderConfig.hashPriority}}}"
+      {{/styleProvider.hashPriority}}
+      {{#styleProvider.legacyTransformer}}
+      transformers={[legacyLogicalPropertiesTransformer]}
+      {{/styleProvider.legacyTransformer}}
+    >
+      {container}
+    </StyleProvider>
+  );
+{{/styleProvider}}
 
   return container;
 }

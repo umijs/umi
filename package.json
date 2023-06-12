@@ -117,7 +117,7 @@
     "umi-scripts": "workspace:*",
     "zx": "^7.1.1"
   },
-  "packageManager": "pnpm@8.1.0",
+  "packageManager": "pnpm@8.6.0",
   "engines": {
     "node": ">=14",
     "pnpm": ">=8"

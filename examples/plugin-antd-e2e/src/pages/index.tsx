@@ -1,5 +1,6 @@
-import { DatePicker, version } from 'antd';
+import { Button, DatePicker, Modal, Tag, version } from 'antd';
 import moment from 'moment';
+import './index.less';
 
 const fileName = 'favicon';
 const imprtedByVariable = import(/* webpackIgnore: true  */ `/${fileName}.png`);
@@ -18,6 +19,18 @@ export default function HomePage() {
           console.log(val);
         }}
       />
+      <Button
+        type="primary"
+        onClick={() => {
+          Modal.confirm({
+            title: 'Confirm',
+            content: 'Bla bla ...',
+          });
+        }}
+      >
+        Confirm Me
+      </Button>
+      <Tag className="my-tag">Tag</Tag>
     </div>
   );
 }
