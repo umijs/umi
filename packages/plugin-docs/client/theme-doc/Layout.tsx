@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
+// @ts-ignore
 import { useLocation } from 'umi';
 import Announcement from './components/Announcement';
 import { ThemeContext } from './context';
@@ -32,7 +33,7 @@ export default (props: any) => {
   }, []);
 
   const { title, description } = props.themeConfig;
-  const location = useLocation();
+  const location = useLocation?.();
   const isHomePage =
     window.location.pathname === '/' ||
     window.location.pathname.replace(/[a-z]{2}-[A-Z]{2}\/?/, '') === '/' ||
