@@ -505,8 +505,7 @@ if (process.env.NODE_ENV === 'development') {
     // history.ts
     // only react generates because the preset-vue override causes vite hot updates to fail
     if (api.appData.framework === 'react') {
-      const { historyWithQuery = false, reactRouter5Compat = false } =
-        api.config;
+      const { historyWithQuery, reactRouter5Compat } = api.config;
       const historyPath = historyWithQuery
         ? winPath(dirname(require.resolve('@umijs/history/package.json')))
         : rendererPath;
