@@ -39,7 +39,7 @@ export default (api: IApi) => {
   });
 
   api.chainWebpack(async (memo) => {
-    const { default: UnoCSS } = await import('@unocss/webpack');
+    const { default: UnoCSS } = require('@unocss/webpack');
     memo.plugin('uno-css').use(UnoCSS);
     memo.optimization.realContentHash(true);
     return memo;
