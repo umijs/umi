@@ -90,8 +90,8 @@ export const addLocale = (
     ? Object.assign({}, localeInfo[name].messages, messages)
     : messages;
 
-
-  const { momentLocale, antd } = extraLocales || {};
+  // 用户只是追加 messages 时，extraLocales 可选
+  const { momentLocale = localeInfo[name]?.momentLocale, antd = localeInfo[name]?.antd } = extraLocales || {};
   const locale = name.split('{{BaseSeparator}}')?.join('-')
   localeInfo[name] = {
     messages: mergeMessages,

@@ -123,7 +123,7 @@
   "packageManager": "pnpm@8.6.0",
   "engines": {
     "node": ">=14",
-    "pnpm": ">=8"
+    "pnpm": ">=8.6.0"
   },
   "//why-overrides-browserslist": "See scripts/bundleDeps.ts",
   "pnpm": {
