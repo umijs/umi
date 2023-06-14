@@ -435,11 +435,24 @@ Warning: There are 1 unused files:
 ## define
 
 - 类型：`Record<string, string>`
-- 默认值：`{ process.env.NODE_ENV: 'development' | 'production' }`
+- 默认值： 如下 
 
-设置代码中的可用变量。
+```
+  { 
+    'process.env': {
+      NODE_ENV : process.env.NODE_ENV,
+      HMR : process.env.HMR, 
+      SOCKET_SERVER: process.env.ERROR_OVERLAY' 
+    } 
+  }
+```
 
-注意：属性值会经过一次 `JSON.stringify` 转换。
+基于[define-plugin 插件](https://webpack.js.org/plugins/define-plugin/)设置代码中的可用变量。
+
+<Message type="warn" emoji="🚨" >
+1. 属性值会经过一次 `JSON.stringify` 转换。
+2. key 值的替换是通过语法形式来匹配的，比如配置了 `{'a.b.c': 'abcValue'}` 是无法替换代码中的  `a.b?.c` 的
+</Message>
 
 比如，
 
