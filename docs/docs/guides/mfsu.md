@@ -131,7 +131,7 @@ externals: {
 #### 场景 1
 
 在使用 monorepo 时 ，项目依赖了 A 包，A 依赖了 B 包，而 B 包是项目 monorepo 中子包提供。这行就形成项目源码依赖 A ，A 又重新依赖项目源码的情况。
-这种情况建设使用 MFSU 的 exclude 配置。
+这种情况建议使用 MFSU 的 exclude 配置。
 
 ```ts {2-4}
 mfsu: {
