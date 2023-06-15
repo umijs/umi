@@ -16,6 +16,7 @@ interface IOpts {
   stripExports: { exports: string[] };
   classPropertiesLoose: any;
   pluginStyledComponents: any;
+  pluginDecorators: any;
 }
 
 export default (_context: any, opts: IOpts) => {
@@ -75,11 +76,14 @@ export default (_context: any, opts: IOpts) => {
       // TC39 Proposals
       // class-static-block
       // decorators
-      [
+      opts.pluginDecorators !== false && [
         require.resolve(
           '@umijs/bundler-utils/compiled/babel/plugin-proposal-decorators',
         ),
-        { legacy: true },
+        {
+          legacy: true,
+          ...opts.pluginDecorators,
+        },
       ],
       // Enable loose mode to use assignment instead of defineProperty
       // Note:
