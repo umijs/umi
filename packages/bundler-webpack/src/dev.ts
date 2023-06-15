@@ -163,7 +163,7 @@ export async function setup(opts: IOpts) {
     rootDir: opts.rootDir,
     env: Env.development,
     entry: opts.entry,
-    userConfig: opts.config,
+    userConfig: { ...opts.config, forkTSChecker: false },
     disableCopy: true,
     hash: true,
     staticPathPrefix: MF_DEP_PREFIX,

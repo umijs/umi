@@ -387,12 +387,7 @@ export default function EmptyRoute() {
         '...$1',
       );
       // import: route props
-      // why has this branch? since test env don't build routeProps.js
-      if (process.env.NODE_ENV === 'test') {
-        headerImports.push(`import routeProps from './routeProps';`);
-      } else {
-        headerImports.push(`import routeProps from './routeProps.js';`);
-      }
+      headerImports.push(`import routeProps from './routeProps';`);
       // prevent override internal route props
       headerImports.push(`
 if (process.env.NODE_ENV === 'development') {
@@ -510,7 +505,8 @@ if (process.env.NODE_ENV === 'development') {
     // history.ts
     // only react generates because the preset-vue override causes vite hot updates to fail
     if (api.appData.framework === 'react') {
-      const historyPath = api.config.historyWithQuery
+      const { historyWithQuery, reactRouter5Compat } = api.config;
+      const historyPath = historyWithQuery
         ? winPath(dirname(require.resolve('@umijs/history/package.json')))
         : rendererPath;
       api.writeTmpFile({
@@ -519,6 +515,7 @@ if (process.env.NODE_ENV === 'development') {
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
           historyPath,
+          reactRouter5Compat,
         },
       });
       api.writeTmpFile({
@@ -527,6 +524,7 @@ if (process.env.NODE_ENV === 'development') {
         tplPath: join(TEMPLATES_DIR, 'historyIntelli.tpl'),
         context: {
           historyPath,
+          reactRouter5Compat,
         },
       });
     }
