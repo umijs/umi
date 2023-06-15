@@ -12,7 +12,7 @@ export default defineConfig({
     socialLinks: {
       github: 'https://github.com/umijs/umi',
     },
-    footer: '',
+    footer: 'Open-source MIT Licensed | Copyright © 2017-present',
     nav: {
       mode: 'override',
       value: [
