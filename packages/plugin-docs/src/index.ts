@@ -49,7 +49,7 @@ export default (api: IApi) => {
       });
     }
     // 放在 docs/xxx.zh-CN.md 的文档，会被映射到 /zh-CN/docs/xxx 目录
-    if (route.file.match(/.[a-z]{2}-[A-Z]{2}.md$/)) {
+    if (route.file?.match(/.[a-z]{2}-[A-Z]{2}.md$/)) {
       route.path = route.path.replace(/(.*).([a-z]{2}-[A-Z]{2})$/, '$2/$1');
 
       // 放在 docs/xxx/README.zh-CN.md 格式结尾的文档，会被映射到 /zh-CN/docs 目录
@@ -61,10 +61,14 @@ export default (api: IApi) => {
 
   // 检查路由是否存在其他语言，没有的话做 fallback 处理
   api.modifyRoutes((r) => {
-    if (!locales) return r;
+    if (!locales) {
+      return r;
+    }
     for (const route in r) {
-      if (r[route].path.match(/^[a-z]{2}-[A-Z]{2}\/.*/)) continue;
-      const defaultLangFile = r[route].file.replace(
+      if (r[route].path.match(/^[a-z]{2}-[A-Z]{2}\/.*/)) {
+        continue;
+      }
+      const defaultLangFile = r[route].file?.replace(
         /(.[a-z]{2}-[A-Z]{2})?.md$/,
         '',
       );
