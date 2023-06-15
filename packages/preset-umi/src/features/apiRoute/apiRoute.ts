@@ -111,13 +111,13 @@ export default (api: IApi) => {
     apiRoutes.map((apiRoute) => {
       api.writeTmpFile({
         noPluginDir: true,
-        path: join('api', apiRoute?.file),
+        path: join('api', apiRoute.file!),
         tplPath: join(TEMPLATES_DIR, 'apiRoute.tpl'),
         context: {
           adapterPath: winPath(resolve(__dirname, '../apiRoute/index.js')),
           apiRootDirPath: winPath(join(api.paths.absTmpPath, 'api')),
           handlerPath: winPath(
-            join(api.paths.absSrcPath, 'api', apiRoute?.file),
+            join(api.paths.absSrcPath, 'api', apiRoute.file!),
           ),
           apiRoutes: JSON.stringify(apiRoutes),
         },
@@ -161,7 +161,7 @@ export default (api: IApi) => {
         await require(join(
           api.paths.cwd,
           OUTPUT_PATH,
-          matchedApiRoute.route?.file,
+          matchedApiRoute.route.file!,
         ).replace('.ts', '.js')).default(req, res);
 
         return;

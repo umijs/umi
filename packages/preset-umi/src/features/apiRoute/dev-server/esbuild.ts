@@ -9,7 +9,7 @@ import { esbuildIgnorePathPrefixPlugin } from '../utils';
 // 将 API 路由的临时文件打包为 Umi Dev Server 可以使用的格式
 export default async function (api: IApi, apiRoutes: IRoute[]) {
   const apiRoutePaths = apiRoutes.map((r) =>
-    join(api.paths.absTmpPath, 'api', r?.file),
+    join(api.paths.absTmpPath, 'api', r.file!),
   );
 
   const ctx = await esbuild.context({
