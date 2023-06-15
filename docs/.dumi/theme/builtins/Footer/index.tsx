@@ -1,13 +1,57 @@
 import React from 'react';
-// @ts-ignore
+import styled from 'styled-components';
 import { Link } from 'umi';
 import NewsLetterForm from './NewsLetterForm';
-// @ts-ignore
-import './index.css';
 
+const FooterWrapper = styled.div`
+  background: #f1f5f7;
+  padding: 40px 0;
+  color: #4a5e71;
+  .footer-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    .footer-left {
+      flex: 1;
+      .footer-line {
+        line-height: 40px;
+        display: flex;
+      }
+
+      .footer-line h3 {
+        font-size: 18px;
+        width: 92px;
+        margin-right: 66px;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-weight: 400;
+      }
+
+      .footer-line div {
+        flex: 1;
+      }
+
+      .footer-line div a {
+        text-decoration: none;
+        color: #4a5e71;
+      }
+    }
+
+    .footer-right {
+      min-width: 400px;
+      font-size: 16px;
+      .footer-copyright {
+        font-size: 14px;
+        color: #8996a1;
+        line-height: 22px;
+        margin-top: 24px;
+      }
+    }
+  }
+`;
 export default () => {
   return (
-    <div className="footer-normal">
+    <FooterWrapper>
       <div className="footer-wrapper">
         <div className="footer-left">
           <div className="footer-line">
@@ -20,8 +64,8 @@ export default () => {
               <a target="_blank" href="https://github.com/umijs/umi/issues">
                 给 Umi 提 Bug
               </a>{' '}
-              · <Link to="/docs/introduce-contributing">向 Umi 贡献代码</Link> ·{' '}
-              <Link to="/docs/introduce-upgrade-to-umi-4">升级到 Umi 4</Link>
+              · <Link to="/docs/introduce/contributing">向 Umi 贡献代码</Link> ·{' '}
+              <Link to="/docs/introduce/upgrade-to-umi-4">升级到 Umi 4</Link>
             </div>
           </div>
           <div className="footer-line">
@@ -36,7 +80,7 @@ export default () => {
           <div className="footer-line">
             <h3>Umi 资源</h3>
             <div>
-              <Link to="/docs/introduce-introduce">文档</Link> · 示例 · 插件 ·{' '}
+              <Link to="/docs/introduce/introduce">文档</Link> · 示例 · 插件 ·{' '}
               <a target="_blank" href="https://github.com/umijs/umi/releases">
                 发布日志
               </a>
@@ -50,6 +94,6 @@ export default () => {
           </div>
         </div>
       </div>
-    </div>
+    </FooterWrapper>
   );
 };

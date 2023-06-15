@@ -1,11 +1,28 @@
-import SectionHeader from '../SectionHeader';
 import React from 'react';
-// @ts-ignore
-import './index.css';
+import styled from 'styled-components';
+import SectionHeader from '../SectionHeader';
 
+const WhoIsUsingWrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    li img {
+      width: 224px;
+      height: 73px;
+    }
+    [data-prefers-color='dark'] .using-normal li {
+      background: rgba(255, 255, 255, 0.9);
+    }
+  }
+`;
 export default () => {
   return (
-    <div className="using-normal">
+    <WhoIsUsingWrapper>
       <SectionHeader title="谁在使用" />
       <ul>
         <li>
@@ -69,6 +86,6 @@ export default () => {
           />
         </li>
       </ul>
-    </div>
+    </WhoIsUsingWrapper>
   );
 };

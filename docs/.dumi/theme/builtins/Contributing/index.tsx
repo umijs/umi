@@ -1,18 +1,35 @@
-import SectionHeader from '../SectionHeader';
 import React from 'react';
-// @ts-ignore
+import styled from 'styled-components';
 import { Link } from 'umi';
-// @ts-ignore
-import './index.css';
+import SectionHeader from '../SectionHeader';
+
+const ContributingWrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  p {
+    font-size: 18px;
+    color: #4a5e71;
+    margin-bottom: 16px;
+  }
+
+  [data-prefers-color='dark'] .contributing-normal p {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  p a {
+    color: #0273dc;
+    text-decoration: none;
+  }
+`;
 
 export default () => {
   return (
-    <div className="contributing-normal">
+    <ContributingWrapper>
       <SectionHeader title="参与建设" />
       <div>
         <p>
           社区有非常多小伙伴在和我们一同建设 Umi，如果你有兴趣，欢迎&nbsp;
-          <Link to="/docs/introduce-contributing">加入我们</Link> 。
+          <Link to="/docs/introduce/contributing">加入我们</Link> 。
         </p>
         <div>
           <a href="https://github.com/umijs/umi/graphs/contributors">
@@ -24,6 +41,6 @@ export default () => {
           </a>
         </div>
       </div>
-    </div>
+    </ContributingWrapper>
   );
 };

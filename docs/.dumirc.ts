@@ -1,6 +1,9 @@
 import { defineConfig } from 'dumi';
 
 export default defineConfig({
+  resolve: {
+    codeBlockMode: 'passive',
+  },
   favicons: [
     'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   ],
@@ -15,7 +18,29 @@ export default defineConfig({
       value: [
         {
           title: 'Docs',
-          link: '/docs/introduce-introduce',
+          link: '/docs/introduce/introduce',
+          children: [
+            {
+              title: 'Turorials',
+              link: '/docs/tutorials/getting-started',
+            },
+            {
+              title: 'Introduce',
+              link: '/docs/introduce/introduce',
+            },
+            {
+              title: 'Guides',
+              link: '/docs/guides/prepare',
+            },
+            {
+              title: 'API',
+              link: '/docs/api/api',
+            },
+            {
+              title: 'Umi Max',
+              link: '/docs/max/introduce',
+            },
+          ],
         },
         {
           title: 'Blog',
@@ -25,7 +50,7 @@ export default defineConfig({
           link: 'https://v3.umijs.org',
           title: 'v3.x',
         },
-      ]
+      ],
     },
   },
 });
