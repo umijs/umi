@@ -198,7 +198,7 @@ declare function Link(props: {
   prefetch?: boolean;
   to: string | Partial<{ pathname: string; search: string; hash: string }>;
   replace?: boolean;
-  state?: boolean;
+  state?: any;
   reloadDocument?: boolean;
 }): React.ReactElement;
 ```

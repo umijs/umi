@@ -460,7 +460,7 @@ paths:{
 ```ts
 interface IRoute {
   path: string;
-  file: string;
+  file?: string;
   id: string;
   parentId?: string;
   [key: string]: any;

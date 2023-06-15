@@ -215,6 +215,8 @@ export default withAuth(TheOldPage)
 ]
 ```
 
+> 使用约定式路由时，约定 `src/pages` 下所有的 `(j|t)sx?` 文件即路由。如果你需要修改默认规则，可以使用 [conventionRoutes](../api/config#conventionroutes) 配置。
+
 ### 动态路由
 
 约定，带 `$` 前缀的目录或文件为动态路由。若 `$` 后不指定参数名，则代表 `*` 通配，比如以下目录结构：

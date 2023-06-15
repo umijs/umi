@@ -201,7 +201,9 @@ interface EffectsCommandMap {
 interface Action<T = any> {
       type: T
 }
-export type Reducer<S = any, A extends Action = AnyAction> = (prevState: S, action: A) => S;
+export type Reducer<S = any, A extends Action = AnyAction> = (prevState: S, action: A) => ${
+        api.config.dva?.immer ? 'S | void' : 'S'
+      };
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 type EffectType = 'takeEvery' | 'takeLatest' | 'watcher' | 'throttle';
 type EffectWithType = [Effect, { type: EffectType }];

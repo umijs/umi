@@ -54,7 +54,7 @@ export enum EnableBy {
 export interface IRoute {
   path: string;
   absPath: string;
-  file: string;
+  file?: string;
   id: string;
   parentId?: string;
   [key: string]: any;
