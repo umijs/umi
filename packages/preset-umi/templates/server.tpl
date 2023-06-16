@@ -15,7 +15,7 @@ try {
 
 try {
   ServerInsertedHTMLContext = require('./core/serverInsertedHTMLContext').ServerInsertedHTMLContext;
-} catch { /* means `helmet: false`, do noting */ }
+} catch {}
 
 
 const routesWithServerLoader = {
