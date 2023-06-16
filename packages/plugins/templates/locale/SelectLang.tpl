@@ -378,8 +378,8 @@ const defaultLangUConfigMap = {
     icon: '🇨🇳',
     title: '语言'
   },
-  'zh-TW': {
-    lang: 'zh-TW',
+  'zh-HK': {
+    lang: 'zh-HK',
     label: '繁體中文',
     icon: '🇭🇰',
     title: '語言'
@@ -460,7 +460,7 @@ export const SelectLang: React.FC<SelectLangProps> = (props) => {
   } else { // 需要 antd 4.20.0 以上版本
     dropdownProps = { overlay: <Menu {...langMenu} /> };
   }
-  
+
   const inlineStyle = {
     cursor: "pointer",
     padding: "12px",
