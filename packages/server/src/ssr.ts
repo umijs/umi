@@ -27,6 +27,23 @@ interface CreateRequestHandlerOptions {
 
 const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> = new Set();
 
+const createJSXProvider = (Provider: any) => {
+  const JSXProvider = (props: any) => {
+    const addInsertedHtml = React.useCallback(
+      (handler: () => React.ReactNode) => {
+        serverInsertedHTMLCallbacks.add(handler);
+      },
+      [],
+    );
+
+    return React.createElement(Provider, {
+      children: props.children,
+      value: addInsertedHtml,
+    });
+  };
+  return JSXProvider;
+};
+
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
   return async (url: string) => {
     const {
@@ -90,19 +107,9 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       context,
     )) as ReactElement;
 
-    const JSXProvider = (props: any) => {
-      const addInsertedHtml = React.useCallback(
-        (handler: () => React.ReactNode) => {
-          serverInsertedHTMLCallbacks.add(handler);
-        },
-        [],
-      );
-
-      return React.createElement(opts.ServerInsertedHTMLContext.Provider, {
-        children: props.children,
-        value: addInsertedHtml,
-      });
-    };
+    const JSXProvider = createJSXProvider(
+      opts.ServerInsertedHTMLContext.Provider,
+    );
 
     return {
       element: React.createElement(JSXProvider, { children: element }),
@@ -125,19 +132,10 @@ const getGenerateStaticHTML = () => {
 
 export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
-  const JSXProvider = (props: any) => {
-    const addInsertedHtml = React.useCallback(
-      (handler: () => React.ReactNode) => {
-        serverInsertedHTMLCallbacks.add(handler);
-      },
-      [],
-    );
 
-    return React.createElement(opts.ServerInsertedHTMLContext.Provider, {
-      children: props.children,
-      value: addInsertedHtml,
-    });
-  };
+  const JSXProvider = createJSXProvider(
+    opts.ServerInsertedHTMLContext.Provider,
+  );
 
   return async (url: string) => {
     const jsx = await jsxGeneratorDeferrer(url);
