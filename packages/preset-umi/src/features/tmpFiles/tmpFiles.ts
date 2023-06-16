@@ -617,6 +617,11 @@ if (process.env.NODE_ENV === 'development') {
           exports.push(`export { TestBrowser } from './testBrowser';`);
         }
       }
+      if (api.config.ssr && api.appData.framework === 'react') {
+        exports.push(
+          `export { useServerInsertedHTML } from './core/serverInsertedHTMLContext';`,
+        );
+      }
       // plugins
       exports.push('// plugins');
       const allPlugins = readdirSync(api.paths.absTmpPath).filter((file) =>

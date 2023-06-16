@@ -1,5 +1,5 @@
-import type { ReactElement } from 'react';
-import { renderToPipeableStream } from 'react-dom/server';
+import React, { ReactElement } from 'react';
+import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type { IRoutesById } from './types';
@@ -7,6 +7,8 @@ import type { IRoutesById } from './types';
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
 }
+
+export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
 
 interface CreateRequestHandlerOptions {
   routesWithServerLoader: RouteLoaders;
@@ -20,7 +22,10 @@ interface CreateRequestHandlerOptions {
   getClientRootComponent: (PluginManager: any) => any;
   createHistory: (opts: any) => any;
   helmetContext?: any;
+  ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
 }
+
+const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> = new Set();
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
   return async (url: string) => {
@@ -81,19 +86,61 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       loaderData,
     };
 
+    const element = (await opts.getClientRootComponent(
+      context,
+    )) as ReactElement;
+
+    const JSXProvider = (props: any) => {
+      const addInsertedHtml = React.useCallback(
+        (handler: () => React.ReactNode) => {
+          serverInsertedHTMLCallbacks.add(handler);
+        },
+        [],
+      );
+
+      return React.createElement(opts.ServerInsertedHTMLContext.Provider, {
+        children: props.children,
+        value: addInsertedHtml,
+      });
+    };
+
     return {
-      element: (await opts.getClientRootComponent(context)) as ReactElement,
+      element: React.createElement(JSXProvider, { children: element }),
       manifest,
     };
   };
 }
 
+const getGenerateStaticHTML = () => {
+  return (
+    ReactDomServer.renderToString(
+      React.createElement(React.Fragment, {
+        children: Array.from(serverInsertedHTMLCallbacks).map((callback) =>
+          callback(),
+        ),
+      }),
+    ) || ''
+  );
+};
+
 export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
+  const JSXProvider = (props: any) => {
+    const addInsertedHtml = React.useCallback(
+      (handler: () => React.ReactNode) => {
+        serverInsertedHTMLCallbacks.add(handler);
+      },
+      [],
+    );
+
+    return React.createElement(opts.ServerInsertedHTMLContext.Provider, {
+      children: props.children,
+      value: addInsertedHtml,
+    });
+  };
 
   return async (url: string) => {
     const jsx = await jsxGeneratorDeferrer(url);
-
     if (jsx) {
       return new Promise(async (resolve, reject) => {
         let chunks: Buffer[] = [];
@@ -103,9 +150,9 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
           chunks.push(Buffer.from(chunk));
           next();
         };
-        writable.on('finish', () => {
+        writable.on('finish', async () => {
           let html = Buffer.concat(chunks).toString('utf8');
-
+          html += await getGenerateStaticHTML();
           // append helmet tags to head
           if (opts.helmetContext) {
             html = html.replace(
@@ -128,12 +175,15 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
 
         // why not use `renderToStaticMarkup` or `renderToString`?
         // they will return empty root by unknown reason (maybe umi has suspense logic?)
-        const stream = renderToPipeableStream(jsx.element, {
-          onShellReady() {
-            stream.pipe(writable);
+        const stream = ReactDomServer.renderToPipeableStream(
+          React.createElement(JSXProvider, { children: jsx.element }),
+          {
+            onShellReady() {
+              stream.pipe(writable);
+            },
+            onError: reject,
           },
-          onError: reject,
-        });
+        );
       });
     }
 
@@ -161,11 +211,22 @@ export default function createRequestHandler(
 
     if (!jsx) return next();
 
-    const stream = renderToPipeableStream(jsx.element, {
+    const writable = new Writable();
+
+    writable._write = (chunk, _encoding, next) => {
+      res.write(chunk);
+      next();
+    };
+
+    writable.on('finish', async () => {
+      res.write(await getGenerateStaticHTML());
+      res.end();
+    });
+
+    const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
       bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
       onShellReady() {
-        res.setHeader('Content-type', 'text/html');
-        stream.pipe(res);
+        stream.pipe(writable);
       },
       onError(x: any) {
         console.error(x);

@@ -63,6 +63,7 @@ export async function getClientRootComponent(opts: {
 function Html({ children, loaderData, manifest }: any) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
+
   return (
     <html lang="en">
       <head>
@@ -78,6 +79,7 @@ function Html({ children, loaderData, manifest }: any) {
             __html: `<b>Enable JavaScript to run this app.</b>`,
           }}
         />
+
         <div id="root">{children}</div>
         <script
           dangerouslySetInnerHTML={{
