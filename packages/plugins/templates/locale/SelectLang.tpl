@@ -378,12 +378,18 @@ const defaultLangUConfigMap = {
     icon: '🇨🇳',
     title: '语言'
   },
+  'zh-TW': {
+    lang: 'zh-TW',
+    label: '繁體中文',
+    icon: '🇭🇰',
+    title: '語言'
+  },
   'zh-HK': {
     lang: 'zh-HK',
     label: '繁體中文',
     icon: '🇭🇰',
     title: '語言'
-  }
+  },
 };
 
 export const SelectLang: React.FC<SelectLangProps> = (props) => {
