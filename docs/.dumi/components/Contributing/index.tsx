@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'umi';
-import SectionHeader from '../SectionHeader';
+import { SectionHeader } from '../SectionHeader';
 
 const ContributingWrapper = styled.div`
   max-width: 1200px;
@@ -22,7 +22,7 @@ const ContributingWrapper = styled.div`
   }
 `;
 
-export default () => {
+export const Contributing = () => {
   return (
     <ContributingWrapper>
       <SectionHeader title="参与建设" />

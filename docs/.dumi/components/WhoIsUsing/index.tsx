@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import SectionHeader from '../SectionHeader';
+import { SectionHeader } from '../SectionHeader';
 
 const WhoIsUsingWrapper = styled.div`
   max-width: 1200px;
@@ -20,7 +20,7 @@ const WhoIsUsingWrapper = styled.div`
     }
   }
 `;
-export default () => {
+export const WhoIsUsing = () => {
   return (
     <WhoIsUsingWrapper>
       <SectionHeader title="谁在使用" />

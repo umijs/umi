@@ -40,7 +40,7 @@ const NewsLetterFormWrapper = styled.div`
   }
 `;
 
-export default () => {
+export const NewsLetterForm = () => {
   return (
     <NewsLetterFormWrapper>
       <h2>订阅 Umi 的最新动态</h2>

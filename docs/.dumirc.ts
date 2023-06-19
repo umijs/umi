@@ -1,12 +1,17 @@
 import { defineConfig } from 'dumi';
+import { version } from '../lerna.json';
 
 export default defineConfig({
+  logo: 'https://gw.alipayobjects.com/zos/bmw-prod/598d14af-4f1c-497d-b579-5ac42cd4dd1f/k7bjua9c_w132_h130.png',
   resolve: {
     codeBlockMode: 'passive',
   },
   favicons: [
     'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   ],
+  define: {
+    'process.env.UMI_VERSION': version,
+  },
   themeConfig: {
     name: 'UmiJS',
     socialLinks: {
@@ -17,40 +22,28 @@ export default defineConfig({
       mode: 'override',
       value: [
         {
-          title: 'Docs',
+          title: '介绍',
           link: '/docs/introduce/introduce',
-          children: [
-            {
-              title: 'Turorials',
-              link: '/docs/tutorials/getting-started',
-            },
-            {
-              title: 'Introduce',
-              link: '/docs/introduce/introduce',
-            },
-            {
-              title: 'Guides',
-              link: '/docs/guides/prepare',
-            },
-            {
-              title: 'API',
-              link: '/docs/api/api',
-            },
-            {
-              title: 'Umi Max',
-              link: '/docs/max/introduce',
-            },
-          ],
         },
         {
-          title: 'Blog',
+          title: '指南',
+          link: '/docs/guides/getting-started',
+        },
+        {
+          title: 'API',
+          link: '/docs/api/api',
+        },
+        {
+          title: 'Umi Max',
+          link: '/docs/max/introduce',
+        },
+        {
+          title: '博客',
           link: '/blog/umi-4-rc',
-        },
-        {
-          link: 'https://v3.umijs.org',
-          title: 'v3.x',
         },
       ],
     },
   },
+  ...(process.env.NODE_ENV === 'development' ? {} : { ssr: {} }),
+  sitemap: { hostname: 'https://umijs.org/' },
 });

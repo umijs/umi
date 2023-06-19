@@ -2,45 +2,51 @@ import React from 'react';
 import { TextLoop } from 'react-text-loop-next';
 import styled from 'styled-components';
 import { Link } from 'umi';
-import GithubStar from './GithubStar';
+import { GithubStar } from './GithubStar';
+import {
+  BG_IMAGE,
+  BIG_LOGE_IMAGE,
+  BIG_SLOGAN1_IMAGE,
+  BIG_SLOGAN2_IMAGE,
+  BOW_IMAGE,
+  GITHUB_STAR_IMAGE,
+} from './image';
 
 const HeroWrapper = styled.div`
   height: 640px;
   position: relative;
-  .hero-bg {
+  .bg {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    background: url(https://img.alicdn.com/imgextra/i4/O1CN01Ri0dNS26K5UcRKrrU_!!6000000007642-2-tps-280-1400.png)
-      repeat-x;
+    background: url('${BG_IMAGE}') repeat-x;
     background-position: 0 -40px;
     background-size: 140px 700px;
     height: 640px;
     z-index: 1;
   }
-  .hero-wrapper {
+  .wrapper {
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     z-index: 2;
-    .hero-left {
+    .left {
       flex: 1;
       padding-top: 130px;
       padding-left: 90px;
-      .hero-bigLogo {
+      .bigLogo {
         width: 460px;
         height: 213px;
-        background: url(https://img.alicdn.com/imgextra/i4/O1CN01Gk5nSa1nkDO5AjXlN_!!6000000005127-2-tps-920-426.png)
-          no-repeat;
+        background: url('${BIG_LOGE_IMAGE}') no-repeat;
         background-size: 460px 213px;
       }
 
-      .hero-actions {
+      .actions {
         margin-top: 87px;
         display: flex;
-        .hero-button {
+        .button {
           background-image: linear-gradient(
             224deg,
             #0071da 0%,
@@ -55,7 +61,7 @@ const HeroWrapper = styled.div`
           font-size: 22px;
           margin-left: 27px;
         }
-        .hero-button:hover {
+        .button:hover {
           background-image: linear-gradient(
             224deg,
             #48a4fe 0%,
@@ -63,7 +69,7 @@ const HeroWrapper = styled.div`
             #8dc9ff 100%
           );
         }
-        .hero-githubStar {
+        .githubStar {
           display: flex;
           font-size: 18px;
           color: #4a5e71;
@@ -73,9 +79,8 @@ const HeroWrapper = styled.div`
           /*background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0iTTEyIDBDNS4zNzQgMCAwIDUuMzczIDAgMTJjMCA1LjMwMiAzLjQzOCA5LjggOC4yMDcgMTEuMzg3LjU5OS4xMTEuNzkzLS4yNjEuNzkzLS41Nzd2LTIuMjM0Yy0zLjMzOC43MjYtNC4wMzMtMS40MTYtNC4wMzMtMS40MTYtLjU0Ni0xLjM4Ny0xLjMzMy0xLjc1Ni0xLjMzMy0xLjc1Ni0xLjA4OS0uNzQ1LjA4My0uNzI5LjA4My0uNzI5IDEuMjA1LjA4NCAxLjgzOSAxLjIzNyAxLjgzOSAxLjIzNyAxLjA3IDEuODM0IDIuODA3IDEuMzA0IDMuNDkyLjk5Ny4xMDctLjc3NS40MTgtMS4zMDUuNzYyLTEuNjA0LTIuNjY1LS4zMDUtNS40NjctMS4zMzQtNS40NjctNS45MzEgMC0xLjMxMS40NjktMi4zODEgMS4yMzYtMy4yMjEtLjEyNC0uMzAzLS41MzUtMS41MjQuMTE3LTMuMTc2IDAgMCAxLjAwOC0uMzIyIDMuMzAxIDEuMjNBMTEuNTA5IDExLjUwOSAwIDAgMSAxMiA1LjgwM2MxLjAyLjAwNSAyLjA0Ny4xMzggMy4wMDYuNDA0IDIuMjkxLTEuNTUyIDMuMjk3LTEuMjMgMy4yOTctMS4yMy42NTMgMS42NTMuMjQyIDIuODc0LjExOCAzLjE3Ni43Ny44NCAxLjIzNSAxLjkxMSAxLjIzNSAzLjIyMSAwIDQuNjA5LTIuODA3IDUuNjI0LTUuNDc5IDUuOTIxLjQzLjM3Mi44MjMgMS4xMDIuODIzIDIuMjIydjMuMjkzYzAgLjMxOS4xOTIuNjk0LjgwMS41NzZDMjAuNTY2IDIxLjc5NyAyNCAxNy4zIDI0IDEyYzAtNi42MjctNS4zNzMtMTItMTItMTJ6Ii8+PC9zdmc+) no-repeat 0 center;*/
           /*background-size: 24px 24px;*/
         }
-        .hero-githubStar:before {
-          background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0iTTEyIDBDNS4zNzQgMCAwIDUuMzczIDAgMTJjMCA1LjMwMiAzLjQzOCA5LjggOC4yMDcgMTEuMzg3LjU5OS4xMTEuNzkzLS4yNjEuNzkzLS41Nzd2LTIuMjM0Yy0zLjMzOC43MjYtNC4wMzMtMS40MTYtNC4wMzMtMS40MTYtLjU0Ni0xLjM4Ny0xLjMzMy0xLjc1Ni0xLjMzMy0xLjc1Ni0xLjA4OS0uNzQ1LjA4My0uNzI5LjA4My0uNzI5IDEuMjA1LjA4NCAxLjgzOSAxLjIzNyAxLjgzOSAxLjIzNyAxLjA3IDEuODM0IDIuODA3IDEuMzA0IDMuNDkyLjk5Ny4xMDctLjc3NS40MTgtMS4zMDUuNzYyLTEuNjA0LTIuNjY1LS4zMDUtNS40NjctMS4zMzQtNS40NjctNS45MzEgMC0xLjMxMS40NjktMi4zODEgMS4yMzYtMy4yMjEtLjEyNC0uMzAzLS41MzUtMS41MjQuMTE3LTMuMTc2IDAgMCAxLjAwOC0uMzIyIDMuMzAxIDEuMjNBMTEuNTA5IDExLjUwOSAwIDAgMSAxMiA1LjgwM2MxLjAyLjAwNSAyLjA0Ny4xMzggMy4wMDYuNDA0IDIuMjkxLTEuNTUyIDMuMjk3LTEuMjMgMy4yOTctMS4yMy42NTMgMS42NTMuMjQyIDIuODc0LjExOCAzLjE3Ni43Ny44NCAxLjIzNSAxLjkxMSAxLjIzNSAzLjIyMSAwIDQuNjA5LTIuODA3IDUuNjI0LTUuNDc5IDUuOTIxLjQzLjM3Mi44MjMgMS4xMDIuODIzIDIuMjIydjMuMjkzYzAgLjMxOS4xOTIuNjk0LjgwMS41NzZDMjAuNTY2IDIxLjc5NyAyNCAxNy4zIDI0IDEyYzAtNi42MjctNS4zNzMtMTItMTItMTJ6Ii8+PC9zdmc+)
-            no-repeat 0 center;
+        .githubStar:before {
+          background: url('${GITHUB_STAR_IMAGE}') no-repeat 0 center;
           background-size: 24px 24px;
           width: 24px;
           height: 54px;
@@ -84,45 +89,42 @@ const HeroWrapper = styled.div`
           margin-right: 6px;
         }
       }
-      .hero-actions a {
+      .actions a {
         text-decoration: none;
       }
     }
-    .hero-right {
+    .right {
       width: 460px;
       padding-top: 90px;
       margin-right: 40px;
-      .hero-bigSlogan1 {
-        background: url(https://img.alicdn.com/imgextra/i4/O1CN01AYMMmi1d4P4hiTpYK_!!6000000003682-2-tps-468-152.png)
-          no-repeat;
+      .bigSlogan1 {
+        background: url('${BIG_SLOGAN1_IMAGE}') no-repeat;
         width: 234px;
         height: 76px;
         background-size: 234px 76px;
         margin: 0 auto 6px;
       }
 
-      .hero-bigSlogan2 {
-        background: url(https://img.alicdn.com/imgextra/i4/O1CN011JiaU21wvVhMqXI4G_!!6000000006370-2-tps-700-116.png)
-          no-repeat;
+      .bigSlogan2 {
+        background: url('${BIG_SLOGAN2_IMAGE}') no-repeat;
         width: 350px;
         height: 58px;
         background-size: 350px 58px;
         margin: 0 auto 14px;
       }
 
-      .hero-slogan {
+      .slogan {
         font-size: 25px;
         color: #708293;
         text-align: center;
         width: 460px;
       }
-      .hero-slogan strong {
+      .slogan strong {
         color: #0273dc;
         font-weight: normal;
       }
-      .hero-bow {
-        background: url(https://img.alicdn.com/imgextra/i3/O1CN01L7phqd1ud4WehHiRc_!!6000000006059-2-tps-760-386.png)
-          no-repeat;
+      .bow {
+        background: url('${BOW_IMAGE}') no-repeat;
         width: 380px;
         height: 193px;
         background-size: 380px 193px;
@@ -130,44 +132,44 @@ const HeroWrapper = styled.div`
       }
     }
   }
-  [data-prefers-color='dark'] .hero-bg {
+  [data-prefers-color='dark'] .bg {
     opacity: 0.1;
   }
-  [data-prefers-color='dark'] .hero-githubStar {
+  [data-prefers-color='dark'] .githubStar {
     color: rgba(255, 255, 255, 0.7);
   }
-  [data-prefers-color='dark'] .hero-githubStar:before {
+  [data-prefers-color='dark'] .githubStar:before {
     filter: invert(80%);
   }
-  [data-prefers-color='dark'] .hero-slogan {
+  [data-prefers-color='dark'] .slogan {
     color: rgba(255, 255, 255, 0.8);
   }
-  [data-prefers-color='dark'] .hero-bow {
+  [data-prefers-color='dark'] .bow {
     opacity: 0.8;
   }
 `;
-export default () => {
+export const Hero = () => {
   // TODO: github stars 存 localStorage
   //  采用 stale-while-revalidate 的策略
   return (
     <HeroWrapper>
-      <div className="hero-bg"></div>
-      <div className="hero-wrapper">
-        <div className="hero-left">
-          <div className="hero-bigLogo" />
-          <div className="hero-actions">
+      <div className="bg"></div>
+      <div className="wrapper">
+        <div className="left">
+          <div className="bigLogo" />
+          <div className="actions">
             <Link to="/docs/tutorials/getting-started">
-              <div className="hero-button">快速上手 →</div>
+              <div className="button">快速上手 →</div>
             </Link>
-            <div className="hero-githubStar">
+            <div className="githubStar">
               <GithubStar />
             </div>
           </div>
         </div>
-        <div className="hero-right">
-          <div className="hero-bigSlogan1"></div>
-          <div className="hero-bigSlogan2"></div>
-          <div className="hero-slogan">
+        <div className="right">
+          <div className="bigSlogan1"></div>
+          <div className="bigSlogan2"></div>
+          <div className="slogan">
             用 Umi 构建你的下一个{' '}
             <TextLoop>
               <strong>React</strong>
@@ -181,10 +183,10 @@ export default () => {
             </TextLoop>{' '}
             应用
           </div>
-          <div className="hero-slogan">
+          <div className="slogan">
             带给你<strong>简单</strong>而<strong>愉悦</strong>的 Web 开发体验
           </div>
-          <div className="hero-bow" />
+          <div className="bow" />
         </div>
       </div>
     </HeroWrapper>

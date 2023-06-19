@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import CountUp from 'react-countup';
 
 const LS_KEY = 'github-stars';
 
-export default () => {
+export const GithubStar = () => {
   const [count, setCount] = useState(localStorage.getItem(LS_KEY) || '12K+');
 
   useEffect(() => {
@@ -21,5 +22,9 @@ export default () => {
     })();
   }, []);
 
-  return <span>{count} Github Stars</span>;
+  return (
+    <span>
+      <CountUp end={+count} /> Github Stars
+    </span>
+  );
 };

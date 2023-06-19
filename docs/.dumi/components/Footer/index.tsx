@@ -1,24 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'umi';
-import NewsLetterForm from './NewsLetterForm';
+import { NewsLetterForm } from './NewsLetterForm';
 
 const FooterWrapper = styled.div`
   background: #f1f5f7;
   padding: 40px 0;
   color: #4a5e71;
-  .footer-wrapper {
+  .wrapper {
     display: flex;
     max-width: 1200px;
     margin: 0 auto;
-    .footer-left {
+    .left {
       flex: 1;
-      .footer-line {
+      .line {
         line-height: 40px;
         display: flex;
       }
 
-      .footer-line h3 {
+      .line h3 {
         font-size: 18px;
         width: 92px;
         margin-right: 66px;
@@ -27,20 +27,20 @@ const FooterWrapper = styled.div`
         font-weight: 400;
       }
 
-      .footer-line div {
+      .line div {
         flex: 1;
       }
 
-      .footer-line div a {
+      .line div a {
         text-decoration: none;
         color: #4a5e71;
       }
     }
 
-    .footer-right {
+    .right {
       min-width: 400px;
       font-size: 16px;
-      .footer-copyright {
+      .copyright {
         font-size: 14px;
         color: #8996a1;
         line-height: 22px;
@@ -49,12 +49,13 @@ const FooterWrapper = styled.div`
     }
   }
 `;
-export default () => {
+
+export const Footer = () => {
   return (
     <FooterWrapper>
-      <div className="footer-wrapper">
-        <div className="footer-left">
-          <div className="footer-line">
+      <div className="wrapper">
+        <div className="left">
+          <div className="line">
             <h3>文档和帮助</h3>
             <div>
               <a target="_blank" href="https://fb.umijs.org">
@@ -68,7 +69,7 @@ export default () => {
               <Link to="/docs/introduce/upgrade-to-umi-4">升级到 Umi 4</Link>
             </div>
           </div>
-          <div className="footer-line">
+          <div className="line">
             <h3>Umi 生态</h3>
             <div>
               <Link to="/blog/umi-4-rc">开发日志</Link> · 团队 · 里程碑 ·{' '}
@@ -77,7 +78,7 @@ export default () => {
               </a>
             </div>
           </div>
-          <div className="footer-line">
+          <div className="line">
             <h3>Umi 资源</h3>
             <div>
               <Link to="/docs/introduce/introduce">文档</Link> · 示例 · 插件 ·{' '}
@@ -87,11 +88,8 @@ export default () => {
             </div>
           </div>
         </div>
-        <div className="footer-right">
+        <div className="right">
           <NewsLetterForm />
-          <div className="footer-copyright">
-            Open-source MIT Licensed · Copyright © 2017-present
-          </div>
         </div>
       </div>
     </FooterWrapper>

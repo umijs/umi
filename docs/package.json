@@ -1,17 +1,18 @@
 {
   "name": "@umijs/docs",
   "version": "0.0.1",
-  "description": "插件化的企业级前端应用框架",
-  "license": "MIT",
   "scripts": {
     "build": "dumi build",
     "dev": "dumi dev",
     "prepare": "dumi setup",
     "start": "npm run dev"
   },
+  "dependencies": {
+    "@ant-design/icons-svg": "^4.2.1",
+    "react-countup": "^6.4.2"
+  },
   "devDependencies": {
     "dumi": "^2.2.0",
     "styled-components": "6.0.0-rc.0"
-  },
-  "authors": []
+  }
 }

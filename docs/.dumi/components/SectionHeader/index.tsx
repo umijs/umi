@@ -27,7 +27,7 @@ const SectionHeaderWrapper = styled.div`
   }
 `;
 
-export default (props: { title: string }) => {
+export const SectionHeader = (props: { title: string }) => {
   return (
     <SectionHeaderWrapper>
       <div></div>
