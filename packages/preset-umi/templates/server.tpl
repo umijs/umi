@@ -6,16 +6,13 @@ import { PluginManager } from '{{{ umiPluginPath }}}';
 import createRequestHandler, { createMarkupGenerator } from '{{{ umiServerPath }}}';
 
 let helmetContext;
-let ServerInsertedHTMLContext;
 
 try {
   helmetContext = require('./core/helmetContext').context;
 } catch { /* means `helmet: false`, do noting */ }
 
 
-try {
-  ServerInsertedHTMLContext = require('./core/serverInsertedHTMLContext').ServerInsertedHTMLContext;
-} catch {}
+const ServerInsertedHTMLContext = require('./core/serverInsertedHTMLContext').ServerInsertedHTMLContext;
 
 
 const routesWithServerLoader = {
