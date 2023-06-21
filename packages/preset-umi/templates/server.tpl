@@ -2,6 +2,7 @@ import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
+import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
 import { PluginManager } from '{{{ umiPluginPath }}}';
 import createRequestHandler, { createMarkupGenerator } from '{{{ umiServerPath }}}';
 
@@ -10,10 +11,6 @@ let helmetContext;
 try {
   helmetContext = require('./core/helmetContext').context;
 } catch { /* means `helmet: false`, do noting */ }
-
-
-const ServerInsertedHTMLContext = require('./core/serverInsertedHTMLContext').ServerInsertedHTMLContext;
-
 
 const routesWithServerLoader = {
 {{#routesWithServerLoader}}
