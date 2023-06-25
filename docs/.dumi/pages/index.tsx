@@ -8,14 +8,16 @@ import { Footer } from '../components/Footer';
 import { Hero } from '../components/Hero';
 import { WhoIsUsing } from '../components/WhoIsUsing';
 
-export default () => {
+const Index = () => {
   return (
     <>
-      <Hero></Hero>
-      <Features></Features>
-      <WhoIsUsing></WhoIsUsing>
-      <Contributing></Contributing>
-      <Footer></Footer>
+      <Hero />
+      <Features />
+      <WhoIsUsing />
+      <Contributing />
+      <Footer />
     </>
   );
 };
+
+export default Index;
