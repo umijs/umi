@@ -21,7 +21,7 @@ toc: content
 
 ## 开始使用
 
-:::success
+:::success{title=🏆︎}
 本教程假设您对什么是微前端，什么是 Qiankun 微应用，以及如何使用 Qiankun 微应用已经有了基本的了解。
 :::
 

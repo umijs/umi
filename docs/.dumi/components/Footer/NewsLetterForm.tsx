@@ -4,6 +4,10 @@ import styled from 'styled-components';
 const NewsLetterFormWrapper = styled.div`
   font-size: 18px;
   margin-bottom: 14px;
+  h2 {
+    font-size: 18px;
+    font-weight: 400;
+  }
   input {
     background: #ffffff;
     border: 1px solid #bac1c8;

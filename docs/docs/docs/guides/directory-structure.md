@@ -118,7 +118,7 @@ COMPRESS=none
 
 #### .umi 目录
 
-:::warning
+:::warning{title=🛎️}
 **不要提交 `.umi` 临时文件到 git 仓库，默认已在 `.gitignore` 被忽略。**
 :::
 
@@ -126,7 +126,7 @@ dev 时的临时文件目录，比如入口文件、路由等，都会被临时�
 
 #### .umi-production 目录
 
-:::warning
+:::warning{title=🛎️}
 **不要提交 `.umi-production` 临时文件到 git 仓库，默认已在 `.gitignore` 被忽略。**
 :::
 
@@ -252,7 +252,7 @@ Umi 区别于其他前端框架，没有显式的程序主入口（如 `src/inde
 
 当你有需要全局使用的样式时，请考虑加入此文件。
 
-:::info
+:::info{title=💡}
 需要注意的是，此文件的优先级在第三方组件库的样式之后，所以当你有覆盖第三方库样式的需求时，请使用 [`overrides.css`](#overridescsslesssassscss) 。
 :::
 

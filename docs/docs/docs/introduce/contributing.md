@@ -102,7 +102,7 @@ $ pnpm doc:dev
 
 Umi 文档的编写基于 MDX 格式。MDX 是 Markdown 格式的拓展，允许您在撰写 Umi 文档时插入 JSX 组件。
 
-:::success
+:::success{title=🏆︎}
 撰写 **文档（Document）** 时，可用的组件可以在 `packages/plugin-docs/client/theme-doc/components` 目录下找到。撰写 **博客（Blog）** 时，可用的组件可以在 `packages/plugin-docs/client/theme-blog/components` 目录下找到。
 :::
 
@@ -129,7 +129,7 @@ $ pnpm dev:css
 
 Umi 会监听 `docs` 和 `packages/plugin-docs/client` 目录下文件的变化，而不会监听 `packages/plugin-docs/src` 目录。
 
-:::info
+:::info{title=💡}
 如果您需要编译 `packages/plugin-docs/src` 中的文件，请移动到 `packages/plugin-docs` 目录下执行 `pnpm build` 命令，然后重启开发。
 :::
 
