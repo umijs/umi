@@ -13,7 +13,7 @@ toc: content
 其中，ESLint 配置具备如下特点：
 
 1. **仅质量相关**：我们从数百条规则中筛选出数十条与编码质量相关的规则进行白名单开启，回归 Lint 本质，且不会与 Prettier 的规则冲突
-2. **性能优先**：部分 TypeScript 的规则实用型低但项目全量编译的成本却很高，我们对这些规则进行禁用以提升性能
+2. **性能优先**：部分 TypeScript 的规则实用性低但项目全量编译的成本却很高，我们对这些规则进行禁用以提升性能
 3. **内置常用插件**：包含 react、react-hooks、@typescript/eslint、jest，满足日常所需
 
 另外，Stylelint 配置还内置 CSS-in-JS 支持，可以检测出 JS 文件中的样式表语法错误。听起来很有吸引力？来看看如何接入吧。
@@ -96,7 +96,7 @@ lint-staged 用来驱动 `umi lint` 命令，每次仅将变更的内容交给 `
 
 ```bash
 $ npm i lint-staged -D
-#or 
+#or
 $ pnpm add lint-staged -D
 ```
 
