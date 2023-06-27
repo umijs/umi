@@ -9,12 +9,18 @@ function createRouteMiddleware(opts: { api: IApi }) {
     let webpackStats: Stats | null = null;
     let onStats: Function | null = null;
 
-    compiler.hooks.done.tap('umiRouteMiddleware', (stats: any) => {
+    compiler?.hooks.done.tap('umiRouteMiddleware', (stats: any) => {
       webpackStats = stats;
       onStats?.(stats);
     });
 
     async function getStats() {
+      if (!compiler && process.env.OKAM) {
+        return {
+          compilation: { assets: { 'umi.js': 'umi.js' } },
+          hasErrors: () => false,
+        };
+      }
       if (webpackStats) return Promise.resolve(webpackStats);
       return new Promise((resolve) => {
         onStats = (stats: any) => {
