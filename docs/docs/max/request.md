@@ -420,7 +420,6 @@ const config = {
     (response) => {
       // 不再需要异步处理读取返回体内容，可直接在data中读出，部分字段可在 config 中找到
       const { data = {} as any, config } = response;
-      console.log('自动移 request');
       // do something
       return response;
     },
