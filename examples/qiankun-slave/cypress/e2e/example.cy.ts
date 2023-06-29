@@ -54,6 +54,14 @@ describe('QianKun Plugin', () => {
     });
   });
 
+  describe('microApp route prepend ok', () => {
+    it('hit microApp route', () => {
+      cy.visit('/prefix/nav');
+
+      cy.contains('goto slave app2');
+    });
+  });
+
   describe('MicroAppLink crossing multi apps', function () {
     it('jump between slave and slave-app2', () => {
       cy.visit('/slave/nav');

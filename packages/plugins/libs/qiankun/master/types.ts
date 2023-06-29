@@ -1,6 +1,7 @@
 // @ts-nocheck
 /* eslint-disable */
 import { FrameworkConfiguration, FrameworkLifeCycles } from 'qiankun';
+import type { MicroAppRouteMode } from './constants';
 
 type BaseIConfig = any;
 
@@ -22,7 +23,7 @@ export type MicroAppRoute = {
    * prepend 既作为匹配规则，也作为子应用 router.basename
    * match 仅作为匹配规则
    */
-  mode: 'match' | 'prepend';
+  mode: MicroAppRouteMode;
 } & Record<string, any>;
 
 export type MasterOptions = {
