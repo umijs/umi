@@ -22,6 +22,7 @@ export default {
   routes: [
     { path: '/', redirect: '/home' },
     { path: '/home', component: 'index' },
+    { path: '/nav', component: 'never' },
     {
       path: '/slave/*',
       microApp: 'slave',
