@@ -133,7 +133,7 @@ import React, { useMemo } from 'react';
 import {
   ProLayout,
 } from "${resolvedPkgPath}";
-import './Layout.less';
+import './Layout.css';
 import Logo from './Logo';
 import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
@@ -556,7 +556,7 @@ export function getRightRenderContent (opts: {
 
     // Layout.less
     api.writeTmpFile({
-      path: 'Layout.less',
+      path: 'Layout.css',
       content: `
 ${
   // antd@5里面没有这个样式了
@@ -565,7 +565,7 @@ ${
     : "@import '~antd/es/style/themes/default.less';"
 }
 @media screen and (max-width: 480px) {
-  // 在小屏幕的时候可以有更好的体验
+  /* 在小屏幕的时候可以有更好的体验 */
   .umi-plugin-layout-container {
     width: 100% !important;
   }
@@ -573,13 +573,11 @@ ${
     border-radius: 0 !important;
   }
 }
-.umi-plugin-layout-menu {
-  .anticon {
-    margin-right: 8px;
-  }
-  .ant-dropdown-menu-item {
-    min-width: 160px;
-  }
+.umi-plugin-layout-menu .anticon {
+  margin-right: 8px;
+}
+.umi-plugin-layout-menu .ant-dropdown-menu-item {
+  min-width: 160px;
 }
 .umi-plugin-layout-right {
   display: flex !important;
@@ -587,30 +585,30 @@ ${
   height: 100%;
   margin-left: auto;
   overflow: hidden;
-  .umi-plugin-layout-action {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-    > i {
-      color: rgba(255, 255, 255, 0.85);
-      vertical-align: middle;
-    }
-    &:hover {
-      background: rgba(0, 0, 0, 0.025);
-    }
-    &:global(.opened) {
-      background: rgba(0, 0, 0, 0.025);
-    }
-  }
-  .umi-plugin-layout-search {
-    padding: 0 12px;
-    &:hover {
-      background: transparent;
-    }
-  }
+}
+.umi-plugin-layout-right .umi-plugin-layout-action {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.umi-plugin-layout-right .umi-plugin-layout-action > i {
+  color: rgba(255, 255, 255, 0.85);
+  vertical-align: middle;
+}
+.umi-plugin-layout-right .umi-plugin-layout-action:hover {
+  background: rgba(0, 0, 0, 0.025);
+}
+.umi-plugin-layout-right .umi-plugin-layout-action.opened {
+  background: rgba(0, 0, 0, 0.025);
+}
+.umi-plugin-layout-right .umi-plugin-layout-search {
+  padding: 0 12px;
+}
+.umi-plugin-layout-right .umi-plugin-layout-search:hover {
+  background: transparent;
 }
 .umi-plugin-layout-name {
   margin-left: 8px;
