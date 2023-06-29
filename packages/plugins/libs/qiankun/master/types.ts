@@ -19,11 +19,7 @@ export type App = {
 export type MicroAppRoute = {
   path: string;
   microApp: string;
-  /**
-   * prepend 既作为匹配规则，也作为子应用 router.basename
-   * match 仅作为匹配规则
-   */
-  mode: MicroAppRouteMode;
+  mode: `${MicroAppRouteMode}`;
 } & Record<string, any>;
 
 export type MasterOptions = {
