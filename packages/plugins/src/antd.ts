@@ -292,6 +292,7 @@ export type IRuntimeConfig = {
 
   api.addRuntimePlugin(() => {
     if (
+      api.config.antd.styleProvider ||
       api.config.antd.configProvider ||
       (appComponentAvailable && api.config.antd.appConfig)
     ) {
