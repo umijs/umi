@@ -127,6 +127,13 @@ interface IRequest{
    <T = any>(url: string): Promise<T>;  // 不提供 opts 时，默认使用 'GET' method，并且默认返回 data
 }
 
+interface IRequestHandle {
+  <T = any>(instance:AxiosInstance,config:RequestConfig, url: string, opts: IRequestOptionsWithResponse): Promise<AxiosResponse<T>>;
+  <T = any>(instance:AxiosInstance,config:RequestConfig, url: string, opts: IRequestOptionsWithoutResponse): Promise<T>;
+  <T = any>(instance:AxiosInstance,config:RequestConfig, url: string, opts: IRequestOptions): Promise<T>; // getResponse 默认是 false， 因此不提供该参数时，只返回 data
+  <T = any>(instance:AxiosInstance,config:RequestConfig, url: string): Promise<T>;  // 不提供 opts 时，默认使用 'GET' method，并且默认返回 data
+}
+
 type RequestError = AxiosError | Error
 
 interface IErrorHandler {
@@ -161,14 +168,12 @@ const getConfig = (): RequestConfig => {
   return config;
 };
 
-const getRequestInstance = (): AxiosInstance => {
-  if (requestInstance) return requestInstance;
-  const config = getConfig();
-  requestInstance = axios.create(config);
+const createAxios = (config: RequestConfig): AxiosInstance => {
+  const instance = axios.create(config);
 
   config?.requestInterceptors?.forEach((interceptor) => {
     if(interceptor instanceof Array){
-      requestInstance.interceptors.request.use((config) => {
+      instance.interceptors.request.use((config) => {
         const { url } = config;
         if(interceptor[0].length === 2){
           const { url: newUrl, options } = interceptor[0](url, config);
@@ -177,7 +182,7 @@ const getRequestInstance = (): AxiosInstance => {
         return interceptor[0](config);
       }, interceptor[1]);
     } else {
-      requestInstance.interceptors.request.use((config) => {
+      instance.interceptors.request.use((config) => {
         const { url } = config;
         if(interceptor.length === 2){
           const { url: newUrl, options } = interceptor(url, config);
@@ -190,28 +195,32 @@ const getRequestInstance = (): AxiosInstance => {
 
   config?.responseInterceptors?.forEach((interceptor) => {
     interceptor instanceof Array ?
-      requestInstance.interceptors.response.use(interceptor[0], interceptor[1]):
-       requestInstance.interceptors.response.use(interceptor);
+      instance.interceptors.response.use(interceptor[0], interceptor[1]):
+       instance.interceptors.response.use(interceptor);
   });
 
   // 当响应的数据 success 是 false 的时候，抛出 error 以供 errorHandler 处理。
-  requestInstance.interceptors.response.use((response) => {
+  instance.interceptors.response.use((response) => {
     const { data } = response;
     if(data?.success === false && config?.errorConfig?.errorThrower){
       config.errorConfig.errorThrower(data);
     }
     return response;
-  })
+  });
+  return instance;
+}
+const getRequestInstance = (): AxiosInstance => {
+  if (requestInstance) return requestInstance;
+  const config = getConfig();
+  requestInstance = createAxios(config);
   return requestInstance;
 };
 
-const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
-  const requestInstance = getRequestInstance();
-  const config = getConfig();
+const requestHandle: IRequestHandle = (instance:AxiosInstance, config:RequestConfig, url: string, opts: any = { method: 'GET' })=>{
   const { getResponse = false, requestInterceptors, responseInterceptors } = opts;
   const requestInterceptorsToEject = requestInterceptors?.map((interceptor) => {
     if(interceptor instanceof Array){
-      return requestInstance.interceptors.request.use((config) => {
+      return instance.interceptors.request.use((config) => {
         const { url } = config;
         if(interceptor[0].length === 2){
           const { url: newUrl, options } = interceptor[0](url, config);
@@ -220,7 +229,7 @@ const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
         return interceptor[0](config);
       }, interceptor[1]);
     } else {
-      return requestInstance.interceptors.request.use((config) => {
+      return instance.interceptors.request.use((config) => {
         const { url } = config;
         if(interceptor.length === 2){
           const { url: newUrl, options } = interceptor(url, config);
@@ -232,27 +241,27 @@ const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
     });
   const responseInterceptorsToEject = responseInterceptors?.map((interceptor) => {
     return interceptor instanceof Array ?
-      requestInstance.interceptors.response.use(interceptor[0], interceptor[1]):
-       requestInstance.interceptors.response.use(interceptor);
+      instance.interceptors.response.use(interceptor[0], interceptor[1]):
+       instance.interceptors.response.use(interceptor);
     });
   return new Promise((resolve, reject)=>{
-    requestInstance
+    instance
       .request({...opts, url})
       .then((res)=>{
         requestInterceptorsToEject?.forEach((interceptor) => {
-          requestInstance.interceptors.request.eject(interceptor);
+          instance.interceptors.request.eject(interceptor);
         });
         responseInterceptorsToEject?.forEach((interceptor) => {
-          requestInstance.interceptors.response.eject(interceptor);
+          instance.interceptors.response.eject(interceptor);
         });
         resolve(getResponse ? res : res.data);
       })
       .catch((error)=>{
         requestInterceptorsToEject?.forEach((interceptor) => {
-          requestInstance.interceptors.request.eject(interceptor);
+          instance.interceptors.request.eject(interceptor);
         });
         responseInterceptorsToEject?.forEach((interceptor) => {
-          requestInstance.interceptors.response.eject(interceptor);
+          instance.interceptors.response.eject(interceptor);
         });
         try {
           const handler =
@@ -267,11 +276,19 @@ const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
   })
 }
 
+const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
+  const requestInstance = getRequestInstance();
+  const config = getConfig();
+  return requestHandle(requestInstance, config, url, opts);
+}
+
 export {
   useRequest,
   UseRequestProvider,
   request,
   getRequestInstance,
+  createAxios,
+  requestHandle,
 };
 
 export type {
@@ -333,6 +350,8 @@ export {
   UseRequestProvider,
   request,
   getRequestInstance,
+  createAxios,
+  requestHandle,
 } from './request';
 `,
     });

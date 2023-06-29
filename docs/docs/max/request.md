@@ -400,3 +400,39 @@ export const request: RequestConfig = {
 上面的例子中的错误处理方案来自于 `umi@3` 的内置错误处理。在这个版本中，我们把它删除了，以方便用户更加自由地定制错误处理方案。如果你仍然想要使用它，可以将这段运行时配置粘贴到你的项目中。
 
 你也可以通过写响应拦截器的方式来进行自己的错误处理，**不一定局限于 errorConfig**。
+
+## 多请求实例
+
+有时候由于业务需要，我们需要在同一个项目中使用两套请求配置。见 [11305](https://github.com/umijs/umi/issues/11305)。
+
+此处提供 `createAxios, requestHandle` 保证同一个项目中创建出来的请求实例保持一致的逻辑，差异仅仅是配置不同。
+
+使用方法如下所示：
+
+```tsx
+import type { RequestConfig } from '@umijs/max';
+import { createAxios, requestHandle } from '@umijs/max';
+import type { AnalysisData } from './data';
+
+const config = {
+  responseInterceptors: [
+    // 直接写一个 function，作为拦截器
+    (response) => {
+      // 不再需要异步处理读取返回体内容，可直接在data中读出，部分字段可在 config 中找到
+      const { data = {} as any, config } = response;
+      console.log('自动移 request');
+      // do something
+      return response;
+    },
+  ],
+} as RequestConfig;
+
+const q = (url: string, opts: any = { method: 'GET' }) => {
+  const requestInstance = createAxios(config);
+  return requestHandle(requestInstance, config, url, opts);
+};
+
+export async function fakeChartData(): Promise<{ data: AnalysisData }> {
+  return q('/api/fake_analysis_chart_data');
+}
+```
