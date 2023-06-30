@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { Navigate, type IRouteProps } from 'umi';
+import { defaultMicroAppRouteMode, MicroAppRouteMode } from './constants';
 import { getMicroAppRouteComponent } from './getMicroAppRouteComponent';
 import type { MicroAppRoute } from './types';
 
@@ -70,8 +71,9 @@ export function patchMicroAppRoute(
       }
     }
 
+    const { mode = defaultMicroAppRouteMode } = route;
     // 在前缀模式下，自动追加通配符，匹配子应用的路由
-    if (route.mode === 'prepend' && !route.path.endsWith('/*')) {
+    if (mode === MicroAppRouteMode.PREPEND && !route.path.endsWith('/*')) {
       route.path = route.path.replace(/\/?$/, '/*');
     }
 
