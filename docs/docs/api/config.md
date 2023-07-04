@@ -1442,6 +1442,15 @@ theme: { '@primary-color': '#1DA57A' }
 
 配置全局页面 title，暂时只支持静态的 Title。
 
+## transitionRouter
+
+- 类型：`object`
+- 默认值：`null`
+
+仅 React 18 可用。
+
+在切换页面时自动使用 `startTransition` 标记为非紧急更新，这可以避免 loading 态突然出现又消失的闪烁效果等[问题](https://react.dev/reference/react/Suspense#preventing-already-revealed-content-from-hiding)，提升用户体验。
+
 ## verifyCommit
 
 - 类型：`{ scope: string[]; allowEmoji: boolean }`
