@@ -14,6 +14,8 @@ export default function deleteOutputFiles(
     name: 'bundler-vite:delete-output-files',
     generateBundle(_, output) {
       Object.keys(output).forEach((name) => {
+        // vite use '/' in windows
+        files = files.map((file) => file.replace(/\\/g, '/'));
         if (files.includes(output[name].fileName)) {
           beforeDelete(output[name]);
           delete output[name];
