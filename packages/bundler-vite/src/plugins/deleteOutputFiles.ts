@@ -1,4 +1,6 @@
+import { winPath } from '@umijs/utils';
 import type { Plugin } from '../../compiled/vite';
+
 // @ts-ignore
 type fileType = Parameters<NonNullable<Plugin['generateBundle']>>[1]['file'];
 
@@ -15,7 +17,7 @@ export default function deleteOutputFiles(
     generateBundle(_, output) {
       Object.keys(output).forEach((name) => {
         // vite use '/' in windows
-        files = files.map((file) => file.replace(/\\/g, '/'));
+        files = files.map((file) => winPath(file));
         if (files.includes(output[name].fileName)) {
           beforeDelete(output[name]);
           delete output[name];
