@@ -3,6 +3,7 @@
 Umi 官方提供了一个脚手架 ，可以轻松快速创建一个项目：
 
 ```bash
+mkdir umi-project&&cd umi-project
 pnpm dlx create-umi@latest
 ```
 
