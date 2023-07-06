@@ -38,6 +38,8 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+  const isAntd5 = antdVersion.startsWith('5');
+  const layoutFile = isAntd5 ? 'Layout.css' : 'Layout.less';
 
   api.describe({
     key: 'layout',
@@ -133,7 +135,7 @@ import React, { useMemo } from 'react';
 import {
   ProLayout,
 } from "${resolvedPkgPath}";
-import './Layout.css';
+import './${layoutFile}';
 import Logo from './Logo';
 import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
@@ -556,13 +558,11 @@ export function getRightRenderContent (opts: {
 
     // Layout.less
     api.writeTmpFile({
-      path: 'Layout.css',
+      path: layoutFile,
       content: `
 ${
   // antd@5里面没有这个样式了
-  antdVersion.startsWith('5')
-    ? ''
-    : "@import '~antd/es/style/themes/default.less';"
+  isAntd5 ? '' : "@import '~antd/es/style/themes/default.less';"
 }
 @media screen and (max-width: 480px) {
   /* 在小屏幕的时候可以有更好的体验 */
