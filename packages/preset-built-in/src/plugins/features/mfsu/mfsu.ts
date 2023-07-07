@@ -1,10 +1,9 @@
-import { BundlerConfigType } from '@umijs/types';
+import { BundlerConfigType, IApi } from '@umijs/types';
 import { chalk, createDebug, mkdirp } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
 import { dirname, join, parse } from 'path';
-import { IApi } from 'umi';
 import webpack from 'webpack';
 import BabelImportRedirectPlugin from './babel-import-redirect-plugin';
 import BabelPluginAutoExport from './babel-plugin-auto-export';

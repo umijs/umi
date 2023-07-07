@@ -629,16 +629,13 @@ export default async function getConfig(
 
   // node polyfills
   const nodeLibs = require('node-libs-browser');
-  if (isWebpack5) {
+
+  const nodePolyfill = process.env.NODE_POLYFILL !== 'none';
+  if (isWebpack5 && nodePolyfill) {
     ret.plugins!.push(
       new bundleImplementor.ProvidePlugin({
         process: nodeLibs['process'],
-      }),
-    );
-    ret.plugins!.push(
-      // ref: https://github.com/umijs/umi/issues/6914
-      // @ts-ignore
-      new bundleImplementor.ProvidePlugin({
+        // ref: https://github.com/umijs/umi/issues/6914
         Buffer: ['buffer', 'Buffer'],
       }),
     );

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/deps",
-  "version": "3.5.34",
+  "version": "3.5.41",
   "description": "@umijs/deps",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,7 +8,8 @@
     "dts": "node ./scripts/dts",
     "ncc-compiled": "ncc cache clean && taskr ncc",
     "printWebpackInner": "node ./scripts/printWebpackInner",
-    "fixBabelBundle": "node ./scripts/fixBabelBundle"
+    "fixBabelBundle": "node ./scripts/fixBabelBundle",
+    "fixBrowserslist": "node ./scripts/fixBrowserslist"
   },
   "taskr": {
     "requires": [
@@ -42,6 +43,7 @@
     "esbuild": "0.12.15",
     "jest-worker": "24.9.0",
     "prettier": "2.2.1",
+    "regenerate": "1.4.2",
     "regenerate-unicode-properties": "10.0.1"
   },
   "devDependencies": {
@@ -107,8 +109,8 @@
     "@types/webpack-sources": "1.4.2",
     "@types/yargs": "15.0.12",
     "@types/yargs-parser": "20.2.0",
-    "@umijs/babel-plugin-auto-css-modules": "3.5.34",
-    "@umijs/babel-plugin-import-to-await-require": "3.5.34",
+    "@umijs/babel-plugin-auto-css-modules": "3.5.41",
+    "@umijs/babel-plugin-import-to-await-require": "3.5.41",
     "@vercel/ncc": "0.28.5",
     "address": "1.2.0",
     "ansi-html": "0.0.7",

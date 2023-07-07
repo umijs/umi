@@ -6,16 +6,26 @@ import { IHttps, IServerOpts } from './Server';
 
 const logger = new Logger('@umijs/server:utils');
 
-export const getCredentials = (opts: IServerOpts): IHttps => {
-  const { https } = opts;
-  const defautlServerOptions: IHttps = {
+function useDefaultKeyCertOptions(httpsOptions: IServerOpts['https']): IHttps {
+  const defaultKeyCertOptions: IHttps = {
     key: join(__dirname, 'cert', 'key.pem'),
     cert: join(__dirname, 'cert', 'cert.pem'),
   };
-  // custom cert using https: { key: '', cert: '' }
-  const serverOptions = (
-    https === true ? defautlServerOptions : https
-  ) as IHttps;
+
+  if (httpsOptions === true) {
+    return defaultKeyCertOptions;
+  }
+  if (typeof httpsOptions === 'object') {
+    return { ...defaultKeyCertOptions, ...httpsOptions };
+  }
+  return {};
+}
+
+export const getCredentials = (opts: IServerOpts): IHttps => {
+  const { https } = opts;
+
+  const serverOptions = useDefaultKeyCertOptions(https);
+
   if (!serverOptions?.key || !serverOptions?.cert) {
     const err = new Error(
       `Both options.https.key and options.https.cert are required.`,

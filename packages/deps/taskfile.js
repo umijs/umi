@@ -18,6 +18,9 @@ const externals = {
   'react': 'react',
   // @umijs/babel-plugin-import-to-await-require 依赖 @umijs/utils，后续考虑删除依赖
   '@umijs/utils': '@umijs/utils',
+  // babel 正则插件动态 require 了 regenerate-unicode-properties，其产物单独依赖 regenerate
+  // 如果其他依赖不对 regenerate 做 external，会导致 regenerate 多实例引发编译失败
+  'regenerate': 'regenerate',
 
   // webpack
   'node-libs-browser': 'node-libs-browser',

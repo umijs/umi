@@ -13,7 +13,11 @@ export default function RouterComponent(props: IRouterComponentProps) {
     if ((window as any).g_useSSR) {
       (window as any).g_initialProps = null;
     }
-    function routeChangeHandler(location: any, action?: string) {
+    function routeChangeHandler(
+      location: any,
+      action?: string,
+      isFirst = false,
+    ) {
       const matchedRoutes = matchRoutes(
         props.routes as RouteConfig[],
         location.pathname,
@@ -39,10 +43,11 @@ export default function RouterComponent(props: IRouterComponentProps) {
           matchedRoutes,
           location,
           action,
+          isFirst,
         },
       });
     }
-    routeChangeHandler(history.location, 'POP');
+    routeChangeHandler(history.location, 'POP', true);
     return history.listen(routeChangeHandler);
   }, [history]);
 

@@ -202,6 +202,51 @@ test('https', async () => {
   server.listeningApp?.close();
 });
 
+test('https but http2 explicitly disabled', async (done) => {
+  const server = new Server({
+    https: {
+      http2: false,
+    },
+    beforeMiddlewares: [],
+    afterMiddlewares: [],
+    compilerMiddleware: (req, res, next) => {
+      if (req.path === '/compiler') {
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('compiler');
+      } else {
+        next();
+      }
+    },
+  });
+
+  // https works ok.
+  const { port, hostname } = await server.listen({
+    port: 3005,
+    hostname: 'localhost',
+  });
+
+  const { body: compilerBody, statusCode } = await got(
+    `https://${hostname}:${port}/compiler`,
+    {
+      rejectUnauthorized: false,
+    },
+  );
+  expect(compilerBody).toEqual('compiler');
+  expect(statusCode).toBe(200);
+
+  // http2 not working is expected.
+  const client = http2.connect(`https://${hostname}:${port}`, {
+    rejectUnauthorized: false,
+  });
+
+  client.on('error', (err) => {
+    expect(`${err}`).toMatch(/ERR_HTTP2_ERROR/);
+    client.close();
+    server.listeningApp?.close();
+    done();
+  });
+});
+
 test('http2 normal', (done) => {
   const server = new Server({
     https: true,
@@ -225,7 +270,9 @@ test('http2 normal', (done) => {
       const client = http2.connect(`https://${hostname}:${port}`, {
         rejectUnauthorized: false,
       });
+      const dummyFn = jest.fn();
       client.on('error', (err) => {
+        dummyFn();
         console.error(err);
       });
 
@@ -242,6 +289,7 @@ test('http2 normal', (done) => {
       });
       http2Req.on('end', () => {
         expect(data).toEqual('compiler');
+        expect(dummyFn).toBeCalledTimes(0);
         client.close();
         server.listeningApp?.close();
         done();

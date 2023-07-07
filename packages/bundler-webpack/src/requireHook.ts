@@ -26,8 +26,10 @@ export function getFileName(filePath: string) {
 let inited = false;
 
 export function init() {
+  const skipRequireHookInit = process.env.INIT_REQUIRE_HOOK === 'none';
+  // Don't hook webpack when has skip flag
   // Allow run once
-  if (inited) return;
+  if (skipRequireHookInit || inited) return;
   inited = true;
 
   const filesMap = files.map((file) => {

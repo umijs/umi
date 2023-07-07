@@ -4,7 +4,6 @@ The difference between runtime-config and config is execution timing, runtime-co
 
 > `node` exclusive dependencies should not work.
 
-
 ## How to use
 
 As convention, `src/app.tsx` is the place you will put the runtime-config.
@@ -22,7 +21,7 @@ let isSubApp = false;
 export function modifyClientRenderOpts(memo) {
   return {
     ...memo,
-    rootElement: isSubApp ? 'sub-root' : memo.rootElement,    
+    rootElement: isSubApp ? 'sub-root' : memo.rootElement,
   };
 }
 ```
@@ -59,7 +58,7 @@ export function render() {
 
 Notice：
 
-* Modify `routes` instead of returning a new one
+- Modify `routes` instead of returning a new one
 
 ### render(oldRender: Function)
 
@@ -78,7 +77,7 @@ export function render(oldRender) {
 }
 ```
 
-### onRouteChange({ routes, matchedRoutes, location, action })
+### onRouteChange({ routes, matchedRoutes, location, action, isFirst })
 
 Change something at route initialization/changing phase.
 
@@ -115,4 +114,3 @@ export function rootContainer(container) {
 ## More options
 
 Since `umi` support modifing runtime-config via plugin, which means you may find more runtime-config options with plugins you involved.
-
