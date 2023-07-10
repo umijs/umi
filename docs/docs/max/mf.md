@@ -193,7 +193,7 @@ import { safeMfImport } from '@umijs/max';
 import React, { Suspense } from 'react';
 
 const RemoteCounter = React.lazy(() => {
-  return safeMfImport('remoteCounter/Counter', { defualt: () => 'Fallback' });
+  return safeMfImport('remoteCounter/Counter', { default: () => 'Fallback' });
 });
 
 export default function Page() {
@@ -329,7 +329,7 @@ registerMfRemote({
 });
 
 const RemoteCounter = React.lazy(() => {
-  return safeMfImport('registered/Counter', { defualt: null });
+  return safeMfImport('registered/Counter', { default: null });
 });
 ```
 
