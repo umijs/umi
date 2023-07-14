@@ -7,7 +7,7 @@ import { Message } from 'umi';
 在普通的 Umi 应用中，默认 **不附带任何插件** ，如需使用 Max 的功能（如 数据流、antd 等），需要手动安装插件并开启他们：
 
 ```bash
-  pnpm add -D @umijs/plugins
+  pnpm add @umijs/plugins
 ```
 
 如开启 antd 插件：

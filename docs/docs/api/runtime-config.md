@@ -69,7 +69,7 @@ export default {
 2. 或者手动开启数据流功能的插件使用该功能：
 
    ```bash
-     pnpm add -D @umijs/plugins
+     pnpm add @umijs/plugins
    ```
 
    ```ts
