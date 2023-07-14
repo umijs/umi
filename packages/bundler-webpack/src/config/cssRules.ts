@@ -12,7 +12,7 @@ interface IOpts {
 }
 
 export async function addCSSRules(opts: IOpts) {
-  const { config, userConfig } = opts;
+  const { config, userConfig, env } = opts;
 
   const rulesConfig = [
     { name: 'css', test: /\.css(\?.*)?$/ },
@@ -98,6 +98,12 @@ export async function addCSSRules(opts: IOpts) {
         };
       }
 
+      // 开启了 styleLoader 和 css 的 sourceMap, 线上打包会暴露源码, 做一层防护
+      const cssLoaderOptionsFixed: { sourceMap?: boolean } = {};
+      if (env === Env.production && userConfig.styleLoader) {
+        cssLoaderOptionsFixed.sourceMap = false;
+      }
+
       rule
         .use('css-loader')
         .loader(require.resolve('css-loader'))
@@ -108,13 +114,13 @@ export async function addCSSRules(opts: IOpts) {
             filter: (url: string) => {
               // Don't parse absolute URLs
               // ref: https://github.com/webpack-contrib/css-loader#url
-              if (url.startsWith('/')) return false;
-              return true;
+              return !url.startsWith('/');
             },
           },
           import: true,
           modules: cssLoaderModulesConfig,
           ...userConfig.cssLoader,
+          ...cssLoaderOptionsFixed,
         });
 
       rule
