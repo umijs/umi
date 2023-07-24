@@ -16,9 +16,9 @@ export function getMicroAppRouteComponent(opts: {
     const match = useMatch(routePath);
     const url = match ? match.pathnameBase : '';
     // 默认取静态配置的 base
-    let umiConfigBase = base === '/' ? '' : base;
+    let umiConfigBase = base === '/' ? '' : trimEndSlash(base);
     // 匹配模式下，routePath 不会作为 prefix
-    const prefix = routeMode === MicroAppRouteMode.MATCH ? '' : (url.endsWith('/') ? url.substr(0, url.length - 1) : url);
+    const prefix = routeMode === MicroAppRouteMode.MATCH ? '' : trimEndSlash(url);
 
     // 拼接子应用挂载路由
     let runtimeMatchedBase = umiConfigBase + prefix;
@@ -38,4 +38,8 @@ export function getMicroAppRouteComponent(opts: {
   };
 
   return RouteComponent;
+}
+
+function trimEndSlash(p: string) {
+  return p.endsWith('/') ? p.slice(0, -1) : p;
 }
