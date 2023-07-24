@@ -25,9 +25,10 @@ interface CreateRequestHandlerOptions {
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
 }
 
-const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> = new Set();
-
-const createJSXProvider = (Provider: any) => {
+const createJSXProvider = (
+  Provider: any,
+  serverInsertedHTMLCallbacks: Set<() => React.ReactNode>,
+) => {
   const JSXProvider = (props: any) => {
     const addInsertedHtml = React.useCallback(
       (handler: () => React.ReactNode) => {
@@ -107,23 +108,21 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       context,
     )) as ReactElement;
 
-    const JSXProvider = createJSXProvider(
-      opts.ServerInsertedHTMLContext.Provider,
-    );
-
     return {
-      element: React.createElement(JSXProvider, { children: element }),
+      element,
       manifest,
     };
   };
 }
 
-const getGenerateStaticHTML = () => {
+const getGenerateStaticHTML = (
+  serverInsertedHTMLCallbacks?: Set<() => React.ReactNode>,
+) => {
   return (
     ReactDomServer.renderToString(
       React.createElement(React.Fragment, {
-        children: Array.from(serverInsertedHTMLCallbacks).map((callback) =>
-          callback(),
+        children: Array.from(serverInsertedHTMLCallbacks || []).map(
+          (callback) => callback(),
         ),
       }),
     ) || ''
@@ -133,14 +132,17 @@ const getGenerateStaticHTML = () => {
 export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
-  const JSXProvider = createJSXProvider(
-    opts.ServerInsertedHTMLContext.Provider,
-  );
-
   return async (url: string) => {
     const jsx = await jsxGeneratorDeferrer(url);
     if (jsx) {
       return new Promise(async (resolve, reject) => {
+        const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> =
+          new Set();
+        const JSXProvider = createJSXProvider(
+          opts.ServerInsertedHTMLContext.Provider,
+          serverInsertedHTMLCallbacks,
+        );
+
         let chunks: Buffer[] = [];
         const writable = new Writable();
 
@@ -150,7 +152,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         };
         writable.on('finish', async () => {
           let html = Buffer.concat(chunks).toString('utf8');
-          html += await getGenerateStaticHTML();
+          html += await getGenerateStaticHTML(serverInsertedHTMLCallbacks);
           // append helmet tags to head
           if (opts.helmetContext) {
             html = html.replace(
