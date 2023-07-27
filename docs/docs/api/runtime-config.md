@@ -146,7 +146,7 @@ export function patchRoutes({ routes, routeComponents }) {
 
 ### patchClientRoutes(\{ routes \})
 
-修改被 react-router 渲染前的树状路由表，接收内容同 [useRoutes](https://reactrouter.com/en/6.14.2/hooks/use-routes)。
+修改被 react-router 渲染前的树状路由表，接收内容同 [useRoutes](https://reactrouter.com/en/main/hooks/use-routes)。
 
 比如在最前面添加一个 `/foo` 路由，
 
