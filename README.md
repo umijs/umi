@@ -21,7 +21,7 @@ See [Contributing Guide](https://umijs.org/docs/introduce/contributing).
 
 ### Core Maintainers
 
-Core Maintainres are community members who have contributed a significant amount of time and energy to the project through issues, bug fixes, implementing enhancements/features.
+Core Maintainers are community members who have contributed a significant amount of time and energy to the project through issues, bug fixes, implementing enhancements/features.
 
 * [sorrycc](https://github.com/sorrycc)
 * [xiaohuoni](https://github.com/xiaohuoni)
