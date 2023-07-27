@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "4.0.0-canary.20230724.1",
+  "version": "4.0.73",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {

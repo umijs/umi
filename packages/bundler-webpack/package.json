@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "4.0.0-canary.20230724.1",
+  "version": "4.0.73",
   "description": "@umijs/bundler-webpack",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "bugs": "https://github.com/umijs/umi/issues",

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "4.0.0-canary.20230724.1",
+  "version": "4.0.73",
   "description": "Official babel preset for umi.",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-preset-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
