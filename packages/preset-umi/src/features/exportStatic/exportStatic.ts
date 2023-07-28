@@ -144,6 +144,12 @@ export default (api: IApi) => {
 
     for (const { file, route, prerender } of htmlData) {
       let { markupArgs } = opts;
+      markupArgs.scripts = markupArgs.scripts.map((script: any) => {
+        if (script.src) {
+          script.async = true;
+        }
+        return script;
+      });
 
       // handle relative publicPath, such as `./`
       if (publicPath.startsWith('.')) {
@@ -260,10 +266,5 @@ export function modifyClientRenderOpts(memo: any) {
 
   api.addRuntimePlugin(() => {
     return [`@@/core/exportStaticRuntimePlugin.ts`];
-  });
-
-  api.modifyHTML(($) => {
-    $('script[src^="/umi."]').attr('async', '');
-    return $;
   });
 };
