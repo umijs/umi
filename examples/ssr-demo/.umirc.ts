@@ -7,4 +7,5 @@ export default {
   ssr: {
     serverBuildPath: './umi.server.js',
   },
+  exportStatic: {},
 };
