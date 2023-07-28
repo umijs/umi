@@ -261,4 +261,9 @@ export function modifyClientRenderOpts(memo: any) {
   api.addRuntimePlugin(() => {
     return [`@@/core/exportStaticRuntimePlugin.ts`];
   });
+
+  api.modifyHTML(($) => {
+    $('script[src^="/umi."]').attr('async', '');
+    return $;
+  });
 };
