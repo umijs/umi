@@ -144,6 +144,13 @@ export default (api: IApi) => {
 
     for (const { file, route, prerender } of htmlData) {
       let { markupArgs } = opts;
+      if (api.config.ssr && prerender) {
+        markupArgs.scripts.forEach((script: any) => {
+          if (script.src) {
+            script.async = true;
+          }
+        });
+      }
 
       // handle relative publicPath, such as `./`
       if (publicPath.startsWith('.')) {
