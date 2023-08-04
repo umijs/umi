@@ -17,6 +17,6 @@
   padding: 0 20px;
 }
 
-:global(.dark) .normal h2 {
+:global .dark :local .normal h2 {
   color: rgba(255, 255, 255, 0.7);
 }

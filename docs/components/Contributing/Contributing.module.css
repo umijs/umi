@@ -9,7 +9,7 @@
   margin-bottom: 16px;
 }
 
-:global(.dark) .normal p {
+:global .dark :local .normal p {
   color: rgba(255, 255, 255, 0.8);
 }
 

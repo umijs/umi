@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'umi';
 import NewsLetterForm from './NewsLetterForm';
 // @ts-ignore
-import styles from './Footer.css';
+import styles from './Footer.module.css';
 
 export default () => {
   return (

@@ -4,7 +4,7 @@ import GithubStar from './GithubStar';
 // @ts-ignore
 import { Link } from 'umi';
 // @ts-ignore
-import styles from './Hero.css';
+import styles from './Hero.module.css';
 
 export default () => {
   // TODO: github stars 存 localStorage

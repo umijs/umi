@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import styles from './SectionHeader.css';
+import styles from './SectionHeader.module.css';
 
 export default (props: { title: string }) => {
   return (

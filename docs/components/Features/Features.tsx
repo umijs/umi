@@ -1,7 +1,7 @@
 import SectionHeader from '@/docs/components/SectionHeader/SectionHeader';
 import React from 'react';
 // @ts-ignore
-import styles from './Features.css';
+import styles from './Features.module.css';
 
 export default () => {
   // prettier-ignore

@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import styles from './NewsLetterForm.css';
+import styles from './NewsLetterForm.module.css';
 
 export default () => {
   return (

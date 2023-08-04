@@ -15,7 +15,7 @@
   height: 640px;
   z-index: 1;
 }
-:global(.dark) .bg {
+:global .dark :local .bg {
   opacity: 0.1;
 }
 
@@ -91,10 +91,10 @@
   content: '';
   margin-right: 6px;
 }
-:global(.dark) .githubStar {
+:global .dark :local .githubStar {
   color: rgba(255, 255, 255, 0.7);
 }
-:global(.dark) .githubStar:before {
+:global .dark :local .githubStar:before {
   filter: invert(80%);
 }
 
@@ -132,7 +132,7 @@
   color: #0273dc;
   font-weight: normal;
 }
-:global(.dark) .slogan {
+:global .dark :local .slogan {
   color: rgba(255, 255, 255, 0.8);
 }
 
@@ -144,6 +144,6 @@
   background-size: 380px 193px;
   margin: 8px auto 0;
 }
-:global(.dark) .bow {
+:global .dark :local .bow {
   opacity: 0.8;
 }

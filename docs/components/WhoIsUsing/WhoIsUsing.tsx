@@ -1,7 +1,7 @@
 import SectionHeader from '@/docs/components/SectionHeader/SectionHeader';
 import React from 'react';
 // @ts-ignore
-import styles from './WhoIsUsing.css';
+import styles from './WhoIsUsing.module.css';
 
 export default () => {
   return (

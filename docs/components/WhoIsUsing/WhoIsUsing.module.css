@@ -12,7 +12,7 @@
 .normal li {
 }
 
-:global(.dark) .normal li {
+:global .dark :local .normal li {
   background: rgba(255, 255, 255, 0.9);
 }
 
