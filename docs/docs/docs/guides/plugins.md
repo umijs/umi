@@ -23,12 +23,12 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config
   });
   api.modifyConfig((memo)=>{
-    memo.favicon = api.userConfig.changeFavicon;
+    memo.favicons = api.userConfig.changeFavicon;
     return memo;
   });
 };
 ```
-这个插件的作用是根据用户配置的 changeFavicon 值来更改配置中的 favicon，（一个很简单且没有实际用途的例子XD）。可以看到插件其实就是一个接收了参数 api 的方法。在这个方法中，我们调用了 `api.modifyConfig` 注册了一个 hook： `(memo)=>{...}`。当你在配置中配置了 `changeFavicon` 之后， Umi 会注册该插件。在 Umi 收集配置的生命周期里，我们在插件里注册的 hook 将被执行，此时配置中的 `favicon` 就会被修改为用户配置中的 `changeFavicon`
+这个插件的作用是根据用户配置的 changeFavicon 值来更改配置中的 favicons，（一个很简单且没有实际用途的例子XD）。可以看到插件其实就是一个接收了参数 api 的方法。在这个方法中，我们调用了 `api.modifyConfig` 注册了一个 hook： `(memo)=>{...}`。当你在配置中配置了 `changeFavicon` 之后， Umi 会注册该插件。在 Umi 收集配置的生命周期里，我们在插件里注册的 hook 将被执行，此时配置中的 `favicon` 就会被修改为用户配置中的 `changeFavicon`
 
 ### plugin 和 preset
 preset 的作用是预设一些插件，它通常用来注册一批 presets 和 plugins。在 preset 中，上述提到的接受 api 的方法可以有返回值，该返回值是一个包含 plugins 和 presets 属性的对象，其作用就是注册相应的插件或者插件集。

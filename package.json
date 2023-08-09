@@ -59,8 +59,8 @@
   "devDependencies": {
     "@iconify-json/ant-design": "1",
     "@iconify-json/fa": "1",
-    "@pnpm/lockfile-file": "^5.0.3",
-    "@pnpm/logger": "^4.0.0",
+    "@pnpm/lockfile-file": "^8.1.1",
+    "@pnpm/logger": "^5.0.0",
     "@types/fs-extra": "^11.0.1",
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",

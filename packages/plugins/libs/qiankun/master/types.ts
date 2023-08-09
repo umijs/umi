@@ -1,6 +1,7 @@
 // @ts-nocheck
 /* eslint-disable */
 import { FrameworkConfiguration, FrameworkLifeCycles } from 'qiankun';
+import type { MicroAppRouteMode } from './constants';
 
 type BaseIConfig = any;
 
@@ -18,6 +19,7 @@ export type App = {
 export type MicroAppRoute = {
   path: string;
   microApp: string;
+  mode: `${MicroAppRouteMode}`;
 } & Record<string, any>;
 
 export type MasterOptions = {

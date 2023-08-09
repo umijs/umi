@@ -5,10 +5,9 @@ import { getPluginManager } from '@@/core/plugin';
 import { prefetchApps } from 'qiankun';
 import { ApplyPluginsType } from 'umi';
 import { insertRoute, noop, patchMicroAppRoute } from './common';
-import { getMicroAppRouteComponent } from './getMicroAppRouteComponent';
 import { getMasterOptions, setMasterOptions } from './masterOptions';
-import { MasterOptions, MicroAppRoute } from './types';
 import { deepFilterLeafRoutes } from './routeUtils';
+import { MasterOptions, MicroAppRoute } from './types';
 
 let microAppRuntimeRoutes: MicroAppRoute[];
 
@@ -55,9 +54,8 @@ function patchMicroAppRouteComponent(routes: any[]) {
       getMasterOptions() as MasterOptions;
     microAppRuntimeRoutes.reverse().forEach((microAppRoute) => {
       const patchRoute = (route: any) => {
-        patchMicroAppRoute(route, getMicroAppRouteComponent, {
+        patchMicroAppRoute(route, {
           base,
-          routePath: route.path,
           masterHistoryType,
           routeBindingAlias,
         });

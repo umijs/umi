@@ -620,10 +620,16 @@ if (process.env.NODE_ENV === 'development') {
           exports.push(`export { TestBrowser } from './testBrowser';`);
         }
       }
-      if (api.config.ssr && api.appData.framework === 'react') {
-        exports.push(
-          `export { useServerInsertedHTML } from './core/serverInsertedHTMLContext';`,
-        );
+      if (api.appData.framework === 'react') {
+        if (api.config.ssr) {
+          exports.push(
+            `export { useServerInsertedHTML } from './core/serverInsertedHTMLContext';`,
+          );
+        } else {
+          exports.push(
+            `export const useServerInsertedHTML: Function = () => {};`,
+          );
+        }
       }
       // plugins
       exports.push('// plugins');

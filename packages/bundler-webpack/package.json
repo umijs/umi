@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "4.0.71",
+  "version": "4.0.74",
   "description": "@umijs/bundler-webpack",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -51,7 +51,7 @@
     "react-refresh": "0.14.0"
   },
   "devDependencies": {
-    "@swc/core": "1.3.24",
+    "@swc/core": "1.3.67",
     "@types/cors": "^2.8.13",
     "@types/webpack-bundle-analyzer": "^4.6.0",
     "@types/webpack-sources": "3.2.0",
@@ -74,7 +74,7 @@
     "speed-measure-webpack-plugin": "1.5.0",
     "style-loader": "3.3.1",
     "svgo-loader": "3.0.0",
-    "swc-plugin-auto-css-modules": "1.3.0",
+    "swc-plugin-auto-css-modules": "1.5.0",
     "terser": "5.16.1",
     "terser-webpack-plugin": "5.3.6",
     "url-loader": "4.1.1",

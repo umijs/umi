@@ -6,7 +6,7 @@ describe('QianKun Plugin', () => {
   it('can navigate to slave', () => {
     // contains https://docs.cypress.io/api/commands/contains
     cy.visit('/home');
-    cy.get('a').click();
+    cy.get('a[href*="/slave/home"]').click();
 
     cy.contains('Slave Home Page');
   });
@@ -42,6 +42,23 @@ describe('QianKun Plugin', () => {
       cy.contains('count:0');
       cy.get('button').click();
       cy.contains('count:1');
+    });
+  });
+
+  describe('microApp route first', () => {
+    it('not hit indexApp route', () => {
+      // contains https://docs.cypress.io/api/commands/contains
+      cy.visit('/nav');
+
+      cy.contains('never seen').should('not.exist');
+    });
+  });
+
+  describe('microApp route prepend ok', () => {
+    it('hit microApp route', () => {
+      cy.visit('/prefix/nav');
+
+      cy.contains('goto slave app2');
     });
   });
 
