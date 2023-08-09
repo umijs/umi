@@ -449,10 +449,9 @@ Warning: There are 1 unused files:
 
 基于[define-plugin 插件](https://webpack.js.org/plugins/define-plugin/)设置代码中的可用变量。
 
-<Message type="warn" emoji="🚨" >
+:::warning{title=🚨}
 1. 属性值会经过一次 `JSON.stringify` 转换。
 2. key 值的替换是通过语法形式来匹配的，比如配置了 `{'a.b.c': 'abcValue'}` 是无法替换代码中的  `a.b?.c` 的
-</Message>
 
 比如，
 
