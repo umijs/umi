@@ -18,8 +18,13 @@ export function isMasterEnable(opts: { userConfig: any }) {
   return !!process.env.INITIAL_QIANKUN_MASTER_OPTIONS;
 }
 
-export function getQiankunLoading(api: IApi) {
-  return api.userConfig.qiankun?.master?.loading;
+function getQiankunLoading(api: IApi) {
+  const loadingPath = api.userConfig.qiankun?.master?.loading;
+  assert(
+    !loadingPath || loadingPath.startsWith?.('@/'),
+    '[@umijs/plugin-qiankun]: loading only support root path, eg: @/loading',
+  );
+  return loadingPath;
 }
 
 export default (api: IApi) => {
