@@ -19,13 +19,13 @@ export function isMasterEnable(opts: { userConfig: any }) {
   return !!process.env.INITIAL_QIANKUN_MASTER_OPTIONS;
 }
 
-function getQiankunLoading(api: IApi) {
-  const path = api.config.qiankun?.master?.loading;
+function getCustomLoader(api: IApi) {
+  const loader = api.config.qiankun?.master?.loader;
   assert(
-    !path || path.startsWith?.('@/'),
-    '[@umijs/plugin-qiankun]: loading only support root path, eg: @/loading',
+    !loader || loader.startsWith?.('@/'),
+    '[@umijs/plugin-qiankun]: loader only support root path, eg: @/loading',
   );
-  return path;
+  return loader;
 }
 
 export default (api: IApi) => {
@@ -123,9 +123,9 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
 
     api.writeTmpFile({
       path: 'MicroAppLoader.tsx',
-      content: getQiankunLoading(api)
+      content: getCustomLoader(api)
         ? // 用户自定义的 loading 优先级最高
-          `export { default } from '${getQiankunLoading(api)}';`
+          `export { default } from '${getCustomLoader(api)}';`
         : api.isPluginEnable('antd')
         ? getFileContent('AntdLoader.tsx')
         : // 开启了 antd 插件的时候，使用 antd 的 loader 组件，否则提示用户必须设置一个自定义的 loader 组件

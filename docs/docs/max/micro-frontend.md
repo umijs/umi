@@ -513,13 +513,13 @@ export default function Page() {
 
 如果您没有使用 antd 作为项目组件库，或希望覆盖默认的加载动画样式时，可以设置一个自定义的加载组件 `loader` 作为子应用的加载动画。
 
-如果通过路由的模式引入子应用，可以配置如下：
+通过路由的模式引入的子应用，目前只支持在运行时配置，代码如下：
 
 ```tsx
-// .umirc.ts
+// .app.tsx
 import CustomLoader from 'src/components/CustomLoader';
 
-export default {
+export const qiankun = () => ({
   routes: [
     {
       path: '/app1',
@@ -529,7 +529,7 @@ export default {
       },
     },
   ],
-};
+});
 ```
 
 如果通过组件的模式引入子应用，直接将 `loader` 作为参数传入即可：
@@ -549,6 +549,19 @@ export default function Page() {
 ```
 
 其中，`loading` 为 `boolean` 类型参数，为 `true` 时表示仍在加载状态，为 `false` 时表示加载状态已结束。
+
+如果多个子应用同时存在自定义loading 的诉求，每个都进行配置是比较繁琐的，可以通过主应用配置来解决，比如说：
+```ts
+// .umirc.ts
+qiankun: {
+  master: {
+    loader: '@/CustomLoader',
+  },
+},
+```
+其中，`loader` 为文件路径，统一约定放在根目录下，`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
+
+注意点，`master.loader` 只是决定了切换时候渲染的动画是什么，我们依旧需要子应用自行决定是否启用，比如说开启 动画将 `autoSetLoading` 设置为 `true` 即可。
 
 ### 子应用错误捕获
 
