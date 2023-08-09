@@ -353,8 +353,8 @@ const { formatMessage } = useIntl();
       'rightContentRender'
     > & {
       childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode;
-      unAccessible?: JSX.Element;
-      noFound?: JSX.Element;
+      noAccessible?: JSX.Element;
+      notFound?: JSX.Element;
       logout?: (initialState: InitDataType['initialState']) => Promise<void> | void;
       rightContentRender?: ((
         headerProps: HeaderProps,
@@ -726,13 +726,11 @@ const Exception: React.FC<{
   route?: IRoute;
   notFound?: React.ReactNode;
   noAccessible?: React.ReactNode;
-  unAccessible?: React.ReactNode;
-  noFound?: React.ReactNode;
 }> = (props) => (
   // render custom 404
-  (!props.route && (props.noFound || props.notFound)) ||
+  (!props.route &&  props.notFound) ||
   // render custom 403
-  (props.route?.unaccessible && (props.unAccessible || props.noAccessible)) ||
+  (props.route.unaccessible &&  props.noAccessible) ||
   // render default exception
   ((!props.route || props.route?.unaccessible) && (
     <Result
