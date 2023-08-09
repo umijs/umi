@@ -74,15 +74,6 @@ createSearchParams([["foo", "1"], ["bar", "2"]]).toString()
 
 [URLSearchParams 文档](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams)
 
-{
-/*
-
-### dynamic
-
-TODO: SUPPORT
-*/
-}
-
 ### generatePath
 
 使用给定的带参数的 path 和对应的 params 生成实际要访问的路由。

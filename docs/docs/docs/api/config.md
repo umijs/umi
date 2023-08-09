@@ -452,6 +452,7 @@ Warning: There are 1 unused files:
 :::warning{title=🚨}
 1. 属性值会经过一次 `JSON.stringify` 转换。
 2. key 值的替换是通过语法形式来匹配的，比如配置了 `{'a.b.c': 'abcValue'}` 是无法替换代码中的  `a.b?.c` 的
+:::
 
 比如，
 
@@ -883,16 +884,6 @@ import { Icon } from 'umi';
 - [terser 参考](https://terser.org/docs/api-reference#minify-options)
 - [swc 参考](https://swc.rs/docs/configuration/minification#configuration)
 - [uglifyJs 参考](https://lisperator.net/uglifyjs/compress)
-
-{
-/*
-## jsMinifier (vite 构建)
-
-* 类型：`string`
-* 默认值：
-
-*/
-}
 
 ## lessLoader
 
