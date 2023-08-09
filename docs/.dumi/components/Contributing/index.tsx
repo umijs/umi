@@ -12,10 +12,6 @@ const ContributingWrapper = styled.div`
     margin-bottom: 16px;
   }
 
-  [data-prefers-color='dark'] .contributing-normal p {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
   p a {
     color: #0273dc;
     text-decoration: none;
@@ -27,7 +23,7 @@ export const Contributing = () => {
     <ContributingWrapper>
       <SectionHeader title="参与建设" />
       <div>
-        <p>
+        <p className="contributing-text">
           社区有非常多小伙伴在和我们一同建设 Umi，如果你有兴趣，欢迎&nbsp;
           <Link to="/docs/introduce/contributing">加入我们</Link> 。
         </p>

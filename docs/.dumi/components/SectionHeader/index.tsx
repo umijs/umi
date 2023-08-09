@@ -19,19 +19,13 @@ const SectionHeaderWrapper = styled.div`
     margin: 0;
     font-weight: 400;
   }
-
-  html [data-prefers-color='dark'] {
-    h2 {
-      color: rgba(255, 255, 255, 0.7);
-    }
-  }
 `;
 
 export const SectionHeader = (props: { title: string }) => {
   return (
     <SectionHeaderWrapper>
       <div></div>
-      <h2>{props.title}</h2>
+      <h2 className="section-header-title">{props.title}</h2>
       <div></div>
     </SectionHeaderWrapper>
   );

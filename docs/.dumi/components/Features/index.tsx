@@ -45,16 +45,9 @@ const FeaturesWrapper = styled.div`
     margin-bottom: 12px;
     text-align: center;
   }
-  [data-prefers-color='dark'] .feature h3 {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
   .feature p {
     font-size: 18px;
     color: #4a5e71;
-  }
-  [data-prefers-color='dark'] .feature p {
-    color: rgba(255, 255, 255, 0.6);
   }
 `;
 

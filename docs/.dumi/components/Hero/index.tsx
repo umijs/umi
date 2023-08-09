@@ -132,21 +132,6 @@ const HeroWrapper = styled.div`
       }
     }
   }
-  [data-prefers-color='dark'] .bg {
-    opacity: 0.1;
-  }
-  [data-prefers-color='dark'] .githubStar {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  [data-prefers-color='dark'] .githubStar:before {
-    filter: invert(80%);
-  }
-  [data-prefers-color='dark'] .slogan {
-    color: rgba(255, 255, 255, 0.8);
-  }
-  [data-prefers-color='dark'] .bow {
-    opacity: 0.8;
-  }
 `;
 export const Hero = () => {
   // TODO: github stars 存 localStorage

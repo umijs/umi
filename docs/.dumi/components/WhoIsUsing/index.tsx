@@ -15,16 +15,13 @@ const WhoIsUsingWrapper = styled.div`
       width: 224px;
       height: 73px;
     }
-    [data-prefers-color='dark'] .using-normal li {
-      background: rgba(255, 255, 255, 0.9);
-    }
   }
 `;
 export const WhoIsUsing = () => {
   return (
     <WhoIsUsingWrapper>
       <SectionHeader title="谁在使用" />
-      <ul>
+      <ul className="using-list">
         <li>
           <img
             alt="蚂蚁集团"
