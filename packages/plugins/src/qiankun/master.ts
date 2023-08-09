@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -19,12 +20,12 @@ export function isMasterEnable(opts: { userConfig: any }) {
 }
 
 function getQiankunLoading(api: IApi) {
-  const loadingPath = api.userConfig.qiankun?.master?.loading;
+  const path = api.userConfig.qiankun?.master?.loading;
   assert(
-    !loadingPath || loadingPath.startsWith?.('@/'),
+    !path || path.startsWith?.('@/'),
     '[@umijs/plugin-qiankun]: loading only support root path, eg: @/loading',
   );
-  return loadingPath;
+  return path;
 }
 
 export default (api: IApi) => {
