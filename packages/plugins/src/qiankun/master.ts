@@ -18,6 +18,10 @@ export function isMasterEnable(opts: { userConfig: any }) {
   return !!process.env.INITIAL_QIANKUN_MASTER_OPTIONS;
 }
 
+export function getQiankunLoading(api: IApi) {
+  return api.userConfig.qiankun?.master?.loading;
+}
+
 export default (api: IApi) => {
   api.describe({
     key: 'qiankun-master',
@@ -113,10 +117,13 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
 
     api.writeTmpFile({
       path: 'MicroAppLoader.tsx',
-      // 开启了 antd 插件的时候，使用 antd 的 loader 组件，否则提示用户必须设置一个自定义的 loader 组件
-      content: api.isPluginEnable('antd')
+      content: getQiankunLoading(api)
+        ? // 用户自定义的 loading 优先级最高
+          `export { default } from '${getQiankunLoading(api)}';`
+        : api.isPluginEnable('antd')
         ? getFileContent('AntdLoader.tsx')
-        : `export default function Loader() { console.warn(\`[plugins/qiankun]: Seems like you'r not using @umijs/plugin-antd, you need to provide a custom loader or set autoSetLoading false to shut down this warning!\`); return null; }`,
+        : // 开启了 antd 插件的时候，使用 antd 的 loader 组件，否则提示用户必须设置一个自定义的 loader 组件
+          `export default function Loader() { console.warn(\`[plugins/qiankun]: Seems like you'r not using @umijs/plugin-antd, you need to provide a custom loader or set autoSetLoading false to shut down this warning!\`); return null; }`,
     });
 
     [
