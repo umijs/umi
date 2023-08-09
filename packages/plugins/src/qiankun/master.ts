@@ -20,7 +20,7 @@ export function isMasterEnable(opts: { userConfig: any }) {
 }
 
 function getQiankunLoading(api: IApi) {
-  const path = api.userConfig.qiankun?.master?.loading;
+  const path = api.config.qiankun?.master?.loading;
   assert(
     !path || path.startsWith?.('@/'),
     '[@umijs/plugin-qiankun]: loading only support root path, eg: @/loading',
