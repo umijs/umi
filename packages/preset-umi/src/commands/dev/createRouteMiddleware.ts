@@ -17,7 +17,7 @@ function createRouteMiddleware(opts: { api: IApi }) {
     async function getStats() {
       if (!compiler && process.env.OKAM) {
         return {
-          compilation: { assets: { 'umi.js': 'umi.js' } },
+          compilation: { assets: { 'umi.js': 'umi.js', 'umi.css': 'umi.css' } },
           hasErrors: () => false,
         };
       }
