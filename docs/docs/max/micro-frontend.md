@@ -559,7 +559,9 @@ qiankun: {
   },
 },
 ```
-其中，`loader` 为文件路径，统一约定放在[根目录](../guides/directory-structure.md)下，`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
+其中，`loader` 为文件路径，统一约定放在 [src 目录](../guides/directory-structure.md#src-目录) 下，在 umi 中 `@` 即代表 `src` 目录。
+
+`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
 
 注意：`master.loader` 不默认开启加载动画，开启动画需要将 `autoSetLoading` 设置为 `true`。
 
