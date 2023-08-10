@@ -559,9 +559,9 @@ qiankun: {
   },
 },
 ```
-其中，`loader` 为文件路径，统一约定放在根目录下，`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
+其中，`loader` 为文件路径，统一约定放在[根目录](../guides/directory-structure.md)下，`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
 
-注意：`master.loader` 只是决定了切换时渲染的动画是什么，我们依旧需要子应用自行决定是否启用。比如说开启动画，将 `autoSetLoading` 设置为 `true` 即可。
+注意：`master.loader` 不默认开启加载动画，开启动画需要将 `autoSetLoading` 设置为 `true`。
 
 ### 子应用错误捕获
 
@@ -678,6 +678,7 @@ export default {
 | 属性 | 必填 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- | --- |
 | `enable` | 否 | 启用 Qiankun 微应用插件，设置为 `false` 时为不启用 | `boolean` | `undefined` |
+| `loader` | 否 | 统一配置微应用加载动画的文件，设置文件路径即可 | `string` | - |
 | `apps` | 是 | 微应用配置 | [`App[]`](#app) | `undefined` |
 | `routes` | 否 | 微应用运行时的路由 | [`Route[]`](#route) | `undefined` |
 | `sandbox` | 否 | 是否开启沙箱模式 | `boolean \| { strictStyleIsolation: boolean, experimentalStyleIsolation: boolean }` | `true` |
