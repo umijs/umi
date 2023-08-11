@@ -24,9 +24,9 @@ const SectionHeaderWrapper = styled.div`
 export const SectionHeader = (props: { title: string }) => {
   return (
     <SectionHeaderWrapper>
-      <div></div>
+      <div className="section-header-line"></div>
       <h2 className="section-header-title">{props.title}</h2>
-      <div></div>
+      <div className="section-header-line"></div>
     </SectionHeaderWrapper>
   );
 };

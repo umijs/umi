@@ -8,12 +8,14 @@ const WhoIsUsingWrapper = styled.div`
   ul {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
     list-style: none;
     padding: 0;
     li img {
       width: 224px;
-      height: 73px;
+      height: 81px;
+      margin: -8px;
     }
   }
 `;

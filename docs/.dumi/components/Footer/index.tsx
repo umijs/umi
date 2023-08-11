@@ -4,10 +4,8 @@ import { Link } from 'umi';
 import { NewsLetterForm } from './NewsLetterForm';
 
 const FooterWrapper = styled.div`
-  background: #f1f5f7;
   padding: 40px 0;
-  color: #4a5e71;
-  .wrapper {
+  .foot-wrapper {
     display: flex;
     max-width: 1200px;
     margin: 0 auto;
@@ -25,10 +23,12 @@ const FooterWrapper = styled.div`
         margin-top: 0;
         margin-bottom: 0;
         font-weight: 400;
+        color: #4a5e71;
       }
 
       .line div {
         flex: 1;
+        color: #4a5e71;
       }
 
       .line div a {
@@ -53,7 +53,7 @@ const FooterWrapper = styled.div`
 export const Footer = () => {
   return (
     <FooterWrapper>
-      <div className="wrapper">
+      <div className="foot-wrapper">
         <div className="left">
           <div className="line">
             <h3>文档和帮助</h3>
