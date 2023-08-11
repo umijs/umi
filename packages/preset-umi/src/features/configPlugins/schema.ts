@@ -81,6 +81,10 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
         message: 'publicPath must be "auto" or end with /',
       }),
     reactRouter5Compat: ({ zod }) => zod.union([zod.boolean(), zod.object({})]),
+    routeLoader: ({ zod }) =>
+      zod.object({
+        moduleType: zod.enum(['esm', 'cjs']),
+      }),
     routes: ({ zod }) => {
       const routeSchema: any = zod.union([
         zod

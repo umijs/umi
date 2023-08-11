@@ -240,6 +240,14 @@ export async function getRouteComponents(opts: {
         return `'${key}': require('${winPath(path)}').default,`;
       }
 
+      // ref: https://github.com/umijs/umi/issues/11466
+      if (opts.api.config.routeLoader?.moduleType === 'cjs') {
+        return useSuspense
+          ? `'${key}': React.lazy(() => Promise.resolve(require('${winPath(
+              path,
+            )}'))),`
+          : `'${key}': () => Promise.resolve(require('${winPath(path)}')),`;
+      }
       return useSuspense
         ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${webpackChunkName}" */'${winPath(
             path,

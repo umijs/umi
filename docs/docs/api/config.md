@@ -1257,6 +1257,21 @@ proxy: {
 
 配置路由。更多信息，请查看 [配置路由](../guides/routes#配置路由)
 
+## routeLoader
+
+- 类型：`{ moduleType: 'esm' | 'cjs' }`
+- 默认值：`{ moduleType: 'esm' }`
+
+配置路由加载方式。moduleType 配置为 'cjs' 会用 `require` 的方式加载路由组件。
+
+```ts
+// moduleType: esm
+'index': React.lazy(() => import(/* webpackChunkName: "p__index" */'../../pages/index.tsx')),
+
+// moduleType: cjs
+'index': React.lazy(() => Promise.resolve(require('../../pages/index.tsx'))),
+```
+
 ## run
 
 - 类型：`{ globals: string[] }`
