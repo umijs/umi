@@ -99,10 +99,10 @@ export interface IAdd<T, U> {
   (args: {
     fn: {
       (args: T): Promise<U | U[]>;
-      name?: string;
-      before?: string | string[];
-      stage?: number;
     };
+    name?: string;
+    before?: string | string[];
+    stage?: number;
   }): void;
 }
 

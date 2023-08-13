@@ -516,13 +516,13 @@ export default function Page() {
 
 如果您没有使用 antd 作为项目组件库，或希望覆盖默认的加载动画样式时，可以设置一个自定义的加载组件 `loader` 作为子应用的加载动画。
 
-如果通过路由的模式引入子应用，可以配置如下：
+通过路由的模式引入的子应用，目前只支持在运行时配置，代码如下：
 
 ```tsx
-// .umirc.ts
+// .app.tsx
 import CustomLoader from 'src/components/CustomLoader';
 
-export default {
+export const qiankun = () => ({
   routes: [
     {
       path: '/app1',
@@ -532,7 +532,7 @@ export default {
       },
     },
   ],
-};
+});
 ```
 
 如果通过组件的模式引入子应用，直接将 `loader` 作为参数传入即可：
@@ -552,6 +552,21 @@ export default function Page() {
 ```
 
 其中，`loading` 为 `boolean` 类型参数，为 `true` 时表示仍在加载状态，为 `false` 时表示加载状态已结束。
+
+如果多个子应用同时存在自定义 loading 的诉求，每个都配置一遍是比较繁琐的，此时可以通过定义主应用的配置来解决，比如说：
+```ts
+// .umirc.ts
+qiankun: {
+  master: {
+    loader: '@/CustomLoader',
+  },
+},
+```
+其中，`loader` 为文件路径，统一约定放在 [src 目录](../guides/directory-structure.md#src-目录) 下，在 umi 中 `@` 即代表 `src` 目录。
+
+`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
+
+注意：`master.loader` 不默认开启加载动画，开启动画需要将 `autoSetLoading` 设置为 `true`。
 
 ### 子应用错误捕获
 
@@ -668,6 +683,7 @@ export default {
 | 属性 | 必填 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- | --- |
 | `enable` | 否 | 启用 Qiankun 微应用插件，设置为 `false` 时为不启用 | `boolean` | `undefined` |
+| `loader` | 否 | 统一配置微应用加载动画的文件，设置文件路径即可 | `string` | - |
 | `apps` | 是 | 微应用配置 | [`App[]`](#app) | `undefined` |
 | `routes` | 否 | 微应用运行时的路由 | [`Route[]`](#route) | `undefined` |
 | `sandbox` | 否 | 是否开启沙箱模式 | `boolean \| { strictStyleIsolation: boolean, experimentalStyleIsolation: boolean }` | `true` |
