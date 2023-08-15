@@ -1,11 +1,10 @@
-# 路由数据加载
+# Route Data Loading
 
-Umi 提供了开箱即用的数据预加载方案，能够解决在多层嵌套路由下，页面组件和数据依赖的瀑布流请求。Umi
-会自动根据当前路由或准备跳转的路由，并行地发起他们的数据请求，因此当路由组件加载完成后，已经有马上可以使用的数据了。
+Umi provides an out-of-the-box data preloading solution that can solve the waterfall request problem of page components and data dependencies in multi-level nested routes. Umi automatically initiates data requests in parallel based on the current route or the route you're about to navigate to. This means that once the route components are loaded, the data is immediately available for use.
 
-## 启用方式
+## Enabling the Feature
 
-配置开启：
+Enable the feature by configuring:
 
 ```ts
 // .umirc.ts
@@ -15,9 +14,9 @@ export default {
 }
 ```
 
-## 使用方式
+## Usage
 
-在路由文件中，除了默认导出的页面组件外，再导出一个 `clientLoader` 函数，并且在该函数内完成路由数据加载的逻辑。
+In the route file, in addition to exporting the default page component, also export a `clientLoader` function. Inside this function, complete the logic for loading route data.
 
 ```tsx
 // pages/.../some_page.tsx
@@ -35,21 +34,21 @@ export async function clientLoader() {
 }
 ```
 
-如上代码，在 `clientLoader` 函数返回的数据，可以在组件内调用 `useClientLoaderData` 获取。
+As seen in the above code, the data returned from the `clientLoader` function can be accessed within the component using `useClientLoaderData`.
 
-## 优化效果
+## Optimization Effect
 
-考虑一个三层嵌套路由的场景：
+Consider a scenario with a three-level nested route:
 
-1. 我们需要先等第一层路由的组件加载完成，然后第一层路由的组件发起数据请求
-2. 第一层路由的数据请求完成后，开始请求第二层路由的组件，第二层路由的组件加载好以后请求第二层路由需要的数据
-3. 第二层路由的数据请求完成后，开始请求第三层路由的组件，第三层路由的组件加载好以后请求第三层路由需要的数据
-4. 第三层路由的数据请求完成后，整个页面才完成渲染
+1. We need to wait for the component of the first-level route to load and then initiate a data request from that component.
+2. After the data request of the first-level route is complete, initiate the request for the component of the second-level route. Once the component of the second-level route is loaded, request the required data for that route.
+3. After the data request of the second-level route is complete, initiate the request for the component of the third-level route. Once the component of the third-level route is loaded, request the required data for that route.
+4. Once the data request of the third-level route is complete, the entire page is rendered.
 
-这样的瀑布流请求会严重影响用户的体验，如下图所示：
+Such a waterfall request process can significantly impact user experience, as shown in the following illustration:
 
 ![](https://img.alicdn.com/imgextra/i1/O1CN01OcsOL91CPw46Pm7vz_!!6000000000074-1-tps-600-556.gif)
 
-如果将组件请求数据的程序提取到 `clientLoader` 中，则 Umi 可以并行地请求这些数据：
+By extracting the component's data request logic into `clientLoader`, Umi can parallelize these data requests, as shown in this illustration:
 
 ![](https://img.alicdn.com/imgextra/i3/O1CN01URnLH81un9EVYGeL9_!!6000000006081-1-tps-600-556.gif)

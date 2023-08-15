@@ -1,12 +1,12 @@
 import { Tabbed } from 'umi';
 
-# 快速上手
+# Getting Started
 
-## 环境准备
+## Environment Setup
 
-首先得有 node，并确保 node 版本是 14 或以上。（推荐用 [nvm](https://github.com/nvm-sh/nvm) 来管理 node 版本，windows 下推荐用 [nvm-windows](https://github.com/coreybutler/nvm-windows)）
+First, you need to have Node.js installed, and make sure the Node.js version is 14 or above. (It's recommended to use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions. For Windows, you can use [nvm-windows](https://github.com/coreybutler/nvm-windows))
 
-mac 或 linux 下安装 nvm。
+Install nvm on macOS or Linux:
 
 ```bash
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -14,21 +14,21 @@ $ nvm -v
 0.39.1
 ```
 
-安装 node。
+Install Node.js:
 
-```
+```bash
 $ nvm install 16
 $ nvm use 16
 $ node -v
 v16.10.0
 ```
 
-然后需要包管理工具。node 默认包含 npm，但也可以选择其他方案，
+Next, you need a package management tool. Node.js comes with npm by default, but you can also choose other options:
 
-* [pnpm](https://pnpm.io/installation), umi 团队推荐
+* [pnpm](https://pnpm.io/installation) (recommended by the Umi team)
 * [Yarn](https://yarnpkg.com/getting-started/install)
 
-安装 pnpm。
+Install pnpm:
 
 ```bash
 curl -fsSL https://get.pnpm.io/install.sh | sh -
@@ -36,14 +36,14 @@ $ pnpm -v
 7.3.0
 ```
 
-## 创建项目
+## Create a Project
 
-先找个地方建个空目录。
+Start by creating an empty directory:
 
 ```bash
 $ mkdir myapp && cd myapp
 ```
-通过官方工具创建项目，
+Create a project using the official tool:
 
 <Tabbed>
 
@@ -137,29 +137,29 @@ info  - generate files
 ```
 </Tabbed>
 
-注：使用 bun 初始化项目会更快，需要 bun >= `0.4.0` 版本。
+Note: Using Bun to initialize the project will be faster, and you need bun version >= `0.4.0`.
 
-国内建议选 **pnpm + taobao 源**，速度提升明显。这一步会自动安装依赖，同时安装成功后会自动执行 `umi setup` 做一些文件预处理等工作。
+For users in China, it's recommended to choose **pnpm + taobao registry** for faster speed. This step will automatically install dependencies and execute `umi setup` after successful installation for some file preprocessing and other tasks.
 
-### 从模板创建项目
+### Create project from a template
 
 ```bash
-  # 从 @umijs/electron-template 创建一个 electron 模板
+  # Create an Electron template from @umijs/electron-template
   pnpm create umi --template electron
 ```
 
-### 参数选项
+### Parameter Options
 
-使用 `create-umi` 创建项目时，可用的参数如下：
+When creating a project using `create-umi`, you can use the following options:
 
 option|description
 :-:|:-
-`--no-git`|创建项目，但不初始化 Git
-`--no-install`|创建项目，但不自动安装依赖
+`--no-git`|Create the project, but don't initialize Git
+`--no-install`|Create the project, but don't automatically install dependencies
 
-## 启动项目
+## Start the Project
 
-执行 `pnpm dev` 命令，
+Execute the `pnpm dev` command:
 
 ```bash
 $ pnpm dev
@@ -174,13 +174,13 @@ event - compiled successfully in 1121 ms (388 modules)
 event - MFSU compiled successfully in 1308 ms (875 modules)
 ```
 
-在浏览器里打开 [http://localhost:8000/](http://localhost:8000/)，能看到以下界面，
+Open your browser and navigate to [http://localhost:8000/](http://localhost:8000/). You should see the following page:
 
 ![](https://img.alicdn.com/imgextra/i2/O1CN01ufcj8M1Lpt1yXd8sy_!!6000000001349-2-tps-1372-1298.png)
 
-## 启用 Prettier（可选）
+## Enable Prettier (Optional)
 
-如果需要用 prettier 做项目代码的自动格式化，执行 `pnpm umi g`，
+If you want to use Prettier for automatic code formatting, execute `pnpm umi g`:
 
 ```bash
 $ pnpm umi g
@@ -191,9 +191,9 @@ info  - Write .prettierignore
 info  - Install dependencies with pnpm
 ```
 
-## 部署发布
+## Deploy and Publish
 
-执行 `pnpm build` 命令，
+Execute the `pnpm build` command:
 
 ```bash
 > umi build
@@ -201,7 +201,7 @@ event - compiled successfully in 1179 ms (567 modules)
 event - build index.html
 ```
 
-产物默认会生成到 `./dist` 目录下，
+The build output will be generated in the `./dist` directory:
 
 ```
 ./dist
@@ -210,4 +210,4 @@ event - build index.html
 └── umi.js
 ```
 
-完成构建后，就可以把 dist 目录部署到服务器上了。
+After completing the build, you can deploy the `dist` directory to your server.

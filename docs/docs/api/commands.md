@@ -1,14 +1,16 @@
-# 命令行
+Sure, here's the translated markdown with the Chinese words replaced:
 
-umi 提供了很多内置的命令行用于启动，构建项目，另外还有一些辅助开发的命令，如生成器等。
+# Command Line
 
-要获取可用的命令列表，你可以在项目目录中运行 help 命令：
+Umi provides many built-in command-line tools for project startup, building, and various development aids such as generators.
+
+To get a list of available commands, you can run the `help` command in your project directory:
 
 ```bash
 umi help
 ```
 
-你应该能看到类似如下的日志：
+You should see logs similar to the following:
 
 ```bash
 Usage: umi <command> [options]
@@ -31,15 +33,15 @@ Commands:
     generate  generate code snippets quickly
     g         generate code snippets quickly
 
-Run `umi help <command>` for more information of specific commands.
+Run `umi help <command>` for more information on specific commands.
 Visit https://umijs.org/ to learn more about Umi.
 ```
 
-> 为方便查找，以下命令通过字母排序。
+> For easier searching, the following commands are sorted alphabetically.
 
 ## build
 
-构建项目，适用于生产环境的部署。
+Builds the project, suitable for production deployment.
 
 ```bash
 $ umi build
@@ -47,9 +49,9 @@ $ umi build
 
 ## config
 
-通过命令行快速查看和修改配置。
+Quickly view and modify configurations through the command line.
 
-查看配置，可以用 `list` 或 `get`。
+To view configurations, you can use `list` or `get`.
 
 ```bash
 $ umi config list
@@ -60,7 +62,7 @@ $ umi config get mfsu
  - [key: externals] { esbuild: true }
 ```
 
-修改配置，可以用 `set` 或 `remove`。
+To modify configurations, you can use `set` or `remove`.
 
 ```bash
 $ umi config set polyfill false
@@ -72,7 +74,7 @@ remove config:polyfill on /private/tmp/sorrycc-wsYpty/.umirc.ts
 
 ## dev
 
-启动本地开发服务器，进行项目的开发与调试。
+Starts the local development server for project development and debugging.
 
 ```bash
 $ umi dev
@@ -81,36 +83,36 @@ $ umi dev
         ║  >   Local: https://127.0.0.1:8001                  ║
 ready - ║  > Network: https://192.168.1.1:8001                ║
         ║                                                     ║
-        ║ Now you can open browser with the above addresses👆 ║
+        ║ Now you can open the browser with the above addresses👆 ║
         ╚═════════════════════════════════════════════════════╝
 event - compiled successfully in 1051 ms (416 modules)
 ```
 
 ## generate
 
-用于增量生成文件或启用功能，命令行别名是 `g`。
+Used to incrementally generate files or enable features. The command-line alias is `g`.
 
-不加任何参数时会给交互式的生成器选择。
+When no parameters are added, an interactive generator selection will be provided.
 
 ```bash
 $ umi g
-# 或
+# Or
 $ umi generate
-? Pick generator type › - Use arrow-keys. Return to submit.
+? Pick generator type › - Use arrow keys. Return to submit.
 ❯   Create Pages -- Create a umi page by page name
     Enable Prettier -- Enable Prettier
 ```
 
-也可以指定参数。
+You can also specify parameters.
 
 ```bash
-# 生成路由文件
+# Generate a route file
 $ umi g page index --typescript --less
 ```
 
 ## help
 
-查看帮助。
+Displays help information.
 
 ```bash
 $ umi help
@@ -127,11 +129,11 @@ Commands:
     plugin    inspect umi plugins
     generate  generate code snippets quickly
 
-Run `umi help <command>` for more information of specific commands.
+Run `umi help <command>` for more information on specific commands.
 Visit https://umijs.org/ to learn more about Umi.
 ```
 
-也可指定命令，查看特定命令的详细帮助。
+You can also specify a command to see detailed help for a specific command.
 
 ```bash
 $ umi help build
@@ -150,27 +152,26 @@ Details:
 
 ## lint
 
-用于检查及修正代码是否符合规则。
+Used to check and correct whether the code complies with the rules.
 
 ```bash
 $ umi lint
 Usage: umi lint
 
- 支持只校验 js、ts、tsx、jsx 类型文件： umi lint --eslint-only
+ Supports checking only js, ts, tsx, jsx type files: umi lint --eslint-only
 
- 支持只校验 css、less 等样式文件： umi lint --stylelint-only
+ Supports checking only style files like css, less: umi lint --stylelint-only
 
- 支持校验 cssinjs 模式校验： umi lint --stylelint-only --cssinjs
+ Supports checking css-in-js mode: umi lint --stylelint-only --cssinjs
 
- 修正代码： --fix
-
+ Fix code issues: --fix
 ```
 
 ## plugin
 
-插件相关操作，目前只支持 `list` 子命令。
+Plugin-related operations, currently only supports the `list` sub-command.
 
-列出所有插件。
+List all plugins.
 
 ```bash
 $ umi plugin list
@@ -189,29 +190,29 @@ $ umi plugin list
 
 ## preview
 
-`umi preview` 命令会在本地启动一个静态 Web 服务器，将 dist 文件夹运行在 http://127.0.0.1:4172, 用于预览构建后产物, 支持 proxy、mock 等设置。
+The `umi preview` command starts a local static web server that runs the `dist` folder at http://127.0.0.1:4172. This is used to preview the built artifacts and supports settings like proxy and mock.
 
-你可以通过 `--port` 参数来配置服务的运行端口。
+You can configure the server's port using the `--port` parameter.
 
 ```bash
 $ umi preview --port 9527
 ```
 
-现在 `preview` 命令会将服务器运行在 http://127.0.0.1:9527.
+Now the `preview` command will run the server at http://127.0.0.1:9527.
 
-通过 `--host` 参数来指定 配置服务运行的 hostname。
+You can use the `--host` parameter to specify the hostname for the service to run.
 
-以下用户配置在 `preview` 时也会生效
+The following user configurations will also take effect during `preview`:
 
-* [https](./config#https)
-* [proxy](../guides/proxy)
-* [mock](../guides/mock)
+- [https](./config#https)
+- [proxy](../guides/proxy)
+- [mock](../guides/mock)
 
-注意 `dist` 目录会随着配置 `outputPath` 的变更而变更。
+Note that the `dist` directory will change with the change in the `outputPath` configuration.
 
 ## run
 
-`umi run` 命令可以让你像 node 运行 js 一样来运行 TypeScript 和 ESM 文件。你可以搭配 [zx](https://github.com/google/zx) 来更好的使用脚本命令。
+The `umi run` command allows you to run TypeScript and ESM files like you would run JavaScript using Node. You can also use [zx](https://github.com/google/zx) to better utilize script commands.
 
 ```bash
 $ umi run ./script.ts
@@ -219,9 +220,9 @@ $ umi run ./script.ts
 
 ## setup
 
-初始化项目，会做临时文件的生成等操作。通常在 package.json 的 `scripts.postinstall` 里设置。
+Initializes the project by performing operations like generating temporary files. Usually set in `scripts.postinstall` in `package.json`.
 
-```bash
+```json
 {
   "scripts": { "postinstall": "umi setup" }
 }
@@ -229,7 +230,7 @@ $ umi run ./script.ts
 
 ## deadcode
 
-用于查找 src 目录下未被引用的文件，并在根目录输出文件。
+Used to find unused files in the `src` directory and output them to the root directory.
 
 ```bash
 $ umi deadcode
@@ -241,14 +242,13 @@ $ umi deadcode
 
 ## mfsu
 
-`umi mfsu` 命令可以查看 MFSU 依赖信息、重新构建 MFSU 依赖和清除 MFSU 依赖。
+The `umi mfsu` command can be used to view MFSU dependency information, rebuild MFSU dependencies, and clear MFSU dependencies.
 
-
-```bash title="获取 MFSU 命令帮忙"
+```bash title="Get MFSU Command Help"
 $ umi mfsu
 ```
 
-```bash title="获取 MFSU 依赖列表"
+```bash title="Get MFSU Dependency List"
 $ umi mfsu ls
 warning@4.0.3
 regenerator-runtime/runtime.js@0.13.11
@@ -263,7 +263,7 @@ lodash/concat@4.17.21
 ...
 ```
 
-```bash title="重新构建 MFSU 依赖"
+```bash title="Rebuild MFSU Dependencies"
 $ umi mfsu build
 info  - Preparing...
 info  - MFSU eager strategy enabled
@@ -273,18 +273,18 @@ info  - [MFSU] buildDeps since cacheDependency has changed
 info  - [plugin: @umijs/preset-umi/dist/commands/mfsu/mfsu] [MFSU][eager] build success
 ```
 
-```bash title="清除 MFSU 依赖"
-$ # 删除依赖信息列表
+```bash title="Clear MFSU Dependencies"
+$ # Remove dependency information list
 $ umi mfsu remove
-$ # 删除依赖信息列表和产物文件
+$ # Remove both dependency information list and artifact files
 $ umi mfsu remove --all
 ```
 
 ## verifyCommit
 
-验证 commit message 信息，通常和 [husky](https://github.com/typicode/husky) 搭配使用。
+Verifies commit message information, usually used in conjunction with [husky](https://github.com/typicode/husky).
 
-比如在 `.husky/commit-msg` 做如下配置，
+For example, configure the `.husky/commit-msg` as follows,
 
 ```bash
 #!/bin/sh
@@ -295,7 +295,7 @@ npx --no-install umi verify-commit $1
 
 ## version
 
-查看 `umi` 版本，等同于 `umi -v`。
+Displays the `umi` version, equivalent to `umi -v`.
 
 ```bash
 $ umi version

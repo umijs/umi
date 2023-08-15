@@ -2,37 +2,38 @@ import { Message } from 'umi';
 
 # API
 
-为方便查找，以下内容通过字母排序。
+For easy reference, the following content is sorted alphabetically.
 
 ## umi
 
 ### createBrowserHistory
 
-创建使用浏览器内置 `history` 来跟踪应用的 `BrowserHistory`。推荐在支持 HTML5 `history` 接口的 现代 Web 浏览器中使用。
+Create a `BrowserHistory` that uses the browser's built-in `history` to track the application. It's recommended to use this in modern web browsers that support the HTML5 `history` interface.
 
-类型定义如下：
+Type definition:
 ```ts
 function createBrowserHistory(options?: { window?: Window }) => BrowserHistory;
 ```
 
-使用范例：
+Usage example:
 ```ts
 // create a BrowserHistory
 import { createBrowserHistory } from 'umi';
 const history = createBrowserHistory();
-// or a iframe BrowserHistory
+// or an iframe BrowserHistory
 import { createBrowserHistory } from 'umi';
 const history = createBrowserHistory({
   window: iframe.contentWindow,
 });
 ```
+
 ### createHashHistory
 
-`createHashHistory` 返回一个 `HashHistory` 实例。`window` 默认为当前 `document` 的 `defaultView`。
+`createHashHistory` returns a `HashHistory` instance. The `window` defaults to the `defaultView` of the current `document`.
 
-`HashHistory` 与 `BrowserHistory` 的主要区别在于，`HashHistory` 将当前位置存储在 URL 的哈希部分中，这意味着它在路由切换时不会发送请求到服务器。如果您将站点托管在您无法完全控制服务器上，或者在只提供同单页面的 Electron 应用程序中，推荐使用 `HashHistory`。
+The main difference between `HashHistory` and `BrowserHistory` is that `HashHistory` stores the current location in the hash portion of the URL, which means it won't send requests to the server when the route changes. If your site is hosted on a server you don't have full control over, or in single-page Electron applications, it's recommended to use `HashHistory`.
 
-使用范例：
+Usage example:
 ```ts
 // create a HashHistory
 import { createHashHistory } from 'umi';
@@ -41,7 +42,7 @@ const history = createHashHistory();
 
 ### createMemoryHistory
 
-`MemoryHistory` 不会在地址栏被操作或读取。它也非常适合测试和其他的渲染环境。
+`MemoryHistory` doesn't manipulate or read from the address bar. It's also great for testing and other rendering environments.
 
 ```ts
 const history = createMemoryHistory(location)
@@ -49,27 +50,27 @@ const history = createMemoryHistory(location)
 
 ### createSearchParams
 
-包装 `new URLSearchParams(init)` 的工具函数，支持使用数组和对象创建
+A utility function that wraps `new URLSearchParams(init)`, supporting arrays and objects for creation.
 
 ```ts
 import { createSearchParams } from 'umi';
 
 
-// 假设路径 http://a.com?foo=1&bar=2
+// Assume the path is http://a.com?foo=1&bar=2
 createSearchParams(location.search);
 createSearchParams("foo=1&bar=2");
 createSearchParams("?foo=1&bar=2");
 
-// 键值对对象
+// Key-value object
 createSearchParams({ foo: 'bar', qux: 'qoo'}).toString()
 // foo=bar&qux=qoo
 
-// 键值元组数组
+// Key-value tuple array
 createSearchParams([["foo", "1"], ["bar", "2"]]).toString()
 // foo=1&bar=2
 ```
 
-[URLSearchParams 文档](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams)
+[URLSearchParams documentation](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams)
 
 {
 /*
@@ -82,7 +83,7 @@ TODO: SUPPORT
 
 ### generatePath
 
-使用给定的带参数的 path 和对应的 params 生成实际要访问的路由。
+Generate the actual route to be accessed using the given parameterized path and corresponding params.
 
 ```ts
 import { generatePath } from 'umi';
@@ -96,9 +97,9 @@ generatePath("/files/:type/*", {
 
 ### Helmet
 
-即 [react-helmet-async](https://github.com/staylor/react-helmet-async) 提供的 Helmet 组件，用于在页面中动态配置 `head` 中的标签，例如 `title`。
+The `Helmet` component provided by [react-helmet-async](https://github.com/staylor/react-helmet-async) is used to dynamically configure tags in the `head` section of the page, such as `title`.
 
-> 注意：为了确保 SSR 时 Helmet 仍能正常工作，请务必使用 Umi 提供的 Helmet 而不是单独安装 react-helmet
+> Note: To ensure Helmet works correctly during SSR, be sure to use the Helmet provided by Umi instead of separately installing react-helmet.
 
 ```tsx
 import { Helmet } from 'umi';
@@ -114,10 +115,10 @@ export default function Page() {
 
 ### history
 
-和 history 相关的操作，用于获取当前路由信息、执行路由跳转、监听路由变更。
+Operations related to history, used to get current route information, perform route navigation, and listen for route changes.
 
 ```ts
-// 建议组件或 hooks 里用 useLocation 取
+// Recommended to use useLocation inside components or hooks
 import { useLocation } from 'umi';
 export default function Page() {
   let location = useLocation();
@@ -131,24 +132,24 @@ export default function Page() {
 }
 ```
 
-如果在 React 组件和 Hooks 之外获取当前路由信息。
+If you need to get current route information outside of React components and hooks:
 
 ```ts
-// location 对象，包含 pathname、search 和 hash
+// location object containing pathname, search, and hash
 window.location.pathname;
 window.location.search;
 window.location.hash;
 ```
 
-命令式路由跳转。
+Imperative route navigation:
 
 ```ts
 import { history } from 'umi';
 
-// 跳转到指定路由
+// Navigate to a specific route
 history.push('/list');
 
-// 带参数跳转到指定路由
+// Navigate to a specific route with parameters
 history.push('/list?a=b&c=d#anchor', state);
 history.push({
     pathname: '/list',
@@ -160,20 +161,20 @@ history.push({
   }
 );
 
-// 跳转当前路径，并刷新 state
+// Navigate to the current path and refresh state
 history.push({}, state)
 
-// 跳转到上一个路由
+// Navigate back to the previous route
 history.back();
 history.go(-1);
 ```
 
 <Message emoji="🚨">
-注意：history.push 和 history.replace 需要使用 `state` 需将 `state` 作为这两个 API 的第二个参数传递
+Note: When using history.push and history.replace, if you need to use `state`, make sure to pass `state` as the second argument to these two APIs.
 </Message>
 
 
-路由监听。
+Route listening:
 
 ```ts
 import { history } from 'umi';
@@ -186,9 +187,9 @@ unlisten();
 
 ### Link
 
-`<Link>` 是 React 组件，是带路由跳转功能的 `<a>` 元素。
+The `<Link>` component is a React component that provides routing functionality similar to an `<a>` element.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function Link(props: {
@@ -200,7 +201,7 @@ declare function Link(props: {
 }): React.ReactElement;
 ```
 
-示例：
+Example:
 
 ```tsx
 import { Link } from 'umi';
@@ -210,15 +211,15 @@ function IndexPage({ user }) {
 }
 ```
 
-`<Link to>` 支持相对路径跳转；`<Link reloadDocument>` 不做路由跳转，等同于 `<a href>` 的跳转行为。
+The `<Link to>` supports relative path navigation; `<Link reloadDocument>` doesn't perform route navigation and behaves similarly to `<a href>`.
 
-若开启了 `prefetch` 则当用户将鼠标放到该组件上方时，Umi 就会自动开始进行跳转路由的组件 js 文件和数据预加载。
+If `prefetch` is enabled, Umi will automatically start preloading the component's JS file and data for the route when the user hovers over the component.
 
 ### matchPath
 
-`matchPath` 可以将给定的路径以及一个已知的路由格式进行匹配，并且返回匹配结果。
+`matchPath` matches the given path with a known route format and returns the matching result.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function matchPath<ParamKey extends string = string>(
@@ -237,7 +238,7 @@ interface PathPattern {
 }
 ```
 
-示例：
+Example:
 ```ts
 import { matchPath } from 'umi';
 const match = matchPath(
@@ -253,10 +254,9 @@ const match = matchPath(
 ```
 ### matchRoutes
 
-`matchRoutes` 可以将给定的路径以及多个可能的路由选择进行匹配，并且返回匹配结果。
+`matchRoutes` matches the given path with multiple possible route selections and returns the matching result.
 
-类型定义如下：
-
+Type definition:
 ```ts
 declare function matchRoutes(
   routes: RouteObject[],
@@ -270,7 +270,7 @@ interface RouteMatch<ParamKey extends string = string> {
 }
 ```
 
-示例：
+Example:
 
 ```ts
 import { matchRoutes } from 'umi';
@@ -302,9 +302,9 @@ const match = matchRoutes(
 
 ### NavLink
 
-`<NavLink>` 是 `<Link>` 的特殊形态，他知道当前是否为路由激活状态。通常在导航菜单、面包屑、Tabs 中会使用，用于显示当前的选中状态。
+`<NavLink>` is a special form of `<Link>` that knows whether it's in an active route state. It's often used in navigation menus, breadcrumbs, and tabs to indicate the current selection.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function NavLink(props: LinkProps & {
@@ -316,7 +316,7 @@ declare function NavLink(props: LinkProps & {
 }): React.ReactElement;
 ```
 
-下方示例分别用了 style、className 和 children 来渲染 active 状态。
+Examples using style, className, and children to render the active state:
 
 ```ts
 import { NavLink } from 'umi';
@@ -332,9 +332,9 @@ function Navs() {
 
 ### Outlet
 
-`<Outlet>` 用于渲染父路由中渲染子路由。如果父路由被严格匹配，会渲染子路由中的 index 路由（如有）。
+`<Outlet>` is used to render child routes within a parent route. If the parent route is strictly matched, it renders the index route of the child routes if available.
 
-类型定义如下：
+Type definition:
 
 ```ts
 interface OutletProps {
@@ -345,7 +345,7 @@ declare function Outlet(
 ): React.ReactElement | null;
 ```
 
-示例：
+Examples:
 
 ```ts
 import { Outlet } from 'umi';
@@ -369,13 +369,13 @@ function DashboardWithContext() {
 }
 ```
 
-`Outlet` 组件的 `context` 可以使用 API `useOutletContext` 在子组件中获取。
+The `context` of the `Outlet` component can be obtained in child components using the `useOutletContext` API.
 
 ### resolvePath
 
-用于在客户端解析前端路由跳转路径。
+Used to resolve front-end route paths on the client side.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function resolvePath(
@@ -388,46 +388,46 @@ declare function resolvePath(
 };
 ```
 
-示例：
+Example:
 
 ```ts
-// 同级相对跳转，返回 { pathname: '/parent/child', search: '', hash: '' }
+// Relative navigation at the same level, returns { pathname: '/parent/child', search: '', hash: '' }
 resolvePath('child', '/parent');
 resolvePath('./child', '/parent');
 resolvePath('', '/parent/child');
 resolvePath('.', '/parent/child');
 
-// 祖先层级相对跳转，返回 { pathname: '/parent/sibling', search: '', hash: '' }
+// Relative navigation to an ancestor level, returns { pathname: '/parent/sibling', search: '', hash: '' }
 resolvePath('../sibling', '/parent/child');
 resolvePath('../../parent/sibling', '/other/child');
 
-// 绝对跳转，返回 { pathname: '/target', search: '', hash: '' }
+// Absolute navigation, returns { pathname: '/target', search: '', hash: '' }
 resolvePath('/target', '/parent');
 resolvePath('/target', '/parent/child');
 
-// 携带 search 和 hash 跳转，返回 { pathname: '/params', search: '?a=b', hash: '#c' }
+// Navigation with search and hash, returns { pathname: '/params', search: '?a=b', hash: '#c' }
 resolvePath('/params?a=b#c', '/prev');
 ```
 
 ### terminal
 
-`terminal` 用于在开发阶段在浏览器向 node 终端输出日志的工具。
+`terminal` is a tool for outputting logs from the browser to the node terminal during development.
 
-示例：
+Example:
 ```ts
-import {terminal} from 'umi';
-// 下面三条命令会在 umi 启动终端上打出用不同颜色代表的日志
+import { terminal } from 'umi';
+// The following three commands will print logs to the terminal with different colors representing different log levels
 terminal.log('i am log level');
 terminal.warn('i am warn level');
 terminal.error('i am error level');
 ```
-注意 `terminal` 只在环境变量 `NODE_ENV` 非 `production` 时生效；在 Umi 的构建产物中对应的日志调用函数不会有任何作用，所以可以不必删除调用 `terminal` 的代码。
+Note: `terminal` only works when the `NODE_ENV` environment variable is not set to `production`. In Umi's build artifacts, the corresponding log calls will have no effect, so you don't need to remove the `terminal` calls from your code.
 
 ### useAppData
 
-`useAppData` 返回全局的应用数据。
+`useAppData` returns the global application data.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function useAppData(): {
@@ -441,14 +441,13 @@ declare function useAppData(): {
   preloadRoute: (to: string) => void;
 };
 ```
-注意：此处 API 可能还会调整。
+Note: This API might be subject to change.
 
 ### useLocation
 
-`useLocation` 返回当前 location 对象。
+`useLocation` returns the current location object.
 
-类型定义如下：
-
+Type definition:
 ```ts
 declare function useLocation(): {
   pathname: string;
@@ -458,7 +457,7 @@ declare function useLocation(): {
 };
 ```
 
-一个场景是在 location change 时做一些 side effect 操作，比如 page view 统计。
+One scenario is to perform side effects when the location changes, such as tracking page views.
 
 ```ts
 import { useLocation } from 'umi';
@@ -474,9 +473,9 @@ function App() {
 
 ### useMatch
 
-`useMatch` 返回传入 path 的匹配信息；如果匹配失败将返回 `null`
+`useMatch` returns the matching information for the given path; it returns `null` if there's no match.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function useMatch(pattern: {
@@ -494,7 +493,7 @@ declare function useMatch(pattern: {
 };
 ```
 
-示例：
+Example:
 ```tsx
 import { useMatch } from 'umi';
 
@@ -506,7 +505,7 @@ console.log(match?.pathname, match?.params.eventId);
 
 ### useNavigate
 
-`useNavigate` 钩子函数返回一个可以控制跳转的函数；比如可以用在提交完表单后跳转到其他页面。
+The `useNavigate` hook function returns a function that can be used to control navigation. It can be used, for example, to navigate to a different page after submitting a form.
 
 ```ts
 declare function useNavigate(): NavigateFunction;
@@ -520,9 +519,9 @@ interface NavigateFunction {
 }
 ```
 
-示例：
+Examples:
 
-* 跳转路径
+* Navigate to a specific path:
 ```ts
 import { useNavigate } from 'umi';
 
@@ -530,7 +529,7 @@ let navigate = useNavigate();
 navigate("../success", { replace: true });
 ```
 
-* 返回上一页
+* Go back to the previous page:
 ```ts
 import { useNavigate } from 'umi';
 
@@ -540,18 +539,18 @@ navigate(-1);
 
 ### useOutlet
 
-`useOutlet` 返回当前匹配的子路由元素，`<Outlet>` 内部使用的就是此 hook 。
+`useOutlet` returns the currently matched child route element. This is what `<Outlet>` internally uses.
 
-类型定义如下：
+Type definition:
 ```ts
 declare function useOutlet(): React.ReactElement | null;
 ```
 
-示例：
+Example:
 ```ts
 import { useOutlet } from 'umi';
 
-const Layout = ()=>{
+const Layout = () => {
   const outlet = useOutlet()
 
   return <div className="fancyLayout">
@@ -562,14 +561,14 @@ const Layout = ()=>{
 
 ### useOutletContext
 
-`useOutletContext` 用于返回 `Outlet` 组件上挂载的 `context` 。
+`useOutletContext` is used to retrieve the `context` attached to the `Outlet` component in child components.
 
-类型定义如下：
+Type definition:
 ```ts
 declare function useOutletContext<Context = unknown>(): Context;
 ```
 
-示例：
+Example:
 ```ts
 import { useOutletContext, Outlet } from 'umi';
 
@@ -588,22 +587,22 @@ const SomeRouteComponentUnderLayout = () => {
 
 ### useParams
 
-`useParams` 钩子函数返回动态路由的匹配参数键值对对象；子路由中会集成父路由的动态参数。
+`useParams` hook function returns a key-value object of matched dynamic route parameters; child routes inherit parent route's dynamic parameters.
 
-类型定义如下：
+Type definition:
 ```ts
 declare function useParams<
   K extends string = string
 >(): Readonly<Params<K>>;
 ```
 
-示例：
+Example:
 
 ```ts
 import { useParams } from 'umi';
 
-// 假设有路由配置  user/:uId/repo/:rId
-// 当前路径       user/abc/repo/def
+// Assuming the route configuration is user/:uId/repo/:rId
+// and the current path is user/abc/repo/def
 const params = useParams()
 /* params
 { uId: 'abc', rId: 'def'}
@@ -612,14 +611,14 @@ const params = useParams()
 
 ### useResolvedPath
 
-`useResolvedPath` 根据当前路径将目标地址解析出完整的路由信息。
+`useResolvedPath` resolves the target route path based on the current path.
 
-类型定义如下：
+Type definition:
 ```ts
 declare function useResolvedPath(to: To): Path;
 ```
 
-示例：
+Example:
 
 ```ts
 import { useResolvedPath } from 'umi';
@@ -632,18 +631,18 @@ const path = useResolvedPath('docs')
 
 ### useRouteData
 
-`useRouteData` 返回当前匹配路由的数据的钩子函数。
+`useRouteData` is a hook function that returns data of the currently matched route.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function useRouteData(): {
   route: Route;
 };
 ```
-注意：此处 API 可能还会调整。
+Note: This API might be subject to change.
 
-示例：
+Example:
 ```ts
 import { useRouteData } from 'umi';
 
@@ -662,9 +661,9 @@ const route = useRouteData();
 
 ### useRoutes
 
-`useRoutes` 渲染路由的钩子函数，传入路由配置和可选参数 `location`, 即可得到渲染结果；如果没有匹配的路由，结果为 `null`。
+`useRoutes` is a hook function to render routes. It takes route configuration and an optional `location` parameter and returns the rendering result. If there are no matched routes, it returns `null`.
 
-类型定义如下：
+Type definition:
 ```ts
 declare function useRoutes(
   routes: RouteObject[],
@@ -672,7 +671,7 @@ declare function useRoutes(
 ): React.ReactElement | null;
 ```
 
-示例：
+Example:
 
 ```ts
 import * as React from "react";
@@ -700,7 +699,7 @@ function App() {
 
 ### useRouteProps
 
-读取当前路由在路由配置里的 props 属性，你可以用此 hook 来获取路由配置中的额外信息。
+`useRouteProps` is used to read the `props` property from the route configuration. You can use this hook to access additional information defined in the route configuration.
 
 ```ts
 // .umirc.ts
@@ -722,13 +721,13 @@ export default function Page() {
 } 
 ```
 
-注：同样适用于约定式路由。
+Note: This also works with conventional routes.
 
 ### useSelectedRoutes
 
-用于读取当前路径命中的所有路由信息。比如在 `layout` 布局中可以获取到当前命中的所有子路由信息，同时可以获取到在 `routes` 配置中的参数，这格外有用。
+`useSelectedRoutes` is used to read information about all matched routes for the current path. For example, it can be used in the `layout` component to obtain information about all child routes matched, along with any parameters defined in the `routes` configuration, which can be quite useful.
 
-实例：
+Example:
 
 ```tsx
 // layouts/index.tsx
@@ -753,9 +752,9 @@ export default function Layout() {
 
 ### useSearchParams
 
-`useSearchParams` 用于读取和修改当前 URL 的 query string。类似 React 的 `useState`，其返回包含两个值的数组，当前 URL 的 search 参数和用于更新 search 参数的函数。
+`useSearchParams` is used to read and modify the query string of the current URL. Similar to React's `useState`, it returns an array containing two values: the current search parameters and a function to update the search parameters.
 
-类型定义如下：
+Type definition:
 
 ```ts
 declare function useSearchParams(defaultInit?: URLSearchParamsInit): [
@@ -773,7 +772,7 @@ type URLSearchParamsInit =
   | URLSearchParams;
 ```
 
-示例：
+Example:
 ```ts
 import React from 'react';
 import { useSearchParams } from 'umi';
@@ -790,9 +789,9 @@ function App() {
 
 ### withRouter
 
-`withRouter` 参考 [react-router faq](https://reactrouter.com/docs/en/v6/getting-started/faq#what-happened-to-withrouter-i-need-it) 实现的版本, 仅实现了部分能力, 请参考类型定义按需使用, 建议迁移到 React Hook API。
+`withRouter` is an implementation of the [react-router faq](https://reactrouter.com/docs/en/v6/getting-started/faq#what-happened-to-withrouter-i-need-it), which only implements part of its capabilities. Please refer to the type definitions for usage details. It's recommended to migrate to React Hook API.
 
-类型定义如下:
+Type definition:
 
 ```ts
 export interface RouteComponentProps<T = ReturnType<typeof useParams>> {
@@ -811,7 +810,7 @@ export interface RouteComponentProps<T = ReturnType<typeof useParams>> {
 }
 ```
 
-示例：
+Example:
 ```tsx
 import React from 'react';
 import { withRouter } from 'umi';

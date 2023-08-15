@@ -1,29 +1,29 @@
-# 脚手架
+# Scaffold
 
-Umi 官方提供了一个脚手架 ，可以轻松快速创建一个项目：
+The Umi official provides a scaffold that allows you to easily and quickly create a project:
 
 ```bash
 pnpm dlx create-umi@latest
 ```
 
-这个命令会安装 `create-umi` 脚手架并自动运行，运行后提供了两个可选项可以选择：
+This command will install the `create-umi` scaffold and automatically run it. After running, it provides two options to choose from:
 
-1. Pick Npm Client - 选择 Npm 客户端
+1. Pick Npm Client
 
-你可以从以下几个选项中选择习惯的 Node 依赖管理工具：
+You can choose your preferred Node dependency management tool from the following options:
 
 - [npm](https://www.npmjs.com/)
 - [cnpm](https://github.com/cnpm/cnpm)
 - [tnpm](https://web.npm.alibaba-inc.com/)
 - [yarn](https://yarnpkg.com/)
-- [pnpm](https://pnpm.io/) (Umi 官方推荐)
+- [pnpm](https://pnpm.io/) (Umi's official recommendation)
 
-2. Pick Npm Registry - 选择 Npm 源
+2. Pick Npm Registry
 
 - [npm](https://www.npmjs.com/)
 - [taobao](https://npmmirror.com/)
 
-选择后会自动生成一个最基本的 Umi 项目，并根据选中的客户端和镜像源安装依赖：
+After making the selections, it will generate a basic Umi project and install dependencies based on the chosen client and registry:
 
 ```text
 .
@@ -42,4 +42,4 @@ pnpm dlx create-umi@latest
 └── typings.d.ts
 ```
 
-这样就一键完成 Umi 项目的初始化了。
+This way, you can initialize a Umi project with just one command.

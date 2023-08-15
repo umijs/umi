@@ -1,10 +1,10 @@
 # react-query
 
-@umijs/max 内置了 [react-query](https://tanstack.com/query/)（和 @tanstack/react-query 是同一个）请求方案。
+@umijs/max comes with the [react-query](https://tanstack.com/query/) (same as @tanstack/react-query) data fetching solution.
 
-## 启用方式
+## Activation
 
-如果是 @umijs/max，配置开启。
+For @umijs/max, enable it through configuration.
 
 ```ts
 export default {
@@ -12,7 +12,7 @@ export default {
 }
 ```
 
-如果是 umi，先安装 `@umijs/plugins` 依赖，再通过配置开启。
+If you are using Umi, first install the `@umijs/plugins` dependency and then activate it through configuration.
 
 ```bash
 $ pnpm i @umijs/plugins -D
@@ -25,24 +25,24 @@ export default {
 }
 ```
 
-## 特性
+## Features
 
-插件帮你做了几件事，
+The plugin handles several tasks for you:
 
-1、dev 模式下开启 react query 的 devtool，可通过 `reactQuery: { devtool: false }` 关闭，选项在 app.ts 里通过 `export const reactQuery = { devtool }` 配置。
+1. It enables the react-query devtool in development mode. You can disable it using `reactQuery: { devtool: false }`, and configure this option in `app.ts` using `export const reactQuery = { devtool }`.
 
-2、注册全局的 QueryClient，可通过 `reactQuery: { queryClient: false }` 关闭，选项在 app.ts 里通过 `export const reactQuery = { queryClient }` 配置。
+2. It registers a global QueryClient. You can disable it using `reactQuery: { queryClient: false }`, and configure this option in `app.ts` using `export const reactQuery = { queryClient }`.
 
-3、大部分 react-query 的导出可以从 `umi` 或 `@umijs/max` 里 import 使用。
+3. Most of the react-query exports can be imported and used from `umi` or `@umijs/max`.
 
-## 配置项
+## Configuration Options
 
-可以在 `reactQuery` 中做以下配置。
+You can configure the following options within `reactQuery`:
 
-- `devtool`: boolean，是否开启 react query 官方 devtool 工具，默认 `true`
-- `queryClient`: boolean, 是否注册全局的 QueryClient 和 QueryClientProvier，默认 `true`
+- `devtool`: boolean, whether to enable the official react-query devtool. Default is `true`.
+- `queryClient`: boolean, whether to register the global QueryClient and QueryClientProvier. Default is `true`.
 
-比如：
+For example:
 
 ```ts
 export default {
@@ -53,16 +53,16 @@ export default {
 }
 ```
 
-注：以上两个配置的运行时配置需在 `app.ts` 里进行配置。
+Note: The runtime configurations for these two options should be done in `app.ts`.
 
-## 运行时配置项
+## Runtime Configuration Options
 
-包含以下配置。
+Includes the following configurations:
 
-- `devtool`：object
+- `devtool`: object
 - `queryClient`: object
 
-比如：
+For example:
 
 ```ts
 const API_SERVER = '/path/to/api/server';

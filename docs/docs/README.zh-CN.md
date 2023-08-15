@@ -1,1 +1,3 @@
-# 文档首页
+import { Navigate } from 'umi';
+
+<Navigate to="introduce/introduce" />

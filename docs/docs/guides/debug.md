@@ -1,58 +1,58 @@
-import { Message } from 'umi';
+# Debugging
 
-# 调试
+In addition to using browser debugging tools for development, Umi recommends the following debugging approaches to assist in project debugging.
 
-除了使用浏览器的调试工具来完成开发中的调试外，Umi 还推荐以下调试方式来协助项目的调试。
+## Debugging the Development Build
 
-## 调试 dev 产物
+If you need to debug the built artifacts during the development phase, such as `umi.js`, you can follow these steps. Let's take `umi.js` as an example. First, download the original `umi.js` file to the root directory of your project. Make any necessary edits for debugging purposes, and then refresh the browser. The project will use the modified `umi.js` file in the root directory. Once debugging is complete, you can simply delete the `umi.js` file from the root directory to revert to the original state.
 
-如果你需要在 dev 阶段调试项目的构建产物，以 `umi.js` 举例。先将原来的 `umi.js` 下载到当前项目根目录下。根据调试需要进行编辑后，刷新浏览器，项目使用的 `umi.js` 就替换成了根目录下的 `umi.js` 文件。调试完毕需要恢复就直接删除根目录的 `umi.js` 即可。
+Here's an example of how to do this:
 
-举例：
 ```bash
-# 下载当前项目的 umi.js
-$curl http://127.0.0.1:8000/umi.js -O
+# Download the umi.js file from the current project
+$ curl http://127.0.0.1:8000/umi.js -O
 
-# 增加想调试的内容，举例增加 "debug!!!" 弹窗
+# Make edits for debugging, for example, add an "debug!!!" alert
 $ echo -e  '\n;alert("debug!!!");\n' >> umi.js
-# 打开浏览器就能看到 alert 弹窗
 
-# 退出调试，恢复到正常状态
-$rm umi.js
+# Open the browser to see the alert popup
+
+# To exit debugging and revert to the normal state
+$ rm umi.js
 ```
 
-以此类推即可调试其他的 JavaScript 文件。
+You can follow similar steps to debug other JavaScript files.
 
 ## XSwitch
 
-如果需要在特定的域名环境调试或者验证当前的修改的代码，推荐使用 Chrome 插件 [XSwitch](https://chrome.google.com/webstore/detail/xswitch/idkjhjggpffolpidfkikidcokdkdaogg)。
-
+If you need to debug or validate your code changes on a specific domain, consider using the Chrome extension [XSwitch](https://chrome.google.com/webstore/detail/xswitch/idkjhjggpffolpidfkikidcokdkdaogg).
 
 ![xswitch-logo](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*fp9yRINN6aMAAAAAAAAAAAAAARQnAQ)
 
+Suppose you want to debug your local code on the production project URL `https://www.myproject.com`. The project uses `https://www.myproject.com/umi.hash.js`. To validate your local project, you need to replace it with your local development environment's `http://127.0.0.1:8000/umi.js`.
 
-假设我们想在线上项目地址 `https://www.myproject.com` 上调试本地代码。项目使用 `https://www.myproject.com/umi.hash.js`，为了验证本地的项目，需要将它替换成本地开发环境的 `http://127.0.0.1:000/umi.js`
+Start your local environment using the `SOCKET_SERVER` environment variable to avoid continuous page refreshes due to connection issues with the socket server:
 
-首先使用环境变量 `SOCKET_SERVER` 启动本地环境（防止因为连接不上 socket server 导致页面不断刷新）。
 ```bash
-$SOCKET_SERVER=http://127.0.0.1:8000/ npx umi dev
+$ SOCKET_SERVER=http://127.0.0.1:8000/ npx umi dev
 ```
 
-然后，在 XSwitch 中配置资源转发规则。
+Next, configure resource forwarding rules in XSwitch:
+
 ```json
 {
   "proxy": [
-    // 数组的第 0 项的资源会被第 1 项目替换
+    // The resource at index 0 of the array will be replaced with the resource at index 1
     [
       "https://www.myproject.com/umi.2c8a01df.js",
       "http://127.0.0.1:8000/umi.js"
     ],
-    // 使用正则可以方便处理分包情况下 js 资源的加载
+    // Using regex to handle loading of JS resources in split chunks
     [
       "https://www.myproject.com/(.*\.js)",
-      "http://127.0.0.1:8000/$1",
+      "http://127.0.0.1:8000/$1"
     ],
-    // 如果需要验证视觉表现，不要忘记替换 css 资源
+    // Don't forget to replace CSS resources if you need to validate visual appearance
     [
       "https://www.myproject.com/umi.ae8b10e0.css",
       "http://127.0.0.1:8000/umi.css"
@@ -61,14 +61,14 @@ $SOCKET_SERVER=http://127.0.0.1:8000/ npx umi dev
 }
 ```
 
-刷新页面，正式域名下的内容就被替换了，这个时候就能方便的指定环境下调试了。
+After refreshing the page, the content from the production domain will be replaced. This way, you can easily debug in a specific environment.
 
-如果要退出调试，关闭 XSwitch 插件功能即可。
+To exit debugging, simply disable the XSwitch extension.
 
 ![turn-off-xswitch](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*qXbNQJvz8-QAAAAAAAAAAAAAARQnAQ)
 
 <Message type='success' emoji="💡">
-经常使用 XSwitch 的话，可新建一个规则保存。
+If you frequently use XSwitch, you can create a rule to save it for later use.
 </Message>
 
 ![rule](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*oWfiT6R0SJkAAAAAAAAAAAAAARQnAQ)

@@ -1,39 +1,39 @@
 import { Message } from 'umi';
 
-# 微前端
+# Micro Frontends
 
-`@umi/max` 内置了 **Qiankun 微前端**[插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts)，它可以一键启用 Qiankun 微前端开发模式，帮助您轻松地在 Umi 项目中集成 Qiankun 微应用，构建出一个生产可用的微前端架构系统。
+`@umi/max` comes with a built-in **Qiankun Micro Frontends** [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts). It enables you to enable Qiankun Micro Frontends development mode with a single click. This plugin helps you seamlessly integrate Qiankun micro apps into your Umi project and build a production-ready micro frontend architecture.
 
-关于 Qiankun 微前端的更多介绍请参阅[此页面](https://qiankun.umijs.org/zh/guide)。
+For more information about Qiankun Micro Frontends, please refer to [this page](https://qiankun.umijs.org/zh/guide).
 
-## 微前端示例
+## Micro Frontends Example
 
-![微前端示例](https://gw.alipayobjects.com/mdn/rms_655822/afts/img/A*TroZSp_cH0MAAAAAAAAAAAAAARQnAQ)
+![Micro Frontends Example](https://gw.alipayobjects.com/mdn/rms_655822/afts/img/A*TroZSp_cH0MAAAAAAAAAAAAAARQnAQ)
 
-如上图所示：在父应用里，我们通过导航栏切换路由后，下方显示的内容来自于不同的子应用。子应用支持单独打开；子应用之间也支持任意的嵌套。
+As shown in the above image: In the parent app, by switching routes using the navigation bar, the content displayed below comes from different child apps. Child apps can be opened individually, and they can also be nested arbitrarily.
 
-换一种更直观的理解方式：父应用和子应用其实都是**独立的前端项目**，父应用可以在内部引入子应用，子应用也可以在自己内部继续引入孙子应用，以此类推。
+In simpler terms, both parent and child apps are **independent frontend projects**. The parent app can internally incorporate child apps, and child apps can also internally incorporate grandchild apps, and so on.
 
-当应用能够作为子应用被其它应用引入的时候，它就成为了我们所说的微应用。
+When an app can be imported as a child app into another app, it becomes what we call a micro app.
 
-## 开始使用
+## Getting Started
 
 <Message type="success">
-本教程假设您对什么是微前端，什么是 Qiankun 微应用，以及如何使用 Qiankun 微应用已经有了基本的了解。
+This tutorial assumes that you have a basic understanding of what micro frontends are, what Qiankun micro apps are, and how to use Qiankun micro apps.
 </Message>
 
-### 配置父应用
+### Configuring the Parent App
 
-首先需要配置父应用，注册子应用的相关信息，这样父应用才能识别子应用并在内部引入。
+First, you need to configure the parent app to register information about the child apps. This way, the parent app can recognize and incorporate the child apps internally.
 
-注册子应用的方式主要有两种：
+There are two main ways to register child apps:
 
-- 插件注册子应用。
-- 运行时注册子应用。
+- Registering child apps using plugins.
+- Registering child apps at runtime.
 
-#### 插件注册子应用
+#### Registering Child Apps Using Plugins
 
-修改父应用的 Umi 配置文件，添加如下内容：
+Modify the Umi configuration file of the parent app and add the following content:
 
 ```ts
 // .umirc.ts
@@ -55,11 +55,11 @@ export default {
 };
 ```
 
-其中，`name` 为子应用的名称，在引入子应用时需要使用到它；`entry` 为子应用运行的 HTTP 地址；`master` 对象的完整 API 可[见此](#masteroptions)。
+Here, `name` is the name of the child app, which you'll use when importing the child app. `entry` is the HTTP address where the child app is hosted. For the complete API of the `master` object, refer to [this](#masteroptions).
 
-#### 运行时注册子应用
+#### Registering Child Apps at Runtime
 
-修改父应用的 Umi 配置文件，添加如下内容：
+Modify the Umi configuration file of the parent app and add the following content:
 
 ```ts
 // .umirc.ts
@@ -70,7 +70,7 @@ export default {
 };
 ```
 
-修改父应用的 `src/app.ts` 文件，导出 `qiankun` 对象：
+Modify the `src/app.ts` file of the parent app and export the `qiankun` object:
 
 ```ts
 // src/app.ts
@@ -88,13 +88,13 @@ export const qiankun = {
 };
 ```
 
-### 配置子应用
+### Configuring Child Apps
 
-子应用需要导出必要的生命周期钩子，供父应用在适当的时机调用。
+Child apps need to export the necessary lifecycle hooks for the parent app to call at appropriate times.
 
-假设您的子应用项目**基于 Umi 开发**且**引入了 `qiankun` [插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts)**。如果没有，可以按照[此教程](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8)进行配置。
+Assuming your child app project is **based on Umi** and has imported the `qiankun` [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts)**. If not, you can configure it following [this tutorial](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8).
 
-修改子应用的 Umi 的配置文件，添加如下内容：
+Modify the Umi configuration file of the child app and add the following content:
 
 ```ts
 // .umirc.ts
@@ -105,24 +105,24 @@ export default {
 };
 ```
 
-这样，微前端插件会自动在项目中创建好 Qiankun 子应用所需的生命周期钩子和方法，Easy as a cake！
+This way, the micro frontend plugin will automatically create the necessary lifecycle hooks and methods for Qiankun child apps in the project. Easy as a cake!
 
-### 引入子应用
+### Importing Child Apps
 
-在父应用中引入子应用，插件提供了三种不同实现的方式：
+You can import child apps into the parent app using three different methods provided by the plugin:
 
-- 路由绑定引入子应用。
-- `<MicroApp />` 组件引入子应用。
-- `<MicroAppWithMemoHistory />` 组件引入子应用。
+- Importing child apps via route binding.
+- Importing child apps using the `<MicroApp />` component.
+- Importing child apps using the `<MicroAppWithMemoHistory />` component.
 
-#### 路由绑定引入子应用
+#### Importing Child Apps via Route Binding
 
-手动配置 `.umirc.ts` 文件中的 `routes` 项，通过路由的方式绑定子应用。何时使用：
+Manually configure the `routes` field in the `.umirc.ts` file to bind child apps via routes. Use this method when:
 
-- 子应用包含完整的路由切换逻辑时。
-- 父子应用路由相互关联时。
+- The child app has a complete route switching logic.
+- Parent and child app routes are interrelated.
 
-现在，我们想要在 `/app1/project` 和 `/app2` 路由分别加载子应用 `app1` 和 `app2`，可以配置父应用的路由如下：
+Now, let's say we want to load the `app1` child app for the `/app1/project` route and the `app2` child app for the `/app2` route. You can configure the parent app's routes as follows:
 
 ```ts
 // .umirc.ts
@@ -136,15 +136,15 @@ export default {
           path: '/app1',
           component: '@/layouts/app-layout.tsx',
           routes: [
-            // 配置微应用 app1 关联的路由
+            // Configure routes associated with the micro app app1
             {
-              // 带上 * 通配符意味着将 /app1/project 下所有子路由都关联给微应用 app1
+              // Using the * wildcard means all sub-routes under /app1/project are associated with the micro app app1
               path: '/project/*',
               microApp: 'app1',
             },
           ],
         },
-        // 配置 app2 关联的路由
+        // Configure routes associated with the app2
         {
           path: '/app2/*',
           microApp: 'app2',
@@ -155,21 +155,21 @@ export default {
 };
 ```
 
-配置好后，子应用的路由 base 会在运行时被设置为主应用中配置的 `path`。
-例如，在上面的配置中，我们指定了 app1 关联的 path 为 `/app1/project`，假如 app1 里有一个路由配置为 `/user`，当我们想在父应用中访问 `/user` 对应的页面时，浏览器的 url 需要是 `base + /user`，即 `/app1/project/user` 路径，否则子应用会因为无法匹配到正确的路由而渲染空白或404页面。
+Once configured, the base route of the child app will be set to the `path` configured in the parent app at runtime.
+For example, in the above configuration, we specified the path associated with app1 as `/app1/project`, if there is a route configured in app1 as `/user`, when we want to access the corresponding path of `/user` in the parent application page, the url of the browser needs to be `base + /user`, that is, `/app1/project/user` path, otherwise the child-app will render a blank or 404 page because it cannot match the correct route.
 
-`qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
+The `qiankun` plugin extends Umi's original route object with an additional `microApp` field, which holds the value of the registered child app's `name`. When switching to the corresponding route, Umi will use the `<MicroApp />` component to render the micro app and replace the original route's `component`.
 
-拓展后的 Umi 路由对象 API [可见此](#route)。
+For the extended Umi route object API, refer to [see more](#route).
 
-#### `<MicroApp />` 组件引入子应用
+#### Importing Child Apps using `<MicroApp />` Component
 
-通过 `<MicroApp />` 组件加载（或卸载）子应用。何时使用：
+Load (or unload) child apps using the `<MicroApp />` component. Use this method when:
 
-- 子应用包含完整的路由切换逻辑时。
-- 父子应用路由相互关联时。
+- The child app has a complete route switching logic.
+- Parent and child app routes are interrelated.
 
-现在，我们想在父应用的某个页面中引入子应用 `app1`，可以编写代码如下：
+Now, if we want to import the `app1` child app into a page of the parent app, you can write the code like this:
 
 ```tsx
 import { MicroApp } from 'umi';
@@ -179,9 +179,9 @@ export default function Page() {
 };
 ```
 
-使用该方式引入子应用时，父子应用的路由将一一对应。例如，当父应用路由为 `/some/page` 时，子应用路由同样为 `/some/page`。切换子应用路由时，父应用将同步切换。
+When using this method to import child apps, the routes of the parent and child apps will correspond one-to-one. For example, if the parent app's route is `/some/page`, the child app's route will also be `/some/page`. When switching the route of the child app, the parent app will switch accordingly.
 
-如果父应用的路由包含前缀，可以通过配置 `base` 属性保证父子应用的路由正确对应。例如，父应用路由为 `/prefix/router-path/some/page` 时，我们希望子应用的路由为 `/some/page`，可以修改代码如下：
+If the parent app's route includes a prefix, you can ensure that the routes of the parent and child apps correspond correctly by configuring the `base` attribute. For example, if the parent app's route is `/prefix/router-path/some/page` and we want the child app's route to be `/some/page`, you can modify the code like this:
 
 ```tsx
 import { MicroApp } from 'umi';
@@ -191,16 +191,16 @@ export default function Page() {
 };
 ```
 
-#### `<MicroAppWithMemoHistory />` 组件引入子应用
+#### Importing Child Apps using `<MicroAppWithMemoHistory />` Component
 
-通过 `<MicroAppWithMemoHistory />` 组件加载（或卸载）子应用。何时使用：
+Load (or unload) child apps using the `<MicroAppWithMemoHistory />` component. Use this method when:
 
-- 仅使用子应用的指定路由时。
-- 父子应用路由相互独立时。
+- You only need to use specific routes of the child app.
+- Parent and child app routes are independent.
 
-`<MicroAppWithMemoHistory />` 组件是 `<MicroApp />` 组件的变体，您需要显式提供 `url` 属性作为子应用的路由。当父应用的路由发生变化时，子应用的路由**不会改变**。
+The `<MicroAppWithMemoHistory />` component is a variation of the `<MicroApp />` component. You need to explicitly provide the `url` attribute as the route of the child app. Unlike the `<MicroApp />` component, the route of the child app will **not change** when the route of the parent app changes.
 
-现在，我们想在父应用的某个组件内部引入 `app2` 子应用，子应用的路由为 `/some/page`，可以编写代码如下：
+Now, let's say we want to import the `app2` child app into a component inside the parent app. The route of the child app is `/some/page`. You can write the code like this:
 
 ```tsx
 import { MicroAppWithMemoHistory } from 'umi';
@@ -210,18 +210,18 @@ export default function Page() {
 };
 ```
 
-### 子应用之间跳转
+### Navigating Between Child Apps
 
-如果子应用通过**路由绑定的方式**引入，在其它子应用的内部，可以使用 `<MicroAppLink />` 跳转到对应的路由。以子应用 `app1` 和 `app2` 为例：
+If you've imported child apps via the **route binding** method, within other child apps, you can use the `<MicroAppLink />` component to navigate to corresponding routes. Let's take child apps `app1` and `app2` as examples:
 
 ```tsx
-// 在 app1 中
+// In app1
 import { MicroAppLink } from 'umi';
 
 export default function Page() {
   return (
     <>
-      {/* 跳转链接为 /app2/home */}
+      {/* Navigating link is /app2/home */}
       <MicroAppLink name="app2" to="/home">
         <Button>go to app2</Button>
       </MicroAppLink>
@@ -230,16 +230,16 @@ export default function Page() {
 }
 ```
 
-在上面的例子中，点击按钮后，父应用的路由变为 `/app2/home`，渲染子应用 `app2` 内部路由为 `/home` 的页面。同理，如果想要从子应用 app2 回到子应用 app1，可以编写代码如下：
+In the example above, clicking the button changes the parent app's route to `/app2/home` and renders the page with route `/home` within the `app2` child app. Similarly, if you want to navigate from the `app2` child app to the `app1` child app, you can write the code like this:
 
 ```tsx
-// 在 app2 中
+// In app2
 import { MicroAppLink } from 'umi';
 
 export default function Page() {
   return (
     <>
-      {/* 跳转链接为 /app1/project/home */}
+      {/* Navigating link is /app1/project/home */}
       <MicroAppLink name="app1" to="/home"> 
         <Button>go to app1</Button>
       </MicroAppLink>
@@ -248,16 +248,16 @@ export default function Page() {
 }
 ```
 
-您也可以从子应用跳转到父应用的指定路由：
+You can also navigate from a child app to a specific route in the parent app:
 
 ```tsx
-// 在子应用中
+// In the child app
 import { MicroAppLink } from 'umi';
 
 export default function Page() {
   return (
     <>
-      {/* 跳转链接为 /table */}
+      {/* Navigating link is /table */}
       <MicroAppLink isMaster to="/table">
         <Button>go to master app</Button>
       </MicroAppLink>
@@ -266,24 +266,24 @@ export default function Page() {
 }
 ```
 
-## 子应用生命周期
+## Child App Lifecycle
 
-Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照微应用的生命周期顺序，Qiankun 支持的完整的生命钩子列表如下：
+Qiankun builds on top of single-spa and provides additional lifecycle hooks. According to the order of micro app lifecycles, Qiankun supports the following complete list of lifecycle hooks:
 
-- `beforeLoad`，微应用**开始获取前**调用。最初，微应用为 `NOT_LOADED` 状态。
-- [`load`](https://single-spa.js.org/docs/building-applications/#load)，微应用**获取完成时**调用。开始获取微应用时，微应用变成 `LOADING_SOURCE_CODE` 状态。若获取成功，微应用变成 `NOT_BOOTSTRAPPED` 状态；若获取失败，微应用变成 `LOAD_ERROR` 状态。
-- [`bootstrap`](https://single-spa.js.org/docs/building-applications/#bootstrap)，微应用**初始化完成时**调用。开始初始化微应用时，微应用变成 `BOOTSTRAPPING` 状态。初始化完成时，微应用变成 `NOT_MOUNTED` 状态。
-- `beforeMount`，微应用每次**开始挂载前**调用。
-- [`mount`](https://single-spa.js.org/docs/building-applications/#mount)，微应用每次**开始挂载时**调用。微应用变成 `MOUNTING` 状态。
-- `afterMount`，微应用每次**挂载完成时**调用。微应用变成 `MOUNTED` 状态。
-- `beforeUnmount`，微应用每次**开始卸载前**调用。
-- [`unmount`](https://single-spa.js.org/docs/building-applications/#unmount)，微应用每次**开始卸载时**调用。微应用变成 `UNMOUNTING` 状态。
-- `afterUnmount`，微应用每次**卸载完成时**调用。微应用变成 `NOT_MOUNTED` 状态。
-- [`unload`](https://single-spa.js.org/docs/building-applications/#unload)，微应用**卸载完成时**调用。微应用变成 `NOT_LOADED` 状态。
+- `beforeLoad`: Called **before the micro app starts loading**. Initially, the micro app is in the `NOT_LOADED` state.
+- [`load`](https://single-spa.js.org/docs/building-applications/#load): Called when the micro app **finishes loading**. When the micro app starts loading, it transitions to the `LOADING_SOURCE_CODE` state. If loading is successful, the micro app transitions to the `NOT_BOOTSTRAPPED` state; if loading fails, it transitions to the `LOAD_ERROR` state.
+- [`bootstrap`](https://single-spa.js.org/docs/building-applications/#bootstrap): Called when the micro app **finishes initializing**. When the micro app starts initialization, it transitions to the `BOOTSTRAPPING` state. After initialization is complete, it transitions to the `NOT_MOUNTED` state.
+- `beforeMount`: Called **before each mounting of the micro app**.
+- [`mount`](https://single-spa.js.org/docs/building-applications/#mount): Called when the micro app **starts mounting**. The micro app transitions to the `MOUNTING` state.
+- `afterMount`: Called when each mounting of the micro app **finishes mounting**. The micro app transitions to the `MOUNTED` state.
+- `beforeUnmount`: Called **before each unmounting of the micro app**.
+- [`unmount`](https://single-spa.js.org/docs/building-applications/#unmount): Called when the micro app **starts unmounting**. The micro app transitions to the `UNMOUNTING` state.
+- `afterUnmount`: Called when each unmounting of the micro app **finishes unmounting**. The micro app transitions to the `NOT_MOUNTED` state.
+- [`unload`](https://single-spa.js.org/docs/building-applications/#unload): Called when the micro app **finishes unloading**. The micro app transitions to the `NOT_LOADED` state.
 
-此外，还存在一个特殊的生命钩子 `update`，仅在使用 `<MicroApp />` 或 `<MicroAppWithMemoHistory />` 组件引入微应用时生效：状态为 `MOUNTED` 的微应用**手动刷新时**调用。开始更新时，微应用变成 `UPDATING` 状态；更新完成时，微应用变成 `MOUNTED` 状态。
+Additionally, there is a special lifecycle hook `update`, which only works when using the `<MicroApp />` or `<MicroAppWithMemoHistory />` component to import micro apps: Called when a micro app in the `MOUNTED` state is **manually refreshed**. When an update starts, the micro app transitions to the `UPDATING` state; after the update is complete, it transitions back to the `MOUNTED` state.
 
-您可以像这样手动刷新子应用：
+You can manually refresh a child app like this:
 
 ```tsx
 import React, { useRef } from 'react';
@@ -292,7 +292,7 @@ import { MicroApp } from 'umi';
 export default function Page() {
   const microAppRef = useRef();
 
-  // 执行此方法时，更新子应用
+  // Call this method to update the child app
   const updateMicroApp = () => {
     microAppRef.current?.update();
   };
@@ -301,17 +301,17 @@ export default function Page() {
 };
 ```
 
-当您需要在子应用的生命周期里添加一些自定义的逻辑时，既可以在父应用中进行全局配置，也可以在子应用中进行单独配置。
+When you need to add custom logic in the lifecycle of child apps, you can configure it globally in the parent app or individually in each child app.
 
-### 父应用配置生命周期钩子
+### Configuring Lifecycle Hooks in the Parent App
 
-在父应用的 `src/app.ts` 中导出 `qiankun` 对象进行全局配置，所有的子应用都将实现这些生命周期钩子：
+Export the `qiankun` object in the `src/app.ts` file of the parent app for global configuration. All child apps will implement these lifecycle hooks:
 
 ```ts
 // src/app.ts
 export const qiankun = {
   lifeCycles: {
-    // 所有子应用在挂载完成时，打印 props 信息
+    // Print props information when all child apps finish mounting
     async afterMount(props) {
       console.log(props);
     },
@@ -319,46 +319,46 @@ export const qiankun = {
 };
 ```
 
-### 子应用配置生命周期钩子
+### Configuring Lifecycle Hooks in Child Apps
 
-在子应用的 `src/app.ts` 中导出 `qiankun` 对象，实现生命周期钩子。子应用运行时仅支持配置 `bootstrap`、`mount` 和 `unmount` 钩子：
+Export the `qiankun` object in the `src/app.ts` file of the child app to implement lifecycle hooks. Child apps only support configuring the `bootstrap`, `mount`, and `unmount` hooks at runtime:
 
 ```ts
 // src/app.ts
 export const qiankun = {
-  // 应用加载之前
+  // Called before the app is loaded
   async bootstrap(props) {
     console.log('app1 bootstrap', props);
   },
-  // 应用 render 之前触发
+  // Called before the app is rendered
   async mount(props) {
     console.log('app1 mount', props);
   },
-  // 应用卸载之后触发
+  // Called after the app is unmounted
   async unmount(props) {
     console.log('app1 unmount', props);
   },
 };
 ```
 
-## 父子应用通信
+## Parent-Child Application Communication
 
-父子应用间的通信有两种实现的方法：
+There are two methods for communication between parent and child applications:
 
-- 基于 `useModel()` 的通信。这是 Umi **推荐**的解决方案。
-- 基于配置的通信。
+1. Communication using `useModel()`. This is the **recommended** solution by Umi.
+2. Communication using configuration.
 
-### 基于 `useModel()` 的通信
+### Communication using `useModel()`
 
-该通信方式基于 [数据流](https://github.com/umijs/umi/blob/master/packages/plugins/src/model.ts) 插件，此插件已经内置于 `@umi/max` 解决方案当中。
+This communication method is based on the [Data Flow](https://github.com/umijs/umi/blob/master/packages/plugins/src/model.ts) plugin, which is built-in with the `@umi/max` solution.
 
-该通信方式需要子应用**基于 Umi 开发**且**引入了该数据流插件**。
+This method requires that child apps are **developed using Umi** and have **imported the data flow plugin**.
 
-关于此插件的详细介绍可见[数据流指南](./data-flow)。
+For more detailed information about this plugin, see the [Data Flow Guide](./data-flow).
 
-#### 主应用透传数据
+#### Passing Data from the Master App
 
-如果通过路由的模式引入子应用，则需要在父应用的 `src/app.ts` 里导出一个名为 `useQiankunStateForSlave()` 的函数，该函数的返回值将传递给子应用：
+If you're importing child apps via the route mode, you need to export a function named `useQiankunStateForSlave()` in the parent app's `src/app.ts` file. The return value of this function will be passed to the child app:
 
 ```ts
 // src/app.ts
@@ -374,7 +374,7 @@ export function useQiankunStateForSlave() {
 }
 ```
 
-如果通过组件的模式引入子应用，直接将数据以组件参数的形式传递给子应用即可：
+If you're importing child apps via the component mode, you can directly pass the data to the child app as component parameters:
 
 ```tsx
 import React, { useState } from 'react';
@@ -395,9 +395,9 @@ export default function Page() {
 };
 ```
 
-#### 子应用消费数据
+#### Consuming Data in the Child App
 
-子应用会自动生成一个全局的 Model，其命名空间为 `@@qiankunStateFromMaster`。通过 `useModel()` 方法，允许子应用在任意组件中获取并消费父应用透传的数据，如下所示：
+The child app will automatically generate a global model with the namespace `@@qiankunStateFromMaster`. Using the `useModel()` method, the child app can obtain and consume the data passed from the parent app in any component, as shown below:
 
 ```tsx
 import { useModel } from 'umi';
@@ -408,7 +408,7 @@ export default function Page() {
 };
 ```
 
-或者可以通过高阶方法 `connectMaster()` 来获取并消费父应用透传的数据，如下所示：
+Alternatively, you can use the higher-order method `connectMaster()` to obtain and consume the data passed from the parent app, as shown below:
 
 ```tsx
 import { connectMaster } from 'umi';
@@ -420,28 +420,28 @@ function MyPage(props) {
 export default connectMaster(MyPage);
 ```
 
-子应用也可以在生命周期钩子中能够获取并消费得到的 `props` 属性，根据需求[实现对应的生命周期钩子](#子应用配置生命周期钩子)即可。
+Child apps can also access and consume the received `props` attributes in lifecycle hooks. You can implement corresponding lifecycle hooks according to your needs, as described in the [Child App Lifecycle Hooks](#child-app-lifecycle-hooks) section.
 
-特别的，当父应用使用 `<MicroApp />` 或 `<MicroAppWithMemoHistory />` 组件的方式引入子应用时，会额外向子应用传递一个 `setLoading()` 方法，允许子应用在合适的时机执行，标记子应用加载为完成状态：
+In particular, when the parent app imports child apps using the `<MicroApp />` or `<MicroAppWithMemoHistory />` component, an additional method `setLoading()` is passed to the child app. This method allows the child app to mark its loading as completed at the appropriate time:
 
 ```tsx
 const masterProps = useModel('@@qiankunStateFromMaster');
 masterProps.setLoading(false);
 
-// 或者
+// Alternatively
 function MyPage(props) {
   props.setLoading(false);
 }
 connectMaster(MyPage);
 ```
 
-当子应用挂载完成变成 `MOUNTED` 状态时，会自动标记为完成状态。
+When the child app completes mounting and transitions to the `MOUNTED` state, it will automatically be marked as completed.
 
-### 基于配置的通信
+### Communication using Configuration
 
-在配置父应用[注册子应用](#配置父应用)时，可以传入 `props` 属性，将数据传递给子应用。
+When configuring the parent app to [register child apps](#configuring-the-parent-app), you can pass the `props` attribute to provide data to the child app.
 
-例如，修改父应用 `src/app.ts` 的 `qiankun` 导出方法如下：
+For example, modify the `qiankun` export method in the parent app's `src/app.ts` as follows:
 
 ```ts
 // src/app.ts
@@ -460,11 +460,11 @@ export const qiankun = {
 };
 ```
 
-子应用在生命周期钩子中能够获取并消费得到的 `props` 属性，根据需求[实现对应的生命周期钩子](#子应用配置生命周期钩子)即可。
+In the child app, you can access and consume the received `props` attributes in lifecycle hooks. Implement the corresponding lifecycle hooks according to your needs, as described in the [Child App Lifecycle Hooks](#child-app-lifecycle-hooks) section.
 
-## 自定义子应用
+## Customizing Child Apps
 
-当启用子应用加载动画或错误捕获能力时，子应用接受一个额外的样式类 `wrapperClassName`，渲染的结果如下所示：
+When enabling child app loading animations or error capture capabilities, the child app accepts an additional style class `wrapperClassName`, and the rendered result is as follows:
 
 ```tsx
 <div style={{ position: 'relative' }} className={wrapperClassName}>
@@ -474,15 +474,15 @@ export const qiankun = {
 </div>
 ```
 
-### 子应用加载动画
+### Child App Loading Animation
 
-启用此能力后，当子应用正在加载时，会自动显示加载动画。当子应用挂载完成变成 `MOUNTED` 状态时，加载状态结束，显示子应用内容。
+When this feature is enabled, an automatic loading animation will be displayed while the child app is loading. When the child app finishes mounting and transitions to the `MOUNTED` state, the loading state ends and the child app content is displayed.
 
-#### 基于 antd 的加载动画
+#### Ant Design-Based Loading Animation
 
-当您使用 antd 作为项目组件库时，可以向子应用传入 `autoSetLoading` 属性以开启子应用加载动画，插件将会自动调用 antd 的 [`<Spin />` 组件](https://ant.design/components/spin-cn/)作为加载组件。
+When using Ant Design as the project's component library, you can pass the `autoSetLoading` property to the child app to enable the automatic loading animation. The plugin will automatically use Ant Design's [`<Spin />` component](https://ant.design/components/spin/) as the loading component.
 
-如果通过路由的模式引入子应用，可以配置如下：
+If you're importing child apps via the route mode, you can configure it like this:
 
 ```ts
 // .umirc.ts
@@ -499,7 +499,7 @@ export default {
 };
 ```
 
-如果通过组件的模式引入子应用，直接将 `autoSetLoading` 作为参数传入即可：
+If you're importing child apps via the component mode, you can directly pass `autoSetLoading` as a parameter:
 
 ```tsx
 import { MicroApp } from 'umi';
@@ -509,11 +509,11 @@ export default function Page() {
 };
 ```
 
-#### 自定义加载动画
+#### Custom Loading Animation
 
-如果您没有使用 antd 作为项目组件库，或希望覆盖默认的加载动画样式时，可以设置一个自定义的加载组件 `loader` 作为子应用的加载动画。
+If you're not using Ant Design as the project's component library or you want to override the default loading animation styles, you can set a custom loading component `loader` as the child app's loading animation.
 
-通过路由的模式引入的子应用，目前只支持在运行时配置，代码如下：
+For child apps imported via the route mode, customizing the loading component is currently only supported at runtime. Here's an example:
 
 ```tsx
 // .app.tsx
@@ -532,7 +532,7 @@ export const qiankun = () => ({
 });
 ```
 
-如果通过组件的模式引入子应用，直接将 `loader` 作为参数传入即可：
+If you're importing child apps via the component mode, you can pass `loader` as a parameter like this:
 
 ```tsx
 import CustomLoader from '@/components/CustomLoader';
@@ -548,9 +548,9 @@ export default function Page() {
 };
 ```
 
-其中，`loading` 为 `boolean` 类型参数，为 `true` 时表示仍在加载状态，为 `false` 时表示加载状态已结束。
+In the code above, `loading` is a `boolean` parameter. When it's `true`, the loading animation is still in progress; when it's `false`, the loading animation has finished.
 
-如果多个子应用同时存在自定义 loading 的诉求，每个都配置一遍是比较繁琐的，此时可以通过定义主应用的配置来解决，比如说：
+If multiple child apps require custom loading animations, configuring each of them individually can be cumbersome. In this case, you can define a global configuration in the main app's settings, for example:
 ```ts
 // .umirc.ts
 qiankun: {
@@ -559,21 +559,21 @@ qiankun: {
   },
 },
 ```
-其中，`loader` 为文件路径，统一约定放在 [src 目录](../guides/directory-structure.md#src-目录) 下，在 umi 中 `@` 即代表 `src` 目录。
+In this example, `loader` is the file path, and it's conventionally placed in the [src directory](../guides/directory-structure.md#src-directory) in Umi. In umi, `@` means the `src` directory.
 
-`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
+`CustomLoader` follows the same implementation as described earlier and accepts a boolean parameter `loading`.
 
-注意：`master.loader` 不默认开启加载动画，开启动画需要将 `autoSetLoading` 设置为 `true`。
+Note: The `master.loader` doesn't enable the loading animation by default. To enable the animation, you need to set `autoSetLoading` to `true`.
 
-### 子应用错误捕获
+### Child-app Error Handling
 
-启用此能力后，当子应用加载出现异常时，会自动显示错误信息。
+When this feature is enabled, an automatic error message will be displayed if an exception occurs while loading the child app.
 
-#### 基于 antd 的错误捕获组件
+#### Antd-based Error Capture Component
 
-当您使用 antd 作为项目组件库时，可以向子应用传入 `autoCaptureError` 属性以开启子应用错误捕获能力，插件将会自动调用 antd 的 [`<Result />` 组件](https://ant.design/components/result-cn/)作为错误捕获组件。
+When using Ant Design as the project's component library, you can pass the `autoCaptureError` property to the child app to enable the automatic error capture capability. The plugin will automatically use Ant Design's [`<Result />` component](https://ant.design/components/result/) as the error capture component.
 
-如果通过路由的模式引入子应用，可以配置如下：
+If you're importing child apps via the route mode, you can configure it like this:
 
 ```ts
 // .umirc.ts
@@ -590,7 +590,7 @@ export default {
 };
 ```
 
-如果通过组件的模式引入子应用，直接将 `autoCaptureError` 作为参数传入即可：
+If you're importing child apps via the component mode, you can directly pass `autoCaptureError` as a parameter:
 
 ```tsx
 import { MicroApp } from 'umi';
@@ -600,11 +600,11 @@ export default function Page() {
 };
 ```
 
-#### 自定义错误捕获组件
+#### Custom Error Capture Component
 
-如果您没有使用 antd 作为项目组件库，或希望覆盖默认的错误捕获组件样式时，可以设置一个自定义的组件 `errorBoundary` 作为子应用的错误捕获组件。
+If you're not using Ant Design as the project's component library or you want to override the default error capture component styles, you can set a custom component `errorBoundary` as the child app's error capture component.
 
-通过组件的模式引入子应用，将 `errorBoundary` 作为参数传入即可：
+For child apps imported via the component mode, you can pass `errorBoundary` as a parameter like this:
 
 ```tsx
 import CustomErrorBoundary from '@/components/CustomErrorBoundary';
@@ -620,17 +620,17 @@ export default function Page() {
 };
 ```
 
-其中，`error` 为 `Error` 类型参数。
+In the code above, `error` is a parameter of type `Error`.
 
-## 环境变量
+## Environment Variables
 
-如果您有一些不能显式编写在 `.umirc.ts` 或 `src/app.ts` 中的配置信息，可以将它们存放在环境变量文件中。例如编写父应用的环境变量文件 `.env` 如下：
+If you have some configuration information that cannot be explicitly written in `.umirc.ts` or `src/app.ts`, you can store them in an environment variable file. For example, write the parent app's environment variable file `.env` as follows:
 
 ```plaintext
 INITIAL_QIANKUN_MASTER_OPTIONS="{\"apps\":[{\"name\":\"app1\",\"entry\":\"//localhost:7001\"},{\"name\":\"app2\",\"entry\":\"//localhost:7002\"}]}"
 ```
 
-在内部，微前端插件会执行 `JSON.parse(process.env.INITIAL_QIANKUN_MASTER_OPTIONS)` 方法，然后将得到的结果与已有的配置信息合并。上面编写的环境变量，合并后相当于编写了如下配置信息：
+Internally, the micro-frontends plugin will execute `JSON.parse(process.env.INITIAL_QIANKUN_MASTER_OPTIONS)`, and then merge the obtained result with the existing configuration information. The environment variable written above is equivalent to writing the following configuration information:
 
 ```ts
 export default {
@@ -646,28 +646,28 @@ export default {
           entry: '//localhost:7002',
         },
       ],
-      // ... .umirc.ts 中其它的配置信息
+      // ... Other configuration information from .umirc.ts
     },
   },
 };
 ```
 
-需注意的是，当存在相同的配置项时，例如 `apps` 项，写在 `.umirc.ts` 中的配置项将**覆盖**环境变量中的配置项。
+It's important to note that when there are duplicate configuration items, such as the `apps` item, the configuration item written in `.umirc.ts` will **override** the configuration item from the environment variable.
 
-同理，对于子应用，可以编写环境变量 `.env` 文件如下：
+Similarly, for child apps, you can write the environment variable file `.env` like this:
 
 ```plaintext
 INITIAL_QIANKUN_SLAVE_OPTIONS="{\"enable\":false}"
 ```
 
-相当于编写了如下配置信息：
+This is equivalent to writing the following configuration information:
 
 ```ts
 export default {
   qiankun: {
     slave: {
       enable: false,
-      // ... .umirc.ts 中其它的配置信息
+      // ... Other configuration information from .umirc.ts
     },
   },
 };
@@ -677,70 +677,70 @@ export default {
 
 ### MasterOptions
 
-| 属性 | 必填 | 说明 | 类型 | 默认值 |
+| Attribute | Required | Description | Type | Default Value |
 | --- | --- | --- | --- | --- |
-| `enable` | 否 | 启用 Qiankun 微应用插件，设置为 `false` 时为不启用 | `boolean` | `undefined` |
-| `loader` | 否 | 统一配置微应用加载动画的文件，设置文件路径即可 | `string` | - |
-| `apps` | 是 | 微应用配置 | [`App[]`](#app) | `undefined` |
-| `routes` | 否 | 微应用运行时的路由 | [`Route[]`](#route) | `undefined` |
-| `sandbox` | 否 | 是否开启沙箱模式 | `boolean \| { strictStyleIsolation: boolean, experimentalStyleIsolation: boolean }` | `true` |
-| `prefetch` | 否 | 是否启用微应用预加载 | `boolean \| 'all' \| string[] \| (( apps: RegistrableApp[] ) => { criticalAppNames: string[]; minorAppsName: string[] })` | `true` |
+| `enable` | No | Enable the Qiankun micro-app plugin. Setting it to `false` disables the plugin. | `boolean` | `undefined` |
+| `loader` | No | Configure a file for the micro-app's loading animation. Provide a file path. | `string` | - |
+| `apps` | Yes | Micro-app configuration | [`App[]`](#app) | `undefined` |
+| `routes` | No | Micro-app runtime routes | [`Route[]`](#route) | `undefined` |
+| `sandbox` | No | Enable sandbox mode | `boolean \| { strictStyleIsolation: boolean, experimentalStyleIsolation: boolean }` | `true` |
+| `prefetch` | No | Enable micro-app preloading | `boolean \| 'all' \| string[] \| (( apps: RegistrableApp[] ) => { criticalAppNames: string[]; minorAppsName: string[] })` | `true` |
 
-关于沙箱和预加载的介绍可见[此页面](https://qiankun.umijs.org/zh/api/#startopts)。
+For an introduction to sandbox and prefetch, refer to [this page](https://qiankun.umijs.org/en/api/#startopts).
 
 ### SlaveOptions
 
-| 属性 | 必填 | 说明 | 类型 | 默认值 |
+| Attribute | Required | Description | Type | Default Value |
 | --- | --- | --- | --- | --- |
-| `enable` | 否 | 启用 Qiankun 微应用插件，设置为 `false` 时为不启用 | `boolean` | `undefined` |
+| `enable` | No | Enable the Qiankun micro-app plugin. Setting it to `false` disables the plugin. | `boolean` | `undefined` |
 
 ### App
 
-| 属性 | 必填 | 说明 | 类型 | 默认值 |
+| Attribute | Required | Description | Type | Default Value |
 | --- | --- | --- | --- | --- |
-| `name` | 是 | 微应用的名称 | `string` |
-| `entry` | 是 | 微应用的 HTML 地址 | `string` | `{ script: string[], styles: [] }` |
-| `credentials` | 否 | 拉取微应用时同时拉取 Cookies，详见[此介绍](https://qiankun.umijs.org/zh/faq#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%8B%89%E5%8F%96%E5%BE%AE%E5%BA%94%E7%94%A8-entry-%E6%97%B6-cookie-%E6%9C%AA%E6%90%BA%E5%B8%A6%E7%9A%84%E9%97%AE%E9%A2%98) | `boolean` | `false` |
-| `props` | 否 | 父应用传递给微应用的数据，详见[父子应用通信章节](#父子应用通信) | `object` | `{}` |
+| `name` | Yes | Name of the micro-app | `string` |
+| `entry` | Yes | HTML address of the micro-app | `string` | `{ script: string[], styles: [] }` |
+| `credentials` | No | Fetch cookies when fetching the micro-app. See [this introduction](https://qiankun.umijs.org/en/faq#how-to-solve-the-problem-that-cookie-is-not-brought-when-fetching-micro-application-entry) | `boolean` | `false` |
+| `props` | No | Data passed from the parent app to the micro-app. See [Parent-Child Application Communication](#communication-using-usemodel) | `object` | `{}` |
 
 ### Route
 
-| 属性 | 必填 | 说明 | 类型 | 默认值 |
+| Attribute | Required | Description | Type | Default Value |
 | --- | --- | --- | --- | --- |
-| `path` | 是 | 路由 PATH | `string` |
-| `microApp` | 是 | 关联的微应用名称 | `string` |
-| `microAppProps` | 否 | 微应用的配置 | [`MicroAppProps`](#microappprops) | `{}` |
+| `path` | Yes | Route PATH | `string` |
+| `microApp` | Yes | Associated micro-app name | `string` |
+| `microAppProps` | No | Micro-app configuration | [`MicroAppProps`](#microappprops) | `{}` |
 
 ### MicroAppProps
 
-| 属性 | 必填 | 说明 | 类型 | 默认值 |
+| Attribute | Required | Description | Type | Default Value |
 | --- | --- | --- | --- | --- |
-| `autoSetLoading` | 否 | 自动设置微应用的加载状态 | `boolean` | `false` |
-| `loader` | 否 | 自定义的微应用加载状态组件 | `(loading) => React.ReactNode` | `undefined` |
-| `autoCaptureError` | 否 | 自动设置微应用的错误捕获 | `boolean` | `false` |
-| `errorBoundary` | 否 | 自定义的微应用错误捕获组件 | `(error: any) => React.ReactNode` | `undefined` |
-| `className` | 否 | 微应用的样式类 | `string` | `undefined` |
-| `wrapperClassName` | 否 | 包裹微应用加载组件、错误捕获组件和微应用的样式类，仅在启用加载组件或错误捕获组件时有效 | `string` | `undefined` |
+| `autoSetLoading` | No | Automatically set the micro-app's loading state | `boolean` | `false` |
+| `loader` | No | Custom micro-app loading status component | `(loading) => React.ReactNode` | `undefined` |
+| `autoCaptureError` | No | Automatically set the micro-app's error capture | `boolean` | `false` |
+| `errorBoundary` | No | Custom micro-app error capture component | `(error: any) => React.ReactNode` | `undefined` |
+| `className` | No | Micro-app style class | `string` | `undefined` |
+| `wrapperClassName` | No | Style class that wraps the micro-app loading component, error capture component, and the micro-app itself. This is only effective when the loading or error capture component is enabled. | `string` | `undefined` |
 
 
 ## FAQ
 
-### 子应用的生命周期钩子加载了，但是页面没有渲染
-如果页面没有报错，且通过查看 DOM 发现子应用的根节点已经有了，只是内容是空，这种基本可以确定是因为当前 url 没有匹配到子应用的任何路由导致的。
+### Child App's Lifecycle Hooks Loaded but the Page Isn't Rendered
+If the page isn't rendering and there are no errors, and you find that the child app's root node has been created but is empty, it's likely because the current URL doesn't match any route of the child app.
 
-比如我们在主应用中配置了：
+For example, in the main app's configuration, you have:
 ```js
 {
   path: '/app1',
   microApp: 'app1',
 }
 ```
-子应用的路由配置是：
+And in the child app's route configuration:
 ```js
 {
   path: '/user',
   component: './User',
 }
 ```
-那么我们必须通过 `/app1/user` 路径才能正常的访问到子应用的 user 页面。
+In this case, you must access the child app's `user` page through the `/app1/user` path to see the content rendered.
 

@@ -1,12 +1,12 @@
-# 环境变量
+# Env Variables
 
-Umi 可以通过环境变量来完成一些特殊的配置和功能。
+Umi can use environment variables to configure specific settings and functionality.
 
-## 如何设置环境变量
+## How to Set Environment Variables
 
-### 执行命令时设置
+### Setting in Command Line
 
-例如需要改变 `umi dev` 开发服务器的端口，进可以通过如下命令实现。
+For example, if you need to change the port of the `umi dev` development server, you can achieve this with the following command:
 
 ```bash
 # OS X, Linux
@@ -16,16 +16,16 @@ $ PORT=3000 umi dev
 $ set PORT=3000&&umi dev
 ```
 
-如果需要同时在不同的操作系统中使用环境变量，推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)
+If you need to use environment variables across different operating systems, it's recommended to use the tool [cross-env](https://github.com/kentcdodds/cross-env):
 
 ```bash
 $ pnpm install cross-env -D
 $ cross-env PORT=3000 umi dev
 ```
 
-### 设置在 .env 文件中
+### Setting in `.env` File
 
-如果你的环境变量需要在开发者之间共享，推荐你设置在项目根目录的 `.env` 文件中，例如:
+If you want to share environment variables among developers, it's recommended to set them in a `.env` file at the root of your project. For example:
 
 ```text
 # file .env
@@ -33,24 +33,24 @@ PORT=3000
 BABEL_CACHE=none
 ```
 
-然后执行，
+Then execute:
 
 ```bash
 $ umi dev
 ```
 
-`umi` 会以 3000 端口启动 dev server，并且禁用 babel 的缓存。
+The `umi` command will start the dev server on port 3000 and disable babel caching.
 
-如果你有部分环境变量的配置在本地要做特殊配置，可以配置在 `.env.local` 文件中去覆盖 `.env` 的配置。比如在之前的 `.env` 的基础上, 你想本地开发覆盖之前 3000 端口, 而使用 4000 端口，可以做如下定义。
+If you have some environment variable configurations that need to be customized locally, you can configure them in the `.env.local` file to override the configurations in `.env`. For instance, based on the previous `.env` configuration, if you want to use port 4000 for local development instead of the previous 3000, you can define it as follows:
 
 ```text
 # file .env.local
 PORT=4000
 ```
 
-`umi` 会以 4000 端口启动 dev server，同时保持禁用 babel 的缓存。
+The `umi` command will start the dev server on port 4000 and still disable babel caching.
 
-此外 `umi` `.env` 文件中还支持变量的方式来配置环境变量。例如：
+Additionally, you can use variable interpolation to configure environment variables in the `.env` file. For example:
 
 ```
 # file .env.local
@@ -60,72 +60,71 @@ BAR=bar
 CONCAT=$FOO$BAR # CONCAT=foobar
 ```
 
-注意：
+Note:
 
-* 不建议将 `.env.local` 加入版本管理中。
+* It's not recommended to include `.env.local` in version control.
 
-## 环境变量列表
+## List of Environment Variables
 
-按字母顺序排列。
+Listed in alphabetical order.
 
 ### APP_ROOT
 
-指定项目根目录。
+Specifies the project root directory.
 
-注意：
+Note:
 
-* APP_ROOT 不能配在 .env 中，只能在命令行里添加
-
+* APP_ROOT cannot be configured in `.env`, only in command line.
 
 ### ANALYZE
 
-用于分析 bundle 构成，默认关闭。
+Used for analyzing bundle composition, disabled by default.
 
-比如：
+For example:
 
 ```bash
 $ ANALYZE=1 umi dev
-# 或者
+# Or
 $ ANALYZE=1 umi build
 ```
 
-可以通过 `ANALYZE_PORT` 环境变量自定义端口或 [`analyze`](../api/config#analyze) 选项自定义配置。
+You can customize the port using the `ANALYZE_PORT` environment variable or the [`analyze`](../api/config#analyze) option.
 
 ### BABEL_POLYFILL
 
-默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
+By default, Babel will apply polyfills based on the targets configuration. Setting this to `none` disables the built-in polyfill.
 
 ### COMPRESS
 
-默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
+By default, CSS and JS are compressed. Setting this to `none` disables compression and is effective during the build process.
 
 ### DID_YOU_KNOW
 
-设置为 `none` 会禁用「你知道吗」提示。
+Setting this to `none` disables "Did You Know" prompts.
 
 ### ERROR_OVERLAY
 
-设置为 `none` 会禁用「Error Overlay」，在调试 Error Boundary 时会有用。
+Setting this to `none` disables the "Error Overlay," which can be useful when debugging error boundaries.
 
 ### FS_LOGGER
 
-默认会开启保存物理日志，值为 none 时不保存，同时针对 webcontainer 场景（比如 stackbliz）暂不保存。
+By default, physical logs are saved. Setting this to `none` disables saving logs. It is also disabled for web container scenarios (e.g., stackblitz).
 
 ### HMR
 
-默认开启 HMR 功能，值为 none 时关闭。
+HMR (Hot Module Replacement) is enabled by default. Setting this to `none` disables HMR.
 
 ### HOST
 
-默认是 `0.0.0.0`。
+The default value is `0.0.0.0`.
 
 ### PORT
 
-指定端口号，默认是 `8000`。
+Specifies the port number. The default is `8000`.
 
 ### SOCKET_SERVER
 
-指定用于 HMR 的 socket 服务器。比如：
+Specifies the socket server used for HMR. For example:
 
 ```bash
 $ SOCKET_SERVER=http://localhost:8000/ umi dev
@@ -133,7 +132,7 @@ $ SOCKET_SERVER=http://localhost:8000/ umi dev
 
 ### SPEED_MEASURE
 
-分析 Webpack 编译时间，支持 `CONSOLE` 和 `JSON` 两种格式，默认是 `CONSOLE`。
+Analyzes Webpack compilation time. Supports two formats: `CONSOLE` and `JSON`. Default is `CONSOLE`.
 
 ```bash
 $ SPEED_MEASURE=JSON umi dev
@@ -141,7 +140,7 @@ $ SPEED_MEASURE=JSON umi dev
 
 ### UMI_ENV
 
-当指定 `UMI_ENV` 时，会额外加载指定值的配置文件，优先级为：
+When `UMI_ENV` is specified, it will load an additional configuration file with the specified value. The priority is:
 
  - `config.ts`
 
@@ -153,13 +152,13 @@ $ SPEED_MEASURE=JSON umi dev
 
  - `config.local.ts`
 
-若不指定 `UMI_ENV` ，则只会加载当前环境对应的配置文件，越向下的越具体，优先级更高，高优的配置可以往下移动。
+If `UMI_ENV` is not specified, only the configuration file corresponding to the current environment will be loaded. Files that are lower in the list will override those higher up.
 
-注：根据当前环境的不同，`dev`, `prod`, `test` 配置文件会自动加载，不能将 `UMI_ENV` 的值设定成他们。
+Note: Depending on the current environment, the `dev`, `prod`, and `test` configuration files will be automatically loaded. You should not set `UMI_ENV` to these values.
 
 ### UMI_PLUGINS
 
-指定 `umi` 命令执行时额外加载的插件的路径，使用 `,` 隔开。
+Specifies the paths of additional plugins to load when executing the `umi` command. Use commas to separate paths.
 
 ```bash
 $ UMI_PLUGINS=./path/to/plugin1,./path/to/plugin2  umi dev
@@ -167,7 +166,7 @@ $ UMI_PLUGINS=./path/to/plugin1,./path/to/plugin2  umi dev
 
 ### UMI_PRESETS
 
-指定 `umi` 命令执行时额外加载插件集的路径，使用 `,` 隔开。
+Specifies the paths of additional plugin sets to load when executing the `umi` command. Use commas to separate paths.
 
 ```bash
 $ UMI_PRESETS=./path/to/preset1,./path/to/preset2  umi dev
@@ -175,7 +174,7 @@ $ UMI_PRESETS=./path/to/preset1,./path/to/preset2  umi dev
 
 ### WEBPACK_FS_CACHE_DEBUG
 
-开启 webpack 的物理缓存 debug 日志。
+Enables debug logs for Webpack's physical caching.
 
 ```bash
 $ WEBPACK_FS_CACHE_DEBUG=1 umi dev

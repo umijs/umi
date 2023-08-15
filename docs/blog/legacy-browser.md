@@ -1,8 +1,8 @@
-# 非现代浏览器兼容
+# Non-Modern Browser Compatibility
 
-## 默认兼容说明
+## Default Compatibility Explanation
 
-Umi 4 默认不支持 IE ，编译兼容目标 `targets` 为 `chrome: 80` ，如需调整，请指定明确的 [targets](../docs/api/config#targets) ：
+Umi 4 does not support IE by default. The compilation compatibility target `targets` is set to `chrome: 80`. If you need to adjust this, specify explicit [targets](../docs/api/config#targets):
 
 ```ts
 // .umirc.ts
@@ -12,13 +12,13 @@ export default {
 }
 ```
 
-若想反馈更多关于兼容性的问题，或参与讨论，请前往：[issue / 8656](https://github.com/umijs/umi/issues/8658)
+If you want to provide feedback or participate in discussions about compatibility, please visit: [issue / 8656](https://github.com/umijs/umi/issues/8658)
 
-## 兼容非现代浏览器
+## Compatibility with Non-Modern Browsers
 
-如果你并不需要兼容至 IE ，只为了提升项目对非现代浏览器的兼容性，可调整兼容目标 [targets](../docs/api/config#targets) 。
+If you don't need to support IE but want to enhance your project's compatibility with non-modern browsers, you can adjust the compatibility [targets](../docs/api/config#targets).
 
-Umi 4 默认使用现代构建工具，产物生成至 `es6` ，如果你有要打包为 `es5` 产物的考量，请调整配置：
+By default, Umi 4 uses modern build tools and generates output to `es6`. If you want to generate output in `es5`, adjust the configuration:
 
 ```ts
 // .umirc.ts
@@ -29,13 +29,13 @@ export default {
 }
 ```
 
-## 兼容旧时代浏览器 ( IE 11 ) 
+## Compatibility with Older Browsers (IE 11)
 
-由于 IE 已经淘汰不再主流，当需要兼容至 IE 时，请阅读以下对策。
+Since IE is no longer mainstream, if you need to support IE, consider the following strategies.
 
-### 框架自带的 legacy mode
+### Framework's Built-In Legacy Mode
 
-Umi 4 自带提供一个 `legacy` 配置用于构建降级（使用限制等详见 [legacy](../docs/api/config#legacy) ）：
+Umi 4 provides a built-in `legacy` configuration for downgrading (for usage limitations, see [legacy](../docs/api/config#legacy)):
 
 ```ts
 // .umirc.ts
@@ -45,15 +45,15 @@ export default {
 }
 ```
 
-默认仅在构建时生效，将尝试构建能使 IE 兼容的产物。
+By default, it only takes effect during the build and attempts to generate compatible output for IE.
 
-### legacy mode 的更多自定义
+### More Customization for Legacy Mode
 
-`legacy` 开启时，默认会转译全部 `node_modules` ，这在大型项目中，会极大的增加构建时间。
+When `legacy` is enabled, it will transpile all `node_modules`. However, transpiling `node_modules` can significantly increase build time in large projects.
 
-若你了解当前项目使用的第三方依赖情况（知道哪些不再提供 `es5` 产物了），可以关闭 `node_modules` 的转换，改为使用 [`extraBabelIncludes`](https://umijs.org/docs/api/config#extrababelincludes) 定点配置那些需要额外纳入转换范围的包。
+If you know which third-party dependencies your project uses (those no longer provide `es5` output), you can disable the `node_modules` transformation and use [`extraBabelIncludes`](https://umijs.org/docs/api/config#extrababelincludes) to specifically configure packages that need extra transformation.
 
-一个例子：
+An example:
 
 ```ts
 // .umirc.ts
@@ -69,9 +69,9 @@ export default {
 }
 ```
 
-### 提高兼容的鲁棒性
+### Enhancing Compatibility Robustness
 
-`legacy` 选项并不能 100% 保证产物 **没有边界情况** 的运行在被淘汰的浏览器内，你可能还需要添加 **前置的** 全量 polyfill 来增强项目的 [鲁棒性](https://baike.baidu.com/item/%E9%B2%81%E6%A3%92%E6%80%A7/832302) 。
+The `legacy` option cannot guarantee 100% that the output will run smoothly on deprecated browsers. You may need to add a **pre-pended** full polyfill to enhance the project's [robustness](https://en.wikipedia.org/wiki/Robustness).
 
 ```ts
 // .umirc.ts
@@ -84,29 +84,29 @@ export default {
 }
 ```
 
-参考的思路有：
+Consider these approaches:
 
-方案 | 说明
+Approach | Explanation
 :-|:-
-CDN 引入 | 以 cdn 形式引入 **script 形式且前置的** 、目标浏览器环境缺少的 polyfill js 文件，如 [es6-shim](https://github.com/paulmillr/es6-shim) 。
-人工 core-js | 利用 [core-js](https://github.com/zloirock/core-js) 系工具，如通过 [core-js-builder](https://github.com/zloirock/core-js/tree/master/packages/core-js-builder) 构建自己需要的 polyfill 产物，再以 **前置 script 脚本** 形式引入项目。
-动态 polyfill 服务 | 使用根据当前浏览器请求 UA 动态下发所需 polyfill 的服务，比如 [polyfill.io](https://polyfill.io/v3/polyfill.min.js) ，考虑到速度，可使用国内的 [alicdn polyfill.io](http://polyfill.alicdn.com/v3/polyfill.min.js) 服务。另外，你还可以使用 [polyfill-service](https://github.com/Financial-Times/polyfill-service) 自建相同的动态 polyfill 下发服务。
+CDN Import | Import polyfill js files that the target browser environment lacks as **script tags that are pre-pended**, such as [es6-shim](https://github.com/paulmillr/es6-shim).
+Manual core-js | Use tools from the [core-js](https://github.com/zloirock/core-js) family, such as building your own required polyfill output using [core-js-builder](https://github.com/zloirock/core-js/tree/master/packages/core-js-builder), and then include it in your project using a **pre-pended script tag**.
+Dynamic Polyfill Service | Use a service that dynamically serves the required polyfills based on the browser's User-Agent (UA) string. For example, [polyfill.io](https://polyfill.io/v3/polyfill.min.js) is a popular option. You can also self-host a similar dynamic polyfill service using [polyfill-service](https://github.com/Financial-Times/polyfill-service).
 
-注：
+Note:
 
-1. 当你处于内外网隔离开发环境时，可以考虑将全部 polyfill 的 js 内容传入内网，在内网的 CDN 使用，或放入 public 目录等方式使用。
+1. If you are in a development environment with internal network isolation, consider bringing in all polyfill js content into the internal network and using it on an internal CDN or placing it in the `public` directory.
 
-2. 使用 script 前置引入的意义在于，在项目 js 资源运行前就准备好一个完整的、被 polyfill 过 api 的环境。
+2. The significance of using pre-pended script tags is to prepare a fully polyfilled environment before the project's JS resources run.
 
-### 在开发环境验证
+## Verifying in the Development Environment
 
-推荐的做法是：构建后在本地通过 [`umi preview`](../docs/api/commands#preview) 或 [`serve`](https://www.npmjs.com/package/serve) 、nginx 等启动服务，来验证产物的 IE 11 运行可行性。
+The recommended approach is to build the project and locally verify the IE 11 compatibility by using [`umi preview`](../docs/api/commands#preview), [`serve`](https://www.npmjs.com/package/serve), or nginx to start a local server.
 
-当你需要在开发环境验证时：
+When you need to verify in the development environment:
 
-1. 将 `legacy.buildOnly` 置为 `false` 。
+1. Set `legacy.buildOnly` to `false`.
 
-2. 由于 react fresh 、hmr 等开发注入的 es6 代码始终在第一位运行，你需要以 script 形式添加一个前置的 polyfill ，提前准备好环境。
+2. Due to React Fresh, HMR, and other ES6 code injected during development, you need to add a pre-pended polyfill as a script tag to prepare the environment before the project's JS resources run.
 
 ```ts
 // .umirc.ts
@@ -122,6 +122,4 @@ export default {
 }
 ```
 
-注：IE 11 并不能完整支持开发时的热更新，且缓存可能需要人为在控制台进行清除后才能看到最新的页面，请做好准备。
-
-
+Note: IE 11 does not fully support hot updates during development, and the cache might need to be manually cleared in the console to see the latest version of the page. Please be prepared for this.

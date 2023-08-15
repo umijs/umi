@@ -1,139 +1,115 @@
-# Umi 4 RC 发布
+# Umi 4 RC Release
 
-大家好，Umi 4 经过几个月的开发，终于要和大家见面了。相比 Umi 2 到 3，3 到 4 的变化是巨大的，开发时间也更长，但我们尽量把对于开发者的影响降低到最小。按捺住激动的心情，在此先和大家分享下都有哪些变化。
+Hello everyone, after several months of development, Umi 4 is finally ready to meet you. Compared to the transitions from Umi 2 to 3, the changes from 3 to 4 are huge, and the development time is longer, but we've tried to minimize the impact on developers. With great excitement, let's share the changes with you.
 
-🎉 新官网和文档<br /> 🚀 MFSU V3 & 默认开启<br /> 🎭 双构建引擎和 ESMi<br /> 🕸 Webpack 5<br /> ⛹🏾‍♂️ React Router 6 & 新路由<br /> 🐹 最佳实践迭代<br /> 🛡️ 依赖预打包<br /> 🤺 Umi Max<br /> 🐛 Low Import 研发模式<br /> ⚠️ 强约束功能集成<br /> 🎈 Import All From Umi 迭代<br /> 🍀 srcTranspiler 和 depTranspiler<br /> 🌼 jsMinifier 和 cssMinifier<br /> 🌸 应用元数据<br /> ❄️ 微生成器<br /> 🧪 贴心小改进<br />
+🎉 New Official Website and Documentation<br /> 🚀 MFSU V3 & Enabled by Default<br /> 🎭 Dual Build Engines and ESMi<br /> 🕸 Webpack 5<br /> ⛹🏾‍♂️ React Router 6 & New Routing System<br /> 🐹 Improved Best Practices<br /> 🛡️ Pre-bundling Dependencies<br /> 🤺 Umi Max<br /> 🐛 Low Import Development Mode<br /> ⚠️ Strong Constraint Feature Integration<br /> 🎈 Import All From Umi Evolution<br /> 🍀 srcTranspiler and depTranspiler<br /> 🌼 jsMinifier and cssMinifier<br /> 🌸 Application Metadata<br /> ❄️ Micro Generator<br /> 🧪 Thoughtful Enhancements<br />
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>新官网和文档。</span>
-  下图是新官网的首页，包括重新梳理的文档、信息结构、以及新写的文档插件。目前包含基础的配置、API、升级和快速上手等基础文档，剩余文档还在紧张编写中。有个变化是之前插件的文档集成到
-  Umi 官网中，成为 Umi Max 的一部分，之后无需跳转。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>New Official Website and Documentation.</span>
+  The image below shows the homepage of the new official website, including restructured documentation, information architecture, and newly written documentation plugins. Currently, it includes basic configurations, APIs, upgrades, quick start guides, and other foundational documents. The remaining documentation is still being written diligently. One change is that the documentation for plugins has been integrated into the Umi official website as part of Umi Max, eliminating the need for redirection.
 </p>
 
 ![](https://img.alicdn.com/imgextra/i1/O1CN014dDq4L1Zc3guRwcse_!!6000000003214-2-tps-1600-941.png)
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>MFSU V3 & 默认开启。</span>
-  MFSU 更新了他的第三个大版本，如果你有用 Umi 3 内置的 MFSU 并遇到问题，建议重新尝试，这个版本有很多改进，解决基本所有之前可能会遇到的诡异问题，并且编译速度和页面打开速度都更快。昨天我还有写一篇
-  [《比 Vite 更快的 MFSU》](https://mp.weixin.qq.com/s?__biz=MjM5NDgyODI4MQ==&mid=2247484624&idx=1&sn=2addfa8cc2511fbea91faf831195788f)。基于此，我们自信地把这个功能在
-  Umi 4 中默认开启。还有值得一提的是，MFSU 可脱离 Umi 运行。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>MFSU V3 & Enabled by Default.</span>
+  MFSU has released its third major version. If you encountered issues with the built-in MFSU in Umi 3, it is recommended to give it a try again. This version comes with many improvements, addressing almost all the quirky issues that you might have encountered previously. It also provides faster compilation and page loading speeds. Just yesterday, I even wrote an article about
+  ["MFSU Faster than Vite"](https://mp.weixin.qq.com/s?__biz=MjM5NDgyODI4MQ==&mid=2247484624&idx=1&sn=2addfa8cc2511fbea91faf831195788f). Based on this, we are confident to enable this feature by default in Umi 4. Additionally, it's worth mentioning that MFSU can run independently of Umi.
 </p>
 
 ![](https://img.alicdn.com/imgextra/i2/O1CN01Znj8HD1mCwz72voXv_!!6000000004919-2-tps-1600-807.png)
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>双构建引擎和 ESMi。</span>
-  Umi 4 提供 Vite 和 Webpack 两种构建模式供开发者选择，并尽可能保证他们之间功能的一致性，可能有些同学会喜欢
-  dev 用 vite，build 用 webpack 这样的组合。同时基于 Vite 模式实现了 ESMi 的 Client
-  端，ESMi 依赖服务端，在外网还无法使用。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Dual Build Engines and ESMi.</span>
+  Umi 4 offers two build modes for developers to choose from: Vite and Webpack. We strive to ensure their functionality consistency as much as possible. Some developers might prefer using Vite for development and Webpack for building. Moreover, based on the Vite mode, we've implemented ESMi on the client side. ESMi requires server-side support and is not yet available on the public internet.
 </p>
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>Webpack 5。</span>Umi 4
-  默认使用 webpack 5 并开启物理缓存。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Webpack 5.</span> Umi 4
+  defaults to using Webpack 5 and enables physical caching.
 </p>
 
 <p>
   <span style={{ color: 'red', fontWeight: 'bold' }}>
-    React Router 6 & 新路由。
+    React Router 6 & New Routing System.
   </span>
-  Umi 4 的路由基于 React Router 6 实现，个人非常喜欢这个版本，因为 Remix 的原因，React
-  Router 6 从设计上考虑了配置式路由的场景，让我得以删除大量 Umi 3 中关于路由渲染的代码。同时基于此，设计了新的路由结构，方便扩展和在未来处理路由的约定式请求。
+  Umi 4's routing is built on React Router 6, a version I personally favor due to its consideration of configuration-based routing scenarios, which aligns with Remix's principles. This version allowed for a significant reduction in routing-related code compared to Umi 3. Furthermore, based on this, a new routing structure has been designed to facilitate expansion and handling of conventional routing requests in the future.
 </p>
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>最佳实践迭代。</span>
-  针对之前 umijs/plugins 仓库中的插件进行了重写、升级，并整合到主仓库。这么做是为了更好的顶层设计，让官方插件之间的风格更一致。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Improved Best Practices.</span>
+  We have rewritten, upgraded, and integrated plugins from the umijs/plugins repository into the main repository. This step was taken to improve top-level design and ensure greater consistency in style among official plugins.
 </p>
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>​​依赖预打包。</span>
-  由于服务企业内部，安全和稳定是其中很重要点，加上最近 colors 和 faker.js 闹得社区沸沸扬扬，谁都不希望睡一觉醒来，自己负责的业务挂了，还背个故障。Umi
-  4 接着 Umi 3 继续做依赖预打包的事，并且更彻底，不仅是 node 侧的依赖，部分运行时的依赖也会做锁定，比如
-  core-js 和 @babel/runtime。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Dependency Pre-bundling.</span>
+  For enterprises, security and stability are crucial. With the recent buzz around colors and faker.js in the community, no one wants to wake up and find their responsible business down due to an issue. Following Umi 3, Umi 4 continues to work on pre-bundling dependencies, going even further by locking down not only node-side dependencies but also certain runtime dependencies, such as core-js and @babel/runtime.
 </p>
 
 ![](https://img.alicdn.com/imgextra/i1/O1CN01h44iJg1T09DNuYOlm_!!6000000002319-2-tps-1600-758.png)
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>Umi Max。</span>Umi Max
-  是内部 Bigfish
-  框架的对外版本，解我们自己的问题，同时也给社区另一个集中化框架的选择。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Umi Max.</span> Umi Max
+  is the external version of our internal Bigfish framework. It addresses our own issues and provides another centralized framework option for the community.
 </p>
 
 <p>
   <span style={{ color: 'red', fontWeight: 'bold' }}>
-    Low Import 研发模式。
+    Low Import Development Mode.
   </span>
-  这是 Umi 4 的试验性功能之一，目前已开发完成，解的问题是让开发者少些或不写 import
-  语句。项目中大量的 import 其实都可以通过工程化的方式自动处理。Umi 4 里通过 lowImport:{' '}
-  {} 开启，然后就可以无 import 直接用路由相关的 Link、useLocation 等，数据流相关的
-  connect、useModel，antd 组件 Button、Calendar 等，以及其他更多。
+  This is one of Umi 4's experimental features, already completed. It addresses the issue of minimizing or eliminating the need for developers to write import statements. Many imports in projects can be automatically managed through engineering. In Umi 4, by enabling lowImport:{' '}
+  {}, you can directly use route-related elements like Link and useLocation, data flow-related components like connect and useModel, Ant Design components like Button and Calendar, and more, without the need for imports.
 </p>
 
 ![](https://img.alicdn.com/imgextra/i4/O1CN0142Vcpt25kMZqjmioe_!!6000000007564-2-tps-1600-631.png)
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>强约束功能集成。</span>Umi
-  4 提供 API 让强约束和代码校验变得非常容易。API 包括
-  api.onCheck、api.onCheckConfig、api.onCheckPkgJSON 和
-  api.onCheckCode，顾名思义，非常好理解他们分别是干嘛的，可以分别对依赖类、代码类和配置类的内容做校验和卡点，适用于团队。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Strong Constraint Feature Integration.</span> Umi
+  4 provides APIs that make strong constraints and code validation easy. These APIs include
+  api.onCheck, api.onCheckConfig, api.onCheckPkgJSON, and
+  api.onCheckCode. As the names suggest, they are used for checking and controlling dependencies, configuration, package.json, tsconfig.json, npmClient, code, and other aspects. These are suitable for team-based development.
 </p>
 
 <p>
   <span style={{ color: 'red', fontWeight: 'bold' }}>
-    Import All From Umi 迭代。
+    Import All From Umi Evolution.
   </span>
-  这是两年前 Umi 3 加的功能，最近发现 Remix、prisma、vitekit 等框架和工具都有类似实现。这种方式有好有坏。好处是通过
-  umi 将大量依赖管理起来，用户无需手动安装。坏处是更黑盒，同时有点 Hack。Umi 4 不能解其黑盒问题，但解了
-  Hack 问题，让实现无副作用，可以和 Vite、MFSU 等方案无缝结合。
+  This was a feature introduced in Umi 3 two years ago. Recently, similar implementations have been seen in frameworks and tools like Remix, prisma, and vitekit. This approach has its pros and cons. The advantage is that Umi manages a large number of dependencies, reducing the need for manual installation. The downside is that it's more of a black box and somewhat hacky. Umi 4 cannot eliminate the black box issue, but it has addressed the hackiness, making the implementation side-effect-free and seamlessly integratable with solutions like Vite and MFSU.
 </p>
 
 <p>
   <span style={{ color: 'red', fontWeight: 'bold' }}>
-    srcTranspiler 和 depTranspiler。
+    srcTranspiler and depTranspiler.
   </span>
-  提供针对源码编译和依赖编译更多选择。源码编译可选 babel、swc 和 esbuild，目前没有银弹，合适场景做合适的选择。比如
-  swc 由于不支持 top level await，和 mfsu 会有些冲突，但他适用于 build，因为有补丁可以兼容到
-  es7；比如 esbuild 适用于 dev，因为快。数据方面以 ant-design-pro 项目为例，源码编译用
-  esbuild 相比 babel 在 M1 2020 无缓存情况下会快 3s。
+  More options are provided for source code and dependency compilation. Options for source code compilation include babel, swc, and esbuild. There's no silver bullet, and the appropriate choice depends on the context. For example, swc conflicts with top-level await and MFSU due to patching issues, but it's suitable for building as it's compatible with es7. On the other hand, esbuild is suitable for development due to its speed. In terms of data, taking the ant-design-pro project as an example, esbuild is around 3 seconds faster than babel for source code compilation on an M1 2020 MacBook without cache.
 </p>
 
 <p>
   <span style={{ color: 'red', fontWeight: 'bold' }}>
-    jsMinifier 和 cssMinifier。
+    jsMinifier and cssMinifier.
   </span>
-  js 压缩和 css 压缩 Umi 4 默认都用的 esbuild，因为快。同时也提供更多选择，js 压缩还支持
-  swc、terser 和 uglifyJs，css 压缩还支持 cssnano。
+  Umi 4 defaults to using esbuild for js and css compression due to its speed. More options are also provided. For js compression, swc, terser, and uglifyJs are supported, while css compression supports cssnano.
 </p>
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>应用元数据。</span>Umi 4
-  有通过 api.appData
-  收集各种项目数据，从配置、路由、package.json、tsconfig.json、npmClient
-  到数据流、国际化、antd 用了哪个版本、react 和 react-dom
-  的版本等，应有尽有，这对于插件开发者会非常实用，也适用于有统计需求的场景。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Application Metadata.</span> Umi 4
+  collects various project data through api.appData, including configurations, routes, package.json, tsconfig.json, npmClient, data flow, internationalization, versions of antd, react, and react-dom used, and more. This is extremely useful for plugin developers and scenarios requiring statistics.
 </p>
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>微生成器。</span>没错，就是
-  modern.js 的微生成器，这功能从 modern.js
-  里学习了不少，名字就不改了。举个例子，比如 prettier
-  功能，可能不是每个项目都需要，就比较适用于微生成器，按需启用、添加配置、安装依赖。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Micro Generator.</span> Yes, it's the micro generator from modern.js, which was inspired by modern.js and retains its name. For example, features like prettier may not be needed in every project, making it suitable for the micro generator. You can enable it as needed, add configurations, and install dependencies.
 </p>
 
 <p>
-  <span style={{ color: 'red', fontWeight: 'bold' }}>贴心小改进。</span>
-  还有不少贴心小改进，举两个例子。1 是项目中新增 plugin.ts，会默认作为插件添加，方便项目进行一些插件级的扩展；2
-  是调试问题时通常需要修改编译后的代码看看有没有改对，你把 umi.js 下下来存到项目根目录，umi
-  会优先使用这份代码。
+  <span style={{ color: 'red', fontWeight: 'bold' }}>Thoughtful Enhancements.</span>
+  There are many thoughtful enhancements as well. Here are two examples: 1. In projects, adding plugin.ts will automatically be treated as a plugin, making it convenient for project-level extensions; 2. When debugging issues, you often need to modify compiled code to check if you've made the right changes. If you download umi.js and place it in the project's root directory, Umi will prioritize using this code.
 </p>
 
-以上是 Umi 4 目前的新功能。
+The above are the new features in Umi 4 so far.
 
-除此之外，还有一些计划在正式版发布之前做的事情。包括 <span style={{color:'red'}}>api route、umi server and adapter、route loader、稳定的 lint、更多命令、组件研发 father 4、文档工具 dumi 2</span> 等，会在之后的 RC 版本中与大家见面。
+In addition to these, there are other plans to be completed before the official release. This includes <span style={{color:'red'}}>api route, umi server and adapter, route loader, stable lint, more commands, component development with father 4, and documentation tool dumi 2</span>, which will be introduced in subsequent RC versions.
 
-欢迎大家尝鲜 Umi 4，官方文档有准备 ant-design-pro 从 Umi 3 到 4 的升级文档。同时 RC 阶段，还准备了一个<span style={{color:'red',fontWeight:'bold'}}>手把手升级的微信交流群</span>，欢迎 Umi 4 的先行者们加入，祝大家升级顺利，也提前祝大家新年快乐 🧨，🐯 年吉祥。
+Feel free to give Umi 4 a try! The official documentation includes an upgrade guide from Umi 3 to 4 for ant-design-pro. During the RC phase, we've also prepared a <span style={{color:'red',fontWeight:'bold'}}>WeChat group for step-by-step upgrades</span>, welcoming pioneers of Umi 4 to join. We wish you a smooth upgrade and an early happy New Year 🧨, auspicious year of the 🐯.
 
 <p>
   <img

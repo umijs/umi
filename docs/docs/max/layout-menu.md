@@ -1,8 +1,8 @@
-# 布局与菜单
+# Layout and Menu
 
-## 启用方式
+## Activation
 
-配置开启。
+Configure the activation in the following way.
 
 ```ts
 // config/config.ts
@@ -13,23 +13,23 @@ export default {
 };
 ```
 
-## 介绍
+## Introduction
 
-为了进一步降低研发成本，我们将布局通过 Umi 插件的方式内置，只需通过简单的配置即可拥有 Ant Design 的 Layout（[ProLayout](https://procomponents.ant.design/components/layout)），包括导航以及侧边栏。从而做到用户无需关心布局。
+To further reduce development costs, we've integrated the layout through Umi plugins, allowing you to easily possess Ant Design's Layout ([ProLayout](https://procomponents.ant.design/components/layout)) with simple configuration. This includes navigation and sidebars. As a result, users do not need to concern themselves with the layout.
 
-- 默认为 Ant Design 的 Layout [@ant-design/pro-layout](https://www.npmjs.com/package/@ant-design/pro-layout)，支持它全部配置项。
-- 顶部导航/侧边栏菜单根据路由中的配置自动生成。
-- 默认支持对路由的 403/404 处理和 Error Boundary。
-- 搭配 `access` [插件](./access)一起使用，可以完成对路由权限的控制。
-- 搭配 `initial-state` [插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/initial-state.ts) 和 [数据流](./data-flow) 插件一起使用，可以拥有默认用户登陆信息的展示。
+- Defaults to Ant Design's Layout [@ant-design/pro-layout](https://www.npmjs.com/package/@ant-design/pro-layout), supporting all of its configuration options.
+- Top navigation/sidebar menus are automatically generated based on route configurations.
+- Default support for 403/404 handling and Error Boundary for routes.
+- When used together with the `access` [plugin](./access), it can complete route permission control.
+- When used together with the `initial-state` [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/initial-state.ts) and [data flow](./data-flow) plugin, it can display default user login information.
 
-> 想要动态菜单？查看这里 [菜单的高级用法](https://beta-pro.ant.design/docs/advanced-menu-cn)
+> Need dynamic menus? Check out the [advanced menu usage](https://beta-pro.ant.design/docs/advanced-menu-cn) here.
 
-## 配置
+## Configuration
 
-### 构建时配置
+### Build-time Configuration
 
-可以通过配置文件 `config/config.ts` 中的 `layout` 属性开启插件。
+You can enable the plugin by configuring the `layout` property in the `config/config.ts` file.
 
 ```ts
 import { defineConfig } from 'umi';
@@ -37,7 +37,7 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   layout: {
     title: 'Ant Design',
-    locale: false, // 默认开启，如无需菜单国际化可关闭
+    locale: false, // Enable by default, can be turned off if menu internationalization is not needed
   },
 });
 ```
@@ -47,92 +47,92 @@ export default defineConfig({
 - Type: `string`
 - Default: `name` in package.json
 
-显示在布局左上角的产品名，默认值为包名。
+The product name displayed in the upper left corner of the layout, with the default value being the package name.
 
 #### locale
 
 - Type: `boolean`
 - Default: `false`
 
-是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为该 key，路由配置的 name 字段的值就是对应的 key 值。如果菜单是多级路由假设是二级路由菜单，那么插件就会去 locales 文件中查找 `menu.[key].[key]`对应的文案，该功能需要配置 [`i18n`](./i18n) 使用。如无需菜单国际化可配置 `false` 关闭。
+Whether to enable internationalization configuration. When enabled, the menu name configured in the route will be treated as the key for menu internationalization. The plugin will look up the corresponding text of `menu.[key]` in the locales file. The default value is the same as the key. The value of the `name` field in the route configuration is the corresponding key value. If the menu is a multi-level route, assuming it is a second-level route menu, the plugin will look up the corresponding text of `menu.[key].[key]` in the locales file. This feature requires configuration with [`i18n`](./i18n). If menu internationalization is not needed, it can be configured as `false`.
 
-### 运行时配置
+### Runtime Configuration
 
-运行时配置写在 `src/app.tsx` 中，key 为 `layout`。
+Runtime configuration is written in `src/app.tsx`, with the key being `layout`.
 
 ```tsx
 import { RunTimeLayoutConfig } from '@umijs/max';
 
 export const layout: RunTimeLayoutConfig = (initialState) => {
   return {
-    // 常用属性
+    // Common properties
     title: 'Ant Design',
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
 
-    // 默认布局调整
+    // Default layout adjustments
     rightContentRender: () => <RightContent />,
     footerRender: () => <Footer />,
     menuHeaderRender: undefined,
 
-    // 其他属性见：https://procomponents.ant.design/components/layout#prolayout
+    // Other properties, see: https://procomponents.ant.design/components/layout#prolayout
   };
 };
 ```
 
-除了下面的插件支持的特有配置外，运行时配置支持所有的构建时配置并透传给 [`@ant-design/pro-layout`](https://procomponents.ant.design/components/layout#prolayout)。
+In addition to the specific configurations supported by the plugins below, runtime configurations support all build-time configurations and pass them to [`@ant-design/pro-layout`](https://procomponents.ant.design/components/layout#prolayout).
 
 #### title
 
 - Type: `string`
 - Default: `name` in package.json
 
-显示在布局左上角的产品名，默认值为包名。
+The product name displayed in the upper left corner of the layout, with the default value being the package name.
 
 #### logo
 
 - Type: `string`
-- default: Ant Design Logo
+- Default: Ant Design Logo
 
-显示在布局左上角产品名前的产品 Logo。
+The product logo displayed in front of the product name in the upper left corner of the layout.
 
 #### logout
 
 - Type: `(initialState: any) => void`
 - Default: `null`
 
-用于运行时配置默认 Layout 的 UI 中，点击退出登录的处理逻辑，默认不做处理。
+The logic for handling logout when the default UI of the Layout plugin is clicked. Default behavior is to do nothing.
 
-> 注：默认在顶部右侧并不会显示退出按钮，需要在运行配置中配合运行时配置 `app.ts(x)` 中的 `getInitialState` 返回一个对象，才可以显示
+> Note: By default, the logout button will not be displayed on the upper right side. It needs to be returned as an object in the `getInitialState` function in the runtime configuration in order to be displayed.
 
 #### rightRender
 
 - Type: `(initialState: any) => React.ReactNode`
-- Default: 展示用户名、头像、退出登录相关组件
+- Default: Displays components related to usernames, avatars, and logout
 
-`initialState` 是运行时配置 `app.ts(x)` 中的 `getInitialState` 返回的对象。
+`initialState` is the object returned by the `getInitialState` function in the runtime configuration `app.ts(x)`.
 
 #### onError
 
 - Type: `(error: Error, info: any) => void;`
 
-发生错误后的回调（可做一些错误日志上报，打点等）。
+Callback that is triggered after an error occurs (can be used for error logging, tracking, etc.).
 
 #### ErrorComponent
 
 - Type: `(error: Error) => React.ReactElement<any>;`
-- Default: Ant Design Pro 的错误页。
+- Default: Ant Design Pro's error page.
 
-发生错误后展示的组件。
+The component displayed after an error occurs.
 
-### 扩展的路由配置
+### Extended Route Configuration
 
-Layout 插件会基于 Umi 的路由，封装了更多的配置项，支持更多配置式的能力。新增：
+The Layout plugin encapsulates more configuration options based on Umi's routes, supporting more configurative capabilities. New additions include:
 
-- 侧边栏菜单配置。
-- 布局路由级别展示/隐藏相关配置。
-- 与权限插件结合，配置式实现权限路由的功能。
+- Sidebar menu configuration.
+- Layout-level display/hide configurations for routes.
+- Combining with the permission plugin to achieve functionality for permission routes.
 
-示例如下：
+An example is as follows:
 
 ```typescript
 // config/route.ts
@@ -140,30 +140,30 @@ export const routes: IBestAFSRoute[] = [
   {
     path: '/welcome',
     component: 'IndexPage',
-    name: '欢迎', // 兼容此写法
+    name: 'Welcome', // Also compatible with this writing style
     icon: 'testicon',
-    // 更多功能查看
+    // More functionality can be found at
     // https://beta-pro.ant.design/docs/advanced-menu
     // ---
-    // 新页面打开
+    // Open in a new page
     target: '_blank',
-    // 不展示顶栏
+    // Do not display the top bar
     headerRender: false,
-    // 不展示页脚
+    // Do not display the footer
     footerRender: false,
-    // 不展示菜单
+    // Do not display the menu
     menuRender: false,
-    // 不展示菜单顶栏
+    // Do not display the menu title and logo
     menuHeaderRender: false,
-    // 权限配置，需要与 plugin-access 插件配合使用
+    // Permission configuration, needs to be used in conjunction with the plugin-access plugin
     access: 'canRead',
-    // 隐藏子菜单
+    // Hide child menu
     hideChildrenInMenu: true,
-    // 隐藏自己和子菜单
+    // Hide itself and child menu
     hideInMenu: true,
-    // 在面包屑中隐藏
+    // Hide in breadcrumbs
     hideInBreadcrumb: true,
-    // 子项往上提，仍旧展示,
+    // Lift children up and display themselves,
     flatMenu: true,
   },
 ];
@@ -173,23 +173,23 @@ export const routes: IBestAFSRoute[] = [
 
 - Type: `string`
 
-菜单上显示的名称，没有则不展示该菜单。
+The name displayed on the menu. If not provided, the menu will not be displayed.
 
 #### icon
 
 - Type: `string`
 
-菜单上显示的 antd 的 icon，为了按需加载 layout 插件会帮你自动转化为 Antd icon 的 dom。支持类型可以在 [antd icon](https://ant.design/components/icon-cn/) 中找到。示例：
+The Antd icon displayed on the menu. To enable on-demand loading, the layout plugin will automatically convert it to the Antd icon's DOM element. Supported types can be found in [antd icon](https://ant.design/components/icon-cn/). Examples:
 
 ```ts
-// <HomeOutlined /> 线框风格
-icon: 'home'; // outlined 线框风格可简写
+// <HomeOutlined /> Outline style
+icon: 'home'; // Outlined style can be abbreviated
 icon: 'HomeOutlined';
 
-// <HomeFilled /> 实底风格
+// <HomeFilled /> Solid style
 icon: 'HomeFilled';
 
-// <HomeTwoTone /> 双色风格
+// <HomeTwoTone /> Two-tone style
 icon: 'HomeTwoTone';
 ```
 
@@ -197,23 +197,23 @@ icon: 'HomeTwoTone';
 
 - Type: `string`
 
-当 Layout 插件配合 `plugin-access` 插件使用时生效。
+Effective when the Layout plugin is used in conjunction with the `plugin-access` plugin.
 
-权限插件会将用户在这里配置的 access 字符串与当前用户所有权限做匹配，如果找到相同的项，并当该权限的值为 false，则当用户访问该路由时，默认展示 403 页面。
+The permission plugin will match the access string configured by the user here with all the permissions of the current user. If a matching item is found and the value of this permission is false, the 403 page will be displayed by default when the user accesses this route.
 
 #### locale
 
 - Type: `string`
 
-菜单的国际化配置，国际化的 key 是 `menu.${submenu-name}.${name}`。
+Internationalization configuration for the menu, with the key for internationalization being `menu.${submenu-name}.${name}`.
 
 #### flatMenu
 
 - Type: `boolean`
 
-默认为 false，为 true 时在菜单中只隐藏此项，子项往上提，仍旧展示。
+Defaults to false. When true, the menu is hidden, and the child item is lifted up to continue being displayed.
 
-打平菜单，如果只想要子级的 menu 不展示自己的，可以配置为 true。
+Flattening the menu allows the menu's child level to not display itself and only display its sub-items.
 
 ```tsx
 const before = [{ name: '111' }, { name: '222', children: [{ name: '333' }] }];
@@ -225,19 +225,19 @@ const after = [{ name: '111' }, { name: '222' }, { name: '333' }];
 
 - Type: `boolean`
 
-xxxRender 设置为 false，即可不展示部分 layout 模块
+The xxxRender setting to false does not display parts of the layout module.
 
-- `headerRender=false` 不显示顶栏
-- `footerRender=false` 不显示页脚
-- `menuRender=false` 不显示菜单
-- `menuHeaderRender=false` 不显示菜单的 title 和 logo
+- `headerRender=false` Do not display the top bar
+- `footerRender=false` Do not display the footer
+- `menuRender=false` Do not display the menu
+- `menuHeaderRender=false` Do not display the menu title and logo
 
 #### hideInXXX
 
 - Type: `boolean`
 
-hideInXXX 可以管理 menu 的渲染。
+hideInXXX can manage the rendering of the menu.
 
-- `hideChildrenInMenu=true` 隐藏子菜单
-- `hideInMenu=true` 隐藏自己和子菜单
-- `hideInBreadcrumb=true` 在面包屑中隐藏
+- `hideChildrenInMenu=true` Hide the child menu
+- `hideInMenu=true` Hide itself and the child menu
+- `hideInBreadcrumb=true` Hide in breadcrumbs

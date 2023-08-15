@@ -1,12 +1,12 @@
 # TypeScript
 
-Umi 默认开启 TypeScript，如果使用官方脚手架创建项目，内置的文件就是使用 Typescript。
+Umi enables TypeScript by default. If you use the official scaffolding to create a project, the built-in files will be in TypeScript.
 
-如果想要使用 Javascript 进行开发，可以直接将项目中用到的 `.(ts|tsx)` 文件改为 `.(js|jsx)` 文件，并使用 Javascript 语法进行开发。
+If you want to develop using JavaScript, you can simply rename the `.(ts|tsx)` files in your project to `.(js|jsx)` files and use JavaScript syntax for development.
 
-## 配置中的 Typescript 提示
+## TypeScript Typing in Configuration
 
-如果想要在配置时也有 Typescript 的语法提示，可以在配置的地方包一层 `defineConfig`, 这样配置的时候就可以有语法提示了：
+If you want TypeScript syntax highlighting and autocompletion in your configuration files as well, you can wrap your configuration in a `defineConfig` function. This will enable TypeScript typing in your configuration:
 
 ```ts
 // .umirc.ts

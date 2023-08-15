@@ -1,16 +1,14 @@
-import { Message, Tabbed } from 'umi';
+# Testing
 
-# 测试
+Automated testing is an effective means of ensuring quality, and Umi 4 provides a scaffolding for unit testing. Umi 4 recommends using [Jest](https://jestjs.io/) and [@testing-library/react](https://github.com/testing-library/react-testing-library) for unit testing in your project.
 
-自动化测试是保障质量的有效手段，Umi 4 提供单元测试的脚手架。Umi 4 推荐使用 [Jest](https://jestjs.io/) 和 [@testing-library/react](https://github.com/testing-library/react-testing-library) 来完成项目中的单元测试。
+## Configuration
 
-## 配置
-
-使用 Umi 4 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
+Use the micro generator in Umi 4 to quickly set up Jest [reference](./generator#jest-configuration-generator). If you need to modify the Jest-related configuration, you can do so in the `jest.config.ts` file.
 
 <Tabbed>
 
-umi 项目
+For a Umi project:
 
 ```ts
 import { Config, configUmiAlias, createConfig } from 'umi/test';
@@ -22,13 +20,13 @@ export default async () => {
       jsTransformer: 'esbuild',
       jsTransformerOpts: { jsx: 'automatic' },
     }),
-    // 覆盖 umi 的默认 jest 配置, 如
+    // Override Umi's default Jest configuration, such as
     // displayName: "Umi jest",
   })) as Config.InitialOptions;
 };
 ```
 
-@umijs/max 项目
+For a @umijs/max project:
 
 ```ts
 import { Config, configUmiAlias, createConfig } from '@umijs/max/test';
@@ -40,7 +38,7 @@ export default async () => {
       jsTransformer: 'esbuild',
       jsTransformerOpts: { jsx: 'automatic' },
     }),
-    // 覆盖 umi 的默认 jest 配置, 如
+    // Override Umi's default Jest configuration, such as
     // displayName: "Umi jest",
   })) as Config.InitialOptions;
 };
@@ -48,20 +46,22 @@ export default async () => {
 
 </Tabbed>
 
-配置完后，就可以开始编写单元测试了。
+After configuration, you can start writing unit tests.
 
-## 与 UI 无关的测试
+## Testing UI-Independent Logic
 
-假设我们需要测试一个 utils 函数 `reverseApiData`, 它将 api 请求的结果 `data` 对象的 key 和 value 互换。
+Suppose we need to test a utility function called `reverseApiData`, which swaps the keys and values of an `data` object obtained from an API request.
 
-我们推荐将测试文件被测模块放在同一级目录，这样可以方便查看测试文件以便理解模块的功能。
+We recommend placing the test file in the same directory as the module being tested. This makes it easier to understand the module's functionality by viewing the test file.
 
 ```txt
 .
 └── utils
-    ├── reverseApiData.test.tss
+    ├── reverseApiData.test.ts
     └── reverseApiData.ts
 ```
+
+Here's the implementation of the utility function:
 
 ```ts
 // utils/reverseApiData.ts
@@ -79,32 +79,29 @@ export async function reverseApiData(url: string, fetcher = fetch) {
 }
 ```
 
-先来写我们第一个测试用例, 确保 `fetcher` 使用传入的 `url` 请求 api 的数据
+Let's start by writing our first test case to ensure that the `fetcher` uses the provided `url` to request API data:
 
 ```ts
 import { reverseApiData } from './reverseApiData';
 
-// 测试用例名字表明测试的目的
 test('reverseApiData use fetcher to request url', async () => {
-  // 测试用例以 3A 的结构来写
-
-  // Arrange 准备阶段，准备 mock 函数或者数据
+  // Arrange (Setup) phase: Prepare mock functions or data
   const fetcher = jest.fn().mockResolvedValue({
     json: () => Promise.resolve(),
   });
 
-  // Act 执行被测对象
+  // Act phase: Execute the function being tested
   await reverseApiData('https://api.end/point', fetcher);
 
-  // Assert 断言测试结果
+  // Assert phase: Assert the test result
   expect(fetcher).toBeCalledWith('https://api.end/point');
 });
 ```
 
-执行测试
+Run the test:
 
 ```bash
-$npx jest
+$ npx jest
 info  - generate files
  PASS  src/utils/reverseApiData.test.ts
 
@@ -116,10 +113,10 @@ Ran all test suites.
 ```
 
 <Message emoji="💡">
-可以使用`npx jest --watch` 让 jest 进程不退出，这样能省去启动重新 jest 的等待时间。
+You can use `npx jest --watch` to keep the Jest process running, eliminating the need to restart Jest every time.
 </Message>
 
-我们再写一个用例来测试这个工具函数完成了键值的对换功能。
+Let's write another test case to test the functionality of this utility function: swapping key-value pairs.
 
 ```ts
 test('reverseApiData reverse simple object', async () => {
@@ -133,15 +130,15 @@ test('reverseApiData reverse simple object', async () => {
 });
 ```
 
-让每个测试用例只关注一个功能点，可以让用例在重构的时候给我们更准确的反馈，改动破坏了什么功能。更多的用例请 [参考](https://github.com/umijs/umi/tree/master/examples/test-test/utils/reverseApiData.test.ts)
+Remember to focus each test case on a specific aspect of functionality. This makes it easier to get precise feedback during refactoring, indicating which functionality might have been affected by changes. For more test cases, you can refer to the [example](https://github.com/umijs/umi/tree/master/examples/test-test/utils/reverseApiData.test.ts).
 
-## UI 测试
+## UI Testing
 
-组件和 UI 相关的测试推荐使用 `@testing-library/react`。
+For testing components and UI-related code, we recommend using `@testing-library/react`.
 
-### 渲染结果判断
+### Rendering Result Assertion
 
-- 使用 jest 的 snapshot
+- Using Jest snapshots
 
 ```tsx
 // examples/test-test/components/Greet/Greet.test.tsx
@@ -155,9 +152,9 @@ test('renders Greet without name by snapshot', () => {
 });
 ```
 
-执行 `npx jest` 后会在测试用例同级目录会生成 `__snapshots__` 文件夹和用例的 snapshot，请加入到版本管理中。
+After running `npx jest`, a `__snapshots__` folder will be generated in the same directory as the test case, along with the snapshots. Include these snapshots in version control.
 
-- 使用 jest 的 inline snapshot
+- Using Jest inline snapshots
 
 ```tsx
 // examples/test-test/components/Greet/Greet.test.tsx
@@ -168,9 +165,9 @@ test('renders Greet without name by inline snapshot', () => {
 });
 ```
 
-执行 `npx jest` 后会在 `toMatchInlineSnapshot` 函数的参数中填入 snapshot 字符串；这种方式适合渲染结果比较短的内容。
+After running `npx jest`, the snapshot string will be filled into the argument of the `toMatchInlineSnapshot` function. This method is suitable for rendering results with shorter content.
 
-- 使用 @testing-library/jest-dom 断言
+- Using @testing-library/jest-dom assertions
 
 ```tsx
 // examples/test-test/components/Greet/Greet.test.tsx
@@ -184,9 +181,9 @@ test('renders Greet without name assert by testing-library', () => {
 });
 ```
 
-更多[断言 API](https://github.com/testing-library/jest-dom)
+For more assertion APIs, refer to the [Jest DOM](https://github.com/testing-library/jest-dom) documentation.
 
-### 组件行为判断
+### Component Behavior Assertion
 
 ```tsx
 // examples/test-test/components/Greet/Greet.test.tsx

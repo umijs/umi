@@ -7,8 +7,8 @@ import { Link } from 'umi';
 import styles from './Hero.css';
 
 export default () => {
-  // TODO: github stars 存 localStorage
-  //  采用 stale-while-revalidate 的策略
+  // TODO: Save github stars to localStorage
+  // Using the stale-while-revalidate strategy
   return (
     <div className={styles.normal}>
       <div className={styles.bg} />
@@ -17,7 +17,7 @@ export default () => {
           <div className={styles.bigLogo} />
           <div className={styles.actions}>
             <Link to="/docs/tutorials/getting-started">
-              <div className={styles.button}>快速上手 →</div>
+              <div className={styles.button}>Get Started →</div>
             </Link>
             <div className={styles.githubStar}>
               <GithubStar />
@@ -28,7 +28,7 @@ export default () => {
           <div className={styles.bigSlogan1}></div>
           <div className={styles.bigSlogan2}></div>
           <div className={styles.slogan}>
-            用 Umi 构建你的下一个{' '}
+            Build your next with Umi{' '}
             <TextLoop>
               <strong>React</strong>
               <strong>Vue</strong>
@@ -37,12 +37,13 @@ export default () => {
               <strong>SPA</strong>
               <strong>SSR</strong>
               <strong>CSR</strong>
-              <strong>中后台</strong>
+              <strong>Enterprise</strong>
             </TextLoop>{' '}
-            应用
+            applications
           </div>
           <div className={styles.slogan}>
-            带给你<strong>简单</strong>而<strong>愉悦</strong>的 Web 开发体验
+            Providing you with a <strong>simple</strong> and{' '}
+            <strong>pleasant</strong> web development experience
           </div>
           <div className={styles.bow} />
         </div>

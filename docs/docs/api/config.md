@@ -1,16 +1,16 @@
 import { Message } from 'umi'
 
-# 配置
+# Configuration
 
-对于 umi 中能使用的自定义配置，你可以使用项目根目录的 `.umirc.ts` 文件或者 `config/config.ts`，值得注意的是这两个文件功能一致，仅仅是存在目录不同，2 选 1 ，`.umirc.ts` 文件优先级较高。
+For custom configurations that can be used in umi, you can use the `.umirc.ts` file in the project root directory or `config/config.ts`. It's worth noting that these two files have the same functionality and differ only in directory location, so you can choose either one, but `.umirc.ts` has higher priority.
 
-> 更多目录相关信息介绍，你可以在[目录结构](../guides/directory-structure)了解。
+> For more information about directory-related details, you can refer to [Directory Structure](../guides/directory-structure).
 
-umi 的配置文件是一个正常的 node 模块，它在执行 umi [命令行](./commands)的时候使用，并且不包含在浏览器端构建中。
+The configuration file for umi is a regular Node.js module. It is used when executing umi [commands](./commands) and is not included in the browser-side build.
 
-> 关于浏览器端构建需要用到的一些配置，还有一些在样式表现上产生作用的一些配置，在 umi 中被统一称为“运行时配置”，你可以在[运行时配置](./runtime-config)看到更多关于它的说明。
+> Some configurations required for browser-side builds and other configurations affecting styling are collectively referred to as "runtime configurations" in umi. You can find more information about them in [Runtime Configuration](./runtime-config).
 
-这里有一个最简单的 umi 配置文件的范例：
+Here's a simple example of a umi configuration file:
 
 ```ts
 import { defineConfig } from 'umi';
@@ -20,20 +20,20 @@ export default defineConfig({
 });
 ```
 
-使用 `defineConfig` 包裹配置是为了在书写配置文件的时候，能得到更好的拼写联想支持。如果你不需要，直接 `export default {}` 也可以。
+Using `defineConfig` to wrap the configuration provides better auto-completion support while writing configuration files. If you don't need it, you can also use `export default {}` directly.
 
-值得关注的是在你使用 umi 的时候，你不需要了解每一个配置的作用。你可以大致的浏览一下以下 umi 支持的所有配置，然后在你需要的时候，再回来查看如何启用和修改你需要的内容。
+It's worth noting that when using umi, you don't need to understand the purpose of every configuration. You can roughly browse through all the configurations supported by umi, and then come back to see how to enable and modify the ones you need when necessary.
 
-> 为方便查找，以下配置项通过字母排序。
+> For easy reference, the following configuration options are listed in alphabetical order.
 
 ## alias
 
-- 类型：`Record<string, string>`
-- 默认值：`{}`
+- Type: `Record<string, string>`
+- Default: `{}`
 
-配置别名，对 import 语句的 source 做映射。
+Configures aliases for mapping `import` statements to sources.
 
-比如：
+For example:
 
 ```js
 {
@@ -43,11 +43,11 @@ export default defineConfig({
 }
 ```
 
-然后代码里 `import 'foo'` 实际上会 `import '/tmp/to/foo'`。
+Then the code `import 'foo'` will actually import from `/tmp/to/foo`.
 
-有几个 Tip。
+A couple of tips:
 
-1、alias 的值最好用绝对路径，尤其是指向依赖时，记得加 `require.resolve`，比如，
+1. It's better to use absolute paths for alias values, especially when referring to dependencies. Remember to use `require.resolve`, for example:
 
 ```js
 // ⛔
@@ -65,17 +65,17 @@ export default defineConfig({
 }
 ```
 
-2、如果不需要子路径也被映射，记得加 `$` 后缀，比如
+2. If you don't want sub-paths to be mapped, add a `$` suffix, for example:
 
 ```js
-// import 'foo/bar' 会被映射到 import '/tmp/to/foo/bar'
+// import 'foo/bar' will be mapped to import '/tmp/to/foo/bar'
 {
   alias: {
     foo: '/tmp/to/foo',
   }
 }
 
-// import 'foo/bar' 还是 import 'foo/bar'，不会被修改
+// import 'foo/bar' will still be import 'foo/bar', not modified
 {
   alias: {
     foo$: '/tmp/to/foo',
@@ -85,55 +85,55 @@ export default defineConfig({
 
 ## autoprefixer
 
-- 类型：`object`
-- 默认值：`{ flexbox: 'no-2009' }`
+- Type: `object`
+- Default: `{ flexbox: 'no-2009' }`
 
-用于解析 CSS 并使用来自 Can I Use 的值将供应商前缀添加到 CSS 规则。如自动给 CSS 添加 `-webkit-` 前缀。
+Used to parse CSS and add vendor prefixes to CSS rules based on values from Can I Use. For example, automatically adding `-webkit-` prefixes to CSS.
 
-更多配置，请查阅 [autoprefixer 的配置项](https://github.com/postcss/autoprefixer#options)。
+For more configuration options, please refer to [autoprefixer options](https://github.com/postcss/autoprefixer#options).
 
 ## analyze
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-通过指定 [`ANALYZE`](../guides/env-variables#analyze) 环境变量分析产物构成时，analyzer 插件的具体配置项，见 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin)
+Configures specific options for the analyzer plugin when analyzing the composition of artifacts using the specified [`ANALYZE`](../guides/env-variables#analyze) environment variable. See [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin) for detailed configuration options for the analyzer plugin.
 
-使用 Vite 模式时，除了可以自定义 [rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer) 的配置， `excludeAssets`、`generateStatsFile`、`openAnalyzer`、`reportFilename`、`reportTitle` 这些选项会自动转换适配。
+When using Vite mode, in addition to customizing the configuration for [rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer), the options `excludeAssets`, `generateStatsFile`, `openAnalyzer`, `reportFilename`, and `reportTitle` will be automatically adapted.
 
 ## base
 
-- 类型：`string`
-- 默认值：`/`
+- Type: `string`
+- Default: `/`
 
-要在非根目录下部署 umi 项目时，你可以使用 base 配置。
+When deploying a umi project under a non-root directory, you can use the base configuration.
 
-base 配置允许你为应用程序设置路由前缀。比如有路由 `/` 和 `/users`，设置 base 为 `/foo/` 后就可通过 `/foo/` 和 `/foo/users` 访问到之前的路由。
+The base configuration allows you to set a route prefix for the application. For example, if you have routes `/` and `/users`, setting the base to `/foo/` would allow accessing the previous routes via `/foo/` and `/foo/users`.
 
-> 注意：base 配置必须在构建时设置，并且不能在不重新构建的情况下更改，因为该值内联在客户端包中。
+> Note: The base configuration must be set during build and cannot be changed without a rebuild, as this value is inlined in the client bundle.
 
 ## cacheDirectoryPath
 
-- 类型：`string`
-- 默认值：`node_modules/.cache`
+- Type: `string`
+- Default: `node_modules/.cache`
 
-默认情况下 Umi 会将构建中的一些缓存文件存放在 `node_modules/.cache` 目录下，比如 logger 日志，webpack 缓存，mfsu 缓存等。你可以通过使用 `cacheDirectoryPath` 配置来修改 Umi 的缓存文件目录。
+By default, Umi stores certain cache files from the build in the `node_modules/.cache` directory, such as logger logs, webpack cache, mfsu cache, etc. You can use the `cacheDirectoryPath` configuration to change the cache directory for Umi.
 
-示例，
+Example:
 
 ```js
-// 更改缓存文件路径到 node_modules/.cache1 文件夹
+// Change the cache file path to the folder node_modules/.cache1
 cacheDirectoryPath: 'node_modules/.cache1',
 ```
 
 ## chainWebpack
 
-- 类型：`(memo, args) => void`
-- 默认值：`null`
+- Type: `(memo, args) => void`
+- Default: `null`
 
-为了扩展 Umi 内置的 webpack 配置，我们提供了用链式编程的方式修改 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)。
+To extend the built-in webpack configuration of Umi, a chainable approach to modifying the webpack configuration is provided, based on webpack-chain. For specific API details, you can refer to the [webpack-chain documentation](https://github.com/mozilla-neutrino/webpack-chain).
 
-如下所示：
+For example:
 
 ```js
 export default {
@@ -143,23 +143,23 @@ export default {
 };
 ```
 
-该函数具有两个参数：
+This function has two parameters:
 
-- `memo` 是现有 webpack 配置
-- `args` 包含一些额外信息和辅助对象，目前有 `env` 和 `webpack`。`env` 为当前环境，值为 `development` 或 `production`；`webpack` 为 webpack 对象，可从中获取 webpack 内置插件等
+- `memo` is the existing webpack configuration.
+- `args` contains additional information and helper objects, currently including `env` and `webpack`. `env` is the current environment, with values `development` or `production`; `webpack` is the webpack object from which built-in plugins and more can be obtained.
 
-用法示例：
+Usage example:
 
 ```js
 export default {
   chainWebpack(memo, { env, webpack }) {
-    // 设置 alias
+    // Set alias
     memo.resolve.alias.set('foo', '/tmp/to/foo');
 
-    // 添加额外插件
+    // Add additional plugins
     memo.plugin('hello').use(Plugin, [...args]);
 
-    // 删除 Umi 内置插件
+    // Remove built-in Umi plugins
     memo.plugins.delete('hmr');
   },
 };
@@ -167,18 +167,18 @@ export default {
 
 ## clickToComponent
 
-- 类型: `{ editor?: string }`
-- 默认值: `false`
+- Type: `{ editor?: string }`
+- Default: `false`
 
-> 当前仅 React 项目支持。
+> Currently, only React projects are supported.
 
-开启后，可通过 `Option+Click/Alt+Click` 点击组件跳转至编辑器源码位置，`Option+Right-click/Alt+Right-click` 可以打开上下文，查看父组件。
+When enabled, you can use `Option+Click` or `Alt+Click` to navigate to the source code location of a component in the editor when clicking on a component. You can also use `Option+Right-click` or `Alt+Right-click` to open the context and view the parent component.
 
-关于参数。`editor` 为编辑器名称，默认为 'vscode'，支持 `vscode` & `vscode-insiders`。
+Regarding parameters, the `editor` parameter is the editor name and is set to 'vscode' by default. Supported options are `vscode` and `vscode-insiders`.
 
-配置 clickToComponent 的行为，详见 [click-to-component](https://github.com/ericclemmons/click-to-component)。
+You can configure the behavior of `clickToComponent` using the [click-to-component](https://github.com/ericclemmons/click-to-component) documentation.
 
-示例：
+Example:
 
 ```ts
 // .umirc.ts
@@ -189,13 +189,13 @@ export default {
 
 ## clientLoader
 
-- 类型: `{}`
-- 默认值: `false`
+- Type: `{}`
+- Default: `false`
 
-开启后，可以为每个路由声明一个数据加载函数 `clientLoader`，将页面需要的加载数据程序提取到 `clientLoader` 可以让 Umi
-提前在页面组件尚未加载好的时候提前进行数据的加载，避免瀑布流请求的问题，详细介绍请看 [路由数据预加载](../guides/client-loader)。
+When enabled, you can declare a data loading function `clientLoader` for each route. Extracting the data loading program that the page requires to `clientLoader` allows Umi
+to preload data before the page component is fully loaded. This avoids the waterfall request problem. For more details, see [Route Data Preloading](../guides/client-loader).
 
-示例：
+Example:
 
 ```ts
 // .umirc.ts
@@ -204,7 +204,7 @@ export default {
 };
 ```
 
-配置开启后，在路由组件中使用：
+With this configuration enabled, you can use it in the route component:
 
 ```jsx
 // pages/.../some_page.tsx
@@ -224,47 +224,47 @@ export async function clientLoader() {
 
 ## codeSplitting
 
-- 类型：`{ jsStrategy: 'bigVendors' | 'depPerChunk' | 'granularChunks'; jsStrategyOptions: {} }`
-- 默认值：`null`
+- Type: `{ jsStrategy: 'bigVendors' | 'depPerChunk' | 'granularChunks'; jsStrategyOptions: {} }`
+- Default: `null`
 
-提供 code splitting 的策略方案。
+Provides strategies for code splitting.
 
-bigVendors 是大 vendors 方案，会将 async chunk 里的 node_modules 下的文件打包到一起，可以避免重复。同时缺点是，1）单文件的尺寸过大，2）毫无缓存效率可言。
+bigVendors bundles all node_modules files from async chunks together to avoid redundancy. However, it results in large single files without caching efficiency.
 
-depPerChunk 和 bigVendors 类似，不同的是把依赖按 package name + version 进行拆分，算是解了 bigVendors 的尺寸和缓存效率问题。但同时带来的潜在问题是，可能导致请求较多。我的理解是，对于非大型项目来说其实还好，因为，1）单个页面的请求不会包含非常多的依赖，2）基于 HTTP/2，几十个请求不算问题。但是，对于大型项目或巨型项目来说，需要考虑更合适的方案。
+depPerChunk is similar to `bigVendors` but splits dependencies based on package name and version, addressing the issues of size and cache efficiency. It may increase the number of requests.
 
-granularChunks 在 bigVendors 和 depPerChunk 之间取了中间值，同时又能在缓存效率上有更好的利用。无特殊场景，建议用 granularChunks 策略。
+granularChunks strikes a balance between `bigVendors` and `depPerChunk`, offering better cache efficiency. For typical scenarios, using `granularChunks` is recommended.
 
 ## conventionLayout
 
-- 类型：`boolean`
-- 默认值：`undefined`
+- Type: `boolean`
+- Default: `undefined`
 
-`src/layouts/index.[tsx|vue|jsx|js]` 为约定式布局，默认开启。可通过配置 `conventionLayout: false` 关闭该默认行为。
+`src/layouts/index.[tsx|vue|jsx|js]` is the convention for layout. It's enabled by default. You can disable this default behavior by setting `conventionLayout: false`.
 
 ## conventionRoutes
 
-- 类型：`{ base: string; exclude: RegExp[] }`
-- 默认值：`null`
+- Type: `{ base: string; exclude: RegExp[] }`
+- Default: `null`
 
-修改默认的约定式路由规则，仅在使用 umi 约定式路由时有效，约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
+Modifies the default convention for routing. Only applicable when using umi's convention-based routing, also known as file-based routing, where the file system defines the routing configuration.
 
-使用约定式路由时，约定 `src/pages` 下所有的 `(j|t)sx?` 文件即路由。
+With convention-based routing, all `(j|t)sx?` files under `src/pages` are treated as routes.
 
-> 你可以从[约定式路由](../guides/routes#约定式路由)查看更多说明。
+> You can find more explanations in [Convention-Based Routing](../guides/routes#convention-based-routing).
 
 ### base
 
-`base` 用于设置约定的路由的基础路径，默认从 `src/pages` 读取，如果是文档站点可能会需要将其改成 `./docs`；
+`base` is used to set the base path for the conventional routes. By default, it reads from `src/pages`. This might need to be changed to `./docs` for documentation sites, for instance.
 
 ### exclude
 
-你可以使用 `exclude` 配置过滤一些不需要的文件，比如用于过滤 components、models 等。
+You can use `exclude` to filter out files that don't need to be treated as routes, e.g., to exclude `components` and `models` directories.
 
-示例，
+Example:
 
 ```js
-// 不识别 components 和 models 目录下的文件为路由
+// Exclude files in the components and models directories from being recognized as routes
 conventionRoutes: {
   exclude: [/\/components\//, /\/models\//],
 }
@@ -272,18 +272,18 @@ conventionRoutes: {
 
 ## copy
 
-- 类型：`Array<string | { from: string; to: string; }>`
-- 默认值：`[]`
+- Type: `Array<string | { from: string; to: string; }>`
+- Default: `[]`
 
-配置要复制到输出目录的文件或文件夹。
+Configures files or directories to be copied to the output directory.
 
-当配置字符串时，默认拷贝到产物目录，如：
+When specifying a string, the file or directory will be copied to the build output directory. For example:
 
 ```ts
 copy: ['foo.json', 'src/bar.json']
 ```
 
-会产生如下产物的结构：
+This results in the following structure in the output:
 
 ```
 + dist
@@ -294,7 +294,7 @@ copy: ['foo.json', 'src/bar.json']
 - foo.json
 ```
 
-你也可以通过对象配置具体的拷贝位置，其中相对路径的起点为项目根目录：
+You can also use objects to specify specific copy locations, where relative paths are based on the project root:
 
 ```ts
 copy: [
@@ -303,7 +303,7 @@ copy: [
 ]
 ```
 
-此时将产生如下产物结构：
+This results in the following structure:
 
 ```
 + dist
@@ -317,20 +317,20 @@ copy: [
 
 ## crossorigin
 
-- 类型：`{ includes?: string[] }`
-- 默认值：`false`
+- Type: `{ includes?: string[] }`
+- Default: `false`
 
-配置 script 标签的 crossorigin。如果有声明，会为本地 script 加上 crossorigin="anonymous" 的属性。
+Configures the `crossorigin` attribute of `script` tags. If defined, it adds the `crossorigin="anonymous"` attribute to local scripts.
 
-关于参数。`includes` 参数可以为额外的非本地 script 标签加上此属性。
+Regarding parameters, the `includes` parameter can be used to add this attribute to additional non-local `script` tags.
 
-比如：
+For example:
 
 ```
 crossorigin: {}
 ```
 
-然后输出的 HTML 中会有这些变化，
+This will result in the following change in the output HTML:
 
 ```diff
 -
@@ -341,12 +341,12 @@ crossorigin: {}
 
 ## cssMinifier
 
-- 类型：`string` 可选的值：`esbuild`, `cssnano`, `parcelCSS`, `none`
-- 默认值：`esbuild`
+- Type: `string` Possible values: `esbuild`, `cssnano`, `parcelCSS`, `none`
+- Default: `esbuild`
 
-配置构建时使用的 CSS 压缩工具; `none` 表示不压缩。
+Configures the CSS minification tool to use during the build; `none` means no minification.
 
-示例：
+Example:
 
 ```js
 {
@@ -356,12 +356,12 @@ crossorigin: {}
 
 ## cssMinifierOptions
 
-- 类型：`Object`
-- 默认值：`{}`
+- Type: `Object`
+- Default: `{}`
 
-`cssMinifier` CSS 压缩工具配置选项。
+Configures options for the `cssMinifier` CSS minification tool.
 
-示例：
+Example:
 
 ```js
 {
@@ -373,49 +373,49 @@ crossorigin: {}
 }
 ```
 
-对应 CSS 压缩的配置请查看对应的文档。
+Refer to the respective CSS minification documentation for the corresponding configuration.
 
-- [esbuild 参考](https://esbuild.github.io/api/#minify)
-- [cssnano 参考](https://cssnano.co/docs/config-file/)
-- [parcelCSS 参考](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
+- [esbuild reference](https://esbuild.github.io/api/#minify)
+- [cssnano reference](https://cssnano.co/docs/config-file/)
+- [parcelCSS reference](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
 
 ## cssLoader
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-配置 css-loader ，详见 [css-loader > options](https://github.com/webpack-contrib/css-loader#options)
+Configures the `css-loader`, see [css-loader > options](https://github.com/webpack-contrib/css-loader#options).
 
 ## cssLoaderModules
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-配置 css modules 的行为，详见 [css-loader > modules](https://github.com/webpack-contrib/css-loader#modules)。
+Configures the behavior of CSS modules, see [css-loader > modules](https://github.com/webpack-contrib/css-loader#modules).
 
-如：
+For example:
 
 ```ts
 cssLoaderModules: {
-  // 配置驼峰式使用
+  // Configure to use camelCase
   exportLocalsConvention: 'camelCase'
 }
 ```
 
 ## deadCode
 
-- 类型：`{ patterns?: string[]; exclude?: string[]; failOnHint?: boolean; detectUnusedFiles?: boolean; detectUnusedExport?: boolean; context?: string }`
-- 默认值：`false`
+- Type: `{ patterns?: string[]; exclude?: string[]; failOnHint?: boolean; detectUnusedFiles?: boolean; detectUnusedExport?: boolean; context?: string }`
+- Default: `false`
 
-检测未使用的文件和导出，仅在 build 阶段开启。
+Detects unused files and exports during the build phase. This is enabled only during the build process.
 
-比如：
+For example:
 
 ```
 deadCode: {}
 ```
 
-然后执行 build，如有发现问题，会打印警告：
+When running the build, if any issues are detected, a warning will be printed:
 
 ```
 Warning: There are 1 unused files:
@@ -423,19 +423,21 @@ Warning: There are 1 unused files:
  Please be careful if you want to remove them (¬º-°)¬.
 ```
 
-可配置项：
+Configuration options:
 
- - `patterns` : 识别代码的范围，如 `['src/pages/**']`
- - `exclude` : 排除检测的范围，如 `['src/pages/utils/**']`
- - `failOnHint` : 检测失败是否终止进程，默认 `false` 不终止
- - `detectUnusedFiles` : 是否检测未使用的文件，默认 `true` 检测
- - `detectUnusedExport` : 是否检测未使用的导出，默认 `true` 检测
- - `context` : 匹配开始的目录，默认为当前项目根目录
+ - `patterns`: Defines the scope of code recognition, e.g., `['src/pages/**']`.
+ - `exclude`: Excludes specific files from detection, e.g., `['src/pages/utils/**']`.
+ - `failOnHint`: Specifies whether the build process should fail if issues are detected. Default is `false` (no failure).
+ - `detectUnusedFiles`: Specifies whether to detect unused files. Default is `true`.
+ - `detectUnusedExport`: Specifies whether to detect unused exports. Default is `true`.
+ - `context`: Specifies the starting directory for matching. Defaults to the project root directory.
 
 ## define
 
-- 类型：`Record<string, string>`
-- 默认值： 如下 
+- Type:
+
+ `Record<string, string>`
+- Default: As shown below
 
 ```
   { 
@@ -445,31 +447,31 @@ Warning: There are 1 unused files:
   }
 ```
 
-基于[define-plugin 插件](https://webpack.js.org/plugins/define-plugin/)设置代码中的可用变量。
+Sets available variables in the code based on the [define-plugin](https://webpack.js.org/plugins/define-plugin/) plugin.
 
 <Message type="warn" emoji="🚨" >
-1. 属性值会经过一次 `JSON.stringify` 转换。
-2. key 值的替换是通过语法形式来匹配的，比如配置了 `{'a.b.c': 'abcValue'}` 是无法替换代码中的  `a.b?.c` 的
+1. The property values will undergo a `JSON.stringify` transformation.
+2. The key replacement is done using syntax, so configuring `{'a.b.c': 'abcValue'}` won't replace `a.b?.c` in the code.
 </Message>
 
-比如，
+For example:
 
 ```
 define: { FOO: 'bar' }
 ```
 
-然后代码里的 `console.log(hello, FOO)` 会被编译成 `console.log(hello, 'bar')`。
+This will compile `console.log(hello, FOO)` in the code to `console.log(hello, 'bar')`.
 
-当你在 ts 的项目中使用这些变量时，你需要在 typings 文件中声明变量类型，以支持 ts 类型提示，比如：
+When using these variables in a TypeScript project, you need to declare their types in a typings file to support type hinting. For example:
 
-如果你的 typings 文件是全局的：
+If your typings file is global:
 
 ```ts
 // typings.d.ts
 declare const FOO: string;
 ```
 
-如果你的 typings 文件是非全局的（包含了 import/export）：
+If your typings file is not global (includes import/export):
 
 ```ts
 // typings.d.ts
@@ -481,80 +483,80 @@ declare global {
 ```
 ## devtool
 
-- 类型：`string`
-- 默认值：dev 时默认 `cheap-module-source-map`，build 时候默认无 sourcemap
+- Type: `string`
+- Default: For dev, default is `cheap-module-source-map`. For build, default is no sourcemap.
 
-设置 sourcemap 生成方式。
+Set the source map generation method.
 
-常见可选值有：
+Common options:
 
-- `eval`，最快的类型，缺点是不支持低版本浏览器
-- `source-map`，最慢但最全的类型
+- `eval`, the fastest type, but not supported by older browsers.
+- `source-map`, the slowest but most comprehensive type.
 
-示例，
+Example,
 
 ```js
-// 关闭 dev 阶段的 sourcemap 生成
+// Turn off source map generation during development
 devtool: false;
 
-// 只设置 dev 阶段的 sourcemap
+// Only set source map for development
 devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 ```
 
 ## classPropertiesLoose
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-设置 babel class-properties 启用 loose
+Enable loose mode for Babel class properties.
 
 ## esbuildMinifyIIFE
 
-- 类型：`boolean`
-- 默认值：`false`
+- Type: `boolean`
+- Default: `false`
 
-修复 esbuild 压缩器自动引入的全局变量导致的命名冲突问题。
+Resolve naming conflicts caused by automatically injected global variables by the esbuild minifier.
 
-由于 Umi 4 默认使用 esbuild 作为压缩器，该压缩器会自动注入全局变量作为 polyfill ，这可能会引发 异步块全局变量冲突、 qiankun 子应用和主应用全局变量冲突 等问题，通过打开该选项或切换 [`jsMinifier`](#jsminifier-webpack) 压缩器可解决此问题。
+Umi 4 defaults to using esbuild as the minifier, which injects global variables as polyfills. This can lead to issues such as conflicts with global variables in asynchronous blocks, conflicts between qiankun sub-apps and main apps, etc. Enabling this option or switching the [`jsMinifier`](#jsminifier-webpack) minifier can solve these problems.
 
-更多信息详见 [vite#7948](https://github.com/vitejs/vite/pull/7948) 。
+For more information, see [vite#7948](https://github.com/vitejs/vite/pull/7948).
 
-示例,
+Example,
 ```ts
 esbuildMinifyIIFE: true
 ```
 
 ## externals
 
-- 类型：`Record<string, string> | Function`
-- 默认值：`{}`
+- Type: `Record<string, string> | Function`
+- Default: `{}`
 
-设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 headScripts 配置使用。
+Specify which modules should not be bundled, and should be instead loaded via `<script>` or other methods. Typically used in conjunction with the `headScripts` configuration.
 
-示例，
+Example,
 
 ```
-// external react
+// Externalize React
 externals: { react: 'React' },
 headScripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 ```
 
-注意：不要轻易设置 antd 的 externals，由于依赖较多，使用方式复杂，可能会遇到较多问题，并且一两句话很难解释清楚。
+Note: Be cautious when setting externals for Ant Design (antd), as it has complex dependencies and usage patterns that might lead to issues that are not easy to explain in a few sentences.
 
 ## extraBabelIncludes
 
-- 类型：`Array<string | RegExp>`
-- 默认值：`[]`
+- Type: `Array<string | RegExp>`
+- Default: `[]`
 
-配置额外需要做 Babel 编译的 NPM 包或目录。比如：
+Configure additional NPM packages or directories that need to be compiled by Babel. Example:
 
 ```js
 export default {
   extraBabelIncludes: [
-    // 支持绝对路径
+    // Absolute path
     join(__dirname, '../../common'),
-    // 支持 npm 包
+    // npm package
     'react-monaco-editor',
-    // 转译全部路径含有 @scope 的包
+    // Compile all paths with @scope
     /@scope/
   ],
 };
@@ -562,31 +564,31 @@ export default {
 
 ## extraBabelPlugins
 
-- 类型：`string[] | Function`
-- 默认值：`[]`
+- Type: `string[] | Function`
+- Default: `[]`
 
-配置额外的 babel 插件。可传入插件地址或插件函数。
+Configure additional Babel plugins. You can provide plugin names or plugin functions.
 
 ## extraBabelPresets
 
-- 类型：`string[] | Function`
-- 默认值：`[]`
+- Type: `string[] | Function`
+- Default: `[]`
 
-配置额外的 babel 插件集。可传入插件集地址或插件集函数。
+Configure additional Babel presets. You can provide preset names or preset functions.
 
 ## extraPostCSSPlugins
 
-- 类型：`PostCSSPlugin[]`
-- 默认值：`[]`
+- Type: `PostCSSPlugin[]`
+- Default: `[]`
 
-配置额外的 postcss 插件。
+Configure additional PostCSS plugins.
 
 ## exportStatic
 
-- 类型：`{ extraRoutePaths: IUserExtraRoute[] | (() => IUserExtraRoute[] | Promise<IUserExtraRoute[]>) }`
-- 默认值：`undefined`
+- Type: `{ extraRoutePaths: IUserExtraRoute[] | (() => IUserExtraRoute[] | Promise<IUserExtraRoute[]>) }`
+- Default: `undefined`
 
-开启该配置后会针对每个路由单独输出 HTML 文件，通常用于静态站点托管。例如项目有如下路由：
+When enabled, each route will generate a separate HTML file, typically used for static site hosting. For example, if you have the following routes:
 
 ```bash
 /
@@ -594,13 +596,13 @@ export default {
 /docs/a
 ```
 
-不开启 `exportStatic` 时会输出：
+Without enabling `exportStatic`, the output would be:
 
 ```bash
 dist/index.html
 ```
 
-开启 `exportStatic` 时会输出：
+With `exportStatic` enabled, the output would be:
 
 ```bash
 dist/index.html
@@ -608,21 +610,21 @@ dist/docs/index.html
 dist/docs/a/index.html
 ```
 
-通过 `extraRoutePaths` 子配置项可以产出额外的页面，通常用于动态路由静态化。例如有如下路由：
+You can use the `extraRoutePaths` sub-config to generate additional pages, commonly used for dynamic route staticization. For example, with the following route:
 
 ```bash
 /news/:id
 ```
 
-默认情况下只会输出 `dist/news/:id/index.html`，但可以通过配置 `extraRoutePaths` 将其静态化：
+By default, only `dist/news/:id/index.html` would be generated. However, you can use the `extraRoutePaths` configuration to staticize it:
 
 ```ts
 // .umirc.ts
 export default {
   exportStatic: {
-    // 配置固定值
+    // Configure fixed values
     extraRoutePaths: ['/news/1', '/news/2'],
-    // 也可以配置函数动态获取
+    // You can also use a function to dynamically generate routes
     extraRoutePaths: async () => {
       const res = await fetch('https://api.example.com/news');
       const data = await res.json();
@@ -632,7 +634,7 @@ export default {
 }
 ```
 
-此时输出文件会变成：
+This would result in the following output:
 
 ```bash
 dist/news/:id/index.html
@@ -640,13 +642,13 @@ dist/news/1/index.html
 dist/news/2/index.html
 ```
 
-`extraRoutePaths` 除了支持配置字符串数据，还可以配置成对象数组，用于启用 SSR 时又希望对部分路由禁用预渲染的场景，例如：
+In addition to strings, `extraRoutePaths` also supports an array of objects. This is useful for enabling SSR while disabling pre-rendering for certain routes, such as:
 
 ```ts
 // .umirc.ts
 export default {
   exportStatic: {
-    // 输出额外页面文件但跳过预渲染
+    // Generate extra page files but skip pre-rendering
     extraRoutePaths: [{ path: '/news/1', prerender: false }],
   },
 }
@@ -655,37 +657,37 @@ export default {
 
 ## favicons
 
-- 类型：`string[]`
-- 默认值：`null`
+- Type: `string[]`
+- Default: `null`
 
-默认情况下，站点将使用约定 [`favicon`](../guides/directory-structure#favicon) 来创建图标的 meta 头标签。
+By default, the site will use the conventional [`favicon`](../guides/directory-structure#favicon) to create the icon's meta tags.
 
-通过如下方式自定义：
+You can customize this using the following approach:
 
 ```js
 favicons: [
-  // 完整地址
+  // Full URL
   'https://domain.com/favicon.ico',
-  // 此时将指向 `/favicon.png` ，确保你的项目含有 `public/favicon.png`
+  // This will point to `/favicon.png`. Make sure your project contains `public/favicon.png`
   '/favicon.png'
 ]
 ```
 
 ## forkTSChecker
 
-- 类型：`object`
-- 默认值：`null`
+- Type: `object`
+- Default: `null`
 
-开启 TypeScript 的类型检查。基于 fork-ts-checker-webpack-plugin，配置项可参考 [fork-ts-checker-webpack-plugin 的 Options](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options)。
+Enable TypeScript type checking. Based on `fork-ts-checker-webpack-plugin`, you can refer to the [Options of fork-ts-checker-webpack-plugin](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options) for configuration options.
 
 ## hash
 
-- 类型：`boolean`
-- 默认值：`false`
+- Type: `boolean`
+- Default: `false`
 
-开启 hash 模式，让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
+Enable hash mode to include a hash suffix in build artifacts. Typically used for incremental releases and to avoid browser caching.
 
-启用后，产物通常是这样，
+When enabled, build artifacts would look like:
 
 ```
 + dist
@@ -695,22 +697,22 @@ favicons: [
     - index.html
 ```
 
-注意：HTML 文件始终没有 hash 后缀。
+Note: HTML files always lack a hash suffix.
 
 ## headScripts
 
-- 类型：`string[] | Script[]`
-- 默认值：`[]`
+- Type: `string[] | Script[]`
+- Default: `[]`
 
-配置 `<head>` 中的额外 script。
+Configure additional script tags in the `<head>` section.
 
-比如，
+For example,
 
 ```js
 headScripts: [`alert(1);`, `https://a.com/b.js`],
 ```
 
-会生成 HTML，
+This would generate HTML:
 
 ```html
 <script>
@@ -719,50 +721,52 @@ headScripts: [`alert(1);`, `https://a.com/b.js`],
 <script src="https://a.com/b.js"></script>
 ```
 
-如果需要额外属性，切换到对象格式，比如，
+If you need additional attributes, switch to the object format. For example,
 
 ```js
 headScripts: [
   { src: '/foo.js', defer: true },
-  { content: `alert('你好');`, charset: 'utf-8' },
+  { content: `alert('Hello');`, charset: 'utf-8' },
 ],
 ```
 
 ## helmet
 
-- 类型：`boolean`
-- 默认值：`true`
+- Type: `boolean`
+- Default: `true`
 
-配置 `react-helmet-async` 的集成，当设置为 `false` 时，不会集成 `react-helmet-async`，此时无法从框架中 `import { Helmet }` 使用，同时构建产物也会减少[相应的尺寸](https://bundlephobia.com/package/react-helmet-async)。
+Configure integration with `react-helmet-async`. When set to `false`, `react-helmet-async` integration
+
+ is disabled. This means you cannot use `import { Helmet }` from the framework, and the resulting build size will be reduced as well.
 
 ## history
 
-- 类型：`{ type: 'browser' | 'hash' | 'memory' }`
-- 默认值：`{ type: 'browser' }`
+- Type: `{ type: 'browser' | 'hash' | 'memory' }`
+- Default: `{ type: 'browser' }`
 
-设置路由 history 类型。
+Set the routing history type.
 
 ## historyWithQuery
 
-- 类型：`‌{}`
-- 默认值：`false`
+- Type: `‌{}`
+- Default: `false`
 
-让 history 带上 query。除了通过 `useNavigate` 进行的跳转场景，此时还需自行处理 query。
+Include query parameters in the history. Apart from navigation using `useNavigate`, you also need to manually handle query parameters in this scenario.
 
 ## https
 
-- 类型：`{ cert: string; key: string; hosts: string[]; http2?: boolean }`
-- 默认值：`{ hosts: ['127.0.0.1', 'localhost'] }`
+- Type: `{ cert: string; key: string; hosts: string[]; http2?: boolean }`
+- Default: `{ hosts: ['127.0.0.1', 'localhost'] }`
 
-开启 dev 的 https 模式，Umi 4 默认使用 [`mkcert`](https://github.com/FiloSottile/mkcert) 快捷创建证书，请确保已经安装。
+Enable HTTPS mode during development. Umi 4 uses [`mkcert`](https://github.com/FiloSottile/mkcert) for quickly creating certificates. Make sure it is installed.
 
-关于参数。
+Parameters:
 
-- `cert` 和 `key` 分别用于指定 cert 和 key 文件。
-- `hosts` 用于指定要支持 https 访问的 host，默认是 `['127.0.0.1', 'localhost']`。
-- `http2` 用于指定是否使用 HTTP 2.0 协议，默认是 true（使用 HTTP 2.0 在 Chrome 或 Edge 浏览器中中有偶然出现 `ERR_HTTP2_PROTOCOL_ERRO`报错，如有遇到，建议配置为 false）。
+- `cert` and `key` are used to specify certificate and key files.
+- `hosts` specifies the hosts that support HTTPS access. Default is `['127.0.0.1', 'localhost']`.
+- `http2` specifies whether to use HTTP 2.0 protocol. Default is true (using HTTP 2.0 in Chrome or Edge browsers might occasionally result in `ERR_HTTP2_PROTOCOL_ERROR` errors; if encountered, consider setting it to false).
 
-示例，
+Example,
 
 ```js
 https: {
@@ -771,85 +775,85 @@ https: {
 
 ## icons
 
-- 类型：`{ autoInstall: {}; alias: Record<string,string>; include: Array<string>;  }`
-- 默认值：`false`
+- Type: `{ autoInstall: {}; alias: Record<string,string>; include: Array<string>;  }`
+- Default: `false`
 
-你就可以通过 umi 导出的 Icon 组件快捷地引用 icon 集或者本地的 icon。
+Quickly reference icon sets or local icons using the Icon component provided by Umi.
 
-### icon 集使用
+### Using icon sets
 
-在 umi 配置文件设置，开启 icons 功能，并允许自动安装图标库。
+In the Umi configuration file, enable the icons feature and allow automatic installation of icon collections.
 
 ```ts
 icons: { autoInstall: {} },
 ```
 
-页面使用：
+Usage in pages:
 
 ```ts
 import { Icon } from 'umi';
 <Icon icon="fa:home" />
 ```
 
-icon 里包含的字符串是 `collect:icon` 的组合，以 `:` 分割。Icon 集推荐在 [Icônes 网站](https://icones.js.org/)上搜索。
+The icon strings contain a combination of `collect:icon`, separated by `:`. Icon collections are recommended to be searched on the [Icônes website](https://icones.js.org/).
 
-## 本地 icon 使用
+## Local icon usage
 
-在 umi 配置文件设置，开启 icons 功能。
+In the Umi configuration file, enable the icons feature.
 
 ```ts
 icons: {},
 ```
 
-本地 svg icon 的使用需要把 svg 保存在 `src/icons` 目录下，然后通过 `local` 这个前缀引用，比如在 `src/icons` 目录下有个 `umi.svg`，然后可以这样引用。
+To use local SVG icons, save the SVG files in the `src/icons` directory. Then, reference them using the `local` prefix. For example, if there's an `umi.svg` in the `src/icons` directory, you can use it like this:
 
 ```tsx
 import { Icon } from 'umi';
 <Icon icon="local:umi" />
 ```
 
-### 配置项介绍
+### Configuration Options
 
-- `autoInstall` 表示是否自动安装 icon 集；tnpm/cnpm 客户端暂不支持，但可以通过手动按需安装对应 icon 集合包 `@iconify-json/collection-name` 。 参考：[Icon 集合列表](https://github.com/iconify/icon-sets/blob/master/collections.md), collection-name 为列表中的 ***Icon set prefix*** 项。
-- `alias` 用于配置 icon 的别名，比如配置了 `alias:{home:'fa:home'}` 后就可以通过 `icon="home"` 使用 `fa:home` 这个 icon 了。
-- `include` 配置需要强制使用的 icon， 例如 `include: ['fa:home', 'local:icon']`。常见的使用场景：将 icon 字符串定义在一个 map 中，导致无法检测到；在 `mdx` 使用了 `Icon` 组件。
+- `autoInstall`: Specifies whether to automatically install icon sets. tnpm/cnpm clients are currently not supported, but you can manually install the corresponding icon set package `@iconify-json/collection-name`. Refer to the [Icon Collection List](https://github.com/iconify/icon-sets/blob/master/collections.md), where `collection-name` corresponds to the ***Icon set prefix*** in the list.
+- `alias`: Configures alias names for icons. For example, after configuring `alias:{home:'fa:home'}`, you can use the `icon="home"` to use the `fa:home` icon.
+- `include`: Configures icons that need to be forcibly used, such as `include: ['fa:home', 'local:icon']`. A common use case is when you define icon strings in a map, causing them not to be detected; or when using the `Icon` component in `mdx`.
 
-### Icon 组件属性
+### Icon Component Props
 
-- icon，指定 icon
-- width，svg 宽度
-- height，svg 高度
-- viewBox，svg viewBox
-- style，外部容器样式
-- className，外部容器样式名
-- spin，是否自动旋转
-- rotate，配置旋转角度，支持多种格式，比如 `1`，`"30deg"`、`"25%"` 都可以
-- flip，支持 `vertical`、`horizontal`，或者他们的组合 `vertical,horizontal`
+- icon: Specifies the icon.
+- width: SVG width.
+- height: SVG height.
+- viewBox: SVG viewBox.
+- style: External container style.
+- className: External container class name.
+- spin: Specifies whether to auto-rotate.
+- rotate: Configures the rotation angle, supports various formats such as `1`, `"30deg"`, `"25%"`.
+- flip: Supports `vertical`, `horizontal`, or their combination `vertical,horizontal`.
 
 ## ignoreMomentLocale
 
-- 类型：`boolean`
-- 默认值：`true`
+- Type: `boolean`
+- Default: `true`
 
-忽略 moment 的 locale 文件，用于减少产物尺寸。
+Ignore moment locale files to reduce the artifact size.
 
-注意：此功能默认开。配置 `ignoreMomentLocale: false` 关闭。
+Note: This feature is enabled by default. Configure `ignoreMomentLocale: false` to disable it.
 
 ## inlineLimit
 
-- 类型：`number`
-- 默认值：`10000` (10k)
+- Type: `number`
+- Default: `10000` (10k)
 
-配置图片文件是否走 base64 编译的阈值。默认是 10000 字节，少于他会被编译为 base64 编码，否则会生成单独的文件。
+Configure the threshold for whether image files should be compiled as base64. Default is 10,000 bytes. Files smaller than this size will be compiled as base64, while larger files will be generated as separate files.
 
 ## jsMinifier (webpack)
 
-- 类型：`string`，可选值 `esbuild`, `terser`, `swc`, `uglifyJs`, `none`
-- 默认值：`esbuild`
+- Type: `string`, Options: `esbuild`, `terser`, `swc`, `uglifyJs`, `none`
+- Default: `esbuild`
 
-配置构建时压缩 JavaScript 的工具；`none`表示不压缩。
+Configure the JavaScript minification tool for the build. `none` indicates no minification.
 
-示例：
+Example:
 
 ```ts
 {
@@ -859,12 +863,12 @@ import { Icon } from 'umi';
 
 ## jsMinifierOptions
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-`jsMinifier` 的配置项；默认情况下压缩代码会移除代码中的注释，可以通过对应的 `jsMinifier` 选项来保留注释。
+Configuration options for `jsMinifier`. By default, minifying code removes comments. You can retain comments by using the corresponding `jsMinifier` option.
 
-示例：
+Example:
 ```js
 {
   jsMinifier: 'esbuild',
@@ -876,61 +880,61 @@ import { Icon } from 'umi';
 }
 ```
 
-配置项需要和所使用的工具对应，具体参考对应文档：
+The configuration options should match the tool you are using, refer to their respective documentation:
 
-- [esbuild 参考](https://esbuild.github.io/api/#minify)
-- [terser 参考](https://terser.org/docs/api-reference#minify-options)
-- [swc 参考](https://swc.rs/docs/configuration/minification#configuration)
-- [uglifyJs 参考](https://lisperator.net/uglifyjs/compress)
+- [esbuild Reference](https://esbuild.github.io/api/#minify)
+- [terser Reference](https://terser.org/docs/api-reference#minify-options)
+- [swc Reference](https://swc.rs/docs/configuration/minification#configuration)
+- [uglifyJs Reference](https://lisperator.net/uglifyjs/compress)
 
 {
 /*
-## jsMinifier (vite 构建)
+## jsMinifier (vite build)
 
-* 类型：`string`
-* 默认值：
+* Type: `string`
+* Default:
 
 */
 }
 
 ## lessLoader
 
-- 类型：`Object`
-- 默认值：`{ modifyVars: userConfig.theme, javascriptEnabled: true }`
+- Type: `Object`
+- Default: `{ modifyVars: userConfig.theme, javascriptEnabled: true }`
 
-设置 less-loader 的 Options。具体参考参考 [less-loader 的 Options](https://github.com/webpack-contrib/less-loader#lessoptions)。
+Configure options for `less-loader`. Refer to [less-loader Options](https://github.com/webpack-contrib/less-loader#lessoptions) for details.
 
-> 默认是用 less@4 版本，如果需要兼容 less@3 请配置使用[less-options-math](https://lesscss.org/usage/#less-options-math)。
+> By default, less@4 is used. If you need compatibility with less@3, configure to use [less-options-math](https://lesscss.org/usage/#less-options-math).
 
 ## legacy
 
-- 类型：`{ buildOnly?: boolean; nodeModulesTransform?: boolean; checkOutput?: boolean; }`
-- 默认值：`false`
+- Type: `{ buildOnly?: boolean; nodeModulesTransform?: boolean; checkOutput?: boolean; }`
+- Default: `false`
 
-当你需要兼容低版本浏览器时，可能需要该选项，开启后将默认使用 **非现代** 的打包工具做构建，这会显著增加你的构建时间。
+When you need to support older browsers, you might need this option. When enabled, the build tool will use the **non-modern** bundler, which significantly increases the build time.
 
 ```ts
 legacy: {}
 ```
 
-默认只在构建时生效，通过设定 `buildOnly: false` 关闭该限制。
+By default, it only applies during build. You can turn off the `buildOnly` restriction by setting `buildOnly: false`.
 
-可通过打开 `checkOutput: true` 选项，每次构建结束后将自动运行 [`es-check`](https://github.com/yowainwright/es-check) 检查产物 `.js` 文件的语法是否为 es5 格式。
+By setting `checkOutput: true`, it will automatically run [`es-check`](https://github.com/yowainwright/es-check) to check if the syntax of `.js` files in the artifacts adheres to es5 format after each build.
 
-开启此选项后：
+With this option enabled:
 
- - 不支持自定义 `srcTranspiler` 、`jsMinifier` 、 `cssMinifier` 选项。
- - 将转译全部 `node_modules` 内的源码，`targets` 兼容至 ie 11 ，通过指定 `nodeModulesTransform: false` 来取消对 `node_modules` 的转换，此时你可以通过配置 `extraBabelIncludes` 更精准的转换那些有兼容性问题的包。
- - 因低版本浏览器不支持 Top level await ，当你在使用 `externals` 时，确保你没有在使用异步性质的 [`externalsType`](https://webpack.js.org/configuration/externals/#externalstype) 时又使用了同步导入依赖。
+- Custom `srcTranspiler`, `jsMinifier`, and `cssMinifier` options are not supported.
+- It will transpile all sources in `node_modules` with targets compatible with IE 11. You can use `nodeModulesTransform: false` to skip transforming `node_modules` and use `extraBabelIncludes` to selectively transpile specific problematic packages.
+- As older browsers do not support Top level await, ensure that you do not use both asynchronous and synchronous imports in the same dependency when using `externals`, unless `externalsType` with an asynchronous nature is used.
 
 ## links
 
-- 类型：`Link[]`
-- 默认值：`[]`
+- Type: `Link[]`
+- Default: `[]`
 
-配置额外的 link 标签。
+Configure additional link tags.
 
-示例，
+For example,
 
 ```js
 links: [{ href: '/foo.css', rel: 'preload' }],
@@ -938,30 +942,30 @@ links: [{ href: '/foo.css', rel: 'preload' }],
 
 ## manifest
 
-- 类型：`{ fileName: string; basePath: string }`
-- 默认值：`null`
+- Type: `{ fileName: string; basePath: string }`
+- Default: `null`
 
-开启 build 时生成额外的 manifest 文件，用于描述产物。
+Generate an additional manifest file during build to describe artifacts. 
 
-关于参数。`fileName` 是生成的文件名，默认是 `asset-manifest.json`；`basePath` 会给所有文件路径加上前缀。
+Parameters: `fileName`: Specifies the file name of the generated manifest. Default is `asset-manifest.json`; `basePath`: Adds a prefix to all file paths.
 
-注意：只在 build 时生成。
+Note: Only generated during build.
 
 ## mdx
 
-- 类型：`{ loader: string; loaderOptions: Object }`
-- 默认值：`{}`
+- Type: `{ loader: string; loaderOptions: Object }`
+- Default: `{}`
 
-mdx loader 配置 loader 配置路径，[loaderOptions](https://github.com/mdx-js/mdx/blob/v1/packages/mdx/index.js#L12) 配置参数
+Configure the mdx loader. The `loader` specifies the path to the loader configuration, and `loaderOptions` specifies the loader options.
 
 ## metas
 
-- 类型：`Meta[]`
-- 默认值：`[]`
+- Type: `Meta[]`
+- Default: `[]`
 
-配置额外的 meta 标签。
+Configure additional meta tags.
 
-比如，
+For example,
 
 ```js
 metas: [
@@ -970,7 +974,7 @@ metas: [
 ],
 ```
 
-会生成以下 HTML，
+Would generate the following HTML:
 
 ```html
 <meta name="keywords" content="umi, umijs" />
@@ -979,75 +983,78 @@ metas: [
 
 ## mfsu
 
-- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void; exclude?: Array<string | RegExp> }`
-- 默认值：`{ mfName: 'mf', strategy: 'normal' }`
+- Type: `{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void; exclude?: Array<string | RegExp> }`
+- Default: `{ mfName: 'mf', strategy: 'normal' }`
 
-配置基于 [Module Federation](https://module-federation.github.io/) 的提速功能。
+Configure the performance optimization feature based on [Module Federation](https://module-federation.github.io/).
 
-关于参数
+Parameters:
 
-- `esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有物理缓存，稍慢一些；推荐项目依赖比较稳定的项目使用。
-- `mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置
-- `cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`
-- `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/sorrycc/webpack-chain)；
-- `runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`
-- `strategy` 指定 mfsu 编译依赖的时机; `normal` 模式下，采用 babel 编译分析后，构建 Module Federation 远端包；`eager` 模式下采用静态分析的方式，和项目代码同时发起构建。
-- `include` 仅在 `strategy: 'eager' ` 模式下生效， 用于补偿在 eager 模式下，静态分析无法分析到的依赖，例如 `react` 未进入 Module Federation 远端模块可以这样配置 `{ include: [ 'react' ] }`
-- `exclude` 手动排除某些不需要被 MFSU 处理的依赖, 字符串或者正则的形式，比如 `vant` 不希望走 MFSU 处理，可以配置 `{ exclude: [ 'vant' ] }` 匹配逻辑为全词匹配，也可以配置 `{ exclude: [ /vant/ ] }` 只要 `import` 路径中匹配该正则的依赖都不走 MFSU 处理
+- `esbuild`: When set to `true`, it uses esbuild for dependency pre-compilation, making the initial startup faster. The drawback is that there won't be physical caching for subsequent compilations, making them slightly slower. Recommended for projects with relatively stable dependencies.
+- `mfName`: The global variable for remote libraries in this approach. The default is `mf`, and it's usually configured to avoid conflicts between the main app and sub-applications in a micro-frontend setup.
+- `cacheDirectory`: Customize the cache directory. The default is `node_modules/.cache/mfsu`.
+- `chainWebpack`: Use webpack-chain to modify the webpack configuration for dependencies. This function is provided with two arguments, `memo` (the current configuration) and `args` (other arguments). For detailed API reference, see [webpack-chain Documentation](https://github.com/sorrycc/webpack-chain).
+- `runtimePublicPath`: Changes the `publicPath` of the loading files for modules in Module Federation to `window.publicPath`.
+- `strategy`: Specifies when mfsu should build dependencies. In `normal` mode, the dependencies are built based on babel analysis and then used in the Module Federation remote bundle. In `eager` mode, the dependencies are built based on static analysis and are built concurrently with the project code.
+- `include`: Only works in `strategy: 'eager'` mode. It's used to compensate for dependencies that couldn't be statically analyzed in eager mode. For example, if `react` is not included in the remote module, you can configure `{ include: [ 'react' ] }`.
+- `exclude`: Manually exclude certain dependencies that should not be processed by MFSU. It can be a string or a regular expression. For example, `{ exclude: [ 'vant' ] }` will exclude the `vant` library from MFSU processing.
 
-示例，
+Example,
 
 ```js
-// 用 esbuild 做依赖预编译
+// Use esbuild for dependency pre-compilation
 mfsu: {
   esbuild: true,
 }
 
-// 关闭 mfsu 功能
+// Disable MFSU
 mfsu: false;
 ```
 
 ```js
-// webpack 配置修改
+// Modify webpack configuration
 mfsu: {
   chainWebpack(memo, args) {
-    // 添加额外插件
+    // Add additional plugins
     memo.plugin('hello').use(Plugin, [...args]);
     return memo;
   }
 }
 ```
 
-注意：此功能默认开。配置 `mfsu: false` 关闭。
+Note: This feature is enabled by default. Configure `mfsu: false` to disable it.
 
 ## mock
 
-- 类型：`{ exclude: string[], include: string[] }`
-- 默认值：`{}`
+- Type: `{ exclude: string[], include: string[] }`
+- Default: `{}`
 
-配置 mock 功能。
+Configure the mock feature.
 
-关于参数。`exclude` 用于排除不需要的 mock 文件；`include` 用于额外添加 mock 目录之外的 mock 文件。
+Parameters:
 
-示例，
+- `exclude`: Excludes mock files that are not needed.
+- `include`: Adds mock files outside the mock directory.
+
+Example,
 
 ```js
-// 让所有 pages 下的 _mock.ts 文件成为 mock 文件
+// Make all _mock.ts files under pages become mock files
 mock: {
   include: ['src/pages/**/_mock.ts'],
 }
 ```
 
-注意：此功能默认开。配置 `mock: false` 关闭。
+Note: This feature is enabled by default. Configure `mock: false` to disable it.
 
 ## mountElementId
 
-- 类型：`string`
-- 默认值：`'root'`
+- Type: `string`
+- Default: `'root'`
 
-配置 react 组件树渲染到 HTML 中的元素 id。
+Configure the HTML element ID where the React component tree should be rendered.
 
-示例，
+Example,
 
 ```js
 mountElementId: 'container'
@@ -1055,74 +1062,74 @@ mountElementId: 'container'
 
 ## monorepoRedirect
 
-- 类型：`{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean }`
-- 默认值：`false`
+- Type: `{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean }`
+- Default: `false`
 
-在 monorepo 中使用 Umi 时，你可能需要引入其他子包的组件、工具方法等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
+When using Umi within a monorepo, you might need to import components, utility methods, etc., from other sub-packages. You can enable this option to redirect imports from these sub-packages to their source code locations (by default, the `src` folder). This can also solve the issue of non-hot updates in the `MFSU` scenario.
 
-这种重定向的好处是：支持热更新，无需预构建其他子包即可进行开发。
+The benefit of this redirection is that it supports hot updates, allowing you to develop without pre-building other sub-packages.
 
-通过配置 `srcDir` 来调整识别源码文件夹的优先位置，通过 `exclude` 来设定不需要重定向的依赖范围。
+Adjust the recognition priority of the source code folder by configuring `srcDir` and set the dependency scope that should not be redirected using `exclude`.
 
-示例：
+Examples:
 
 ```js
-// 默认重定向到子包的 src 文件夹
+// Default redirection to the src folder of the sub-packages
 monorepoRedirect: {}
-// 在子包中寻找，优先定向到 libs 文件夹
+// Look within the sub-package and prioritize redirection to the libs folder
 monorepoRedirect: {
   srcDir: ['libs', 'src'],
 }
-// 不重定向 @scope/* 的子包
+// Do not redirect sub-packages under @scope/*
 monorepoRedirect: {
   exclude: [/^@scope\/.+/],
 }
 ```
 
-在实际的大型业务 monorepo 中，每个子包的依赖都是从他们的目录开始向上寻找 `node_modules` 并加载的，但在本地开发时，依赖都安装在 `devDependencies` ，和从 npm 上安装表现不一致，所以不可避免会遇到多实例问题。
+In large-scale business monorepos, each sub-package's dependencies are loaded starting from their directories to `node_modules`. However, during local development, dependencies are installed in `devDependencies`, which is inconsistent with installing from npm. As a result, multiple instances of the same dependency can be encountered.
 
 <Message fontsize='small'>
-举个例子，每个子包在本地开发时都需要 `antd` ，在 `devDependencies` 中安装了，也在 `peerDependencies` 中指明了 `antd` ，我们预期该包发布到 npm ，被某个项目安装后， `antd` 是使用的项目本身的依赖，全局唯一，但由于在 monorepo 中，指定在 `devDependencies` 中的依赖必定存在，且子包代码寻找依赖时是从该子包进行的，导致了每个子包都用了自己的 `antd` ，出现了产物中有多份 `antd` 、产物体积增大、消息队列被破坏等情况。
+For example, each sub-package requires `antd` during local development, which is installed in `devDependencies` and also specified in `peerDependencies`. When the package is expected to be installed via npm and used by a project, `antd` should be a project's own dependency, unique globally. However, in a monorepo, dependencies specified in `devDependencies` are always present, and sub-packages search for dependencies from within themselves. This leads to each sub-package using its own instance of `antd`, causing multiple copies of `antd` in the build, increased build size, disruption of message queues, and other issues.
 </Message>
 
-为了解决这种问题，我们约定：
+To address this problem, we have a convention:
 
-当打开 `peerDeps` 选项时，所有子包指明的 `peerDependencies` 都会被自动添加 `alias` 重定向唯一化，避免多实例的存在：
+When the `peerDeps` option is enabled, all `peerDependencies` specified in sub-packages are automatically added as `alias` to ensure uniqueness and avoid multiple instances:
 
 ```ts
 monorepoRedirect: { peerDeps: true }
 ```
 
-经过重定向，依赖全局唯一，便可以在开发时保持和在 npm 上安装包后的体验一致。
+With redirection in place, the dependencies are unique globally, and the development experience can be consistent with installing packages from npm.
 
 ## mpa
 
-- 类型：`object`
-- 默认值：`false`
+- Type: `object`
+- Default: `false`
 
-启用 [mpa 模式](../guides/mpa)。
+Enable the [mpa mode](../guides/mpa).
 
 ## outputPath
 
-- 类型：`string`
-- 默认值：`dist`
+- Type: `string`
+- Default: `dist`
 
-配置输出路径。
+Configure the output path.
 
-注意：不允许设定为 src、public、pages、mock、config、locales、models 等约定式功能相关的目录。
+Note: Not allowed to be set to directories related to conventional functionalities like src, public, pages, mock, config, locales, models, etc.
 
 ## phantomDependency
 
-- 类型：`{ exclude: string[] }`
-- 默认值：`false`
+- Type: `{ exclude: string[] }`
+- Default: `false`
 
-执行幽灵依赖检测。
+Perform phantom dependency detection.
 
-当使用未在 package.json 中声明的依赖，以及也没有通过 alias 或 externals 进行配置时，会抛错并提醒。
+When using undeclared dependencies in `package.json`, and no configuration is provided through alias or externals, an error will be thrown with a reminder.
 
 ![](https://mdn.alipayobjects.com/huamei_ddtbzw/afts/img/A*k5uoQ5TOPooAAAAAAAAAAAAADkCKAQ/original)
 
-如遇到有需要需做白名单处理，可通过 exclude 配置项实现，exclude 的项是 npm 依赖的包名。
+If whitelist handling is needed, it can be achieved through the `exclude` configuration, where the excluded items are the package names of npm dependencies.
 
 ```ts
 export default {
@@ -1134,34 +1141,34 @@ export default {
 
 ## plugins
 
-- 类型：`string[]`
-- 默认值：`[]`
+- Type: `string[]`
+- Default: `[]`
 
-配置额外的 Umi 插件。
+Configure additional Umi plugins.
 
-数组项为指向插件的路径，可以是 npm 依赖、相对路径或绝对路径。如果是相对路径，则会从项目根目录开始找。
+Items in the array are paths pointing to the plugins, which can be npm dependencies, relative paths, or absolute paths. If it's a relative path, it will be searched from the project's root directory.
 
-示例，
+Examples:
 
 ```js
 plugins: [
-  // npm 依赖
+  // npm dependency
   'umi-plugin-hello',
-  // 相对路径
+  // relative path
   './plugin',
-  // 绝对路径
+  // absolute path
   `${__dirname}/plugin.js`,
 ],
 ```
 
 ## polyfill
 
-- 类型：`{ imports: string[] }`
-- 默认值：`{}`
+- Type: `{ imports: string[] }`
+- Default: `{}`
 
-设置按需引入的 polyfill。默认全量引入。
+Set up on-demand imports of polyfills. Defaults to importing all.
 
-比如只引入 core-js 的 stable 部分，
+For example, import only the stable part of core-js:
 
 ```js
 polyfill: {
@@ -1169,7 +1176,7 @@ polyfill: {
 }
 ```
 
-如果对于性能有更极致的要求，可以考虑按需引入，
+If there's a need for more performance optimization, you can consider importing on-demand:
 
 ```js
 polyfill: {
@@ -1177,45 +1184,45 @@ polyfill: {
 }
 ```
 
-注意：此功能默认开。配置 `polyfill: false` 或设置环境变量 `BABEL_POLYFILL=none` 关闭。
+Note: This feature is enabled by default. To disable it, set `polyfill: false` or use the environment variable `BABEL_POLYFILL=none`.
 
 ## postcssLoader
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-设置 [postcss-loader 的配置项](https://github.com/webpack-contrib/postcss-loader#options)。
+Configure options for [postcss-loader](https://github.com/webpack-contrib/postcss-loader#options).
 
 ## presets
 
-- 类型：`string[]`
-- 默认值：`[]`
+- Type: `string[]`
+- Default: `[]`
 
-配置额外的 Umi 插件集。
+Configure additional Umi plugin sets.
 
-数组项为指向插件集的路径，可以是 npm 依赖、相对路径或绝对路径。如果是相对路径，则会从项目根目录开始找。
+Items in the array are paths pointing to the plugin sets, which can be npm dependencies, relative paths, or absolute paths. If it's a relative path, it will be searched from the project's root directory.
 
-示例，
+Examples:
 
 ```js
 presets: [
-  // npm 依赖
+  // npm dependency
   'umi-preset-hello',
-  // 相对路径
+  // relative path
   './preset',
-  // 绝对路径
+  // absolute path
   `${__dirname}/preset.js`,
 ],
 ```
 
 ## proxy
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-配置代理功能。
+Configure proxy functionality.
 
-比如，
+For example:
 
 ```js
 proxy: {
@@ -1227,42 +1234,42 @@ proxy: {
 }
 ```
 
-然后访问 `/api/users` 就能访问到 http://jsonplaceholder.typicode.com/users 的数据。
+Then, accessing `/api/users` will fetch data from http://jsonplaceholder.typicode.com/users.
 
-注意：proxy 功能仅在 dev 时有效。
+Note: Proxy functionality only works during development (`dev` mode).
 
 ## publicPath
 
-- 类型：`string`
-- 默认值：`/`
+- Type: `string`
+- Default: `/`
 
-配置 webpack 的 publicPath。
+Configure webpack's publicPath.
 
 ## reactRouter5Compat
 
-- 类型：`object`
-- 默认值：`false`
+- Type: `object`
+- Default: `false`
 
-启用 react-router 5 兼容模式。此模式下，路由组件的 props 会包含 location、match、history 和 params 属性，和 react-router 5 的保持一致。
+Enable react-router 5 compatibility mode. In this mode, the route component's props will include `location`, `match`, `history`, and `params` properties, consistent with react-router 5.
 
-但要注意的是，
+However, note that:
 
-1. 此模式下会有额外的 re-render
-2. 由于依赖库 history 更新，location 中依旧没有 query 属性
+1. This mode introduces additional re-renders.
+2. Due to the updated dependency library history, the `query` property is not present in the `location`.
 
 ## routes
 
-- 类型：`Route[]`
-- 默认值：`[]`
+- Type: `Route[]`
+- Default: `[]`
 
-配置路由。更多信息，请查看 [配置路由](../guides/routes#配置路由)
+Configure routes. For more information, see [Configuring Routes](../guides/routes#配置路由).
 
 ## routeLoader
 
-- 类型：`{ moduleType: 'esm' | 'cjs' }`
-- 默认值：`{ moduleType: 'esm' }`
+- Type: `{ moduleType: 'esm' | 'cjs' }`
+- Default: `{ moduleType: 'esm' }`
 
-配置路由加载方式。moduleType 配置为 'cjs' 会用 `require` 的方式加载路由组件。
+Configure the route loading method. When `moduleType` is configured as 'cjs', route components will be loaded using the `require` method.
 
 ```ts
 // moduleType: esm
@@ -1274,19 +1281,19 @@ proxy: {
 
 ## run
 
-- 类型：`{ globals: string[] }`
-- 默认值：`null`
+- Type: `{ globals: string[] }`
+- Default: `null`
 
-run 命令的全局注入配置。添加`['zx/globals']`，在使用`umi run ./script.ts`的时候，umi会自动注入`import 'zx/globals';`，从而省略掉每个脚本都要写`import 'zx/globals';`。
+Global injection configuration for the run command. Adding `['zx/globals']` will automatically inject `import 'zx/globals';` when using `umi run ./script.ts`, eliminating the need to write `import 'zx/globals';` in every script.
 
 ## runtimePublicPath
 
-- 类型：`object`
-- 默认值：`null`
+- Type: `object`
+- Default: `null`
 
-启用运行时 publicPath，开启后会使用 `window.publicPath` 作为资源动态加载的起始路径。
+Enable runtime publicPath, which uses `window.publicPath` as the starting path for dynamically loading resources.
 
-比如，
+For example:
 
 ```js
 runtimePublicPath: {},
@@ -1294,18 +1301,18 @@ runtimePublicPath: {},
 
 ## scripts
 
-- 类型：`string[] | Script[]`
-- 默认值：`[]`
+- Type: `string[] | Script[]`
+- Default: `[]`
 
-配置 `<body>` 中额外的 script 标签。
+Configure additional script tags in the `<body>`.
 
-比如，
+For example:
 
 ```js
 scripts: [`alert(1);`, `https://a.com/b.js`],
 ```
 
-会生成 HTML，
+This will generate HTML:
 
 ```html
 <script>
@@ -1314,7 +1321,7 @@ scripts: [`alert(1);`, `https://a.com/b.js`],
 <script src="https://a.com/b.js"></script>
 ```
 
-如果需要额外属性，切换到对象格式，比如，
+If additional attributes are needed, switch to the object format:
 
 ```js
 scripts: [
@@ -1325,36 +1332,36 @@ scripts: [
 
 ## sassLoader
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-配置 sass-loader ，详见 [sass-loader > options](https://github.com/webpack-contrib/sass-loader#options)
+Configure sass-loader, details in [sass-loader > options](https://github.com/webpack-contrib/sass-loader#options).
 
 ## styleLoader
 
-- 类型：`object`
-- 默认值：`false`
+- Type: `object`
+- Default: `false`
 
-启用 style loader 功能，让 CSS 内联在 JS 中，不输出额外的 CSS 文件。
+Enable style loader functionality to inline CSS into JS, without generating separate CSS files.
 
 ## styles
 
-- 类型：`string[]`
-- 默认值：`[]`
+- Type: `string[]`
+- Default: `[]`
 
-配置额外的 CSS。
+Configure additional CSS.
 
-配置项支持内联样式和外联样式路径，后者通过是否以 https?:// 开头来判断。
+Items in the configuration array can include inline styles and external style paths, with external styles determined by whether they start with https?://.
 
-插入的样式会前置，优先级低于项目内用户编写样式。
+The inserted styles will be prefixed and have lower priority than user-written styles in the project.
 
-比如：
+For example:
 
 ```js
 styles: [`body { color: red; }`, `https://a.com/b.css`],
 ```
 
-会生成以下 HTML，
+This will generate the following HTML:
 
 ```html
 <style>
@@ -1367,19 +1374,19 @@ styles: [`body { color: red; }`, `https://a.com/b.css`],
 
 ## srcTranspiler
 
-- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`, `none`
-- 默认值：`babel`
+- Type: `string`, optional values: `babel`, `swc`, `esbuild`, `none`
+- Default: `babel`
 
-配置构建时转译 js/ts 的工具。
+Configure the tool for transpiling js/ts during build.
 
 ## srcTranspilerOptions
 
-- 类型：`{ swc?: SwcConfig, esbuild?: EsbuildConfig }`
-- 默认值：`undefined`
+- Type: `{ swc?: SwcConfig, esbuild?: EsbuildConfig }`
+- Default: `undefined`
 
-如果你使用了 `swc` / `esbuild` 作为 `srcTranspiler` 转译器，你可以通过此选项对转译器做进一步的配置，详见 [SwcConfig](https://swc.rs/docs/configuration/swcrc) 、 [EsbuildConfig](https://esbuild.github.io/api/#transform-api) 配置文档。
+If you are using `swc` / `esbuild` as the `srcTranspiler` transpiler, you can further configure the transpiler using this option. Refer to the [SwcConfig](https://swc.rs/docs/configuration/swcrc) and [EsbuildConfig](https://esbuild.github.io/api/#transform-api) configuration documents.
 
-如给 swc 添加其他的插件：
+For example, adding other plugins to swc:
 
 ```ts
 srcTranspilerOptions: {
@@ -1403,35 +1410,35 @@ srcTranspilerOptions: {
 
 ## svgr
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-svgr 默认开启，支持如下方式使用 React svg 组件：
+By default, svgr is enabled, supporting the usage of React SVG components in the following way:
 
 ```ts
 import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
 ```
 
-可配置 svgr 的行为，配置项详见 [@svgr/core > Config](https://github.com/gregberge/svgr/blob/main/packages/core/src/config.ts#L9)。
+Configuration of svgr's behavior is possible, with configuration options detailed in [@svgr/core > Config](https://github.com/gregberge/svgr/blob/main/packages/core/src/config.ts#L9).
 
 ## svgo
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-默认使用 svgo 来优化 svg 资源，配置项详见 [svgo](https://github.com/svg/svgo#configuration) 。
+svgo is used by default to optimize SVG resources, with configuration options detailed in [svgo](https://github.com/svg/svgo#configuration).
 
 ## targets
 
-- 类型：`object`
-- 默认值：`{ chrome: 80 }`
+- Type: `object`
+- Default: `{ chrome: 80 }`
 
-配置需要兼容的浏览器最低版本。Umi 会根据这个自定引入 polyfill、配置 autoprefixer 和做语法转换等。
+Configure the minimum required versions of browsers for compatibility. Umi will automatically introduce polyfills, configure autoprefixer, and perform syntax transformations based on this configuration.
 
-示例，
+Example:
 
 ```js
-// 兼容 ie11
+// Compatibility with IE11
 targets: {
   ie: 11;
 }
@@ -1439,12 +1446,12 @@ targets: {
 
 ## theme
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-配置 less 变量主题。
+Configure Less variable themes.
 
-示例：
+Example:
 
 ```js
 theme: { '@primary-color': '#1DA57A' }
@@ -1452,19 +1459,19 @@ theme: { '@primary-color': '#1DA57A' }
 
 ## title
 
-- 类型：`string`
-- 默认值：`null`
+- Type: `string`
+- Default: `null`
 
-配置全局页面 title，暂时只支持静态的 Title。
+Configure the global page title. Currently, only static titles are supported.
 
 ## verifyCommit
 
-- 类型：`{ scope: string[]; allowEmoji: boolean }`
-- 默认值：`{ scope: ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'workflow', 'build', 'ci', 'chore', 'types', 'wip', 'release', 'dep', 'deps', 'example', 'examples', 'merge', 'revert'] }`
+- Type: `{ scope: string[]; allowEmoji: boolean }`
+- Default: `{ scope: ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'workflow', 'build', 'ci', 'chore', 'types', 'wip', 'release', 'dep', 'deps', 'example', 'examples', 'merge', 'revert'] }`
 
-针对 verify-commit 命令的配置项。
+Configuration options for the verify-commit command.
 
-关于参数。`scope` 用于配置允许的 scope，不区分大小写，配置后会覆盖默认的；`allowEmoji` 开启后会允许加 EMOJI 前缀，比如 `💥 feat(模块): 添加了个很棒的功能`。
+Regarding parameters: `scope` is used to configure allowed scopes, case-insensitive. Configuring this will override the defaults. `allowEmoji`, when enabled, allows the use of EMOJI prefixes, such as `💥 feat(module): added an awesome feature`.
 
 ```
 verifyCommit: {
@@ -1473,19 +1480,19 @@ verifyCommit: {
 }
 ```
 
-注意：使用 `git revert` 或 `git merge` 命令以及 `changesets` 的发版 merge 格式所产生的 commit message 会默认通过校验。
+Note: Commit messages generated by `git revert` or `git merge` commands, as well as the merge format of `changesets`, will pass verification by default.
 
 ## vite
 
-- 类型：`object`
-- 默认值：`{}`
+- Type: `object`
+- Default: `{}`
 
-开发者的配置会 merge 到 vite 的 [默认配置](https://vitejs.dev/config/)。
+Developer configurations will be merged into vite's [default configuration](https://vitejs.dev/config/).
 
-示例，
+Example:
 
 ```js
-// 更改临时文件路径到 node_modules/.bin/.vite 文件夹
+// Change the temporary file path to the node_modules/.bin/.vite folder
 vite: {
   cacheDir: 'node_modules/.bin/.vite',
 }
@@ -1493,8 +1500,8 @@ vite: {
 
 ## writeToDisk
 
-- 类型：`boolean`
-- 默认值：`false`
+- Type: `boolean`
+- Default: `false`
 
-开启后会在 dev 模式下额外输出一份文件到 dist 目录，通常用于 chrome 插件、electron 应用、sketch 插件等开发场景。
+When enabled, an additional copy of files will be output to the dist directory during development (`dev` mode). This is usually used in development scenarios like Chrome extensions, Electron applications, Sketch plugins, etc.
 

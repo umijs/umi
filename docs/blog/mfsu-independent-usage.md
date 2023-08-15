@@ -1,32 +1,32 @@
 import { Message } from 'umi';
 
-# 独立使用 MFSU
+# Using MFSU Independently
 
-`MFSU` 支持独立在非 umijs 项目中使用，本文将会介绍如何将 `MFSU` 接入你的 webpack 项目。
+`MFSU` can be used independently in non-UmiJS projects. This article will guide you through the process of integrating `MFSU` into your webpack project.
 
-## 示例项目
+## Sample Projects
 
-如何接入 MFSU ？提供以下几个 示例项目 配置供参考：
+To demonstrate MFSU integration, here are a few example projects you can refer to:
 
-Webpack 配置示例：<a href="https://github.com/umijs/umi/tree/master/examples/mfsu-independent" target="_blank">examples/mfsu-independent</a>
+Webpack Configuration Example: [examples/mfsu-independent](https://github.com/umijs/umi/tree/master/examples/mfsu-independent)
 
-CRA v5 配置示例：<a href="https://github.com/umijs/cra-v5-with-mfsu-example" target="_blank">cra-v5-with-mfsu-example</a>
+CRA v5 Configuration Example: [cra-v5-with-mfsu-example](https://github.com/umijs/cra-v5-with-mfsu-example)
 
-## 安装
+## Installation
 
-首先安装 `mfsu` 的依赖：
+First, install the dependencies for `mfsu`:
 
 ```bash
-  pnpm add -D @umijs/mfsu
+pnpm add -D @umijs/mfsu
 ```
 
-## 配置 MFSU
+## Configuring MFSU
 
-配置 MFSU 一共需要简单的四步操作，请确保以下所有行为都只在开发环境生效。
+Configuring MFSU involves four simple steps. Make sure these steps are applied only in the development environment.
 
-### 1. 初始化实例
+### 1. Initialize an Instance
 
-第一步，初始化一个 `MFSU` 实例，这是 `MFSU` 的基础：
+In the first step, initialize an `MFSU` instance, which serves as the foundation for `MFSU`:
 
 ```js
 // webpack.config.js
@@ -41,9 +41,9 @@ const mfsu = new MFSU({
 });
 ```
 
-### 2. 添加中间件
+### 2. Add Middleware
 
-第二步，添加 `MFSU` 的 `devServer` 中间件到 webpack-dev-server 中，他将为你提供 `MFSU` 所需打包后的资源：
+In the second step, add the `MFSU` `devServer` middleware to the webpack-dev-server. This middleware provides the required packaged resources for `MFSU`:
 
 #### webpack 5
 
@@ -80,15 +80,15 @@ module.exports = {
 }
 ```
 
-### 3. 配置转换器
+### 3. Configure Transformers
 
-第三步，你需要配置一种源码转换器，他的作用是用来收集、转换依赖导入路径，替换为 `MFSU` 的模块联邦地址（中间件所提供的）。
+The third step involves configuring a source code transformer. Its purpose is to collect and transform dependency import paths, replacing them with `MFSU`'s module federation addresses provided by the middleware.
 
-此处提供两种方案：`babel plugins` 或 `esbuild handler` ，一般情况下选择 `babel plugins` 即可。 
+Two options are provided here: `babel plugins` or `esbuild handler`. Generally, `babel plugins` is the preferred choice.
 
 #### Babel Plugins
 
-向 `babel-loader` 添加 `MFSU` 的 `babel plugins` 即可。
+Simply add `MFSU`'s `babel plugins` to the `babel-loader`:
 
 ```js
 // webpack.config.js
@@ -117,10 +117,10 @@ module.exports = {
 
 #### Esbuild handler
 
-另一种方案是使用内置提供的 `esbuild-loader` 来处理 `js/ts` 资源，**仅用于开发环境** 。
+An alternative is using the built-in `esbuild-loader` to handle `js/ts` resources. Note that this is only for the development environment.
 
 <Message type='success' emoji="🚀">
-<strong>使用这种方案的好处是</strong>：在开发环境获得比 `babel` 更快的编译和启动速度
+<strong>The benefit of this approach is</strong>: faster compilation and startup speed than `babel` in the development environment.
 </Message>
 
 ```js
@@ -153,15 +153,14 @@ module.exports = {
 ```
 
 <Message type='warning' emoji="💡">
-<strong>什么时候我不应该使用 esbuild 方案？</strong><br />1. 我有自定义的 `babel plugins` 必须在开发环境使用<br />2. 我需要显示 `css-in-js` 的开发环境友好类名（一般由 babel plugin 提供支持）<br />3. 在开发环境多适配一套 `esbuild-loader` 的成本大于配置 `babel plugins` 的成本 
+<strong>When should I not use the esbuild approach?</strong><br />1. I have custom `babel plugins` that must be used in the development environment.<br />2. I need developer-friendly class names for `css-in-js` in the development environment (usually supported by babel plugins).<br />3. The cost of adapting to a set of `esbuild-loader` in the development environment is higher than configuring `babel plugins`.
 </Message>
 
+### 4. Set Webpack Configuration
 
-### 4. 设定 webpack 配置
+In the fourth step, use the methods provided by `MFSU` to modify your webpack configuration. This involves incremental changes, so you don't need to worry about affecting your original configuration.
 
-第四步，调用 `MFSU` 提供的方法改变你的 webpack 配置，在这里只有增量行为，你无需担心会影响到你原来的配置内容。
-
-如下代码所示，`mfsu.setWebpackConfig` 是一个异步方法，为了调用他你需要将原来的 webpack 配置单独抽为一个对象 `config` 之后，再将调用此方法的返回值导出。
+As shown in the following code, `mfsu.setWebpackConfig` is an asynchronous method. To use it, extract your original webpack configuration into a separate `config` object. Then, export the return value of calling this method.
 
 ```js
 // webpack.config.js
@@ -174,7 +173,6 @@ const depConfig = {
   // webpack config for dependencies
 }
 
-
 // [mfsu] 4. inject mfsu webpack config
 const getConfig = async () => {
   await mfsu.setWebpackConfig({
@@ -186,11 +184,11 @@ const getConfig = async () => {
 module.exports = getConfig()
 ```
 
-到此为止，`MFSU` 完全配置完毕，下面可以开始启动项目使用。
+At this point, your `MFSU` configuration is complete. You can now start using it in your project.
 
-## 使用
+## Usage
 
-进行完 4 步配置后，启动你的项目，你可以从项目根目录得到 `.mfsu` 文件夹，即 `MFSU` 缓存文件夹，请将其添加到 git 的忽略列表（这些缓存文件你不应该提交他们）：
+After completing the four configuration steps, start your project. You will find a `.mfsu` folder in the project's root directory. This folder contains the `MFSU` cache files. Make sure to add this folder to your Git ignore list (you shouldn't commit these cache files):
 
 ```bash
 # .gitignore
@@ -198,11 +196,11 @@ module.exports = getConfig()
 .mfsu
 ```
 
-符合预期时，你已经可以享受 `MFSU` 带来的好处，包括 `esbuild` 快速的打包和二次热启动的提速。
+If everything is set up correctly, you can now enjoy the benefits of `MFSU`, including faster packaging with `esbuild` and improved speed for hot restarts.
 
-## 其他配置
+## Other Configurations
 
-以下是其他你可能会用到的 `MFSU` 实例配置：
+Here are additional configurations for the `MFSU` instance that you might find useful:
 
 ```js
   const mfsu = new MFSU({
@@ -210,24 +208,26 @@ module.exports = getConfig()
   })
 ```
 
-其他 Options:
+Other Options:
 
 |option|default|description|
 |:-|:-|:-|
-|`cwd`|`process.cwd()`|项目根目录|
-|`getCacheDependency`|`() => {}`|用返回值来对比，使 MFSU cache 无效的函数|
-|`tmpBase`|`${process.cwd()}/.mfsu`|MFSU 缓存存放目录|
-|`unMatchLibs`|`[]`|手动排除某些不需要被 MFSU 处理的依赖|
-|`runtimePublicPath`|`undefined`|同 umijs > [`runtimePublicPath`](../docs/api/config#runtimepublicpath)|
-|`implementor`|`undefined`|webpack 实例，需要和项目内使用的唯一实例一致|
-|`buildDepWithESBuild`|`false`|是否使用 `esbuild` 打包依赖|
-|`onMFSUProgress`|`undefined`|获取 MFSU 编译进度的回调|
+|`cwd`|`process.cwd()`|Project root directory|
+|`getCacheDependency`|`() => {}`|Function that returns a value used to invalidate MFSU cache|
+|`tmpBase`|`${process.cwd()}/.mfsu`|Location to store MFSU cache|
+|`unMatchLibs`|`[]`|Manually exclude specific dependencies from MFSU processing|
+|`runtimePublicPath`|`undefined`|Same as umijs > [`runtimePublicPath`](../docs/api
 
-## 常见问题
+/config#runtimepublicpath)|
+|`implementor`|`undefined`|Webpack instance, must match the unique instance used in the project|
+|`buildDepWithESBuild`|`false`|Whether to use `esbuild` to package dependencies|
+|`onMFSUProgress`|`undefined`|Callback to get MFSU compilation progress|
 
-#### 如何保证我的 MFSU 配置只在开发环境生效？
+## Frequently Asked Questions
 
-使用环境标识避免所有 `MFSU` 在生产环境构建时的配置侵入：
+#### How can I ensure that my MFSU configuration only applies in the development environment?
+
+Use environment flags to avoid configuring all `MFSU` settings during production build:
 
 ```js
 const isDev = process.env.NODE_ENV === 'development'
