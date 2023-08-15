@@ -61,7 +61,8 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
   markupRender ??= require(absServerBuildPath(api))._markupGenerator;
 
   try {
-    const markup = await markupRender(path);
+    let markup = await markupRender(path);
+
     const [mainTpl, extraTpl = ''] = markup.split('</html>');
     // TODO: improve return type for markup generator
     const helmetContent = mainTpl.match(

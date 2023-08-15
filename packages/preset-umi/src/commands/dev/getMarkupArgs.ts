@@ -55,5 +55,27 @@ export async function getMarkupArgs(opts: { api: IApi }) {
       // });
       return html;
     },
+
+    /**
+     * 编译完成后，修改 html
+     * 在 modifyHTML 和 modifyHTMLFavicon之后执行
+     * modifyHTML 里面做了太多操作，为了防止顺序问题，所以新增一个钩子
+     * @param html
+     * @param args
+     * @returns
+     */
+    async modifyHTMLmodifyHTMLOnComplete(
+      html: string,
+      args: {
+        path: string;
+      },
+    ) {
+      let newHtml = opts.api.applyPlugins({
+        key: 'modifyHTMLOnComplete',
+        initialValue: html,
+        args,
+      });
+      return newHtml;
+    },
   };
 }
