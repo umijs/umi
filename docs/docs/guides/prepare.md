@@ -1,19 +1,19 @@
 import { Message } from 'umi';
 
-# 开发环境
+# Dev Environment
 
-本文将带领你从零开始在本地搭建一个 Umi.js 项目的开发环境。
+This article will guide you through setting up a local development environment for a Umi.js project from scratch.
 
-## Nodejs
+## Node.js
 
-Umi.js 需要使用 [Node.js](https://nodejs.org/zh-cn/) 来进行开发，因此请先确保电脑已经安装了 Node.js 且版本在 14 以上。
+Umi.js requires [Node.js](https://nodejs.org/) for development, so please make sure you have Node.js installed on your computer with a version of 14 or above.
 
 <Message emoji="💡">
-如果你是 macOS 用户，建议使用 [nvm](https://github.com/nvm-sh/nvm) 来管理 Node.js 的版本；
-Windows 用户建议使用 [nvm-windows](https://github.com/coreybutler/nvm-windows) 。
+If you are a macOS user, it's recommended to use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
+For Windows users, it's recommended to use [nvm-windows](https://github.com/coreybutler/nvm-windows).
 </Message>
 
-本文将以 macOS 或 Linux 环境下使用 [nvm](https://github.com/nvm-sh/nvm) 的方式安装 [Node.js](https://nodejs.org/zh-cn/) ：
+This article assumes you're using macOS or Linux and will show you how to install [Node.js](https://nodejs.org/) using [nvm](https://github.com/nvm-sh/nvm):
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -22,14 +22,14 @@ nvm -v
 0.39.1
 ```
 
-安装完成 [nvm](https://github.com/nvm-sh/nvm) 之后，使用以下命令来安装 [Node.js](https://nodejs.org/zh-cn/) ：
+After installing [nvm](https://github.com/nvm-sh/nvm), use the following commands to install [Node.js](https://nodejs.org/):
 
 ```bash
 nvm install 16
 nvm use 16
 ```
 
-安装完成后，使用以下命令来检查是否安装成功并且安装了正确的版本：
+After installation, use the following command to check if the installation was successful and if the correct version is installed:
 
 ```bash
 node -v
@@ -37,15 +37,15 @@ node -v
 v16.14.0
 ```
 
-## 依赖管理
+## Dependency Management
 
-Node 安装完成后会自带 [npm](https://www.npmjs.com/) 依赖管理工具，但 Umi.js 推荐使用 [pnpm](https://pnpm.io/) 来管理依赖：
+After installing Node, you'll have the [npm](https://www.npmjs.com/) dependency management tool. However, Umi.js recommends using [pnpm](https://pnpm.io/) to manage dependencies:
 
 ```bash
 curl -fsSL https://get.pnpm.io/install.sh | sh -
 ```
 
-安装完成后，可以用以下命令检查是否安装成功：
+After installation, you can use the following command to check if the installation was successful:
 
 ```bash
 pnpm -v
@@ -55,14 +55,14 @@ pnpm -v
 
 ## IDE
 
-安装完 [Node.js](https://nodejs.org/zh-cn/) 及 [pnpm](https://pnpm.io/) (或其他依赖管理工具) 后，你需要一个自己习惯的 IDE 或文本编辑器来编写代码。如果你还没有习惯的 IDE，可以从下方挑选一个：
+Once you've installed [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) (or other dependency management tools), you'll need an IDE or text editor to write your code. If you don't have a preferred IDE, you can choose one from the list below:
 
-1. [Visual Studio Code](https://code.visualstudio.com/) (推荐)
-2. [WebStorm](https://www.jetbrains.com/webstorm/) (推荐)
+1. [Visual Studio Code](https://code.visualstudio.com/) (recommended)
+2. [WebStorm](https://www.jetbrains.com/webstorm/) (recommended)
 3. [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 4. [Sublime Text](https://www.sublimetext.com/)
 5. [Atom](https://atom.io/)
 
-## 下一步
+## Next Steps
 
-恭喜你！你的本地环境已经准备好开始开发 Umi.js 项目了，马上前往 [脚手架](boilerplate) 学习如何使用 Umi.js 脚手架快速启动一个项目吧 🎉
+Congratulations! Your local environment is ready to start developing Umi.js projects. Head over to [Boilerplate](boilerplate) to learn how to quickly start a project using the Umi.js scaffold 🎉

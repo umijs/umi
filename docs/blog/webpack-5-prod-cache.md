@@ -1,40 +1,40 @@
 import { Message } from 'umi';
 
-# 物理构建缓存
+# Physical Build Caching
 
-在 `umi build` 构建生产环境产物时，Umi 4 默认没有配置 webpack 5 的物理缓存，这是因为 webpack 的物理缓存失效时机问题，需要依赖用户项目的实际情况，所以没有很好的通用解决方案。
+When building production artifacts with `umi build`, Umi 4 does not configure physical caching for webpack 5 by default. This is due to the issue of when the physical cache of webpack becomes invalid, as it depends on the actual circumstances of the user's project. As a result, there is no universal solution.
 
-所以，当你不明确哪些依赖会让项目物理缓存失效时，很容易产生构建缓存不失效，导致产物是旧的问题，极大影响研发效率。
+Therefore, when you are unsure which dependencies might cause the project's physical cache to become invalid, it's easy to end up with build cache that doesn't expire, leading to outdated artifacts and greatly affecting development efficiency.
 
-## 缓存场景
+## Caching Scenarios
 
-当你的项目需要构建缓存时，是有原因的，我们粗略把场景分成两类：普通项目、Monorepo 中的项目。
+There are reasons why your project might need build caching, and we can roughly divide these scenarios into two categories: regular projects and projects within a Monorepo.
 
-### 普通项目
+### Regular Projects
 
-构建比较慢，如何复用上次的物理缓存，做到多次构建提速？
+When building is relatively slow, how can you reuse the physical cache from the last build to speed up multiple builds?
 
-#### 首选解决思路
+#### Preferred Approach
 
-此时首选的优化思路应该是：考虑使用其他更快的现代转译器，比如调整 [`srcTranspiler`](../docs/api/config#srctranspiler) 、[`cssMinifier`](../docs/api/config#cssminifier) 。
+In this case, the preferred optimization approach should be to consider using other faster modern transpilers, such as adjusting [`srcTranspiler`](../docs/api/config#srctranspiler) or [`cssMinifier`](../docs/api/config#cssminifier).
 
-#### CI 中的问题
+#### Issues in CI
 
-物理缓存一般存在于 `node_modules/.cache` ，这就意味着如果你在 CI 中构建，构建的基建必须要支持恢复上次的缓存文件，如果构建容器不支持恢复缓存，同样也无法享受好处。
+Physical caching generally resides in `node_modules/.cache`, which means that if you're building in a CI environment, the build infrastructure must support restoring the previous cache files. If the build container doesn't support cache restoration, you won't benefit from this feature either.
 
-#### 选择依据
+#### Criteria for Selection
 
-所以，当你：
+So, you should consider enabling physical caching only when:
 
-1. **多次构建**：确实有多次反复构建的需求。
+1. **Multiple Builds**: There is indeed a need for multiple repeated builds.
 
-2. **能恢复缓存**：在本地构建，或在 CI 有手段能恢复上次的物理缓存文件。
+2. **Cache Restoration Possible**: You're building locally or in CI with a way to restore the previous physical cache files.
 
-3. **时间长**：项目构建时间比较长、开启其他转译器仍无法提速（或有强诉求无法切换转译器）。
+3. **Long Build Time**: The project's build time is relatively long, and using other transpilers still doesn't speed up the process (or there's a strong requirement not to switch transpilers).
 
-满足这些条件后，你才应该考虑开启物理缓存。
+Once these conditions are met, you can consider enabling physical caching.
 
-#### 配置方法
+#### Configuration Method
 
 ```ts
 // .umirc.ts
@@ -49,14 +49,14 @@ export default defineConfig({
       config.cache({
         type: 'filesystem',
         store: 'pack',
-        // 🟡 假如你的项目在 CI 中构建每次环境变量都不一样，请挑选或者排除
+        // 🟡 If your project's environment variables are different in each CI build, please choose or exclude.
         version: createEnvironmentHash(process.env),
         buildDependencies: {
           config: [__filename],
           tsconfig: [join(__dirname, 'tsconfig.json')],
           packagejson: [join(__dirname, 'package.json')],
           umirc: [join(__dirname, '.umirc.ts')],
-          // 🟡 其他可能会影响项目的配置文件路径，其内容变更会使缓存失效
+          // 🟡 Other configuration file paths that might affect the project and whose content changes would invalidate the cache
         },
       })
     }
@@ -71,30 +71,24 @@ function createEnvironmentHash(env: Record<string, any>) {
 }
 ```
 
-请格外注意：
+Please pay special attention to:
 
-1. 你的项目有哪些文件、依赖会影响项目，配置他们作为依赖，变更时可以使得缓存失效。
+1. Identify the files and dependencies in your project that can affect the project. Configure them as dependencies so that changes to them invalidate the cache.
 
-2. 因为 `process.env` 包括了所有的 nodejs 环境变量，这非常多，如果环境变量在 CI 中每次构建都存在差异，请挑选所需的环境变量，或者排除掉会变化的。
+2. Because `process.env` includes all Node.js environment variables, which can be numerous, if environment variables differ in each CI build, choose the ones needed or exclude those that change.
 
     ```ts
-    // 如挑选可能会影响项目内容的环境变量
+    // For example, selecting environment variables that could affect the project's content
     createEnvironmentHash({
       NODE_ENV: process.env.NODE_ENV
       // ...
     })
     ```
 
-### Monorepo 中的项目
+### Projects in a Monorepo
 
-在 monorepo 中，如何缓存需要前置构建的其他子包，比如构建 `apps/project-umi` 需要先构建好他依赖的子包 `libs/component` ，但是下次 `libs/component` 没有代码改动，如何跳过这部分前置依赖的构建？
+In a Monorepo, how do you cache pre-build dependencies of other subpackages? For example, when building `apps/project-umi`, you need to first build its dependent subpackage `libs/component`. However, if there are no code changes in `libs/component` the next time, how do you skip the build for this part of the pre-dependencies?
 
-此时推荐你使用 [Turborepo](https://turbo.build/repo) 来做 monorepo 构建方案，具体使用方法请参见 [官方文档](https://turbo.build/repo/docs) 和 [examples](https://github.com/vercel/turbo/tree/main/examples) 。
+In this case, we recommend using [Turborepo](https://turbo.build/repo) for a Monorepo build solution. For specific usage instructions, please refer to the [official documentation](https://turbo.build/repo/docs) and [examples](https://github.com/vercel/turbo/tree/main/examples).
 
-注：如果在 CI 中构建，同样需要容器支持恢复上次的 turbo 缓存，可以通过 [`--cache-dir`](https://turbo.build/repo/docs/reference/command-line-reference#--cache-dir) 选项更改缓存位置。
-
-
-
-
-
-
+Note: If you're building in a CI environment, cache restoration is also necessary for turbo caching. You can use the [`--cache-dir`](https://turbo.build/repo/docs/reference/command-line-reference#--cache-dir) option to change the cache location.

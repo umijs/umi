@@ -1,10 +1,10 @@
 # styled-components
 
-@umijs/max 内置了 [styled-components](https://styled-components.com/) 样式方案。
+`@umijs/max` comes with built-in support for the [styled-components](https://styled-components.com/) styling solution.
 
-## 启用方式
+## Activation
 
-如果是 @umijs/max，配置开启。
+If you're using `@umijs/max`, enable it by configuring the following:
 
 ```ts {2}
 export default {
@@ -12,7 +12,7 @@ export default {
 }
 ```
 
-如果是 umi，先安装 `@umijs/plugins` 依赖，再通过配置开启。
+If you're using Umi, first install the `@umijs/plugins` dependency, then activate it through configuration.
 
 ```bash
 $ pnpm i @umijs/plugins -D
@@ -25,23 +25,23 @@ export default {
 }
 ```
 
-## 特性
+## Features
 
-插件帮你做了几件事，
+The plugin handles a few tasks for you:
 
-1、大部分 styled-components 的导出可以从 `umi` 或 `@umijs/max` 里 import 使用。
+1. Most styled-components exports can be imported from either `umi` or `@umijs/max`.
 
-2、支持通过配置的方式开启 styled-components 的 babel 插件，仅 dev 模式有效。
+2. It supports enabling the styled-components Babel plugin through configuration, applicable only in the development mode.
 
-3、支持通过运行时配置的方式声明全局样式。
+3. It supports declaring global styles through runtime configuration.
 
-## 配置项
+## Configuration Options
 
-可以在 `styledComponents` 中做以下配置。
+You can use the following configurations under `styledComponents`:
 
-- `babelPlugin`: Object，开启 styled-components 的 babel 插件，仅 dev 模式有效
+- `babelPlugin`: Object, enable the styled-components Babel plugin, only effective in development mode.
 
-比如：
+For example:
 
 ```ts
 export default {
@@ -51,16 +51,16 @@ export default {
 }
 ```
 
-## 运行时配置项
+## Runtime Configuration Options
 
-包含以下配置。
+This includes the following configuration:
 
-- `GlobalStyle`：ReactComponent
+- `GlobalStyle`: ReactComponent
 
-比如：
+For example:
 
 ```ts
-import {createGlobalStyle} from "umi";
+import { createGlobalStyle } from "umi";
 
 export const styledComponents = {
   GlobalStyle: createGlobalStyle`

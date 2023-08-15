@@ -8,11 +8,12 @@ import styles from './Contributing.css';
 export default () => {
   return (
     <div className={styles.normal}>
-      <SectionHeader title="参与建设" />
+      <SectionHeader title="Contributing" />
       <div>
         <p>
-          社区有非常多小伙伴在和我们一同建设 Umi，如果你有兴趣，欢迎&nbsp;
-          <Link to="/docs/introduce/contributing">加入我们</Link> 。
+          There are many community members who are contributing to Umi. If
+          you're interested, feel free to&nbsp;
+          <Link to="/docs/introduce/contributing">join us</Link>.
         </p>
         <div>
           <a href="https://github.com/umijs/umi/graphs/contributors">

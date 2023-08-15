@@ -5,7 +5,7 @@ import styles from './NewsLetterForm.css';
 export default () => {
   return (
     <div className={styles.normal}>
-      <h2>订阅 Umi 的最新动态</h2>
+      <h2>Subscribe to the Latest Updates from Umi</h2>
       <form
         action="https://www.getrevue.co/profile/chencheng/add_subscriber"
         method="post"
@@ -14,10 +14,10 @@ export default () => {
         <input
           type="text"
           name="member[email]"
-          placeholder="请输入电子邮箱地址"
+          placeholder="Enter your email address"
         />
         <button type="submit" name="member[subscribe]">
-          订阅
+          Subscribe
         </button>
       </form>
     </div>

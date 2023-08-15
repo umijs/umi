@@ -1,8 +1,8 @@
-import { Message } from 'umi'
+import { Message } from 'umi';
 
-# 目录结构
+# Directory Structure
 
-这里罗列了 Umi 项目中约定(或推荐)的目录结构，在项目开发中，请遵照这个目录结构组织代码。
+Here is the directory structure convention (or recommendation) for Umi projects. When developing a project, organize your code following this directory structure.
 
 ```bash
 .
@@ -23,9 +23,9 @@ import { Message } from 'umi'
 │   ├── pages
 │   │   ├── index.less
 │   │   └── index.tsx
-│   ├── utils // 推荐目录
+│   ├── utils // Recommended directory
 │   │   └── index.ts
-│   ├── services // 推荐目录
+│   ├── services // Recommended directory
 │   │   └── api.ts
 │   ├── app.(ts|tsx)
 │   ├── global.ts
@@ -40,20 +40,21 @@ import { Message } from 'umi'
 │       └── mfsu-deps
 ├── .env
 ├── plugin.ts 
-├── .umirc.ts // 与 config/config 文件 2 选一
+├── .umirc.ts // Choose either .umirc.ts or config/config.ts
 ├── package.json
 ├── tsconfig.json
 └── typings.d.ts
 ```
-## 根目录
+
+## Root Directory
 
 ### package.json
 
-与 Umi 3 不同，Umi 4 不会自动注册 `package.json` 中以 `@umijs/preset-`、`@umijs/plugin-`、`umi-preset-` 和 `umi-plugin-` 开头的插件、预设，若你需要自定义额外的插件、预设，需要手动配置到 [`plugins`](../api/config#plugins) 。
+Unlike Umi 3, Umi 4 doesn't automatically register plugins and presets that start with `@umijs/preset-`, `@umijs/plugin-`, `umi-preset-`, and `umi-plugin-` from the `package.json`. If you want to use custom plugins or presets, you need to manually configure them in the [`plugins`](../api/config#plugins) section.
 
 ### .env
 
-环境变量，比如：
+Environment variables, for example:
 
 ```text
 PORT=8888
@@ -62,11 +63,11 @@ COMPRESS=none
 
 ### .umirc.ts
 
-> 与 `config/config.ts` 文件功能相同，2 选 1 。`.umirc.ts` 文件优先级较高
+> Same functionality as `config/config.ts`, choose either one. `.umirc.ts` has higher priority.
 
-配置文件，包含 Umi 所有[非运行时配置](../api/config)（运行时配置一般定义于 [`app.ts`](#apptstsx)）。
+Configuration file containing all of Umi's [non-runtime configurations](../api/config) (runtime configurations are usually defined in [`app.ts`](#apptstsx)).
 
-若你需要在不同环境中加载不同配置，这在 Umi 中是根据 [`UMI_ENV`](./env-variables#umi_env) 来实现的，一个不同环境启动的例子：
+If you need to load different configurations in different environments, you can achieve this in Umi by using the [`UMI_ENV`](./env-variables#umi_env) variable. Here's an example of starting different environments:
 
 ```ts
 // package.json
@@ -80,65 +81,63 @@ COMPRESS=none
 
 ### config/config.ts
 
-> 与 `.umirc.ts` 文件功能相同，2 选 1 。`.umirc.ts` 文件优先级较高
+> Same functionality as `.umirc.ts`, but you can centralize all configurations in a `config` folder to keep the root directory clean.
 
-与 [`.umirc.ts`](#umircts) 相同，区别是你可以单独在一个 `config` 文件夹下集中管理所有的配置，保持项目根目录整洁。
+### dist Directory
 
-### dist 目录
+The default output folder for artifacts generated after running `umi build`. You can modify the output folder using [`outputPath`](../api/config#outputpath) configuration.
 
-执行 `umi build` 后产物的默认输出文件夹。可通过 [`outputPath`](../api/config#outputpath) 配置修改产物输出文件夹。
+### mock Directory
 
-### mock 目录
+This directory is used to store mock files. All `.ts` / `.js` files in this directory will be loaded by the mock service to provide mock data. Learn more about usage in [Mock](./mock).
 
-存放 mock 文件，此目录下所有 `.ts` / `.js` 文件会被 mock 服务加载，从而提供模拟数据，使用方法详见 [Mock](./mock) 。
+### public Directory
 
-### public 目录
+This directory is used to store fixed static resources. For instance, if you have a file named `public/image.png`, you can access it as `/image.png` during development. After building, it will be copied to the output folder.
 
-存放固定的静态资源，如存放 `public/image.png` ，则开发时可以通过 `/image.png` 访问到，构建后会被拷贝到输出文件夹。
+Note:
 
-注：
-
-1. 对于 svg 资源，Umi 支持 [svgr](../api/config#svgr) ，可以直接导入作为组件使用：
+1. For SVG resources, Umi supports [svgr](../api/config#svgr) and you can directly import SVG files as components:
 
   ```ts
   import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
   // <SvgSmile />
   ```
 
-2. 对于图片等资源，Umi 支持直接导入获取资源路径：
+2. For other image resources, you can import them directly and get the resource path:
 
   ```tsx
   import imgUrl from './image.png'
-  // <img src={imgUrl} />>
+  // <img src={imgUrl} />
   ```
 
-### `src` 目录
+### `src` Directory
 
-#### .umi 目录
-
-<Message type='warning'>
-**不要提交 `.umi` 临时文件到 git 仓库，默认已在 `.gitignore` 被忽略。**
-</Message>
-
-dev 时的临时文件目录，比如入口文件、路由等，都会被临时生成到这里。
-
-#### .umi-production 目录
+#### .umi Directory
 
 <Message type='warning'>
-**不要提交 `.umi-production` 临时文件到 git 仓库，默认已在 `.gitignore` 被忽略。**
+**Do not commit `.umi` temporary files to the git repository. They are ignored by default in `.gitignore`.**
 </Message>
 
-build 时的临时文件目录，比如入口文件、路由等，都会被临时生成到这里。
+This is the temporary files directory during development. It contains temporary files such as entry files and routes.
+
+#### .umi-production Directory
+
+<Message type='warning'>
+**Do not commit `.umi-production` temporary files to the git repository. They are ignored by default in `.gitignore`.**
+</Message>
+
+This is the temporary files directory during building. It contains temporary files such as entry files and routes.
 
 #### app.[ts｜tsx]
 
-[运行时配置](../api/runtime-config) 文件，可以在这里扩展运行时的能力，比如修改路由、修改 render 方法等。
+[Runtime configuration](../api/runtime-config) file. You can extend the runtime capabilities here, such as modifying routes, modifying the render method, etc.
 
-运行时配置带来的逻辑会在浏览器中运行，因此当有远程配置、动态内容时，这些我们在本地开发时还不确定，不能写死，所以需要在浏览器实际运行项目时动态获取他们。
+The logic introduced by the runtime configuration will run in the browser. Therefore, when you have remote configuration or dynamic content that cannot be hard-coded during local development, you need to dynamically obtain them when the project is actually running in the browser.
 
 #### layouts/index.tsx
 
-全局布局，默认会在所有路由下生效，比如有以下路由关系：
+Global layout. It is applied to all routes by default. For example, consider the following route configuration:
 
 ```
 [
@@ -147,7 +146,7 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 ]
 ```
 
-输出为：
+The output will be:
 
 ```jsx
 <Layout>
@@ -156,7 +155,7 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 </Layout>
 ```
 
-当你需要关闭 layout 时可以使用 `layout: false` ，当你需要更多层 layout 时，可以考虑使用 [`wrappers`](./routes#wrappers) ，仅在配置式路由可用：
+You can disable the layout using `layout: false`. If you need nested layouts, you can consider using [`wrappers`](./routes#wrappers), which is only available for configuration-based routes:
 
 ```ts
   routes: [
@@ -169,11 +168,11 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
   ]
 ```
 
-#### pages 目录
+#### pages Directory
 
-约定式路由默认以 `pages/*` 文件夹的文件层级结构来生成路由表。
+Conventional routes are generated based on the file hierarchy within the `pages/*` folder.
 
-在配置式路由中，`component` 若写为相对路径，将从该文件夹为起点开始寻找文件：
+In configuration-based routing, if `component` is written as a relative path, it will start looking for files from this directory:
 
 ```ts
   routes: [
@@ -182,9 +181,9 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
   ]
 ```
 
-##### 基础路由
+##### Basic Routing
 
-假设 `pages` 目录结构如下：
+Assuming the directory structure of `pages` is as follows:
 
 ```
 + pages/
@@ -193,7 +192,7 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
   - index.tsx
 ```
 
-那么，会自动生成路由配置如下：
+The generated route configuration will be:
 
 ```ts
 [
@@ -202,9 +201,9 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 ]
 ```
 
-##### 动态路由
+##### Dynamic Routing
 
-约定带 `$` 前缀的目录或文件为动态路由。若 `$` 后不指定参数名，则代表 `*` 通配，比如以下目录结构：
+Directories or files prefixed with `$` are considered dynamic routes. If no parameter name is specified after `$`, it represents the `*` wildcard. For example, consider the following directory structure:
 
 ```
 + pages/
@@ -215,9 +214,9 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
   - index.tsx
 ```
 
-会生成路由配置如下：
+The generated route configuration will be:
 
-```ts
+```
 [
   { path: '/', component: '@/pages/index.tsx' },
   { path: '/foo/:slug', component: '@/pages/foo/$slug.tsx' },
@@ -227,7 +226,7 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 
 ##### pages/404.tsx
 
-在使用约定式路由时，该文件会自动被注册为全局 404 的 fallback 页面。若你使用配置式路由，需要自行配置兜底路由到路由表最后一个：
+In conventional routing, this file is automatically registered as the global fallback page for 404 errors. If you use configuration-based routing, you need to manually configure a catch-all route to this file as the last route in the route configuration:
 
 ```ts
   routes: [
@@ -238,39 +237,39 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 
 #### global.(j|t)sx?
 
-全局前置脚本文件。
+Global pre-script file.
 
-Umi 区别于其他前端框架，没有显式的程序主入口（如 `src/index.ts`），所以当你有需要在应用前置、全局运行的逻辑时，优先考虑写入 `global.ts` 。
+Unlike other frontend frameworks, Umi doesn't have an explicit main entry point (like `src/index.ts`). When you need logic to run globally or before the application starts, consider adding it to `global.ts`.
 
-当你需要添加全局 Context 、修改应用运行时，请使用 [`app.tsx`](#apptstsx) 。
+If you need to add global context or modify the application runtime, use [`app.tsx`](#apptstsx).
 
 #### global.(css|less|sass|scss)
 
-全局样式文件。
+Global style file.
 
-当你有需要全局使用的样式时，请考虑加入此文件。
+When you need styles to be applied globally, consider adding them to this file.
 
 <Message>
-需要注意的是，此文件的优先级在第三方组件库的样式之后，所以当你有覆盖第三方库样式的需求时，请使用 [`overrides.css`](#overridescsslesssassscss) 。
+Note that this file has a lower priority than third-party component library styles. So, if you need to override styles from a third-party library, use [`overrides.css`](#overridescsslesssassscss).
 </Message>
 
 #### overrides.(css|less|sass|scss)
 
-高优先级全局样式文件。
+High-priority global style file.
 
-该文件一般专用于覆盖第三方库样式，其中所有 CSS 选择器都会附加 `body` 前缀以抬高优先级。
+This file is typically used to override third-party library styles. All CSS selectors in this file are prefixed with `body` to increase their specificity.
 
 #### loading.(tsx|jsx)
 
-全局加载组件。
+Global loading component.
 
-Umi 4 默认 [按页分包](../../blog/code-splitting) ，从而在页面切换时存在加载过程，通过该文件来配置加载动画。
+Umi 4 defaults to [page-based splitting](../../blog/code-splitting), which introduces a loading process when switching pages. Use this file to configure loading animations.
 
 ### plugin.ts 
 
-项目级 Umi 插件。
+Project-level Umi plugins.
 
-当你有 Umi 定制需求时，往往会用到 [插件 API](../api/plugin-api) （比如 [修改产物 html](../api/plugin-api#modifyhtml)），此时可创建该文件进行自定义：
+When you have custom requirements for Umi, you'll often need to use [plugin APIs](../api/plugin-api) (e.g., [modify HTML output](../api/plugin-api#modifyhtml)). You can create this file for customization:
 
 ```ts
 import type { IApi } from 'umi';
@@ -292,12 +291,12 @@ export default (api: IApi) => {
 
 ### favicon
 
-站点 `favicon` 图标文件。
+Site `favicon` icon file.
 
-当存在 `src/favicon.(ico|gif|png|jpg|jpeg|svg|avif|webp)` 文件时，将会自动在产物中添加站点 `favicon` ：
+When the `src/favicon.(ico|gif|png|jpg|jpeg|svg|avif|webp)` file exists, it will automatically add a `favicon` link to the produced HTML:
 
 ```html
 <link rel="shortcut icon" href="/favicon.png">
 ```
 
-若使用外部资源等，可以使用 [favicons](../api/config#favicons) 手动配置站点图标，配置值优先于约定。
+If you use external resources, you can manually configure the site icon using [favicons](../api/config#favicons), and the configured value takes precedence over conventions.

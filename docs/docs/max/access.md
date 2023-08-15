@@ -1,20 +1,20 @@
-# 权限
+# Permissions
 
-## 启用方式
+## Activation Method
 
-配置开启。同时需要 `src/access.ts` 提供权限配置。
+Enable configuration. Also, `src/access.ts` needs to provide permission configuration.
 
 ```ts
 export default {
   access: {},
-  // access 插件依赖 initial State 所以需要同时开启
+  // The access plugin depends on initial State so both need to be enabled simultaneously
   initialState: {},
 };
 ```
 
-## 介绍
+## Introduction
 
-我们约定了 `src/access.ts` 为我们的权限定义文件，该文件需要默认导出一个方法，导出的方法会在项目初始化时被执行。该方法需要返回一个对象，对象的每一个值就对应定义了一条权限。如下所示：
+We have designated `src/access.ts` as our permission definition file. This file needs to export a default function, and the exported function will be executed during project initialization. This function needs to return an object, where each value corresponds to a defined permission. Here's how it looks:
 
 ```js
 // src/access.ts
@@ -31,34 +31,34 @@ export default function (initialState) {
 }
 ```
 
-其中 `initialState` 是通过初始化状态插件 `initial-state` 提供的数据，你可以使用该数据来初始化你的用户权限。
+Here, `initialState` is the data provided by the initialization state plugin `initial-state`. You can use this data to initialize user permissions.
 
-## 配置
+## Configuration
 
-### 扩展的路由配置
+### Extended Route Configuration
 
-配合 [layout](./layout-menu) 插件你可以很简单的实现针对某些页面的权限控制。如下所示，只有拥有了 canReadPageA （在 `src/access.ts` 中定义）权限，用户才可以访问该页面。否则会默认渲染 Layout 插件内置的权限错误页面。
+In conjunction with the [layout](./layout-menu) plugin, you can easily implement permission control for certain pages. As shown below, only users with the `canReadPageA` permission (defined in `src/access.ts`) can access this page. Otherwise, the built-in permission error page from the Layout plugin will be rendered by default.
 
 ```ts
 export const routes = [
   {
     path: '/pageA',
     component: 'PageA',
-    access: 'canReadPageA', // 权限定义返回值的某个 key
+    access: 'canReadPageA', // The key corresponding to a value returned by the permission definition
   },
 ];
 ```
 
-### 自定义权限页面配置
+### Custom Permission Page Configuration
 
-上面说到默认渲染 Layout 插件内置的权限错误页面，如果想配置自定义权限页面需要在 `src/app.tsx` 中定义。
+As mentioned earlier, by default, the built-in permission error page from the Layout plugin will be rendered. If you want to configure a custom permission page, you need to define it in `src/app.tsx`.
 
 ```tsx
 export const layout: RunTimeLayoutConfig = () => {
   return {
-    // 自定义 403 页面
+    // Custom 403 page
     unAccessible: <div>'unAccessible'</div>,
-    // 自定义 404 页面
+    // Custom 404 page
     noFound: <div>'noFound'</div>,
   };
 };
@@ -68,13 +68,13 @@ export const layout: RunTimeLayoutConfig = () => {
 
 - Type: `string`
 
-对应的权限名称。
+Corresponds to the permission name.
 
 ## API
 
 ### useAccess
 
-我们提供了一个 Hooks 用于在组件中获取权限相关信息，如下所示：
+We provide a hook for components to access permission-related information, as shown below:
 
 ```js
 import React from 'react';
@@ -85,7 +85,7 @@ const PageA = (props) => {
   const access = useAccess();
 
   if (access.canReadFoo) {
-    // 如果可以读取 Foo，则...
+    // If can read Foo, then...
   }
 
   return <>TODO</>;
@@ -94,31 +94,31 @@ const PageA = (props) => {
 export default PageA;
 ```
 
-配合 `Access` 组件可以很简单的实现页面内的元素的权限控制。
+Combined with the `Access` component, you can easily control the permissions of elements within a page.
 
 ### Access
 
-可以在业务组件中使用插件提供的 React hook `useAccess` 以及组件 `<Access />` 对应用进行权限控制了。组件 `Access` 支持的属性如下：
+You can use the plugin-provided React hook `useAccess` and the `<Access />` component to control the permissions of your application. The `Access` component supports the following attributes:
 
 #### accessible
 
 - Type: `boolean`
 
-是否有权限，通常通过 `useAccess` 获取后传入进来。
+Whether there is permission, typically obtained through `useAccess`.
 
 #### fallback
 
 - Type: `React.ReactNode`
 
-无权限时的显示，默认无权限不显示任何内容。
+What to display when there is no permission; by default, nothing is displayed.
 
 ### children
 
 - Type: `React.ReactNode`
 
-有权限时的显示。
+What to display when there is permission.
 
-完整示例如下：
+Here's a complete example:
 
 ```js
 import React from 'react';
@@ -126,10 +126,10 @@ import { useAccess, Access } from 'umi';
 
 const PageA = (props) => {
   const { foo } = props;
-  const access = useAccess(); // access 的成员: canReadFoo, canUpdateFoo, canDeleteFoo
+  const access = useAccess(); // access members: canReadFoo, canUpdateFoo, canDeleteFoo
 
   if (access.canReadFoo) {
-    // 如果可以读取 Foo，则...
+    // If can read Foo, then...
   }
 
   return (
@@ -157,6 +157,6 @@ const PageA = (props) => {
 };
 ```
 
-- `useAccess()` 的返回值 `access` 就是 `src/access.ts` 中定义的权限集合，可以利用它进行组件内代码执行流的控制。
+- The return value `access` of `useAccess()` is the collection of permissions defined in `src/access.ts`, and you can use it to control the execution flow of your component's code.
 
-- `<Access>` 组件拥有 `accessible` 和 `fallback` 两个属性，当 `accessible` 为 `true` 时会渲染子组件，当 `accessible` 为 `false` 会渲染 `fallback` 属性对应的 `ReactNode`。
+- The `<Access>` component has two attributes: `accessible` and `fallback`. When `accessible` is `true`, the child component will be rendered. When `accessible` is `false`, the `ReactNode` corresponding to the `fallback` attribute will be rendered.

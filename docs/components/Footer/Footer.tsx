@@ -11,34 +11,38 @@ export default () => {
       <div className={styles.wrapper}>
         <div className={styles.left}>
           <div className={styles.line}>
-            <h3>文档和帮助</h3>
+            <h3>Docs</h3>
             <div>
               <a target="_blank" href="https://fb.umijs.org">
-                反馈和交流群
+                Feedback
               </a>{' '}
               ·{' '}
               <a target="_blank" href="https://github.com/umijs/umi/issues">
-                给 Umi 提 Bug
+                Report a Bug
               </a>{' '}
-              · <Link to="/docs/introduce/contributing">向 Umi 贡献代码</Link> ·{' '}
-              <Link to="/docs/introduce/upgrade-to-umi-4">升级到 Umi 4</Link>
+              · <Link to="/docs/introduce/contributing">Contribute to Umi</Link>{' '}
+              ·{' '}
+              <Link to="/docs/introduce/upgrade-to-umi-4">
+                Upgrade to Umi 4
+              </Link>
             </div>
           </div>
           <div className={styles.line}>
-            <h3>Umi 生态</h3>
+            <h3>Ecosystem</h3>
             <div>
-              <Link to="/blog">开发日志</Link> · 团队 · 里程碑 ·{' '}
+              <Link to="/blog">Development Log</Link> · Team · Milestones ·{' '}
               <a target="_blank" href="https://qiankun.umijs.org/">
-                乾坤
+                Qiankun
               </a>
             </div>
           </div>
           <div className={styles.line}>
-            <h3>Umi 资源</h3>
+            <h3>Resources</h3>
             <div>
-              <Link to="/docs/introduce/introduce">文档</Link> · 示例 · 插件 ·{' '}
+              <Link to="/docs/introduce/introduce">Documentation</Link> ·
+              Examples · Plugins ·{' '}
               <a target="_blank" href="https://github.com/umijs/umi/releases">
-                发布日志
+                Release Notes
               </a>
             </div>
           </div>

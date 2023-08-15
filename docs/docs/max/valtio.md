@@ -1,38 +1,38 @@
 # valtio
 
-@umijs/max 内置了 valtio 数据流方案。
+@umijs/max comes with the valtio state management solution.
 
-## 启用 valtio
+## Activation
 
-配置开启。
+Enable it through configuration.
 
 ```ts
 export default {
   valtio: {},
-}
+};
 ```
 
-## 开始使用
+## Getting Started
 
-### 基本用法
+### Basic Usage
 
-极其简单。
+It's incredibly simple.
 
 ```ts
 import { proxy, useSnapshot } from 'umi';
 
-// 1、定义数据
+// 1. Define data
 const state = proxy({ count: 0 });
-// 2、使用数据
+// 2. Use data
 const snap = useSnapshot(state);
 snap.count;
-// 3、更新数据
+// 3. Update data
 state.count += 1;
 ```
 
-### React 外访问
+### Access Outside React
 
-天然支持。
+Natively supported.
 
 ```ts
 import { proxy } from 'umi';
@@ -42,83 +42,86 @@ state.count;
 state.count += 1;
 ```
 
-### 数据推导
+### Computed Data
 
 ```ts
 import { proxyWithComputed } from 'umi';
 
-const state = proxyWithComputed({
-  count: 0,
-}, {
-  double: snap => snap.count * 2,
-});
+const state = proxyWithComputed(
+  {
+    count: 0,
+  },
+  {
+    double: snap => snap.count * 2,
+  }
+);
 ```
 
-### Action 和异步 Action
+### Actions and Async Actions
 
-两种用法，可以和 state 放一起，也可以分开。
+There are two ways to define actions: you can define them within the same object as the state, or separate them.
 
 ```ts
 import { proxy } from 'umi';
 
-// 方法一：放一起
+// Method 1: Define together
 const state = proxy({
   count: 0,
   actions: {
-	  add() {
-	    // 注意这里别用 this.count，基于 snap 调用时会报错
-	    state.count += 1;
-	  },
-  }
+    add() {
+      // Note: Don't use this.count here, as calling this in relation to snap will cause an error
+      state.count += 1;
+    },
+  },
 });
-// 方法二：分开放
+// Method 2: Define separately
 const state = proxy({ count: 0 });
 const actions = {
   add() {
     state.count += 1;
   },
-  // 异步 action
+  // Async action
   async addAsync() {
     state.count += await fetch('/api/add');
   },
 };
 ```
 
-### 数据结构的拆分与组合
+### Splitting and Combining Data Structures
 
 ```ts
 import { proxy } from 'umi';
 
-// 比如如下定义
-// state.foo 和 state.bar 都是 proxy，可拆分使用
+// For example, defining as follows:
+// Both state.foo and state.bar are proxies and can be used separately
 const state = proxy({
   foo: { a: 1 },
   bar: { b: 1 },
 });
 
-// 组合
+// Combining
 const foo = proxy({ a: 1 });
 const bar = proxy({ b: 1 });
 const state = proxy({ foo, bar });
 ```
 
-### 组件封装
+### Component Encapsulation
 
-如果 props 内容和 state 无关，可以不处理；如果有关，按以下方式用 context 包一下，同时做 props 到 state 的数据同步即可。
+If props are unrelated to state, they can be left as they are. If they are related, use the following method to wrap them in a context. Also, synchronize the data from props to state.
 
 ```ts
 import { proxy } from 'umi';
 
-// 1、createContext
+// 1. Create Context
 const MyContext = createContext();
-// 2、Provider
+// 2. Provider
 const value = useRef(proxy({ count: 0 })).current;
-<MyContext.Provider value={value} />
-// 3、useContext
+<MyContext.Provider value={value} />;
+// 3. useContext
 useContext(MyContext);
 ```
 
-### Redux DevTools 支持
+### Redux DevTools Support
 
 ```ts
 import { proxy, proxyWithDevtools } from 'umi';
@@ -127,7 +130,7 @@ const state = proxy({ count: 0 });
 proxyWithDevtools(state, { name: 'count', enabled: true });
 ```
 
-### Redo & Undo 支持
+### Redo & Undo Support
 
 ```ts
 import { proxyWithHistory } from 'umi';
@@ -142,24 +145,27 @@ state.redo();
 state.history;
 ```
 
-### 持久化缓存
+### Persistence Cache
 
-待实现。
+To be implemented.
 
 ```ts
 import { proxyWithPersistant } from 'umi';
 
-const state = proxyWithPersistant({
-  count: 0,
-}, {
-  type: 'localStorage',
-  key: 'count',
-});
+const state = proxyWithPersistant(
+  {
+    count: 0,
+  },
+  {
+    type: 'localStorage',
+    key: 'count',
+  }
+);
 ```
 
-### 扩展
+### Extension
 
-valtio 是基于组装式的扩展方式，相比 middleware 的方式在类型提示上会更好一些。比如我要实现前面的 proxyWithPersistant，简单点的方案只要这样，
+Valtio allows compositional extensions, which can offer better type hinting compared to middleware. For example, for implementing the `proxyWithPersistant` function mentioned earlier, a simple solution can be as follows:
 
 ```ts
 export function proxyWithPersist<V>(val: V, opts: {  
@@ -174,9 +180,11 @@ export function proxyWithPersist<V>(val: V, opts: {
 }
 ```
 
-### 兼容性
+### Compatibility
 
-1）需要 React 16.8 或以上，2）不支持 IE 11，3）map 和 set 不能直接用，需改用 valtio 提供的 proxyMap 和 proxySet。
+1. Requires React 16.8 or above.
+2. Does not support IE 11.
+3. Cannot directly use `map` and `set`, use `proxyMap` and `proxySet` provided by valtio.
 
 ```ts
 import { proxy, proxyMap } from 'umi';
@@ -187,7 +195,6 @@ const state = proxy({
 });
 ```
 
-### 测试
+### Testing
 
-可以直接测 store，也可以测基于 store 的 React 组件。正常写用例即可，后者推荐用 @testing-library/react。
-
+You can directly test the store or test React components based on the store. Write your test cases as usual. For the latter, it's recommended to use `@testing-library/react`.

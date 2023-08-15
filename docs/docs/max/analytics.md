@@ -1,25 +1,25 @@
-# 站点统计
+# Website Analytics
 
-`@umijs/max` 内置了站点统计的功能，目前支持 [Google Analytics](https://analytics.google.com/analytics/web/) 和[百度统计](https://tongji.baidu.com/web/welcome/login)
+`@umijs/max` comes with built-in website analytics functionality, currently supporting [Google Analytics](https://analytics.google.com/analytics/web/) and [Baidu Tongji](https://tongji.baidu.com/web/welcome/login).
 
-## 启用方式
+## Activation
 
-配置开启，按照需求配置进对应的统计服务的 key 即可。
+Enable analytics by configuring it and providing the corresponding tracking keys as needed.
 
-举例：
+For example:
 
 ```ts
 {
   analytics: {
-    ga_v2: 'G-abcdefg', // google analytics 的 key (GA 4)
+    ga_v2: 'G-abcdefg', // Google Analytics key (GA 4)
     baidu: 'baidu_tongji_key',
 
-    // 若你在使用 GA v1 旧版本，请使用 `ga` 来配置
+    // If you are using the older GA v1 version, use `ga` to configure
     ga: 'ga_old_key'
   }
 }
 ```
 
-### 环境变量
+### Environment Variables
 
-[Google Analytics 4](https://support.google.com/analytics/answer/10089681) 的 key 也可以通过环境变量 `GA_V2_KEY` 来配置，旧版本为 `GA_KEY` 。
+You can also configure the key for [Google Analytics 4](https://support.google.com/analytics/answer/10089681) using the environment variable `GA_V2_KEY`, and for the older version, you can use `GA_KEY`.

@@ -7,62 +7,62 @@ export default () => {
   // prettier-ignore
   return (
     <div className={styles.normal}>
-      <SectionHeader title="主要特性" />
+      <SectionHeader title="Main Features" />
       <ul>
         <li className={styles.feature}>
           <div></div>
-          <h3>开箱即用</h3>
+          <h3>Out of the Box</h3>
           <p>
-            内置路由、构建、部署、测试、Lint 等，仅需一个 Umi 依赖即可上手开发。
+            Built-in routing, building, deployment, testing, linting, and more. Start developing with just a Umi dependency.
           </p>
         </li>
         <li className={styles.feature}>
           <div></div>
-          <h3>企业级</h3>
+          <h3>Enterprise-Grade</h3>
           <p>
-            蚂蚁集团 10000+ 应用的选择。同时也在阿里、字节、腾讯、网易、美团、快手等公司有大量应用。
+            Choice of over 10,000 applications within the Ant Group. Also extensively used in companies such as Alibaba, ByteDance, Tencent, NetEase, Meituan, and Kuaishou.
           </p>
         </li>
         <li className={styles.feature}>
           <div></div>
-          <h3>最佳实践</h3>
+          <h3>Best Practices</h3>
           <p>
-            内置微前端、数据流、权限、国际化、icons 方案、埋点、antd、请求、CSS 方案、图表等最佳实践。
+            Built-in best practices including micro-frontends, data flows, permissions, internationalization, icons solution, analytics, antd, requests, CSS solutions, charts, and more.
           </p>
         </li>
         <li className={styles.feature}>
           <div></div>
-          <h3>可扩展</h3>
+          <h3>Extensible</h3>
           <p>
-            Umi 实现了 web 应用开发的完整生命周期，并使之插件化，包括 Umi 内部功能也是全由插件实现。
+            Umi provides a complete lifecycle of web application development and makes it plugin-friendly. Even internal features of Umi are implemented as plugins.
           </p>
         </li>
         <li className={styles.feature}>
           <div></div>
-          <h3>完备路由</h3>
+          <h3>Comprehensive Routing</h3>
           <p>
-            基于 React Router 6，类 Remix，支持嵌套、动态、动态可选、预加载、基于路由的请求优化等。
+            Built on top of React Router 6, similar to Remix, supporting nesting, dynamic routing, dynamic optional routing, preloading, and route-based request optimization.
           </p>
         </li>
         <li className={styles.feature}>
           <div></div>
-          <h3>默认快</h3>
+          <h3>Natively Fast</h3>
           <p>
-            MFSU 解 Webpack 编译慢的问题，通过 esbuild 解压缩、配置、测试的性能问题，还有运行时...
+            MFSU solves the slow Webpack compilation problem, and esbuild handles performance issues related to compression, configuration, testing, and runtime...
           </p>
         </li>
         <li className={styles.feature}>
           <div></div>
-          <h3>双构建引擎</h3>
+          <h3>Dual Build Engines</h3>
           <p>
-            提供 Vite 和 Webpack 两种构建模式供开发者选择，并尽可能保证他们之间功能的一致性。
+            Provides both Vite and Webpack as build options for developers, aiming to ensure consistency in functionality between the two.
           </p>
         </li>
         <li className={styles.feature}>
           <div></div>
-          <h3>依赖预打包</h3>
+          <h3>Pre-Bundled Dependencies</h3>
           <p>
-            Umi 针对依赖做了预打包处理，彻底地锁定依赖，定期更新，让框架的每个版本在 10 年后依旧可用。
+            Umi pre-bundles dependencies, ensuring dependency locking and regular updates, making each version of the framework usable even after 10 years.
           </p>
         </li>
       </ul>

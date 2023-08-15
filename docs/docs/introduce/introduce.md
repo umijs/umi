@@ -1,52 +1,48 @@
-# Umi 介绍
+# Introduction to Umi
 
 <br />
 <img src="https://img.alicdn.com/imgextra/i3/O1CN01eBiy611b67KLFOxi3_!!6000000003415-2-tps-200-200.png" width="120" />
 
-##  Umi 是什么？
+## What is Umi?
 
-Umi，中文发音为「乌米」，是可扩展的企业级前端应用框架。Umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。然后配以生命周期完善的插件体系，覆盖从源码到构建产物的每个生命周期，支持各种功能扩展和业务需求。
+Umi, from the Chinese word 乌米 "woo-mee" (wū mǐ), is a scalable enterprise-class front-end application framework. Umi is based on routing, and supports both configuration routing and convention routing to ensure complete routing function experience. It is also complemented with a complete life cycle plug-in system, covering every use case from source code to build products, and supports many function extensions and business requirements.
 
-Umi 是蚂蚁集团的底层前端框架，已直接或间接地服务了 10000+ 应用，包括 Java、Node、H5 无线、离线（Hybrid）应用、纯前端 assets 应用、CMS 应用、Electron 应用、Serverless 应用等。他已经很好地服务了我们的内部用户，同时也服务了不少外部用户，包括淘系、飞猪、阿里云、字节、腾讯、口碑、美团等。在 2021 年字节的[调研报告](https://zhuanlan.zhihu.com/p/403206195)中，Umi 是其中 25.33% 开发者的选择。
+Umi is the underlying front-end framework of Ant Group, and has directly or indirectly served 10,000 applications, including Java, Node.js, mobile (H5), offline (Hybrid) apps, pure frontend asset applications, CMS applications, Electron apps, and Serverless applications. It has effectively served internal users within Ant Group and a significant number of external users from various companies such as Taobao, Fliggy, Alibaba Cloud, ByteDance, Tencent, Koubei, and Meituan. In ByteDance's [2021 developer survey report](https://zhuanlan.zhihu.com/p/403206195), Umi was the choice of 25.33% of developers.
 
-Umi 有很多非常有意思的特性，比如。
+Umi boasts several interesting features:
 
-1、**企业级**，在安全性、稳定性、最佳实践、约束能力方面会考虑更多<br />
-2、**插件化**，啥都能改，Umi 本身也是由插件构成<br />
-3、**MFSU**，比 Vite 还快的 Webpack 打包方案<br />
-4、基于 React Router 6 的完备路由<br />
-5、默认最快的请求<br />
-6、SSR & SSG<br />
-7、稳定白盒性能好的 ESLint 和 Jest<br />
-8、React 18 的框架级接入<br />
-9、Monorepo 最佳实践<br />
+1. **Enterprise-Grade**: Focused on security, stability, best practices, and constraint capabilities.
+2. **Plugin-Based**: Highly customizable with Umi itself built upon a plugin architecture.
+3. **MFSU**: A Webpack bundling solution faster than Vite.
+4. Complete routing based on React Router 6.
+5. Fastest default request setup.
+6. SSR & SSG capabilities.
+7. Stable and performant ESLint and Jest integration.
+8. Framework-level integration with React 18.
+9. Monorepo best practices.
 ...
 
+## When Not to Use Umi?
 
-## 什么时候不用 Umi？
+Umi might not be suitable for your project if:
 
-如果你的项目，
-
-1、需要支持 IE 8 或更低版本的浏览器<br />
-2、需要支持 React 16.8.0 以下的 React<br />
-3、需要跑在 Node 14 以下的环境中<br />
-4、有很强的 webpack 自定义需求和主观意愿<br />
-5、需要选择不同的路由方案<br />
+1. You need to support browsers, including IE 8 or lower.
+2. You need to support React versions earlier than 16.8.0.
+3. Your project needs to run in an environment with Node.js versions lower than 14.
+4. You have specific and strong Webpack customization requirements and preferences.
+5. You need to choose a different routing solution.
 ...
 
-Umi 可能不适合你。
-
-
-## 为什么不是？
+## Why Not?
 
 ### create-react-app
 
-create-react-app 是脚手架，和 Umi、next.js、remix、ice、modern.js 等元框架不是同一类型。脚手架可以让我们快速启动项目，对于单一的项目够用，但对于团队而言却不够。因为使用脚手架像泼出去的水，一旦启动，无法迭代。同时脚手架所能做的封装和抽象都非常有限。
+create-react-app is a scaffolding tool and is not in the same category as Umi, next.js, remix, ice, modern.js, and similar frameworks. Scaffolding tools allow quick project setup, suitable for individual projects but insufficient for team use. Once a scaffolding is set up, it becomes difficult to iterate. Additionally, the encapsulation and abstraction provided by scaffolding tools are limited.
 
 ### next.js
 
-如果要做 SSR，next.js 是非常好的选择（当然，Umi 也支持 SSR）；而如果只做 CSR，Umi 会是更好的选择。相比之下，Umi 的扩展性会更好；并且 Umi 做了很多更贴地气的功能，比如配置式路由、补丁方案、antd 的接入、微前端、国际化、权限等；同时 Umi 会更稳定，因为他锁了能锁的全部依赖，定期主动更新，某一个子版本的 Umi，不会因为重装依赖之后而跑不起来。
+For SSR (Server-Side Rendering), next.js is an excellent choice (though Umi also supports SSR). If you're only doing CSR (Client-Side Rendering), Umi might be a better option. Umi offers better extensibility, more user-friendly features such as configuration-based routing, patching solutions, integration with antd, micro-frontends, internationalization, permissions, and more. Umi is also more stable, as it locks all possible dependencies, updates them periodically, and won't break after reinstalling dependencies.
 
-### remix
+### Remix
 
-Remix 是我非常喜欢的框架，Umi 4 从中<strike>抄</strike>（学）了不少东西。但 Remix 是 Server 框架，其内置的 loader 和 action 都是跑在 server 端的，所以会对部署环境会有一定要求。Umi 将 loader、action 以及 remix 的请求机制同时运用到 client 和 server 侧，不仅 server 请求快，纯 CSR 的项目请求也可达到理论的最快值。同时 Remix 基于 esbuild 做打包，可能不适用于对兼容性有要求或者依赖尺寸特别大的项目。
+I like Remix a lot, and Umi 4 has learned quite a bit from it. However, Remix is primarily a server framework, with its built-in loaders and actions running on the server side, which makes specific deployment environments necessary. Umi utilizes loaders, actions, and Remix's request mechanisms on both the client and server sides, achieving fast server requests and even faster requests for purely CSR projects. Additionally, Remix uses esbuild for bundling, which might not be suitable for projects with strict compatibility requirements or large dependency sizes.

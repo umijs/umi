@@ -1,10 +1,10 @@
-# 代码拆分指南
+# Code Splitting Guide
 
-Umi 4 默认 按页拆包、按需加载（这近似等同于 Umi 3 中的 `dynamicImport`），通过 [`loading.tsx`](../docs/guides/directory-structure#loadingtsxjsx) 来自定义加载动画。
+Umi 4 by default performs page-based splitting and lazy loading (similar to `dynamicImport` in Umi 3), allowing customization of loading animations through [`loading.tsx`](../docs/guides/directory-structure#loadingtsxjsx).
 
-### 使用分包策略
+### Using Splitting Strategies
 
-Umi 4 内置了不同的代码拆分策略 ( [codeSplitting](../docs/api/config#codesplitting) ) ，通过配置开启：
+Umi 4 comes with various built-in code splitting strategies ( [codeSplitting](../docs/api/config#codesplitting) ) that can be enabled through configuration:
 
 ```ts
 // .umirc.ts
@@ -15,29 +15,29 @@ export default {
 }
 ```
 
-这会按照一定的优化策略进行自动分包，若需手动进行更细致的分包，请参见下文。
+This will automatically perform package splitting based on certain optimization strategies. For more detailed manual splitting, please refer to the following section.
 
-### 手动拆分
+### Manual Splitting
 
-当你的产物体积变大时，可进一步手动拆包：
+When your application's size increases, you can further perform manual splitting:
 
 ```ts
 import { lazy, Suspense } from 'react'
 
-// './Page' 该组件将被自动拆出去
+// './Page' component will be automatically split out
 const Page = lazy(() => import('./Page'))
 
 export default function() {
   return (
-    <Suspense fallback={<div>loading...</div}>
+    <Suspense fallback={<div>loading...</div>}>
       <Page />
     </Suspense>
   )
 }
 ```
 
-通常情况下，我们会手动拆分引用了较大第三方库的组件，实现按需加载。
+In most cases, you would manually split components that reference larger third-party libraries to achieve on-demand loading.
 
-### 分析产物构成
+### Analyzing Build Composition
 
-通过指定 [ANALYZE](../docs/guides/env-variables#analyze) 环境变量可以分析产物构成，根据分析结果来修改代码和进一步决策。
+By specifying the [ANALYZE](../docs/guides/env-variables#analyze) environment variable, you can analyze the composition of your build, allowing you to modify code and make further decisions based on the analysis results.

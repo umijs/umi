@@ -1,31 +1,31 @@
-# 插件 API
+# Plugin API
 
-Umi 的核心就在于它的插件机制。基于 Umi 的插件机制，你可以获得扩展项目的编译时和运行时的能力。以下罗列出我们为你提供的所有的插件API，以帮助你能自由编写插件。
+The core of Umi lies in its plugin mechanism. Based on Umi's plugin mechanism, you can extend the capabilities of your project at both compile time and runtime. Below is a list of all the plugin APIs we provide to help you freely write plugins.
 
-在查用 Umi 插件 API 之前，我们建议你先阅读[插件](../guides/plugins)一节，以了解 umi 插件的机制及原理，这将帮助你更好的使用插件 API。
+Before looking at the Umi plugin APIs, we recommend that you read the [Plugins](../guides/plugins) section to understand the mechanism and principles of Umi plugins. This will help you better utilize the plugin API.
 
-> 为方便查找，以下内容通过字母排序。
+> For easier searching, the following content is sorted alphabetically.
 
-## 核心 API
-service 和 PluginAPI 里定义的方法。
+## Core APIs
+Methods defined in `service` and `PluginAPI`.
 
 ### applyPlugins
 ```ts
 api.applyPlugins({ key: string, type?: api.ApplyPluginsType, initialValue?: any, args?: any })
 ```
-取得 `register()` 注册的 hooks 执行后的数据，这是一个异步函数，因此它返回的将是一个 Promise。这个方法的例子和详解见 [register](#register) api
+Retrieve the data after the execution of hooks registered with `register()`. This is an asynchronous function, so it returns a Promise. Examples and explanations of this method can be found in the [register](#register) API.
 
 ### describe
 ```ts
 api.describe({ key?:string, config?: { default , schema, onChange }, enableBy? })
 ```
-在插件注册阶段( initPresets or initPlugins stage )执行，用于描述插件或者插件集的 key、配置信息和启用方式等。
+Executed during the plugin registration phase (initPresets or initPlugins stage), used to describe the key, configuration information, and enablement method of the plugin or plugin set.
 
-- `key` 是配置中该插件配置的键名
-- `config.default` 是插件配置的默认值，当用户没有在配置中配置 key 时，默认配置将生效。
-- `config.schema` 用于声明配置的类型，基于 [joi](https://joi.dev/) 。 **如果你希望用户进行配置，这个是必须的** ，否则用户的配置无效
-- `config.onChange` 是 dev 模式下，配置被修改后的处理机制。默认值为 `api.ConfigChangeType.reload`，表示在 dev 模式下，配置项被修改时会重启 dev 进程。 你也可以修改为 `api.ConfigChangeType.regenerateTmpFiles`, 表示只重新生成临时文件。你还可以传入一个方法，来自定义处理机制。
-- `enableBy` 是插件的启用方式，默认是`api.EnableBy.register`，表示注册启用，即插件只要被注册就会被启用。可以更改为 `api.EnableBy.config` ，表示配置启用，只有配置插件的配置项才启用插件。你还可以自定义一个返回布尔值的方法（ true 为启用 ）来决定其启用时机，这通常用来实现动态生效。
+- `key` is the key under which the plugin is configured in the configuration.
+- `config.default` is the default value of the plugin configuration. When the user does not configure the key in the configuration, the default configuration will take effect.
+- `config.schema` declares the type of the configuration, based on [joi](https://joi.dev/). **This is required if you want users to configure it**, otherwise the user's configuration will be invalid.
+- `config.onChange` is the handling mechanism after the configuration is modified in dev mode. The default value is `api.ConfigChangeType.reload`, which means that the dev process will be restarted when the configuration item is modified. You can also change it to `api.ConfigChangeType.regenerateTmpFiles`, which means that only temporary files will be regenerated. You can also pass in a function to customize the processing mechanism.
+- `enableBy` is the enabling method of the plugin, defaulting to `api.EnableBy.register`, which means register to enable, i.e., the plugin will be enabled as long as it is registered. You can change it to `api.EnableBy.config`, which means configuration to enable, and only the configuration items of the plugin will enable the plugin. You can also customize a method that returns a boolean value (true for enable) to determine when it should be enabled. This is usually used to achieve dynamic activation.
 
 e.g.
 ```ts
@@ -40,55 +40,55 @@ api.describe({
   enableBy: api.EnableBy.config,
 })
 ```
-这个例子中，插件的 `key` 为 `foo`，因此配置中的键名为 `foo`，配置的类型是字符串，当配置 `foo` 发生变化时，dev 只会重新生成临时文件。该插件只有在用户配置了 `foo` 之后才会启用。
+In this example, the plugin key is `foo`, so the key in the configuration is `foo`. The type of the configuration is a string. When the configuration `foo` changes, dev will only regenerate temporary files. This plugin will only be enabled if the user configures `foo`.
 
 ### isPluginEnable
 ```ts
 api.isPluginEnable( key：string)
 ```
-判断插件是否启用，传入的参数是插件的 key
+Determine whether the plugin is enabled. The parameter passed in is the key of the plugin.
 
 ### register
 ```ts
 api.register({ key: string, fn, before?: string, stage?: number})
 ```
-为 `api.applyPlugins` 注册可供其使用的 hook。
+Register hooks that can be used by `api.applyPlugins`.
 
-- `key` 是注册的 hook 的类别名称，可以多次使用 `register` 向同一个 `key` 注册 hook，它们将会依次执行。这个 `key` 也同样是使用 `applyPlugins` 收集 hooks 数据时使用的 `key`。注意： **这里的 key 和 插件的 key 没有任何联系。** 
-- `fn` 是 hook 的定义，可以是同步的，也可以是异步的（返回一个 Promise 即可）
-- `stage` 用于调整执行顺序，默认为 0，设为 -1 或更少会提前执行，设为 1 或更多会后置执行。
-- `before` 同样用于调整执行的顺序，传入的值为注册的 hook 的名称。注意：**`register` 注册的 hook 的名称是所在 Umi 插件的 id。** stage 和 before 的更多用法参考 [tapable](https://github.com/webpack/tapable)
+- `key` is the category name of the registered hook. You can use `register` multiple times to register hooks under the same `key`, and they will be executed in sequence. This `key` is also used when collecting hook data using `applyPlugins`. Note: **The key here has no connection with the key of the plugin.**
+- `fn` is the definition of the hook, which can be synchronous or asynchronous (returning a Promise).
+- `stage` is used to adjust the execution order, defaulting to 0. Setting it to -1 or lower will execute it in advance, while setting it to 1 or higher will execute it after.
+- `before` is also used to adjust the execution order. The value passed in is the name of the registered hook. Note: **The name of the hook registered by `register` is the id of the Umi plugin it belongs to.** For more usage of `stage` and `before`, please refer to [tapable](https://github.com/webpack/tapable).
 
-注意： 相较于 `umi@3`， `umi@4` 去除了 `pluginId` 参数。
+Note: Compared to `umi@3`, `umi@4` has removed the `pluginId` parameter.
 
-fn 的写法需要结合即将使用的 applyPlugins 的 type 参数来确定：
-- `api.ApplyPluginsType.add` `applyPlugins` 将按照 hook 顺序来将它们的返回值拼接成一个数组。此时 `fn` 需要有返回值，`fn` 将获取 `applyPlugins` 的参数 `args` 来作为自己的参数。`applyPlugins` 的 `initialValue` 必须是一个数组，它的默认值是空数组。当 `key` 以 `'add'` 开头且没有显式地声明 `type` 时，`applyPlugins` 会默认按此类型执行。
-- `api.ApplyPluginsType.modify` `applyPlugins` 将按照 hook 顺序来依次更改 `applyPlugins` 接收的 `initialValue`， 因此此时 **`initialValue` 是必须的** 。此时 `fn` 需要接收一个 `memo` 作为自己的第一个参数，而将会把 `applyPlugins` 的参数 `args` 来作为自己的第二个参数。`memo` 是前面一系列 hook 修改 `initialValue` 后的结果， `fn` 需要返回修改后的`memo` 。当 `key` 以 `'modify'` 开头且没有显式地声明 `type` 时，`applyPlugins` 会默认按此类型执行。
-- `api.ApplyPluginsType.event` `applyPlugins` 将按照 hook 顺序来依次执行。此时不用传入 `initialValue` 。`fn` 不需要有返回值，并且将会把 `applyPlugins` 的参数 `args` 来作为自己的参数。当 `key` 以 `'on'` 开头且没有显式地声明 `type` 时，`applyPlugins` 会默认按此类型执行。
+The writing of `fn` needs to be combined with the `type` parameter of the upcoming `applyPlugins` to determine:
+- `api.ApplyPluginsType.add` `applyPlugins` will concatenate their return values into an array in hook order. In this case, `fn` needs to have a return value, and `fn` will receive `args` of `applyPlugins` as its own parameters. The `initialValue` of `applyPlugins` must be an array, and its default value is an empty array. When the `key` starts with `'add'` and `type` is not explicitly declared, `applyPlugins` will default to execute according to this type.
+- `api.ApplyPluginsType.modify` `applyPlugins` will sequentially change the `initialValue` received by `applyPlugins` according to the hook order. Therefore, **`initialValue` is required in this case**. In this case, `fn` needs to receive a `memo` as its first parameter and will receive `args` of `applyPlugins` as its second parameter. `memo` is the result of modifying `initialValue` by a series of previous hooks, and `fn` needs to return the modified `memo`. When the `key` starts with `'modify'` and `type` is not explicitly declared, `applyPlugins` will default to execute according to this type.
+- `api.ApplyPluginsType.event` `applyPlugins` will execute sequentially according to the hook order. In this case, you don't need to pass in `initialValue`. `fn` doesn't need to have a return value, and it will receive `args` of `applyPlugins` as its own parameters. When the `key` starts with `'on'` and `type` is not explicitly declared, `applyPlugins` will default to execute according to this type.
 
-e.g.1 add 型
+e.g.1 add type
 ```ts
 api.register({
   key: 'addFoo',
-  // 同步
+  // Synchronous
   fn: (args) => args
 });
 
 api.register({
   key: 'addFoo',
-  // 异步
+  // Asynchronous
   fn: async (args) => args * 2
 })
 
 api.applyPlugins({
   key: 'addFoo',
-  // key 是 add 型，不用显式声明为 api.ApplyPluginsType.add
+  // key is of add type, no need to explicitly declare it as api.ApplyPluginsType.add
   args: 1
 }).then((data)=>{
   console.log(data); // [1,2]
 })
 ```
-e.g.2 modify 型
+e.g.2 modify type
 ```ts
 api.register({
   key: 'foo',
@@ -101,7 +101,7 @@ api.register({
 api.applyPlugins({ 
   key: 'foo', 
   type: api.ApplyPluginsType.modify,
-  // 必须有 initialValue
+  // initialValue is required
   initialValue: { 
     a: 0,
     b: 0
@@ -124,36 +124,36 @@ api.registerCommand({
   resolveConfigMode? : 'strict' | 'loose'
 })
 ```
-注册命令。
-- `alias` 为别名，比如 generate 的别名 g
-- `fn` 的参数为 `{ args }`， args 的格式同 [yargs](https://github.com/yargs/yargs) 的解析结果，需要注意的是 `_` 里的 command 本身被去掉了，比如执行`umi generate page foo`，`args._` 为 `['page','foo']`
-- `resolveConfigMode` 参数控制执行命令时配置解析的方式，`strict` 模式下强校验 Umi 项目的配置文件内容，如果有非法内容中断命令执行；`loose` 模式下不执行配置文件的校验检查。
+Register a command.
+- `alias` is the alias, e.g., the alias of `generate` is `g`.
+- The parameter of `fn` is `{ args }`, where the format of `args` is the parsing result of [yargs](https://github.com/yargs/yargs), and it should be noted that the command itself in `_` has been removed, for example, when executing `umi generate page foo`, `args._` is `['page','foo']`.
+- The `resolveConfigMode` parameter controls the way configuration is resolved when executing the command. In `strict` mode, the content of the Umi project's configuration file is strongly validated, and the command execution is interrupted if there is any illegal content; in `loose` mode, the validation check of the configuration file is not executed.
 
 ### registerMethod
 ```ts
 api.registerMethod({ name: string, fn? })
 ```
-往 api 上注册一个名为 `'name'` 的方法。
+Register a method on the `api` with the name `'name'`.
 
-- 当传入了 fn 时，执行 fn
-- 当没有传入 fn 时，`registerMethod` 会将 `name` 作为 `api.register` 的 `key` 并且将其柯里化后作为 `fn`。这种情况下相当于注册了一个 `register` 的快捷调用方式，便于注册 hook。
+- When `fn` is provided, execute `fn`.
+- When `fn` is not provided, `registerMethod` will use `'name'` as the `key` for `api.register` and curry it as `fn`. In this case, it is equivalent to registering a shortcut for `register`, which facilitates hook registration.
 
-注意： 
-- 相较于 `umi@3`， `umi@4` 去除了 exitsError 参数。
-- 通常不建议注册额外的方法，因为它们不会有 ts 提示，直接使用 `api.register()` 是一个更安全的做法。
+Note:
+- Compared to `umi@3`, `umi@4` has removed the `exitsError` parameter.
+- It is generally not recommended to register additional methods, as they won't have TypeScript prompts. Using `api.register()` directly is a safer approach.
 
 e.g.1
 ```ts
 api.registerMethod({
   name: foo,
-  // 有 fn
+  // With fn
   fn: (args) => {
     console.log(args);
   }
 })
 api.foo('hello, umi!'); // hello, umi!
 ```
-该例子中，我们往api上注册了一个 foo 方法，该方法会把参数 console 到控制台。
+In this example, we registered a method named `foo` on the `api`, which will log the arguments to the console.
 
 e.g.2
 ```ts
@@ -161,7 +161,7 @@ import api from './api';
 
 api.registerMethod({
   name: 'addFoo'
-  // 没有 fn
+  // Without fn
 })
 
 api.addFoo( args => args );
@@ -174,13 +174,13 @@ api.applyPlugins({
   console.log(data); // [ 1, 2 ]
 });
 ```
-该例子中，我们没有向 `api.registerMethod` 中传入 fn。此时，我们相当于往 api 上注册了一个"注册器"：`addFoo`。每次调用该方法都相当于调用了 `register({ key: 'addFoo', fn })`。因此当我们使用 `api.applyPlugins` 的时候（由于我们的方法是 add 型的，可以不用显式声明其 type ）就可以获取刚刚注册的 hook 的值。
+In this example, we didn't provide an `fn` to `api.registerMethod`. In this case, we essentially registered a "register" method on the `api`: `addFoo`. Each time this method is called, it's equivalent to calling `register({ key: 'addFoo', fn })`. Therefore, when we use `api.applyPlugins` (since our method is of the add type, we don't need to explicitly declare its type), we can retrieve the value of the just registered hook.
 
 ### registerPresets
 ```ts
 api.registerPresets( presets: string[] )
 ```
-注册插件集，参数为路径数组。该 api 必须在 initPresets stage 执行，即只可以在 preset 中注册其他 presets
+Register plugin sets, where the parameter is an array of paths. This API must be executed during the `initPresets` stage, which means you can only register other presets in presets.
 
 e.g.
 ```ts
@@ -194,7 +194,7 @@ api.registerPresets([
 ```ts
 api.registerPlugins( plugins: string[] )
 ```
-注册插件，参数为路径数组。该 api 必须在 initPresets 和 initPlugins stage 执行。
+Register plugins, where the parameter is an array of paths. This API must be executed during the `initPresets` and `initPlugins` stages.
 
 e.g.
 ```ts
@@ -204,7 +204,7 @@ api.registerPlugins([
 ])
 ```
 
-注意： 相较于 `umi@3` ，`umi@4` 不再支持在 `registerPresets` 和 `registerPlugins` 中直接传入插件对象了，现在只允许传入插件的路径。
+Note: Compared to `umi@3`, `umi@4` no longer supports directly passing plugin objects in `registerPresets` and `registerPlugins`. Now, only the paths of the plugins are allowed to be passed in.
 
 ### registerGenerator
 
@@ -212,12 +212,12 @@ api.registerPlugins([
 ```ts
 api.skipPlugins( keys: string[])
 ```
-声明哪些插件需要被禁用，参数为插件 key 的数组
+Declare which plugins need to be skipped. The parameter is an array of plugin keys.
 
-## 扩展方法
-通过`api.registerMethod()` 扩展的方法，它们的作用都是注册一些 hook 以供使用，因此都需要接收一个 fn。这些方法中的大部分都按照 `add-` `modify-` `on-` 的方式命名，它们分别对应了 `api.ApplyPluginsType`的三种方式，不同方式接收的 fn 不太相同，详见 [register](#register) 一节。
+## Extension Methods
+Methods extended through `api.registerMethod()`. Their purpose is to register hooks for use, so they all need to accept an `fn`. Most of these methods are named in the format of `add-`, `modify-`, and `on-`, which correspond to the three types of `api.ApplyPluginsType`. The differences in the `fn` received for different types are not quite the same; see the [register](#register) section for details.
 
-注意： 下文提到的所有 fn 都可以是同步的或者异步的（返回一个 Promise 即可）。fn 都可以被
+Note: All the `fn` mentioned below can be synchronous or asynchronous (returning a Promise). The `fn` can also be replaced with:
 
 ```ts
 {
@@ -228,13 +228,13 @@ api.skipPlugins( keys: string[])
 }
 
 ```
-代替。其中各个参数的作用详见 [tapable](https://github.com/webpack/tapable)
+Where the roles of various parameters are detailed in [tapable](https://github.com/webpack/tapable).
 
 ### addBeforeBabelPlugins
-增加额外的 Babel 插件。传入的 fn 不需要参数，且需要返回一个 Babel 插件或插件数组。
+Add additional Babel plugins. The provided `fn` doesn't require any parameters and should return a Babel plugin or an array of plugins.
 ```ts
 api.addBeforeBabelPlugins(() => {
-  // 返回一个 Babel 插件（来源于 Babel 官网的例子）
+  // Return a Babel plugin (from Babel's official example)
   return () => {
     visitor: {
       Identifier(path) {
@@ -247,10 +247,10 @@ api.addBeforeBabelPlugins(() => {
 ```
 
 ### addBeforeBabelPresets
-增加额外的 Babel 插件集。传入的 fn 不需要参数，且需要返回一个 Babel 插件集( presets )或插件集数组。
+Add additional Babel presets. The provided `fn` doesn't require any parameters and should return a Babel preset or an array of presets.
 ```ts
 api.addBeforeBabelPresets(() => {
-  // 返回一个 Babel 插件集
+  // Return a Babel preset
   return () => {
     return {
       plugins: ["Babel_Plugin_A","Babel_Plugin_B"]
@@ -260,7 +260,7 @@ api.addBeforeBabelPresets(() => {
 ```
 
 ### addBeforeMiddlewares
-在 webpack-dev-middleware 之前添加中间件。传入的 fn 不需要参数，且需要返回一个 express 中间件或其数组。
+Add middleware before webpack-dev-middleware. The provided `fn` doesn't require any parameters and should return an express middleware or an array of middlewares.
 ```ts
 api.addBeforeMiddlewares(() => {
   return (req, res, next) => {
@@ -273,19 +273,19 @@ api.addBeforeMiddlewares(() => {
 ```
 
 ### addEntryCode
-在入口文件的最后面添加代码（render 后）。传入的 fn 不需要参数，且需要返回一个 string 或者 string 数组。
+Add code to the end of the entry file (after render). The provided `fn` doesn't require any parameters and should return a string or an array of strings.
 ```ts
 api.addEntryCode(() => `console.log('I am after render!')`);
 ```
 
 ### addEntryCodeAhead
-在入口文件的最前面添加代码（render 前，import 后）。传入的 fn 不需要参数，且需要返回一个 string 或者 string 数组。
+Add code to the beginning of the entry file (before render, after imports). The provided `fn` doesn't require any parameters and should return a string or an array of strings.
 ```ts
 api.addEntryCodeAhead(() => `console.log('I am before render!')`)
 ```
 
 ### addEntryImports
-在入口文件中添加 import 语句 （import 最后面）。传入的 fn 不需要参数，其需要返回一个 `{source: string, specifier?: string}` 或其数组。
+Add import statements to the entry file (after the last import). The provided `fn` doesn't require any parameters and should return an object `{source: string, specifier?: string}` or an array of such objects.
 ```ts
 api.addEntryImports(() => ({
   source: '/modulePath/xxx.js',
@@ -294,7 +294,7 @@ api.addEntryImports(() => ({
 ```
 
 ### addEntryImportsAhead
-在入口文件中添加 import 语句 （import 最前面）。传入的 fn 不需要参数，其需要返回一个 `{source: string, specifier?: string}` 或其数组。
+Add import statements to the entry file (before the first import). The provided `fn` doesn't require any parameters and should return an object `{source: string, specifier?: string}` or an array of such objects.
 ```ts
 api.addEntryImportsAhead(() => ({
   source: 'anyPackage'
@@ -302,19 +302,19 @@ api.addEntryImportsAhead(() => ({
 ```
 
 ### addExtraBabelPlugins
-添加额外的 Babel 插件。 传入的 fn 不需要参数，且需要返回一个 Babel 插件或插件数组。
+Add additional Babel plugins. The provided `fn` doesn't require any parameters and should return a Babel plugin or an array of plugins.
 
 ### addExtraBabelPresets
-添加额外的 Babel 插件集。传入的 fn 不需要参数，且需要返回一个 Babel 插件集或其数组。
+Add additional Babel presets. The provided `fn` doesn't require any parameters and should return a Babel preset or an array of presets.
 
 ### addHTMLHeadScripts
-往 HTML 的 `<head>` 元素里添加 Script。传入的 fn 不需要参数，且需要返回一个 string（想要加入的代码） 或者 `{ async?: boolean, charset?: string, crossOrigin?: string | null, defer?: boolean, src?: string, type?: string, content?: string }` 或者它们的数组。
+Add scripts to the `<head>` element of the HTML. The provided `fn` doesn't require any parameters and should return a string (the code you want to add) or an object or an array of objects with properties like `async`, `charset`, `crossOrigin`, `defer`, `src`, `type`, or `content`.
 ```ts
 api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 ```
 
 ### addHTMLLinks 
-往 HTML 里添加 Link 标签。 传入的 fn 不需要参数，返回的对象或其数组接口如下：
+Add Link tags to the HTML. The provided `fn` doesn't require any parameters and should return an object with properties like `as`, `crossOrigin`, `disabled`, `href`, `hreflang`, `imageSizes`, `imageSrcset`, `integrity`, `media`, `referrerPolicy`, `rel`, `rev`, `target`, or `type`.
 ```ts
 {  
   as?: string, crossOrigin: string | null, 
@@ -334,7 +334,7 @@ api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 ```
 
 ### addHTMLMetas
-往 HTML 里添加 Meta 标签。 传入的 fn 不需要参数，返回的对象或其数组接口如下：
+Add Meta tags to the HTML. The provided `fn` doesn't require any parameters and should return an object with properties like `content`, `http-equiv`, `name`, or `scheme`.
 ```ts
 {
   content?: string,
@@ -345,47 +345,49 @@ api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 ```
 
 ### addHTMLScripts
-往 HTML 尾部添加 Script。 传入的 fn 不需要参数，返回的对象接口同 [addHTMLHeadScripts](#addHTMLHeadScripts) 
+Add scripts to the end of the HTML. The provided `fn` doesn't require any parameters and should return an object with properties like `async`, `charset`, `crossOrigin`, `defer`, `src`, `type`, or `content`.
 
 ### addHTMLStyles
-往 HTML 里添加 Style 标签。 传入的 fn 不需要参数，返回一个 string （style 标签里的代码）或者 `{ type?: string, content?: string }`，或者它们的数组。
-
+Add style tags to the HTML. The provided `fn` doesn't require any parameters and should return a string (the content of the style tag) or an object with properties like `type` or `content`.
+```ts
+api.addHTMLStyles(() => 'body { background-color: red; }')
+```
 
 ### addLayouts
-添加全局 layout 组件。 传入的 fn 不需要参数，返回 `{ id?: string, file: string }`
+Add global layout components. The provided `fn` doesn't require any parameters and should return an object `{ id?: string, file: string }`.
 
 ### addMiddlewares
-添加中间件，在 route 中间件之后。 传入的 fn 不需要参数，返回 express 中间件。
+Add middlewares after route middlewares. The provided `fn` doesn't require any parameters and should return an express middleware.
 
 ### addPolyfillImports
-添加补丁 import，在整个应用的最前面执行。 传入的 fn 不需要参数，返回 `{ source: string, specifier?:string }`
+Add polyfill imports, executed at the very beginning of the application. The provided `fn` doesn't require any parameters and should return an object `{ source: string, specifier?: string }`.
 
 ### addPrepareBuildPlugins
 
 ### addRuntimePlugin
-添加运行时插件，传入的 fn 不需要参数，返回 string ，表示插件的路径。
+Add runtime plugins. The provided `fn` doesn't require any parameters and should return a string representing the plugin's path.
 
 ### addRuntimePluginKey
-添加运行时插件的 Key， 传入的 fn 不需要参数，返回 string ，表示插件的路径。
+Add keys for runtime plugins. The provided `fn` doesn't require any parameters and should return a string representing the plugin's path.
 
 ### addTmpGenerateWatcherPaths
-添加监听路径，变更时会重新生成临时文件。传入的 fn 不需要参数，返回 string，表示要监听的路径。
+Add paths to watch. When changed, temporary files will be regenerated. The provided `fn` doesn't require any parameters and should return a string representing the path to be watched.
 
 ### addOnDemandDeps
-添加按需安装的依赖，他们会在项目启动时检测是否安装：
+Add on-demand installed dependencies. They will be checked for installation when the project starts:
 
 ```ts
-  api.addOnDemandDeps(() => [{ name: '@swc/core', version: '^1.0.0', dev: true }])
+api.addOnDemandDeps(() => [{ name: '@swc/core', version: '^1.0.0', dev: true }])
 ```
 
 ### chainWebpack
-通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 的方式修改 webpack 配置。传入一个fn，该 fn 不需要返回值。它将接收两个参数：
-- `memo` 对应 webpack-chain 的 config
-- `args:{ webpack, env }`  `arg.webpack` 是 webpack 实例， `args.env` 代表当前的运行环境。
+Modify webpack configuration using [webpack-chain](https://github.com/neutrinojs/webpack-chain). Pass a function as an argument to this method; this function doesn't require a return value. It will receive two parameters:
+- `memo`, corresponding to the webpack config from webpack-chain.
+- `args: { webpack, env }`, where `args.webpack` is the webpack instance, and `args.env` represents the current environment.
 
 e.g.
 ```ts
-api.chainWebpack(( memo, { webpack, env}) => {
+api.chainWebpack((memo, { webpack, env}) => {
   // set alias
   memo.resolve.alias.set('a','path/to/a');
   // Delete progess bar plugin
@@ -393,9 +395,9 @@ api.chainWebpack(( memo, { webpack, env}) => {
 })
 ```
 
-### modifyAppData （`umi@4` 新增）
+### modifyAppData (Added in `umi@4`)
 
-修改 app 元数据。传入的 fn 接收 appData 并且返回它。
+Modify app metadata. The provided `fn` receives `appData` and should return it.
 ```ts
 api.modifyAppData((memo) => {
   memo.foo = 'foo';
@@ -404,7 +406,7 @@ api.modifyAppData((memo) => {
 ```
 
 ### modifyConfig
-修改配置，相较于用户的配置，这份是最终传给 Umi 使用的配置。传入的 fn 接收 config 作为第一个参数，并且返回它。另外 fn 可以接收 `{ paths }` 作为第二个参数。`paths` 保存了 Umi 的各个路径。
+Modify the configuration. Compared to the user's configuration, this is the configuration passed to Umi for use. The provided `fn` receives `config` as the first parameter and should return it. Additionally, the `fn` can receive `{ paths }` as the second parameter. `paths` contains various paths of Umi.
 ```ts
 api.modifyConfig((memo, { paths }) => {
   memo.alias = {
@@ -416,10 +418,10 @@ api.modifyConfig((memo, { paths }) => {
 ```
 
 ### modifyDefaultConfig
-修改默认配置。传入的 fn 接收 config 并且返回它。
+Modify the default configuration. The provided `fn` receives `config` and should return it.
 
 ### modifyHTML
-修改 HTML，基于 cheerio 的 ast。传入的 fn 接收 cheerioAPI 并且返回它。另外 fn 还可以接收`{ path }` 作为它的第二个参数，该参数代表路由的 path
+Modify the HTML based on cheerio's AST. The provided `fn` receives the cheerio API and should return it. Additionally, `fn` can also receive `{ path }` as its second parameter, which represents the route's path.
 ```ts
 api.modifyHTML(($, { path }) => {
   $('h2').addClass('welcome');
@@ -428,14 +430,14 @@ api.modifyHTML(($, { path }) => {
 ```
 
 ### modifyHTMLFavicon
-修改 HTML 的 favicon 路径。 传入的 fn 接收原本的 favicon 路径(string 类型)并且返回它。 
+Modify the HTML's favicon path. The provided `fn` receives the original favicon path (as a string) and should return it.
 
 ### modifyPaths
-修改 paths，比如 absOutputPath、absTmpPath。传入的 fn 接收 paths 并且返回它。
+Modify paths, such as `absOutputPath` and `absTmpPath`. The provided `fn` receives `paths` and should return it.
 
-paths 的接口如下：
+The interface for `paths` is as follows:
 ```ts
-paths:{
+paths: {
   cwd?: string;
   absSrcPath?: string;
   absPagesPath?: string;
@@ -446,13 +448,13 @@ paths:{
 ```
 
 ### modifyRendererPath
-修改 renderer path。传入的 fn 接收原本的 path （string 类型）并且返回它。
+Modify the renderer path. The passed `fn` receives the original path (of type `string`) and returns it.
 
 ### modifyServerRendererPath
-修改 server renderer path。传入的 fn 接收原本的 path （string 类型）并且返回它。
+Modify the server renderer path. The passed `fn` receives the original path (of type `string`) and returns it.
 
 ### modifyRoutes
-修改路由。 传入的 fn 接收 id-route 的 map 并且返回它。其中 route 的接口如下：
+Modify routes. The passed `fn` receives the `id-route` map and returns it. The interface of the `route` is as follows:
 ```ts
 interface IRoute {
   path: string;
@@ -477,7 +479,7 @@ api.modifyRoutes((memo) => {
 
 ### modifyTSConfig
 
-修改临时目录下的 tsconfig 文件内容。
+Modify the contents of the tsconfig file in the temporary directory.
 
 ```ts
 api.modifyTSConfig((memo) => {
@@ -487,7 +489,7 @@ api.modifyTSConfig((memo) => {
 ```
 
 ### modifyViteConfig
-修改 vite 最终配置。 传入的 fn 接收 vite 的 Config 对象作为第一个参数并且返回它。另外 fn 还可以接收 `{ env }` 作为第二个参数，可以通过该参数获取当前的环境。
+Modify the final Vite configuration. The passed `fn` receives the Vite Config object as the first parameter and returns it. Additionally, the `fn` can also receive `{ env }` as the second parameter, allowing you to access the current environment.
 ```ts
 api.modifyViteConfig((memo, { env }) => {
   if(env === 'development'){
@@ -497,7 +499,7 @@ api.modifyViteConfig((memo, { env }) => {
 })
 ```
 ### modifyWebpackConfig
-修改 webpack 最终配置。传入的 fn 接收 webpack 的 Config 对象作为第一个参数并且返回它。另外 fn 还可以接收 `{ webpack, env }` 作为第二个参数，其中 webpack 是 webpack 实例，env 代表当前环境。
+Modify the final Webpack configuration. The passed `fn` receives the Webpack Config object as the first parameter and returns it. Additionally, the `fn` can also receive `{ webpack, env }` as the second parameter, where `webpack` is the Webpack instance and `env` represents the current environment.
 
 ```ts
 api.modifyWebpackConfig((memo, { webpack, env }) => {
@@ -508,10 +510,10 @@ api.modifyWebpackConfig((memo, { webpack, env }) => {
 ```
 
 ### onBeforeCompiler
-generate 之后，webpack / vite compiler 之前。传入的 fn 不接收任何参数。
+After generate, before webpack/vite compiler. The passed `fn` doesn't receive any parameters.
 
 ### onBeforeMiddleware
-提供在服务器内部执行所有其他中间件之前执行自定义中间件的能力, 这可以用来定义自定义处理程序， 例如:
+Provides the ability to execute custom middleware inside the server before all other middlewares. This can be used to define custom handlers, for example:
 
 ```ts
 api.onBeforeMiddleware(({ app }) => {
@@ -522,16 +524,16 @@ api.onBeforeMiddleware(({ app }) => {
 ```
 
 ### onBuildComplete
-build 完成时。传入的 fn 接收 `{ isFirstCompile: boolean, stats, time: number, err?: Error }` 作为参数。
+When build is completed. The passed `fn` receives `{ isFirstCompile: boolean, stats, time: number, err?: Error }` as parameters.
 
 ### onBuildHtmlComplete
-build 完成且 html 完成构建之后。
+After build is completed and HTML is built.
 
 ### onCheck
-检查时，在 onStart 之前执行。传入的 fn 不接收任何参数
+During checking, executed before `onStart`. The passed `fn` doesn't receive any parameters.
 
 ### onCheckCode
-检查代码时。传入的 fn 接收的参数接口如下：
+During code checking. The passed `fn` receives the following parameter interface:
 ```ts
 args: {
   file: string;
@@ -551,13 +553,13 @@ args: {
 ```
 
 ### onCheckConfig
-检查 config 时。传入的 fn 接收 `{ config, userConfig }`作为参数，它们分别表示实际的配置和用户的配置。
+During checking configuration. The passed `fn` receives `{ config, userConfig }` as parameters, where they represent the actual configuration and the user's configuration respectively.
 
 ### onCheckPkgJSON
-检查 package.json 时。传入的 fn 接收 `{origin?, current}` 作为参数。它们的类型都是 package.json 对象
+During checking package.json. The passed `fn` receives `{origin?, current}` as parameters. Both are package.json objects.
 
 ### onDevCompileDone
-dev 完成时。传入的 fn 接收的参数接口如下：
+When dev is completed. The passed `fn` receives the following parameter interface:
 ```ts
 args: {
   isFirstCompile: boolean;
@@ -567,7 +569,7 @@ args: {
 ```
 
 ### onGenerateFiles
-生成临时文件时，随着文件变化会频繁触发，有缓存。 传入的 fn 接收的参数接口如下：
+When generating temporary files, this event can trigger frequently due to file changes, and it is cached. The passed `fn` receives the following parameter interface:
 ```ts
 args: {
   isFirstTime?: boolean;
@@ -580,52 +582,54 @@ args: {
 
 
 ### onPatchRoute
-匹配单个路由，可以修改路由，给路由打补丁
+Matches a single route and can modify the route, applying patches to it.
 
 
 ### onPkgJSONChanged
-package.json 变更时。传入的 fn 接收 `{origin?, current}` 作为参数。它们的类型都是 package.json 对象
+When package.json changes. The passed `fn` receives `{origin?, current}` as parameters. Both are package.json objects.
 
 ### onPrepareBuildSuccess
 
 ### onStart
-启动时。传入的 fn 不接收任何参数。
+When starting. The passed `fn` doesn't receive any parameters.
 
 
 ### writeTmpFile
-`api.writeTmpFile()`的 type 参数的类型。
+The type of the `type` parameter for `api.writeTmpFile()`.
 
-- content: 写入的文本内容，有内容就不会使用模板。
-- context: 模板上下文。
-- noPluginDir: 是否使用插件名做为目录。
-- path: 写入文件的路径。
-- tpl: 使用模板字符串，没有模板路径会使用它。
-- tplPath: 使用模板文件的路径。
+- `content`: The text content to write, if provided, the template won't be used.
+- `context`: The template context.
+- `noPluginDir`: Whether to use the plugin name as a directory.
+- `path`: The path to write the file.
+- `tpl`: Use a template string, if no template path is provided.
+- `tplPath`: Use a template file path.
 
 
-## 属性
-从 api 可以直接访问到的属性，这些属性有一部分来自于 service
+## Properties
+Attributes that can be directly accessed from the `api`, some of which come from the `service`.
 
 ### appData
 
 ### args
-命令行参数，这里去除了命令本身。
+Command-line arguments, excluding the command itself.
 
 e.g.
-- `$ umi dev --foo`,  args 为 `{ _:[], foo: true }`
-- `$ umi g page index --typescript --less` , args 为 `{ _: [ 'page', 'index''], typescript: true, less: true }`
+- `$ umi dev --foo`,
+
+ args are `{ _:[], foo: true }`
+- `$ umi g page index --typescript --less`, args are `{ _: [ 'page', 'index''], typescript: true, less: true }`
 
 ### config
-最终的配置（取决于你访问的时机，可能是当前收集到的最终配置）
+Final configuration (depends on the context of access, possibly the current collected final configuration).
 
 ### cwd
-当前路径
+Current working directory.
 
 ### env
-即 `process.env.NODE_ENV` 可能有 `development`、`production` 和 `test`
+Equivalent to `process.env.NODE_ENV`, can be `development`, `production`, or `test`.
 
 ### logger
-插件日志对象，包含 `{ log, info, debug, error, warn, profile }`，他们都是方法。其中 `api.logger.profile` 可用于性能耗时记录。
+Plugin logging object, containing `{ log, info, debug, error, warn, profile }`, all of which are methods. `api.logger.profile` can be used for profiling performance time.
 
 ```ts
 api.logger.profile('barId');
@@ -636,60 +640,60 @@ setTimeout(() => {
 ```
 
 ### name
-当前命令的名称，例如 `$ umi dev `， `name` 就是 `dev`
+Name of the current command, for example, `$ umi dev `, `name` is `dev`.
 
 ### paths
-项目相关的路径：
-- `absNodeModulesPath`，node_modules 目录绝对路径
-- `absOutputPath`，输出路径，默认是 ./dist
-- `absPagesPath`，pages 目录绝对路径
-- `absSrcPath`，src 目录绝对路径，需注意 src 目录是可选的，如果没有 src 目录，absSrcPath 等同于 cwd
-- `absTmpPath`，临时目录绝对路径
-- `cwd`，当前路径
+Project-related paths:
+- `absNodeModulesPath`: Absolute path to the node_modules directory.
+- `absOutputPath`: Output path, default is `./dist`.
+- `absPagesPath`: Absolute path to the pages directory.
+- `absSrcPath`: Absolute path to the src directory. Note that the src directory is optional. If there's no src directory, `absSrcPath` is the same as `cwd`.
+- `absTmpPath`: Absolute path to the temporary directory.
+- `cwd`: Current working directory.
 
-注意： 注册阶段不能获取到。因此不能在插件里直接获取，要在 hook 里使用。
+Note: Cannot be accessed during the registration stage. So, it can't be directly accessed in plugins, only in hooks.
 
 ### pkg
-当前项目的 `package.json` 对象
+`package.json` object of the current project.
 
 ### pkgPath
-当前项目的 `package.json` 的绝对路径。
+Absolute path to the `package.json` of the current project.
 
 ### plugin
-当前插件的对象。
-- `type` 插件类型，有 preset 和 plugin 两种
-- `path` 插件路径
-- `id` 插件 id
-- `key` 插件 key
-- `config` 插件的配置
-- `enableBy` 插件的启用方式
+Object of the current plugin.
+- `type`: Plugin type, either preset or plugin.
+- `path`: Plugin path.
+- `id`: Plugin id.
+- `key`: Plugin key.
+- `config`: Plugin configuration.
+- `enableBy`: Plugin enable method.
 
-注意： 注册阶段使用的 plugin 对象是你 `describe` 之前的对象。
+Note: The plugin object used during the registration stage is the one before your `describe`.
 
 ### service
-Umi 的 `Service` 实例。通常不需要用到，除非你知道为什么。
+Umi's `Service` instance. Generally not needed unless you know why.
 
 ### userConfig
-用户的配置，从 `.umirc` 或 `config/config` 中读取的内容，没有经过 defaultConfig 以及插件的任何处理。可以在注册阶段使用。
+User's configuration, read from `.umirc` or `config/config`, without any processing from defaultConfig or plugins. Can be used during the registration stage.
 
 ### ApplyPluginsType
-`api.applyPlugins()` 的 type 参数的类型。包含
-- add
-- modify
-- event
+Type parameter for `api.applyPlugins()`. Contains:
+- `add`
+- `modify`
+- `event`
 
 ### ConfigChangeType
-为 `api.describe()` 提供 `config.onChange` 的类型，目前包含两种：
-- restart，重启 dev 进程，是默认值
-- regenerateTmpFiles，重新生成临时文件
+Type for `config.onChange` in `api.describe()`, currently contains two types:
+- `restart`, restart the dev process (default).
+- `regenerateTmpFiles`, regenerate temporary files.
 
 ### EnableBy
-插件的启用方式，包含三种：
-- register
-- config
+Plugin enable method, contains three methods:
+- `register`
+- `config`
 
 ### ServiceStage
-Umi service 的运行阶段。有如下阶段：
+Umi service run stages. Contains stages like:
 - uninitialized
 - init
 - initPresets
