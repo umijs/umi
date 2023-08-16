@@ -86,7 +86,7 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
   } catch (err) {
     logger.error(`Pre-render ${path} error: ${err}`);
     if (!notThrow) {
-      process.exit(1);
+      throw err;
     }
   }
 
