@@ -59,7 +59,7 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
  */
 async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
   const {
-    exportStatic: { notThrow = false },
+    exportStatic: { ignorePreRenderError = false },
   } = api.config;
   markupRender ??= require(absServerBuildPath(api))._markupGenerator;
 
@@ -85,7 +85,7 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
     logger.info(`Pre-render for ${path}`);
   } catch (err) {
     logger.error(`Pre-render ${path} error: ${err}`);
-    if (!notThrow) {
+    if (!ignorePreRenderError) {
       throw err;
     }
   }
@@ -132,7 +132,7 @@ export default (api: IApi) => {
               zod.function(),
               zod.array(zod.string()),
             ]),
-            notThrow: zod.boolean().default(false),
+            ignorePreRenderError: zod.boolean().default(false),
           })
           .deepPartial(),
     },

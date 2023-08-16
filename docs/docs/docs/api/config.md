@@ -585,7 +585,7 @@ export default {
 
 ## exportStatic
 
-- 类型：`{ extraRoutePaths: IUserExtraRoute[] | (() => IUserExtraRoute[] | Promise<IUserExtraRoute[]>) }`
+- 类型：`{ extraRoutePaths: IUserExtraRoute[] | (() => IUserExtraRoute[] | Promise<IUserExtraRoute[]>), ignorePreRenderError: boolean }`
 - 默认值：`undefined`
 
 开启该配置后会针对每个路由单独输出 HTML 文件，通常用于静态站点托管。例如项目有如下路由：
@@ -654,6 +654,17 @@ export default {
 }
 ```
 
+`exportStatic` 在搭配 `ssr` 使用时会进行预渲染，在预渲染失败时会抛出异常并终止构建，可以通过配置 `ignorePreRenderError` 来忽略预渲染失败的错误，例如：
+
+```ts
+// .umirc.ts
+export default {
+  exportStatic: {
+    // 忽略预渲染失败的错误
+    ignorePreRenderError: true,
+  },
+}
+```
 
 ## favicons
 
