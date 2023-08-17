@@ -576,6 +576,8 @@ qiankun: {
 
 当您使用 antd 作为项目组件库时，可以向子应用传入 `autoCaptureError` 属性以开启子应用错误捕获能力，插件将会自动调用 antd 的 [`<Result />` 组件](https://ant.design/components/result-cn/)作为错误捕获组件。
 
+如（文案语言会自动读取 umi locale 配置切换）：<img src="https://mdn.alipayobjects.com/huamei_zvchwx/afts/img/A*gAAVRrAJJNEAAAAAAAAAAAAADuWEAQ/original">
+
 如果通过路由的模式引入子应用，可以配置如下：
 
 ```ts
