@@ -7,6 +7,8 @@ const devToolAppDist = join(__dirname, '../../../devToolAppDist');
 const assetsDir = join(__dirname, '../../../assets');
 
 export default (api: IApi) => {
+  if (process.env.OKAM) return;
+
   api.addBeforeMiddlewares(async () => {
     // get loading html
     const $ = await api.applyPlugins<typeof cheerio>({

@@ -54,7 +54,7 @@ export enum EnableBy {
 export interface IRoute {
   path: string;
   absPath: string;
-  file: string;
+  file?: string;
   id: string;
   parentId?: string;
   [key: string]: any;
@@ -99,10 +99,10 @@ export interface IAdd<T, U> {
   (args: {
     fn: {
       (args: T): Promise<U | U[]>;
-      name?: string;
-      before?: string | string[];
-      stage?: number;
     };
+    name?: string;
+    before?: string | string[];
+    stage?: number;
   }): void;
 }
 

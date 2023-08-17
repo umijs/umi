@@ -2,6 +2,7 @@ import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
+import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
 import { PluginManager } from '{{{ umiPluginPath }}}';
 import createRequestHandler, { createMarkupGenerator } from '{{{ umiServerPath }}}';
 
@@ -50,6 +51,7 @@ const createOpts = {
   getClientRootComponent,
   helmetContext,
   createHistory,
+  ServerInsertedHTMLContext,
 };
 const requestHandler = createRequestHandler(createOpts);
 

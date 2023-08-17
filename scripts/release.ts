@@ -1,10 +1,7 @@
-// import { getReleaseNotes } from '@/scripts/utils/getReleaseNotes';
 import * as logger from '@umijs/utils/src/logger';
 import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
-// import open from 'open';
 import { join } from 'path';
-// import qs from 'qs';
 import rimraf from 'rimraf';
 import 'zx/globals';
 import { PATHS } from './.internal/constants';
@@ -76,13 +73,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // build packages
   logger.event('build packages');
   await $`npm run build:release`;
-  // await $`npm run build:extra`;
-  //
-  // logger.event('check client code change');
-  // const isGitCleanAfterClientBuild = (
-  //   await $`git status --porcelain`
-  // ).stdout.trim().length;
-  // assert(!isGitCleanAfterClientBuild, 'client code is updated');
 
   // bump version
   logger.event('bump version');
@@ -141,21 +131,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('pnpm publish');
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
-  // const canReleaseNotes = !['canary', 'rc', 'beta', 'alpha'].find((item) =>
-  //   version.includes(item),
-  // );
-  // FIXME: getReleaseNotes don't work with 404 error
-  // if (false && canReleaseNotes) {
-  // // get release notes
-  // logger.event('get release notes');
-  // const { releaseNotes } = await getReleaseNotes(version);
-  // // generate changelog
-  // logger.event('generate changelog');
-  // generateChangelog(releaseNotes);
-  // // release by GitHub
-  // logger.event('release by github');
-  // releaseByGithub(releaseNotes, version);
-  // }
 
   // check 2fa config
   let otpArg: string[] = [];
@@ -183,42 +158,4 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   await $`cd packages/max && pnpm publish --no-git-checks --tag ${tag} ${otpArg}`;
   logger.info(`+ @umijs/max`);
   $.verbose = true;
-
-  // sync tnpm
-  logger.event('sync tnpm');
-  $.verbose = false;
-  await Promise.all(
-    pkgs.map(async (pkg) => {
-      const { name } = require(path.join(PATHS.PACKAGES, pkg, 'package.json'));
-      logger.info(`sync ${name}`);
-      await $`tnpm sync ${name}`;
-    }),
-  );
-  $.verbose = true;
 })();
-
-// function releaseByGithub(releaseNotes: string, version: string) {
-//   const releaseParams = {
-//     tag: version,
-//     title: `v${version}`,
-//     body: releaseNotes,
-//     prerelease: false,
-//   };
-//   open(
-//     `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParams)}`,
-//   );
-// }
-
-// function generateChangelog(releaseNotes: string) {
-//   const CHANGELOG_PATH = join(PATHS.ROOT, 'TMP_CHANGELOG.md');
-//   const hasFile = fs.existsSync(CHANGELOG_PATH);
-//   let newStr = '';
-//   if (hasFile) {
-//     const str = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
-//     const arr = str.split('# umi changelog');
-//     newStr = `# umi changelog\n\n${releaseNotes}${arr[1]}`;
-//   } else {
-//     newStr = `# umi changelog\n\n${releaseNotes}`;
-//   }
-//   fs.writeFileSync(CHANGELOG_PATH, newStr);
-// }

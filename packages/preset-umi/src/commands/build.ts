@@ -127,6 +127,9 @@ umi build --clean
       let stats: any;
       if (api.config.vite) {
         stats = await bundlerVite.build(opts);
+      } else if (process.env.OKAM) {
+        const { build } = require(process.env.OKAM);
+        stats = await build(opts);
       } else {
         // Measure files sizes before build
         const absOutputPath = resolve(

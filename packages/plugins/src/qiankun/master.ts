@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -16,6 +17,15 @@ export function isMasterEnable(opts: { userConfig: any }) {
     return masterCfg.enable !== false;
   }
   return !!process.env.INITIAL_QIANKUN_MASTER_OPTIONS;
+}
+
+function getCustomLoader(api: IApi) {
+  const loader = api.config.qiankun?.master?.loader;
+  assert(
+    !loader || loader.startsWith?.('@/'),
+    '[@umijs/plugin-qiankun]: loader only support root path, eg: @/loading',
+  );
+  return loader;
 }
 
 export default (api: IApi) => {
@@ -113,10 +123,13 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
 
     api.writeTmpFile({
       path: 'MicroAppLoader.tsx',
-      // 开启了 antd 插件的时候，使用 antd 的 loader 组件，否则提示用户必须设置一个自定义的 loader 组件
-      content: api.isPluginEnable('antd')
+      content: getCustomLoader(api)
+        ? // 用户自定义的 loading 优先级最高
+          `export { default } from '${getCustomLoader(api)}';`
+        : api.isPluginEnable('antd')
         ? getFileContent('AntdLoader.tsx')
-        : `export default function Loader() { console.warn(\`[plugins/qiankun]: Seems like you'r not using @umijs/plugin-antd, you need to provide a custom loader or set autoSetLoading false to shut down this warning!\`); return null; }`,
+        : // 开启了 antd 插件的时候，使用 antd 的 loader 组件，否则提示用户必须设置一个自定义的 loader 组件
+          `export default function Loader() { console.warn(\`[plugins/qiankun]: Seems like you'r not using @umijs/plugin-antd, you need to provide a custom loader or set autoSetLoading false to shut down this warning!\`); return null; }`,
     });
 
     [

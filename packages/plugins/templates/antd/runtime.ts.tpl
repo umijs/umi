@@ -1,14 +1,15 @@
 import React from 'react';
 import {
   Modal,
-{{#configProvider}}
   ConfigProvider,
-{{/configProvider}}
 {{#appConfig}}
   App,
 {{/appConfig}}
   message,
   notification,
+{{#enableV5ThemeAlgorithm}}
+  theme,
+{{/enableV5ThemeAlgorithm}}
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
 {{#styleProvider}}
@@ -47,6 +48,7 @@ export function rootContainer(rawContainer) {
     ...finalConfigProvider
   } = getAntdConfig();
   let container = rawContainer;
+
 {{#configProvider}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
@@ -76,6 +78,26 @@ export function rootContainer(rawContainer) {
 
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
+
+{{#enableV5ThemeAlgorithm}}
+  // Add token algorithm for antd5 only
+  container = (
+    <ConfigProvider
+      theme={({
+        algorithm: [
+          {{#enableV5ThemeAlgorithm.compact}}
+          theme.compactAlgorithm,
+          {{/enableV5ThemeAlgorithm.compact}}
+          {{#enableV5ThemeAlgorithm.dark}}
+          theme.darkAlgorithm,
+          {{/enableV5ThemeAlgorithm.dark}}
+        ],
+      })}
+    >
+      {container}
+    </ConfigProvider>
+  );
+{{/enableV5ThemeAlgorithm}}
 
 {{#styleProvider}}
   container = (

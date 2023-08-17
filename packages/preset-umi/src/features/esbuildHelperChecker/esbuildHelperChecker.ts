@@ -72,6 +72,7 @@ export default (api: IApi) => {
   });
 
   api.onBuildComplete(async ({ err }) => {
+    if (process.env.OKAM) return;
     if (err) return;
     const jsMinifier = api.config.jsMinifier || 'esbuild';
     if (jsMinifier !== 'esbuild') return;

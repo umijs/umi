@@ -24,6 +24,7 @@ export default (api: IApi) => {
   } catch (e) {}
 
   const isV5 = antdVersion.startsWith('5');
+  const isV4 = antdVersion.startsWith('4');
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
@@ -97,7 +98,7 @@ export default (api: IApi) => {
     memo.alias.antd = pkgPath;
 
     // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
-    if (antdVersion.startsWith('5')) {
+    if (isV5) {
       const theme = require('@ant-design/antd-theme-variable');
       memo.theme = {
         ...theme,
@@ -114,27 +115,25 @@ export default (api: IApi) => {
       }
     }
 
-    // dark mode & compact mode
-    if (antd.dark || antd.compact) {
-      const { getThemeVariables } = require('antd/dist/theme');
+    // 只有 antd@4 才需要将 compact 和 dark 传入 less 变量
+    if (isV4) {
+      if (antd.dark || antd.compact) {
+        const { getThemeVariables } = require('antd/dist/theme');
+        memo.theme = {
+          ...getThemeVariables(antd),
+          ...memo.theme,
+        };
+      }
+
       memo.theme = {
-        ...getThemeVariables(antd),
+        'root-entry-name': 'default',
         ...memo.theme,
       };
     }
 
-    // antd theme
-    memo.theme = {
-      'root-entry-name': 'default',
-      ...memo.theme,
-    };
-
     // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
     if (antd.theme) {
-      assert(
-        antdVersion.startsWith('5'),
-        `antd.theme is only valid when antd is 5`,
-      );
+      assert(isV5, `antd.theme is only valid when antd is 5`);
       antd.configProvider ??= {};
       // priority: antd.theme > antd.configProvider.theme
       antd.configProvider.theme = deepmerge(
@@ -178,26 +177,23 @@ export default (api: IApi) => {
 
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
-    // only enable style for non-antd@5
-    const style = isV5 ? false : api.config.antd.style || 'less';
+    const style = api.config.antd.style || 'less';
 
-    return api.config.antd.import && !api.appData.vite
-      ? [
-          [
-            require.resolve('babel-plugin-import'),
-            {
-              libraryName: 'antd',
-              libraryDirectory: 'es',
-              ...(style
-                ? {
-                    style: style === 'less' || 'css',
-                  }
-                : {}),
-            },
-            'antd',
-          ],
-        ]
-      : [];
+    if (api.config.antd.import && !api.appData.vite) {
+      return [
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            libraryName: 'antd',
+            libraryDirectory: 'es',
+            ...(isV5 ? {} : { style: style === 'less' || 'css' }),
+          },
+          'antd',
+        ],
+      ];
+    }
+
+    return [];
   });
 
   // antd config provider & app component
@@ -205,6 +201,8 @@ export default (api: IApi) => {
     const withConfigProvider = !!api.config.antd.configProvider;
     const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
     const styleProvider = api.config.antd.styleProvider;
+    const userInputCompact = api.config.antd.compact;
+    const userInputDark = api.config.antd.dark;
 
     // Hack StyleProvider
 
@@ -246,6 +244,11 @@ export default (api: IApi) => {
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
         styleProvider: styleProviderConfig,
+        // 是否启用了 v5 的 theme algorithm
+        enableV5ThemeAlgorithm:
+          isV5 && (userInputCompact || userInputDark)
+            ? { compact: userInputCompact, dark: userInputDark }
+            : false,
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
@@ -301,13 +304,12 @@ export type IRuntimeConfig = {
   });
 
   api.addEntryImportsAhead(() => {
-    const isAntd5 = antdVersion.startsWith('5');
     const style = api.config.antd.style || 'less';
     const imports: Awaited<
       ReturnType<Parameters<IApi['addEntryImportsAhead']>[0]['fn']>
     > = [];
 
-    if (isAntd5) {
+    if (isV5) {
       // import antd@5 reset style
       imports.push({ source: 'antd/dist/reset.css' });
     } else if (!api.config.antd.import || api.appData.vite) {

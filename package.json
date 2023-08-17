@@ -23,11 +23,8 @@
     "didyouknow:build": "pnpm --filter @umijs/did-you-know build",
     "didyouknow:dev": "pnpm --filter @umijs/did-you-know dev",
     "didyouknow:release": "pnpm --filter @umijs/did-you-know release",
-    "doc:build": "pnpm doc:deps && umi build",
-    "doc:deps": "pnpm doc:deps-ts && pnpm doc:deps-extra",
-    "doc:deps-extra": "umi-scripts turbo build:extra --filter @umijs/plugin-docs...",
-    "doc:deps-ts": "umi-scripts turbo build --filter @umijs/plugin-docs...",
-    "doc:dev": "umi dev",
+    "doc:build": "pnpm --filter @umijs/docs build",
+    "doc:dev": "pnpm --filter @umijs/docs dev",
     "format": "prettier --cache --write .",
     "format:docs": "prettier --cache 'docs/**/*.{md,mdx}' --write --ignore-path .gitignore --ignore-unknown",
     "format:plugin-docs": "prettier --cache 'packages/plugin-docs/**/*' --write --ignore-unknown",
@@ -62,8 +59,8 @@
   "devDependencies": {
     "@iconify-json/ant-design": "1",
     "@iconify-json/fa": "1",
-    "@pnpm/lockfile-file": "^5.0.3",
-    "@pnpm/logger": "^4.0.0",
+    "@pnpm/lockfile-file": "^8.1.1",
+    "@pnpm/logger": "^5.0.0",
     "@types/fs-extra": "^11.0.1",
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
@@ -120,10 +117,10 @@
     "umi-scripts": "workspace:*",
     "zx": "^7.1.1"
   },
-  "packageManager": "pnpm@8.1.0",
+  "packageManager": "pnpm@8.6.2",
   "engines": {
     "node": ">=14",
-    "pnpm": ">=8"
+    "pnpm": "^8.6.2"
   },
   "//why-overrides-browserslist": "See scripts/bundleDeps.ts",
   "pnpm": {
