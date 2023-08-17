@@ -183,7 +183,7 @@ export interface IRuntimeConfig {
   api.chainWebpack((config) => {
     assert(api.pkg.name, 'You should have name in package.json.');
     // 默认不修改 library chunk 的 name，从而确保可以通过 window[appName] 访问到导出
-    const { shouldNotAddLibraryChunkName = true } = (api.config.qiankun || {}).slave!;
+    const { shouldNotAddLibraryChunkName } = (api.config.qiankun || {}).slave!;
     config.output
       .libraryTarget('umd')
       .library(
