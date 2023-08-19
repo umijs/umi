@@ -143,14 +143,11 @@ export default defineConfig({
               title: 'MPA 模式',
               link: 'docs/guides/mpa',
             },
-            {
-              title: 'MFSU',
-              link: 'docs/guides/mfsu',
-            },
-            {
-              title: '配置文件格式约定',
-              link: 'docs/guides/config-convention',
-            },
+            // 暂不开放
+            // {
+            //   title: 'MFSU',
+            //   link: 'docs/guides/mfsu',
+            // },
           ],
         },
       ],
