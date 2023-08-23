@@ -60,6 +60,18 @@ describe('QianKun Plugin', () => {
 
       cy.contains('goto slave app2');
     });
+    it('mount with /prefix should ignore childapp.config.base manual-slave', () => {
+      cy.visit('/prefix/basename');
+      cy.get('a')
+        .should('have.attr', 'href', '/prefix/')
+        .should('not.have.attr', 'href', '/manual-slave/');
+    });
+    it('mount with /* should ignore childapp.config.base manual-slave', () => {
+      cy.visit('/basename');
+      cy.get('a')
+        .should('have.attr', 'href', '/')
+        .should('not.have.attr', 'href', '/manual-slave');
+    });
   });
 
   describe('MicroAppLink crossing multi apps', function () {
