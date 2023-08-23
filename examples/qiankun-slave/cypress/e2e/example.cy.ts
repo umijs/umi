@@ -70,7 +70,7 @@ describe('QianKun Plugin', () => {
       cy.visit('/basename');
       cy.get('a')
         .should('have.attr', 'href', '/')
-        .should('not.have.attr', 'href', '/manual-slave');
+        .should('not.have.attr', 'href', '/manual-slave/');
     });
   });
 
