@@ -73,75 +73,75 @@ export default defineConfig({
             },
             {
               title: '开发环境',
-              link: 'docs/guides/prepare',
+              link: '/docs/guides/prepare',
             },
             {
               title: '目录结构',
-              link: 'docs/guides/directory-structure',
+              link: '/docs/guides/directory-structure',
             },
             {
               title: '路由',
-              link: 'docs/guides/routes',
+              link: '/docs/guides/routes',
             },
             {
               title: '插件',
-              link: 'docs/guides/use-plugins',
+              link: '/docs/guides/use-plugins',
             },
             {
               title: 'Mock',
-              link: 'docs/guides/mock',
+              link: '/docs/guides/mock',
             },
             {
               title: '代理',
-              link: 'docs/guides/proxy',
+              link: '/docs/guides/proxy',
             },
             {
               title: '样式',
-              link: 'docs/guides/styling',
+              link: '/docs/guides/styling',
             },
             {
               title: '路由数据加载',
-              link: 'docs/guides/client-loader',
+              link: '/docs/guides/client-loader',
             },
             {
               title: 'TypeScript',
-              link: 'docs/guides/typescript',
+              link: '/docs/guides/typescript',
             },
             {
               title: '环境变量',
-              link: 'docs/guides/env-variables',
+              link: '/docs/guides/env-variables',
             },
             {
               title: '脚手架',
-              link: 'docs/guides/boilerplate',
+              link: '/docs/guides/boilerplate',
             },
             {
               title: '微生成器',
-              link: 'docs/guides/generator',
+              link: '/docs/guides/generator',
             },
             {
               title: '编码规范',
-              link: 'docs/guides/lint',
+              link: '/docs/guides/lint',
             },
             {
               title: '调试',
-              link: 'docs/guides/debug',
+              link: '/docs/guides/debug',
             },
             {
               title: '测试',
-              link: 'docs/guides/test',
+              link: '/docs/guides/test',
             },
             {
               title: '开发插件',
-              link: 'docs/guides/plugins',
+              link: '/docs/guides/plugins',
             },
             {
               title: '使用 Vue',
-              link: 'docs/guides/use-vue',
+              link: '/docs/guides/use-vue',
             },
             {
               title: 'MPA 模式',
-              link: 'docs/guides/mpa',
+              link: '/docs/guides/mpa',
             },
           ],
         },
