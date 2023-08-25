@@ -15,6 +15,10 @@ export const qiankun = {
         path: '/prefix',
         microApp: 'slave',
       },
+      {
+        path: '/*',
+        microApp: 'slave',
+      },
     ],
   },
 };
