@@ -220,7 +220,7 @@ export default (api: IApi) => {
 
       if (cssinjs) {
         styleProviderConfig = {
-          cssinjs,
+          cssinjs: winPath(cssinjs),
         };
 
         if (ieTarget) {
