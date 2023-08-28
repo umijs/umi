@@ -11,6 +11,10 @@ export default {
         colorPrimary: '#1DA57A',
       },
     },
+    styleProvider: {
+      hashPriority: 'high',
+      legacyTransformer: true,
+    },
     // dark: true,
     compact: true,
     /**
