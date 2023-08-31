@@ -113,16 +113,20 @@ export default (api: IApi) => {
     return memo;
   });
 
-  // use absolute path to types references in `npm/yarn` will cause case problems.
-  // https://github.com/umijs/umi/discussions/10947
-  const isFlattedDepsDir = [NpmClientEnum.npm, NpmClientEnum.yarn].includes(
-    api.appData.npmClient,
-  );
-
   api.onGenerateFiles(() => {
-    const PKG_TYPE_REFERENCE = `/// <reference types="${
+    // use absolute path to types references in `npm/yarn` will cause case problems.
+    // https://github.com/umijs/umi/discussions/10947
+    // https://github.com/umijs/umi/discussions/11570
+    const isFlattedDepsDir = [NpmClientEnum.npm, NpmClientEnum.yarn].includes(
+      api.appData.npmClient,
+    );
+    const PKG_TYPE_REFERENCE = `
+/// <reference types="${
       isFlattedDepsDir ? ANT_PRO_COMPONENT : resolvedPkgPath
-    }" />`;
+    }" />
+${isFlattedDepsDir ? '/// <reference types="antd" />' : ''}
+`.trimStart();
+
     const hasInitialStatePlugin = api.config.initialState;
     // Layout.tsx
     api.writeTmpFile({
