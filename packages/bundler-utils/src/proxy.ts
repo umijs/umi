@@ -32,8 +32,8 @@ export function createProxy(
         ...proxy,
         onProxyReq(proxyReq, req: any, res) {
           // add origin in request header
-          if (proxyReq.getHeader('origin')) {
-            proxyReq.setHeader('origin', new URL(proxy.target!)?.href || '');
+          if (proxy.changeOrigin && proxyReq.getHeader('origin')) {
+            proxyReq.setHeader('origin', new URL(proxy.target!)?.origin || '');
           }
           proxy.onProxyReq?.(proxyReq, req, res, proxy);
         },
