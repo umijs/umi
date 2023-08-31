@@ -220,7 +220,7 @@ export default (api: IApi) => {
 
       if (cssinjs) {
         styleProviderConfig = {
-          cssinjs,
+          cssinjs: winPath(cssinjs),
         };
 
         if (ieTarget) {
@@ -295,6 +295,7 @@ export type IRuntimeConfig = {
 
   api.addRuntimePlugin(() => {
     if (
+      api.config.antd.styleProvider ||
       api.config.antd.configProvider ||
       (appComponentAvailable && api.config.antd.appConfig)
     ) {

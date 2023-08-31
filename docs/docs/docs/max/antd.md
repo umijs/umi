@@ -131,7 +131,11 @@ export default {
 
 配置 `antd` 的 `StyleProvider` 组件，该组件用于兼容低版本浏览器，如 IE11。当你的项目配置了 `legacy` 或者 `targets` 包含 `ie` 时，会自动进行降级处理，不需要手动配置。
 
-**注意：该配置项仅 antd v5 及以上可用**
+**注意：**
+
+1. 该配置项仅 antd v5 及以上可用。
+
+2. 降级 CSS 需要依赖 [`@ant-design/cssinjs`](https://ant.design/docs/react/compatible-style-cn) ，若你显示安装了 `antd` ，请安装并确保你的 `@ant-design/cssinjs` 版本与 `antd` 正确对应。
 
 ### 运行时配置
 
