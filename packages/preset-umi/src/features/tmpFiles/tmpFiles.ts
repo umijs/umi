@@ -430,23 +430,27 @@ if (process.env.NODE_ENV === 'development') {
       key: 'addRuntimePlugin',
       initialValue: [api.appData.appJS?.path].filter(Boolean),
     });
-    const validKeys = await api.applyPlugins({
-      key: 'addRuntimePluginKey',
-      initialValue: [
-        'patchRoutes',
-        'patchClientRoutes',
-        'modifyContextOpts',
-        'modifyClientRenderOpts',
-        'rootContainer',
-        'innerProvider',
-        'i18nProvider',
-        'accessProvider',
-        'dataflowProvider',
-        'outerProvider',
-        'render',
-        'onRouteChange',
-      ],
-    });
+    const validKeys = [
+      ...new Set(
+        await api.applyPlugins({
+          key: 'addRuntimePluginKey',
+          initialValue: [
+            'patchRoutes',
+            'patchClientRoutes',
+            'modifyContextOpts',
+            'modifyClientRenderOpts',
+            'rootContainer',
+            'innerProvider',
+            'i18nProvider',
+            'accessProvider',
+            'dataflowProvider',
+            'outerProvider',
+            'render',
+            'onRouteChange'
+          ]
+        })
+      )
+    ];
     const appPluginRegExp = /(\/|\\)app.(ts|tsx|jsx|js)$/;
     api.writeTmpFile({
       noPluginDir: true,
