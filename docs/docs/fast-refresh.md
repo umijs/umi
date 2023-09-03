@@ -1,34 +1,30 @@
----
-translateHelp: true
----
+# Fast Refresh
 
-# 快速刷新（Fast Refresh）
+> Fast Refresh is an official React module hot-reloading (HMR) solution developed by React for React Native. Due to its platform-independent core implementation, it is also suitable for the web.
 
-> 快速刷新（Fast Refresh）是 React 官方为 React Native 开发的模块热替换（HMR）方案，由于其核心实现与平台无关，同时也适用于 Web。
+The most significant feature of Fast Refresh is that in a development environment, it can **preserve component state** and provide **instant feedback** when editing.
 
-Fast Refresh 功能最大的特性是：开发环境下，可以**保持组件状态**，同时编辑提供**即时反馈**。
+## How to Use?
 
-## 怎样使用？
+Simply add `fastRefresh: {}` to your [configuration file](/docs/config) to enable it.
 
-在[配置文件](/docs/config)加上 `fastRefresh: {}` 即可开启
-
-这张 gif 动图展示的是使用 Fast Refresh 特性的开发体验，可以看出，修改组件代码后，用户名和密码**状态保持**，这将提升应用本地研发体验。
+The GIF animation below demonstrates the development experience using the Fast Refresh feature. You can see that after modifying the component code, the username and password **retain their state**, which enhances the local development experience.
 
 ![](https://gw.alipayobjects.com/zos/antfincdn/B2biHHW6s%24/fast-refresh.gif)
 
-开发方式上与平时没有区别，正常地修改、保存、预览，只是在效果反馈上，体验更加好。
+In terms of development workflow, there is no difference from usual. You can edit, save, and preview as usual. The only distinction is the improved feedback experience.
 
-## 限制
+## Limitations
 
-有些情况下，维持状态并不是预期，所以为了可靠起见，Fast Refresh 遇到以下情况一概不保留状态（remount）：
+In some cases, maintaining state may not be the expected behavior. Therefore, to ensure reliability, Fast Refresh does not preserve state (remount) in the following situations:
 
-- Class 类组件一律重刷（remount），状态会被重置，包括高阶组件返回的 Class 组件
-- 不纯组件模块，所编辑的模块除导出 React 组件外，还导出了其它模块
-- 特殊的，还可以通过 `// @refresh reset` 指令（在源码文件中任意位置加上这行注释）强制重刷（remount），最大限度地保证可用性
+- All Class components are remounted, and their state is reset, including Class components returned by higher-order components.
+- Modules that are not pure components, meaning the edited module exports things other than React components.
+- In special cases, you can also force a remount (maximum availability guarantee) by adding the `// @refresh reset` comment line anywhere in the source code file.
 
-## 技巧
+## Tips
 
-推荐写函数命名组件，例如：
+It is recommended to give function components a name, for example:
 
 ✅ Good:
 
@@ -44,8 +40,8 @@ export default Foo;
 export default () => {};
 ```
 
-## FAQ
+## Frequently Asked Questions
 
 ### TypeError: Cannot read property 'forEach' of undefined
 
-Please check the version of the browser extension React DevTools, whether it is less than v4, and please upgrade to v4 version can be solved.[issue#6432](https://github.com/umijs/umi/issues/6432)
+Please check the version of the browser extension React DevTools. If it is below version v4, please upgrade to v4. This should resolve the issue. [issue#6432](https://github.com/umijs/umi/issues/6432)
