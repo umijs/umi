@@ -1,29 +1,22 @@
----
-translateHelp: true
----
+# Using Images
 
-# Use Image
+## Using Images in JavaScript
 
-
-## JS 里使用图片
-
-通过 require 引用相对路径的图片。
-
-比如：
+You can reference images with relative paths using `require` in JavaScript. For example:
 
 ```js
 export default () => <img src={require('./foo.png')} />
 ```
 
-支持别名，比如通过 `@` 指向 src 目录：
+Aliases are also supported, such as using `@` to point to the `src` directory:
 
 ```js
 export default () => <img src={require('@/foo.png')} />
 ```
 
-## JS 里使用svg
+## Using SVGs in JavaScript
 
-**组件式引入**
+**Component-Based Import**
 
 ```js
 import { ReactComponent as Logo } from './logo.svg'
@@ -33,7 +26,7 @@ function Analysis() {
 }
 ```
 
-**url式引入**
+**URL-Based Import**
 
 ```js
 import logoSrc from './logo.svg'
@@ -43,12 +36,9 @@ function Analysis() {
 }
 ```
 
+## Using Images in CSS
 
-## CSS 里使用图片
-
-通过相对路径引用。
-
-比如，
+You can reference images with relative paths in CSS. For example:
 
 ```css
 .logo {
@@ -56,7 +46,7 @@ function Analysis() {
 }
 ```
 
-CSS 里也支持别名，但需要在前面加 `~` 前缀，
+Aliases are also supported in CSS, but you need to prefix them with `~`. For example:
 
 ```css
 .logo {
@@ -64,26 +54,26 @@ CSS 里也支持别名，但需要在前面加 `~` 前缀，
 }
 ```
 
-注意：
+Please note:
 
-1. 这是 webpack 的规则，如果切到其他打包工具，可能会有变化
-2. less 中同样适用
+1. These rules are specific to Webpack. If you switch to another bundling tool, there may be differences.
+2. The same rules apply to Less as well.
 
-## 图片路径问题
+## Image Path Considerations
 
-项目中使用图片有两种方式，
+There are two ways to use images in your project:
 
-1. 先把图片传到 cdn，然后在 JS 和 CSS 中使用图片的绝对路径
-2. 把图片放在项目里，然后在 JS 和 CSS 中通过相对路径的方式使用
+1. Upload the images to a CDN and then use absolute paths to reference them in your JS and CSS.
+2. Place the images in your project and use relative paths in your JS and CSS.
 
-前者不会有任何问题；后者，如果在 JS 中引用相对路径的图片时，在发布时会根据 publicPath 绝对引入路径，所以就算没有开启 dynamicImport 时，也需要注意 publicPath 的正确性。
+The first approach should work without any issues. For the second approach, when referencing images with relative paths in JavaScript, they will be included with absolute paths in the build based on the `publicPath`. So, even if you haven't enabled `dynamicImport`, ensure that the `publicPath` is configured correctly.
 
-## Base64 编译
+## Base64 Encoding
 
-通过相对路径引入图片的时候，如果图片小于 10K，会被编译为 Base64，否则会被构建为独立的图片文件。
+When importing images with relative paths, images smaller than 10KB will be encoded as Base64. Otherwise, they will be built as separate image files.
 
-10K 这个阈值可以通过 [inlineLimit 配置](../config#inlinelimit)修改。
+You can modify the 10KB threshold using the [inlineLimit configuration](../config#inlinelimit).
 
-## 使用 CDN
+## Using CDN
 
 TODO
