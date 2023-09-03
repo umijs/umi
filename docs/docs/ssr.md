@@ -2,56 +2,56 @@
 
 ## What is Server-Side Rendering?
 
-First, let's understand what it is and whether it fits our business scenario before deciding whether to use it.
+> First, let's understand what it is and whether it fits our business scenario before deciding whether to use it.
 
-Server-Side Rendering (SSR) refers to the process of rendering the HTML structure of a page on the server side, sending it to the browser, and then binding the state and events to make it a fully interactive page.
+Server-Side Rendering (SSR) is a page rendering technique where the HTML structure of a page is assembled on the **server side**, sent to the browser, and then the state and events are bound to it, turning it into a fully interactive page.
 
-This may sound a bit academic, so let's clarify it with two images.
+This might sound a bit academic, so let's make it clearer with two images.
 
 The first image illustrates the difference between a Single Page Application (SPA) and a server-side rendered (SSR) site when it comes to **social sharing**:
 
-![SPA vs. SSR for Social Sharing](https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png)
+![Social Sharing Difference](https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png)
 
-The second image shows the difference in **initial loading time** between SSR and CSR. SSR generally has a shorter time to the first byte (TTFB) because the corresponding content is already present when the HTML document is returned (see Network):
+The second image shows the difference in **initial load time** between SSR and CSR. SSR has less white screen time because it already has content when the HTML document returns (see Network):
 
-![SSR vs. CSR Initial Loading Time](https://user-images.githubusercontent.com/13595509/80308316-e74a3880-8800-11ea-9a20-2d9d153fe9d1.png)
+![Initial Load Time Difference](https://user-images.githubusercontent.com/13595509/80308316-e74a3880-8800-11ea-9a20-2d9d153fe9d1.png)
 
-From these two images, we can see that SSR is commonly used in the following two scenarios:
+Based on these two images, SSR is commonly used in the following two scenarios:
 
-1. **SEO Requirements**: Used for search engine indexing and social sharing, typically in frontend applications.
-2. **First Screen Rendering Performance**: Used when there are performance requirements for the initial rendering, especially on mobile devices or in low network conditions.
+1. **SEO Requirements**: It's used for search engine indexing and social sharing, typically in frontend applications.
+2. **Fast Initial Rendering**: It's used when there are requirements for fast initial rendering, often in mobile applications or under poor network conditions.
 
-In other words, if you are building a backend-heavy application (such as antd pro or admin dashboards), you should carefully consider whether to use SSR.
+> In other words, if you're building an admin or backend application (such as antd pro or a management dashboard), think carefully about whether to use SSR.
 
 ## What is Pre-rendering?
 
-Server-Side Rendering requires a backend server (usually Node.js) to be available. If you don't have a backend server but want to achieve the same benefits in the scenarios mentioned above, you can use **pre-rendering**.
+Server-Side Rendering requires a backend server (usually Node.js) to work. If you don't have a backend server but still want to achieve the goals mentioned above, you can use **pre-rendering**.
 
-The only difference between pre-rendering and server-side rendering is the **timing** of rendering. Server-Side Rendering renders when a user accesses the page (i.e., **server-side rendering**), and the data is usually the latest. Pre-rendering, on the other hand, renders during project build time, so the data may not be the latest (if real-time data is not required).
+The key difference between pre-rendering and server-side rendering is the **timing of rendering**. Server-side rendering happens when a user accesses the page (i.e., **server-side rendering**), and the data is generally the most up-to-date. Pre-rendering, on the other hand, occurs during project build time, and when a user accesses the page, the data might not be the most up-to-date (pre-rendering is suitable when data doesn't need to be real-time).
 
-Pre-rendering (Pre Render) performs rendering during project build, generating static HTML fragments. It doesn't require real-time compilation of HTML on a web server and is suitable for **static site generation**.
+Pre-rendering (Pre Render) involves rendering during the build process to generate static HTML fragments. It doesn't require real-time dynamic HTML compilation by a web server and is suitable for **static site generation**.
 
 ## Umi Server-Side Rendering Features
 
-Starting from Umi 2.8+, Umi had SSR capabilities. However, for newcomers, it had a relatively high learning curve.
+> As early as Umi 2.8+, Umi already had SSR capabilities, but it had a higher learning curve for newcomers.
 
-In Umi 3, significant optimizations and improvements have been made to SSR in line with real-world business scenarios, resulting in the following features:
+With Umi 3, significant optimizations and improvements have been made to SSR based on its specific business scenarios, offering the following features:
 
-- **Out of the Box**: SSR is built-in and can be easily enabled with a single command, `umi dev` for SSR preview, making development and debugging convenient.
-- **Server Framework Agnostic**: Umi does not tightly couple with server frameworks (e.g., [Egg.js](https://eggjs.org/), [Express](https://expressjs.com/), [Koa](https://koajs.com/)). It can be easily integrated with any framework or Serverless mode.
-- **Support for Application and Page-Level Data Pre-fetching**: Umi 3 continues the page data pre-fetching feature (getInitialProps) from Umi 2 to address the previous challenge of global data retrieval.
-- **Support for On-Demand Loading**: With `dynamicImport` enabled, Umi 3 loads corresponding resource files (CSS/JS) based on different routes.
-- **Built-In Pre-rendering**: Umi 3 includes pre-rendering functionality out of the box, no need to install additional plugins. When `ssr` and `exportStatic` are enabled, it compiles the rendered HTML during `umi build`.
-- **Support for Rendering Degradation**: Umi 3 prioritizes SSR but automatically falls back to Client-Side Rendering (CSR) if server-side rendering fails, without disrupting normal business processes.
-- **Support for Streaming Rendering**: Enabling `ssr: { mode: 'stream' }` enables streaming rendering, resulting in shorter [Time to First Byte (TTFB)](https://en.wikipedia.org/wiki/Time_to_first_byte) time compared to normal SSR.
-- **Compatible with Client-Side Dynamic Loading**: Umi 3 allows simultaneous use of SSR and dynamicImport (dynamic loading) without issues.
-- **Modular SSR Functionality**: Umi 3's built-in SSR functionality is sufficient for most use cases, but if it doesn't meet your needs or you want to customize the rendering method, you can do so through the provided API.
+- **Out of the Box**: SSR is built-in and can be easily enabled with a single command, `umi dev`, making development and debugging convenient.
+- **Server Framework Agnostic**: Umi doesn't couple with server frameworks like [Egg.js](https://eggjs.org/), [Express](https://expressjs.com/), or [Koa](https://koajs.com/). It can be integrated seamlessly with any framework or Serverless mode.
+- **Support for Data Pre-fetching at the Application and Page Level**: Umi 3 continues the page data pre-fetching (getInitialProps) feature from Umi 2 to solve the problem of fetching global data in the previous version.
+- **Support for Lazy Loading**: With `dynamicImport` enabled, Umi 3 will load corresponding resource files (CSS/JS) based on different routes.
+- **Built-in Pre-rendering**: Umi 3 includes pre-rendering functionality out of the box. You no longer need to install additional plugins. Simply enable `ssr` and `exportStatic`, and Umi will compile the rendered HTML during `umi build`.
+- **Support for Rendering Degradation**: Umi 3 prioritizes SSR. If server-side rendering fails, it automatically falls back to client-side rendering (CSR) without disrupting normal business processes.
+- **Support for Streaming Rendering**: Enabling `ssr: { mode: 'stream' }` allows streaming rendering, which results in shorter [TTFB](https://baike.baidu.com/item/TTFB) (Time To First Byte) times compared to normal SSR.
+- **Compatible with Client-Side Dynamic Loading**: In Umi 2, using both SSR and dynamicImport (dynamic loading) had some issues. In Umi 3, you can use them simultaneously.
+- **Modular SSR Features**: While Umi 3's built-in SSR features are quite comprehensive, if your requirements are not met or you want to customize the rendering method, you can do so using the provided APIs.
 
 ## Enabling Server-Side Rendering
 
 By default, server-side rendering is disabled. You need to enable it through configuration:
 
-```js
+```javascript
 export default {
   ssr: {},
 }
@@ -59,163 +59,213 @@ export default {
 
 ## Development
 
-Execute `umi dev`, access the page, and you'll see server-side rendering in action.
+Execute `umi dev` to access the page, and it will be server-side rendered.
 
 ![Server-Side Rendering in Development](https://user-images.githubusercontent.com/13595509/80309380-4743dd80-8807-11ea-9def-7bb43522dce3.png)
 
-> [How to Determine If the Current Page Is SSR or CSR?](#how-to-determine-if-the-current-page-is-ssr-or-csr)
+> [How to Determine Whether the Current Page Is SSR or CSR?](#how-to-determine-whether-the-current-page-is-ssr-or-csr)
 
-If you're using it alongside a backend framework during development, you can disable server-side rendering behavior in `umi dev` through configuration:
+If you're using it together with a backend framework in development mode, you can disable server-side rendering behavior under `umi dev` with the following configuration:
 
-```js
-
+```javascript
 export default {
   ssr: {
-    // Default is true
+    // Defaults to true
     devServerRender: false,
   },
-
-
 }
 ```
 
-## Configuration
+## Data Pre-fetching
 
-Umi 3's SSR configuration is simple and clear, and you can use a variety of options to meet your business needs.
+Data retrieval in server-side rendering differs from Single Page Applications (SPAs). To ensure that both the client and server have access to the same data, Umi 3 provides **page-level data pre-fetching**.
 
-The default configuration is as follows:
+### Page-Level Data Pre-fetching
 
-```js
-export default {
-  ssr: {
-    devServerRender: true,
-    mode: 'stream',
-  },
-}
-```
-
-- `devServerRender`: Determines whether server-side rendering is enabled during development. The default is `true`. If set to `false`, the server will not perform rendering during development, and it will be up to you to determine whether the current page is in CSR or SSR mode.
-- `mode`: The server-side rendering mode. The default is `'stream'`, which means streaming rendering is enabled. In streaming mode, the server renders and sends the HTML content in chunks as it's generated, resulting in a faster [Time to First Byte (TTFB)](https://en.wikipedia.org/wiki/Time_to_first_byte) compared to non-streaming mode. If you don't need streaming rendering, you can set it to `'normal'`.
-
-These configurations can be adjusted according to your needs.
-
-## How to Determine If the Current Page Is SSR or CSR?
-
-If `devServerRender` is enabled, you can use the following methods to determine whether the current page is in SSR or CSR mode:
-
-### 1. Use `window.G_USE_SSR` in JavaScript
-
-In JavaScript code, you can check the `window.G_USE_SSR` global variable to determine if the page is in SSR mode:
-
-```javascript
-if (window.G_USE_SSR) {
-  // Server-side rendering (SSR) mode
-} else {
-  // Client-side rendering (CSR) mode
-}
-```
-
-This variable is automatically set by Umi based on the SSR configuration.
-
-### 2. Use `isServer()` in JavaScript
-
-You can also use the `isServer()` function provided by Umi to check if the current code is running on the server side:
-
-```javascript
-import { isServer } from 'umi';
-
-if (isServer()) {
-  // Server-side rendering (SSR) mode
-} else {
-  // Client-side rendering (CSR) mode
-}
-```
-
-This function returns `true` if the code is running on the server side and `false` if it's running on the client side.
-
-### 3. Use `window.G_SSR_ENV` in Template
-
-In template files (e.g., JSX or EJS), you can check the `window.G_SSR_ENV` variable to determine if the page is in SSR mode:
+Each page may have its own data pre-fetching logic. Here, we retrieve the `getInitialProps` static method from the page component, which is then executed, and its result is injected into the page component's `props`. For example:
 
 ```jsx
-{window.G_SSR_ENV ? (
-  <div>Server-side rendering (SSR) mode</div>
-) : (
-  <div>Client-side rendering (CSR) mode</div>
-)}
+// pages/index.tsx
+import { IGetInitialProps } from 'umi';
+import React from 'react';
+
+const Home = (props) => {
+  const { data } = props;
+  return (
+    {/* <div>Hello World</div> */}
+    <div>{data.title}</div>
+  )
+}
+
+Home.getInitialProps = (async (ctx) => {
+  return Promise.resolve({
+    data: {
+      title: 'Hello World',
+    }
+  })
+}) as IGetInitialProps;
+
+/** You can also use a class component:
+class Home extends React.Component {
+  static getInitialProps = (async (ctx) => {
+    return Promise.resolve({
+      data: {
+        title: 'Hello World',
+      }
+    })
+  }) as IGetInitialProps;
+
+  render() {
+    const { data } = props;
+    return (
+      <div>{data.title}</
+
+div>
+    )
+  }
+}
+*/
+export default Home;
 ```
 
-This variable is automatically set by Umi based on the SSR configuration.
+> `getInitialProps` should be an `async` function. After switching to Umi 3, existing `getInitialProps` will work without any changes.
 
-These methods allow you to conditionally render content or execute code based on whether the page is in SSR or CSR mode, giving you control over the behavior of your application.
+#### Data Pre-fetching Execution Timing
 
-## Deployment
+- **Server Side**: In server-side rendering, `getInitialProps` is executed on the server side, and the result is sent to the client as part of the initial HTML.
 
-When deploying your Umi SSR application to production, you need to ensure that the server is properly configured to handle SSR requests. Here are the general steps for deploying a Umi SSR application:
+- **Client Side**: On the client side, `getInitialProps` is executed as a normal React lifecycle method (componentDidMount). It won't be executed during server-side rendering if `shouldPrefetch` is set to `false`. The data is passed to the component as `props`.
 
-1. **Build the Application**: Use the `umi build` command to build your Umi application. This command will generate the necessary files for production deployment.
+#### Data Pre-fetching in Detail
 
-```bash
-umi build
-```
+Let's break down how data pre-fetching works in Umi 3:
 
-2. **Set Up a Production Server**: You'll need a production server to host your Umi SSR application. This server can be based on Node.js or any other compatible environment.
+1. On the server side, when a user accesses a page, Umi 3 first routes the request to the appropriate page component.
 
-3. **Configure Server Routing**: Configure your production server to handle SSR requests. You'll typically need to create a server file that sets up routing and SSR rendering. In Umi, you can use the `umi.server.js` file for this purpose.
+2. If the page component has a `getInitialProps` method defined (it's optional), Umi 3 executes it and awaits the result.
 
-Here's an example of a simple Node.js server file for Umi SSR:
+3. Once the `getInitialProps` method completes (whether by resolving or rejecting the returned Promise), Umi 3 injects the result into the component's `props`.
+
+4. The page component is then rendered with the pre-fetched data on the server side. The HTML is sent to the browser.
+
+5. On the client side, when the browser receives the HTML, it also receives the pre-fetched data. The page component on the client side is rehydrated (React's term for initializing the component with existing data), and the data is used for rendering.
+
+6. On subsequent client-side navigations within the app, `getInitialProps` will be executed on the client side, not on the server side, unless `shouldPrefetch` is set to `false`.
+
+### API-Level Data Pre-fetching
+
+In addition to page-level data pre-fetching with `getInitialProps`, Umi 3 also supports **API-level data pre-fetching**. This allows you to fetch data in the layout component (or any component) that wraps your pages and share that data with multiple pages.
+
+API-level data pre-fetching can be achieved using the `getInitialProps` method in your layout component:
 
 ```javascript
-const express = require('express');
-const { createServer } = require('http');
-const { render } = require('@umijs/server');
-const { join } = require('path');
+// layouts/index.tsx
+import { IGetInitialProps } from 'umi';
 
-const app = express();
+const Layout: React.FC = ({ children }) => {
+  return (
+    <div>
+      {/* Your layout content */}
+      {children}
+    </div>
+  );
+};
 
-// Serve static files (e.g., CSS, JavaScript) from the "dist" directory
-app.use(express.static(join(__dirname, 'dist')));
+Layout.getInitialProps = async (ctx) => {
+  // Fetch data and return it as an object
+  const data = await fetchData();
 
-app.get('*', async (req, res) => {
-  const { error, html } = await render({
-    cwd: __dirname,
-    path: req.url,
-    getInitialPropsCtx: {},
-    mode: 'stream', // Use 'stream' mode for SSR
-  });
+  return { data };
+};
 
-  if (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  } else {
-    res.write(html);
-    res.end();
-  }
-});
-
-const server = createServer(app);
-
-const PORT = process.env.PORT || 3000;
-
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+export default Layout;
 ```
 
-4. **Set Environment Variables**: Configure any necessary environment variables for your production server, such as the port number and other server-specific settings.
+In this example, the `Layout` component fetches data using `getInitialProps` and makes it available to all child pages wrapped by this layout. Child pages can access this data through their own `getInitialProps` or by simply accessing it from `props`.
 
-5. **Start the Production Server**: Start your production server to make your Umi SSR application accessible to users.
+### Caching Data Pre-fetched on the Server
 
-6. **Deploy to Hosting Provider**: Deploy your production server and Umi SSR application to a hosting provider or server infrastructure of your choice. This could be a cloud hosting platform, a dedicated server, or a containerized environment, depending on your needs.
+To prevent redundant data fetching, you can use caching mechanisms when pre-fetching data on the server side. Caching helps improve the performance and efficiency of your SSR application.
 
-7. **Monitor and Optimize**: Monitor your SSR application in production and optimize it for performance, scalability, and reliability as needed.
+Here's a basic example of caching pre-fetched data using the popular `lru-cache` library:
 
-Keep in mind that the exact deployment process may vary depending on your hosting environment and requirements. Make sure to follow best practices for securing and maintaining your production server.
+```javascript
+// pages/index.tsx
+import { IGetInitialProps } from 'umi';
+import React from 'react';
+import LRU from 'lru-cache';
 
-## Conclusion
+const cache = new LRU({
+  max: 500, // Maximum cache size
+  maxAge: 1000 * 60 * 60, // Cache data for 1 hour
+});
 
-Server-Side Rendering (SSR) in Umi.js offers a powerful way to improve SEO, initial loading performance, and user experience in your React-based applications. It enables you to pre-render pages on the server side and deliver them as fully interactive HTML, making your content more accessible to search engines and users.
+const fetchData = async () => {
+  // Check if the data is in the cache
+  const cachedData = cache.get('data');
 
-By following the steps outlined in this guide, you can enable SSR in your Umi.js application, configure it for development and production, and deploy it to a production server. Whether you're building a single-page app or a complex web application, SSR can be a valuable tool in your toolkit for achieving better SEO and faster initial loading times.
+  if (cachedData) {
+    return cachedData;
+  }
 
-As you work with Umi SSR, be sure to explore its documentation and stay up-to-date with any updates or changes to the framework. Additionally, consider implementing best practices for SEO, performance optimization, and server-side rendering to get the most out of your SSR-enabled Umi.js application.
+  // Fetch the data if it's not in the cache
+  const response = await fetch('https://api.example.com/data');
+  const data = await response.json();
+
+  // Store the data in the cache
+  cache.set('data', data);
+
+  return data;
+};
+
+const Home = (props) => {
+  const { data } = props;
+  return (
+    <div>{data.title}</div>
+  );
+};
+
+Home.getInitialProps = async (ctx) => {
+  return {
+    data: await fetchData(),
+  };
+};
+
+export default Home;
+```
+
+In this example, we create a cache using `lru-cache` and use it to store fetched data. Before making a network request, we check if the data is already in the cache. If it is, we return the cached data; otherwise, we fetch it, store it in the cache, and return it.
+
+This caching mechanism helps reduce the load on your server and improves the response time for subsequent requests for the same data.
+
+Keep in mind that caching strategies may vary based on your specific requirements and the nature of your data. You can customize the caching logic to suit your needs.
+
+### Data Pre-fetching Pitfalls
+
+While data pre-fetching in server-side rendering is a powerful feature, it comes with some potential pitfalls and considerations:
+
+1. **Error Handling**: Ensure that you handle errors properly when fetching data in `getInitialProps`. If a data fetch fails on the server side, it can result in a failed SSR response. You should handle errors gracefully and possibly return default data or an error message to avoid breaking the entire page.
+
+2. **Data Hydration**: When pre-fetched data is passed to the client, make sure your client-side code can properly hydrate (initialize) components with this data. Mismatched data structures or unexpected null values can lead to client-side errors.
+
+3. **Data Fetching Redundancy**: Be mindful of redundant data fetching. Consider implementing caching strategies to avoid fetching the same data multiple times, both on the server and client sides.
+
+4. **Data Privacy**: Think about data privacy and security. Ensure that sensitive data is not exposed during server-side rendering and that any client-side data fetching adheres to security best practices.
+
+5. **Performance Impact**: Excessive or inefficient data pre-fetching can negatively impact performance. Be aware of the performance implications of your data fetching logic and optimize it as needed.
+
+6. **Client-Side Re-fetching**: By default, `getInitialProps` may re-fetch data on the client side when navigating between pages. If this behavior is not desired, consider using client-side state management or caching to avoid unnecessary data fetches.
+
+7. **Loading Indicators**: Implement loading indicators or placeholders to provide a better user experience while data is being fetched, especially on the client side.
+
+8. **Testing**: Test your data pre-fetching logic thoroughly to catch potential issues early. Pay attention to edge cases and error scenarios.
+
+9. **Documentation**: Document your data pre-fetching patterns and conventions, especially if multiple team members are working on the project. Clear documentation can help ensure consistency and reduce confusion.
+
+10. **Monitoring and Logging**: Implement monitoring and logging for data pre-fetching to track performance, detect errors, and troubleshoot issues in production.
+
+### Conclusion
+
+Data pre-fetching is a crucial aspect of server-side rendering in Umi 3. It enables you to fetch data on the server and include it in the initial HTML response, improving performance and SEO. By understanding the concepts and best
+
+ practices of data pre-fetching, you can build efficient and fast-rendering React applications with Umi 3.
