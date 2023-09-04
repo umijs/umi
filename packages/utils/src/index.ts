@@ -36,6 +36,7 @@ import installDeps from './installDeps';
 import * as logger from './logger';
 import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
+export * as prettier from '../compiled/prettier';
 export * as aliasUtils from './aliasUtils';
 export * from './getCorejsVersion';
 export * from './getDevBanner';

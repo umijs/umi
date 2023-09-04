@@ -605,6 +605,7 @@ package.json 变更时。传入的 fn 接收 `{origin?, current}` 作为参数�
 - path: 写入文件的路径。
 - tpl: 使用模板字符串，没有模板路径会使用它。
 - tplPath: 使用模板文件的路径。
+- format: 是否格式化文件。
 
 
 ## 属性
