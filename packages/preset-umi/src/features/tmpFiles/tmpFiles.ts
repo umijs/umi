@@ -430,27 +430,44 @@ if (process.env.NODE_ENV === 'development') {
       key: 'addRuntimePlugin',
       initialValue: [api.appData.appJS?.path].filter(Boolean),
     });
-    const validKeys = [
-      ...new Set(
-        await api.applyPlugins({
-          key: 'addRuntimePluginKey',
-          initialValue: [
-            'patchRoutes',
-            'patchClientRoutes',
-            'modifyContextOpts',
-            'modifyClientRenderOpts',
-            'rootContainer',
-            'innerProvider',
-            'i18nProvider',
-            'accessProvider',
-            'dataflowProvider',
-            'outerProvider',
-            'render',
-            'onRouteChange'
-          ]
-        })
-      )
-    ];
+
+    function checkDuplicatePluginKeys(arr: string[]) {
+      const duplicates: string[] = [];
+      arr.reduce((prev, curr) => {
+        if (prev[curr]) {
+          duplicates.push(curr);
+        } else {
+          prev[curr] = true;
+        }
+        return prev;
+      }, {} as { [k: string]: boolean });
+      if (duplicates.length) {
+        throw new Error(
+          `The plugin key cannot be duplicated. (${duplicates.join(', ')})`,
+        );
+      }
+    }
+
+    const validKeys = await api.applyPlugins({
+      key: 'addRuntimePluginKey',
+      initialValue: [
+        'patchRoutes',
+        'patchClientRoutes',
+        'modifyContextOpts',
+        'modifyClientRenderOpts',
+        'rootContainer',
+        'innerProvider',
+        'i18nProvider',
+        'accessProvider',
+        'dataflowProvider',
+        'outerProvider',
+        'render',
+        'onRouteChange',
+      ],
+    });
+
+    checkDuplicatePluginKeys(validKeys);
+
     const appPluginRegExp = /(\/|\\)app.(ts|tsx|jsx|js)$/;
     api.writeTmpFile({
       noPluginDir: true,
