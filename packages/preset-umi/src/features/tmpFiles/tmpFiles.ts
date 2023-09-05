@@ -433,14 +433,14 @@ if (process.env.NODE_ENV === 'development') {
 
     function checkDuplicatePluginKeys(arr: string[]) {
       const duplicates: string[] = [];
-      arr.reduce((prev, curr) => {
+      arr.reduce<{ [k: string]: boolean }>((prev, curr) => {
         if (prev[curr]) {
           duplicates.push(curr);
         } else {
           prev[curr] = true;
         }
         return prev;
-      }, {} as { [k: string]: boolean });
+      }, {});
       if (duplicates.length) {
         throw new Error(
           `The plugin key cannot be duplicated. (${duplicates.join(', ')})`,
