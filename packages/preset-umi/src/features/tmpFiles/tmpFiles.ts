@@ -433,7 +433,7 @@ if (process.env.NODE_ENV === 'development') {
 
     function checkDuplicatePluginKeys(arr: string[]) {
       const duplicates: string[] = [];
-      arr.reduce<{ [k: string]: boolean }>((prev, curr) => {
+      arr.reduce<Record<string, boolean>>((prev, curr) => {
         if (prev[curr]) {
           duplicates.push(curr);
         } else {
