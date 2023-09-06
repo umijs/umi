@@ -29,7 +29,6 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
     "@svgr/core": "6.5.1",
     "@svgr/plugin-jsx": "^6.5.1",
     "@svgr/plugin-svgo": "^6.5.1",
@@ -60,6 +59,7 @@
     "source-map": "0.7.3"
   },
   "devDependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
     "@swc/core": "1.3.67",
     "@types/cors": "^2.8.13",
     "@types/webpack-bundle-analyzer": "^4.6.0",
