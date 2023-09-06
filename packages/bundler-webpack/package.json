@@ -23,6 +23,7 @@
   "scripts": {
     "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
+    "build:deps:react-refresh-webpack-plugin": "pnpm tsx ./scripts/patchReactRefreshWebpackPlugin.ts",
     "dev": "umi-scripts father dev",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs",
     "test": "umi-scripts jest-turbo"
@@ -38,17 +39,25 @@
     "@umijs/case-sensitive-paths-webpack-plugin": "^1.0.1",
     "@umijs/mfsu": "workspace:*",
     "@umijs/utils": "workspace:*",
+    "ansi-html-community": "0.0.8",
+    "common-path-prefix": "3.0.0",
+    "core-js-pure": "3.23.3",
     "cors": "^2.8.5",
     "css-loader": "6.7.1",
+    "error-stack-parser": "2.0.6",
     "es5-imcompatible-versions": "^0.1.78",
+    "find-up": "5.0.0",
     "fork-ts-checker-webpack-plugin": "8.0.0",
+    "html-entities": "2.1.0",
     "jest-worker": "29.4.3",
     "lightningcss": "1.19.0",
+    "loader-utils": "2.0.4",
     "node-libs-browser": "2.2.1",
     "postcss": "^8.4.21",
     "postcss-preset-env": "7.5.0",
     "react-error-overlay": "6.0.9",
-    "react-refresh": "0.14.0"
+    "react-refresh": "0.14.0",
+    "source-map": "0.7.3"
   },
   "devDependencies": {
     "@swc/core": "1.3.67",
@@ -64,6 +73,7 @@
     "css-minimizer-webpack-plugin": "4.0.0",
     "cssnano": "5.1.7",
     "file-loader": "6.2.0",
+    "globby": "13.1.3",
     "less-loader": "11.1.0",
     "mini-css-extract-plugin": "2.7.2",
     "postcss-flexbugs-fixes": "5.0.2",

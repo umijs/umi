@@ -4,4 +4,5 @@ export default {
   routePrefetch: {},
   manifest: {},
   clientLoader: {},
+  mfsu: false,
 };
