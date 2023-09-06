@@ -24,7 +24,6 @@ export type MicroAppRoute = {
 
 export type MasterOptions = {
   enable?: boolean;
-  loader?: string;
   apps?: App[];
   routes?: MicroAppRoute[];
   lifeCycles?: FrameworkLifeCycles<object>;
@@ -38,6 +37,10 @@ export type MasterOptions = {
   appNameKeyAlias?: string;
   // 预加载应用阈值
   prefetchThreshold?: number;
+  // 子应用默认的错误捕获组件，值为文件路径
+  defaultErrorBoundary?: string;
+  // 子应用默认的加载动画，值为文件路径
+  defaultLoader?: string;
 } & FrameworkConfiguration;
 
 export type SlaveOptions = {
