@@ -550,7 +550,7 @@ export default function Page() {
 
 其中，`loading` 为 `boolean` 类型参数，为 `true` 时表示仍在加载状态，为 `false` 时表示加载状态已结束。
 
-如果项目中希望多个子应用使用用统一的自定义加载动画，可以通过在主应用配置 `defaultLoader` 来完成
+如果项目中希望多个子应用使用统一的自定义加载动画，可以通过在主应用配置 `defaultLoader` 来完成
 
 ```ts
 // .umirc.ts
@@ -654,7 +654,7 @@ export default function Page() {
 
 其中，`error` 为 `Error` 类型参数。
 
-如果项目中希望多个子应用使用用统一的自定义错误捕获组件，可以通过在主应用配置 `defaultErrorBoundary` 来完成
+如果项目中希望多个子应用使用统一的自定义错误捕获组件，可以通过在主应用配置 `defaultErrorBoundary` 来完成
 
 ```ts
 // .umirc.ts
