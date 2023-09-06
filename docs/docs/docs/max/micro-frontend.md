@@ -21,7 +21,9 @@ toc: content
 
 ## 开始使用
 
-:::success{title=🏆︎} 本教程假设您对什么是微前端，什么是 Qiankun 微应用，以及如何使用 Qiankun 微应用已经有了基本的了解。 :::
+:::success{title=🏆︎}
+
+本教程假设您对什么是微前端，什么是 Qiankun 微应用，以及如何使用 Qiankun 微应用已经有了基本的了解。 :::
 
 ### 配置父应用
 
@@ -156,7 +158,9 @@ export default {
 };
 ```
 
-配置好后，子应用的路由 base 会在运行时被设置为主应用中配置的 `path`。例如，在上面的配置中，我们指定了 app1 关联的 path 为 `/app1/project`，假如 app1 里有一个路由配置为 `/user`，当我们想在父应用中访问 `/user` 对应的页面时，浏览器的 url 需要是 `base + /user`，即 `/app1/project/user` 路径，否则子应用会因为无法匹配到正确的路由而渲染空白或 404 页面。
+配置好后，子应用的路由 base 会在运行时被设置为主应用中配置的 `path`。
+
+例如，在上面的配置中，我们指定了 app1 关联的 path 为 `/app1/project`，假如 app1 里有一个路由配置为 `/user`，当我们想在父应用中访问 `/user` 对应的页面时，浏览器的 url 需要是 `base + /user`，即 `/app1/project/user` 路径，否则子应用会因为无法匹配到正确的路由而渲染空白或 404 页面。
 
 `qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
 
