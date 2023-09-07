@@ -2,8 +2,8 @@
 /* eslint-disable */
 __USE_MODEL__;
 import concat from 'lodash/concat';
-import mergeWith from 'lodash/mergeWith';
 import isEqual from 'lodash/isEqual';
+import mergeWith from 'lodash/mergeWith';
 import noop from 'lodash/noop';
 import {
   FrameworkConfiguration,
@@ -20,6 +20,8 @@ import React, {
   useState,
 } from 'react';
 import { qiankunStateForSlaveModelNamespace } from './constants';
+import defaultErrorBoundary from './defaultErrorBoundary';
+import defaultLoader from './defaultLoader';
 import { ErrorBoundary } from './ErrorBoundary';
 import { getMasterOptions } from './masterOptions';
 import MicroAppLoader from './MicroAppLoader';
@@ -117,6 +119,7 @@ export const MicroApp = forwardRef(
     // 未配置自定义 errorBoundary 且开启了 autoCaptureError 场景下，使用插件默认的 errorBoundary，否则使用自定义 errorBoundary
     const microAppErrorBoundary =
       errorBoundary ||
+      defaultErrorBoundary ||
       (propsFromParams.autoCaptureError
         ? (e) => <ErrorBoundary error={e} />
         : null);
@@ -144,8 +147,12 @@ export const MicroApp = forwardRef(
       if (!appConfig) {
         setComponentError(
           new Error(
-            `[@umijs/plugin-qiankun]: Can not find the configuration of ${name} app! Currently, only the following apps are configured:\n${JSON.stringify(apps, null, 2)}`
-          )
+            `[@umijs/plugin-qiankun]: Can not find the configuration of ${name} app! Currently, only the following apps are configured:\n${JSON.stringify(
+              apps,
+              null,
+              2,
+            )}`,
+          ),
         );
       }
       return noop;
@@ -155,7 +162,10 @@ export const MicroApp = forwardRef(
     const stateForSlave = (useModel || noop)(
       qiankunStateForSlaveModelNamespace,
     );
-    const { entry, props: { settings: settingsFromConfig = {}, ...propsFromConfig } = {} } = appConfig || {};
+    const {
+      entry,
+      props: { settings: settingsFromConfig = {}, ...propsFromConfig } = {},
+    } = appConfig || {};
 
     useEffect(() => {
       setComponentError(null);
@@ -245,7 +255,9 @@ export const MicroApp = forwardRef(
           // 确保 microApp.update 调用是跟组件状态变更顺序一致的，且后一个微应用更新必须等待前一个更新完成
           microApp._updatingPromise = microApp._updatingPromise.then(() => {
             const canUpdate = (microApp?: MicroAppType) =>
-              microApp?.update && microApp.getStatus() === 'MOUNTED' && !microApp._unmounting;
+              microApp?.update &&
+              microApp.getStatus() === 'MOUNTED' &&
+              !microApp._unmounting;
             if (canUpdate(microApp)) {
               const props = {
                 ...propsFromConfig,
@@ -285,6 +297,7 @@ export const MicroApp = forwardRef(
     // 未配置自定义 loader 且开启了 autoSetLoading 场景下，使用插件默认的 loader，否则使用自定义 loader
     const microAppLoader =
       loader ||
+      defaultLoader ||
       (propsFromParams.autoSetLoading
         ? (loading) => <MicroAppLoader loading={loading} />
         : null);

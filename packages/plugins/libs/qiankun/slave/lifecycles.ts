@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { getPluginManager } from '@@/core/plugin';
 import ReactDOM from 'react-dom';
-import { ApplyPluginsType, __getRoot, history } from 'umi';
+import { ApplyPluginsType, history, __getRoot } from 'umi';
 import { setModelState } from './qiankunModel';
 
 const noop = () => {};

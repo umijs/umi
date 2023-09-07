@@ -19,13 +19,13 @@ export function isMasterEnable(opts: { userConfig: any }) {
   return !!process.env.INITIAL_QIANKUN_MASTER_OPTIONS;
 }
 
-function getCustomLoader(api: IApi) {
-  const loader = api.config.qiankun?.master?.loader;
+function getDefaultMicroAppProps(api: IApi, key: string) {
+  const microAppProps = api.config.qiankun?.master?.[key];
   assert(
-    !loader || loader.startsWith?.('@/'),
-    '[@umijs/plugin-qiankun]: loader only support root path, eg: @/loading',
+    !microAppProps || microAppProps.startsWith?.('@/'),
+    `[@umijs/plugin-qiankun]: ${key} only support src path, eg: @/${key}`,
   );
-  return loader;
+  return microAppProps;
 }
 
 export default (api: IApi) => {
@@ -38,7 +38,7 @@ export default (api: IApi) => {
     return [withTmpPath({ api, path: 'masterRuntimePlugin.tsx' })];
   });
 
-  api.modifyDefaultConfig((config) => ({
+  api.modifyDefaultConfig((config: any) => ({
     ...config,
     mountElementId: defaultMasterRootId,
     qiankun: {
@@ -50,7 +50,7 @@ export default (api: IApi) => {
     },
   }));
 
-  api.modifyRoutes((memo) => {
+  api.modifyRoutes((memo: any) => {
     Object.keys(memo).forEach((id) => {
       const route = memo[id];
       if (route.microApp) {
@@ -123,13 +123,34 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
 
     api.writeTmpFile({
       path: 'MicroAppLoader.tsx',
-      content: getCustomLoader(api)
-        ? // 用户自定义的 loading 优先级最高
-          `export { default } from '${getCustomLoader(api)}';`
-        : api.isPluginEnable('antd')
+      content: api.isPluginEnable('antd')
         ? getFileContent('AntdLoader.tsx')
         : // 开启了 antd 插件的时候，使用 antd 的 loader 组件，否则提示用户必须设置一个自定义的 loader 组件
           `export default function Loader() { console.warn(\`[plugins/qiankun]: Seems like you'r not using @umijs/plugin-antd, you need to provide a custom loader or set autoSetLoading false to shut down this warning!\`); return null; }`,
+    });
+
+    // 子应用默认的错误捕获组件
+    api.writeTmpFile({
+      path: 'defaultErrorBoundary.tsx',
+      content: getDefaultMicroAppProps(api, 'defaultErrorBoundary')
+        ? `export { default } from '${getDefaultMicroAppProps(
+            api,
+            'defaultErrorBoundary',
+          )}';`
+        : // 返回 null
+          `export default null;`,
+    });
+
+    // 子应用默认的加载动画
+    api.writeTmpFile({
+      path: 'defaultLoader.tsx',
+      content: getDefaultMicroAppProps(api, 'defaultLoader')
+        ? `export { default } from '${getDefaultMicroAppProps(
+            api,
+            'defaultLoader',
+          )}';`
+        : // 返回 null
+          `export default null;`,
     });
 
     [

@@ -22,7 +22,9 @@ toc: content
 ## 开始使用
 
 :::success{title=🏆︎}
+
 本教程假设您对什么是微前端，什么是 Qiankun 微应用，以及如何使用 Qiankun 微应用已经有了基本的了解。
+
 :::
 
 ### 配置父应用
@@ -159,7 +161,8 @@ export default {
 ```
 
 配置好后，子应用的路由 base 会在运行时被设置为主应用中配置的 `path`。
-例如，在上面的配置中，我们指定了 app1 关联的 path 为 `/app1/project`，假如 app1 里有一个路由配置为 `/user`，当我们想在父应用中访问 `/user` 对应的页面时，浏览器的 url 需要是 `base + /user`，即 `/app1/project/user` 路径，否则子应用会因为无法匹配到正确的路由而渲染空白或404页面。
+
+例如，在上面的配置中，我们指定了 app1 关联的 path 为 `/app1/project`，假如 app1 里有一个路由配置为 `/user`，当我们想在父应用中访问 `/user` 对应的页面时，浏览器的 url 需要是 `base + /user`，即 `/app1/project/user` 路径，否则子应用会因为无法匹配到正确的路由而渲染空白或 404 页面。
 
 `qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
 
@@ -179,7 +182,7 @@ import { MicroApp } from 'umi';
 
 export default function Page() {
   return <MicroApp name="app1" />;
-};
+}
 ```
 
 使用该方式引入子应用时，父子应用的路由将一一对应。例如，当父应用路由为 `/some/page` 时，子应用路由同样为 `/some/page`。切换子应用路由时，父应用将同步切换。
@@ -190,8 +193,8 @@ export default function Page() {
 import { MicroApp } from 'umi';
 
 export default function Page() {
-  return <MicroApp name="app1" base="/prefix/router-path" />
-};
+  return <MicroApp name="app1" base="/prefix/router-path" />;
+}
 ```
 
 #### `<MicroAppWithMemoHistory />` 组件引入子应用
@@ -210,7 +213,7 @@ import { MicroAppWithMemoHistory } from 'umi';
 
 export default function Page() {
   return <MicroAppWithMemoHistory name="app2" url="/some/page" />;
-};
+}
 ```
 
 ### 子应用之间跳转
@@ -243,7 +246,7 @@ export default function Page() {
   return (
     <>
       {/* 跳转链接为 /app1/project/home */}
-      <MicroAppLink name="app1" to="/home"> 
+      <MicroAppLink name="app1" to="/home">
         <Button>go to app1</Button>
       </MicroAppLink>
     </>
@@ -289,7 +292,7 @@ Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照
 您可以像这样手动刷新子应用：
 
 ```tsx
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { MicroApp } from 'umi';
 
 export default function Page() {
@@ -301,7 +304,7 @@ export default function Page() {
   };
 
   return <MicroApp name="app1" ref={microAppRef} />;
-};
+}
 ```
 
 当您需要在子应用的生命周期里添加一些自定义的逻辑时，既可以在父应用中进行全局配置，也可以在子应用中进行单独配置。
@@ -380,7 +383,7 @@ export function useQiankunStateForSlave() {
 如果通过组件的模式引入子应用，直接将数据以组件参数的形式传递给子应用即可：
 
 ```tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MicroApp } from 'umi';
 
 export default function Page() {
@@ -395,7 +398,7 @@ export default function Page() {
       setGlobalState={setGlobalState}
     />
   );
-};
+}
 ```
 
 #### 子应用消费数据
@@ -408,7 +411,7 @@ import { useModel } from 'umi';
 export default function Page() {
   const masterProps = useModel('@@qiankunStateFromMaster');
   return <div>{JSON.stringify(masterProps)}</div>;
-};
+}
 ```
 
 或者可以通过高阶方法 `connectMaster()` 来获取并消费父应用透传的数据，如下所示：
@@ -509,14 +512,14 @@ import { MicroApp } from 'umi';
 
 export default function Page() {
   return <MicroApp name="app1" autoSetLoading />;
-};
+}
 ```
 
 #### 自定义加载动画
 
 如果您没有使用 antd 作为项目组件库，或希望覆盖默认的加载动画样式时，可以设置一个自定义的加载组件 `loader` 作为子应用的加载动画。
 
-通过路由的模式引入的子应用，目前只支持在运行时配置，代码如下：
+通过路由的模式引入的子应用，只支持在运行时配置，代码如下：
 
 ```tsx
 // .app.tsx
@@ -535,7 +538,7 @@ export const qiankun = () => ({
 });
 ```
 
-如果通过组件的模式引入子应用，直接将 `loader` 作为参数传入即可：
+通过组件的模式引入子应用，直接将 `loader` 作为参数传入即可：
 
 ```tsx
 import CustomLoader from '@/components/CustomLoader';
@@ -548,25 +551,36 @@ export default function Page() {
       loader={(loading) => <CustomLoader loading={loading} />}
     />
   );
-};
+}
 ```
 
 其中，`loading` 为 `boolean` 类型参数，为 `true` 时表示仍在加载状态，为 `false` 时表示加载状态已结束。
 
-如果多个子应用同时存在自定义 loading 的诉求，每个都配置一遍是比较繁琐的，此时可以通过定义主应用的配置来解决，比如说：
+如果项目中希望多个子应用使用统一的自定义加载动画，可以通过在主应用配置 `defaultLoader` 来完成
+
 ```ts
 // .umirc.ts
 qiankun: {
   master: {
-    loader: '@/CustomLoader',
+    defaultLoader: '@/defaultLoader',
   },
 },
 ```
-其中，`loader` 为文件路径，统一约定放在 [src 目录](../guides/directory-structure.md#src-目录) 下，在 umi 中 `@` 即代表 `src` 目录。
 
-`CustomLoader` 跟上述实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
+其中，`defaultLoader` 为文件路径，统一约定放在 [src 目录](../guides/directory-structure.md#src-目录) 下，在 umi 中 `@` 即代表 `src` 目录。
 
-注意：`master.loader` 不默认开启加载动画，开启动画需要将 `autoSetLoading` 设置为 `true`。
+`defaultLoader` 跟上述 `loader` 的实现一致，接收一个 `loading` 为 `boolean` 类型的参数。
+
+```tsx
+// defaultLoader.tsx
+import { Spin } from 'antd';
+
+export default function (loading: boolean) {
+  return <Spin spinning={loading} />;
+}
+```
+
+注意：`loader` 的优先级高于 `defaultLoader`。
 
 ### 子应用错误捕获
 
@@ -602,12 +616,31 @@ import { MicroApp } from 'umi';
 
 export default function Page() {
   return <MicroApp name="app1" autoCaptureError />;
-};
+}
 ```
 
 #### 自定义错误捕获组件
 
 如果您没有使用 antd 作为项目组件库，或希望覆盖默认的错误捕获组件样式时，可以设置一个自定义的组件 `errorBoundary` 作为子应用的错误捕获组件。
+
+通过路由的模式引入的子应用，只支持在运行时配置，代码如下：
+
+```tsx
+// .app.tsx
+import CustomErrorBoundary from '@/components/CustomErrorBoundary';
+
+export const qiankun = () => ({
+  routes: [
+    {
+      path: '/app1',
+      microApp: 'app1',
+      microAppProps: {
+        errorBoundary: (error) => <CustomErrorBoundary error={error} />,
+      },
+    },
+  ],
+});
+```
 
 通过组件的模式引入子应用，将 `errorBoundary` 作为参数传入即可：
 
@@ -622,10 +655,34 @@ export default function Page() {
       errorBoundary={(error) => <CustomErrorBoundary error={error} />}
     />
   );
-};
+}
 ```
 
 其中，`error` 为 `Error` 类型参数。
+
+如果项目中希望多个子应用使用统一的自定义错误捕获组件，可以通过在主应用配置 `defaultErrorBoundary` 来完成
+
+```ts
+// .umirc.ts
+qiankun: {
+  master: {
+    defaultErrorBoundary: '@/defaultErrorBoundary',
+  },
+},
+```
+
+其中，`defaultErrorBoundary` 为文件路径，统一约定放在 [src 目录](../guides/directory-structure.md#src-目录) 下，在 umi 中 `@` 即代表 `src` 目录。
+
+`defaultErrorBoundary` 跟上述 `errorBoundary` 的实现一致，接收一个 `error` 为 `Error` 类型的参数。
+
+```tsx
+// defaultErrorBoundary.tsx
+export default function (error: Error) {
+  return <div>{error?.message}</div>;
+}
+```
+
+注意：`errorBoundary` 的优先级高于 `defaultErrorBoundary`。
 
 ## 环境变量
 
@@ -685,9 +742,10 @@ export default {
 | 属性 | 必填 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- | --- |
 | `enable` | 否 | 启用 Qiankun 微应用插件，设置为 `false` 时为不启用 | `boolean` | `undefined` |
-| `loader` | 否 | 统一配置微应用加载动画的文件，设置文件路径即可 | `string` | - |
 | `apps` | 是 | 微应用配置 | [`App[]`](#app) | `undefined` |
 | `routes` | 否 | 微应用运行时的路由 | [`Route[]`](#route) | `undefined` |
+| `defaultErrorBoundary` | 否 | 子应用默认的错误捕获组件，值为文件路径 | `string` | - |
+| `defaultLoader` | 否 | 子应用默认的加载动画，值为文件路径 | `string` | - |
 | `sandbox` | 否 | 是否开启沙箱模式 | `boolean \| { strictStyleIsolation: boolean, experimentalStyleIsolation: boolean }` | `true` |
 | `prefetch` | 否 | 是否启用微应用预加载 | `boolean \| 'all' \| string[] \| (( apps: RegistrableApp[] ) => { criticalAppNames: string[]; minorAppsName: string[] })` | `true` |
 
@@ -727,25 +785,28 @@ export default {
 | `className` | 否 | 微应用的样式类 | `string` | `undefined` |
 | `wrapperClassName` | 否 | 包裹微应用加载组件、错误捕获组件和微应用的样式类，仅在启用加载组件或错误捕获组件时有效 | `string` | `undefined` |
 
-
 ## FAQ
 
 ### 子应用的生命周期钩子加载了，但是页面没有渲染
+
 如果页面没有报错，且通过查看 DOM 发现子应用的根节点已经有了，只是内容是空，这种基本可以确定是因为当前 url 没有匹配到子应用的任何路由导致的。
 
 比如我们在主应用中配置了：
+
 ```js
 {
   path: '/app1',
   microApp: 'app1',
 }
 ```
+
 子应用的路由配置是：
+
 ```js
 {
   path: '/user',
   component: './User',
 }
 ```
-那么我们必须通过 `/app1/user` 路径才能正常的访问到子应用的 user 页面。
 
+那么我们必须通过 `/app1/user` 路径才能正常的访问到子应用的 user 页面。
