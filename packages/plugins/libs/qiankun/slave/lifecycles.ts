@@ -82,8 +82,8 @@ export function genMount(mountElementId: string) {
       const clientRenderOpts = {
         callback: () => {
           // 默认开启
-          // 不再判断 autoSetLoading 的值，因为通过组件模式可以直接传递 loader
-          if (typeof props.setLoading === 'function') {
+          // 如果需要手动控制 loading，通过主应用配置 props.autoSetLoading false 可以关闭
+          if (props.autoSetLoading && typeof props.setLoading === 'function') {
             props.setLoading(false);
           }
 
