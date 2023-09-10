@@ -50,6 +50,7 @@ export function rootContainer(rawContainer) {
   let container = rawContainer;
 
 {{#configProvider}}
+  {{^hasRefactorStaticConfig}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfigProvider.prefixCls
@@ -61,6 +62,15 @@ export function rootContainer(rawContainer) {
       prefixCls: `${finalConfigProvider.prefixCls}-notification`
     });
   }
+  {{/hasRefactorStaticConfig}}
+
+  {{#hasRefactorStaticConfig}}
+  if (finalConfigProvider.prefixCls) {
+    ConfigProvider.config({
+      prefixCls: finalConfigProvider.prefixCls,
+    });
+  };
+  {{/hasRefactorStaticConfig}}
 
   if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
