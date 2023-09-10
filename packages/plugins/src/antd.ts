@@ -142,6 +142,13 @@ export default (api: IApi) => {
       );
     }
 
+    // https://github.com/umijs/umi/issues/11156
+    if (antd.configProvider.theme.algorithm) {
+      api.logger.error(
+        `When configure 'algorithm' in the configuration file, an exception occurs. Please configure 'algorithm' in the runtime configuration instead. see: https://umijs.org/docs/max/antd#运行时配置`,
+      );
+    }
+
     if (antd.appConfig) {
       if (!appComponentAvailable) {
         delete antd.appConfig;
