@@ -261,7 +261,7 @@ export default (api: IApi) => {
          * @**umi-issue:** https://github.com/umijs/umi/issues/10231
          * @**antd-PR:** https://github.com/ant-design/ant-design/pull/29285
          */
-        hasRefactorStaticConfig: semver.gte(antdVersion, '4.13.0'),
+        disableInternalStatic: semver.gt(antdVersion, '4.13.0'),
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });

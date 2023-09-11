@@ -4,11 +4,11 @@ import {
 {{#appConfig}}
   App,
 {{/appConfig}}
-{{^hasRefactorStaticConfig}}
+{{^disableInternalStatic}}
   Modal,
   message,
   notification,
-{{/hasRefactorStaticConfig}}
+{{/disableInternalStatic}}
 {{#enableV5ThemeAlgorithm}}
   theme,
 {{/enableV5ThemeAlgorithm}}
@@ -52,7 +52,7 @@ export function rootContainer(rawContainer) {
   let container = rawContainer;
 
 {{#configProvider}}
-  {{^hasRefactorStaticConfig}}
+  {{^disableInternalStatic}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfigProvider.prefixCls
@@ -64,15 +64,15 @@ export function rootContainer(rawContainer) {
       prefixCls: `${finalConfigProvider.prefixCls}-notification`
     });
   }
-  {{/hasRefactorStaticConfig}}
+  {{/disableInternalStatic}}
 
-  {{#hasRefactorStaticConfig}}
+  {{#disableInternalStatic}}
   if (finalConfigProvider.prefixCls) {
     ConfigProvider.config({
       prefixCls: finalConfigProvider.prefixCls,
     });
   };
-  {{/hasRefactorStaticConfig}}
+  {{/disableInternalStatic}}
 
   if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
