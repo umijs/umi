@@ -1,6 +1,6 @@
-import { App, Button, Space, theme, version } from 'antd';
+import { App, Button, Space, Switch, theme, version } from 'antd';
 import React, { useState } from 'react';
-import { getLocale, setLocale, useIntl } from 'umi';
+import { getLocale, setLocale, useAntdConfig, useIntl } from 'umi';
 
 export default function Page() {
   const [isZh, setIsZh] = useState(true);
@@ -8,6 +8,7 @@ export default function Page() {
   const { message, modal } = App.useApp();
   const locale = getLocale();
   const { token } = theme.useToken();
+  const [antdConfig, setAntdConfig] = useAntdConfig();
 
   const showModal = () => {
     modal.confirm({
@@ -48,6 +49,29 @@ export default function Page() {
         >
           {msg}
         </Button>
+      </Space>
+      <hr />
+      <Space>
+        isDarkTheme
+        <Switch
+          checked={antdConfig?.dark}
+          onChange={() => {
+            setAntdConfig({
+              dark: !antdConfig?.dark,
+            });
+          }}
+        />
+      </Space>
+      <Space>
+        isCompactTheme
+        <Switch
+          checked={antdConfig?.compact}
+          onChange={() => {
+            setAntdConfig({
+              compact: !antdConfig?.compact,
+            });
+          }}
+        />
       </Space>
     </div>
   );
