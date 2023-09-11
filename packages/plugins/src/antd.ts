@@ -144,7 +144,7 @@ export default (api: IApi) => {
       // https://github.com/umijs/umi/issues/11156
       assert(
         !antd.configProvider.theme.algorithm,
-        `When configure 'algorithm' in the configuration file, an exception occurs. Please configure 'algorithm' in the runtime configuration instead. see: https://umijs.org/docs/max/antd#运行时配置`,
+        `The 'algorithm' option only available for runtime config, please move it to the runtime plugin, see: https://umijs.org/docs/max/antd#运行时配置`,
       );
     }
 
