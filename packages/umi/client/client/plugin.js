@@ -8,12 +8,12 @@ import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _defineProperty from "@babel/runtime/helpers/esm/defineProperty";
 import { assert, compose, isPromiseLike } from "./utils";
-export var ApplyPluginsType = /*#__PURE__*/function (ApplyPluginsType) {
+export var ApplyPluginsType;
+(function (ApplyPluginsType) {
   ApplyPluginsType["compose"] = "compose";
   ApplyPluginsType["modify"] = "modify";
   ApplyPluginsType["event"] = "event";
-  return ApplyPluginsType;
-}({});
+})(ApplyPluginsType || (ApplyPluginsType = {}));
 export var PluginManager = /*#__PURE__*/function () {
   function PluginManager(opts) {
     _classCallCheck(this, PluginManager);
