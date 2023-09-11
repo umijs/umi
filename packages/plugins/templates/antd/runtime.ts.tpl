@@ -7,9 +7,6 @@ import {
 {{/appConfig}}
   message,
   notification,
-{{#enableV5ThemeAlgorithm}}
-  theme,
-{{/enableV5ThemeAlgorithm}}
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
 {{#styleProvider}}
@@ -20,6 +17,9 @@ import {
   {{/styleProvider.legacyTransformer}}
 } from '{{{styleProvider.cssinjs}}}';
 {{/styleProvider}}
+{{#isAntd5}}
+import _UmiPluginAntdContextProvider from './context';
+{{/isAntd5}}
 import { getPluginManager } from '../core/plugin';
 
 let cacheAntdConfig = null;
@@ -36,6 +36,10 @@ const getAntdConfig = () => {
   {{#appConfig}}
         appConfig: {{{appConfig}}},
   {{/appConfig}}
+  {{#enableV5ThemeAlgorithm}}
+        dark: {{{enableV5ThemeAlgorithm.dark}}},
+        compact: {{{enableV5ThemeAlgorithm.compact}}},
+  {{/enableV5ThemeAlgorithm}}
       },
     });
   }
@@ -89,25 +93,13 @@ export function rootContainer(rawContainer) {
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
 
-{{#enableV5ThemeAlgorithm}}
-  // Add token algorithm for antd5 only
+{{#isAntd5}}
   container = (
-    <ConfigProvider
-      theme={({
-        algorithm: [
-          {{#enableV5ThemeAlgorithm.compact}}
-          theme.compactAlgorithm,
-          {{/enableV5ThemeAlgorithm.compact}}
-          {{#enableV5ThemeAlgorithm.dark}}
-          theme.darkAlgorithm,
-          {{/enableV5ThemeAlgorithm.dark}}
-        ],
-      })}
-    >
+    <_UmiPluginAntdContextProvider config={finalConfigProvider}>
       {container}
-    </ConfigProvider>
+    </_UmiPluginAntdContextProvider>
   );
-{{/enableV5ThemeAlgorithm}}
+{{/isAntd5}}
 
 {{#styleProvider}}
   container = (

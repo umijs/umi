@@ -9,7 +9,7 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
-type AntdConfig = Prettify<{}
+export type AntdConfig = Prettify<{}
 {{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
 {{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
 >;

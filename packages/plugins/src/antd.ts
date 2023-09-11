@@ -235,10 +235,27 @@ export default (api: IApi) => {
       }
     }
 
+    if (isV5) {
+      api.writeTmpFile({
+        path: `context.tsx`,
+        tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'context.tsx.tpl')),
+        context: {},
+      });
+
+      api.writeTmpFile({
+        path: `index.tsx`,
+        content: `
+import React from 'react';
+export { useAntdConfig } from './context';
+        `.trim(),
+      });
+    }
+
     // Template
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
+        isAntd5: isV5,
         configProvider:
           withConfigProvider && JSON.stringify(api.config.antd.configProvider),
         appConfig:
@@ -247,7 +264,10 @@ export default (api: IApi) => {
         // 是否启用了 v5 的 theme algorithm
         enableV5ThemeAlgorithm:
           isV5 && (userInputCompact || userInputDark)
-            ? { compact: userInputCompact, dark: userInputDark }
+            ? {
+                compact: userInputCompact ?? false,
+                dark: userInputDark ?? false,
+              }
             : false,
         /**
          * 是否重构了全局静态配置。 重构后需要在运行时将全局静态配置传入到 ConfigProvider 中。
