@@ -140,6 +140,12 @@ export default (api: IApi) => {
         antd.configProvider.theme || {},
         antd.theme,
       );
+
+      // https://github.com/umijs/umi/issues/11156
+      assert(
+        !antd.configProvider.theme.algorithm,
+        `The 'algorithm' option only available for runtime config, please move it to the runtime plugin, see: https://umijs.org/docs/max/antd#运行时配置`,
+      );
     }
 
     if (antd.appConfig) {
