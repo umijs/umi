@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-  Modal,
   ConfigProvider,
 {{#appConfig}}
   App,
 {{/appConfig}}
+{{^hasRefactorStaticConfig}}
+  Modal,
   message,
   notification,
+{{/hasRefactorStaticConfig}}
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
 {{#styleProvider}}
