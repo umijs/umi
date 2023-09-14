@@ -1908,9 +1908,6 @@ importers:
 
   packages/bundler-webpack:
     dependencies:
-      '@pmmmwh/react-refresh-webpack-plugin':
-        specifier: 0.5.10
-        version: 0.5.10(react-refresh@0.14.0)(webpack@5.88.2)
       '@svgr/core':
         specifier: 6.5.1
         version: 6.5.1
@@ -1935,6 +1932,9 @@ importers:
       '@umijs/mfsu':
         specifier: workspace:*
         version: link:../mfsu
+      '@umijs/react-refresh-webpack-plugin':
+        specifier: 0.5.11
+        version: 0.5.11(react-refresh@0.14.0)(webpack@5.88.2)
       '@umijs/utils':
         specifier: workspace:*
         version: link:../utils
@@ -13263,7 +13263,7 @@ packages:
       playwright-core: 1.27.1
     dev: true
 
-  /@pmmmwh/react-refresh-webpack-plugin@0.5.10(react-refresh@0.14.0)(webpack@5.88.2):
+  /@pmmmwh/react-refresh-webpack-plugin@0.5.10(react-refresh@0.14.0):
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
     engines: {node: '>= 10.13'}
     peerDependencies:
@@ -13301,7 +13301,7 @@ packages:
       react-refresh: 0.14.0
       schema-utils: 3.1.1
       source-map: 0.7.4
-      webpack: 5.88.2(@swc/core@1.3.67)(uglify-js@3.17.4)
+    dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin@0.5.7:
     resolution: {integrity: sha512-bcKCAzF0DV2IIROp9ZHkRJa6O4jy7NlnHdWL3GmcUxYWNjLXkK5kfELELwEfSP5hXPfVL/qOGMAROuMQb9GG8Q==}
@@ -14864,7 +14864,7 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.4.6
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
 
   /@types/eslint@7.29.0:
     resolution: {integrity: sha512-VNcvioYDH8/FxaeTKkM4/TiTwt6pBV9E3OfGmvaw8tPl0rrHCJ4Ll15HRT+pMiFAf/MLQvAzC+6RzUMEL9Ceng==}
@@ -14876,7 +14876,7 @@ packages:
   /@types/eslint@8.4.6:
     resolution: {integrity: sha512-/fqTbjxyFUaYNO7VcW5g+4npmqVACz1bB7RTHYuLj+PRjw9hrCwrUXVQFpChUS0JsyEFvMZ7U/PfmvWgxJhI9g==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
       '@types/json-schema': 7.0.12
 
   /@types/estree-jsx@0.0.1:
@@ -14900,6 +14900,7 @@ packages:
 
   /@types/estree@1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
+    dev: true
 
   /@types/estree@1.0.1:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
@@ -16313,7 +16314,7 @@ packages:
     resolution: {integrity: sha512-T+Kuxg5ujvQeLMZe9wNVjFU0kjQa5WzuJmi5pAvw840W+k2Z3NyyzbMFC2mS8UYxVoHdVrtmfLuR3Epe0TSOPg==}
     hasBin: true
     dependencies:
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(react-refresh@0.14.0)(webpack@5.88.2)
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(react-refresh@0.14.0)
       '@svgr/core': 6.5.1
       '@svgr/plugin-jsx': 6.5.1(@svgr/core@6.5.1)
       '@svgr/plugin-svgo': 6.5.1(@svgr/core@6.5.1)
@@ -16351,7 +16352,7 @@ packages:
     resolution: {integrity: sha512-T+Kuxg5ujvQeLMZe9wNVjFU0kjQa5WzuJmi5pAvw840W+k2Z3NyyzbMFC2mS8UYxVoHdVrtmfLuR3Epe0TSOPg==}
     hasBin: true
     dependencies:
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(react-refresh@0.14.0)(webpack@5.88.2)
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(react-refresh@0.14.0)
       '@svgr/core': 6.5.1
       '@svgr/plugin-jsx': 6.5.1(@svgr/core@6.5.1)
       '@svgr/plugin-svgo': 6.5.1(@svgr/core@6.5.1)
@@ -16954,6 +16955,47 @@ packages:
       - webpack-hot-middleware
       - webpack-plugin-serve
     dev: true
+
+  /@umijs/react-refresh-webpack-plugin@0.5.11(react-refresh@0.14.0)(webpack@5.88.2):
+    resolution: {integrity: sha512-RtFvB+/GmjRhpHcqNgnw8iWZpTlxOnmNxi8eDcecxMmxmSgeDj25LV0jr4Q6rOhv3GTIfVGBhkwz+khGT5tfmg==}
+    engines: {node: '>= 10.13'}
+    peerDependencies:
+      '@types/webpack': 4.x || 5.x
+      react-refresh: '>=0.10.0 <1.0.0'
+      sockjs-client: ^1.4.0
+      type-fest: '>=0.17.0 <5.0.0'
+      webpack: '>=4.43.0 <6.0.0'
+      webpack-dev-server: 3.x || 4.x
+      webpack-hot-middleware: 2.x
+      webpack-plugin-serve: 0.x || 1.x
+    peerDependenciesMeta:
+      '@types/webpack':
+        optional: true
+      sockjs-client:
+        optional: true
+      type-fest:
+        optional: true
+      webpack:
+        optional: true
+      webpack-dev-server:
+        optional: true
+      webpack-hot-middleware:
+        optional: true
+      webpack-plugin-serve:
+        optional: true
+    dependencies:
+      ansi-html-community: 0.0.8
+      common-path-prefix: 3.0.0
+      core-js-pure: 3.29.0
+      error-stack-parser: 2.1.4
+      find-up: 5.0.0
+      html-entities: 2.3.3
+      loader-utils: 2.0.4
+      react-refresh: 0.14.0
+      schema-utils: 3.1.1
+      source-map: 0.7.4
+      webpack: 5.88.2(@swc/core@1.3.67)(uglify-js@3.17.4)
+    dev: false
 
   /@umijs/renderer-react@4.0.0-canary.20220628.2(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-tBZhIPo9s87KlX1FUuVPk4/XYKHe7uqAvtDlK3HVncvkMPoLmt0A730vF8xTN0AMscNT7x+YYETxtNG8muCmMQ==}
