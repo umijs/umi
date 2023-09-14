@@ -23,7 +23,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "valtio": "1.10.5"
+    "valtio": "1.11.2"
   },
   "publishConfig": {
     "access": "public"
