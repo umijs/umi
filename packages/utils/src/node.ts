@@ -1,12 +1,12 @@
-import { isLocalDev, logger } from '@umijs/utils';
-import { FRAMEWORK_NAME, MIN_NODE_VERSION } from '../constants';
+import { isLocalDev, logger } from './';
 
 const ver = parseInt(process.version.slice(1));
 
-export function checkVersion() {
-  if (ver < MIN_NODE_VERSION || ver === 15 || ver === 17) {
+export function checkVersion(minVersion: number, message?: string) {
+  if (ver < minVersion || ver === 15 || ver === 17 || ver === 19) {
     logger.error(
-      `Your node version ${ver} is not supported, please upgrade to ${MIN_NODE_VERSION} or above except 15 or 17.`,
+      message ||
+        `Your node version ${ver} is not supported, please upgrade to ${minVersion} or above except 15 or 17.`,
     );
     process.exit(1);
   }
@@ -18,9 +18,9 @@ export function checkLocal() {
   }
 }
 
-export function setNodeTitle(name?: string) {
+export function setNodeTitle(name: string) {
   if (process.title === 'node') {
-    process.title = name || FRAMEWORK_NAME;
+    process.title = name;
   }
 }
 

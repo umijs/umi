@@ -27,6 +27,7 @@ export default () => {
       require.resolve('./features/icons/icons'),
       require.resolve('./features/mock/mock'),
       require.resolve('./features/mpa/mpa'),
+      require.resolve('./features/okam/okam'),
       require.resolve('./features/overrides/overrides'),
       require.resolve('./features/phantomDependency/phantomDependency'),
       require.resolve('./features/polyfill/polyfill'),

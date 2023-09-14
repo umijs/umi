@@ -1,7 +1,12 @@
-import { logger, printHelp, yParser, setNoDeprecation } from '@umijs/utils';
+import {
+  logger,
+  printHelp,
+  setNoDeprecation,
+  setNodeTitle,
+  yParser,
+} from '@umijs/utils';
 import { DEV_COMMAND, FRAMEWORK_NAME } from '../constants';
 import { Service } from '../service/service';
-import { setNodeTitle } from './node';
 setNodeTitle(`${FRAMEWORK_NAME}-dev`);
 setNoDeprecation();
 
