@@ -28,7 +28,6 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
     "@svgr/core": "6.5.1",
     "@svgr/plugin-jsx": "^6.5.1",
     "@svgr/plugin-svgo": "^6.5.1",
@@ -37,6 +36,7 @@
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/case-sensitive-paths-webpack-plugin": "^1.0.1",
     "@umijs/mfsu": "workspace:*",
+    "@umijs/react-refresh-webpack-plugin": "0.5.11",
     "@umijs/utils": "workspace:*",
     "cors": "^2.8.5",
     "css-loader": "6.7.1",
