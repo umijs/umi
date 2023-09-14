@@ -2,10 +2,11 @@ import { isLocalDev, logger } from './';
 
 const ver = parseInt(process.version.slice(1));
 
-export function checkVersion(minVersion: number) {
+export function checkVersion(minVersion: number, message?: string) {
   if (ver < minVersion || ver === 15 || ver === 17 || ver === 19) {
     logger.error(
-      `Your node version ${ver} is not supported, please upgrade to ${minVersion} or above except 15 or 17.`,
+      message ||
+        `Your node version ${ver} is not supported, please upgrade to ${minVersion} or above except 15 or 17.`,
     );
     process.exit(1);
   }
