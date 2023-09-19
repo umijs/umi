@@ -148,7 +148,7 @@ export async function addCSSRules(opts: IOpts) {
 
       if (loader) {
         rule
-          .use(loader)
+          .use(`${name}-loader`)
           .loader(loader)
           .options(loaderOptions || {});
       }
