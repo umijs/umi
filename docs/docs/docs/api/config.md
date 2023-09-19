@@ -1342,6 +1342,12 @@ scripts: [
 
 启用 style loader 功能，让 CSS 内联在 JS 中，不输出额外的 CSS 文件。
 
+## stylusLoader
+- 类型：`object`
+- 默认值：`{}`
+
+配置 stylus-loader ，详见 [stylus-loader > options](https://github.com/webpack-contrib/stylus-loader#options)
+
 ## styles
 
 - 类型：`string[]`

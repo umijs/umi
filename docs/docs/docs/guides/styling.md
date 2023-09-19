@@ -90,6 +90,13 @@ export default function () {
 }
 ```
 
+Umi 也同时提供了对 `.styl` 和 `.stylus` 文件的内置支持。使用必须安装 `stylus` 相应的预处理器依赖, 其他用法用上面的列子
+
+```bash
+# .styl and .stylus
+npm add -D stylus
+```
+
 ## 进阶设置
 
 如果你需要使用除了常见的 LESS, SASS 或 SCSS 以外的其他样式预处理器，你可以透过 Umi

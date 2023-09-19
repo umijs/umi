@@ -1533,6 +1533,25 @@ importers:
         specifier: workspace:*
         version: link:../../packages/umi
 
+  examples/with-stylus:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+    devDependencies:
+      '@types/react':
+        specifier: ^18.0.26
+        version: 18.2.6
+      '@types/react-dom':
+        specifier: ^18.0.10
+        version: 18.0.10
+      stylus:
+        specifier: ^0.60.0
+        version: 0.60.0
+      typescript:
+        specifier: ^4.9.4
+        version: 4.9.4
+
   examples/with-tailwindcss:
     dependencies:
       '@umijs/plugins':
@@ -2038,6 +2057,9 @@ importers:
       style-loader:
         specifier: 3.3.1
         version: 3.3.1(webpack@5.88.2)
+      stylus-loader:
+        specifier: 7.1.3
+        version: 7.1.3(webpack@5.88.2)
       svgo-loader:
         specifier: 3.0.0
         version: 3.0.0
@@ -2834,6 +2856,10 @@ packages:
 
   /@adobe/css-tools@4.0.1:
     resolution: {integrity: sha512-+u76oB43nOHrF4DDWRLWDCtci7f3QJoEBigemIdIeTi1ODqjx6Tad9NCVnPRwewWlKkVab5PlK8DCtPTyX7S8g==}
+    dev: true
+
+  /@adobe/css-tools@4.2.0:
+    resolution: {integrity: sha512-E09FiIft46CmH5Qnjb0wsW54/YQd69LsxeKUOWawmws1XWvyFGURnAChH0mlr7YPFR1ofwvUQfcL0J3lMxXqPA==}
     dev: true
 
   /@ahooksjs/use-request@2.8.15(react@17.0.2):
@@ -5026,7 +5052,7 @@ packages:
   /@antv/util@2.0.17:
     resolution: {integrity: sha512-o6I9hi5CIUvLGDhth0RxNSFDRwXeywmt6ExR4+RmVAzIi48ps6HUy+svxOCayvrPBN37uE6TAc2KDofRo0nK9Q==}
     dependencies:
-      csstype: 3.1.0
+      csstype: 3.1.2
       tslib: 2.5.0
 
   /@antv/x6-react-components@1.1.15(antd@4.24.7)(react-dom@18.1.0)(react@18.1.0):
@@ -15224,31 +15250,31 @@ packages:
   /@types/react-dom@18.0.10:
     resolution: {integrity: sha512-E42GW/JA4Qv15wQdqJq8DL4JhNpB3prJgjgapN3qJT9K2zO5IIAQh4VXvCEDupoqAwnz0cY4RlXeC/ajX5SFHg==}
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.2.6
 
   /@types/react-helmet@6.1.6:
     resolution: {integrity: sha512-ZKcoOdW/Tg+kiUbkFCBtvDw0k3nD4HJ/h/B9yWxN4uDO8OkRksWTO+EL+z/Qu3aHTeTll3Ro0Cc/8UhwBCMG5A==}
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.2.6
     dev: true
 
   /@types/react-reconciler@0.26.7:
     resolution: {integrity: sha512-mBDYl8x+oyPX/VBb3E638N0B7xG+SPk/EAMcVPeexqus/5aTpTphQi0curhhshOqRrc9t6OPoJfEUkbymse/lQ==}
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.2.6
     dev: false
 
   /@types/react-reconciler@0.28.2:
     resolution: {integrity: sha512-8tu6lHzEgYPlfDf/J6GOQdIc+gs+S2yAqlby3zTsB3SP2svlqTYe5fwZNtZyfactP74ShooP2vvi1BOp9ZemWw==}
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.2.6
     dev: false
 
   /@types/react-redux@7.1.24:
     resolution: {integrity: sha512-7FkurKcS1k0FHZEtdbbgN8Oc6b+stGSfZYjQGicofJ0j4U0qIn/jaSvnP2pLwZKiai3/17xqqxkkrxTgN8UNbQ==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.0.26
+      '@types/react': 18.2.6
       hoist-non-react-statics: 3.3.2
       redux: 4.2.1
     dev: true
@@ -15256,7 +15282,7 @@ packages:
   /@types/react-test-renderer@18.0.0:
     resolution: {integrity: sha512-C7/5FBJ3g3sqUahguGi03O79b8afNeSD6T8/GU50oQrJCU0bVCCGQHaGKUbg2Ce8VQEEqTw8/HiS6lXHHdgkdQ==}
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.2.6
     dev: true
 
   /@types/react@18.0.26:
@@ -42914,6 +42940,34 @@ packages:
 
   /stylis@4.1.4:
     resolution: {integrity: sha512-USf5pszRYwuE6hg9by0OkKChkQYEXfkeTtm0xKw+jqQhwyjCVLdYyMBK7R+n7dhzsblAWJnGxju4vxq5eH20GQ==}
+
+  /stylus-loader@7.1.3(webpack@5.88.2):
+    resolution: {integrity: sha512-TY0SKwiY7D2kMd3UxaWKSf3xHF0FFN/FAfsSqfrhxRT/koXTwffq2cgEWDkLQz7VojMu7qEEHt5TlMjkPx9UDw==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      stylus: '>=0.52.4'
+      webpack: ^5.0.0
+    peerDependenciesMeta:
+      webpack:
+        optional: true
+    dependencies:
+      fast-glob: 3.2.12
+      normalize-path: 3.0.0
+      webpack: 5.88.2(@swc/core@1.3.67)(uglify-js@3.17.4)
+    dev: true
+
+  /stylus@0.60.0:
+    resolution: {integrity: sha512-j2pBgEwzCu05yCuY4cmyp0FtPQQFBBAGB7TY7QaNl7eztiHwkxzwvIp5vjZJND/a1JNOka+ZW9ewVPFZpI3pcA==}
+    hasBin: true
+    dependencies:
+      '@adobe/css-tools': 4.2.0
+      debug: 4.3.4(supports-color@8.1.1)
+      glob: 7.2.3
+      sax: 1.2.4
+      source-map: 0.7.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /sugarss@2.0.0:
     resolution: {integrity: sha512-WfxjozUk0UVA4jm+U1d736AUpzSrNsQcIbyOkoE364GrtWmIrFdk5lksEupgWMD4VaT/0kVx1dobpiDumSgmJQ==}
