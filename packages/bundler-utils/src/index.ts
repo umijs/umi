@@ -1,7 +1,6 @@
 import { importLazy, logger, winPath } from '@umijs/utils';
-import { extname } from 'path';
 import { init, parse } from '../compiled/es-module-lexer';
-import { Loader, transformSync } from '../compiled/esbuild';
+import { transformSync } from '../compiled/esbuild';
 
 const babelCodeFrame: typeof import('../compiled/babel/code-frame') =
   importLazy(require.resolve('../compiled/babel/code-frame'));
@@ -17,7 +16,7 @@ export function parseModuleSync(opts: { content: string; path: string }) {
   if (opts.path.endsWith('.tsx') || opts.path.endsWith('.jsx')) {
     try {
       content = transformSync(content, {
-        loader: extname(opts.path).slice(1) as Loader,
+        loader: 'tsx',
         format: 'esm',
       }).code;
     } catch (e) {
