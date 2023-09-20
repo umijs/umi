@@ -86,6 +86,46 @@ export async function getRoutes(opts: {
     }
   }
 
+  // layout routes
+  const absLayoutPath =
+    opts.api.config?.conventionLayout === false
+      ? false
+      : tryPaths([
+          join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.jsx'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.js'),
+        ]);
+
+  const layouts = await opts.api.applyPlugins({
+    key: 'addLayouts',
+    initialValue: [
+      absLayoutPath && {
+        id: '@@/global-layout',
+        file: winPath(absLayoutPath),
+        test(route: any) {
+          return route.layout !== false;
+        },
+      },
+    ].filter(Boolean),
+  });
+  for (const layout of layouts) {
+    addParentRoute({
+      addToAll: true,
+      target: {
+        id: layout.id,
+        path: '/',
+        file: layout.file,
+        parentId: undefined,
+        absPath: '/',
+        isLayout: true,
+      },
+      routes,
+      test: layout.test,
+    });
+  }
+
+  // collect ssr info
   for (const id of Object.keys(routes)) {
     if (routes[id].file) {
       // TODO: cache for performance
@@ -131,45 +171,6 @@ export async function getRoutes(opts: {
         }
       }
     }
-  }
-
-  // layout routes
-  const absLayoutPath =
-    opts.api.config?.conventionLayout === false
-      ? false
-      : tryPaths([
-          join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
-          join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
-          join(opts.api.paths.absSrcPath, 'layouts/index.jsx'),
-          join(opts.api.paths.absSrcPath, 'layouts/index.js'),
-        ]);
-
-  const layouts = await opts.api.applyPlugins({
-    key: 'addLayouts',
-    initialValue: [
-      absLayoutPath && {
-        id: '@@/global-layout',
-        file: winPath(absLayoutPath),
-        test(route: any) {
-          return route.layout !== false;
-        },
-      },
-    ].filter(Boolean),
-  });
-  for (const layout of layouts) {
-    addParentRoute({
-      addToAll: true,
-      target: {
-        id: layout.id,
-        path: '/',
-        file: layout.file,
-        parentId: undefined,
-        absPath: '/',
-        isLayout: true,
-      },
-      routes,
-      test: layout.test,
-    });
   }
 
   // patch routes
