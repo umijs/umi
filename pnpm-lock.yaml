@@ -1688,8 +1688,8 @@ importers:
   libs/valtio:
     dependencies:
       valtio:
-        specifier: 1.10.5
-        version: 1.10.5(react@18.1.0)
+        specifier: 1.11.2
+        version: 1.11.2(@types/react@18.0.26)(react@18.1.0)
 
   packages/ast:
     dependencies:
@@ -44736,7 +44736,7 @@ packages:
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}
     hasBin: true
     peerDependencies:
-      browserslist: 4.21.5
+      browserslist: '>= 4.21.0'
     dependencies:
       browserslist: 4.21.5
       escalade: 3.1.1
@@ -45067,15 +45067,19 @@ packages:
       use-sync-external-store: 1.2.0(react@18.1.0)
     dev: false
 
-  /valtio@1.10.5(react@18.1.0):
-    resolution: {integrity: sha512-jTp0k63VXf4r5hPoaC6a6LCG4POkVSh629WLi1+d5PlajLsbynTMd7qAgEiOSPxzoX5iNvbN7iZ/k/g29wrNiQ==}
+  /valtio@1.11.2(@types/react@18.0.26)(react@18.1.0):
+    resolution: {integrity: sha512-1XfIxnUXzyswPAPXo1P3Pdx2mq/pIqZICkWN60Hby0d9Iqb+MEIpqgYVlbflvHdrp2YR/q3jyKWRPJJ100yxaw==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
+      '@types/react': '>=16.8'
       react: '>=16.8'
     peerDependenciesMeta:
+      '@types/react':
+        optional: true
       react:
         optional: true
     dependencies:
+      '@types/react': 18.0.26
       proxy-compare: 2.5.1
       react: 18.1.0
       use-sync-external-store: 1.2.0(react@18.1.0)
