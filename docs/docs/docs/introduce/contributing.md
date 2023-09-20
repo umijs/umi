@@ -76,7 +76,7 @@ Time:        13.658 s
 Ran all test suites.
 ```
 
-如果需要只跑部分文件的用例，用 `pnpm jest`，因为 `pnpm test` 只开了 turborepo 功能的。
+如果需要只跑部分文件的用例，用 `pnpm jest`，因为 `pnpm test` 是开了 turborepo 功能的。
 
 比如，
 
