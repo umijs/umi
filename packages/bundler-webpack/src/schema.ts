@@ -176,6 +176,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         })
         .deepPartial(),
     styleLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
+    stylusLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
     svgo: ({ zod }) =>
       zod.union([zod.record(zod.string(), zod.any()), zod.boolean()]),
     svgr: ({ zod }) => zod.record(zod.string(), zod.any()),

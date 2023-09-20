@@ -35,6 +35,12 @@ export async function addCSSRules(opts: IOpts) {
       loader: require.resolve('@umijs/bundler-webpack/compiled/sass-loader'),
       loaderOptions: userConfig.sassLoader || {},
     },
+    {
+      name: 'stylus',
+      test: /\.(styl|stylus)(\?.*)?$/,
+      loader: require.resolve('@umijs/bundler-webpack/compiled/stylus-loader'),
+      loaderOptions: userConfig.stylusLoader || {},
+    },
   ];
 
   for (const { name, test, loader, loaderOptions } of rulesConfig) {
@@ -142,8 +148,8 @@ export async function addCSSRules(opts: IOpts) {
 
       if (loader) {
         rule
-          .use(loader)
-          .loader(typeof loader === 'string' ? require.resolve(loader) : loader)
+          .use(`${name}-loader`)
+          .loader(loader)
           .options(loaderOptions || {});
       }
     }
