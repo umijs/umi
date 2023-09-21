@@ -180,6 +180,14 @@ $ pnpm build:deps --dep webpack-manifest-plugin
 $ pnpm release
 ```
 
+## 通过 dist-tag 回滚
+
+比如要回滚到 4.0.81 。
+
+```bash
+$ pnpm -rc --filter "./packages/**" exec pnpm dist-tag add \$PNPM_PACKAGE_NAME@4.0.81 latest
+```
+
 ## 加入 Contributor 群
 
 提交过 Bugfix 或 Feature 类 PR 的同学，如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id）加我钉钉，然后我会拉到群里。
