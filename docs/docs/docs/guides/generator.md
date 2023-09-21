@@ -173,32 +173,32 @@ $umi g page foo --fallback
 $umi g component
 ✔ Please input you component Name … foo
 Write: src/components/Foo/index.ts
-Write: src/components/Foo/Foo.tsx
+Write: src/components/Foo/component.tsx
 ```
 
 直接生成：
 ```bash
 $umi g component bar
 Write: src/components/Bar/index.ts
-Write: src/components/Bar/Bar.tsx
+Write: src/components/Bar/component.tsx
 ```
 
 嵌套生成：
 ```bash
 $umi g component group/subgroup/baz
 Write: src/components/group/subgroup/Baz/index.ts
-Write: src/components/group/subgroup/Baz/Baz.tsx
+Write: src/components/group/subgroup/Baz/component.tsx
 ```
 
 批量生成：
 ```bash
 $umi g component apple banana orange
 Write: src/components/Apple/index.ts
-Write: src/components/Apple/Apple.tsx
+Write: src/components/Apple/component.tsx
 Write: src/components/Banana/index.ts
-Write: src/components/Banana/Banana.tsx
+Write: src/components/Banana/component.tsx
 Write: src/components/Orange/index.ts
-Write: src/components/Orange/Orange.tsx
+Write: src/components/Orange/component.tsx
 ```
 
 #### 对组件模板内容进行自定义
