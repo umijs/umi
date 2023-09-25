@@ -21,6 +21,7 @@ test('class', () => {
       return 'foo';
     }
   }
+
   const a = new A();
   expect(a.foo()).toEqual('foo');
 });
