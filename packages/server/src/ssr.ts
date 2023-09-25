@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
-import { Writable } from 'stream';
+import { Writable, Readable } from 'stream';
 import type { IRoutesById } from './types';
 
 interface RouteLoaders {
@@ -232,6 +232,57 @@ export default function createRequestHandler(
         console.error(x);
       },
     });
+  };
+}
+
+export function createUnioHandler(
+  opts: CreateRequestHandlerOptions,
+) {
+  const jsxGeneratorDeferrer = createJSXGenerator(opts);
+
+  return async function (req: any) {
+    const jsx = await jsxGeneratorDeferrer(req.url);
+
+    if (!jsx) {
+      throw Error('jsx is null');
+    }
+
+    const readable = new Readable();
+    const writable = new Writable();
+
+    writable._write = (chunk, _encoding, next) => {
+      readable.push(chunk);
+      next();
+    };
+
+    writable.on('finish', async () => {
+      readable.push(await getGenerateStaticHTML());
+      readable.push(null); // 关闭流
+    });
+
+    const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
+      bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+      onShellReady() {
+        stream.pipe(writable);
+      },
+      onError(x: any) {
+        console.error(x);
+      },
+    });
+    return readable;
+  };
+}
+
+export function createUnioSeaverLoader(
+  opts: CreateRequestHandlerOptions,
+) {
+  return async function (req: any) {
+    // 切换路由场景下，会通过此 API 执行 server loader
+    const data = await executeLoader(
+      req.query.route,
+      opts.routesWithServerLoader,
+    );
+    return Readable.from(JSON.stringify(data), {encoding: 'utf8'})
   };
 }
 
