@@ -277,9 +277,10 @@ export function createUnioSeaverLoader(
   opts: CreateRequestHandlerOptions,
 ) {
   return async function (req: any) {
+    const query = Object.fromEntries(new URL(req.url).searchParams)
     // 切换路由场景下，会通过此 API 执行 server loader
     const data = await executeLoader(
-      req.query.route,
+      query.route,
       opts.routesWithServerLoader,
     );
     return Readable.from(JSON.stringify(data), {encoding: 'utf8'})
