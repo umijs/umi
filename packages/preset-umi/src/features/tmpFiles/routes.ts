@@ -144,9 +144,12 @@ export async function getRoutes(opts: {
       }
 
       const isJSFile = /.[jt]sx?$/.test(file);
-      routes[id].__content = readFileSync(file, 'utf-8');
+      // layout route 这里不需要这些属性
+      if (!routes[id].isLayout) {
+        routes[id].__content = readFileSync(file, 'utf-8');
+        routes[id].__isJSFile = isJSFile;
+      }
       routes[id].__absFile = winPath(file);
-      routes[id].__isJSFile = isJSFile;
 
       const enableSSR = opts.api.config.ssr;
       const enableClientLoader = opts.api.config.clientLoader;

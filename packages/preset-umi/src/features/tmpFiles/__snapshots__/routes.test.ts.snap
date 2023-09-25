@@ -57,8 +57,6 @@ exports[`getRoutes 1`] = `
     "path": "/absolute",
   },
   "@@/global-layout": {
-    "__content": "",
-    "__isJSFile": true,
     "absPath": "/",
     "file": "@/layouts/index.tsx",
     "id": "@@/global-layout",
