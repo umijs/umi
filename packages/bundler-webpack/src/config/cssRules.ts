@@ -43,6 +43,8 @@ export async function addCSSRules(opts: IOpts) {
     },
   ];
 
+  const cssPublicPath = userConfig.cssPublicPath || './';
+
   for (const { name, test, loader, loaderOptions } of rulesConfig) {
     const rule = config.module.rule(name);
     const nestRulesConfig = [
@@ -76,7 +78,7 @@ export async function addCSSRules(opts: IOpts) {
             ),
           )
           .options({
-            publicPath: './',
+            publicPath: cssPublicPath,
             emit: true,
             esModule: true,
           });
