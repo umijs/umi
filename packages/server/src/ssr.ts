@@ -235,55 +235,57 @@ export default function createRequestHandler(
   };
 }
 
-export function createUnioHandler(
+export function createUmiHandler(
   opts: CreateRequestHandlerOptions,
 ) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
-  return async function (req: any) {
-    const jsx = await jsxGeneratorDeferrer(req.url);
+  return function (req: Request) {
+    return new Promise(async (resolve, reject) => {
+      const jsx = await jsxGeneratorDeferrer(req.url);
 
-    if (!jsx) {
-      throw Error('jsx is null');
-    }
+      if (!jsx) {
+        reject(new Error('jsx is null'));
+        return;
+      }
 
-    const readable = new Readable();
-    const writable = new Writable();
+      const readable = new Readable();
+      const writable = new Writable();
 
-    writable._write = (chunk, _encoding, next) => {
-      readable.push(chunk);
-      next();
-    };
+      writable._write = (chunk, _encoding, next) => {
+        readable.push(chunk);
+        next();
+      };
 
-    writable.on('finish', async () => {
-      readable.push(await getGenerateStaticHTML());
-      readable.push(null); // 关闭流
-    });
+      writable.on('finish', async () => {
+        readable.push(await getGenerateStaticHTML());
+        readable.push(null); // 关闭流
+      });
 
-    const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
-      bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-      onShellReady() {
-        stream.pipe(writable);
-      },
-      onError(x: any) {
-        console.error(x);
-      },
-    });
-    return readable;
+      const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
+        bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+        onShellReady() {
+          stream.pipe(writable);
+        },
+        onError(err: any) {
+          reject(err);
+        },
+      });
+      resolve(readable);
+    })
   };
 }
 
-export function createUnioSeaverLoader(
+export function createUmiServerLoader(
   opts: CreateRequestHandlerOptions,
 ) {
-  return async function (req: any) {
+  return async function (req: Request) {
     const query = Object.fromEntries(new URL(req.url).searchParams)
     // 切换路由场景下，会通过此 API 执行 server loader
-    const data = await executeLoader(
+    return await executeLoader(
       query.route,
       opts.routesWithServerLoader,
     );
-    return Readable.from(JSON.stringify(data), {encoding: 'utf8'})
   };
 }
 
