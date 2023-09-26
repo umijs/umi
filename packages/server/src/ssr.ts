@@ -245,7 +245,7 @@ export function createUmiHandler(
       const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
 
       if (!jsx) {
-        reject(new Error('找不到资源'));
+        reject(new Error('no page resource'));
         return;
       }
 
