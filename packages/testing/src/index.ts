@@ -85,6 +85,7 @@ export function createConfig(opts?: {
       '<rootDir>/packages/.+/fixtures',
     ],
     setupFiles: [require.resolve('../setupFiles/shim')],
+    resolver: require.resolve('./resolver.js'),
   };
   if (opts?.target === 'browser') {
     config.testEnvironment = 'jsdom';
