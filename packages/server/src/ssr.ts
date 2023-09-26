@@ -242,24 +242,23 @@ export function createUmiHandler(
 
   return function (req: Request) {
     return new Promise(async (resolve, reject) => {
-      const jsx = await jsxGeneratorDeferrer(req.url);
+      const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
 
       if (!jsx) {
         reject(new Error('jsx is null'));
         return;
       }
 
-      const readable = new Readable();
+      let buf = Buffer.alloc(0)
       const writable = new Writable();
 
       writable._write = (chunk, _encoding, next) => {
-        readable.push(chunk);
+        buf = Buffer.concat([buf, chunk]);
         next();
       };
 
       writable.on('finish', async () => {
-        readable.push(await getGenerateStaticHTML());
-        readable.push(null); // 关闭流
+        resolve(Readable.from(buf))
       });
 
       const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
@@ -271,7 +270,6 @@ export function createUmiHandler(
           reject(err);
         },
       });
-      resolve(readable);
     })
   };
 }
