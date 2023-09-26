@@ -385,7 +385,7 @@ crossorigin: {}
 - 类型：`String`
 - 默认值：`./`
 
-为 CSS 中的图片、文件等外部资源指定自定义公共路径。作用类似于 `publicPath` 默认值是 `./`
+为 CSS 中的图片、文件等外部资源指定自定义公共路径。作用类似于 `publicPath` 默认值是 `./`。
 
 ## cssLoader
 
