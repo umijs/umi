@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
-import { Writable } from 'stream';
+import { Writable, Readable } from 'stream';
 import type { IRoutesById } from './types';
 
 interface RouteLoaders {
@@ -232,6 +232,58 @@ export default function createRequestHandler(
         console.error(x);
       },
     });
+  };
+}
+
+export function createUmiHandler(
+  opts: CreateRequestHandlerOptions,
+) {
+  const jsxGeneratorDeferrer = createJSXGenerator(opts);
+
+  return function (req: Request) {
+    return new Promise(async (resolve, reject) => {
+      const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
+
+      if (!jsx) {
+        reject(new Error('no page resource'));
+        return;
+      }
+
+      let buf = Buffer.alloc(0)
+      const writable = new Writable();
+
+      writable._write = (chunk, _encoding, next) => {
+        buf = Buffer.concat([buf, chunk]);
+        next();
+      };
+
+      writable.on('finish', async () => {
+        resolve(Readable.from(buf))
+      });
+
+      const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
+        bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+        onShellReady() {
+          stream.pipe(writable);
+        },
+        onError(err: any) {
+          reject(err);
+        },
+      });
+    })
+  };
+}
+
+export function createUmiServerLoader(
+  opts: CreateRequestHandlerOptions,
+) {
+  return async function (req: Request) {
+    const query = Object.fromEntries(new URL(req.url).searchParams)
+    // 切换路由场景下，会通过此 API 执行 server loader
+    return await executeLoader(
+      query.route,
+      opts.routesWithServerLoader,
+    );
   };
 }
 

@@ -4,7 +4,7 @@ import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
 import { PluginManager } from '{{{ umiPluginPath }}}';
-import createRequestHandler, { createMarkupGenerator } from '{{{ umiServerPath }}}';
+import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader } from '{{{ umiServerPath }}}';
 
 let helmetContext;
 
@@ -54,6 +54,8 @@ const createOpts = {
   ServerInsertedHTMLContext,
 };
 const requestHandler = createRequestHandler(createOpts);
+export const renderRoot = createUmiHandler(createOpts);
+export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
 
