@@ -45,7 +45,7 @@ export const build = async (api: IApi, opts: any) => {
 
     memo.output
       .path(dirname(absOutputFile))
-      .filename('umi.server.js')
+      .filename('[name].[hash:8].server.js')
       .chunkFilename('[name].server.js')
       .libraryTarget('commonjs2');
 
