@@ -179,4 +179,6 @@ export default function handler(request, response) {
     };
     return config;
   });
+
+  api.addRuntimePluginKey(() => ['modifyServerRenderOpts']);
 };

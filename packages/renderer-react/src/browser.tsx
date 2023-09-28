@@ -140,6 +140,12 @@ export type RenderClientOpts = {
    * 应用渲染完成的回调函数
    */
   callback?: () => void;
+  /**
+   * 自定义 Suspense 组件
+   */
+  suspenseComponent?: Parameters<
+    typeof createClientRoutes
+  >[0]['suspenseComponent'];
 };
 /**
  * umi max 所需要的所有插件列表，用于获取provide
@@ -170,6 +176,7 @@ const getBrowser = (
     routeComponents: opts.routeComponents,
     loadingComponent: opts.loadingComponent,
     reactRouter5Compat: opts.reactRouter5Compat,
+    suspenseComponent: opts.suspenseComponent,
   });
   opts.pluginManager.applyPlugins({
     key: 'patchClientRoutes',
