@@ -86,53 +86,6 @@ export async function getRoutes(opts: {
     }
   }
 
-  for (const id of Object.keys(routes)) {
-    if (routes[id].file) {
-      // TODO: cache for performance
-      let file = routes[id].file;
-      const basedir =
-        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath;
-
-      if (!isAbsolute(file)) {
-        if (file.startsWith('@/')) {
-          file = file.replace('@/', '../');
-        }
-        file = resolve.sync(localPath(file), {
-          basedir,
-          extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
-        });
-      }
-
-      const isJSFile = /.[jt]sx?$/.test(file);
-      routes[id].__content = readFileSync(file, 'utf-8');
-      routes[id].__absFile = winPath(file);
-      routes[id].__isJSFile = isJSFile;
-
-      const enableSSR = opts.api.config.ssr;
-      const enableClientLoader = opts.api.config.clientLoader;
-      const enableRouteProps = !opts.api.userConfig.routes;
-      const needCollectExports =
-        enableSSR || enableClientLoader || enableRouteProps;
-      if (needCollectExports) {
-        const exports =
-          isJSFile && existsSync(file)
-            ? await getModuleExports({
-                file,
-              })
-            : [];
-        if (enableSSR) {
-          routes[id].hasServerLoader = exports.includes('serverLoader');
-        }
-        if (enableClientLoader && exports.includes('clientLoader')) {
-          routes[id].clientLoader = `clientLoaders['${id}']`;
-        }
-        if (enableRouteProps && exports.includes('routeProps')) {
-          routes[id].routeProps = `routeProps['${id}']`;
-        }
-      }
-    }
-  }
-
   // layout routes
   const absLayoutPath =
     opts.api.config?.conventionLayout === false
@@ -170,6 +123,57 @@ export async function getRoutes(opts: {
       routes,
       test: layout.test,
     });
+  }
+
+  // collect ssr info
+  for (const id of Object.keys(routes)) {
+    if (routes[id].file) {
+      // TODO: cache for performance
+      let file = routes[id].file;
+      const basedir =
+        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath;
+
+      if (!isAbsolute(file)) {
+        if (file.startsWith('@/')) {
+          file = file.replace('@/', '../');
+        }
+        file = resolve.sync(localPath(file), {
+          basedir,
+          extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
+        });
+      }
+
+      const isJSFile = /.[jt]sx?$/.test(file);
+      // layout route 这里不需要这些属性
+      if (!routes[id].isLayout) {
+        routes[id].__content = readFileSync(file, 'utf-8');
+        routes[id].__isJSFile = isJSFile;
+      }
+      routes[id].__absFile = winPath(file);
+
+      const enableSSR = opts.api.config.ssr;
+      const enableClientLoader = opts.api.config.clientLoader;
+      const enableRouteProps = !opts.api.userConfig.routes;
+      const needCollectExports =
+        enableSSR || enableClientLoader || enableRouteProps;
+      if (needCollectExports) {
+        const exports =
+          isJSFile && existsSync(file)
+            ? await getModuleExports({
+                file,
+              })
+            : [];
+        if (enableSSR) {
+          routes[id].hasServerLoader = exports.includes('serverLoader');
+        }
+        if (enableClientLoader && exports.includes('clientLoader')) {
+          routes[id].clientLoader = `clientLoaders['${id}']`;
+        }
+        if (enableRouteProps && exports.includes('routeProps')) {
+          routes[id].routeProps = `routeProps['${id}']`;
+        }
+      }
+    }
   }
 
   // patch routes

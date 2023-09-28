@@ -59,6 +59,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         CSSMinifier.none,
       ]),
     cssMinifierOptions: ({ zod }) => zod.record(zod.string(), zod.any()),
+    cssPublicPath: ({ zod }) => zod.string(),
     deadCode: ({ zod }) =>
       zod
         .object({
