@@ -13,6 +13,7 @@ export async function getClientRootComponent(opts: {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
+  withoutHTML?: boolean;
 }) {
   const basename = '/';
   const components = { ...opts.routeComponents };
@@ -41,21 +42,25 @@ export async function getClientRootComponent(opts: {
       args: {},
     });
   }
+  const app = (
+    <AppContext.Provider
+      value={{
+        routes: opts.routes,
+        routeComponents: opts.routeComponents,
+        clientRoutes,
+        pluginManager: opts.pluginManager,
+        basename,
+        clientLoaderData: {},
+        serverLoaderData: opts.loaderData,
+      }}
+    >
+      {rootContainer}
+    </AppContext.Provider>
+  );
+  if (opts.withoutHTML) return app;
   return (
     <Html loaderData={opts.loaderData} manifest={opts.manifest}>
-      <AppContext.Provider
-        value={{
-          routes: opts.routes,
-          routeComponents: opts.routeComponents,
-          clientRoutes,
-          pluginManager: opts.pluginManager,
-          basename,
-          clientLoaderData: {},
-          serverLoaderData: opts.loaderData,
-        }}
-      >
-        {rootContainer}
-      </AppContext.Provider>
+      {app}
     </Html>
   );
 }
