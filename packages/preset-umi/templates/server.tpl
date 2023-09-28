@@ -27,7 +27,9 @@ export function getValidKeys() {
 }
 
 export function getManifest() {
-  return JSON.parse(require('fs').readFileSync('{{{ assetsPath }}}', 'utf-8'));
+  return JSON.parse(require('fs').readFileSync(
+  process.env.UNIO_RESOURCE_DIR ? process.env.UNIO_RESOURCE_DIR + '/build-manifest.json' :
+  '{{{ assetsPath }}}', 'utf-8'));
 }
 
 export function createHistory(opts) {
