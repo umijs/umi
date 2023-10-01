@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
-import { Writable, Readable } from 'stream';
+import { Readable, Writable } from 'stream';
 import type { IRoutesById } from './types';
 
 interface RouteLoaders {
@@ -158,11 +158,11 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
             html = html.replace(
               /(<\/head>)/,
               [
-                opts.helmetContext.helmet.title.toString(),
-                opts.helmetContext.helmet.priority.toString(),
-                opts.helmetContext.helmet.meta.toString(),
-                opts.helmetContext.helmet.link.toString(),
-                opts.helmetContext.helmet.script.toString(),
+                opts.helmetContext.helmet?.title?.toString(),
+                opts.helmetContext.helmet?.priority?.toString(),
+                opts.helmetContext.helmet?.meta?.toString(),
+                opts.helmetContext.helmet?.link?.toString(),
+                opts.helmetContext.helmet?.script?.toString(),
                 '$1',
               ]
                 .filter(Boolean)
@@ -235,9 +235,7 @@ export default function createRequestHandler(
   };
 }
 
-export function createUmiHandler(
-  opts: CreateRequestHandlerOptions,
-) {
+export function createUmiHandler(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
   return function (req: Request) {
@@ -249,7 +247,7 @@ export function createUmiHandler(
         return;
       }
 
-      let buf = Buffer.alloc(0)
+      let buf = Buffer.alloc(0);
       const writable = new Writable();
 
       writable._write = (chunk, _encoding, next) => {
@@ -258,7 +256,7 @@ export function createUmiHandler(
       };
 
       writable.on('finish', async () => {
-        resolve(Readable.from(buf))
+        resolve(Readable.from(buf));
       });
 
       const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
@@ -270,20 +268,15 @@ export function createUmiHandler(
           reject(err);
         },
       });
-    })
+    });
   };
 }
 
-export function createUmiServerLoader(
-  opts: CreateRequestHandlerOptions,
-) {
+export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: Request) {
-    const query = Object.fromEntries(new URL(req.url).searchParams)
+    const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
-    return await executeLoader(
-      query.route,
-      opts.routesWithServerLoader,
-    );
+    return await executeLoader(query.route, opts.routesWithServerLoader);
   };
 }
 
