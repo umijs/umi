@@ -28,7 +28,7 @@ export function getValidKeys() {
 
 export function getManifest() {
   return JSON.parse(require('fs').readFileSync(
-  process.env.UNIO_RESOURCE_DIR ? process.env.UNIO_RESOURCE_DIR + '/build-manifest.json' :
+  process.env.SSR_RESOURCE_DIR ? process.env.SSR_RESOURCE_DIR + '/build-manifest.json' :
   '{{{ assetsPath }}}', 'utf-8'));
 }
 
