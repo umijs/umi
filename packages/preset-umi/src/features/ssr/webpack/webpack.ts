@@ -48,8 +48,8 @@ export const build = async (api: IApi, opts: any) => {
 
     memo.output
       .path(dirname(absOutputFile))
-      .filename(useHash ? '[name].[contenthash:8].server.js' : 'umi.server.js')
-      .chunkFilename(useHash ? '[name].[contenthash:8].server.js' : '[name].server.js')
+      .filename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
+      .chunkFilename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
       .libraryTarget('commonjs2');
 
     // remove useless progress plugin
