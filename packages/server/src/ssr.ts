@@ -252,27 +252,13 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
         return;
       }
 
-      let buf = Buffer.alloc(0);
-      const writable = new Writable();
-
-      writable._write = (chunk, _encoding, next) => {
-        buf = Buffer.concat([buf, chunk]);
-        next();
-      };
-
-      writable.on('finish', async () => {
-        resolve(Readable.from(buf));
-      });
-
-      const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
+      const stream = await ReactDomServer.renderToReadableStream(jsx.element, {
         bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-        onShellReady() {
-          stream.pipe(writable);
-        },
         onError(err: any) {
           reject(err);
         },
       });
+      resolve(stream);
     });
   };
 }
