@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
-import { Readable, Writable } from 'stream';
+import { Writable } from 'stream';
 import type { IRoutesById } from './types';
 
 interface RouteLoaders {
