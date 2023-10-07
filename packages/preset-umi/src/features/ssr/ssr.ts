@@ -134,8 +134,9 @@ export function useServerInsertedHTML(callback: () => React.ReactNode): void {
       writeFileSync(
         join(api.cwd, 'api/umi.server.js'),
         `
+const manifest = require('../server/build-manifest.json');
 export default function handler(request, response) {
-  require('../server/umi.server.js').default(request, response);
+    require(manifest.assets["umi.js"]).default(request, response);
 }
       `.trimStart(),
         'utf-8',

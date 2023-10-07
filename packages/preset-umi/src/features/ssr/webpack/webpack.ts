@@ -4,13 +4,16 @@ import { lodash, logger } from '@umijs/utils';
 import { dirname, resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath } from '../utils';
+import { Env } from "@umijs/bundler-webpack/dist/types";
 
 export const build = async (api: IApi, opts: any) => {
   logger.wait('[SSR] Compiling...');
   const now = new Date().getTime();
   const bundlerOpts: any = lodash.cloneDeep(opts);
   const oChainWebpack = bundlerOpts.chainWebpack;
-
+  const isDev = opts.env === Env.development;
+  const { userConfig, config } = opts;
+  const useHash = (config.hash || (userConfig?.hash && !isDev));
   // disable deadCode check
   delete bundlerOpts.config.deadCode;
 
@@ -45,8 +48,8 @@ export const build = async (api: IApi, opts: any) => {
 
     memo.output
       .path(dirname(absOutputFile))
-      .filename('umi.server.js')
-      .chunkFilename('[name].server.js')
+      .filename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
+      .chunkFilename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
       .libraryTarget('commonjs2');
 
     // remove useless progress plugin
