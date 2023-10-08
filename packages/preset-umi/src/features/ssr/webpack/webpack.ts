@@ -11,8 +11,6 @@ export const build = async (api: IApi, opts: any) => {
   const now = new Date().getTime();
   const bundlerOpts: any = lodash.cloneDeep(opts);
   const oChainWebpack = bundlerOpts.chainWebpack;
-  const isDev = api.env === Env.development;
-  const { userConfig, config } = opts;
   const useHash = api.config.hash && api.env === Env.production;
   // disable deadCode check
   delete bundlerOpts.config.deadCode;
