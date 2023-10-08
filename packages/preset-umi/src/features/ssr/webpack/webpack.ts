@@ -11,9 +11,9 @@ export const build = async (api: IApi, opts: any) => {
   const now = new Date().getTime();
   const bundlerOpts: any = lodash.cloneDeep(opts);
   const oChainWebpack = bundlerOpts.chainWebpack;
-  const isDev = opts.env === Env.development;
+  const isDev = api.env === Env.development;
   const { userConfig, config } = opts;
-  const useHash = (config.hash || (userConfig?.hash && !isDev));
+  const useHash = (config.hash || userConfig?.hash) && !isDev;
   // disable deadCode check
   delete bundlerOpts.config.deadCode;
 
@@ -49,7 +49,9 @@ export const build = async (api: IApi, opts: any) => {
     memo.output
       .path(dirname(absOutputFile))
       .filename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
-      .chunkFilename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
+      .chunkFilename(
+        useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js',
+      )
       .libraryTarget('commonjs2');
 
     // remove useless progress plugin
