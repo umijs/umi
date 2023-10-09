@@ -32,6 +32,7 @@ export default function mf(api: IApi) {
             ),
             shared: zod.record(zod.any()),
             library: zod.record(zod.any()),
+            remoteHash: zod.boolean(),
           })
           .partial();
       },
@@ -70,7 +71,7 @@ export default function mf(api: IApi) {
       );
     }
 
-    const useHash = api.config.hash && api.env !== 'development';
+    const useHash = api.config.mf.remoteHash && api.env !== 'development';
 
     const mfConfig = {
       name,
