@@ -239,6 +239,7 @@ export default function createRequestHandler(
   };
 }
 
+// 新增的给CDN worker用的SSR请求handle
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
   return async function (req: Request, params?: CreateRequestHandlerOptions) {
     const jsxGeneratorDeferrer = createJSXGenerator({
@@ -251,8 +252,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
       throw new Error('no page resource')
     }
 
-    const stream = await ReactDomServer.renderToNodeStream(jsx.element);
-    return stream;
+    return ReactDomServer.renderToNodeStream(jsx.element);
   };
 }
 
