@@ -253,6 +253,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
         return;
       }
 
+      // 同时兼容target = node 和 target = webworker 两个场景
       const stream = await (ReactDomServer.renderToReadableStream || ReactDomServer.renderToNodeStream)(jsx.element, {
         bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
         onError(err: any) {
