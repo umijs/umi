@@ -14,7 +14,7 @@ interface CreateRequestHandlerOptions {
   routesWithServerLoader: RouteLoaders;
   PluginManager: any;
   manifest:
-    | (() => { assets: Record<string, string> })
+    | ((sourceDir?: string | null) => { assets: Record<string, string> })
     | { assets: Record<string, string> };
   getPlugins: () => any;
   getValidKeys: () => any;
@@ -24,6 +24,7 @@ interface CreateRequestHandlerOptions {
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
   withoutHTML?: boolean;
+  sourceDir?: string | null;
 }
 
 const createJSXProvider = (
@@ -55,6 +56,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       getValidKeys,
       getRoutes,
       createHistory,
+      sourceDir,
     } = opts;
 
     // make import { history } from 'umi' work
@@ -95,7 +97,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     );
 
     const manifest =
-      typeof opts.manifest === 'function' ? opts.manifest() : opts.manifest;
+      typeof opts.manifest === 'function' ? opts.manifest(sourceDir) : opts.manifest;
     const context = {
       routes,
       routeComponents,
@@ -238,13 +240,12 @@ export default function createRequestHandler(
 }
 
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
-  const jsxGeneratorDeferrer = createJSXGenerator({
-    ...opts,
-    withoutHTML: true,
-  });
-
-  return function (req: Request) {
+  return function (req: Request, params?: CreateRequestHandlerOptions) {
     return new Promise(async (resolve, reject) => {
+      const jsxGeneratorDeferrer = createJSXGenerator({
+        ...opts,
+        ...params,
+      });
       const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
 
       if (!jsx) {
@@ -252,7 +253,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
         return;
       }
 
-      const stream = await ReactDomServer.renderToReadableStream(jsx.element, {
+      const stream = await (ReactDomServer.renderToReadableStream || ReactDomServer.renderToNodeStream)(jsx.element, {
         bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
         onError(err: any) {
           reject(err);
