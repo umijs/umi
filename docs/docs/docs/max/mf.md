@@ -167,13 +167,14 @@ src/exposes/
 }
 ```
 
-### 关闭MF产物Hash
-默认情况下，当用户开启 hash: true 时， MF 产物中入口文件将自动携带 hash ，如 remote.123abc.js ，可通过设定 mf.remoteHash: false 关闭（将得到 remote.js ），此时你可能需要修改 nginx / CDN / 网关 的响应头配置来去除该 remote.js 文件的缓存，否则新构建将无法生效。
-```js
+### 关闭 MF 产物 hash
+
+默认情况下，当用户开启 `hash: true` 时， MF 产物中入口文件将自动携带 hash ，如 `remote.123abc.js` ，可通过设定 `remoteHash: false` 关闭（将得到 `remote.js` ），此时你可能需要修改 nginx / CDN / 网关 的响应头配置来去除该 `remote.js` 文件的缓存，否则新构建将无法生效。
+
+```ts
 mf: {
   remoteHash: false
 }
-```
 
 ## 运行时 API
 
