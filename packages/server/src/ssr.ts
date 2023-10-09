@@ -240,28 +240,19 @@ export default function createRequestHandler(
 }
 
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
-  return function (req: Request, params?: CreateRequestHandlerOptions) {
-    return new Promise(async (resolve, reject) => {
-      const jsxGeneratorDeferrer = createJSXGenerator({
-        ...opts,
-        ...params,
-      });
-      const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
-
-      if (!jsx) {
-        reject(new Error('no page resource'));
-        return;
-      }
-
-      // 同时兼容target = node 和 target = webworker 两个场景
-      const stream = await (ReactDomServer.renderToReadableStream || ReactDomServer.renderToNodeStream)(jsx.element, {
-        bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-        onError(err: any) {
-          reject(err);
-        },
-      });
-      resolve(stream);
+  return async function (req: Request, params?: CreateRequestHandlerOptions) {
+    const jsxGeneratorDeferrer = createJSXGenerator({
+      ...opts,
+      ...params,
     });
+    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
+
+    if (!jsx) {
+      throw new Error('no page resource')
+    }
+
+    const stream = await ReactDomServer.renderToNodeStream(jsx.element);
+    return stream;
   };
 }
 
