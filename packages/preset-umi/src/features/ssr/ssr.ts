@@ -27,7 +27,6 @@ export default (api: IApi) => {
             serverBuildPath: zod.string(),
             platform: zod.string(),
             builder: zod.enum(['esbuild', 'webpack']),
-            target: zod.enum(['node', 'webworker']),
           })
           .deepPartial();
       },

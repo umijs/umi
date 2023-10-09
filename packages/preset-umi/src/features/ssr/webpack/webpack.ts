@@ -40,8 +40,7 @@ export const build = async (api: IApi, opts: any) => {
     await oChainWebpack(memo);
     memo.entryPoints.clear();
     memo.entry('umi').add(resolve(api.paths.absTmpPath, 'umi.server.ts'));
-    // 支持自定义SSR构建目标，默认为node，可配置为webworker以支持运行在类似Cloudflare Workers的平台
-    memo.target(api.config.ssr.target || 'node');
+    memo.target('node');
     memo.name('umi');
     memo.devtool(false);
 
