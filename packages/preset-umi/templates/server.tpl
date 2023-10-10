@@ -37,7 +37,7 @@ export function createHistory(opts) {
 
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
-  let m = getManifest()
+  let m = getManifest();
   return m.assets[fileName];
 };
 const createOpts = {
