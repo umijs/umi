@@ -14,7 +14,7 @@ interface CreateRequestHandlerOptions {
   routesWithServerLoader: RouteLoaders;
   PluginManager: any;
   manifest:
-    | ((sourceDir?: string | null) => { assets: Record<string, string> })
+    | ((sourceDir?: string) => { assets: Record<string, string> })
     | { assets: Record<string, string> };
   getPlugins: () => any;
   getValidKeys: () => any;
