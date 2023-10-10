@@ -175,6 +175,7 @@ src/exposes/
 mf: {
   remoteHash: false
 }
+```
 
 ## 运行时 API
 
