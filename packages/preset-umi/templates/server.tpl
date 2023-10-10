@@ -26,10 +26,9 @@ export function getValidKeys() {
   return [{{#validKeys}}'{{{ . }}}',{{/validKeys}}];
 }
 
-export function getManifest() {
+export function getManifest(sourceDir) {
   return JSON.parse(require('fs').readFileSync(
-  process.env.SSR_RESOURCE_DIR ? process.env.SSR_RESOURCE_DIR + '/build-manifest.json' :
-  '{{{ assetsPath }}}', 'utf-8'));
+  sourceDir ? require('path').join(sourceDir,'build-manifest.json') : '{{{ assetsPath }}}', 'utf-8'));
 }
 
 export function createHistory(opts) {
@@ -41,7 +40,6 @@ global.g_getAssets = (fileName) => {
   let m = typeof manifest === 'function' ? manifest() : manifest;
   return m.assets[fileName];
 };
-
 const manifest = {{{ env }}} === 'development' ? getManifest : getManifest();
 const createOpts = {
   routesWithServerLoader,
@@ -49,7 +47,7 @@ const createOpts = {
   getPlugins,
   getValidKeys,
   getRoutes,
-  manifest,
+  manifest: getManifest,
   getClientRootComponent,
   helmetContext,
   createHistory,
