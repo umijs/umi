@@ -37,8 +37,7 @@ export function createHistory(opts) {
 
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
-  const manifest = {{{ env }}} === 'development' ? getManifest : getManifest();
-  let m = typeof manifest === 'function' ? manifest() : manifest;
+  let m = getManifest()
   return m.assets[fileName];
 };
 const createOpts = {
