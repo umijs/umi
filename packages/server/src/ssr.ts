@@ -24,7 +24,7 @@ interface CreateRequestHandlerOptions {
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
   withoutHTML?: boolean;
-  sourceDir?: string | null;
+  sourceDir?: string;
 }
 
 const createJSXProvider = (
