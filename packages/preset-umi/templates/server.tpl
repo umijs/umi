@@ -37,10 +37,10 @@ export function createHistory(opts) {
 
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
+  const manifest = {{{ env }}} === 'development' ? getManifest : getManifest();
   let m = typeof manifest === 'function' ? manifest() : manifest;
   return m.assets[fileName];
 };
-const manifest = {{{ env }}} === 'development' ? getManifest : getManifest();
 const createOpts = {
   routesWithServerLoader,
   PluginManager,
