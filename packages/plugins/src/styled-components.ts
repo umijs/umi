@@ -67,10 +67,19 @@ export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetMan
       ...(isLegacy ? { enableVendorPrefixes: true } : {}),
       ...(disableCSSOM ? { disableCSSOMInjection: true } : {}),
     };
+    const hasProvider = !lodash.isEmpty(providerOptions);
 
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
+${
+  hasProvider
+    ? `
+import { StyleSheetManager } from '${winPath(libPath)}';
+`
+    : ``
+}
+
 ${styledComponentsRuntimeCode}
 export function rootContainer(container) {
   const globalStyle = styledComponentsConfig.GlobalStyle ? <styledComponentsConfig.GlobalStyle /> : null;
@@ -81,17 +90,15 @@ export function rootContainer(container) {
     </>
   );
   ${
-    lodash.isEmpty(providerOptions)
+    hasProvider
       ? `
-  return inner;
-  `
-      : `
   return (
     <StyleSheetManager {...${JSON.stringify(providerOptions)}}>
       {inner}
     </StyleSheetManager>
   );
   `
+      : 'return inner;'
   }
 }
       `,
