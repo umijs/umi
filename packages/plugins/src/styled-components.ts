@@ -1,5 +1,6 @@
-import { winPath } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { dirname } from 'path';
+import type { IStyleSheetManager } from 'styled-components';
 import { IApi } from 'umi';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -57,18 +58,41 @@ export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetMan
     )
       ? `import { styledComponents as styledComponentsConfig } from '@/app';`
       : `const styledComponentsConfig = {};`;
+
+    const isLegacy =
+      !lodash.isEmpty(api.config.targets?.ie) || api.config.legacy;
+    const disableCSSOM = !!api.config.qiankun?.slave;
+    const providerOptions: IStyleSheetManager = {
+      // https://styled-components.com/docs/faqs#vendor-prefixes-are-omitted-by-default
+      ...(isLegacy ? { enableVendorPrefixes: true } : {}),
+      ...(disableCSSOM ? { disableCSSOMInjection: true } : {}),
+    };
+
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
 ${styledComponentsRuntimeCode}
 export function rootContainer(container) {
   const globalStyle = styledComponentsConfig.GlobalStyle ? <styledComponentsConfig.GlobalStyle /> : null;
-  return (
+  const inner = (
     <>
       {globalStyle}
       {container}
     </>
   );
+  ${
+    lodash.isEmpty(providerOptions)
+      ? `
+  return inner;
+  `
+      : `
+  return (
+    <StyleSheetManager {...${JSON.stringify(providerOptions)}}>
+      {inner}
+    </StyleSheetManager>
+  );
+  `
+  }
 }
       `,
     });
