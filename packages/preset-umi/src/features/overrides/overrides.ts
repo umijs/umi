@@ -32,8 +32,8 @@ export default (api: IApi) => {
                 // special :first-child to promote html selector priority
                 return `html:first-child`;
               } else if (/^body([\s+~>[:]|$)/.test(selector)) {
-                // use + to promote body selector priority
-                return `* + ${selector}`;
+                // use html parent to promote body selector priority
+                return `html ${selector}`;
               }
 
               return prefixedSelector;

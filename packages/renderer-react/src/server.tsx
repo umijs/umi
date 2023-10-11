@@ -13,6 +13,7 @@ export async function getClientRootComponent(opts: {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
+  withoutHTML?: boolean;
 }) {
   const basename = '/';
   const components = { ...opts.routeComponents };
@@ -41,21 +42,27 @@ export async function getClientRootComponent(opts: {
       args: {},
     });
   }
+  const app = (
+    <AppContext.Provider
+      value={{
+        routes: opts.routes,
+        routeComponents: opts.routeComponents,
+        clientRoutes,
+        pluginManager: opts.pluginManager,
+        basename,
+        clientLoaderData: {},
+        serverLoaderData: opts.loaderData,
+      }}
+    >
+      {rootContainer}
+    </AppContext.Provider>
+  );
+  if (opts.withoutHTML) {
+    return <div id="root">{app}</div>;
+  }
   return (
     <Html loaderData={opts.loaderData} manifest={opts.manifest}>
-      <AppContext.Provider
-        value={{
-          routes: opts.routes,
-          routeComponents: opts.routeComponents,
-          clientRoutes,
-          pluginManager: opts.pluginManager,
-          basename,
-          clientLoaderData: {},
-          serverLoaderData: opts.loaderData,
-        }}
-      >
-        {rootContainer}
-      </AppContext.Provider>
+      {app}
     </Html>
   );
 }
@@ -63,6 +70,7 @@ export async function getClientRootComponent(opts: {
 function Html({ children, loaderData, manifest }: any) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
+
   return (
     <html lang="en">
       <head>
@@ -78,6 +86,7 @@ function Html({ children, loaderData, manifest }: any) {
             __html: `<b>Enable JavaScript to run this app.</b>`,
           }}
         />
+
         <div id="root">{children}</div>
         <script
           dangerouslySetInnerHTML={{

@@ -7,9 +7,7 @@ test('transform umi targets', () => {
 });
 
 test('filter ie browsers', () => {
-  expect(target({ targets: { chrome: 80, ie: 11 } }, {}).build).toEqual({
-    target: ['chrome80'],
-  });
+  expect(target({ targets: { chrome: 80, ie: 11 } }, {}).build).toEqual({});
 });
 
 test('empty target - config', () => {

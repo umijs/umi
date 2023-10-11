@@ -430,6 +430,24 @@ if (process.env.NODE_ENV === 'development') {
       key: 'addRuntimePlugin',
       initialValue: [api.appData.appJS?.path].filter(Boolean),
     });
+
+    function checkDuplicatePluginKeys(arr: string[]) {
+      const duplicates: string[] = [];
+      arr.reduce<Record<string, boolean>>((prev, curr) => {
+        if (prev[curr]) {
+          duplicates.push(curr);
+        } else {
+          prev[curr] = true;
+        }
+        return prev;
+      }, {});
+      if (duplicates.length) {
+        throw new Error(
+          `The plugin key cannot be duplicated. (${duplicates.join(', ')})`,
+        );
+      }
+    }
+
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
       initialValue: [
@@ -447,6 +465,9 @@ if (process.env.NODE_ENV === 'development') {
         'onRouteChange',
       ],
     });
+
+    checkDuplicatePluginKeys(validKeys);
+
     const appPluginRegExp = /(\/|\\)app.(ts|tsx|jsx|js)$/;
     api.writeTmpFile({
       noPluginDir: true,
@@ -618,6 +639,17 @@ if (process.env.NODE_ENV === 'development') {
           process.env.NODE_ENV === 'development'
         ) {
           exports.push(`export { TestBrowser } from './testBrowser';`);
+        }
+      }
+      if (api.appData.framework === 'react') {
+        if (api.config.ssr) {
+          exports.push(
+            `export { useServerInsertedHTML } from './core/serverInsertedHTMLContext';`,
+          );
+        } else {
+          exports.push(
+            `export const useServerInsertedHTML: Function = () => {};`,
+          );
         }
       }
       // plugins

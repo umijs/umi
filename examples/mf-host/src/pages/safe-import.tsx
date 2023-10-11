@@ -2,7 +2,7 @@ import { safeMfImport } from '@umijs/max';
 import React, { Suspense } from 'react';
 
 const RemoteCounter = React.lazy(() => {
-  return safeMfImport('remoteCounter/Counter', { defualt: null });
+  return safeMfImport('remoteCounter/Counter', { default: null });
 });
 
 export default () => {

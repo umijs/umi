@@ -1,5 +1,10 @@
 import React from 'react';
-import { Link, useClientLoaderData, useServerLoaderData } from 'umi';
+import {
+  Link,
+  useClientLoaderData,
+  useServerInsertedHTML,
+  useServerLoaderData,
+} from 'umi';
 import Button from '../components/Button';
 // @ts-ignore
 import bigImage from './big_image.jpg';
@@ -14,6 +19,11 @@ import umiLogo from './umi.png';
 export default function HomePage() {
   const clientLoaderData = useClientLoaderData();
   const serverLoaderData = useServerLoaderData();
+
+  useServerInsertedHTML(() => {
+    return <div>inserted html</div>;
+  });
+
   return (
     <div>
       <h1 className="title">Hello~</h1>

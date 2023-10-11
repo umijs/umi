@@ -40,6 +40,8 @@ export {
   derive,
   underive,
   useProxy,
+  ref,
+  watch,
 } from '${libPath}';
       `,
     });

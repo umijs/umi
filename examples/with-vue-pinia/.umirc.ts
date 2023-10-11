@@ -3,5 +3,12 @@ export default {
   npmClient: 'pnpm',
   crossorigin: {},
   presets: [require.resolve('@umijs/preset-vue')],
-  polyfill: false,
+  // polyfill: false,
+  targets: {
+    chrome: 49,
+  },
+  vite: {},
+  viteLegacy: {
+    renderModernChunks: true,
+  },
 };

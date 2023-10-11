@@ -53,12 +53,12 @@ function BrowserRoutes(props: {
         },
       });
     }
-    history.listen(onRouteChange);
     onRouteChange({
       location: state.location,
       action: state.action,
       isFirst: true,
     });
+    return history.listen(onRouteChange);
   }, [history, props.routes, props.clientRoutes]);
   return (
     <Router
