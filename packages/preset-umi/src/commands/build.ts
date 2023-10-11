@@ -197,6 +197,10 @@ umi build --clean
 
           fsExtra.mkdirpSync(dirname(absPath));
           writeFileSync(absPath, content, 'utf-8');
+          if (api.config.ssr && path === 'index.html') {
+            // SSR模式下，多输出一份和index.html完全一致的*.html文件，用于ER场景
+            writeFileSync(resolve(api.paths.absOutputPath, '*.html'), content, 'utf-8');
+          }
           logger.event(`Build ${path}`);
         });
       }
