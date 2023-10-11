@@ -72,13 +72,7 @@ export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetMan
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
-${
-  hasProvider
-    ? `
-import { StyleSheetManager } from '${winPath(libPath)}';
-`
-    : ``
-}
+${hasProvider ? `import { StyleSheetManager } from '${winPath(libPath)}';` : ``}
 
 ${styledComponentsRuntimeCode}
 export function rootContainer(container) {
