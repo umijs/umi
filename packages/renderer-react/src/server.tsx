@@ -58,7 +58,7 @@ export async function getClientRootComponent(opts: {
     </AppContext.Provider>
   );
   if (opts.withoutHTML) {
-    return app;
+    return <div id="root">{app}</div>;
   }
   return (
     <Html loaderData={opts.loaderData} manifest={opts.manifest}>
