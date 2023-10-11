@@ -70,6 +70,9 @@ export default (_context: any, opts: IOpts) => {
       opts.pluginStyledComponents && [
         require.resolve('babel-plugin-styled-components'),
         {
+          // 该 plugin 会校验 styled 的来源
+          // 如果不是 `styled-components`, 需要手动引入后才能使 displayName 生效
+          topLevelImportPaths: ['@umijs/max'],
           ...opts.pluginStyledComponents,
         },
       ],
