@@ -167,7 +167,6 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         Transpiler.babel,
         Transpiler.esbuild,
         Transpiler.swc,
-        Transpiler.none,
       ]),
     srcTranspilerOptions: ({ zod }) =>
       zod
