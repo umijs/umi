@@ -37,7 +37,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@babel/runtime": "7.21.0",
+    "@babel/runtime": "7.23.2",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",
