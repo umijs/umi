@@ -1,5 +1,5 @@
-import { join } from 'path';
 import { existsSync } from 'fs';
+import { basename, join } from 'path';
 import { IApi } from '../../types';
 
 /** esbuild plugin for resolving umi imports */
@@ -29,6 +29,11 @@ export function absServerBuildPath(api: IApi) {
     );
   }
 
+  // server output path will not be removed before compile
+  // so remove require cache to avoid outdated asset path when enable hash
+  delete require.cache[manifestPath];
   const manifest = require(manifestPath);
-  return join(api.paths.cwd, 'server', manifest.assets['umi.js'])
+  // basename use to strip public path
+  // ex. /foo/umi.xxx.js -> umi.xxx.js
+  return join(api.paths.cwd, 'server', basename(manifest.assets['umi.js']));
 }
