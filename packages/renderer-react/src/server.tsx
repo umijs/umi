@@ -58,7 +58,16 @@ export async function getClientRootComponent(opts: {
     </AppContext.Provider>
   );
   if (opts.withoutHTML) {
-    return <div id="root">{app}</div>;
+    return <>
+      <div id="root">{app}</div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
+            opts.loaderData,
+          )}`,
+        }}
+      />
+    </>;
   }
   return (
     <Html loaderData={opts.loaderData} manifest={opts.manifest}>
