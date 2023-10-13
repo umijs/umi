@@ -145,11 +145,6 @@ export default function handler(request, response) {
     }
   });
 
-  api.onBuildHtmlComplete(() => {
-    // SSR模式下，多输出一份和index.html完全一致的*.html文件，用于ER场景
-    fsExtra.copyFileSync(join(api.paths.absOutputPath, 'index.html'), join(api.paths.absOutputPath, '*.html'));
-  })
-
   const pluginName = 'ProcessAssetsPlugin';
   class ProcessAssetsPlugin {
     apply(compiler: Compiler) {
