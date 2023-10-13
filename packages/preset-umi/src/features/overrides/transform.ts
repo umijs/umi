@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 import type { AtRule } from 'postcss';
@@ -18,7 +19,7 @@ export async function transform(cssContent: string, filePath: string) {
         if (origin.startsWith('/')) return;
 
         function getResolvedPath(origin: string) {
-          return path.resolve(path.dirname(filePath), origin);
+          return winPath(path.resolve(path.dirname(filePath), origin));
         }
 
         // 已经包含 ./ 和 ../ 的场景，不需要额外处理

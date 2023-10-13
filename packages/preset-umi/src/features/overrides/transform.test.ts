@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { join } from 'path';
 import { transform } from './transform';
 
@@ -43,7 +44,8 @@ test('transform import', async () => {
   `,
     filePath,
   );
-  expect(result.replace(new RegExp(`${fixturesDir}`, 'g'), '')).toEqual(`
+  expect(result.replace(new RegExp(`${winPath(fixturesDir)}`, 'g'), ''))
+    .toEqual(`
 @import "a";
 @import "~b";
 @import "/overrides/normal/foo/bar/a.css";
