@@ -69,7 +69,8 @@ test('transform import with url', async () => {
   `,
     filePath,
   );
-  expect(result.replace(new RegExp(`${fixturesDir}`, 'g'), '')).toEqual(`
+  expect(result.replace(new RegExp(`${winPath(fixturesDir)}`, 'g'), ''))
+    .toEqual(`
 @import "/overrides/normal/foo/bar/a.css";
 @import "/overrides/normal/foo/bar/a.css";
 @import "/overrides/normal/foo/bar/a.css";
