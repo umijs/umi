@@ -3,6 +3,7 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type { IRoutesById } from './types';
+import type { ServerLoaderLoaderArgs } from '@umijs/renderer-react';
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
@@ -95,7 +96,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader, request);
+              loaderData[id] = await executeLoader(id, routesWithServerLoader, {request});
               resolve();
             }),
         ),
@@ -211,7 +212,7 @@ export default function createRequestHandler(
       const data = await executeLoader(
         req.query.route,
         opts.routesWithServerLoader,
-        req,
+        {request: req},
       );
       res.status(200).json(data);
       return;
@@ -267,7 +268,7 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: Request) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
-    return await executeLoader(query.route, opts.routesWithServerLoader, req);
+    return await executeLoader(query.route, opts.routesWithServerLoader, {request: req});
   };
 }
 
@@ -309,12 +310,12 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
-  request: Request
+  serverLoaderArgs: ServerLoaderLoaderArgs
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
   // TODO: 处理错误场景
-  return await mod.serverLoader({request});
+  return await mod.serverLoader(serverLoaderArgs);
 }
