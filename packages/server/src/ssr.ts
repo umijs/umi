@@ -3,7 +3,6 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type { IRoutesById } from './types';
-import type { ServerLoaderLoaderArgs } from '@umijs/renderer-react';
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
@@ -49,7 +48,6 @@ const createJSXProvider = (
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  // 需要从req中读取url、header等
   return async (url: string, headers?: Headers) => {
     const {
       routesWithServerLoader,
@@ -61,7 +59,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       sourceDir,
     } = opts;
 
-    const {pathname} = new URL(url);
+    const { pathname } = new URL(url);
     // make import { history } from 'umi' work
     createHistory({ type: 'memory', initialEntries: [pathname], initialIndex: 1 });
 
@@ -310,7 +308,7 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
-  serverLoaderArgs: ServerLoaderLoaderArgs
+  serverLoaderArgs: { request: Request }
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {

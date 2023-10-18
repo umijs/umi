@@ -30,7 +30,7 @@ export {
   useRouteProps,
   useSelectedRoutes,
   useServerLoaderData,
-  ServerLoaderLoaderArgs,
+  IServerLoaderArgs,
 } from './appContext';
 export { renderClient, __getRoot } from './browser';
 export { LinkWithPrefetch as Link } from './link';

@@ -50,7 +50,7 @@ export function useServerLoaderData() {
 }
 
 // serverLoader的参数类型
-export interface ServerLoaderLoaderArgs {
+export interface IServerLoaderArgs {
   request: Request;
 }
 
