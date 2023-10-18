@@ -59,7 +59,6 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       sourceDir,
     } = opts;
 
-    const { pathname } = new URL(url);
     // make import { history } from 'umi' work
     createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
 
@@ -79,6 +78,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       },
     });
 
+    const { pathname } = new URL(url);
     const matches = matchRoutesForSSR(pathname, routes);
     if (matches.length === 0) {
       return;
