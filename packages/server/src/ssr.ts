@@ -60,8 +60,9 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       sourceDir,
     } = opts;
 
+    const {pathname} = new URL(url);
     // make import { history } from 'umi' work
-    createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
+    createHistory({ type: 'memory', initialEntries: [pathname], initialIndex: 1 });
 
     const pluginManager = PluginManager.create({
       plugins: getPlugins(),
@@ -79,22 +80,22 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       },
     });
 
-    const matches = matchRoutesForSSR(url, routes);
+    const matches = matchRoutesForSSR(pathname, routes);
     if (matches.length === 0) {
       return;
     }
 
     const loaderData: { [key: string]: any } = {};
+    const request = new Request(url, {
+      headers,
+    })
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader, {
-                url,
-                headers,
-              } as Request);
+              loaderData[id] = await executeLoader(id, routesWithServerLoader, request);
               resolve();
             }),
         ),
@@ -106,7 +107,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       routes,
       routeComponents,
       pluginManager,
-      location: url,
+      location: pathname,
       manifest,
       loaderData,
       withoutHTML: opts.withoutHTML,
@@ -216,7 +217,8 @@ export default function createRequestHandler(
       return;
     }
 
-    const jsx = await jsxGeneratorDeferrer(req.url, req.headers);
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    const jsx = await jsxGeneratorDeferrer(fullUrl, req.headers);
 
     if (!jsx) return next();
 
@@ -251,7 +253,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
       ...opts,
       ...params,
     });
-    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
+    const jsx = await jsxGeneratorDeferrer(req.url, req.headers);
 
     if (!jsx) {
       throw new Error('no page resource')
@@ -307,12 +309,12 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
-  req: Request
+  request: Request
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
   // TODO: 处理错误场景
-  return await mod.serverLoader(req);
+  return await mod.serverLoader({request});
 }

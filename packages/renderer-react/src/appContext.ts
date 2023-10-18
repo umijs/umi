@@ -49,6 +49,11 @@ export function useServerLoaderData() {
   return { data: appData.serverLoaderData[route.route.id] };
 }
 
+// serverLoader的参数类型
+export interface LoaderArgs {
+  request: Request;
+}
+
 export function useClientLoaderData() {
   const route = useRouteData();
   const appData = useAppData();
