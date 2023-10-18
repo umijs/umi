@@ -61,7 +61,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
 
     const { pathname } = new URL(url);
     // make import { history } from 'umi' work
-    createHistory({ type: 'memory', initialEntries: [pathname], initialIndex: 1 });
+    createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
 
     const pluginManager = PluginManager.create({
       plugins: getPlugins(),
