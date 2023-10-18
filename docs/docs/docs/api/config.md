@@ -1384,7 +1384,7 @@ styles: [`body { color: red; }`, `https://a.com/b.css`],
 
 ## srcTranspiler
 
-- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`, `none`
+- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`
 - 默认值：`babel`
 
 配置构建时转译 js/ts 的工具。
