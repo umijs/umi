@@ -317,5 +317,5 @@ async function executeLoader(
     return;
   }
   // TODO: 处理错误场景
-  return await mod.serverLoader(serverLoaderArgs);
+  return mod.serverLoader(serverLoaderArgs);
 }
