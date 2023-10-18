@@ -48,7 +48,8 @@ const createJSXProvider = (
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  return async (url: string) => {
+  // 需要从req中读取url、header等
+  return async (url: string, headers?: Headers) => {
     const {
       routesWithServerLoader,
       PluginManager,
@@ -90,7 +91,10 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader);
+              loaderData[id] = await executeLoader(id, routesWithServerLoader, {
+                url,
+                headers,
+              } as Request);
               resolve();
             }),
         ),
@@ -206,12 +210,13 @@ export default function createRequestHandler(
       const data = await executeLoader(
         req.query.route,
         opts.routesWithServerLoader,
+        req,
       );
       res.status(200).json(data);
       return;
     }
 
-    const jsx = await jsxGeneratorDeferrer(req.url);
+    const jsx = await jsxGeneratorDeferrer(req.url, req.headers);
 
     if (!jsx) return next();
 
@@ -260,7 +265,7 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: Request) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
-    return await executeLoader(query.route, opts.routesWithServerLoader);
+    return await executeLoader(query.route, opts.routesWithServerLoader, req);
   };
 }
 
@@ -302,11 +307,12 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
+  req: Request
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
   // TODO: 处理错误场景
-  return await mod.serverLoader();
+  return await mod.serverLoader(req);
 }
