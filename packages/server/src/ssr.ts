@@ -53,7 +53,7 @@ const createJSXProvider = (
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  return async (url: string, serverLoaderArg?: IServerLoaderArgs) => {
+  return async (url: string, serverLoaderArgs?: IServerLoaderArgs) => {
     const {
       routesWithServerLoader,
       PluginManager,
@@ -95,7 +95,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader, serverLoaderArg);
+              loaderData[id] = await executeLoader(id, routesWithServerLoader, serverLoaderArgs);
               resolve();
             }),
         ),
