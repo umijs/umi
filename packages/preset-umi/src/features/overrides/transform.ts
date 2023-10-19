@@ -54,6 +54,8 @@ export async function transform(cssContent: string, filePath: string) {
   const result = await require('postcss')([
     selectorPlugin,
     importPlugin,
-  ]).process(cssContent, {});
+  ]).process(cssContent, {
+    from: 'overrides.css',
+  });
   return result.css;
 }
