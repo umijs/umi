@@ -48,7 +48,7 @@ const createJSXProvider = (
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  return async (request: Request) => {
+  return async (url: string, serverLoaderArg?: { request: Request}) => {
     const {
       routesWithServerLoader,
       PluginManager,
@@ -60,7 +60,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     } = opts;
 
     // make import { history } from 'umi' work
-    createHistory({ type: 'memory', initialEntries: [request.url], initialIndex: 1 });
+    createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
 
     const pluginManager = PluginManager.create({
       plugins: getPlugins(),
@@ -78,8 +78,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       },
     });
 
-    const { pathname } = new URL(request.url);
-    const matches = matchRoutesForSSR(pathname, routes);
+    const matches = matchRoutesForSSR(url, routes);
     if (matches.length === 0) {
       return;
     }
@@ -91,7 +90,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader, {request});
+              loaderData[id] = await executeLoader(id, routesWithServerLoader, serverLoaderArg);
               resolve();
             }),
         ),
@@ -103,7 +102,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       routes,
       routeComponents,
       pluginManager,
-      location: pathname,
+      location: url,
       manifest,
       loaderData,
       withoutHTML: opts.withoutHTML,
@@ -138,9 +137,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
   return async (url: string) => {
-    // dumi 里做 ssg 时传的 path 是不带 host 的，需要加上host
-    const request = new Request('http://localhost' + url);
-    const jsx = await jsxGeneratorDeferrer(request);
+    const jsx = await jsxGeneratorDeferrer(url);
     if (jsx) {
       return new Promise(async (resolve, reject) => {
         const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> =
@@ -218,7 +215,7 @@ export default function createRequestHandler(
     const request = new Request(req.protocol + '://' + req.get('host') + req.originalUrl, {
       headers: req.headers,
     });
-    const jsx = await jsxGeneratorDeferrer(request);
+    const jsx = await jsxGeneratorDeferrer(req.url, { request });
 
     if (!jsx) return next();
 
@@ -253,7 +250,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
       ...opts,
       ...params,
     });
-    const jsx = await jsxGeneratorDeferrer(req);
+    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname, { request: req });
 
     if (!jsx) {
       throw new Error('no page resource')
