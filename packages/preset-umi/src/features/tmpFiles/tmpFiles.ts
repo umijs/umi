@@ -305,12 +305,7 @@ declare module '*.txt' {
         imports: importsToStr(
           await api.applyPlugins({
             key: 'addEntryImports',
-            initialValue: [
-              // append overrides.{ext} style file
-              api.appData.overridesCSS.length && {
-                source: api.appData.overridesCSS[0],
-              },
-            ].filter(Boolean),
+            initialValue: [],
           }),
         ).join('\n'),
         basename: api.config.base,
