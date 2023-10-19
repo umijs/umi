@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.85",
+  "version": "4.0.87",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -37,7 +37,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@babel/runtime": "7.21.0",
+    "@babel/runtime": "7.23.2",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",
