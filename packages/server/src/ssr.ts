@@ -211,7 +211,7 @@ export default function createRequestHandler(
       const data = await executeLoader(
         req.query.route,
         opts.routesWithServerLoader,
-        {request: req},
+        { request: req },
       );
       res.status(200).json(data);
       return;
@@ -269,7 +269,7 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: Request) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
-    return await executeLoader(query.route, opts.routesWithServerLoader, {request: req});
+    return await executeLoader(query.route, opts.routesWithServerLoader, { request: req });
   };
 }
 
