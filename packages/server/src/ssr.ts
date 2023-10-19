@@ -48,7 +48,7 @@ const createJSXProvider = (
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  return async (url: string, headers?: Headers) => {
+  return async (request: Request) => {
     const {
       routesWithServerLoader,
       PluginManager,
@@ -60,7 +60,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     } = opts;
 
     // make import { history } from 'umi' work
-    createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
+    createHistory({ type: 'memory', initialEntries: [request.url], initialIndex: 1 });
 
     const pluginManager = PluginManager.create({
       plugins: getPlugins(),
@@ -78,16 +78,13 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       },
     });
 
-    const { pathname } = new URL(url);
+    const { pathname } = new URL(request.url);
     const matches = matchRoutesForSSR(pathname, routes);
     if (matches.length === 0) {
       return;
     }
 
     const loaderData: { [key: string]: any } = {};
-    const request = new Request(url, {
-      headers,
-    })
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
@@ -141,7 +138,8 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
   return async (url: string) => {
-    const jsx = await jsxGeneratorDeferrer(url);
+    const request = new Request(url);
+    const jsx = await jsxGeneratorDeferrer(request);
     if (jsx) {
       return new Promise(async (resolve, reject) => {
         const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> =
@@ -216,8 +214,10 @@ export default function createRequestHandler(
       return;
     }
 
-    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-    const jsx = await jsxGeneratorDeferrer(fullUrl, req.headers);
+    const request = new Request(req.protocol + '://' + req.get('host') + req.originalUrl, {
+      headers: req.headers,
+    });
+    const jsx = await jsxGeneratorDeferrer(request);
 
     if (!jsx) return next();
 
@@ -252,7 +252,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
       ...opts,
       ...params,
     });
-    const jsx = await jsxGeneratorDeferrer(req.url, req.headers);
+    const jsx = await jsxGeneratorDeferrer(req);
 
     if (!jsx) {
       throw new Error('no page resource')
