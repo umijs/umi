@@ -138,7 +138,8 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
   return async (url: string) => {
-    const request = new Request(url);
+    // dumi 里做 ssg 时传的 path 是不带 host 的，需要加上host
+    const request = new Request('http://localhost' + url);
     const jsx = await jsxGeneratorDeferrer(request);
     if (jsx) {
       return new Promise(async (resolve, reject) => {
