@@ -10,6 +10,11 @@ interface RouteLoaders {
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
 
+// serverLoader的参数类型
+export interface IServerLoaderArgs {
+  request: Request;
+}
+
 interface CreateRequestHandlerOptions {
   routesWithServerLoader: RouteLoaders;
   PluginManager: any;
@@ -48,7 +53,7 @@ const createJSXProvider = (
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  return async (url: string, serverLoaderArg?: { request: Request}) => {
+  return async (url: string, serverLoaderArg?: IServerLoaderArgs) => {
     const {
       routesWithServerLoader,
       PluginManager,
@@ -306,7 +311,7 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
-  serverLoaderArgs?: { request: Request }
+  serverLoaderArgs?: IServerLoaderArgs
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
