@@ -18,7 +18,7 @@ import umiLogo from './umi.png';
 
 export default function HomePage() {
   const clientLoaderData = useClientLoaderData();
-  const serverLoaderData = useServerLoaderData();
+  const serverLoaderData = useServerLoaderData<typeof serverLoader>();
 
   useServerInsertedHTML(() => {
     return <div>inserted html</div>;
