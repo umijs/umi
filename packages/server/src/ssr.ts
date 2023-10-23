@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
-import { Readable, Writable } from 'stream';
+import { Writable } from 'stream';
 import type { IRoutesById } from './types';
 
 interface RouteLoaders {
@@ -10,11 +10,16 @@ interface RouteLoaders {
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
 
+// serverLoader的参数类型
+export interface IServerLoaderArgs {
+  request: Request;
+}
+
 interface CreateRequestHandlerOptions {
   routesWithServerLoader: RouteLoaders;
   PluginManager: any;
   manifest:
-    | (() => { assets: Record<string, string> })
+    | ((sourceDir?: string) => { assets: Record<string, string> })
     | { assets: Record<string, string> };
   getPlugins: () => any;
   getValidKeys: () => any;
@@ -23,6 +28,8 @@ interface CreateRequestHandlerOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
+  withoutHTML?: boolean;
+  sourceDir?: string;
 }
 
 const createJSXProvider = (
@@ -46,7 +53,7 @@ const createJSXProvider = (
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  return async (url: string) => {
+  return async (url: string, serverLoaderArgs?: IServerLoaderArgs) => {
     const {
       routesWithServerLoader,
       PluginManager,
@@ -54,6 +61,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       getValidKeys,
       getRoutes,
       createHistory,
+      sourceDir,
     } = opts;
 
     // make import { history } from 'umi' work
@@ -87,14 +95,20 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader);
+              loaderData[id] = await executeLoader(
+                id,
+                routesWithServerLoader,
+                serverLoaderArgs,
+              );
               resolve();
             }),
         ),
     );
 
     const manifest =
-      typeof opts.manifest === 'function' ? opts.manifest() : opts.manifest;
+      typeof opts.manifest === 'function'
+        ? opts.manifest(sourceDir)
+        : opts.manifest;
     const context = {
       routes,
       routeComponents,
@@ -102,6 +116,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
+      withoutHTML: opts.withoutHTML,
     };
 
     const element = (await opts.getClientRootComponent(
@@ -202,12 +217,19 @@ export default function createRequestHandler(
       const data = await executeLoader(
         req.query.route,
         opts.routesWithServerLoader,
+        { request: req },
       );
       res.status(200).json(data);
       return;
     }
 
-    const jsx = await jsxGeneratorDeferrer(req.url);
+    const request = new Request(
+      req.protocol + '://' + req.get('host') + req.originalUrl,
+      {
+        headers: req.headers,
+      },
+    );
+    const jsx = await jsxGeneratorDeferrer(req.url, { request });
 
     if (!jsx) return next();
 
@@ -235,40 +257,22 @@ export default function createRequestHandler(
   };
 }
 
+// 新增的给CDN worker用的SSR请求handle
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
-  const jsxGeneratorDeferrer = createJSXGenerator(opts);
-
-  return function (req: Request) {
-    return new Promise(async (resolve, reject) => {
-      const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname);
-
-      if (!jsx) {
-        reject(new Error('no page resource'));
-        return;
-      }
-
-      let buf = Buffer.alloc(0);
-      const writable = new Writable();
-
-      writable._write = (chunk, _encoding, next) => {
-        buf = Buffer.concat([buf, chunk]);
-        next();
-      };
-
-      writable.on('finish', async () => {
-        resolve(Readable.from(buf));
-      });
-
-      const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
-        bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-        onShellReady() {
-          stream.pipe(writable);
-        },
-        onError(err: any) {
-          reject(err);
-        },
-      });
+  return async function (req: Request, params?: CreateRequestHandlerOptions) {
+    const jsxGeneratorDeferrer = createJSXGenerator({
+      ...opts,
+      ...params,
     });
+    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname, {
+      request: req,
+    });
+
+    if (!jsx) {
+      throw new Error('no page resource');
+    }
+
+    return ReactDomServer.renderToNodeStream(jsx.element);
   };
 }
 
@@ -276,7 +280,9 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: Request) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
-    return await executeLoader(query.route, opts.routesWithServerLoader);
+    return await executeLoader(query.route, opts.routesWithServerLoader, {
+      request: req,
+    });
   };
 }
 
@@ -318,11 +324,12 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
+  serverLoaderArgs?: IServerLoaderArgs,
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
   // TODO: 处理错误场景
-  return await mod.serverLoader();
+  return mod.serverLoader(serverLoaderArgs);
 }

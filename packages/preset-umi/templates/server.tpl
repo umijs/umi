@@ -26,8 +26,9 @@ export function getValidKeys() {
   return [{{#validKeys}}'{{{ . }}}',{{/validKeys}}];
 }
 
-export function getManifest() {
-  return JSON.parse(require('fs').readFileSync('{{{ assetsPath }}}', 'utf-8'));
+export function getManifest(sourceDir) {
+  return JSON.parse(require('fs').readFileSync(
+  sourceDir ? require('path').join(sourceDir,'build-manifest.json') : '{{{ assetsPath }}}', 'utf-8'));
 }
 
 export function createHistory(opts) {
@@ -36,18 +37,16 @@ export function createHistory(opts) {
 
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
-  let m = typeof manifest === 'function' ? manifest() : manifest;
+  let m = getManifest();
   return m.assets[fileName];
 };
-
-const manifest = {{{ env }}} === 'development' ? getManifest : getManifest();
 const createOpts = {
   routesWithServerLoader,
   PluginManager,
   getPlugins,
   getValidKeys,
   getRoutes,
-  manifest,
+  manifest: getManifest,
   getClientRootComponent,
   helmetContext,
   createHistory,

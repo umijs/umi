@@ -382,7 +382,7 @@ crossorigin: {}
 - [parcelCSS 参考](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
 
 ## cssPublicPath
-- 类型：`String`
+- 类型：`string`
 - 默认值：`./`
 
 为 CSS 中的图片、文件等外部资源指定自定义公共路径。作用类似于 `publicPath` 默认值是 `./`。
@@ -1384,7 +1384,7 @@ styles: [`body { color: red; }`, `https://a.com/b.css`],
 
 ## srcTranspiler
 
-- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`, `none`
+- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`
 - 默认值：`babel`
 
 配置构建时转译 js/ts 的工具。

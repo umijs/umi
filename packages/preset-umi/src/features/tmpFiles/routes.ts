@@ -315,9 +315,15 @@ export function componentToChunkName(
           ),
           '',
         )
+        // 丢弃 .pnpm 下的多层 node_modules 避免 chunkName 过长
+        // ex. node_modules/.pnpm/dumi@2.1.19_xxxx/node_modules/dumi/dist/client/pages/404
+        .replace(/.+(node_modules(\/|\\))/, '$1')
+        // 丢弃 tnpm 目录下的软链结构避免 chunkName 过长
+        // ex. node_modules/_@umijs_utils@4.0.83@@umijs/utils/dist/index.js
+        .replace(/(\/|\\)_@?([^@]+@){2}/, '$1')
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
-        // 转换 tnpm node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
+        // 转换 node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
         .replace(/@/g, '_')
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')
