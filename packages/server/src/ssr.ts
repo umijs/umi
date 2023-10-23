@@ -10,7 +10,19 @@ interface RouteLoaders {
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
 
-interface CreateRequestHandlerOptions {
+interface CreateRequestServerlessOptions {
+  /**
+   * only return body html
+   * @example <div id="root">{app}</div> ...
+   */
+  withoutHTML?: boolean;
+  /**
+   * folder path for `build-manifest.json`
+   */
+  sourceDir?: string;
+}
+
+interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   routesWithServerLoader: RouteLoaders;
   PluginManager: any;
   manifest:
@@ -23,8 +35,6 @@ interface CreateRequestHandlerOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  withoutHTML?: boolean;
-  sourceDir?: string;
 }
 
 const createJSXProvider = (
