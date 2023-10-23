@@ -238,6 +238,10 @@ const { formatMessage } = useIntl();
     },
   });
 
+  const LayoutWrapper = pluginManager.applyPlugins({
+    key: 'wrapLayout',
+    type: 'modify',
+  }) ?? React.Fragment;
 
   // 现在的 layout 及 wrapper 实现是通过父路由的形式实现的, 会导致路由数据多了冗余层级, proLayout 消费时, 无法正确展示菜单, 这里对冗余数据进行过滤操作
   const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === 'ant-design-pro-layout'), (route) => {
@@ -248,85 +252,87 @@ const { formatMessage } = useIntl();
   const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
 
   return (
-    <ProLayout
-      route={route}
-      location={location}
-      title={userConfig.title || 'plugin-layout'}
-      navTheme="dark"
-      siderWidth={256}
-      onMenuHeaderClick={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        navigate('/');
-      }}
-      formatMessage={userConfig.formatMessage || formatMessage}
-      menu={{ locale: userConfig.locale }}
-      logo={Logo}
-      menuItemRender={(menuItemProps, defaultDom) => {
-        if (menuItemProps.isUrl || menuItemProps.children) {
-          return defaultDom;
-        }
-        if (menuItemProps.path && location.pathname !== menuItemProps.path) {
-          return (
-            // handle wildcard route path, for example /slave/* from qiankun
-            <Link to={menuItemProps.path.replace('/*', '')} target={menuItemProps.target}>
-              {defaultDom}
-            </Link>
-          );
-        }
-        return defaultDom;
-      }}
-      itemRender={(route, _, routes) => {
-        const { breadcrumbName, title, path } = route;
-        const label = title || breadcrumbName
-        const last = routes[routes.length - 1]
-        if (last) {
-          if (last.path === path || last.linkPath === path) {
-            return <span>{label}</span>;
+    <LayoutWrapper>
+      <ProLayout
+        route={route}
+        location={location}
+        title={userConfig.title || 'plugin-layout'}
+        navTheme="dark"
+        siderWidth={256}
+        onMenuHeaderClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          navigate('/');
+        }}
+        formatMessage={userConfig.formatMessage || formatMessage}
+        menu={{ locale: userConfig.locale }}
+        logo={Logo}
+        menuItemRender={(menuItemProps, defaultDom) => {
+          if (menuItemProps.isUrl || menuItemProps.children) {
+            return defaultDom;
           }
-        }
-        return <Link to={path}>{label}</Link>;
-      }}
-      disableContentMargin
-      fixSiderbar
-      fixedHeader
-      {...runtimeConfig}
-      rightContentRender={
-        runtimeConfig.rightContentRender !== false &&
-        ((layoutProps) => {
-          const dom = getRightRenderContent({
-            runtimeConfig,
-            loading,
-            initialState,
-            setInitialState,
-          });
-          if (runtimeConfig.rightContentRender) {
-            return runtimeConfig.rightContentRender(layoutProps, dom, {
-              // BREAK CHANGE userConfig > runtimeConfig
-              userConfig,
+          if (menuItemProps.path && location.pathname !== menuItemProps.path) {
+            return (
+              // handle wildcard route path, for example /slave/* from qiankun
+              <Link to={menuItemProps.path.replace('/*', '')} target={menuItemProps.target}>
+                {defaultDom}
+              </Link>
+            );
+          }
+          return defaultDom;
+        }}
+        itemRender={(route, _, routes) => {
+          const { breadcrumbName, title, path } = route;
+          const label = title || breadcrumbName
+          const last = routes[routes.length - 1]
+          if (last) {
+            if (last.path === path || last.linkPath === path) {
+              return <span>{label}</span>;
+            }
+          }
+          return <Link to={path}>{label}</Link>;
+        }}
+        disableContentMargin
+        fixSiderbar
+        fixedHeader
+        {...runtimeConfig}
+        rightContentRender={
+          runtimeConfig.rightContentRender !== false &&
+          ((layoutProps) => {
+            const dom = getRightRenderContent({
               runtimeConfig,
               loading,
               initialState,
               setInitialState,
             });
-          }
-          return dom;
-        })
-      }
-    >
-      <Exception
-        route={matchedRoute}
-        noFound={runtimeConfig?.noFound}
-        notFound={runtimeConfig?.notFound}
-        unAccessible={runtimeConfig?.unAccessible}
-        noAccessible={runtimeConfig?.noAccessible}
-      >
-        {runtimeConfig.childrenRender
-          ? runtimeConfig.childrenRender(<Outlet />, props)
-          : <Outlet />
+            if (runtimeConfig.rightContentRender) {
+              return runtimeConfig.rightContentRender(layoutProps, dom, {
+                // BREAK CHANGE userConfig > runtimeConfig
+                userConfig,
+                runtimeConfig,
+                loading,
+                initialState,
+                setInitialState,
+              });
+            }
+            return dom;
+          })
         }
-      </Exception>
-    </ProLayout>
+      >
+        <Exception
+          route={matchedRoute}
+          noFound={runtimeConfig?.noFound}
+          notFound={runtimeConfig?.notFound}
+          unAccessible={runtimeConfig?.unAccessible}
+          noAccessible={runtimeConfig?.noAccessible}
+        >
+          {runtimeConfig.childrenRender
+            ? runtimeConfig.childrenRender(<Outlet />, props)
+            : <Outlet />
+          }
+        </Exception>
+      </ProLayout>
+    </LayoutWrapper>
   );
 }
       `,
@@ -771,7 +777,7 @@ export default Exception;
     ];
   });
 
-  api.addRuntimePluginKey(() => ['layout']);
+  api.addRuntimePluginKey(() => ['layout', 'wrapLayout']);
 
   api.addRuntimePlugin(() => {
     return [withTmpPath({ api, path: 'runtime.tsx' })];
