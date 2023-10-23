@@ -3,10 +3,10 @@ import type {
   Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { EnableBy } from '@umijs/core/dist/types';
-import { fsExtra, importLazy, logger } from '@umijs/utils';
+import { fsExtra, importLazy, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import type { IApi } from '../../types';
 import { absServerBuildPath } from './utils';
 
@@ -61,6 +61,11 @@ export default (api: IApi) => {
     },
   ]);
 
+  const serverPackagePath = dirname(
+    require.resolve('@umijs/server/package.json'),
+  );
+  const ssrTypesPath = join(serverPackagePath, './dist/types');
+
   api.onGenerateFiles(() => {
     // react-shim.js is for esbuild to build umi.server.js
     api.writeTmpFile({
@@ -93,6 +98,14 @@ export function useServerInsertedHTML(callback: () => React.ReactNode): void {
     addInsertedServerHTMLCallback(callback);
   }
 }
+`,
+    });
+
+    // types
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      content: `
+export type { IServerLoaderArgs, UmiRequest } from '${winPath(ssrTypesPath)}'
 `,
     });
   });

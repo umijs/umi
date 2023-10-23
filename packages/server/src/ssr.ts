@@ -2,22 +2,13 @@ import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
-import type { IRoutesById } from './types';
+import type { IRoutesById, IServerLoaderArgs, UmiRequest } from './types';
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
 }
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
-
-export type UmiRequest = Partial<Request> & Pick<Request, 'url' | 'headers'>;
-
-/**
- * serverLoader 的参数类型
- */
-export interface IServerLoaderArgs {
-  request: UmiRequest;
-}
 
 interface CreateRequestHandlerOptions {
   routesWithServerLoader: RouteLoaders;
