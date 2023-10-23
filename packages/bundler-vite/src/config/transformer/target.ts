@@ -1,3 +1,4 @@
+import { lodash } from '@umijs/utils';
 import type { IConfigProcessor } from '.';
 import legacyPlugin from '../../../compiled/@vitejs/plugin-legacy';
 import * as lite from '../../../compiled/caniuse-lite';
@@ -8,6 +9,11 @@ import { getBrowserlist } from './css';
  */
 export default (function target(userConfig) {
   const config: ReturnType<IConfigProcessor> = { build: {}, plugins: [] };
+  const userTargets = userConfig.targets;
+  if (lodash.isEmpty(userTargets)) {
+    return config;
+  }
+
   const { features, feature: unpackFeature } = lite;
   const { stats } = unpackFeature(features['es6-module']);
 
@@ -25,12 +31,12 @@ export default (function target(userConfig) {
     return false;
   }
 
-  const isLegacy = isLegacyBrowser(userConfig.targets);
+  const isLegacy = isLegacyBrowser(userTargets);
 
   // convert { ie: 11 } to ['ie11']
   // 低版本浏览器需要使用 legacy 插件 同时设置会有 warning
-  if (typeof userConfig.targets === 'object' && !isLegacy) {
-    config.build!.target = Object.entries(userConfig.targets)
+  if (lodash.isObject(userTargets) && !isLegacy) {
+    config.build!.target = Object.entries(userTargets)
       .filter(([name]) => {
         // refer: https://esbuild.github.io/api/#target
         return ['chrome', 'edge', 'firefox', 'node', 'safari'].includes(name);
@@ -38,9 +44,9 @@ export default (function target(userConfig) {
       .map(([name, ver]) => `${name}${ver}`);
   }
 
-  if (userConfig.targets && isLegacy) {
+  if (userTargets && isLegacy) {
     const legacyOpts: any = {
-      targets: getBrowserlist(userConfig.targets),
+      targets: getBrowserlist(userTargets),
       // 需要有值 否则无法生成 systemjs
       polyfills: ['es.promise.finally'],
       ignoreBrowserslistConfig: true,
