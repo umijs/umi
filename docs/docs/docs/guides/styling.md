@@ -5,7 +5,7 @@ toc: content
 
 # 样式
 
-本文介绍各种在 Umi 项目中使用样式的方式。
+本文介绍在 Umi 项目中使用样式的各种方式。
 
 ## 使用 CSS 样式
 
@@ -57,7 +57,7 @@ export default function () {
 Umi 默认支持 LESS (推荐)，SASS 和 SCSS 样式的导入，你可以直接按照引入 CSS 文件的方式引入并使用这些由 CSS 预处理器处理的样式。
 
 :::info{title=💡}
-在 Umi 中使用 Sass(Scss) 需要额外安装预处理依赖 如: `npm add -D sass`
+在 Umi 中使用 SASS (SCSS) 需要额外安装预处理依赖 如: `npm add -D sass`
 :::
 
 ```jsx
@@ -90,7 +90,7 @@ export default function () {
 }
 ```
 
-Umi 也同时提供了对 `.styl` 和 `.stylus` 文件的内置支持。使用必须安装 `stylus` 相应的预处理器依赖, 其他用法用上面的列子
+Umi 也同时提供了对 `.styl` 和 `.stylus` 文件的内置支持。使用前必须安装 `stylus` 相应的预处理器依赖，其他用法用上面的例子
 
 ```bash
 # .styl and .stylus
