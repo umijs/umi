@@ -16,7 +16,7 @@ Umi.js 需要使用 [Node.js](https://nodejs.org/zh-cn/) 来进行开发，因�
 Windows 用户建议使用 [nvm-windows](https://github.com/coreybutler/nvm-windows) 。
 :::
 
-本文将以 macOS 或 Linux 环境下使用 [nvm](https://github.com/nvm-sh/nvm) 的方式安装 [Node.js](https://nodejs.org/zh-cn/) ：
+本文将在 macOS 或 Linux 环境下使用 [nvm](https://github.com/nvm-sh/nvm) 安装 [Node.js](https://nodejs.org/zh-cn/) ：
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -58,7 +58,7 @@ pnpm -v
 
 ## IDE
 
-安装完 [Node.js](https://nodejs.org/zh-cn/) 及 [pnpm](https://pnpm.io/) (或其他依赖管理工具) 后，你需要一个自己习惯的 IDE 或文本编辑器来编写代码。如果你还没有习惯的 IDE，可以从下方挑选一个：
+安装完 [Node.js](https://nodejs.org/zh-cn/) 及 [pnpm](https://pnpm.io/) (或其他依赖管理工具) 后，你需要使用一个自己习惯的 IDE 或文本编辑器来编写代码。如果你还没有习惯的 IDE，可以从下方挑选一个：
 
 1. [Visual Studio Code](https://code.visualstudio.com/) (推荐)
 2. [WebStorm](https://www.jetbrains.com/webstorm/) (推荐)
@@ -68,4 +68,4 @@ pnpm -v
 
 ## 下一步
 
-恭喜你！你的本地环境已经准备好开始开发 Umi.js 项目了，马上前往 [脚手架](boilerplate) 学习如何使用 Umi.js 脚手架快速启动一个项目吧 🎉
+恭喜你！你的本地环境已经准备好开始开发 Umi.js 项目了，马上前往 [脚手架](boilerplate) 学习如何使用 Umi.js 脚手架快速启动一个项目吧！🎉
