@@ -5,6 +5,7 @@ import { dirname, resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath } from '../utils';
 import { Env } from "@umijs/bundler-webpack/dist/types";
+import webpack from '@umijs/bundler-webpack/compiled/webpack';
 
 export const build = async (api: IApi, opts: any) => {
   logger.wait('[SSR] Compiling...');
@@ -46,14 +47,23 @@ export const build = async (api: IApi, opts: any) => {
 
     memo.output
       .path(dirname(absOutputFile))
-      .filename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
+      // 防止多chunk情况下（有懒加载时）的文件名冲突报错
+      .filename(useHash ? '[name].[contenthash:8].server.js' : '[name].server.js')
       .chunkFilename(
-        useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js',
+        useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
       )
       .libraryTarget('commonjs2');
 
     // remove useless progress plugin
     memo.plugins.delete('progress-plugin');
+
+    // SSR场景对代码做lazy分割没有意义，全局关闭
+    // https://stackoverflow.com/questions/56018557/switch-off-webpacks-lazy-loading-globally-without-magic-comments
+    // memo.plugin('limit-chunk-count-plugin').use(webpack.optimize.LimitChunkCountPlugin, [
+    //   {
+    //     maxChunks: 1,
+    //   }
+    // ])
 
     // do not minify
     memo.optimization.minimize(false);
