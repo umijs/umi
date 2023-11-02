@@ -46,7 +46,7 @@ export const build = async (api: IApi, opts: any) => {
 
     memo.output
       .path(dirname(absOutputFile))
-      // 防止多chunk情况下（有懒加载时）的文件名冲突报错
+      // 避免多 chunk 时的命名冲突，虽然 ssr 在项目里禁用了 import() 语法，但 node_modules 下可能存在的 import() 没有被 babel 插件覆盖到
       .filename(useHash ? '[name].[contenthash:8].server.js' : '[name].server.js')
       .chunkFilename(
         useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
