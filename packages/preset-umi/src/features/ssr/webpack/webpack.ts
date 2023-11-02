@@ -5,7 +5,6 @@ import { dirname, resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath } from '../utils';
 import { Env } from "@umijs/bundler-webpack/dist/types";
-import webpack from '@umijs/bundler-webpack/compiled/webpack';
 
 export const build = async (api: IApi, opts: any) => {
   logger.wait('[SSR] Compiling...');
@@ -56,14 +55,6 @@ export const build = async (api: IApi, opts: any) => {
 
     // remove useless progress plugin
     memo.plugins.delete('progress-plugin');
-
-    // SSR场景对代码做lazy分割没有意义，全局关闭
-    // https://stackoverflow.com/questions/56018557/switch-off-webpacks-lazy-loading-globally-without-magic-comments
-    // memo.plugin('limit-chunk-count-plugin').use(webpack.optimize.LimitChunkCountPlugin, [
-    //   {
-    //     maxChunks: 1,
-    //   }
-    // ])
 
     // do not minify
     memo.optimization.minimize(false);
