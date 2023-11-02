@@ -73,6 +73,10 @@ export function createConfig(opts?: {
         opts?.jsTransformer || 'esbuild',
         opts?.jsTransformerOpts,
       ),
+      '^.+\\.mjs$': getJSTransformer(
+        opts?.jsTransformer || 'esbuild',
+        opts?.jsTransformerOpts,
+      ),
     },
     moduleNameMapper: {
       '^.+\\.(css|less|sass|scss|stylus)$':
