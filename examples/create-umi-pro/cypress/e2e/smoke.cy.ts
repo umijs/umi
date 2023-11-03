@@ -23,9 +23,16 @@ describe('Basic Test', () => {
   });
 
   it('access ok', () => {
+    cy.intercept('OPTIONS', '/api/v1/queryUserList').as(
+      'queryUserListPermissionCheck',
+    );
+
     cy.visit('/access');
 
-    cy.get('button.ant-btn').contains('只有 Admin 可以看到这个按钮');
+    cy.get('button.btn-admin').contains('只有 Admin 可以看到这个按钮');
+    cy.wait('@queryUserListPermissionCheck', { timeout: 10000 })
+      .get('button.btn-options')
+      .contains('只有通过 OPTIONS 请求进行动态权限校验成功的可以看到这个按钮');
   });
 
   it('simple CRUD ok', () => {

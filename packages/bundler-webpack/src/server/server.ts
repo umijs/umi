@@ -35,15 +35,6 @@ export async function createServer(opts: IOpts): Promise<any> {
   // 避免在 https 模式下时「Cannot access 'ws' before initialization」的报错
   let ws: ReturnType<typeof createWebSocketServer>;
 
-  // cros
-  app.use(
-    cors({
-      origin: true,
-      methods: ['GET', 'HEAD', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-      credentials: true,
-    }),
-  );
-
   // compression
   app.use(require('@umijs/bundler-webpack/compiled/compression')());
 
@@ -71,6 +62,15 @@ export async function createServer(opts: IOpts): Promise<any> {
 
   // before middlewares
   (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
+
+  // cros, need put after mock middleware
+  app.use(
+    cors({
+      origin: true,
+      methods: ['GET', 'HEAD', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+      credentials: true,
+    }),
+  );
 
   // webpack dev middleware
   const configs = Array.isArray(webpackConfig)

@@ -11,6 +11,12 @@ export default {
       errorCode: 0,
     });
   },
+  'OPTIONS /api/v1/queryUserList': (req: any, res: any) => {
+    res.json({
+      success: true,
+      errorCode: 0,
+    });
+  },
   'PUT /api/v1/user/': (req: any, res: any) => {
     res.json({
       success: true,
