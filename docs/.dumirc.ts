@@ -44,22 +44,27 @@ export default defineConfig({
         {
           title: '介绍',
           link: '/docs/introduce/introduce',
+          activePath: '/docs/introduce',
         },
         {
           title: '指南',
           link: '/docs/guides/getting-started',
+          activePath: '/docs/guides',
         },
         {
           title: 'API',
           link: '/docs/api/api',
+          activePath: '/docs/api',
         },
         {
           title: 'Umi Max',
           link: '/docs/max/introduce',
+          activePath: '/docs/max',
         },
         {
           title: '博客',
           link: '/blog/umi-4-rc',
+          activePath: '/blog',
         },
       ],
     },
