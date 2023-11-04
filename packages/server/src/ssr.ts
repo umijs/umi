@@ -95,14 +95,20 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader, serverLoaderArgs);
+              loaderData[id] = await executeLoader(
+                id,
+                routesWithServerLoader,
+                serverLoaderArgs,
+              );
               resolve();
             }),
         ),
     );
 
     const manifest =
-      typeof opts.manifest === 'function' ? opts.manifest(sourceDir) : opts.manifest;
+      typeof opts.manifest === 'function'
+        ? opts.manifest(sourceDir)
+        : opts.manifest;
     const context = {
       routes,
       routeComponents,
@@ -167,11 +173,11 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
             html = html.replace(
               /(<\/head>)/,
               [
-                opts.helmetContext.helmet.title.toString(),
-                opts.helmetContext.helmet.priority.toString(),
-                opts.helmetContext.helmet.meta.toString(),
-                opts.helmetContext.helmet.link.toString(),
-                opts.helmetContext.helmet.script.toString(),
+                opts.helmetContext.helmet?.title?.toString(),
+                opts.helmetContext.helmet?.priority?.toString(),
+                opts.helmetContext.helmet?.meta?.toString(),
+                opts.helmetContext.helmet?.link?.toString(),
+                opts.helmetContext.helmet?.script?.toString(),
                 '$1',
               ]
                 .filter(Boolean)
@@ -217,9 +223,12 @@ export default function createRequestHandler(
       return;
     }
 
-    const request = new Request(req.protocol + '://' + req.get('host') + req.originalUrl, {
-      headers: req.headers,
-    });
+    const request = new Request(
+      req.protocol + '://' + req.get('host') + req.originalUrl,
+      {
+        headers: req.headers,
+      },
+    );
     const jsx = await jsxGeneratorDeferrer(req.url, { request });
 
     if (!jsx) return next();
@@ -255,10 +264,12 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
       ...opts,
       ...params,
     });
-    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname, { request: req });
+    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname, {
+      request: req,
+    });
 
     if (!jsx) {
-      throw new Error('no page resource')
+      throw new Error('no page resource');
     }
 
     return ReactDomServer.renderToNodeStream(jsx.element);
@@ -269,7 +280,9 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: Request) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
-    return await executeLoader(query.route, opts.routesWithServerLoader, { request: req });
+    return await executeLoader(query.route, opts.routesWithServerLoader, {
+      request: req,
+    });
   };
 }
 
@@ -311,7 +324,7 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
-  serverLoaderArgs?: IServerLoaderArgs
+  serverLoaderArgs?: IServerLoaderArgs,
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
