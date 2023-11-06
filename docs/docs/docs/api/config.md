@@ -1450,7 +1450,7 @@ import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
 ```js
 // 兼容 ie11
 targets: {
-  ie: 11;
+  ie: 11,
 }
 ```
 
