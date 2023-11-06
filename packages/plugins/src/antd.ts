@@ -258,8 +258,8 @@ export default (api: IApi) => {
         /**
          * 是否重构了全局静态配置。 重构后需要在运行时将全局静态配置传入到 ConfigProvider 中。
          * 实际上 4.13.0 重构后有一个 bug，真正的 warn 出现在 4.13.1，并且 4.13.1 修复了这个 bug。
-         * @**umi-issue:** https://github.com/umijs/umi/issues/10231
-         * @**antd-PR:** https://github.com/ant-design/ant-design/pull/29285
+         * Resolve issue: https://github.com/umijs/umi/issues/10231
+         * `InternalStatic` 指 `Modal.config` 等静态方法，详见：https://github.com/ant-design/ant-design/pull/29285
          */
         disableInternalStatic: semver.gt(antdVersion, '4.13.0'),
       },
