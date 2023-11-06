@@ -4,7 +4,7 @@ import { build } from './build';
 const fixtures = path.join(__dirname, '../../../fixtures/prepare-build');
 
 test('build', async () => {
-  const res = await build({
+  const [res] = await build({
     entryPoints: [path.join(fixtures, 'normal/index.ts')],
     config: {
       cwd: path.join(fixtures, 'normal'),

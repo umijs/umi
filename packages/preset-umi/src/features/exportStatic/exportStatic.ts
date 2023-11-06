@@ -31,10 +31,11 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
     if (
       // skip layout
       !route.isLayout &&
+      route?.path &&
       // skip dynamic route for win, because `:` is not allowed in file name
-      (!IS_WIN || !route.path.includes('/:')) &&
+      (!IS_WIN || !route?.path?.includes('/:')) &&
       // skip `*` route, because `*` is not working for most site serve services
-      (!route.path.includes('*') ||
+      (!route?.path?.includes('*') ||
         // except `404.html`
         is404)
     ) {
@@ -58,6 +59,9 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
  * get pre-rendered html by route path
  */
 async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
+  const {
+    exportStatic: { ignorePreRenderError = false },
+  } = api.config;
   markupRender ??= require(absServerBuildPath(api))._markupGenerator;
 
   try {
@@ -82,6 +86,9 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
     logger.info(`Pre-render for ${path}`);
   } catch (err) {
     logger.error(`Pre-render ${path} error: ${err}`);
+    if (!ignorePreRenderError) {
+      throw err;
+    }
   }
 
   return htmlTpl;
@@ -126,6 +133,7 @@ export default (api: IApi) => {
               zod.function(),
               zod.array(zod.string()),
             ]),
+            ignorePreRenderError: zod.boolean().default(false),
           })
           .deepPartial(),
     },
@@ -144,6 +152,13 @@ export default (api: IApi) => {
 
     for (const { file, route, prerender } of htmlData) {
       let { markupArgs } = opts;
+      if (api.config.ssr && prerender) {
+        markupArgs.scripts.forEach((script: any) => {
+          if (script.src) {
+            script.async = true;
+          }
+        });
+      }
 
       // handle relative publicPath, such as `./`
       if (publicPath.startsWith('.')) {

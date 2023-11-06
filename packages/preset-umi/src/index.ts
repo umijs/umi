@@ -13,6 +13,7 @@ export default () => {
       require.resolve('./features/appData/appData'),
       require.resolve('./features/appData/umiInfo'),
       require.resolve('./features/check/check'),
+      require.resolve('./features/check/babel722'),
       require.resolve('./features/codeSplitting/codeSplitting'),
       require.resolve('./features/configPlugins/configPlugins'),
       require.resolve('./features/crossorigin/crossorigin'),
@@ -26,6 +27,7 @@ export default () => {
       require.resolve('./features/icons/icons'),
       require.resolve('./features/mock/mock'),
       require.resolve('./features/mpa/mpa'),
+      require.resolve('./features/okam/okam'),
       require.resolve('./features/overrides/overrides'),
       require.resolve('./features/phantomDependency/phantomDependency'),
       require.resolve('./features/polyfill/polyfill'),
@@ -55,6 +57,7 @@ export default () => {
       require.resolve('./features/webpack/webpack'),
       require.resolve('./features/swc/swc'),
       require.resolve('./features/ui/ui'),
+      require.resolve('./features/hmrGuardian/hmrGuardian'),
 
       // commands
       require.resolve('./commands/build'),

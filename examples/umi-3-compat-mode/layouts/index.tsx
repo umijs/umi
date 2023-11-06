@@ -7,7 +7,7 @@ export default (props) => {
       <div>
         <button
           onClick={() => {
-            history.back();
+            props.history.goBack();
           }}
         >
           go back

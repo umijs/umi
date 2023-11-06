@@ -1,13 +1,16 @@
-import { logger, printHelp, setNoDeprecation, yParser } from '@umijs/utils';
-import { DEV_COMMAND, FRAMEWORK_NAME } from '../constants';
-import { Service } from '../service/service';
-import { dev } from './dev';
 import {
   catchUnhandledRejection,
   checkLocal,
   checkVersion as checkNodeVersion,
+  logger,
+  printHelp,
+  setNoDeprecation,
   setNodeTitle,
-} from './node';
+  yParser,
+} from '@umijs/utils';
+import { DEV_COMMAND, FRAMEWORK_NAME, MIN_NODE_VERSION } from '../constants';
+import { Service } from '../service/service';
+import { dev } from './dev';
 
 interface IOpts {
   presets?: string[];
@@ -16,9 +19,9 @@ interface IOpts {
 catchUnhandledRejection();
 
 export async function run(opts?: IOpts) {
-  checkNodeVersion();
+  checkNodeVersion(MIN_NODE_VERSION);
   checkLocal();
-  setNodeTitle();
+  setNodeTitle(FRAMEWORK_NAME);
   setNoDeprecation();
 
   const args = yParser(process.argv.slice(2), {

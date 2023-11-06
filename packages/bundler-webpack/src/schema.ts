@@ -38,6 +38,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
     babelLoaderCustomize: ({ zod }) => zod.string(),
     cacheDirectoryPath: ({ zod }) => zod.string(),
     chainWebpack: ({ zod }) => zod.function(),
+    checkDepCssModules: ({ zod }) => zod.boolean().default(false),
     copy: ({ zod }) =>
       zod.array(
         zod.union([
@@ -58,6 +59,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         CSSMinifier.none,
       ]),
     cssMinifierOptions: ({ zod }) => zod.record(zod.string(), zod.any()),
+    cssPublicPath: ({ zod }) => zod.string(),
     deadCode: ({ zod }) =>
       zod
         .object({
@@ -161,12 +163,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
     runtimePublicPath: ({ zod }) => zod.object({}),
     sassLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
     srcTranspiler: ({ zod }) =>
-      zod.enum([
-        Transpiler.babel,
-        Transpiler.esbuild,
-        Transpiler.swc,
-        Transpiler.none,
-      ]),
+      zod.enum([Transpiler.babel, Transpiler.esbuild, Transpiler.swc]),
     srcTranspilerOptions: ({ zod }) =>
       zod
         .object({
@@ -175,6 +172,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         })
         .deepPartial(),
     styleLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
+    stylusLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
     svgo: ({ zod }) =>
       zod.union([zod.record(zod.string(), zod.any()), zod.boolean()]),
     svgr: ({ zod }) => zod.record(zod.string(), zod.any()),

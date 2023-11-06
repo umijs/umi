@@ -25,9 +25,9 @@ export default (api: IApi) => {
       const h = new GeneratorHelper(api);
 
       h.addDevDeps({
-        prettier: '^2',
-        'prettier-plugin-organize-imports': '^2',
-        'prettier-plugin-packagejson': '^2',
+        prettier: '^2.8.8',
+        'prettier-plugin-organize-imports': '^3.2.2',
+        'prettier-plugin-packagejson': '^2.4.3',
       });
 
       // 2、添加 .prettierrc 和 .prettierignore

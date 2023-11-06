@@ -5,6 +5,7 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'lint',
     description: 'lint source code using eslint and stylelint',
+    configResolveMode: 'loose',
     details: `
 umi lint
 

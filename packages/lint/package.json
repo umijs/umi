@@ -1,6 +1,6 @@
 {
   "name": "@umijs/lint",
-  "version": "4.0.69",
+  "version": "4.0.87",
   "description": "@umijs/lint",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/lint#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -21,14 +21,14 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@babel/core": "7.21.0",
-    "@babel/eslint-parser": "7.19.1",
+    "@babel/core": "7.23.2",
+    "@babel/eslint-parser": "7.22.15",
     "@stylelint/postcss-css-in-js": "^0.38.0",
-    "@typescript-eslint/eslint-plugin": "5.48.1",
-    "@typescript-eslint/parser": "5.48.1",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "@umijs/babel-preset-umi": "workspace:*",
-    "eslint-plugin-jest": "27.2.1",
-    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-jest": "27.2.3",
+    "eslint-plugin-react": "7.33.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "postcss": "^8.4.21",
     "postcss-syntax": "0.36.2",

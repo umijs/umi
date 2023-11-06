@@ -7,7 +7,7 @@ import { Model, ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
-  const pkgPath = join(__dirname, '../libs/dva.ts');
+  const pkgPath = join(__dirname, '../libs/dva.tsx');
 
   api.describe({
     config: {
@@ -78,7 +78,7 @@ export interface IRuntimeConfig {
       tpl: `
 // It's faked dva
 // aliased to @umijs/plugins/templates/dva
-import { create, Provider } from 'dva';
+import { create, Provider } from '${winPath(pkgPath)}';
 import createLoading from '${winPath(require.resolve('dva-loading'))}';
 ${
   api.config.dva?.immer
@@ -162,7 +162,9 @@ export function dataflowProvider(container, opts) {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { connect, useDispatch, useStore, useSelector } from 'dva';
+export { connect, useDispatch, useStore, useSelector } from '${winPath(
+        pkgPath,
+      )}';
 export { getDvaApp } from './dva';
 `,
     });
@@ -201,7 +203,9 @@ interface EffectsCommandMap {
 interface Action<T = any> {
       type: T
 }
-export type Reducer<S = any, A extends Action = AnyAction> = (prevState: S, action: A) => S;
+export type Reducer<S = any, A extends Action = AnyAction> = (prevState: S, action: A) => ${
+        api.config.dva?.immer ? 'S | void' : 'S'
+      };
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 type EffectType = 'takeEvery' | 'takeLatest' | 'watcher' | 'throttle';
 type EffectWithType = [Effect, { type: EffectType }];

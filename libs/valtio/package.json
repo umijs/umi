@@ -1,6 +1,6 @@
 {
   "name": "@umijs/valtio",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Umi.js valtio plugin",
   "keywords": [],
   "homepage": "https://github.com/umijs/umi/tree/master/libs/valtio",
@@ -23,7 +23,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "valtio": "1.10.5"
+    "valtio": "1.11.2"
   },
   "publishConfig": {
     "access": "public"

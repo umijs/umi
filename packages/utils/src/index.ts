@@ -45,6 +45,7 @@ export * from './isJavaScriptFile';
 export * from './isLocalDev';
 export * from './isMonorepo';
 export * from './isStyleFile';
+export * from './node';
 export * from './npmClient';
 export * from './randomColor/randomColor';
 export * from './readDirFiles';

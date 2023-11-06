@@ -16,6 +16,7 @@ interface IOpts {
   stripExports: { exports: string[] };
   classPropertiesLoose: any;
   pluginStyledComponents: any;
+  pluginDecorators: any;
 }
 
 export default (_context: any, opts: IOpts) => {
@@ -69,17 +70,23 @@ export default (_context: any, opts: IOpts) => {
       opts.pluginStyledComponents && [
         require.resolve('babel-plugin-styled-components'),
         {
+          // 该 plugin 会校验 styled 的来源
+          // 如果不是 `styled-components`, 需要手动引入后才能使 displayName 生效
+          topLevelImportPaths: ['@umijs/max'],
           ...opts.pluginStyledComponents,
         },
       ],
       // TC39 Proposals
       // class-static-block
       // decorators
-      [
+      opts.pluginDecorators !== false && [
         require.resolve(
           '@umijs/bundler-utils/compiled/babel/plugin-proposal-decorators',
         ),
-        { legacy: true },
+        {
+          legacy: true,
+          ...opts.pluginDecorators,
+        },
       ],
       // Enable loose mode to use assignment instead of defineProperty
       // Note:

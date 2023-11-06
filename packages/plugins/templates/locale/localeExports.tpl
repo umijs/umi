@@ -51,11 +51,30 @@ import lang_{{lang}}{{country}}{{index}} from "{{{path}}}";
 {{/paths}}
 {{/LocaleList}}
 
+const flattenMessages=(
+  nestedMessages: Record<string, any>,
+  prefix = '',
+) => {
+  return Object.keys(nestedMessages).reduce(
+    (messages: Record<string, any>, key) => {
+      const value = nestedMessages[key];
+      const prefixedKey = prefix ? `${prefix}.${key}` : key;
+      if (typeof value === 'string') {
+        messages[prefixedKey] = value;
+      } else {
+        Object.assign(messages, flattenMessages(value, prefixedKey));
+      }
+      return messages;
+    },
+    {},
+  );
+}
+
 export const localeInfo: {[key: string]: any} = {
   {{#LocaleList}}
   '{{name}}': {
     messages: {
-      {{#paths}}...lang_{{lang}}{{country}}{{index}},{{/paths}}
+      {{#paths}}...flattenMessages(lang_{{lang}}{{country}}{{index}}),{{/paths}}
     },
     locale: '{{locale}}',
     {{#Antd}}antd: {
@@ -90,8 +109,8 @@ export const addLocale = (
     ? Object.assign({}, localeInfo[name].messages, messages)
     : messages;
 
-
-  const { momentLocale, antd } = extraLocales || {};
+  // 用户只是追加 messages 时，extraLocales 可选
+  const { momentLocale = localeInfo[name]?.momentLocale, antd = localeInfo[name]?.antd } = extraLocales || {};
   const locale = name.split('{{BaseSeparator}}')?.join('-')
   localeInfo[name] = {
     messages: mergeMessages,

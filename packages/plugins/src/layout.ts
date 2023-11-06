@@ -38,6 +38,8 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+  const isAntd5 = antdVersion.startsWith('5');
+  const layoutFile = isAntd5 ? 'Layout.css' : 'Layout.less';
 
   api.describe({
     key: 'layout',
@@ -111,16 +113,20 @@ export default (api: IApi) => {
     return memo;
   });
 
-  // use absolute path to types references in `npm/yarn` will cause case problems.
-  // https://github.com/umijs/umi/discussions/10947
-  const isFlattedDepsDir = [NpmClientEnum.npm, NpmClientEnum.yarn].includes(
-    api.appData.npmClient,
-  );
-
   api.onGenerateFiles(() => {
-    const PKG_TYPE_REFERENCE = `/// <reference types="${
+    // use absolute path to types references in `npm/yarn` will cause case problems.
+    // https://github.com/umijs/umi/discussions/10947
+    // https://github.com/umijs/umi/discussions/11570
+    const isFlattedDepsDir = [NpmClientEnum.npm, NpmClientEnum.yarn].includes(
+      api.appData.npmClient,
+    );
+    const PKG_TYPE_REFERENCE = `
+/// <reference types="${
       isFlattedDepsDir ? ANT_PRO_COMPONENT : resolvedPkgPath
-    }" />`;
+    }" />
+${isFlattedDepsDir ? '/// <reference types="antd" />' : ''}
+`.trimStart();
+
     const hasInitialStatePlugin = api.config.initialState;
     // Layout.tsx
     api.writeTmpFile({
@@ -133,7 +139,7 @@ import React, { useMemo } from 'react';
 import {
   ProLayout,
 } from "${resolvedPkgPath}";
-import './Layout.less';
+import './${layoutFile}';
 import Logo from './Logo';
 import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
@@ -556,16 +562,14 @@ export function getRightRenderContent (opts: {
 
     // Layout.less
     api.writeTmpFile({
-      path: 'Layout.less',
+      path: layoutFile,
       content: `
 ${
   // antd@5里面没有这个样式了
-  antdVersion.startsWith('5')
-    ? ''
-    : "@import '~antd/es/style/themes/default.less';"
+  isAntd5 ? '' : "@import '~antd/es/style/themes/default.less';"
 }
 @media screen and (max-width: 480px) {
-  // 在小屏幕的时候可以有更好的体验
+  /* 在小屏幕的时候可以有更好的体验 */
   .umi-plugin-layout-container {
     width: 100% !important;
   }
@@ -573,13 +577,11 @@ ${
     border-radius: 0 !important;
   }
 }
-.umi-plugin-layout-menu {
-  .anticon {
-    margin-right: 8px;
-  }
-  .ant-dropdown-menu-item {
-    min-width: 160px;
-  }
+.umi-plugin-layout-menu .anticon {
+  margin-right: 8px;
+}
+.umi-plugin-layout-menu .ant-dropdown-menu-item {
+  min-width: 160px;
 }
 .umi-plugin-layout-right {
   display: flex !important;
@@ -587,30 +589,30 @@ ${
   height: 100%;
   margin-left: auto;
   overflow: hidden;
-  .umi-plugin-layout-action {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-    > i {
-      color: rgba(255, 255, 255, 0.85);
-      vertical-align: middle;
-    }
-    &:hover {
-      background: rgba(0, 0, 0, 0.025);
-    }
-    &:global(.opened) {
-      background: rgba(0, 0, 0, 0.025);
-    }
-  }
-  .umi-plugin-layout-search {
-    padding: 0 12px;
-    &:hover {
-      background: transparent;
-    }
-  }
+}
+.umi-plugin-layout-right .umi-plugin-layout-action {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.umi-plugin-layout-right .umi-plugin-layout-action > i {
+  color: rgba(255, 255, 255, 0.85);
+  vertical-align: middle;
+}
+.umi-plugin-layout-right .umi-plugin-layout-action:hover {
+  background: rgba(0, 0, 0, 0.025);
+}
+.umi-plugin-layout-right .umi-plugin-layout-action.opened {
+  background: rgba(0, 0, 0, 0.025);
+}
+.umi-plugin-layout-right .umi-plugin-layout-search {
+  padding: 0 12px;
+}
+.umi-plugin-layout-right .umi-plugin-layout-search:hover {
+  background: transparent;
 }
 .umi-plugin-layout-name {
   margin-left: 8px;
