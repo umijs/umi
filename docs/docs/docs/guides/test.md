@@ -8,7 +8,7 @@ toc: content
 
 ## 配置
 
-使用 Umi 4 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
+使用 Umi 4 的微生成器快速地配置好 Jest [参考](./generator#jest-配置生成器)，如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
 
 
 umi 项目
@@ -53,7 +53,7 @@ export default async () => {
 
 假设我们需要测试一个 utils 函数 `reverseApiData`, 它将 api 请求的结果 `data` 对象的 key 和 value 互换。
 
-我们推荐将测试文件被测模块放在同一级目录，这样可以方便查看测试文件以便理解模块的功能。
+我们推荐将测试文件和被测模块放在同一级目录，这样可以方便查看测试文件以便理解模块的功能。
 
 ```txt
 .
@@ -132,7 +132,7 @@ test('reverseApiData reverse simple object', async () => {
 });
 ```
 
-让每个测试用例只关注一个功能点，可以让用例在重构的时候给我们更准确的反馈，改动破坏了什么功能。更多的用例请 [参考](https://github.com/umijs/umi/tree/master/examples/test-test/utils/reverseApiData.test.ts)
+让每个测试用例只关注一个功能点，可以让用例在重构的时候给我们更准确的反馈，例如改动破坏了什么功能。更多的用例请参考 [代码](https://github.com/umijs/umi/tree/master/examples/test-test/utils/reverseApiData.test.ts)。
 
 ## UI 测试
 

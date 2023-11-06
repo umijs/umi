@@ -34,7 +34,7 @@ toc: content
 
 ### 启动命令
 
-如果使用了 `@umijs/max` 可以使用 `max` 命令来替换 `umi`，`max dev`，`max build` 等
+如果使用了 `@umijs/max` 可以使用 `max` 命令来替换 `umi`，`max dev`，`max build` 等。
 
 `umi@4` 将一些项目前置操作放到了 `setup` 命令中，如 umi@3 中的 `umi g tmp` 等命令，需要使用 `umi setup` 替换
 

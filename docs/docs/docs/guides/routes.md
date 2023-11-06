@@ -27,7 +27,7 @@ export default {
 }
 ```
 
-Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载过程是异步的，所以往往你需要编写 [`loading.tsx`](./directory-structure#loadingtsxjsx) 来给项目添加加载样式，提升体验。
+Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载过程是异步的，所以往往你需要编写 [`loading.tsx`](./directory-structure#loadingtsxjsx) 来给项目添加加载样式，提升用户体验。
 
 :::info{title=💡}
 你可以在 Chrome Devtools > 网络 Tab 中将网络设置成低速，然后切换路由查看加载组件是否生效。
@@ -62,7 +62,7 @@ Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载�
 
 * Type: `string`
 
-配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始寻找。
+配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径。如果是相对路径，会从 `src/pages` 开始寻找。
 
 如果指向 `src` 目录的文件，可以用 `@`，比如 `component: '@/layouts/basic'`，推荐使用 `@` 组织路由文件位置。
 
@@ -361,7 +361,7 @@ export default function() {
 ]
 ```
 
-这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
+这样，如果访问 `/foo`，则 `/` 和 `/users` 都不能匹配，于是会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
 
 > 404 只有约定式路由会自动生效，如果使用配置式路由，需要自行配置 404 的通配路由。
 
