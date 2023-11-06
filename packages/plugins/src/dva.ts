@@ -162,7 +162,9 @@ export function dataflowProvider(container, opts) {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { connect, useDispatch, useStore, useSelector } from '${winPath(pkgPath)}';
+export { connect, useDispatch, useStore, useSelector } from '${winPath(
+        pkgPath,
+      )}';
 export { getDvaApp } from './dva';
 `,
     });

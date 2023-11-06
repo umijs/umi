@@ -19,8 +19,7 @@ Umi 4 中同时支持 webpack 和 vite 两种构建方式，跑通了后，迫�
   <span style={{ color: 'red', fontWeight: 'bold' }}>
     两个示例、四种模式、四个维度的对比。
   </span>
-  两个示例分别是大型的全量 ant-design-pro 和小型的 libs example；四种模式分别是 webpack、webpack
-  + MFSU、webpack + MFSU with esbuild mode、Vite in umi；四个维度分别是无缓存的冷启动、有缓存的热启动、修改代码后的热更新、页面打开速度。
+  两个示例分别是大型的全量 ant-design-pro 和小型的 libs example；四种模式分别是 webpack、webpack + MFSU、webpack + MFSU with esbuild mode、Vite in umi；四个维度分别是无缓存的冷启动、有缓存的热启动、修改代码后的热更新、页面打开速度。
 </p>
 
 多说几点和统计相关的。上述 webpack 相关模式全部开启物理缓存；Vite 是 Umi 中集成后的 Vite，也有担心是不是 Umi 对于 Vite 的误用，经开发者确认，基本排除误用的可能性，大段时间消耗在预编译依赖上；Ant Design Pro 中包含 less 的使用，这是使用 esbuild 无法加速的部分，这有影响，但对于不同模式应该是公平的；下图数据是本地用 13-inch M1 2022 重启电脑后跑 5 次后平均取值的结果；Vite 的热更速度没统计是因为由于 esm 的特性，改完后要等请求过来后处理完才算结束，无法统计，但肯定是很快的。
