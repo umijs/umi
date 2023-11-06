@@ -266,14 +266,10 @@ const getBrowser = (
           // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
           if (!isFirst && opts.routes[id]?.hasServerLoader) {
             // 在有basename的情况下__serverLoader的请求路径需要加上basename
-            fetch(
-              (basename.endsWith('/') ? basename : basename + '/') +
-                '__serverLoader?route=' +
-                id,
-              {
-                credentials: 'include',
-              },
-            )
+            const url = `${withEndSlash(basename)}'__serverLoader?route='${id}`;
+            fetch(url, {
+              credentials: 'include',
+            })
               .then((d) => d.json())
               .then((data) => {
                 // setServerLoaderData when startTransition because if ssr is enabled,
@@ -354,4 +350,8 @@ export function renderClient(opts: RenderClientOpts) {
   }
   // @ts-ignore
   ReactDOM.render(<Browser />, rootElement);
+}
+
+function withEndSlash(str: string) {
+  return str.endsWith('/') ? str : `${str}/`;
 }

@@ -3,7 +3,7 @@ import AntdMomentWebpackPlugin from '@ant-design/moment-webpack-plugin';
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge, Mustache, semver, winPath } from 'umi/plugin-utils';
+import { deepmerge, semver, winPath } from 'umi/plugin-utils';
 import { TEMPLATES_DIR } from './constants';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
@@ -255,37 +255,24 @@ export default (api: IApi) => {
           isV5 && (userInputCompact || userInputDark)
             ? { compact: userInputCompact, dark: userInputDark }
             : false,
+        /**
+         * 是否重构了全局静态配置。 重构后需要在运行时将全局静态配置传入到 ConfigProvider 中。
+         * 实际上 4.13.0 重构后有一个 bug，真正的 warn 出现在 4.13.1，并且 4.13.1 修复了这个 bug。
+         * Resolve issue: https://github.com/umijs/umi/issues/10231
+         * `InternalStatic` 指 `Modal.config` 等静态方法，详见：https://github.com/ant-design/ant-design/pull/29285
+         */
+        disableInternalStatic: semver.gt(antdVersion, '4.13.0'),
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
 
     api.writeTmpFile({
       path: 'types.d.ts',
-      content: Mustache.render(
-        `
-{{#withConfigProvider}}
-import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{/withConfigProvider}}
-{{#withAppConfig}}
-import type { AppConfig } from 'antd/es/app/context';
-{{/withAppConfig}}
-
-type Prettify<T> = {
-  [K in keyof T]: T[K];
-} & {};
-
-type AntdConfig = Prettify<{}
-{{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
-{{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
->;
-
-export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
-`.trim(),
-        {
-          withConfigProvider,
-          withAppConfig,
-        },
-      ),
+      context: {
+        withConfigProvider,
+        withAppConfig,
+      },
+      tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'types.d.ts.tpl')),
     });
 
     api.writeTmpFile({
