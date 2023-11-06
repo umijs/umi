@@ -1,0 +1,6 @@
+{
+  "name": "esm_only_pkg",
+  "version": "1.0.0",
+  "module": "main.js",
+  "dependencies": {}
+}

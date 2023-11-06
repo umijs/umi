@@ -1,6 +1,7 @@
 // @ts-nocheck
 /* eslint-disable */
 import { FrameworkConfiguration, FrameworkLifeCycles } from 'qiankun';
+import type { MicroAppRouteMode } from './constants';
 
 type BaseIConfig = any;
 
@@ -18,6 +19,7 @@ export type App = {
 export type MicroAppRoute = {
   path: string;
   microApp: string;
+  mode: `${MicroAppRouteMode}`;
 } & Record<string, any>;
 
 export type MasterOptions = {
@@ -35,6 +37,10 @@ export type MasterOptions = {
   appNameKeyAlias?: string;
   // 预加载应用阈值
   prefetchThreshold?: number;
+  // 子应用默认的错误捕获组件，值为文件路径
+  defaultErrorBoundary?: string;
+  // 子应用默认的加载动画，值为文件路径
+  defaultLoader?: string;
 } & FrameworkConfiguration;
 
 export type SlaveOptions = {

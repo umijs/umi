@@ -35,7 +35,15 @@ export async function addCSSRules(opts: IOpts) {
       loader: require.resolve('@umijs/bundler-webpack/compiled/sass-loader'),
       loaderOptions: userConfig.sassLoader || {},
     },
+    {
+      name: 'stylus',
+      test: /\.(styl|stylus)(\?.*)?$/,
+      loader: require.resolve('@umijs/bundler-webpack/compiled/stylus-loader'),
+      loaderOptions: userConfig.stylusLoader || {},
+    },
   ];
+
+  const cssPublicPath = userConfig.cssPublicPath || './';
 
   for (const { name, test, loader, loaderOptions } of rulesConfig) {
     const rule = config.module.rule(name);
@@ -70,16 +78,19 @@ export async function addCSSRules(opts: IOpts) {
             ),
           )
           .options({
-            publicPath: './',
+            publicPath: cssPublicPath,
             emit: true,
             esModule: true,
           });
       }
 
-      // If SSR is enabled, we need to handling the css modules name hashing
+      // If SSR with bundler esbuild is enabled, we need to handling the css modules name hashing
       // and save the class names mapping into opts.cssModulesMapping
       // so the esbuild can use it to generate the correct name for the server side
-      const getLocalIdent = userConfig.ssr && getLocalIdentForSSR;
+      const getLocalIdent =
+        userConfig.ssr && userConfig.ssr.compiler === 'esbuild'
+          ? getLocalIdentForSSR
+          : undefined;
       const localIdentName = '[local]___[hash:base64:5]';
 
       let cssLoaderModulesConfig: any;
@@ -142,8 +153,8 @@ export async function addCSSRules(opts: IOpts) {
 
       if (loader) {
         rule
-          .use(loader)
-          .loader(typeof loader === 'string' ? require.resolve(loader) : loader)
+          .use(`${name}-loader`)
+          .loader(loader)
           .options(loaderOptions || {});
       }
     }

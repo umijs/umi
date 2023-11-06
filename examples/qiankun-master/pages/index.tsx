@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 // @ts-ignore
-import { Link, MicroAppWithMemoHistory } from '@umijs/max';
+import { Link } from '@umijs/max';
 // @ts-ignore
-import { Drawer } from 'antd';
 
 export default function HomePage() {
   return (
@@ -12,6 +11,9 @@ export default function HomePage() {
       <div>
         <Link to="/slave/home">
           <button>go-slave</button>
+        </Link>
+        <Link to="/nav">
+          <button>go-match-slave</button>
         </Link>
       </div>
     </div>

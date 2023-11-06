@@ -1,4 +1,4 @@
-import { App, Button, Space, version } from 'antd';
+import { App, Button, Space, theme, version } from 'antd';
 import React, { useState } from 'react';
 import { getLocale, setLocale, useIntl } from 'umi';
 
@@ -7,6 +7,8 @@ export default function Page() {
   // 若要使用 useApp hook，须先在 antd 插件中配置 appConfig
   const { message, modal } = App.useApp();
   const locale = getLocale();
+  const { token } = theme.useToken();
+
   const showModal = () => {
     modal.confirm({
       title: 'Hai',
@@ -25,23 +27,28 @@ export default function Page() {
   };
 
   return (
-    <>
+    <div
+      style={{
+        backgroundColor: token.colorBgContainer,
+        height: '100vh',
+      }}
+    >
       <h1>with antd@{version}</h1>
       <Space>
         <Button onClick={sayHai}>Say Hai</Button>
         <Button type="primary" onClick={showModal}>
           Open Modal
         </Button>
+        locale:{locale}
+        <Button
+          onClick={() => {
+            setIsZh(!isZh);
+            setLocale(isZh ? 'en-US' : 'zh-CN', false);
+          }}
+        >
+          {msg}
+        </Button>
       </Space>
-      locale:{locale}
-      <Button
-        onClick={() => {
-          setIsZh(!isZh);
-          setLocale(isZh ? 'en-US' : 'zh-CN', false);
-        }}
-      >
-        {msg}
-      </Button>
-    </>
+    </div>
   );
 }

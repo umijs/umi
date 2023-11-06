@@ -424,6 +424,10 @@ PORT=8888 umi dev
 
       if (enableVite) {
         await bundlerVite.dev(opts);
+      } else if (process.env.OKAM) {
+        require('@umijs/bundler-webpack/dist/requireHook');
+        const { dev } = require(process.env.OKAM);
+        await dev(opts);
       } else {
         await bundlerWebpack.dev(opts);
       }

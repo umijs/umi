@@ -11,6 +11,7 @@ interface IConfigs {
   srcDir?: string[];
   exclude?: RegExp[];
   peerDeps?: boolean;
+  useRootProject?: boolean;
 }
 
 export default (api: IApi) => {
@@ -34,10 +35,17 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig(async (memo) => {
+    const config: IConfigs = memo.monorepoRedirect || {};
+    const {
+      exclude = [],
+      srcDir = ['src'],
+      peerDeps = false,
+      useRootProject = false,
+    } = config;
     const currentProjectRoot = process.env.APP_ROOT ? process.cwd() : api.cwd;
     const rootPkg = await pkgUp({
       // APP_ROOT: https://github.com/umijs/umi/issues/9461
-      cwd: dirname(currentProjectRoot),
+      cwd: useRootProject ? currentProjectRoot : dirname(currentProjectRoot),
     });
     if (!rootPkg) return memo;
     const root = dirname(rootPkg);
@@ -46,8 +54,6 @@ export default (api: IApi) => {
       `The 'monorepoRedirect' option can only be used in monorepo, you don't need configure.`,
     );
 
-    const config: IConfigs = memo.monorepoRedirect || {};
-    const { exclude = [], srcDir = ['src'], peerDeps = false } = config;
     // Note: not match `umi` package in local dev
     if (isLocalDev()) {
       logger.info(

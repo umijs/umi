@@ -48,6 +48,7 @@ module.exports = {
       presets: [require.resolve('@umijs/babel-preset-umi')],
     },
     requireConfigFile: false,
+    warnOnUnsupportedTypeScriptVersion: false,
   },
 };
 

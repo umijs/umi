@@ -1,14 +1,17 @@
 import React from 'react';
 import {
-  Modal,
-{{#configProvider}}
   ConfigProvider,
-{{/configProvider}}
 {{#appConfig}}
   App,
 {{/appConfig}}
+{{^disableInternalStatic}}
+  Modal,
   message,
   notification,
+{{/disableInternalStatic}}
+{{#enableV5ThemeAlgorithm}}
+  theme,
+{{/enableV5ThemeAlgorithm}}
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
 {{#styleProvider}}
@@ -47,7 +50,9 @@ export function rootContainer(rawContainer) {
     ...finalConfigProvider
   } = getAntdConfig();
   let container = rawContainer;
+
 {{#configProvider}}
+  {{^disableInternalStatic}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfigProvider.prefixCls
@@ -59,6 +64,15 @@ export function rootContainer(rawContainer) {
       prefixCls: `${finalConfigProvider.prefixCls}-notification`
     });
   }
+  {{/disableInternalStatic}}
+
+  {{#disableInternalStatic}}
+  if (finalConfigProvider.prefixCls) {
+    ConfigProvider.config({
+      prefixCls: finalConfigProvider.prefixCls,
+    });
+  };
+  {{/disableInternalStatic}}
 
   if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
@@ -77,11 +91,31 @@ export function rootContainer(rawContainer) {
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
 
+{{#enableV5ThemeAlgorithm}}
+  // Add token algorithm for antd5 only
+  container = (
+    <ConfigProvider
+      theme={({
+        algorithm: [
+          {{#enableV5ThemeAlgorithm.compact}}
+          theme.compactAlgorithm,
+          {{/enableV5ThemeAlgorithm.compact}}
+          {{#enableV5ThemeAlgorithm.dark}}
+          theme.darkAlgorithm,
+          {{/enableV5ThemeAlgorithm.dark}}
+        ],
+      })}
+    >
+      {container}
+    </ConfigProvider>
+  );
+{{/enableV5ThemeAlgorithm}}
+
 {{#styleProvider}}
   container = (
     <StyleProvider
       {{#styleProvider.hashPriority}}
-      hashPriority="{{{styleProviderConfig.hashPriority}}}"
+      hashPriority="{{{styleProvider.hashPriority}}}"
       {{/styleProvider.hashPriority}}
       {{#styleProvider.legacyTransformer}}
       transformers={[legacyLogicalPropertiesTransformer]}
