@@ -28,7 +28,6 @@ interface CreateRequestHandlerOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  withoutHTML?: boolean;
   sourceDir?: string;
 }
 
@@ -89,6 +88,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     }
 
     const loaderData: { [key: string]: any } = {};
+    const metadata: { [key: string]: any } = {};
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
@@ -100,6 +100,17 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
                 routesWithServerLoader,
                 serverLoaderArgs,
               );
+              // 如果有metadataLoader，执行metadataLoader
+              // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
+              // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
+              if(routes[id].hasMetadataLoader) {
+                Object.assign(metadata, await executeMetadataLoader(
+                  id,
+                  routesWithServerLoader,
+                  serverLoaderArgs,
+                  loaderData[id],
+                ));
+              }
               resolve();
             }),
         ),
@@ -116,7 +127,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      withoutHTML: opts.withoutHTML,
+      metadata,
     };
 
     const element = (await opts.getClientRootComponent(
@@ -332,4 +343,17 @@ async function executeLoader(
   }
   // TODO: 处理错误场景
   return mod.serverLoader(serverLoaderArgs);
+}
+
+async function executeMetadataLoader(
+  routeKey: string,
+  routesWithServerLoader: RouteLoaders,
+  serverLoaderArgs?: IServerLoaderArgs,
+  serverLoaderData?: any, // serverLoader的返回值
+) {
+  const mod = await routesWithServerLoader[routeKey]();
+  if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
+    return;
+  }
+  return mod.metadataLoader(serverLoaderArgs, serverLoaderData);
 }

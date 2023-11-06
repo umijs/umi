@@ -165,6 +165,7 @@ export async function getRoutes(opts: {
             : [];
         if (enableSSR) {
           routes[id].hasServerLoader = exports.includes('serverLoader');
+          routes[id].hasMetadataLoader = exports.includes('metadataLoader');
         }
         if (enableClientLoader && exports.includes('clientLoader')) {
           routes[id].clientLoader = `clientLoaders['${id}']`;
