@@ -1,5 +1,5 @@
-import React from 'react';
 import {
+  IServerLoaderArgs,
   Link,
   useClientLoaderData,
   useServerInsertedHTML,
@@ -18,7 +18,7 @@ import umiLogo from './umi.png';
 
 export default function HomePage() {
   const clientLoaderData = useClientLoaderData();
-  const serverLoaderData = useServerLoaderData();
+  const serverLoaderData = useServerLoaderData<typeof serverLoader>();
 
   useServerInsertedHTML(() => {
     return <div>inserted html</div>;
@@ -51,7 +51,8 @@ export async function clientLoader() {
   return { message: 'data from client loader of index.tsx' };
 }
 
-export async function serverLoader() {
+export async function serverLoader({ request }: IServerLoaderArgs) {
+  const { url } = request;
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
-  return { message: 'data from server loader of index.tsx' };
+  return { message: `data from server loader of index.tsx, url: ${url}` };
 }
