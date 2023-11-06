@@ -62,12 +62,12 @@ export default {
 ```ts
 import { createGlobalStyle } from "umi";
 
-export const styledComponents = () => ({
+export const styledComponents = {
   GlobalStyle: createGlobalStyle`
     h1 {
       background: #ccc;
     }
   `
-})
+}
 ```
 
