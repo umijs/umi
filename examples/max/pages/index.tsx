@@ -25,14 +25,21 @@ export default function HomePage() {
   const access = useAccess();
   console.log('access', access);
   const intl = useIntl();
+
   return (
     <div>
       <h2 className={styles.myText}>index page</h2>
       <Button type="primary">Button</Button>
       <Input />
       <DatePicker />
-      <div>{intl.formatMessage({ id: 'HELLO' })}</div>
-      <FormattedMessage id="World" />
+      {/* 中英文语言切换 */}
+      <section id="locales">
+        <div className="hello">{intl.formatMessage({ id: 'HELLO' })}</div>
+        <FormattedMessage id="World" />
+        <div className="user-welcome">
+          {intl.formatMessage({ id: 'user.welcome' })}
+        </div>
+      </section>
       <Button
         type="primary"
         onClick={() => {
