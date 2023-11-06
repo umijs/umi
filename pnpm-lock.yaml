@@ -738,6 +738,9 @@ importers:
       antd:
         specifier: ^4.23.2
         version: 4.23.2(react-dom@18.1.0)(react@18.1.0)
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.7
       react:
         specifier: 18.1.0
         version: 18.1.0
