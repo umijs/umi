@@ -55,11 +55,7 @@ export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetMan
       content: `
 ${styledComponentsRuntimeCode}
 export function rootContainer(container) {
-  const scConfig =
-    typeof styledComponentsConfig === 'function'
-      ? styledComponentsConfig()
-      : styledComponentsConfig;
-  const globalStyle = scConfig.GlobalStyle ? <scConfig.GlobalStyle /> : null;
+  const globalStyle = styledComponentsConfig.GlobalStyle ? <styledComponentsConfig.GlobalStyle /> : null;
   return (
     <>
       {globalStyle}
