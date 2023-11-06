@@ -1,6 +1,6 @@
 import type {
-  Compiler,
   Compilation,
+  Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { sources } from '@umijs/bundler-webpack/compiled/webpack';
 import { fsExtra } from '@umijs/utils';
@@ -23,9 +23,11 @@ const PLUGIN_NAME = 'SSR_PLUGIN';
 class SSRPlugin {
   opts: IOpts;
   manifest: Map<string, string>;
+  isGenManifest: boolean;
   constructor(opts: IOpts) {
     this.opts = opts;
     this.manifest = new Map();
+    this.isGenManifest = false;
   }
   apply(compiler: Compiler) {
     // ref: https://github.com/webdeveric/webpack-assets-manifest
@@ -70,13 +72,16 @@ class SSRPlugin {
           2,
         );
         if (
-          process.env.NODE_ENV === 'production' ||
-          this.opts.userConfig.writeToDisk
+          (process.env.NODE_ENV === 'production' ||
+            this.opts.userConfig.writeToDisk) &&
+          !this.isGenManifest
         ) {
+          // 如果已经生成了,就不管了。不然会报错重复添加
           compilation.emitAsset(
             'build-manifest.json',
             new sources.RawSource(assetsSource, false),
           );
+          this.isGenManifest = true;
         } else {
           const outputPath = compiler.options.output.path!;
           fsExtra.mkdirpSync(outputPath);

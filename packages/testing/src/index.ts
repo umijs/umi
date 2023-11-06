@@ -73,6 +73,10 @@ export function createConfig(opts?: {
         opts?.jsTransformer || 'esbuild',
         opts?.jsTransformerOpts,
       ),
+      '^.+\\.mjs$': getJSTransformer(
+        opts?.jsTransformer || 'esbuild',
+        opts?.jsTransformerOpts,
+      ),
     },
     moduleNameMapper: {
       '^.+\\.(css|less|sass|scss|stylus)$':
@@ -85,6 +89,7 @@ export function createConfig(opts?: {
       '<rootDir>/packages/.+/fixtures',
     ],
     setupFiles: [require.resolve('../setupFiles/shim')],
+    resolver: require.resolve('./resolver.js'),
   };
   if (opts?.target === 'browser') {
     config.testEnvironment = 'jsdom';

@@ -72,6 +72,7 @@ export default (api: IApi) => {
     svgr: {},
     ignoreMomentLocale: true,
     mfsu: { strategy: 'eager' },
+    routeLoader: { moduleType: 'esm' },
   };
 
   const bundleSchemas = api.config.vite

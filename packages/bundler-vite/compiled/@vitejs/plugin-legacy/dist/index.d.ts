@@ -28,6 +28,10 @@ interface Options {
      * default: false
      */
     externalSystemJS?: boolean;
+    /**
+     * default: true
+     */
+    renderModernChunks?: boolean;
 }
 
 declare function viteLegacyPlugin(options?: Options): Plugin[];

@@ -3,10 +3,10 @@ import type {
   Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { EnableBy } from '@umijs/core/dist/types';
-import { fsExtra, importLazy, logger } from '@umijs/utils';
+import { fsExtra, importLazy, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import type { IApi } from '../../types';
 import { absServerBuildPath } from './utils';
 
@@ -61,6 +61,11 @@ export default (api: IApi) => {
     },
   ]);
 
+  const serverPackagePath = dirname(
+    require.resolve('@umijs/server/package.json'),
+  );
+  const ssrTypesPath = join(serverPackagePath, './dist/types');
+
   api.onGenerateFiles(() => {
     // react-shim.js is for esbuild to build umi.server.js
     api.writeTmpFile({
@@ -69,6 +74,38 @@ export default (api: IApi) => {
       content: `
       import * as React from 'react';
 export { React };
+`,
+    });
+
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'core/serverInsertedHTMLContext.ts',
+      content: `
+// Use React.createContext to avoid errors from the RSC checks because
+// it can't be imported directly in Server Components:
+import React from 'react'
+
+export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
+// More info: https://github.com/vercel/next.js/pull/40686
+export const ServerInsertedHTMLContext =
+  React.createContext<ServerInsertedHTMLHook | null>(null as any);
+
+// copy form https://github.com/vercel/next.js/blob/fa076a3a69c9ccf63c9d1e53e7b681aa6dc23db7/packages/next/src/shared/lib/server-inserted-html.tsx#L13
+export function useServerInsertedHTML(callback: () => React.ReactNode): void {
+  const addInsertedServerHTMLCallback = React.useContext(ServerInsertedHTMLContext);
+  // Should have no effects on client where there's no flush effects provider
+  if (addInsertedServerHTMLCallback) {
+    addInsertedServerHTMLCallback(callback);
+  }
+}
+`,
+    });
+
+    // types
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      content: `
+export type { IServerLoaderArgs, UmiRequest } from '${winPath(ssrTypesPath)}'
 `,
     });
   });
@@ -110,8 +147,9 @@ export { React };
       writeFileSync(
         join(api.cwd, 'api/umi.server.js'),
         `
+const manifest = require('../server/build-manifest.json');
 export default function handler(request, response) {
-  require('../server/umi.server.js').default(request, response);
+    require(manifest.assets["umi.js"]).default(request, response);
 }
       `.trimStart(),
         'utf-8',

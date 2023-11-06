@@ -8,7 +8,7 @@ registerMfRemote({
 });
 
 const RemoteCounter = React.lazy(() => {
-  return safeMfImport('registered/Counter', { defualt: null });
+  return safeMfImport('registered/Counter', { default: null });
 });
 
 export default () => {

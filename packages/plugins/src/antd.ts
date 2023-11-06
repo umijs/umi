@@ -3,7 +3,7 @@ import AntdMomentWebpackPlugin from '@ant-design/moment-webpack-plugin';
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge, Mustache, semver, winPath } from 'umi/plugin-utils';
+import { deepmerge, semver, winPath } from 'umi/plugin-utils';
 import { TEMPLATES_DIR } from './constants';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
@@ -24,6 +24,7 @@ export default (api: IApi) => {
   } catch (e) {}
 
   const isV5 = antdVersion.startsWith('5');
+  const isV4 = antdVersion.startsWith('4');
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
@@ -97,7 +98,7 @@ export default (api: IApi) => {
     memo.alias.antd = pkgPath;
 
     // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
-    if (antdVersion.startsWith('5')) {
+    if (isV5) {
       const theme = require('@ant-design/antd-theme-variable');
       memo.theme = {
         ...theme,
@@ -114,32 +115,36 @@ export default (api: IApi) => {
       }
     }
 
-    // dark mode & compact mode
-    if (antd.dark || antd.compact) {
-      const { getThemeVariables } = require('antd/dist/theme');
+    // 只有 antd@4 才需要将 compact 和 dark 传入 less 变量
+    if (isV4) {
+      if (antd.dark || antd.compact) {
+        const { getThemeVariables } = require('antd/dist/theme');
+        memo.theme = {
+          ...getThemeVariables(antd),
+          ...memo.theme,
+        };
+      }
+
       memo.theme = {
-        ...getThemeVariables(antd),
+        'root-entry-name': 'default',
         ...memo.theme,
       };
     }
 
-    // antd theme
-    memo.theme = {
-      'root-entry-name': 'default',
-      ...memo.theme,
-    };
-
     // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
     if (antd.theme) {
-      assert(
-        antdVersion.startsWith('5'),
-        `antd.theme is only valid when antd is 5`,
-      );
+      assert(isV5, `antd.theme is only valid when antd is 5`);
       antd.configProvider ??= {};
       // priority: antd.theme > antd.configProvider.theme
       antd.configProvider.theme = deepmerge(
         antd.configProvider.theme || {},
         antd.theme,
+      );
+
+      // https://github.com/umijs/umi/issues/11156
+      assert(
+        !antd.configProvider.theme.algorithm,
+        `The 'algorithm' option only available for runtime config, please move it to the runtime plugin, see: https://umijs.org/docs/max/antd#运行时配置`,
       );
     }
 
@@ -178,26 +183,23 @@ export default (api: IApi) => {
 
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
-    // only enable style for non-antd@5
-    const style = isV5 ? false : api.config.antd.style || 'less';
+    const style = api.config.antd.style || 'less';
 
-    return api.config.antd.import && !api.appData.vite
-      ? [
-          [
-            require.resolve('babel-plugin-import'),
-            {
-              libraryName: 'antd',
-              libraryDirectory: 'es',
-              ...(style
-                ? {
-                    style: style === 'less' || 'css',
-                  }
-                : {}),
-            },
-            'antd',
-          ],
-        ]
-      : [];
+    if (api.config.antd.import && !api.appData.vite) {
+      return [
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            libraryName: 'antd',
+            libraryDirectory: 'es',
+            ...(isV5 ? {} : { style: style === 'less' || 'css' }),
+          },
+          'antd',
+        ],
+      ];
+    }
+
+    return [];
   });
 
   // antd config provider & app component
@@ -205,6 +207,8 @@ export default (api: IApi) => {
     const withConfigProvider = !!api.config.antd.configProvider;
     const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
     const styleProvider = api.config.antd.styleProvider;
+    const userInputCompact = api.config.antd.compact;
+    const userInputDark = api.config.antd.dark;
 
     // Hack StyleProvider
 
@@ -222,7 +226,7 @@ export default (api: IApi) => {
 
       if (cssinjs) {
         styleProviderConfig = {
-          cssinjs,
+          cssinjs: winPath(cssinjs),
         };
 
         if (ieTarget) {
@@ -246,37 +250,29 @@ export default (api: IApi) => {
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
         styleProvider: styleProviderConfig,
+        // 是否启用了 v5 的 theme algorithm
+        enableV5ThemeAlgorithm:
+          isV5 && (userInputCompact || userInputDark)
+            ? { compact: userInputCompact, dark: userInputDark }
+            : false,
+        /**
+         * 是否重构了全局静态配置。 重构后需要在运行时将全局静态配置传入到 ConfigProvider 中。
+         * 实际上 4.13.0 重构后有一个 bug，真正的 warn 出现在 4.13.1，并且 4.13.1 修复了这个 bug。
+         * Resolve issue: https://github.com/umijs/umi/issues/10231
+         * `InternalStatic` 指 `Modal.config` 等静态方法，详见：https://github.com/ant-design/ant-design/pull/29285
+         */
+        disableInternalStatic: semver.gt(antdVersion, '4.13.0'),
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
 
     api.writeTmpFile({
       path: 'types.d.ts',
-      content: Mustache.render(
-        `
-{{#withConfigProvider}}
-import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{/withConfigProvider}}
-{{#withAppConfig}}
-import type { AppConfig } from 'antd/es/app/context';
-{{/withAppConfig}}
-
-type Prettify<T> = {
-  [K in keyof T]: T[K];
-} & {};
-
-type AntdConfig = Prettify<{}
-{{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
-{{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
->;
-
-export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
-`.trim(),
-        {
-          withConfigProvider,
-          withAppConfig,
-        },
-      ),
+      context: {
+        withConfigProvider,
+        withAppConfig,
+      },
+      tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'types.d.ts.tpl')),
     });
 
     api.writeTmpFile({
@@ -292,6 +288,7 @@ export type IRuntimeConfig = {
 
   api.addRuntimePlugin(() => {
     if (
+      api.config.antd.styleProvider ||
       api.config.antd.configProvider ||
       (appComponentAvailable && api.config.antd.appConfig)
     ) {
@@ -301,13 +298,12 @@ export type IRuntimeConfig = {
   });
 
   api.addEntryImportsAhead(() => {
-    const isAntd5 = antdVersion.startsWith('5');
     const style = api.config.antd.style || 'less';
     const imports: Awaited<
       ReturnType<Parameters<IApi['addEntryImportsAhead']>[0]['fn']>
     > = [];
 
-    if (isAntd5) {
+    if (isV5) {
       // import antd@5 reset style
       imports.push({ source: 'antd/dist/reset.css' });
     } else if (!api.config.antd.import || api.appData.vite) {

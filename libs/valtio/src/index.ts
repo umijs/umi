@@ -1,4 +1,4 @@
-export { proxy, snapshot, subscribe, useSnapshot } from 'valtio';
+export { proxy, ref, snapshot, subscribe, useSnapshot } from 'valtio';
 export {
   derive,
   devtools as proxyWithDevtools,
@@ -9,6 +9,7 @@ export {
   subscribeKey,
   underive,
   useProxy,
+  watch,
 } from 'valtio/utils';
 
 // TODO:

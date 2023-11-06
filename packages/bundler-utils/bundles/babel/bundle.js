@@ -1,3 +1,12 @@
+// Babel >= 7.22.0 renamed packages
+// https://babeljs.io/blog/2023/05/26/7.22.0
+const babelTransformDeps = {
+  exportNamespaceFrom: () => require('@babel/plugin-transform-export-namespace-from'),
+  classProperties: () => require('@babel/plugin-transform-class-properties'),
+  privateMethods: () => require('@babel/plugin-transform-private-methods'),
+  privatePropertyInObject: () => require('@babel/plugin-transform-private-property-in-object')
+}
+
 module.exports = {
   codeFrame: () => require('@babel/code-frame'),
   core: () => require('@babel/core'),
@@ -11,8 +20,8 @@ module.exports = {
     require('@babel/plugin-proposal-do-expressions'),
   pluginProposalExportDefaultFrom: () =>
     require('@babel/plugin-proposal-export-default-from'),
-  pluginProposalExportNamespaceFrom: () =>
-    require('@babel/plugin-proposal-export-namespace-from'),
+  pluginProposalExportNamespaceFrom: babelTransformDeps.exportNamespaceFrom,
+  pluginTransformExportNamespaceFrom: babelTransformDeps.exportNamespaceFrom,
   pluginProposalFunctionBind: () =>
     require('@babel/plugin-proposal-function-bind'),
   pluginProposalPartialApplication: () =>
@@ -34,8 +43,13 @@ module.exports = {
   traverse: () => require('@babel/traverse'),
   types: () => require('@babel/types'),
 
-  // class 使用 loose 模式需要
-  pluginProposalClassProperties: () => require('@babel/plugin-proposal-class-properties'),
-  pluginProposalPrivateMethods: () => require('@babel/plugin-proposal-private-methods'),
-  pluginProposalPrivatePropertyInObject: () => require('@babel/plugin-proposal-private-property-in-object')
+  // class-properties: class 使用 loose 模式需要
+  pluginProposalClassProperties: babelTransformDeps.classProperties,
+  pluginTransformClassProperties: babelTransformDeps.classProperties,
+  // private-methods
+  pluginProposalPrivateMethods: babelTransformDeps.privateMethods,
+  pluginTransformPrivateMethods: babelTransformDeps.privateMethods,
+  // private-property-in-object
+  pluginProposalPrivatePropertyInObject: babelTransformDeps.privatePropertyInObject,
+  pluginTransformPrivatePropertyInObject: babelTransformDeps.privatePropertyInObject
 };

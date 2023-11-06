@@ -71,7 +71,7 @@ export const unpackTemplate = async (opts: IUnpackTemplateOpts) => {
 async function getNpmPkgTarUrl(opts: { registry: string; name: string }) {
   const { registry, name } = opts;
   const nameWithoutScope = name.startsWith('@') ? name.split('/')[1] : name;
-  const latestPkgInfoUrl = `${registry}${name}/latest?date=${Date.now()}`;
+  const latestPkgInfoUrl = `${registry}${name}/latest`;
   const res = await axios.get(latestPkgInfoUrl, { validateStatus: () => true });
   const latestVersion = res?.data?.version;
   if (!latestVersion) {
