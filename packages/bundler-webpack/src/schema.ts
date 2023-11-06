@@ -163,11 +163,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
     runtimePublicPath: ({ zod }) => zod.object({}),
     sassLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
     srcTranspiler: ({ zod }) =>
-      zod.enum([
-        Transpiler.babel,
-        Transpiler.esbuild,
-        Transpiler.swc,
-      ]),
+      zod.enum([Transpiler.babel, Transpiler.esbuild, Transpiler.swc]),
     srcTranspilerOptions: ({ zod }) =>
       zod
         .object({

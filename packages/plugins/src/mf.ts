@@ -71,9 +71,10 @@ export default function mf(api: IApi) {
       );
     }
 
-    const useHash = typeof api.config.mf.remoteHash === 'boolean'
-      ? api.config.mf.remoteHash
-      : (api.config.hash && api.env !== 'development');
+    const useHash =
+      typeof api.config.mf.remoteHash === 'boolean'
+        ? api.config.mf.remoteHash
+        : api.config.hash && api.env !== 'development';
 
     const mfConfig = {
       name,
