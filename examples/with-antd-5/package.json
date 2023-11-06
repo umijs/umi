@@ -8,8 +8,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.16.0",
     "@umijs/plugins": "workspace:*",
-    "antd": "^5.3.0",
+    "antd": "^5.8.4",
     "umi": "workspace:*"
   }
 }

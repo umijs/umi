@@ -1,5 +1,6 @@
 import * as bundlerWebpack from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import { Env } from '@umijs/bundler-webpack/dist/types';
 import { lodash, logger } from '@umijs/utils';
 import { dirname, resolve } from 'path';
 import { IApi } from '../../../types';
@@ -10,7 +11,7 @@ export const build = async (api: IApi, opts: any) => {
   const now = new Date().getTime();
   const bundlerOpts: any = lodash.cloneDeep(opts);
   const oChainWebpack = bundlerOpts.chainWebpack;
-
+  const useHash = api.config.hash && api.env === Env.production;
   // disable deadCode check
   delete bundlerOpts.config.deadCode;
 
@@ -45,8 +46,13 @@ export const build = async (api: IApi, opts: any) => {
 
     memo.output
       .path(dirname(absOutputFile))
-      .filename('umi.server.js')
-      .chunkFilename('[name].server.js')
+      // 避免多 chunk 时的命名冲突，虽然 ssr 在项目里禁用了 import() 语法，但 node_modules 下可能存在的 import() 没有被 babel 插件覆盖到
+      .filename(
+        useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
+      )
+      .chunkFilename(
+        useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
+      )
       .libraryTarget('commonjs2');
 
     // remove useless progress plugin

@@ -10,11 +10,16 @@ interface RouteLoaders {
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
 
+// serverLoader的参数类型
+export interface IServerLoaderArgs {
+  request: Request;
+}
+
 interface CreateRequestHandlerOptions {
   routesWithServerLoader: RouteLoaders;
   PluginManager: any;
   manifest:
-    | (() => { assets: Record<string, string> })
+    | ((sourceDir?: string) => { assets: Record<string, string> })
     | { assets: Record<string, string> };
   getPlugins: () => any;
   getValidKeys: () => any;
@@ -23,11 +28,14 @@ interface CreateRequestHandlerOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
+  withoutHTML?: boolean;
+  sourceDir?: string;
 }
 
-const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> = new Set();
-
-const createJSXProvider = (Provider: any) => {
+const createJSXProvider = (
+  Provider: any,
+  serverInsertedHTMLCallbacks: Set<() => React.ReactNode>,
+) => {
   const JSXProvider = (props: any) => {
     const addInsertedHtml = React.useCallback(
       (handler: () => React.ReactNode) => {
@@ -45,7 +53,7 @@ const createJSXProvider = (Provider: any) => {
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
-  return async (url: string) => {
+  return async (url: string, serverLoaderArgs?: IServerLoaderArgs) => {
     const {
       routesWithServerLoader,
       PluginManager,
@@ -53,6 +61,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       getValidKeys,
       getRoutes,
       createHistory,
+      sourceDir,
     } = opts;
 
     // make import { history } from 'umi' work
@@ -86,14 +95,20 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(id, routesWithServerLoader);
+              loaderData[id] = await executeLoader(
+                id,
+                routesWithServerLoader,
+                serverLoaderArgs,
+              );
               resolve();
             }),
         ),
     );
 
     const manifest =
-      typeof opts.manifest === 'function' ? opts.manifest() : opts.manifest;
+      typeof opts.manifest === 'function'
+        ? opts.manifest(sourceDir)
+        : opts.manifest;
     const context = {
       routes,
       routeComponents,
@@ -101,29 +116,28 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
+      withoutHTML: opts.withoutHTML,
     };
 
     const element = (await opts.getClientRootComponent(
       context,
     )) as ReactElement;
 
-    const JSXProvider = createJSXProvider(
-      opts.ServerInsertedHTMLContext.Provider,
-    );
-
     return {
-      element: React.createElement(JSXProvider, { children: element }),
+      element,
       manifest,
     };
   };
 }
 
-const getGenerateStaticHTML = () => {
+const getGenerateStaticHTML = (
+  serverInsertedHTMLCallbacks?: Set<() => React.ReactNode>,
+) => {
   return (
     ReactDomServer.renderToString(
       React.createElement(React.Fragment, {
-        children: Array.from(serverInsertedHTMLCallbacks).map((callback) =>
-          callback(),
+        children: Array.from(serverInsertedHTMLCallbacks || []).map(
+          (callback) => callback(),
         ),
       }),
     ) || ''
@@ -133,14 +147,17 @@ const getGenerateStaticHTML = () => {
 export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
-  const JSXProvider = createJSXProvider(
-    opts.ServerInsertedHTMLContext.Provider,
-  );
-
   return async (url: string) => {
     const jsx = await jsxGeneratorDeferrer(url);
     if (jsx) {
       return new Promise(async (resolve, reject) => {
+        const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> =
+          new Set();
+        const JSXProvider = createJSXProvider(
+          opts.ServerInsertedHTMLContext.Provider,
+          serverInsertedHTMLCallbacks,
+        );
+
         let chunks: Buffer[] = [];
         const writable = new Writable();
 
@@ -150,17 +167,17 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         };
         writable.on('finish', async () => {
           let html = Buffer.concat(chunks).toString('utf8');
-          html += await getGenerateStaticHTML();
+          html += await getGenerateStaticHTML(serverInsertedHTMLCallbacks);
           // append helmet tags to head
           if (opts.helmetContext) {
             html = html.replace(
               /(<\/head>)/,
               [
-                opts.helmetContext.helmet.title.toString(),
-                opts.helmetContext.helmet.priority.toString(),
-                opts.helmetContext.helmet.meta.toString(),
-                opts.helmetContext.helmet.link.toString(),
-                opts.helmetContext.helmet.script.toString(),
+                opts.helmetContext.helmet?.title?.toString(),
+                opts.helmetContext.helmet?.priority?.toString(),
+                opts.helmetContext.helmet?.meta?.toString(),
+                opts.helmetContext.helmet?.link?.toString(),
+                opts.helmetContext.helmet?.script?.toString(),
                 '$1',
               ]
                 .filter(Boolean)
@@ -200,12 +217,19 @@ export default function createRequestHandler(
       const data = await executeLoader(
         req.query.route,
         opts.routesWithServerLoader,
+        { request: req },
       );
       res.status(200).json(data);
       return;
     }
 
-    const jsx = await jsxGeneratorDeferrer(req.url);
+    const request = new Request(
+      req.protocol + '://' + req.get('host') + req.originalUrl,
+      {
+        headers: req.headers,
+      },
+    );
+    const jsx = await jsxGeneratorDeferrer(req.url, { request });
 
     if (!jsx) return next();
 
@@ -229,6 +253,35 @@ export default function createRequestHandler(
       onError(x: any) {
         console.error(x);
       },
+    });
+  };
+}
+
+// 新增的给CDN worker用的SSR请求handle
+export function createUmiHandler(opts: CreateRequestHandlerOptions) {
+  return async function (req: Request, params?: CreateRequestHandlerOptions) {
+    const jsxGeneratorDeferrer = createJSXGenerator({
+      ...opts,
+      ...params,
+    });
+    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname, {
+      request: req,
+    });
+
+    if (!jsx) {
+      throw new Error('no page resource');
+    }
+
+    return ReactDomServer.renderToNodeStream(jsx.element);
+  };
+}
+
+export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
+  return async function (req: Request) {
+    const query = Object.fromEntries(new URL(req.url).searchParams);
+    // 切换路由场景下，会通过此 API 执行 server loader
+    return await executeLoader(query.route, opts.routesWithServerLoader, {
+      request: req,
     });
   };
 }
@@ -271,11 +324,12 @@ function createClientRoute(route: any) {
 async function executeLoader(
   routeKey: string,
   routesWithServerLoader: RouteLoaders,
+  serverLoaderArgs?: IServerLoaderArgs,
 ) {
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
   // TODO: 处理错误场景
-  return await mod.serverLoader();
+  return mod.serverLoader(serverLoaderArgs);
 }

@@ -1,4 +1,4 @@
-import {{{compName}}} from './{{{compName}}}'
+import {{{compName}}} from './component'
 
 export default {{{compName}}}
-export * from './{{{compName}}}'
+export * from './component'

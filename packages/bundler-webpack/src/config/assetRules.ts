@@ -40,7 +40,7 @@ export async function addAssetRules(opts: IOpts) {
     .oneOf('fallback')
     .exclude.add(/^$/) /* handle data: resources */
     .add(/\.(js|mjs|cjs|jsx|ts|tsx)$/)
-    .add(/\.(css|less|sass|scss|stylus)$/)
+    .add(/\.(css|less|sass|scss|styl|stylus)$/)
     .add(/\.html$/)
     .add(/\.json$/);
   if (userConfig.mdx) {

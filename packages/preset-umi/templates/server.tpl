@@ -4,7 +4,7 @@ import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
 import { PluginManager } from '{{{ umiPluginPath }}}';
-import createRequestHandler, { createMarkupGenerator } from '{{{ umiServerPath }}}';
+import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader } from '{{{ umiServerPath }}}';
 
 let helmetContext;
 
@@ -26,8 +26,9 @@ export function getValidKeys() {
   return [{{#validKeys}}'{{{ . }}}',{{/validKeys}}];
 }
 
-export function getManifest() {
-  return JSON.parse(require('fs').readFileSync('{{{ assetsPath }}}', 'utf-8'));
+export function getManifest(sourceDir) {
+  return JSON.parse(require('fs').readFileSync(
+  sourceDir ? require('path').join(sourceDir,'build-manifest.json') : '{{{ assetsPath }}}', 'utf-8'));
 }
 
 export function createHistory(opts) {
@@ -36,24 +37,24 @@ export function createHistory(opts) {
 
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
-  let m = typeof manifest === 'function' ? manifest() : manifest;
+  let m = getManifest();
   return m.assets[fileName];
 };
-
-const manifest = {{{ env }}} === 'development' ? getManifest : getManifest();
 const createOpts = {
   routesWithServerLoader,
   PluginManager,
   getPlugins,
   getValidKeys,
   getRoutes,
-  manifest,
+  manifest: getManifest,
   getClientRootComponent,
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
 };
 const requestHandler = createRequestHandler(createOpts);
+export const renderRoot = createUmiHandler(createOpts);
+export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
 
