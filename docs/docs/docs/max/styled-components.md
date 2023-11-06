@@ -64,7 +64,7 @@ export default {
 比如：
 
 ```ts
-import { createGlobalStyle } from "umi";
+import {createGlobalStyle} from "umi";
 
 export const styledComponents = {
   GlobalStyle: createGlobalStyle`
