@@ -54,7 +54,7 @@ Umi 通过写死版本、依赖预打包、通过 eslint hack 锁定 eslint 依�
 
 ## import all from umi
 
-很多人可能都第一次听到。import all from umi 意思是所有 import 都来自 `umi`。比如 dva 不是 `import { connect } from 'dva'`，而是 `import { connect } from 'umi'`，从 umi 中导出。导出的方法不仅来自 umi 自身，还来自 umi 插件。
+很多人可能都第一次听到。import all from umi 意思是所有 import 都来自 `umi`。比如 dva 不是 `import { connect } from 'dva'`，而是 `import { connect } from 'umi'`，从 Umi 中导出。导出的方法不仅来自 Umi 自身，还来自 Umi 插件。
 
 这是两年前 Umi 3 加的功能，最近发现 Remix、prisma、vitekit 等框架和工具都有类似实现。
 

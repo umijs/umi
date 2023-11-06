@@ -358,7 +358,7 @@ crossorigin: {}
 
 ## cssMinifierOptions
 
-- 类型：`Object`
+- 类型：`object`
 - 默认值：`{}`
 
 `cssMinifier` CSS 压缩工具配置选项。
@@ -904,7 +904,7 @@ import { Icon } from 'umi';
 
 ## lessLoader
 
-- 类型：`Object`
+- 类型：`object`
 - 默认值：`{ modifyVars: userConfig.theme, javascriptEnabled: true }`
 
 设置 less-loader 的 Options。具体参考参考 [less-loader 的 Options](https://github.com/webpack-contrib/less-loader#lessoptions)。
@@ -1450,7 +1450,7 @@ import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
 ```js
 // 兼容 ie11
 targets: {
-  ie: 11;
+  ie: 11,
 }
 ```
 
