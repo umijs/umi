@@ -5,8 +5,11 @@
  * @since 2019-06-20
  */
 
-import React, { ReactComponentElement } from 'react';
+import React from 'react';
 import { Navigate, type IRouteProps } from 'umi';
+import { defaultMicroAppRouteMode, MicroAppRouteMode } from './constants';
+import { getMicroAppRouteComponent } from './getMicroAppRouteComponent';
+import type { MicroAppRoute } from './types';
 
 export const defaultMountContainerId = 'root-subapp';
 
@@ -44,14 +47,7 @@ function testPathWithStaticPrefix(pathPrefix: string, realPath: string) {
 // }
 
 export function patchMicroAppRoute(
-  route: any,
-  getMicroAppRouteComponent: (opts: {
-    appName: string;
-    base: string;
-    routePath: string;
-    masterHistoryType: string;
-    routeProps?: any;
-  }) => string | ReactComponentElement<any>,
+  route: MicroAppRoute,
   masterOptions: {
     base: string;
     masterHistoryType: string;
@@ -75,8 +71,9 @@ export function patchMicroAppRoute(
       }
     }
 
-    // 自动追加通配符，匹配子应用的路由
-    if (!route.path.endsWith('/*')) {
+    const { mode = defaultMicroAppRouteMode } = route;
+    // 在前缀模式下，自动追加通配符，匹配子应用的路由
+    if (mode === MicroAppRouteMode.PREPEND && !route.path.endsWith('/*')) {
       route.path = route.path.replace(/\/?$/, '/*');
     }
 
@@ -90,6 +87,7 @@ export function patchMicroAppRoute(
       appName: microAppName,
       base,
       routePath: route.path,
+      routeMode: route.mode,
       masterHistoryType,
       routeProps,
     };

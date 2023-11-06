@@ -1,25 +1,26 @@
 {
-  "name": "{{{ name }}}",
+  "name": "{{{ pluginName }}}",
   "author": "{{{ author }}}",
   "version": "0.0.1",
-  "description": "{{{ description }}}",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "scripts": {
-    "build": "father-build"
+    "dev": "father dev",
+    "build": "father build"
   },
   "keywords": [],
-  "repository": "{{{ org }}}/{{{ name }}}",
   "authors": {
     "name": "{{{ author }}}",
-    "email": "{{{ mail }}}"
+    "email": "{{{ email }}}"
   },
   "license": "MIT",
   "files": [
-    "lib"
+    "dist"
   ],
   "devDependencies": {
-    "@umijs/types": "{{{ version }}}",
-    "father-build": "^1.20.0"
+    "father": "^4.1.8",
+    "umi": "{{{ version }}}",
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.3"
   }
 }

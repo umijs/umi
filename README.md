@@ -21,14 +21,14 @@ See [Contributing Guide](https://umijs.org/docs/introduce/contributing).
 
 ### Core Maintainers
 
-Core Maintainres are community members who have contributed a significant amount of time and energy to the project through issues, bug fixes, implementing enhancements/features.
+Core Maintainers are community members who have contributed significantly to the project through addressing issues, fixing bugs, and implementing enhancements/features.
 
 * [sorrycc](https://github.com/sorrycc)
 * [xiaohuoni](https://github.com/xiaohuoni)
 
 ### Maintainers
 
-Maintainers are community members who have 10 or more PRs merged in umi, or have spend lot's of time on umi community or issues.
+Maintainers are community members who have had 10 or more PRs merged in umi or have spent a lot of time contributing to the umi community or addressing issues.
 
 * [PeachScript](https://github.com/PeachScript)
 * [YdreamW](https://github.com/YdreamW)
@@ -38,10 +38,11 @@ Maintainers are community members who have 10 or more PRs merged in umi, or have
 * [xierenyuan](https://github.com/xierenyuan)
 * [siyi98](https://github.com/siyi98)
 * [txp1035](https://github.com/txp1035)
+* [zenotsai](https://github.com/zenotsai)
 
 ### Contributors
 
-Contributors are community members who have 1 or more PR merged in umi. Contributors can contact me[[sorrycc](https://github.com/sorrycc)] to join the Contributor Group.
+Contributors are community members who have had 1 or more PRs merged in umi. If you are a contributor, you can contact me [[sorrycc](https://github.com/sorrycc)] to join the Contributor Group.
 
 <a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=890&button=false" /></a>
 

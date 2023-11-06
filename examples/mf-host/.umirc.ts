@@ -12,11 +12,11 @@ const shared = {
 };
 
 export default defineConfig({
-  mfsu: {
-    remoteName: 'hostUser',
-    remoteAliases: ['remoteCounter', 'utopia'],
-    shared,
+  publicPath: 'http://localhost:8000/',
+  qiankun: {
+    slave: {},
   },
+  base: '/',
   mf: {
     name: 'hostUser',
     remotes: [
@@ -36,4 +36,6 @@ export default defineConfig({
     ],
     shared,
   },
+  // dont use in production!!! just for tests
+  hash: false,
 });

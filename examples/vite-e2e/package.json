@@ -3,10 +3,10 @@
   "private": true,
   "scripts": {
     "build": "umi build",
-    "ci": "cypress run",
+    "cypress:ci": "pnpm umi-scripts cypress",
     "dev": "umi dev",
     "e2e": "cypress run",
-    "e2e:ci": "cross-env HMR=none PORT=4010 start-server-and-test dev http://localhost:4010/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci": "cross-env HMR=none PORT=4010 start-server-and-test dev http://localhost:4010/__umi/api/status cypress:ci",
     "e2e:open": "cypress open",
     "preview": "max preview --port 4020",
     "setup": "umi setup",
@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "antd": "^4.20.6",
-    "umi": "4.0.46"
+    "umi": "workspace:*"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "cypress": "^10.0.0",
+    "cypress": "^12.0.0",
     "start-server-and-test": "^1.15.2"
   }
 }

@@ -8,13 +8,13 @@ export default (api: IApi) => {
   api.describe({
     key: 'crossorigin',
     config: {
-      schema(Joi) {
-        return Joi.alternatives(
-          Joi.boolean(),
-          Joi.object({
-            includes: Joi.array().items(Joi.object().instance(RegExp)),
+      schema({ zod }) {
+        return zod.union([
+          zod.boolean(),
+          zod.object({
+            includes: zod.array(zod.instanceof(RegExp)).optional(),
           }),
-        );
+        ]);
       },
     },
     enableBy: api.EnableBy.config,

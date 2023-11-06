@@ -134,7 +134,9 @@ export async function addJavaScriptRules(opts: IOpts) {
           // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
           sourceType: 'unambiguous',
           babelrc: false,
+          configFile: false,
           cacheDirectory: false,
+          browserslistConfigFile: false,
           // process.env.BABEL_CACHE !== 'none'
           //   ? join(cwd, `.umi/.cache/babel-loader`)
           //   : false,

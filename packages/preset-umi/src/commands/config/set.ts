@@ -1,5 +1,4 @@
 import { generate, getASTByFilePath, setConfigByName } from '@umijs/ast';
-import prettier from '@umijs/utils/compiled/prettier';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
@@ -13,11 +12,16 @@ export function set(api: IApi, name: string, value: string) {
     const content = `export default {};`;
     writeFileSync(absPath, content, 'utf-8');
     mainConfigFile = absPath;
+
+    // 需要在首次 set 时，设置 mainConfigFile 路径
+    api.appData.mainConfigFile = absPath;
   }
 
   const ast = getASTByFilePath(mainConfigFile);
   if (!ast) return;
   const generateCode = generate(setConfigByName(ast, name, value)!);
+  // perf: lazy import
+  const prettier = require('@umijs/utils/compiled/prettier');
   const printStr = prettier.format(generateCode, {
     parser: 'typescript',
   });

@@ -1,25 +1,24 @@
 import { chalk, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { dirname, extname, join, resolve } from 'path';
 import { IApi } from '../../types';
-import { extractExports } from './extractExports';
 
 // TODO:
-// - 支持通过 env.MPA_FILTER 过滤要启动的项目（提速）
 // - precompile html-webpack-plugin
 export default (api: IApi) => {
   api.describe({
     key: 'mpa',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          template: Joi.string(),
-          layout: Joi.string(),
-          getConfigFromEntryFile: Joi.boolean(),
-          entry: Joi.object(),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            template: zod.string(),
+            layout: zod.string(),
+            getConfigFromEntryFile: zod.boolean(),
+            entry: zod.object({}),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,
@@ -34,6 +33,7 @@ export default (api: IApi) => {
       entry: await collectEntryWithTimeCount(
         api.paths.absPagesPath,
         api.config.mpa,
+        api.userConfig.mountElementId,
       ),
     };
     return memo;
@@ -42,14 +42,15 @@ export default (api: IApi) => {
   api.onGenerateFiles(async ({ isFirstTime }) => {
     // Config HMR
     if (!isFirstTime) {
-      api.appData.mpa.entry = await collectEntryWithTimeCount(
+      api.appData.mpa!.entry = await collectEntryWithTimeCount(
         api.paths.absPagesPath,
         api.config.mpa,
+        api.userConfig.mountElementId,
       );
     }
 
     const isReact18 = api.appData.react.version.startsWith('18.');
-    (api.appData.mpa.entry as Entry[]).forEach((entry) => {
+    (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
       const layout = entry.layout || api.config.mpa.layout;
       const layoutImport = layout ? `import Layout from '${layout}';` : '';
       const layoutJSX = layout ? `<Layout><App /></Layout>` : `<App />`;
@@ -88,15 +89,15 @@ ${renderer}
 
   api.modifyEntry((memo) => {
     if ('umi' in memo) delete memo['umi'];
-    (api.appData.mpa.entry as Entry[]).forEach((entry) => {
+    (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
       memo[entry.name] = join(api.paths.absTmpPath, entry.tmpFilePath);
     });
     return memo;
   });
 
   api.chainWebpack((memo) => {
-    (api.appData.mpa.entry as Entry[]).forEach((entry) => {
-      memo.plugin(`html-${entry.name}`).use(HtmlWebpackPlugin, [
+    (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
+      memo.plugin(`html-${entry.name}`).use(require('html-webpack-plugin'), [
         {
           filename: `${entry.name}.html`,
           minify: false,
@@ -126,19 +127,40 @@ interface IMpaOpts {
   entry: Record<string, Record<string, any>>;
 }
 
-async function collectEntryWithTimeCount(root: string, opts: IMpaOpts) {
+async function collectEntryWithTimeCount(
+  root: string,
+  opts: IMpaOpts,
+  mountElementId?: string,
+) {
   const d = new Date();
-  const entries = await collectEntry(root, opts);
+  const entries = await collectEntry(root, opts, mountElementId);
   logger.info(
     `[MPA] Collect Entries in ${new Date().getTime() - d.getTime()}ms`,
   );
   return entries;
 }
 
-async function collectEntry(root: string, opts: IMpaOpts) {
+function filterEntry(dir: string) {
+  if (!process.env.MPA_FILTER) {
+    return true;
+  }
+  const entries = process.env.MPA_FILTER.split(',');
+  return entries.includes(dir);
+}
+
+async function collectEntry(
+  root: string,
+  opts: IMpaOpts,
+  mountElementId?: string,
+) {
   return await readdirSync(root).reduce<Promise<Entry[]>>(
     async (memoP, dir) => {
       const memo = await memoP;
+
+      if (!filterEntry(dir)) {
+        return memo;
+      }
+
       const absDir = join(root, dir);
       if (existsSync(absDir) && statSync(absDir).isDirectory()) {
         const indexFile = getIndexFile(absDir);
@@ -152,7 +174,7 @@ async function collectEntry(root: string, opts: IMpaOpts) {
             name,
             file: indexFile,
             tmpFilePath: `mpa/${dir}${extname(indexFile)}`,
-            mountElementId: 'root',
+            mountElementId: mountElementId || 'root',
             ...globalConfig,
             ...config,
             title: globalConfig?.title || config.title || dir,
@@ -185,6 +207,7 @@ async function getConfig(indexFile: string) {
 }
 
 async function getConfigFromEntryFile(indexFile: string) {
+  const { extractExports } = await import('./extractExports.js');
   const config = await extractExports({
     entry: indexFile,
     exportName: 'config',

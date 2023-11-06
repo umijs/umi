@@ -8,5 +8,7 @@ export default {
     { path: '/home', component: 'home' },
     { path: '/count', component: 'count' },
     { path: '/nav', component: 'nav' },
+    { path: '/basename', component: 'basename' },
   ],
+  hash: false,
 };

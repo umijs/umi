@@ -5,10 +5,11 @@ import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import {
   ETempDir,
-  type IArgsPage,
+  IFile,
   processGenerateFiles,
   promptsExitWhenCancel,
   tryEject,
+  type IArgsPage,
 } from './utils';
 
 export default (api: IApi) => {
@@ -27,11 +28,12 @@ export default (api: IApi) => {
         await tryEject(ETempDir.Page, api.paths.cwd);
         return;
       }
-
       return new PageGenerator({
         args,
         absPagesPath: api.paths.absPagesPath,
         appCwd: api.paths.cwd,
+        importSource: api.appData.umi.importSource,
+        useStyledComponents: !!api.userConfig.styledComponents,
       }).run();
     },
   });
@@ -45,6 +47,7 @@ export class PageGenerator {
   private isDirMode = false;
   private dir = '';
   private name = '';
+  private importSource = '';
   private needEnsureDirMode = false;
   private prompts = promptsExitWhenCancel;
   private paths: string[] = [];
@@ -54,9 +57,12 @@ export class PageGenerator {
       args: IArgsPage;
       absPagesPath: string;
       appCwd: string;
+      importSource?: string;
+      useStyledComponents?: boolean;
     },
   ) {
     this.isDirMode = !!options.args.dir;
+    this.importSource = options.importSource || 'umi';
     const [_, ...inputPaths] = options.args._;
 
     if (inputPaths.length > 0) {
@@ -158,24 +164,34 @@ export class PageGenerator {
   }
 
   private async fileModeRun() {
-    const { absPagesPath, args, appCwd } = this.options;
+    const { absPagesPath, args, appCwd, useStyledComponents } = this.options;
     const { _, dir: _dir, eject: _eject, fallback, ...restVars } = args;
 
+    const filesMap: IFile[] = [
+      {
+        from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+        fromFallback: join(
+          PAGE_TEMPLATE_DIR,
+          useStyledComponents
+            ? 'index.styled-components.tsx.tpl'
+            : 'index.tsx.tpl',
+        ),
+        to: join(absPagesPath, this.dir, `${this.name}.tsx`),
+        exts: ['.tsx.tpl', '.tsx'],
+      },
+    ];
+
+    // 如果项目开启了 styled-components 功能，则不再生成 less 文件
+    if (!useStyledComponents) {
+      filesMap.push({
+        from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+        fromFallback: join(PAGE_TEMPLATE_DIR, 'index.less.tpl'),
+        to: join(absPagesPath, this.dir, `${this.name}.less`),
+        exts: ['.less.tpl', '.less'],
+      });
+    }
     await processGenerateFiles({
-      filesMap: [
-        {
-          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
-          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.tsx.tpl'),
-          to: join(absPagesPath, this.dir, `${this.name}.tsx`),
-          exts: ['.tsx.tpl', '.tsx'],
-        },
-        {
-          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
-          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.less.tpl'),
-          to: join(absPagesPath, this.dir, `${this.name}.less`),
-          exts: ['.less.tpl', '.less'],
-        },
-      ],
+      filesMap,
       baseDir: this.options.appCwd,
       presetArgs: {
         fallback,
@@ -184,6 +200,7 @@ export class PageGenerator {
         color: randomColor(),
         name: this.name,
         cssExt: '.less',
+        importSource: this.importSource,
         ...restVars,
       },
     });
@@ -206,6 +223,7 @@ export class PageGenerator {
         fallback,
       },
       templateVars: {
+        importSource: this.importSource,
         color: randomColor(),
         name: 'index',
         cssExt: '.less',

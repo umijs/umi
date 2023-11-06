@@ -5,4 +5,7 @@ export default {
   alias: {
     '@xx/utils': resolve('utils/index.ts'),
   },
+  targets: {
+    ie: 11,
+  },
 };

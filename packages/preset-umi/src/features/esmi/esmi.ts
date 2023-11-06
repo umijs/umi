@@ -1,7 +1,7 @@
 import { parse as parseImports } from '@umijs/bundler-utils/compiled/es-module-lexer';
-import MagicString from 'magic-string';
+import { MagicString } from '@umijs/utils';
 import { join } from 'path';
-import type { Plugin, ResolvedConfig } from 'vite';
+import type { HmrContext, Plugin, ResolvedConfig } from 'vite';
 import { createResolver } from '../../libs/scan';
 import type { IApi } from '../../types';
 import requireToImport from './esbuildPlugins/requireToImport';
@@ -15,7 +15,7 @@ let importmatches: Record<string, string> = {};
  * esmi vite plugin
  */
 function esmi(opts: {
-  handleHotUpdate?: Plugin['handleHotUpdate'];
+  handleHotUpdate?: (ctx: HmrContext) => void;
   resolver: ReturnType<typeof createResolver>;
 }): Plugin {
   return {
@@ -199,10 +199,10 @@ export default (api: IApi) => {
   api.describe({
     key: 'esmi',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          cdnOrigin: Joi.string(),
-          shimUrl: Joi.string(),
+      schema({ zod }) {
+        return zod.object({
+          cdnOrigin: zod.string(),
+          shimUrl: zod.string().optional(),
         });
       },
     },

@@ -1,13 +1,9 @@
-{{#isClientLoaderEnabled}}
-import clientLoaders from './loaders.js';
-{{/isClientLoaderEnabled}}
-{{#isReact}}
-import React from 'react';
-{{/isReact}}
+{{{ headerImports }}}
 
 export async function getRoutes() {
+  const routes = {{{ routes }}} as const;
   return {
-    routes: {{{ routes }}},
+    routes,
     routeComponents: {{{ routeComponents }}},
   };
 }

@@ -1,12 +1,13 @@
-import { pkgUp, winPath, logger, chalk } from '@umijs/utils';
+import { chalk, logger, pkgUp, winPath } from '@umijs/utils';
 import assert from 'assert';
+import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
-import { isAbsolute, join, dirname } from 'path';
+import { dirname, isAbsolute, join } from 'path';
 import { MF_VA_PREFIX } from '../constants';
 import { MFSU } from '../mfsu/mfsu';
+import { resolveFromContexts } from '../utils/resolveUtils';
 import { trimFileContent } from '../utils/trimFileContent';
 import { getExposeFromContent } from './getExposeFromContent';
-import { resolveFromContexts } from '../utils/resolveUtils';
 
 export class Dep {
   public file: string;
@@ -29,10 +30,28 @@ export class Dep {
     this.version = opts.version;
     this.cwd = opts.cwd;
     this.shortFile = this.file;
-    this.normalizedFile = this.shortFile.replace(/\//g, '_').replace(/:/g, '_');
+    this.normalizedFile = this.normalizePath(this.shortFile);
     this.filePath = `${MF_VA_PREFIX}${this.normalizedFile}.js`;
     this.excludeNodeNatives = opts.excludeNodeNatives!;
     this.importer = opts.importer;
+  }
+
+  private normalizePath(p: string): string {
+    let longPath = p;
+
+    if (longPath.startsWith(this.cwd)) {
+      longPath = longPath.slice(this.cwd.length);
+    }
+    longPath = longPath.replace(/\//g, '_').replace(/:/g, '_');
+
+    if (longPath.length <= 200) {
+      return longPath;
+    }
+
+    const hash = createHash('md5').update(longPath).digest('hex').slice(0, 16);
+    const post = longPath.slice(-200);
+
+    return `${hash}_${post}`;
   }
 
   async buildExposeContent() {
@@ -75,10 +94,10 @@ export * from '${this.file}';
 
   async getRealFile() {
     try {
-      const contexts = [this.cwd];
-      if (this.importer) {
-        contexts.push(dirname(this.importer));
-      }
+      // resolve from importer's dir priority to cwd
+      const contexts = this.importer
+        ? [dirname(this.importer), this.cwd]
+        : [this.cwd];
 
       // don't need to handle alias here
       // it's already handled by babel plugin

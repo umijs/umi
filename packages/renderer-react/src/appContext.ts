@@ -1,4 +1,5 @@
 import React from 'react';
+import { matchRoutes, useLocation } from 'react-router-dom';
 import { useRouteData } from './routeContext';
 import {
   IClientRoute,
@@ -6,7 +7,6 @@ import {
   IRouteComponents,
   IRoutesById,
 } from './types';
-import { useLocation, matchRoutes } from 'react-router-dom';
 
 interface IAppContextType {
   routes: IRoutesById;
@@ -37,10 +37,19 @@ export function useSelectedRoutes() {
   return routes || [];
 }
 
-export function useServerLoaderData() {
+export function useRouteProps<T extends Record<string, any> = any>() {
+  const currentRoute = useSelectedRoutes().slice(-1);
+  const { element: _, ...props } = currentRoute[0]?.route || {};
+  return props as T;
+}
+
+type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
+export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   const route = useRouteData();
   const appData = useAppData();
-  return { data: appData.serverLoaderData[route.route.id] };
+  return {
+    data: appData.serverLoaderData[route.route.id] as Awaited<ReturnType<T>>,
+  };
 }
 
 export function useClientLoaderData() {

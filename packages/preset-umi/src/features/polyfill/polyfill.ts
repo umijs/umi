@@ -1,16 +1,18 @@
-import { transform } from '@umijs/bundler-utils/compiled/babel/core';
 import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
-import { getCorejsVersion, winPath } from '@umijs/utils';
+import { getCorejsVersion, importLazy, winPath } from '@umijs/utils';
 import { dirname, join } from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
+  const babelCore: typeof import('@umijs/bundler-utils/compiled/babel/core') =
+    importLazy(require.resolve('@umijs/bundler-utils/compiled/babel/core'));
+
   api.describe({
     key: 'polyfill',
     config: {
-      schema(Joi) {
-        return Joi.object().keys({
-          imports: Joi.array().items(Joi.string()).required().unique(),
+      schema({ zod }) {
+        return zod.object({
+          imports: zod.array(zod.string()).optional(),
         });
       },
     },
@@ -25,6 +27,7 @@ export default (api: IApi) => {
           .map((item: string) => `import '${item}';`)
           .join('\n')
       : `import 'core-js';`;
+    const { transform } = babelCore;
     const { code } = transform(
       `
 ${coreJsImports}
@@ -43,6 +46,7 @@ export {};
               ),
               modules: false,
               targets: api.config.targets,
+              ignoreBrowserslistConfig: true,
             },
           ],
         ],
@@ -51,6 +55,7 @@ export {};
         ],
         babelrc: false,
         configFile: false,
+        browserslistConfigFile: false,
       },
     )!;
 

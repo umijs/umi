@@ -1,7 +1,8 @@
-import extraConfig from './extraConfig';
 import { defineConfig } from 'umi';
+import extraConfig from './extraConfig';
 
 export default defineConfig({
+  devtool: 'source-map',
   base: '/foo',
   publicPath: '/foo/',
   // history: { type: 'hash' },
@@ -101,5 +102,7 @@ export default defineConfig({
     },
   ],
   styles: ['//cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css'],
+  esbuildMinifyIIFE: true,
+  classPropertiesLoose: {},
   ...extraConfig,
 });

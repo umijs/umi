@@ -1,21 +1,25 @@
-import { parseModule } from '@umijs/bundler-utils';
-import { getNpmClient } from '@umijs/utils';
+import { getNpmClient, importLazy, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { parse } from '../../../compiled/ini';
 import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
-import { createResolver, scan } from '../../libs/scan';
 import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
-import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
 
 export default (api: IApi) => {
+  const routesApi: typeof import('../tmpFiles/routes') = importLazy(
+    require.resolve('../tmpFiles/routes'),
+  );
+  const bundlerUtils: typeof import('@umijs/bundler-utils') = importLazy(
+    require.resolve('@umijs/bundler-utils'),
+  );
+
   api.modifyAppData(async (memo) => {
-    memo.routes = await getRoutes({
+    memo.routes = await routesApi.getRoutes({
       api,
     });
-    memo.apiRoutes = await getApiRoutes({
+    memo.apiRoutes = await routesApi.getApiRoutes({
       api,
     });
     memo.hasSrcDir = api.paths.absSrcPath.endsWith('/src');
@@ -46,10 +50,12 @@ export default (api: IApi) => {
     memo.appJS = await getAppJsInfo();
     memo.locale = await osLocale();
     memo.vite = api.config.vite ? {} : undefined;
-    const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
+    const { globalCSS, globalJS, overridesCSS, globalLoading } =
+      getGlobalFiles();
     memo.globalCSS = globalCSS;
     memo.globalJS = globalJS;
     memo.overridesCSS = overridesCSS;
+    memo.globalLoading = globalLoading;
 
     const gitDir = findGitDir(api.paths.cwd);
     if (gitDir) {
@@ -67,16 +73,21 @@ export default (api: IApi) => {
 
     memo.framework = 'react';
 
-    return memo;
-  });
+    // load ts info
+    const tsPkg = tryLoadDepPkg({
+      name: 'typescript',
+      from: api.cwd,
+    });
+    const tslibPkg = tryLoadDepPkg({
+      name: 'tslib',
+      from: api.cwd,
+    });
+    memo.typescript = {
+      tsVersion: tsPkg?.version,
+      tslibVersion: tslibPkg?.version,
+    };
 
-  api.registerMethod({
-    name: '_refreshRoutes',
-    async fn() {
-      api.appData.routes = await getRoutes({
-        api,
-      });
-    },
+    return memo;
   });
 
   // Execute earliest, so that other onGenerateFiles can get it
@@ -85,10 +96,12 @@ export default (api: IApi) => {
     async fn(args: IOnGenerateFiles) {
       if (!args.isFirstTime) {
         api.appData.appJS = await getAppJsInfo();
-        const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
+        const { globalCSS, globalJS, overridesCSS, globalLoading } =
+          getGlobalFiles();
         api.appData.globalCSS = globalCSS;
         api.appData.globalJS = globalJS;
         api.appData.overridesCSS = overridesCSS;
+        api.appData.globalLoading = globalLoading;
       }
     },
     stage: Number.NEGATIVE_INFINITY,
@@ -98,6 +111,7 @@ export default (api: IApi) => {
   api.register({
     key: 'updateAppDataDeps',
     async fn() {
+      const { createResolver, scan } = await import('../../libs/scan.js');
       const resolver = createResolver({
         alias: api.config.alias,
       });
@@ -123,7 +137,7 @@ export default (api: IApi) => {
   async function getAppJsInfo() {
     for (const path of expandJSPaths(join(api.paths.absSrcPath, 'app'))) {
       if (existsSync(path)) {
-        const [_, exports] = await parseModule({
+        const [_, exports] = await bundlerUtils.parseModule({
           path,
           content: readFileSync(path, 'utf-8'),
         });
@@ -154,6 +168,11 @@ export default (api: IApi) => {
       [],
     );
 
+    const loadingFile = expandJSPaths(join(absSrcPath, 'loading')).find(
+      existsSync,
+    );
+    const globalLoading = loadingFile ? winPath(loadingFile) : undefined;
+
     const overridesCSS = [getOverridesCSS(api.paths.absSrcPath)].filter(
       Boolean,
     ) as string[];
@@ -162,6 +181,7 @@ export default (api: IApi) => {
       globalCSS,
       globalJS,
       overridesCSS,
+      globalLoading,
     };
   }
 };
@@ -178,4 +198,13 @@ function findGitDir(dir: string): string | null {
     return parent;
   }
   return null;
+}
+
+function tryLoadDepPkg(opts: { name: string; from: string }) {
+  const { name, from } = opts;
+  try {
+    return require(require.resolve(`${name}/package.json`, {
+      paths: [from],
+    }));
+  } catch {}
 }

@@ -103,6 +103,9 @@ async function executePlugin(mfConfig: any) {
     config: {
       mf: mfConfig,
     },
+    userConfig: {
+      mf: mfConfig,
+    },
     logger: {
       info: jest.fn(),
       warn: jest.fn(),
@@ -114,7 +117,9 @@ async function executePlugin(mfConfig: any) {
     modifyWebpackConfig(fn: Function) {
       modifier = fn;
     },
+    register() {},
     addRuntimePluginKey() {},
+    modifyDefaultConfig() {},
   };
 
   plugin(api as any);

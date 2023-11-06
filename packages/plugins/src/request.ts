@@ -6,15 +6,14 @@ export default (api: IApi) => {
   api.describe({
     key: 'request',
     config: {
-      schema: (Joi) => {
-        return Joi.alternatives().try(
-          Joi.object({
-            dataField: Joi.string()
-              .pattern(/^[a-zA-Z]*$/)
-              .allow(''),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema: ({ zod }) => {
+        // 生成类型 dataField: '' | string
+        return zod
+          .object({
+            // TODO: '' | string 没有找到对应的写法
+            dataField: zod.string(),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,
@@ -321,7 +320,9 @@ export type {
   AxiosResponse,
   AxiosError,
   RequestError,
-  ResponseInterceptor } from './request';
+  ResponseInterceptor,
+  RequestOptions,
+  Request } from './request';
 `,
     });
     api.writeTmpFile({

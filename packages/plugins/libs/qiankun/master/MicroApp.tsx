@@ -2,12 +2,13 @@
 /* eslint-disable */
 __USE_MODEL__;
 import concat from 'lodash/concat';
+import isEqual from 'lodash/isEqual';
 import mergeWith from 'lodash/mergeWith';
 import noop from 'lodash/noop';
 import {
   FrameworkConfiguration,
   loadMicroApp,
-  MicroApp as MicroAppType,
+  MicroApp as MicroAppTypeDefinition,
   prefetchApps,
 } from 'qiankun';
 import React, {
@@ -19,6 +20,8 @@ import React, {
   useState,
 } from 'react';
 import { qiankunStateForSlaveModelNamespace } from './constants';
+import defaultErrorBoundary from './defaultErrorBoundary';
+import defaultLoader from './defaultLoader';
 import { ErrorBoundary } from './ErrorBoundary';
 import { getMasterOptions } from './masterOptions';
 import MicroAppLoader from './MicroAppLoader';
@@ -35,6 +38,12 @@ type BrowserHistory = {
 type MemoryHistory = {
   type?: 'memory';
 } & any;
+
+type MicroAppType = MicroAppTypeDefinition & {
+  _unmounting?: boolean;
+  _updatingPromise?: Promise<void>;
+  _updatingTimestamp?: number;
+};
 
 export type Props = {
   name: string;
@@ -58,10 +67,17 @@ export type Props = {
   className?: string;
 } & Record<string, any>;
 
-function unmountMicroApp(microApp?: MicroAppType) {
-  if (microApp) {
-    microApp.mountPromise.then(() => microApp.unmount());
+function unmountMicroApp(microApp: MicroAppType) {
+  microApp.mountPromise.then(() => microApp.unmount());
+}
+
+function useDeepCompare<T>(value: T): T {
+  const ref = useRef<T>(value);
+  if (!isEqual(value, ref.current)) {
+    ref.current = value;
   }
+
+  return ref.current;
 }
 
 let noneMounted = true;
@@ -88,7 +104,6 @@ export const MicroApp = forwardRef(
       ...propsFromParams
     } = componentProps;
 
-    // ref: https://github.com/umijs/plugins/pull/866
     // name 跟 appNameKeyAlias 这两个 key 同时存在时，优先使用 name，避免对存量应用造成 breaking change。
     // 比如 appNameKeyAlias 配置是 id，但之前 id 正好作为普通的 props 使用过，如 <MicroApp name="app" id="123" />
     // 正常场景会优先匹配 appNameKeyAlias 对应的字段，fallback 到 name，避免对已经使用 <MicroApp name="app" /> 的应用造成影响
@@ -104,6 +119,7 @@ export const MicroApp = forwardRef(
     // 未配置自定义 errorBoundary 且开启了 autoCaptureError 场景下，使用插件默认的 errorBoundary，否则使用自定义 errorBoundary
     const microAppErrorBoundary =
       errorBoundary ||
+      defaultErrorBoundary ||
       (propsFromParams.autoCaptureError
         ? (e) => <ErrorBoundary error={e} />
         : null);
@@ -123,8 +139,6 @@ export const MicroApp = forwardRef(
 
     const containerRef = useRef<HTMLDivElement>();
     const microAppRef = useRef<MicroAppType>();
-    const updatingPromise = useRef<Promise<any>>();
-    const updatingTimestamp = useRef(Date.now());
 
     useImperativeHandle(componentRef, () => microAppRef.current);
 
@@ -133,7 +147,11 @@ export const MicroApp = forwardRef(
       if (!appConfig) {
         setComponentError(
           new Error(
-            `[@umijs/plugin-qiankun]: Can not find the configuration of ${name} app!`,
+            `[@umijs/plugin-qiankun]: Can not find the configuration of ${name} app! Currently, only the following apps are configured:\n${JSON.stringify(
+              apps,
+              null,
+              2,
+            )}`,
           ),
         );
       }
@@ -144,7 +162,10 @@ export const MicroApp = forwardRef(
     const stateForSlave = (useModel || noop)(
       qiankunStateForSlaveModelNamespace,
     );
-    const { entry, props: propsFromConfig = {} } = appConfig || {};
+    const {
+      entry,
+      props: { settings: settingsFromConfig = {}, ...propsFromConfig } = {},
+    } = appConfig || {};
 
     useEffect(() => {
       setComponentError(null);
@@ -152,6 +173,7 @@ export const MicroApp = forwardRef(
       const configuration = {
         globalContext: window,
         ...globalSettings,
+        ...settingsFromConfig,
         ...settingsFromProps,
       };
       microAppRef.current = loadMicroApp(
@@ -212,36 +234,41 @@ export const MicroApp = forwardRef(
         },
       );
 
-      return () => unmountMicroApp(microAppRef.current);
+      return () => {
+        const microApp = microAppRef.current;
+        if (microApp) {
+          // 微应用 unmount 是异步的，中间的流转状态不能确定，所有需要一个标志位来确保 unmount 开始之后不会再触发 update
+          microApp._unmounting = true;
+          unmountMicroApp(microApp);
+        }
+      };
     }, [name]);
 
     useEffect(() => {
       const microApp = microAppRef.current;
       if (microApp) {
-        if (!updatingPromise.current) {
+        if (!microApp._updatingPromise) {
           // 初始化 updatingPromise 为 microApp.mountPromise，从而确保后续更新是在应用 mount 完成之后
-          updatingPromise.current = microApp.mountPromise;
+          microApp._updatingPromise = microApp.mountPromise;
+          microApp._updatingTimestamp = Date.now();
         } else {
           // 确保 microApp.update 调用是跟组件状态变更顺序一致的，且后一个微应用更新必须等待前一个更新完成
-          updatingPromise.current = updatingPromise.current.then(() => {
+          microApp._updatingPromise = microApp._updatingPromise.then(() => {
             const canUpdate = (microApp?: MicroAppType) =>
-              microApp?.update && microApp.getStatus() === 'MOUNTED';
+              microApp?.update &&
+              microApp.getStatus() === 'MOUNTED' &&
+              !microApp._unmounting;
             if (canUpdate(microApp)) {
               const props = {
                 ...propsFromConfig,
                 ...stateForSlave,
                 ...propsFromParams,
-                __globalRoutesInfo: {
-                  appNameKeyAlias,
-                  masterHistoryType,
-                  base: globalSettings.base,
-                  microAppRoutes: globalSettings.microAppRoutes,
-                },
                 setLoading,
               };
 
               if (process.env.NODE_ENV === 'development') {
-                if (Date.now() - updatingTimestamp.current < 200) {
+                const updatingTimestamp = microApp._updatingTimestamp!;
+                if (Date.now() - updatingTimestamp < 200) {
                   console.warn(
                     `[@umijs/plugin-qiankun] It seems like microApp ${name} is updating too many times in a short time(200ms), you may need to do some optimization to avoid the unnecessary re-rendering.`,
                   );
@@ -251,7 +278,7 @@ export const MicroApp = forwardRef(
                   `[@umijs/plugin-qiankun] MicroApp ${name} is updating with props: `,
                   props,
                 );
-                updatingTimestamp.current = Date.now();
+                microApp._updatingTimestamp = Date.now();
               }
 
               // 返回 microApp.update 形成链式调用
@@ -265,11 +292,12 @@ export const MicroApp = forwardRef(
       }
 
       return noop;
-    }, Object.values({ ...stateForSlave, ...propsFromParams }));
+    }, [useDeepCompare({ ...stateForSlave, ...propsFromParams })]);
 
     // 未配置自定义 loader 且开启了 autoSetLoading 场景下，使用插件默认的 loader，否则使用自定义 loader
     const microAppLoader =
       loader ||
+      defaultLoader ||
       (propsFromParams.autoSetLoading
         ? (loading) => <MicroAppLoader loading={loading} />
         : null);

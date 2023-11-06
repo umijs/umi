@@ -1,4 +1,4 @@
-import { lodash, winPath } from '@umijs/utils';
+import { importLazy, lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -6,7 +6,10 @@ import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { getModuleExports } from './getModuleExports';
 import { importsToStr } from './importsToStr';
-import { getRouteComponents, getRoutes } from './routes';
+
+const routesApi: typeof import('./routes') = importLazy(
+  require.resolve('./routes'),
+);
 
 export default (api: IApi) => {
   const umiDir = process.env.UMI_DIR!;
@@ -14,8 +17,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'tmpFiles',
     config: {
-      schema(Joi) {
-        return Joi.boolean();
+      schema({ zod }) {
+        return zod.boolean();
       },
     },
   });
@@ -37,68 +40,77 @@ export default (api: IApi) => {
     );
 
     // tsconfig.json
+    const frameworkName = api.service.frameworkName;
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
-    const umiTempDir = `${srcPrefix}.umi`;
+    const umiTempDir = `${srcPrefix}.${frameworkName}`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
+    const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
+    const isTslibInstalled = !!api.appData.typescript.tslibVersion;
+
+    // x 1、basic config
+    // x 2、alias
+    // 3、language service platform
+    // 4、typing
+    let umiTsConfig = {
+      compilerOptions: {
+        target: 'esnext',
+        module: 'esnext',
+        lib: ['dom', 'dom.iterable', 'esnext'],
+        allowJs: true,
+        skipLibCheck: true,
+        moduleResolution: isTs5 ? 'bundler' : 'node',
+        importHelpers: isTslibInstalled,
+        noEmit: true,
+        jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
+        esModuleInterop: true,
+        sourceMap: true,
+        baseUrl,
+        strict: true,
+        resolveJsonModule: true,
+        allowSyntheticDefaultImports: true,
+
+        // Supported by vue only
+        ...(api.appData.framework === 'vue'
+          ? {
+              // TODO Actually, it should be vite mode, but here it is written as vue only
+              // Required in Vite https://vitejs.dev/guide/features.html#typescript
+              isolatedModules: true,
+            }
+          : {}),
+
+        paths: {
+          '@/*': [`${srcPrefix}*`],
+          '@@/*': [`${umiTempDir}/*`],
+          [`${api.appData.umi.importSource}`]: [umiDir],
+          [`${api.appData.umi.importSource}/typings`]: [
+            `${umiTempDir}/typings`,
+          ],
+          ...(api.config.vite
+            ? {
+                '@fs/*': ['*'],
+              }
+            : {}),
+        },
+      },
+      include: [
+        `${baseUrl}.${frameworkName}rc.ts`,
+        `${baseUrl}**/*.d.ts`,
+        `${baseUrl}**/*.ts`,
+        `${baseUrl}**/*.tsx`,
+        api.appData.framework === 'vue' && `${baseUrl}**/*.vue`,
+      ].filter(Boolean),
+    };
+
+    umiTsConfig = await api.applyPlugins({
+      key: 'modifyTSConfig',
+      type: api.ApplyPluginsType.modify,
+      initialValue: umiTsConfig,
+    });
 
     api.writeTmpFile({
       noPluginDir: true,
       path: 'tsconfig.json',
-      // x 1、basic config
-      // x 2、alias
-      // 3、language service platform
-      // 4、typing
-      content: JSON.stringify(
-        {
-          compilerOptions: {
-            target: 'esnext',
-            module: 'esnext',
-            moduleResolution: 'node',
-            importHelpers: true,
-            jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
-            esModuleInterop: true,
-            sourceMap: true,
-            baseUrl,
-            strict: true,
-            resolveJsonModule: true,
-            allowSyntheticDefaultImports: true,
-
-            // Supported by vue only
-            ...(api.appData.framework === 'vue'
-              ? {
-                  // TODO Actually, it should be vite mode, but here it is written as vue only
-                  // Required in Vite https://vitejs.dev/guide/features.html#typescript
-                  isolatedModules: true,
-                  // For `<script setup>`
-                  // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
-                  preserveValueImports: true,
-                }
-              : {}),
-
-            paths: {
-              '@/*': [`${srcPrefix}*`],
-              '@@/*': [`${umiTempDir}/*`],
-              [`${api.appData.umi.importSource}`]: [umiDir],
-              [`${api.appData.umi.importSource}/typings`]: [
-                `${umiTempDir}/typings`,
-              ],
-              ...(api.config.vite
-                ? {
-                    '@fs/*': ['*'],
-                  }
-                : {}),
-            },
-          },
-          include: [
-            `${baseUrl}.umirc.ts`,
-            `${baseUrl}**/*.d.ts`,
-            `${baseUrl}**/*.ts`,
-            `${baseUrl}**/*.tsx`,
-          ],
-        },
-        null,
-        2,
-      ),
+      content: JSON.stringify(umiTsConfig, null, 2),
     });
 
     // typings.d.ts
@@ -293,22 +305,14 @@ declare module '*.txt' {
         imports: importsToStr(
           await api.applyPlugins({
             key: 'addEntryImports',
-            initialValue: [
-              // append overrides.{ext} style file
-              api.appData.overridesCSS.length && {
-                source: api.appData.overridesCSS[0],
-              },
-            ].filter(Boolean),
+            initialValue: [],
           }),
         ).join('\n'),
         basename: api.config.base,
         historyType: api.config.history.type,
         hydrate: !!api.config.ssr,
         reactRouter5Compat: !!api.config.reactRouter5Compat,
-        loadingComponent:
-          existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||
-          existsSync(join(api.paths.absSrcPath, 'loading.jsx')) ||
-          existsSync(join(api.paths.absSrcPath, 'loading.js')),
+        loadingComponent: api.appData.globalLoading,
       },
     });
 
@@ -333,9 +337,12 @@ export default function EmptyRoute() {
     if (opts.isFirstTime) {
       routes = api.appData.routes;
     } else {
-      routes = await getRoutes({
+      routes = await routesApi.getRoutes({
         api,
       });
+      // refresh route data, prevent route data outdated
+      // this can immediately get the latest `icon`... props in routes config
+      api.appData.routes = routes;
     }
 
     const hasSrc = api.appData.hasSrcDir;
@@ -354,17 +361,62 @@ export default function EmptyRoute() {
         }
       }
     }
+
+    // header imports
+    const headerImports: string[] = [];
+
+    // trim quotes
+    let routesString = JSON.stringify(clonedRoutes);
+    if (api.config.clientLoader) {
+      // "clientLoaders['foo']" > clientLoaders['foo']
+      routesString = routesString.replace(/"(clientLoaders\[.*?)"/g, '$1');
+      // import: client loader
+      headerImports.push(`import clientLoaders from './loaders.js';`);
+    }
+    // routeProps is enabled for conventional routes
+    // e.g. dumi 需要用到约定式路由但又不需要 routeProps
+    if (!api.userConfig.routes && api.isPluginEnable('routeProps')) {
+      // routeProps":"routeProps['foo']" > ...routeProps['foo']
+      routesString = routesString.replace(
+        /"routeProps":"(routeProps\[.*?)"/g,
+        '...$1',
+      );
+      // import: route props
+      headerImports.push(`import routeProps from './routeProps';`);
+      // prevent override internal route props
+      headerImports.push(`
+if (process.env.NODE_ENV === 'development') {
+  Object.entries(routeProps).forEach(([key, value]) => {
+    const internalProps = ['path', 'id', 'parentId', 'isLayout', 'isWrapper', 'layout', 'clientLoader'];
+    Object.keys(value).forEach((prop) => {
+      if (internalProps.includes(prop)) {
+        throw new Error(
+          \`[UmiJS] route '\${key}' should not have '\${prop}' prop, please remove this property in 'routeProps'.\`
+        )
+      }
+    })
+  })
+}
+`);
+    }
+
+    // import: react
+    if (api.appData.framework === 'react') {
+      headerImports.push(`import React from 'react';`);
+    }
+
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/route.tsx',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
-        isReact: api.appData.framework === 'react',
-        isClientLoaderEnabled: !!api.config.clientLoader,
-        routes: JSON.stringify(clonedRoutes)
-          // "clientLoaders['foo']" > clientLoaders['foo']
-          .replace(/"(clientLoaders\[.*?)"/g, '$1'),
-        routeComponents: await getRouteComponents({ routes, prefix, api }),
+        headerImports: headerImports.join('\n'),
+        routes: routesString,
+        routeComponents: await routesApi.getRouteComponents({
+          routes,
+          prefix,
+          api,
+        }),
       },
     });
 
@@ -373,6 +425,24 @@ export default function EmptyRoute() {
       key: 'addRuntimePlugin',
       initialValue: [api.appData.appJS?.path].filter(Boolean),
     });
+
+    function checkDuplicatePluginKeys(arr: string[]) {
+      const duplicates: string[] = [];
+      arr.reduce<Record<string, boolean>>((prev, curr) => {
+        if (prev[curr]) {
+          duplicates.push(curr);
+        } else {
+          prev[curr] = true;
+        }
+        return prev;
+      }, {});
+      if (duplicates.length) {
+        throw new Error(
+          `The plugin key cannot be duplicated. (${duplicates.join(', ')})`,
+        );
+      }
+    }
+
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
       initialValue: [
@@ -390,6 +460,9 @@ export default function EmptyRoute() {
         'onRouteChange',
       ],
     });
+
+    checkDuplicatePluginKeys(validKeys);
+
     const appPluginRegExp = /(\/|\\)app.(ts|tsx|jsx|js)$/;
     api.writeTmpFile({
       noPluginDir: true,
@@ -403,6 +476,8 @@ export default function EmptyRoute() {
           path: winPath(plugin),
         })),
         validKeys,
+        // Inject code for vite only
+        isViteMode: !!api.config.vite,
       },
     });
 
@@ -446,7 +521,8 @@ export default function EmptyRoute() {
     // history.ts
     // only react generates because the preset-vue override causes vite hot updates to fail
     if (api.appData.framework === 'react') {
-      const historyPath = api.config.historyWithQuery
+      const { historyWithQuery, reactRouter5Compat } = api.config;
+      const historyPath = historyWithQuery
         ? winPath(dirname(require.resolve('@umijs/history/package.json')))
         : rendererPath;
       api.writeTmpFile({
@@ -455,6 +531,16 @@ export default function EmptyRoute() {
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
           historyPath,
+          reactRouter5Compat,
+        },
+      });
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'core/historyIntelli.ts',
+        tplPath: join(TEMPLATES_DIR, 'historyIntelli.tpl'),
+        context: {
+          historyPath,
+          reactRouter5Compat,
         },
       });
     }
@@ -550,6 +636,17 @@ export default function EmptyRoute() {
           exports.push(`export { TestBrowser } from './testBrowser';`);
         }
       }
+      if (api.appData.framework === 'react') {
+        if (api.config.ssr) {
+          exports.push(
+            `export { useServerInsertedHTML } from './core/serverInsertedHTMLContext';`,
+          );
+        } else {
+          exports.push(
+            `export const useServerInsertedHTML: Function = () => {};`,
+          );
+        }
+      }
       // plugins
       exports.push('// plugins');
       const allPlugins = readdirSync(api.paths.absTmpPath).filter((file) =>
@@ -626,9 +723,16 @@ export default function EmptyRoute() {
           runtimeConfigType,
         },
       });
-      exports.push(`export { defineApp } from './core/defineApp'`);
-      // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
-      exports.push(`export type {  RuntimeConfig } from './core/defineApp'`);
+      // FIXME: if exported after plugins, circular dependency:
+      //        `app.ts -> exports.ts -> plugin -> core/plugin.ts -> app.ts`
+      //        we will get a `defineApp` of `undefined`
+      // https://github.com/umijs/umi/issues/9702
+      // https://github.com/umijs/umi/issues/10412
+      exports.unshift(
+        `export { defineApp } from './core/defineApp'`,
+        // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
+        `export type { RuntimeConfig } from './core/defineApp'`,
+      );
       api.writeTmpFile({
         noPluginDir: true,
         path: 'exports.ts',

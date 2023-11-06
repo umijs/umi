@@ -1,30 +1,21 @@
-# {{{ name }}}
+# {{{ pluginName }}}
 
-[![NPM version](https://img.shields.io/npm/v/{{{ name }}}.svg?style=flat)](https://npmjs.org/package/{{{ name }}})
-[![NPM downloads](http://img.shields.io/npm/dm/{{{ name }}}.svg?style=flat)](https://npmjs.org/package/{{{ name }}})
-
-{{{ description }}}
+A umi plugin
 
 ## Install
 
 ```bash
-# or yarn
-$ npm install
-```
-
-```bash
-$ npm run build --watch
-$ npm run start
+pnpm i {{{ pluginName }}}
 ```
 
 ## Usage
 
-Configure in `.umirc.js`,
+Configure in `.umirc.ts`,
 
 ```js
 export default {
   plugins: [
-    ['{{{ name }}}'],
+    ['{{{ pluginName }}}'],
   ],
 }
 ```

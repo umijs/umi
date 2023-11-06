@@ -1,13 +1,17 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { lodash, logger, rimraf } from '@umijs/utils';
+import { importLazy, lodash, logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import type { Worker } from 'worker_threads';
 import webpack from '../compiled/webpack';
-import { getConfig, IOpts as IConfigOpts } from './config/config';
+import type { IOpts as IConfigOpts } from './config/config';
 import { MFSU_NAME } from './constants';
 import { createServer } from './server/server';
 import { Env, IConfig } from './types';
+
+const configModule: typeof import('./config/config') = importLazy(
+  require.resolve('./config/config'),
+);
 
 type IOpts = {
   afterMiddlewares?: any[];
@@ -34,6 +38,7 @@ type IOpts = {
   srcCodeCache?: any;
   startBuildWorker?: (deps: any[]) => Worker;
   onBeforeMiddleware?: Function;
+  disableCopy?: boolean;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function ensureSerializableValue(obj: any) {
@@ -52,6 +57,27 @@ export function ensureSerializableValue(obj: any) {
 }
 
 export async function dev(opts: IOpts) {
+  const { mfsu, webpackConfig } = await setup(opts);
+
+  await createServer({
+    webpackConfig,
+    userConfig: opts.config,
+    cwd: opts.cwd,
+    beforeMiddlewares: [
+      ...(mfsu?.getMiddlewares() || []),
+      ...(opts.beforeMiddlewares || []),
+    ],
+    port: opts.port,
+    host: opts.host,
+    ip: opts.ip,
+    afterMiddlewares: [...(opts.afterMiddlewares || [])],
+    onDevCompileDone: opts.onDevCompileDone,
+    onProgress: opts.onProgress,
+    onBeforeMiddleware: opts.onBeforeMiddleware,
+  });
+}
+
+export async function setup(opts: IOpts) {
   const cacheDirectoryPath = resolve(
     opts.rootDir || opts.cwd,
     opts.config.cacheDirectoryPath || 'node_modules/.cache',
@@ -95,7 +121,7 @@ export async function dev(opts: IOpts) {
     });
   }
 
-  const webpackConfig = await getConfig({
+  const webpackConfig = await configModule.getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.development,
@@ -129,14 +155,15 @@ export async function dev(opts: IOpts) {
         }
       : undefined,
     pkg: opts.pkg,
+    disableCopy: opts.disableCopy,
   });
 
-  const depConfig = await getConfig({
+  const depConfig = await configModule.getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.development,
     entry: opts.entry,
-    userConfig: opts.config,
+    userConfig: { ...opts.config, forkTSChecker: false },
     disableCopy: true,
     hash: true,
     staticPathPrefix: MF_DEP_PREFIX,
@@ -180,20 +207,8 @@ export async function dev(opts: IOpts) {
     }
   }
 
-  await createServer({
+  return {
+    mfsu,
     webpackConfig,
-    userConfig: opts.config,
-    cwd: opts.cwd,
-    beforeMiddlewares: [
-      ...(mfsu?.getMiddlewares() || []),
-      ...(opts.beforeMiddlewares || []),
-    ],
-    port: opts.port,
-    host: opts.host,
-    ip: opts.ip,
-    afterMiddlewares: [...(opts.afterMiddlewares || [])],
-    onDevCompileDone: opts.onDevCompileDone,
-    onProgress: opts.onProgress,
-    onBeforeMiddleware: opts.onBeforeMiddleware,
-  });
+  };
 }

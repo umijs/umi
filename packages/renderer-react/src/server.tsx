@@ -1,18 +1,9 @@
 import React from 'react';
-import { HelmetProvider } from 'react-helmet-async';
 import { StaticRouter } from 'react-router-dom/server';
 import { AppContext } from './appContext';
 import { Routes } from './browser';
 import { createClientRoutes } from './routes';
 import { IRouteComponents, IRoutesById } from './types';
-
-// store helmet data
-const helmetContext = {};
-
-// get helmet context
-export function getHelmetContext() {
-  return helmetContext;
-}
 
 // Get the root React component for ReactDOMServer.renderToString
 export async function getClientRootComponent(opts: {
@@ -22,6 +13,7 @@ export async function getClientRootComponent(opts: {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
+  withoutHTML?: boolean;
 }) {
   const basename = '/';
   const components = { ...opts.routeComponents };
@@ -50,23 +42,38 @@ export async function getClientRootComponent(opts: {
       args: {},
     });
   }
+  const app = (
+    <AppContext.Provider
+      value={{
+        routes: opts.routes,
+        routeComponents: opts.routeComponents,
+        clientRoutes,
+        pluginManager: opts.pluginManager,
+        basename,
+        clientLoaderData: {},
+        serverLoaderData: opts.loaderData,
+      }}
+    >
+      {rootContainer}
+    </AppContext.Provider>
+  );
+  if (opts.withoutHTML) {
+    return (
+      <>
+        <div id="root">{app}</div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
+              opts.loaderData,
+            )}`,
+          }}
+        />
+      </>
+    );
+  }
   return (
     <Html loaderData={opts.loaderData} manifest={opts.manifest}>
-      <HelmetProvider context={helmetContext}>
-        <AppContext.Provider
-          value={{
-            routes: opts.routes,
-            routeComponents: opts.routeComponents,
-            clientRoutes,
-            pluginManager: opts.pluginManager,
-            basename,
-            clientLoaderData: {},
-            serverLoaderData: opts.loaderData,
-          }}
-        >
-          {rootContainer}
-        </AppContext.Provider>
-      </HelmetProvider>
+      {app}
     </Html>
   );
 }
@@ -74,6 +81,7 @@ export async function getClientRootComponent(opts: {
 function Html({ children, loaderData, manifest }: any) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
+
   return (
     <html lang="en">
       <head>
@@ -89,6 +97,7 @@ function Html({ children, loaderData, manifest }: any) {
             __html: `<b>Enable JavaScript to run this app.</b>`,
           }}
         />
+
         <div id="root">{children}</div>
         <script
           dangerouslySetInnerHTML={{

@@ -47,11 +47,30 @@ describe('Basic Test', () => {
     cy.get('li.ant-pro-base-menu-menu-item').contains('dva');
   });
 
-  it('can change local', () => {
+  it('can change Chinese locale render page', () => {
     cy.get('.ant-dropdown-trigger').find('i.anticon').click();
 
     cy.contains('简体中文').click();
     cy.get('li.ant-pro-base-menu-menu-item').contains('首页');
+    cy.get('section#locales div.hello').should('have.text', '你好');
+    cy.get('section#locales h1').should('have.text', '世界！');
+    cy.get('section#locales div.user-welcome').should(
+      'have.text',
+      '你好, 朋友',
+    );
+  });
+
+  it('can change English locale render page', () => {
+    cy.get('.ant-dropdown-trigger').find('i.anticon').click();
+
+    cy.contains('English').click();
+    cy.get('li.ant-pro-base-menu-menu-item').contains('Index');
+    cy.get('section#locales div.hello').should('have.text', 'Hello');
+    cy.get('section#locales h1').should('have.text', 'World!');
+    cy.get('section#locales div.user-welcome').should(
+      'have.text',
+      'hello, friend',
+    );
   });
 
   it('tailwind css', () => {
@@ -60,5 +79,11 @@ describe('Basic Test', () => {
       'color',
       'rgb(136, 19, 55)',
     );
+  });
+
+  it('display included Icon components', () => {
+    cy.get('span.local\\:rice');
+    cy.get('span.ant-design\\:fire-twotone');
+    cy.get('span.local\\:logo\\/umi');
   });
 });

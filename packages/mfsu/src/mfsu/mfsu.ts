@@ -7,7 +7,7 @@ import type {
 import express from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
@@ -236,7 +236,7 @@ promise new Promise(resolve => {
   // inject this script with the src set to the versioned remoteEntry.js
   document.head.appendChild(script);
 })
-                `.trimLeft()
+                `.trimStart()
               : `${mfName}@${publicPath}${REMOTE_FILE_FULL}`, // mfsu 的入口文件如果需要在其他的站点上被引用,需要显示的指定publicPath,以保证入口文件的正确访问
           },
         }),
@@ -260,7 +260,7 @@ promise new Promise(resolve => {
     this.strategy.init(opts.config);
   }
 
-  async buildDeps() {
+  async buildDeps(opts: { useWorker: boolean } = { useWorker: true }) {
     try {
       const shouldBuild = this.strategy.shouldBuild();
       if (!shouldBuild) {
@@ -283,6 +283,7 @@ promise new Promise(resolve => {
 
       await this.depBuilder.build({
         deps,
+        useWorker: opts.useWorker,
       });
       this.lastBuildError = null;
 

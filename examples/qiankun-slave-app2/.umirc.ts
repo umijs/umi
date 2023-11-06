@@ -9,4 +9,5 @@ export default {
     { path: '/hello', component: 'hello' },
   ],
   runtimePublicPath: {},
+  hash: false,
 };

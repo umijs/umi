@@ -50,6 +50,8 @@
 /.pnpm-*.log
 /.github_token
 /TMP_CHANGELOG.md
+/.openai_token
+/.github_account
 
 # Ignore declaration files, they are generated from local development
 /packages/bundler-webpack/client/**/*.d.ts
@@ -57,3 +59,5 @@
 /packages/umi/client/**/*.d.ts
 /packages/umi/client/**/*.d.ts.map
 /packages/bundler-vite/src/fixtures/alias/node_modules
+**/cypress/screenshots/
+**/cypress/videos/

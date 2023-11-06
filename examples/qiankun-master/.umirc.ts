@@ -10,6 +10,10 @@ export default {
           name: 'slave-app2',
           entry: 'http://127.0.0.1:7002', // your slave app address
         },
+        {
+          name: 'slave-mf',
+          entry: 'http://127.0.0.1:8000', // your slave app address
+        },
       ],
     },
     slave: {},
@@ -18,9 +22,14 @@ export default {
   routes: [
     { path: '/', redirect: '/home' },
     { path: '/home', component: 'index' },
+    { path: '/nav', component: 'never' },
     {
       path: '/slave/*',
       microApp: 'slave',
+    },
+    {
+      path: '/slave-mf/*',
+      microApp: 'slave-mf',
     },
     {
       path: '/animal',

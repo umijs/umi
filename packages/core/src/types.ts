@@ -1,4 +1,5 @@
 import joi from '@umijs/utils/compiled/@hapi/joi';
+import zod, { z } from '@umijs/utils/compiled/zod';
 
 export enum Env {
   development = 'development',
@@ -14,7 +15,7 @@ export enum PluginType {
 export interface IPluginConfig {
   default?: any;
   schema?: {
-    (joi: joi.Root): joi.Schema;
+    (joi: joi.Root & { zod: typeof z }): joi.Schema | zod.Schema;
   };
   onChange?: string | Function;
 }
@@ -53,7 +54,7 @@ export enum EnableBy {
 export interface IRoute {
   path: string;
   absPath: string;
-  file: string;
+  file?: string;
   id: string;
   parentId?: string;
   [key: string]: any;
@@ -98,10 +99,10 @@ export interface IAdd<T, U> {
   (args: {
     fn: {
       (args: T): Promise<U | U[]>;
-      name?: string;
-      before?: string | string[];
-      stage?: number;
     };
+    name?: string;
+    before?: string | string[];
+    stage?: number;
   }): void;
 }
 

@@ -1,6 +1,6 @@
 // @ts-nocheck
-import qiankunRender, { contextOptsStack } from './lifecycles';
 import { createHistory } from '@@/core/history';
+import qiankunRender, { contextOptsStack } from './lifecycles';
 
 export function render(oldRender: any) {
   return qiankunRender().then(oldRender);
@@ -11,7 +11,9 @@ export function modifyClientRenderOpts(memo: any) {
   const clientRenderOpts = contextOptsStack.shift();
   const { basename, historyType } = memo;
 
-  const newBasename = clientRenderOpts?.basename || basename;
+  // use ?? instead of ||, incase clientRenderOpts.basename is ''
+  // only break when microApp has a config.base and mount path is /*
+  const newBasename = clientRenderOpts?.basename ?? basename;
   const newHistoryType = clientRenderOpts?.historyType || historyType;
 
   if (newHistoryType !== historyType || newBasename !== basename) {

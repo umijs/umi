@@ -1,9 +1,9 @@
 import type { Options as SwcConfig } from '@swc/core';
 import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
-import webpack, { Configuration } from '../compiled/webpack';
-import Config from '../compiled/webpack-5-chain';
 import type { TransformOptions as EsbuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import type { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import webpack, { Configuration } from '../compiled/webpack';
+import Config from '../compiled/webpack-5-chain';
 
 export enum Env {
   development = 'development',
@@ -87,6 +87,7 @@ export interface IConfig {
   jsMinifier?: `${JSMinifier}`;
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { [key: string]: any };
+  normalCSSLoaderModules?: { [key: string]: any };
   outputPath?: string;
   postcssLoader?: { [key: string]: any };
   proxy?: { [key: string]: ProxyOptions } | ProxyOptions[];
@@ -102,6 +103,8 @@ export interface IConfig {
   writeToDisk?: boolean;
   babelLoaderCustomize?: string;
   analyze?: BundleAnalyzerPlugin.Options;
+  esbuildMinifyIIFE?: boolean;
+  checkDepCssModules?: boolean;
   [key: string]: any;
 }
 

@@ -8,9 +8,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.46"
+    "umi": "workspace:*"
   },
   "devDependencies": {
-    "es-check": "^7.0.0"
+    "es-check": "^7.1.0"
   }
 }

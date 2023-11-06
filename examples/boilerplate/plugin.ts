@@ -30,4 +30,11 @@ export default (api: IApi) => {
     args;
     // console.log('> onCheckCode', args);
   });
+
+  api.addHTMLScripts({
+    async fn() {
+      return [`console.log('async scripts hello world')`];
+    },
+    stage: 100,
+  });
 };

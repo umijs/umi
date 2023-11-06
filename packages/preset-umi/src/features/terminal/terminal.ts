@@ -5,8 +5,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'terminal',
     config: {
-      schema(Joi) {
-        return Joi.object();
+      schema({ zod }) {
+        return zod.object({});
       },
     },
   });
@@ -52,7 +52,7 @@ const terminal = {
   profileEnd(...args: any[]) { console.profileEnd(...args) },
 };
 export { terminal };
-      `.trimLeft(),
+      `.trimStart(),
     });
   });
 

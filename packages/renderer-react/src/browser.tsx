@@ -6,7 +6,6 @@ import React, {
   useState,
 } from 'react';
 // compatible with < react@18 in @umijs/preset-umi/src/features/react
-import { HelmetProvider } from 'react-helmet-async';
 import ReactDOM from 'react-dom/client';
 import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
@@ -50,11 +49,16 @@ function BrowserRoutes(props: {
           location: opts.location,
           action: opts.action,
           basename: props.basename,
+          isFirst: Boolean(opts.isFirst),
         },
       });
     }
-    history.listen(onRouteChange);
-    onRouteChange({ location: state.location, action: state.action });
+    onRouteChange({
+      location: state.location,
+      action: state.action,
+      isFirst: true,
+    });
+    return history.listen(onRouteChange);
   }, [history, props.routes, props.clientRoutes]);
   return (
     <Router
@@ -261,7 +265,11 @@ const getBrowser = (
           // server loader
           // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
           if (!isFirst && opts.routes[id]?.hasServerLoader) {
-            fetch('/__serverLoader?route=' + id)
+            // 在有basename的情况下__serverLoader的请求路径需要加上basename
+            const url = `${withEndSlash(basename)}'__serverLoader?route='${id}`;
+            fetch(url, {
+              credentials: 'include',
+            })
               .then((d) => d.json())
               .then((data) => {
                 // setServerLoaderData when startTransition because if ssr is enabled,
@@ -298,24 +306,22 @@ const getBrowser = (
     }, []);
 
     return (
-      <HelmetProvider context={{}}>
-        <AppContext.Provider
-          value={{
-            routes: opts.routes,
-            routeComponents: opts.routeComponents,
-            clientRoutes,
-            pluginManager: opts.pluginManager,
-            rootElement: opts.rootElement!,
-            basename,
-            clientLoaderData,
-            serverLoaderData,
-            preloadRoute: handleRouteChange,
-            history: opts.history,
-          }}
-        >
-          {rootContainer}
-        </AppContext.Provider>
-      </HelmetProvider>
+      <AppContext.Provider
+        value={{
+          routes: opts.routes,
+          routeComponents: opts.routeComponents,
+          clientRoutes,
+          pluginManager: opts.pluginManager,
+          rootElement: opts.rootElement!,
+          basename,
+          clientLoaderData,
+          serverLoaderData,
+          preloadRoute: handleRouteChange,
+          history: opts.history,
+        }}
+      >
+        {rootContainer}
+      </AppContext.Provider>
     );
   };
   return Browser;
@@ -344,4 +350,8 @@ export function renderClient(opts: RenderClientOpts) {
   }
   // @ts-ignore
   ReactDOM.render(<Browser />, rootElement);
+}
+
+function withEndSlash(str: string) {
+  return str.endsWith('/') ? str : `${str}/`;
 }

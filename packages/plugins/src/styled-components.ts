@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
 import { withTmpPath } from './utils/withTmpPath';
@@ -6,9 +7,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'styledComponents',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          babelPlugin: Joi.object(),
+      schema({ zod }) {
+        return zod.object({
+          babelPlugin: zod.record(zod.any()).optional(),
         });
       },
     },
@@ -37,7 +38,9 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
-import styled, { ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme } from '${libPath}';
+import styled, { ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme } from '${winPath(
+        libPath,
+      )}';
 export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme };
       `,
     });
@@ -52,7 +55,11 @@ export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetMan
       content: `
 ${styledComponentsRuntimeCode}
 export function rootContainer(container) {
-  const globalStyle = styledComponentsConfig.GlobalStyle ? <styledComponentsConfig.GlobalStyle /> : null;
+  const scConfig =
+    typeof styledComponentsConfig === 'function'
+      ? styledComponentsConfig()
+      : styledComponentsConfig;
+  const globalStyle = scConfig.GlobalStyle ? <scConfig.GlobalStyle /> : null;
   return (
     <>
       {globalStyle}

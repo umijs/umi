@@ -4,6 +4,7 @@ export {
   createMemoryHistory,
   type History,
 } from 'history';
+export { Helmet, HelmetProvider } from 'react-helmet-async';
 export {
   createSearchParams,
   generatePath,
@@ -23,11 +24,11 @@ export {
   useRoutes,
   useSearchParams,
 } from 'react-router-dom';
-export { Helmet } from 'react-helmet-async';
 export {
   useAppData,
-  useSelectedRoutes,
   useClientLoaderData,
+  useRouteProps,
+  useSelectedRoutes,
   useServerLoaderData,
 } from './appContext';
 export { renderClient, __getRoot } from './browser';

@@ -25,9 +25,9 @@ export default (api: IApi) => {
       const h = new GeneratorHelper(api);
 
       h.addDevDeps({
-        prettier: '^2',
-        'prettier-plugin-organize-imports': '^2',
-        'prettier-plugin-packagejson': '^2',
+        prettier: '^2.8.8',
+        'prettier-plugin-organize-imports': '^3.2.2',
+        'prettier-plugin-packagejson': '^2.4.3',
       });
 
       // 2、添加 .prettierrc 和 .prettierignore
@@ -42,7 +42,7 @@ export default (api: IApi) => {
   "overrides": [{ "files": ".prettierrc", "options": { "parser": "json" } }],
   "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-packagejson"]
 }
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write .prettierrc');
       writeFileSync(
@@ -51,7 +51,7 @@ export default (api: IApi) => {
 node_modules
 .umi
 .umi-production
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write .prettierignore');
 

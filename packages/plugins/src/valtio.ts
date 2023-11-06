@@ -1,6 +1,6 @@
-import { IApi } from 'umi';
-import { dirname } from 'path';
 import { winPath } from '@umijs/utils';
+import { dirname } from 'path';
+import { IApi } from 'umi';
 
 // TODO:
 // - generator
@@ -11,8 +11,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'valtio',
     config: {
-      schema(joi) {
-        return joi.object();
+      schema({ zod }) {
+        return zod.object({});
       },
     },
     enableBy: api.EnableBy.config,
@@ -39,6 +39,9 @@ export {
   proxySet,
   derive,
   underive,
+  useProxy,
+  ref,
+  watch,
 } from '${libPath}';
       `,
     });

@@ -25,8 +25,8 @@ export async function buildDep(opts: any) {
     if (opts.pkgName === 'mini-css-extract-plugin') {
       resolvePath = 'mini-css-extract-plugin/dist/index';
     }
-    entry = require.resolve(resolvePath, {
-      paths: [nodeModulesPath],
+    entry = resolve.sync(resolvePath, {
+      basedir: nodeModulesPath,
     });
   } else {
     entry = path.join(opts.base, opts.file);
@@ -57,6 +57,34 @@ Object.keys(exported).forEach(function (key) {
       if (opts.file === './bundles/webpack/bundle') {
         delete opts.webpackExternals['webpack'];
       }
+
+      // babel pre rewrite
+      if (opts.file === './bundles/babel/bundle') {
+        // See https://github.com/umijs/umi/issues/10356
+        // The inherited `browserslist` config is dynamic loaded
+        const babelCorePkg = require.resolve('@babel/core/package.json', {
+          paths: [path.join(PATHS.PACKAGES, './bundler-utils')],
+        });
+        // And need overrides a consistent version of `browserslist` in `packages.json#pnpm.overrides`
+        const browserslistPkg = require.resolve('browserslist/package.json', {
+          paths: [path.dirname(babelCorePkg)],
+        });
+        const nodePartFile = path.join(
+          path.dirname(browserslistPkg),
+          'node.js',
+        );
+        const originContent = fs.readFileSync(nodePartFile, 'utf-8');
+        // https://github.com/browserslist/browserslist/blob/fc5fc088c640466df62a6b6c86154b19be3de821/node.js#L176
+        fs.writeFileSync(
+          nodePartFile,
+          originContent.replace(
+            /require\(require\.resolve/g,
+            'eval("require")(require.resolve',
+          ),
+          'utf-8',
+        );
+      }
+
       let { code, assets } = await ncc(entry, {
         externals: opts.webpackExternals,
         minify: !!opts.minify,
@@ -129,15 +157,29 @@ Object.keys(exported).forEach(function (key) {
           'zx',
           '@vitejs/plugin-legacy',
           '@vitejs/plugin-vue',
+          '@clack/prompts',
         ].includes(opts.pkgName)
       ) {
         code = code.replace(/require\("node:/g, 'require("');
       }
+
+      // in production, we have the global all `core-js` polyfill (feature/polyfill.ts)
+      // don't need the polyfill added by vite
+      // https://github.com/vitejs/vite/blob/d953536aae448e2bea0f3a7cb3c0062b16d45597/packages/plugin-legacy/src/index.ts#L257
+      if (opts.pkgName === '@vitejs/plugin-legacy') {
+        code = code.replace(
+          'await detectPolyfills(`Promise.resolve(); Promise.all();`',
+          'await (()=>{})(`Promise.resolve(); Promise.all();`',
+        );
+      }
+
       if (
         code.includes('"node:') &&
         opts.pkgName && // skip local file bundle like babel/bundle.js
         opts.pkgName !== 'stylelint-declaration-block-no-ignored-properties' &&
-        opts.pkgName !== 'vite'
+        opts.pkgName !== 'vite' &&
+        opts.pkgName !== 'https-proxy-agent' &&
+        opts.pkgName !== 'socks-proxy-agent'
       ) {
         throw new Error(`${opts.pkgName} has "node:"`);
       }

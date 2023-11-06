@@ -1,7 +1,7 @@
-import type { ProxyOptions } from './types';
+import assert from 'assert';
 import type { Express } from '../compiled/express';
 import { createProxyMiddleware } from '../compiled/http-proxy-middleware';
-import assert from 'assert';
+import type { ProxyOptions } from './types';
 
 export function createProxy(
   proxy: { [key: string]: ProxyOptions } | ProxyOptions[],
@@ -32,8 +32,8 @@ export function createProxy(
         ...proxy,
         onProxyReq(proxyReq, req: any, res) {
           // add origin in request header
-          if (proxyReq.getHeader('origin')) {
-            proxyReq.setHeader('origin', new URL(proxy.target!)?.href || '');
+          if (proxy.changeOrigin && proxyReq.getHeader('origin')) {
+            proxyReq.setHeader('origin', new URL(proxy.target!)?.origin || '');
           }
           proxy.onProxyReq?.(proxyReq, req, res, proxy);
         },

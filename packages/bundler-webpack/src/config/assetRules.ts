@@ -12,7 +12,7 @@ interface IOpts {
 export async function addAssetRules(opts: IOpts) {
   const { config, userConfig } = opts;
 
-  const inlineLimit = parseInt(userConfig.inlineLimit || '10000', 10);
+  const inlineLimit = userConfig.inlineLimit;
   const rule = config.module.rule('asset');
 
   rule
@@ -40,7 +40,7 @@ export async function addAssetRules(opts: IOpts) {
     .oneOf('fallback')
     .exclude.add(/^$/) /* handle data: resources */
     .add(/\.(js|mjs|cjs|jsx|ts|tsx)$/)
-    .add(/\.(css|less|sass|scss|stylus)$/)
+    .add(/\.(css|less|sass|scss|styl|stylus)$/)
     .add(/\.html$/)
     .add(/\.json$/);
   if (userConfig.mdx) {

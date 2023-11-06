@@ -87,8 +87,11 @@ function createRoutePath(routeId: string): string {
     // routes/not.nested -> routes/not/nested
     .replace(/\./g, '/');
 
-  // /index/index -> ''
-  path = /\b\/?index\/index$/.test(path) ? path.replace(/\/?index$/, '') : path;
+  // only replace two `index` in the end of path
+  // /index/index -> '/index'
+  // index/index -> 'index'
+  // a-index/index -> 'a-index/index'
+  path = /(^|\/)index\/index$/.test(path) ? path.replace(/\/index$/, '') : path;
   // /(?<!:)\/?\bindex$/
   // e/index true
   // index true

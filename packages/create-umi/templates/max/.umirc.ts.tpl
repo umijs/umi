@@ -25,9 +25,9 @@ export default defineConfig({
       component: './Access',
     },
     {
-        name: ' CRUD 示例',
-        path: '/table',
-        component: './Table',
+      name: ' CRUD 示例',
+      path: '/table',
+      component: './Table',
     },
   ],
   npmClient: '{{{ npmClient }}}',

@@ -50,7 +50,7 @@ export default (api: IApi) => {
         'jest-environment-jsdom': jestMajorVersion,
         // RTL
         '@testing-library/jest-dom': '^5',
-        '@testing-library/react': '^13',
+        '@testing-library/react': '^14',
       };
       const packageToInstall: Record<string, string> = res.willUseTLR
         ? {
@@ -125,7 +125,7 @@ ${collectCoverageFrom.map((v) => `        '${v}'`).join(',\n')}
     throw e;
   }
 };
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write jest.config.ts');
 

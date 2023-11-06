@@ -22,15 +22,14 @@ export default (api: IApi) => {
   api.describe({
     key: 'analytics',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            baidu: Joi.string(),
-            ga: Joi.string(),
-            ga_v2: Joi.string(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod
+          .object({
+            baidu: zod.string(),
+            ga: zod.string(),
+            ga_v2: zod.string(),
+          })
+          .partial();
       },
       onChange: api.ConfigChangeType.reload,
     },

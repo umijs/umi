@@ -1,6 +1,7 @@
-import { createHashHistory, createMemoryHistory, createBrowserHistory, History } from '{{{ historyPath }}}';
+import { createHashHistory, createMemoryHistory, createBrowserHistory } from '{{{ historyPath }}}';
+import type { UmiHistory } from './historyIntelli';
 
-let history: History;
+let history: UmiHistory;
 let basename: string = '/';
 export function createHistory(opts: any) {
   let h;
@@ -14,6 +15,12 @@ export function createHistory(opts: any) {
   if (opts.basename) {
     basename = opts.basename;
   }
+
+{{#reactRouter5Compat}}
+  h.goBack = function() {
+    h.back();
+  };
+{{/reactRouter5Compat}}
 
   history = {
     ...h,

@@ -4,7 +4,8 @@ import {
   JSMinifier,
   Transpiler,
 } from '@umijs/bundler-webpack/dist/types';
-import { chalk, lodash, logger } from '@umijs/utils';
+import { chalk, crossSpawn, lodash, logger, resolve } from '@umijs/utils';
+import { join } from 'path';
 import type { IApi } from '../../types';
 
 type WebpackChainFunc = Parameters<IApi['chainWebpack']>[0];
@@ -18,15 +19,53 @@ export default (api: IApi) => {
   api.describe({
     key: 'legacy',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          buildOnly: Joi.boolean(),
-          nodeModulesTransform: Joi.boolean(),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            buildOnly: zod.boolean(),
+            nodeModulesTransform: zod.boolean(),
+            checkOutput: zod.boolean(),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,
   });
+
+  const legacyModeLabel = chalk.bold.bgBlue(' LEGACY MODE ');
+  const pluginConfig = api.config.legacy || api.userConfig.legacy || {};
+  const enableEsCheck = pluginConfig?.checkOutput;
+  if (api.env === Env.production && enableEsCheck) {
+    api.addOnDemandDeps(() => {
+      return [
+        {
+          name: 'es-check',
+          version: '^7.1.0',
+          reason: 'es-check is used to check output files in legacy mode',
+        },
+      ];
+    });
+    api.onBuildComplete(({ err }) => {
+      if (err) {
+        return;
+      }
+      const cwd = api.cwd;
+      const scriptPath = resolve.sync('es-check', { basedir: cwd });
+      logger.info(
+        `${legacyModeLabel} Start checking output ${chalk.cyan(
+          '.js',
+        )} files with ${chalk.cyan('es-check')}...`,
+      );
+      crossSpawn(
+        scriptPath,
+        ['es5', join(api.paths.absOutputPath, '**/*.js')],
+        {
+          stdio: 'inherit',
+          cwd,
+        },
+      );
+    });
+  }
 
   api.modifyConfig({
     stage: Number.MAX_SAFE_INTEGER,
@@ -34,7 +73,7 @@ export default (api: IApi) => {
       const { userConfig } = api;
       // compatible use plugin config scene
       const { buildOnly = true, nodeModulesTransform = true }: ILegacyOpts =
-        api.config.legacy || userConfig.legacy || {};
+        pluginConfig;
 
       if (api.env === Env.development) {
         if (buildOnly) {
@@ -43,7 +82,7 @@ export default (api: IApi) => {
         // mfsu is using top level await, we should close it
         memo.mfsu = false;
         logger.warn(
-          `mfsu is not supported in ${chalk.cyan(
+          `${legacyModeLabel} mfsu is not supported in ${chalk.cyan(
             'legacy',
           )} mode, we automatically close mfsu`,
         );
@@ -55,7 +94,7 @@ export default (api: IApi) => {
         userConfig.cssMinifier
       ) {
         logger.fatal(
-          `Manual configuration of ${[
+          `${legacyModeLabel} Manual configuration of ${[
             'srcTranspiler',
             'jsMinifier',
             'cssMinifier',
@@ -98,10 +137,8 @@ export default (api: IApi) => {
         ie: 11,
       };
 
-      logger.ready(
-        `${chalk.cyan(
-          'legacy',
-        )} mode is enabled, we automatically modify the ${[
+      logger.info(
+        `${legacyModeLabel} is enabled, we automatically modify the ${[
           'srcTranspiler',
           'jsMinifier',
           'cssMinifier',
@@ -160,7 +197,7 @@ export default (api: IApi) => {
             externalsType
           ) {
             logger.warn(
-              `Legacy browsers do not support ${chalk.yellow(
+              `${legacyModeLabel} Legacy browsers do not support ${chalk.yellow(
                 'Top level await',
               )}, ensure you are not using both ${chalk.bold.red(
                 `Top level sync import`,
@@ -185,7 +222,9 @@ function useBabelTransformSvgr(memo: WebpackChainConfig, api: IApi) {
     .options({
       sourceType: 'unambiguous',
       babelrc: false,
+      configFile: false,
       cacheDirectory: false,
+      browserslistConfigFile: false,
       targets: api.config.targets,
       presets: [
         [

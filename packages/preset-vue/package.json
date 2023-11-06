@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-vue",
-  "version": "4.0.46",
+  "version": "4.0.87",
   "description": "@umijs/preset-vue",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-vue#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -22,14 +22,16 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@umijs/renderer-vue": "4.0.46",
+    "@umijs/renderer-vue": "workspace:*",
+    "@vitejs/plugin-vue-jsx": "3.0.1",
+    "@vue/babel-plugin-jsx": "1.1.1",
     "vue": "3.2.45",
     "vue-loader": "17.0.1",
     "vue-router": "4.1.6"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "2.3.1",
-    "umi": "4.0.46"
+    "@vitejs/plugin-vue": "4.1.0",
+    "umi": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

@@ -9,9 +9,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'run',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          globals: Joi.array().items(Joi.string()),
+      schema({ zod }) {
+        return zod.object({
+          globals: zod.array(zod.string()).optional(),
         });
       },
     },
@@ -19,6 +19,8 @@ export default (api: IApi) => {
 
   api.registerCommand({
     name: 'run',
+    description: 'run the script commands, support for ts and zx',
+    configResolveMode: 'loose',
     fn: ({ args }) => {
       const globals: string[] = api.config.run?.globals || [];
       const [scriptFilePath, ...restArgs] = args._;

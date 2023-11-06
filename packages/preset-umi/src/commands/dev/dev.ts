@@ -8,12 +8,14 @@ import {
   rimraf,
   winPath,
 } from '@umijs/utils';
-import { existsSync, readFileSync, readdirSync } from 'fs';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
-import type { IApi, GenerateFilesFn, OnConfigChangeFn } from '../../types';
+import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
+import type { GenerateFilesFn, IApi } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
+import { getProjectFileList } from '../../utils/projectFileList';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
 import { getBabelOpts } from './getBabelOpts';
@@ -27,7 +29,6 @@ import {
   unwatch,
   watch,
 } from './watch';
-import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
@@ -112,6 +113,7 @@ PORT=8888 umi dev
           ...expandJSPaths(join(absSrcPath, 'app')),
           ...expandJSPaths(join(absSrcPath, 'global')),
           ...expandCSSPaths(join(absSrcPath, 'global')),
+          ...expandCSSPaths(join(absSrcPath, 'overrides')),
         ].filter(Boolean),
       });
       lodash.uniq<string>(watcherPaths.map(winPath)).forEach((p: string) => {
@@ -191,7 +193,7 @@ PORT=8888 umi dev
               await generate({ isFirstTime: false });
             }
             for await (const fn of data.fns) {
-              await (fn as OnConfigChangeFn)({ generate });
+              await fn();
             }
           },
         }),
@@ -309,7 +311,14 @@ PORT=8888 umi dev
             'mfsu_v4',
           ),
         });
-        await srcCodeCache!.init();
+
+        if (api.appData.framework === 'vue') {
+          await srcCodeCache!.initWithScan();
+        } else {
+          const files = getProjectFileList(api);
+          await srcCodeCache!.init(files);
+        }
+
         addUnWatch(() => {
           srcCodeCache!.unwatch();
         });
@@ -415,6 +424,10 @@ PORT=8888 umi dev
 
       if (enableVite) {
         await bundlerVite.dev(opts);
+      } else if (process.env.OKAM) {
+        require('@umijs/bundler-webpack/dist/requireHook');
+        const { dev } = require(process.env.OKAM);
+        await dev(opts);
       } else {
         await bundlerWebpack.dev(opts);
       }

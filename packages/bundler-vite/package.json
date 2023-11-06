@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-vite",
-  "version": "4.0.46",
+  "version": "4.0.87",
   "description": "@umijs/bundler-vite",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-vite#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -25,21 +25,23 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@svgr/core": "6.2.1",
-    "@umijs/bundler-utils": "4.0.46",
-    "@umijs/utils": "4.0.46",
-    "@vitejs/plugin-react": "2.2.0",
+    "@svgr/core": "6.5.1",
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/utils": "workspace:*",
+    "@vitejs/plugin-react": "4.0.0",
+    "core-js": "3.28.0",
     "less": "4.1.3",
     "postcss-preset-env": "7.5.0",
     "rollup-plugin-visualizer": "5.9.0",
-    "vite": "3.2.5"
+    "systemjs": "^6.14.1",
+    "vite": "4.3.1"
   },
   "devDependencies": {
     "@types/caniuse-lite": "1.0.1",
     "@types/svgo": "3.0.0",
-    "@vitejs/plugin-legacy": "2.3.1",
+    "@vitejs/plugin-legacy": "4.1.1",
     "caniuse-lite": "1.0.30001441",
-    "rollup": "2.79.1",
+    "rollup": "3.7.0",
     "rollup-plugin-copy": "3.4.0"
   },
   "publishConfig": {
@@ -61,7 +63,9 @@
       "glob": "@umijs/utils/compiled/glob",
       "less": "@umijs/bundler-utils/compiled/less",
       "resolve": "@umijs/utils/compiled/resolve",
-      "vite": "vite"
+      "vite": "vite",
+      "@babel/core": "@umijs/bundler-utils/compiled/babel/core",
+      "@babel/preset-env": "@umijs/bundler-utils/compiled/babel/preset-env"
     },
     "extraDtsDeps": [
       "vite"

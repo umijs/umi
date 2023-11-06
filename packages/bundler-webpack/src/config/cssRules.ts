@@ -35,7 +35,15 @@ export async function addCSSRules(opts: IOpts) {
       loader: require.resolve('@umijs/bundler-webpack/compiled/sass-loader'),
       loaderOptions: userConfig.sassLoader || {},
     },
+    {
+      name: 'stylus',
+      test: /\.(styl|stylus)(\?.*)?$/,
+      loader: require.resolve('@umijs/bundler-webpack/compiled/stylus-loader'),
+      loaderOptions: userConfig.stylusLoader || {},
+    },
   ];
+
+  const cssPublicPath = userConfig.cssPublicPath || './';
 
   for (const { name, test, loader, loaderOptions } of rulesConfig) {
     const rule = config.module.rule(name);
@@ -45,15 +53,15 @@ export async function addCSSRules(opts: IOpts) {
           .test(test)
           .oneOf('css-modules')
           .resourceQuery(/modules/),
-        isCSSModules: true,
+        isAutoCSSModuleRule: true,
       },
       {
         rule: rule.test(test).oneOf('css').sideEffects(true),
-        isCSSModules: false,
+        isAutoCSSModuleRule: false,
       },
     ].filter(Boolean);
     // @ts-ignore
-    for (const { rule, isCSSModules } of nestRulesConfig) {
+    for (const { rule, isAutoCSSModuleRule } of nestRulesConfig) {
       if (userConfig.styleLoader) {
         rule
           .use('style-loader')
@@ -70,10 +78,35 @@ export async function addCSSRules(opts: IOpts) {
             ),
           )
           .options({
-            publicPath: './',
+            publicPath: cssPublicPath,
             emit: true,
             esModule: true,
           });
+      }
+
+      // If SSR with bundler esbuild is enabled, we need to handling the css modules name hashing
+      // and save the class names mapping into opts.cssModulesMapping
+      // so the esbuild can use it to generate the correct name for the server side
+      const getLocalIdent =
+        userConfig.ssr && userConfig.ssr.compiler === 'esbuild'
+          ? getLocalIdentForSSR
+          : undefined;
+      const localIdentName = '[local]___[hash:base64:5]';
+
+      let cssLoaderModulesConfig: any;
+      if (isAutoCSSModuleRule) {
+        cssLoaderModulesConfig = {
+          localIdentName,
+          ...userConfig.cssLoaderModules,
+          getLocalIdent,
+        };
+      } else if (userConfig.normalCSSLoaderModules) {
+        cssLoaderModulesConfig = {
+          localIdentName,
+          auto: true,
+          ...userConfig.normalCSSLoaderModules,
+          getLocalIdent,
+        };
       }
 
       rule
@@ -91,42 +124,7 @@ export async function addCSSRules(opts: IOpts) {
             },
           },
           import: true,
-          ...(isCSSModules
-            ? {
-                modules: {
-                  localIdentName: '[local]___[hash:base64:5]',
-                  ...userConfig.cssLoaderModules,
-                  // If SSR is enabled, we need to handling the css modules name hashing
-                  // and save the class names mapping into opts.cssModulesMapping
-                  // so the esbuild can use it to generate the correct name for the server side
-                  getLocalIdent:
-                    userConfig.ssr &&
-                    ((
-                      context: LoaderContext,
-                      localIdentName: string,
-                      localName: string,
-                      opt: any,
-                    ) => {
-                      const classIdent = (
-                        winPath(context.resourcePath).replace(
-                          winPath(ensureLastSlash(opt.context)),
-                          '',
-                        ) +
-                        '@' +
-                        localName
-                      ).trim();
-                      let hash = Buffer.from(classIdent)
-                        .toString('base64')
-                        .replace(/=/g, '');
-                      hash = hash.substring(hash.length - 5);
-                      const result = localIdentName
-                        .replace(/\[local]/g, localName)
-                        .replace(/\[hash[^\[]*?]/g, hash);
-                      return result;
-                    }),
-                },
-              }
-            : {}),
+          modules: cssLoaderModulesConfig,
           ...userConfig.cssLoader,
         });
 
@@ -155,8 +153,8 @@ export async function addCSSRules(opts: IOpts) {
 
       if (loader) {
         rule
-          .use(loader)
-          .loader(typeof loader === 'string' ? require.resolve(loader) : loader)
+          .use(`${name}-loader`)
+          .loader(loader)
           .options(loaderOptions || {});
       }
     }
@@ -165,4 +163,26 @@ export async function addCSSRules(opts: IOpts) {
 
 function ensureLastSlash(path: string) {
   return path.endsWith('/') ? path : path + '/';
+}
+
+function getLocalIdentForSSR(
+  context: LoaderContext,
+  localIdentName: string,
+  localName: string,
+  opt: any,
+) {
+  const classIdent = (
+    winPath(context.resourcePath).replace(
+      winPath(ensureLastSlash(opt.context)),
+      '',
+    ) +
+    '@' +
+    localName
+  ).trim();
+  let hash = Buffer.from(classIdent).toString('base64').replace(/=/g, '');
+  hash = hash.substring(hash.length - 5);
+  const result = localIdentName
+    .replace(/\[local]/g, localName)
+    .replace(/\[hash[^\[]*?]/g, hash);
+  return result;
 }

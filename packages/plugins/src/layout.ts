@@ -1,10 +1,31 @@
-import * as allIcons from '@ant-design/icons';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { lodash, Mustache, NpmClientEnum, winPath } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
+
+// 获取所有 icons
+const antIconsPath = winPath(
+  dirname(require.resolve('@ant-design/icons/package')),
+);
+
+const getAllIcons = () => {
+  // 读取 index.d.ts
+  const iconTypePath = join(antIconsPath, './lib/icons/index.d.ts');
+  const iconTypeContent = readFileSync(iconTypePath, 'utf-8');
+
+  // 截取 default as ${iconName}, 然后获取 iconName 转换为 map
+  return [...iconTypeContent.matchAll(/default as (\w+)/g)].reduce(
+    (memo: Record<string, boolean>, cur) => {
+      memo[cur[1]] = true;
+      return memo;
+    },
+    {},
+  );
+};
+
+const ANT_PRO_COMPONENT = '@ant-design/pro-components';
 
 export default (api: IApi) => {
   let antdVersion = '4.0.0';
@@ -17,15 +38,14 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+  const isAntd5 = antdVersion.startsWith('5');
+  const layoutFile = isAntd5 ? 'Layout.css' : 'Layout.less';
 
   api.describe({
     key: 'layout',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object(),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.record(zod.any());
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
@@ -37,7 +57,7 @@ export default (api: IApi) => {
    */
   const depList = [
     '@alipay/tech-ui',
-    '@ant-design/pro-components',
+    ANT_PRO_COMPONENT,
     '@ant-design/pro-layout',
   ];
 
@@ -67,10 +87,11 @@ export default (api: IApi) => {
       return join(cwd, 'node_modules', pkgHasDep);
     }
     // 如果项目中没有去找插件依赖的
-    return dirname(require.resolve('@ant-design/pro-components/package.json'));
+    return dirname(require.resolve(`${ANT_PRO_COMPONENT}/package.json`));
   };
 
   const pkgPath = winPath(getPkgPath());
+  const resolvedPkgPath = pkgPath || ANT_PRO_COMPONENT;
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;
@@ -93,9 +114,19 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
-    const PKG_TYPE_REFERENCE = `/// <reference types="${
-      pkgPath || '@ant-design/pro-components'
-    }" />`;
+    // use absolute path to types references in `npm/yarn` will cause case problems.
+    // https://github.com/umijs/umi/discussions/10947
+    // https://github.com/umijs/umi/discussions/11570
+    const isFlattedDepsDir = [NpmClientEnum.npm, NpmClientEnum.yarn].includes(
+      api.appData.npmClient,
+    );
+    const PKG_TYPE_REFERENCE = `
+/// <reference types="${
+      isFlattedDepsDir ? ANT_PRO_COMPONENT : resolvedPkgPath
+    }" />
+${isFlattedDepsDir ? '/// <reference types="antd" />' : ''}
+`.trimStart();
+
     const hasInitialStatePlugin = api.config.initialState;
     // Layout.tsx
     api.writeTmpFile({
@@ -107,8 +138,8 @@ import type { IRoute } from 'umi';
 import React, { useMemo } from 'react';
 import {
   ProLayout,
-} from "${pkgPath || '@ant-design/pro-components'}";
-import './Layout.less';
+} from "${resolvedPkgPath}";
+import './${layoutFile}';
 import Logo from './Logo';
 import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
@@ -245,7 +276,17 @@ const { formatMessage } = useIntl();
         }
         return defaultDom;
       }}
-      itemRender={(route) => <Link to={route.path}>{route.breadcrumbName}</Link>}
+      itemRender={(route, _, routes) => {
+        const { breadcrumbName, title, path } = route;
+        const label = title || breadcrumbName
+        const last = routes[routes.length - 1]
+        if (last) {
+          if (last.path === path || last.linkPath === path) {
+            return <span>{label}</span>;
+          }
+        }
+        return <Link to={path}>{label}</Link>;
+      }}
       disableContentMargin
       fixSiderbar
       fixedHeader
@@ -300,9 +341,7 @@ const { formatMessage } = useIntl();
       path: 'types.d.ts',
       content: `
     ${PKG_TYPE_REFERENCE}
-    import type { ProLayoutProps, HeaderProps } from "${
-      pkgPath || '@ant-design/pro-components'
-    }";
+    import type { ProLayoutProps, HeaderProps } from "${resolvedPkgPath}";
     ${
       hasInitialStatePlugin
         ? `import type InitialStateType from '@@/plugin-initialState/@@initialState';
@@ -321,7 +360,7 @@ const { formatMessage } = useIntl();
       unAccessible?: JSX.Element;
       noFound?: JSX.Element;
       logout?: (initialState: InitDataType['initialState']) => Promise<void> | void;
-      rightContentRender?: (
+      rightContentRender?: ((
         headerProps: HeaderProps,
         dom: JSX.Element,
         props: {
@@ -331,7 +370,7 @@ const { formatMessage } = useIntl();
           initialState: InitDataType['initialState'];
           setInitialState: InitDataType['setInitialState'];
         },
-      ) => JSX.Element;
+      ) => JSX.Element) | false;
       rightRender?: (
         initialState: InitDataType['initialState'],
         setInitialState: InitDataType['setInitialState'],
@@ -349,6 +388,7 @@ export interface IRuntimeConfig {
 }
       `,
     });
+    const allIcons: Record<string, boolean> = getAllIcons();
     const iconsMap = Object.keys(api.appData.routes).reduce<
       Record<string, boolean>
     >((memo, id) => {
@@ -367,9 +407,6 @@ export interface IRuntimeConfig {
       return memo;
     }, {});
     const icons = Object.keys(iconsMap);
-    const antIconsPath = winPath(
-      dirname(require.resolve('@ant-design/icons/package')),
-    );
     api.writeTmpFile({
       path: 'icons.tsx',
       content: `
@@ -414,7 +451,7 @@ export function patchRoutes({ routes }) {
     const rightRenderContent = `
 import React from 'react';
 import { Avatar, version, Dropdown, Menu, Spin } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from '${antIconsPath}';
 {{#Locale}}
 import { SelectLang } from '@@/plugin-locale';
 {{/Locale}}
@@ -433,7 +470,6 @@ export function getRightRenderContent (opts: {
     );
   }
 
- 
 
   const avatar = (
     <span className="umi-plugin-layout-action">
@@ -476,12 +512,26 @@ export function getRightRenderContent (opts: {
       },
     ],
   };
-  
   // antd@5 和  4.24 之后推荐使用 menu，性能更好
-  const dropdownProps =
-    version.startsWith("5.") || version.startsWith("4.24.")
-      ? { menu: langMenu }
-      : { overlay: <Menu {...langMenu} /> };  
+  let dropdownProps;
+  if (version.startsWith("5.") || version.startsWith("4.24.")) {
+    dropdownProps = { menu: langMenu };
+  } else if (version.startsWith("3.")) {
+    dropdownProps = {
+      overlay: (
+        <Menu>
+          {langMenu.items.map((item) => (
+            <Menu.Item key={item.key} onClick={item.onClick}>
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu>
+      ),
+    };
+  } else { // 需要 antd 4.20.0 以上版本
+    dropdownProps = { overlay: <Menu {...langMenu} /> };
+  }
+
 
   return (
     <div className="umi-plugin-layout-right anticon">
@@ -512,16 +562,14 @@ export function getRightRenderContent (opts: {
 
     // Layout.less
     api.writeTmpFile({
-      path: 'Layout.less',
+      path: layoutFile,
       content: `
 ${
   // antd@5里面没有这个样式了
-  antdVersion.startsWith('5')
-    ? ''
-    : "@import '~antd/es/style/themes/default.less';"
+  isAntd5 ? '' : "@import '~antd/es/style/themes/default.less';"
 }
 @media screen and (max-width: 480px) {
-  // 在小屏幕的时候可以有更好的体验
+  /* 在小屏幕的时候可以有更好的体验 */
   .umi-plugin-layout-container {
     width: 100% !important;
   }
@@ -529,13 +577,11 @@ ${
     border-radius: 0 !important;
   }
 }
-.umi-plugin-layout-menu {
-  .anticon {
-    margin-right: 8px;
-  }
-  .ant-dropdown-menu-item {
-    min-width: 160px;
-  }
+.umi-plugin-layout-menu .anticon {
+  margin-right: 8px;
+}
+.umi-plugin-layout-menu .ant-dropdown-menu-item {
+  min-width: 160px;
 }
 .umi-plugin-layout-right {
   display: flex !important;
@@ -543,30 +589,30 @@ ${
   height: 100%;
   margin-left: auto;
   overflow: hidden;
-  .umi-plugin-layout-action {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-    > i {
-      color: rgba(255, 255, 255, 0.85);
-      vertical-align: middle;
-    }
-    &:hover {
-      background: rgba(0, 0, 0, 0.025);
-    }
-    &:global(.opened) {
-      background: rgba(0, 0, 0, 0.025);
-    }
-  }
-  .umi-plugin-layout-search {
-    padding: 0 12px;
-    &:hover {
-      background: transparent;
-    }
-  }
+}
+.umi-plugin-layout-right .umi-plugin-layout-action {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.umi-plugin-layout-right .umi-plugin-layout-action > i {
+  color: rgba(255, 255, 255, 0.85);
+  vertical-align: middle;
+}
+.umi-plugin-layout-right .umi-plugin-layout-action:hover {
+  background: rgba(0, 0, 0, 0.025);
+}
+.umi-plugin-layout-right .umi-plugin-layout-action.opened {
+  background: rgba(0, 0, 0, 0.025);
+}
+.umi-plugin-layout-right .umi-plugin-layout-search {
+  padding: 0 12px;
+}
+.umi-plugin-layout-right .umi-plugin-layout-search:hover {
+  background: transparent;
 }
 .umi-plugin-layout-name {
   margin-left: 8px;

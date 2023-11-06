@@ -3,7 +3,7 @@ import {
   getConfigRoutes,
   getConventionRoutes,
 } from '@umijs/core';
-import { lodash, resolve, tryPaths, winPath, isMonorepo } from '@umijs/utils';
+import { isMonorepo, lodash, resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
@@ -86,54 +86,16 @@ export async function getRoutes(opts: {
     }
   }
 
-  for (const id of Object.keys(routes)) {
-    if (routes[id].file) {
-      // TODO: cache for performance
-      let file = routes[id].file;
-      const basedir =
-        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath;
-
-      if (!isAbsolute(file)) {
-        if (file.startsWith('@/')) {
-          file = file.replace('@/', '../');
-        }
-        file = resolve.sync(localPath(file), {
-          basedir,
-          extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
-        });
-      }
-
-      const isJSFile = /.[jt]sx?$/.test(file);
-      routes[id].__content = readFileSync(file, 'utf-8');
-      routes[id].__absFile = winPath(file);
-      routes[id].__isJSFile = isJSFile;
-      if (opts.api.config.ssr || opts.api.config.clientLoader) {
-        routes[id].__exports =
-          isJSFile && existsSync(file)
-            ? await getModuleExports({
-                file,
-              })
-            : [];
-      }
-      if (opts.api.config.ssr) {
-        routes[id].hasServerLoader =
-          routes[id].__exports.includes('serverLoader');
-      }
-      if (opts.api.config.clientLoader) {
-        routes[id].__hasClientLoader =
-          routes[id].__exports.includes('clientLoader');
-        routes[id].clientLoader = `clientLoaders['${id}']`;
-      }
-    }
-  }
-
   // layout routes
-  const absLayoutPath = tryPaths([
-    join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
-    join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
-    join(opts.api.paths.absSrcPath, 'layouts/index.jsx'),
-    join(opts.api.paths.absSrcPath, 'layouts/index.js'),
-  ]);
+  const absLayoutPath =
+    opts.api.config?.conventionLayout === false
+      ? false
+      : tryPaths([
+          join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.jsx'),
+          join(opts.api.paths.absSrcPath, 'layouts/index.js'),
+        ]);
 
   const layouts = await opts.api.applyPlugins({
     key: 'addLayouts',
@@ -161,6 +123,57 @@ export async function getRoutes(opts: {
       routes,
       test: layout.test,
     });
+  }
+
+  // collect ssr info
+  for (const id of Object.keys(routes)) {
+    if (routes[id].file) {
+      // TODO: cache for performance
+      let file = routes[id].file;
+      const basedir =
+        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath;
+
+      if (!isAbsolute(file)) {
+        if (file.startsWith('@/')) {
+          file = file.replace('@/', '../');
+        }
+        file = resolve.sync(localPath(file), {
+          basedir,
+          extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
+        });
+      }
+
+      const isJSFile = /.[jt]sx?$/.test(file);
+      // layout route 这里不需要这些属性
+      if (!routes[id].isLayout) {
+        routes[id].__content = readFileSync(file, 'utf-8');
+        routes[id].__isJSFile = isJSFile;
+      }
+      routes[id].__absFile = winPath(file);
+
+      const enableSSR = opts.api.config.ssr;
+      const enableClientLoader = opts.api.config.clientLoader;
+      const enableRouteProps = !opts.api.userConfig.routes;
+      const needCollectExports =
+        enableSSR || enableClientLoader || enableRouteProps;
+      if (needCollectExports) {
+        const exports =
+          isJSFile && existsSync(file)
+            ? await getModuleExports({
+                file,
+              })
+            : [];
+        if (enableSSR) {
+          routes[id].hasServerLoader = exports.includes('serverLoader');
+        }
+        if (enableClientLoader && exports.includes('clientLoader')) {
+          routes[id].clientLoader = `clientLoaders['${id}']`;
+        }
+        if (enableRouteProps && exports.includes('routeProps')) {
+          routes[id].routeProps = `routeProps['${id}']`;
+        }
+      }
+    }
   }
 
   // patch routes
@@ -231,6 +244,14 @@ export async function getRouteComponents(opts: {
         return `'${key}': require('${winPath(path)}').default,`;
       }
 
+      // ref: https://github.com/umijs/umi/issues/11466
+      if (opts.api.config.routeLoader?.moduleType === 'cjs') {
+        return useSuspense
+          ? `'${key}': React.lazy(() => Promise.resolve(require('${winPath(
+              path,
+            )}'))),`
+          : `'${key}': () => Promise.resolve(require('${winPath(path)}')),`;
+      }
       return useSuspense
         ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${webpackChunkName}" */'${winPath(
             path,
@@ -294,9 +315,15 @@ export function componentToChunkName(
           ),
           '',
         )
+        // 丢弃 .pnpm 下的多层 node_modules 避免 chunkName 过长
+        // ex. node_modules/.pnpm/dumi@2.1.19_xxxx/node_modules/dumi/dist/client/pages/404
+        .replace(/.+(node_modules(\/|\\))/, '$1')
+        // 丢弃 tnpm 目录下的软链结构避免 chunkName 过长
+        // ex. node_modules/_@umijs_utils@4.0.83@@umijs/utils/dist/index.js
+        .replace(/(\/|\\)_@?([^@]+@){2}/, '$1')
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
-        // 转换 tnpm node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
+        // 转换 node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
         .replace(/@/g, '_')
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')

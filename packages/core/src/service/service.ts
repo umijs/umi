@@ -1,8 +1,9 @@
+import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
 import {
   AsyncSeriesWaterfallHook,
   SyncWaterfallHook,
 } from '@umijs/bundler-utils/compiled/tapable';
-import { chalk, lodash, yParser, fastestLevenshtein } from '@umijs/utils';
+import { chalk, fastestLevenshtein, lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
@@ -26,6 +27,7 @@ import { Hook } from './hook';
 import { getPaths } from './path';
 import { Plugin } from './plugin';
 import { PluginAPI } from './pluginAPI';
+import { noopStorage, Telemetry } from './telemetry';
 
 interface IOpts {
   cwd: string;
@@ -49,6 +51,13 @@ export class Service {
       }
     >;
     framework?: IFrameworkType;
+    prepare?: {
+      buildResult: BuildResult;
+      fileImports?: Record<string, Declaration[]>;
+    };
+    mpa?: {
+      entry?: { [key: string]: string }[];
+    };
     [key: string]: any;
   } = {};
   args: yParser.Arguments = { _: [], $0: '' };
@@ -87,6 +96,7 @@ export class Service {
     [key: string]: any;
   } = {};
   pkgPath: string = '';
+  telemetry = new Telemetry();
 
   constructor(opts: IOpts) {
     this.cwd = opts.cwd;
@@ -263,7 +273,7 @@ export class Service {
     this.pkg = pkg;
     this.pkgPath = pkgPath || join(this.cwd, 'package.json');
 
-    const prefix = this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME;
+    const prefix = this.frameworkName;
     const specifiedEnv = process.env[`${prefix}_ENV`.toUpperCase()];
     // https://github.com/umijs/umi/pull/9105
     // assert(
@@ -335,7 +345,7 @@ export class Service {
     }
     // setup api.config from modifyConfig and modifyDefaultConfig
     this.stage = ServiceStage.resolveConfig;
-    const { config, defaultConfig } = await this.resolveConfig();
+    const { defaultConfig } = await this.resolveConfig();
     if (this.config.outputPath) {
       this.paths.absOutputPath = isAbsolute(this.config.outputPath)
         ? this.config.outputPath
@@ -345,6 +355,13 @@ export class Service {
       key: 'modifyPaths',
       initialValue: this.paths,
     });
+
+    const storage = await this.applyPlugins({
+      key: 'modifyTelemetryStorage',
+      initialValue: noopStorage,
+    });
+
+    this.telemetry.useStorage(storage);
     // applyPlugin collect app data
     // TODO: some data is mutable
     this.stage = ServiceStage.collectAppData;
@@ -355,14 +372,14 @@ export class Service {
         cwd: this.cwd,
         pkg,
         pkgPath,
-        plugins,
+        plugins: this.plugins,
         presets,
         name,
         args,
         // config
         userConfig: this.userConfig,
         mainConfigFile: configManager.mainConfigFile,
-        config,
+        config: this.config,
         defaultConfig: defaultConfig,
         // TODO
         // moduleGraph,
@@ -390,7 +407,7 @@ export class Service {
     // run command
     this.stage = ServiceStage.runCommand;
     let ret = await command.fn({ args });
-    this._baconPlugins();
+    this._profilePlugins();
     return ret;
   }
 
@@ -399,7 +416,7 @@ export class Service {
     const paths = getPaths({
       cwd: this.cwd,
       env: this.env,
-      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
+      prefix: this.frameworkName,
     });
     return paths;
   }
@@ -436,14 +453,59 @@ export class Service {
     return { config, defaultConfig };
   }
 
-  _baconPlugins() {
-    // TODO: prettier
-    if (this.args.baconPlugins) {
+  _profilePlugins() {
+    if (this.args.profilePlugins) {
       console.log();
-      for (const id of Object.keys(this.plugins)) {
-        const plugin = this.plugins[id];
-        console.log(chalk.green('plugin'), plugin.id, plugin.time);
-      }
+      Object.keys(this.plugins)
+        .map((id) => {
+          const plugin = this.plugins[id];
+          const total = totalTime(plugin);
+          return {
+            id,
+            total,
+            register: plugin.time.register || 0,
+            hooks: plugin.time.hooks,
+          };
+        })
+        .filter((time) => {
+          return time.total > (this.args.profilePluginsLimit ?? 10);
+        })
+        .sort((a, b) => (b.total > a.total ? 1 : -1))
+        .forEach((time) => {
+          console.log(chalk.green('plugin'), time.id, time.total);
+          if (this.args.profilePluginsVerbose) {
+            console.log('      ', chalk.green('register'), time.register);
+            console.log(
+              '      ',
+              chalk.green('hooks'),
+              JSON.stringify(sortHooks(time.hooks)),
+            );
+          }
+        });
+    }
+
+    function sortHooks(hooks: Record<string, number[]>) {
+      const ret: Record<string, number[]> = {};
+      Object.keys(hooks)
+        .sort((a, b) => {
+          return add(hooks[b]) - add(hooks[a]);
+        })
+        .forEach((key) => {
+          ret[key] = hooks[key];
+        });
+      return ret;
+    }
+
+    function totalTime(plugin: Plugin) {
+      const time = plugin.time;
+      return (
+        (time.register || 0) +
+        Object.values(time.hooks).reduce<number>((a, b) => a + add(b), 0)
+      );
+    }
+
+    function add(nums: number[]) {
+      return nums.reduce((a, b) => a + b, 0);
     }
   }
 
@@ -612,6 +674,10 @@ export class Service {
       console.log();
     }
   }
+
+  get frameworkName() {
+    return this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME;
+  }
 }
 
 export interface IServicePluginAPI {
@@ -638,6 +704,7 @@ export interface IServicePluginAPI {
   >;
   modifyDefaultConfig: IModify<typeof Service.prototype.config, null>;
   modifyPaths: IModify<typeof Service.prototype.paths, null>;
+  modifyTelemetryStorage: IModify<typeof Service.prototype.telemetry, null>;
 
   ApplyPluginsType: typeof ApplyPluginsType;
   ConfigChangeType: typeof ConfigChangeType;
@@ -647,3 +714,63 @@ export interface IServicePluginAPI {
   registerPresets: (presets: any[]) => void;
   registerPlugins: (plugins: (Plugin | {})[]) => void;
 }
+
+// this is manually copied from @umijs/es-module-parser
+type DeclareKind = 'value' | 'type';
+type Declaration =
+  | {
+      type: 'ImportDeclaration';
+      source: string;
+      specifiers: Array<SimpleImportSpecifier>;
+      importKind: DeclareKind;
+      start: number;
+      end: number;
+    }
+  | {
+      type: 'DynamicImport';
+      source: string;
+      start: number;
+      end: number;
+    }
+  | {
+      type: 'ExportNamedDeclaration';
+      source: string;
+      specifiers: Array<SimpleExportSpecifier>;
+      exportKind: DeclareKind;
+      start: number;
+      end: number;
+    }
+  | {
+      type: 'ExportAllDeclaration';
+      source: string;
+      start: number;
+      end: number;
+    };
+type SimpleImportSpecifier =
+  | {
+      type: 'ImportDefaultSpecifier';
+      local: string;
+    }
+  | {
+      type: 'ImportNamespaceSpecifier';
+      local: string;
+      imported: string;
+    }
+  | {
+      type: 'ImportNamespaceSpecifier';
+      local?: string;
+    };
+type SimpleExportSpecifier =
+  | {
+      type: 'ExportDefaultSpecifier';
+      exported: string;
+    }
+  | {
+      type: 'ExportNamespaceSpecifier';
+      exported?: string;
+    }
+  | {
+      type: 'ExportSpecifier';
+      exported: string;
+      local: string;
+    };

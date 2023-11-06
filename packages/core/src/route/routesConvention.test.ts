@@ -65,6 +65,20 @@ test('normal', () => {
       parentId: undefined,
       path: '/',
     },
+    'a-index/index': {
+      absPath: '/a-index',
+      file: 'a-index/index.ts',
+      id: 'a-index/index',
+      parentId: undefined,
+      path: 'a-index',
+    },
+    'g/index/index': {
+      absPath: '/g',
+      file: 'g/index/index.ts',
+      id: 'g/index/index',
+      parentId: undefined,
+      path: 'g',
+    },
   });
 });
 
@@ -103,6 +117,20 @@ test('exclude', () => {
       id: 'index/index',
       parentId: undefined,
       path: '/',
+    },
+    'a-index/index': {
+      absPath: '/a-index',
+      file: 'a-index/index.ts',
+      id: 'a-index/index',
+      parentId: undefined,
+      path: 'a-index',
+    },
+    'g/index/index': {
+      absPath: '/g',
+      file: 'g/index/index.ts',
+      id: 'g/index/index',
+      parentId: undefined,
+      path: 'g',
     },
   });
 });

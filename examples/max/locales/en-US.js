@@ -1,5 +1,9 @@
 export default {
-  HELLO: 'Hello!',
+  HELLO: 'Hello',
+  World: 'World!',
   'site.title': 'Index',
   'about.title': 'About',
+  user:{
+    welcome: 'hello, friend',
+  },
 };

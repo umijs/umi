@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { TEMPLATES_DIR } from './constants';
 import {
   exactLocalePaths,
   getAntdLocale,
@@ -13,6 +14,7 @@ import {
 } from './utils/localeUtils';
 import { withTmpPath } from './utils/withTmpPath';
 
+const LOCALE_TEMPLATES_DIR = join(TEMPLATES_DIR, 'locale');
 interface ILocaleConfig {
   default?: string;
   baseNavigator?: boolean;
@@ -46,18 +48,17 @@ export default (api: IApi) => {
   api.describe({
     key: 'locale',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            default: Joi.string(),
-            useLocalStorage: Joi.boolean(),
-            baseNavigator: Joi.boolean(),
-            title: Joi.boolean(),
-            antd: Joi.boolean(),
-            baseSeparator: Joi.string(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod
+          .object({
+            default: zod.string(),
+            useLocalStorage: zod.boolean(),
+            baseNavigator: zod.boolean(),
+            title: zod.boolean(),
+            antd: zod.boolean(),
+            baseSeparator: zod.string(),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,
@@ -107,7 +108,7 @@ export default (api: IApi) => {
 
   api.onGenerateFiles(async () => {
     const localeTpl = readFileSync(
-      join(__dirname, '../libs/locale/locale.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'locale.tpl'),
       'utf-8',
     );
     // moment2dayjs
@@ -146,7 +147,7 @@ export default (api: IApi) => {
 
     let DefaultAntdLocales: string[] = [];
     // set antd default locale
-    if (!antdLocales.length && api.config.locale?.antd) {
+    if (!antdLocales.length && antd) {
       const [lang, country = ''] = defaultLocale.split(baseSeparator);
       DefaultAntdLocales = lodash.uniq(
         await addAntdLocales({
@@ -177,7 +178,7 @@ export default (api: IApi) => {
     });
 
     const localeExportsTpl = readFileSync(
-      join(__dirname, '../libs/locale/localeExports.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'localeExports.tpl'),
       'utf-8',
     );
     const localeDirName = 'locales';
@@ -210,7 +211,7 @@ export default (api: IApi) => {
     });
     // runtime.tsx
     const runtimeTpl = readFileSync(
-      join(__dirname, '../libs/locale/runtime.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'runtime.tpl'),
       'utf-8',
     );
     api.writeTmpFile({
@@ -222,7 +223,7 @@ export default (api: IApi) => {
 
     // SelectLang.tsx
     const selectLang = readFileSync(
-      join(__dirname, '../libs/locale/SelectLang.tpl'),
+      join(LOCALE_TEMPLATES_DIR, 'SelectLang.tpl'),
       'utf-8',
     );
 
@@ -243,6 +244,21 @@ export default (api: IApi) => {
 export { addLocale, setLocale, getLocale, getIntl, useIntl, injectIntl, formatMessage, FormattedMessage, getAllLocales, FormattedDate, FormattedDateParts, FormattedDisplayName, FormattedHTMLMessage, FormattedList, FormattedNumber, FormattedNumberParts, FormattedPlural, FormattedRelativeTime, FormattedTime, FormattedTimeParts, IntlProvider, RawIntlProvider } from './localeExports';
 export { SelectLang } from './SelectLang';
 `,
+    });
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import {
+  IntlCache,
+  createIntl,
+} from '${reactIntlPkgPath}';
+type OptionalIntlConfig = Omit<Parameters<typeof createIntl>[0], 'locale' | 'defaultLocale'>;
+export interface IRuntimeConfig {
+    locale?: {
+      getLocale?: () => string;
+      cache?: IntlCache;
+    } & OptionalIntlConfig;
+};`,
     });
   });
 

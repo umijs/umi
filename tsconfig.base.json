@@ -19,6 +19,7 @@
     "**/fixtures",
     "**/*.test.ts",
     "**/*.e2e.ts",
-    "**/templates"
+    "**/templates",
+    "ui"
   ]
 }

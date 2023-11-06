@@ -6,11 +6,8 @@ import { withTmpPath } from './utils/withTmpPath';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object(),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.record(zod.any());
       },
     },
     enableBy: api.EnableBy.config,
@@ -29,7 +26,7 @@ export default (api: IApi) => {
 import React from 'react';${
         hasAccessFile
           ? `
-import accessFactory from '@/access'
+import accessFactory from '@/access';
 import { useModel } from '@@/plugin-model';
 `
           : ''
@@ -154,9 +151,30 @@ export const useAccessMarkedRoutes = (routes: IRoute[]) => {
     api.writeTmpFile({
       path: 'context.ts',
       content: `
-import React from 'react';
+import React from 'react';${
+        hasAccessFile
+          ? `
+import { AccessInstance } from './types.d';
+
+export const AccessContext = React.createContext<AccessInstance>(null);
+`
+          : `
 export const AccessContext = React.createContext<any>(null);
+`
+      }
       `,
+    });
+
+    // types.d.ts
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      content: hasAccessFile
+        ? `
+import accessFactory from '@/access';
+
+export type AccessInstance = ReturnType<typeof accessFactory>;
+`
+        : 'export {}',
     });
   });
 

@@ -1,8 +1,9 @@
-import { codeFrameColumns } from '@umijs/bundler-utils/compiled/babel/code-frame';
-import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
-import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
-import { winPath, logger } from '@umijs/utils';
-import { extname } from 'path';
+import { importLazy, logger, winPath } from '@umijs/utils';
+import { init, parse } from '../compiled/es-module-lexer';
+import { transformSync } from '../compiled/esbuild';
+
+const babelCodeFrame: typeof import('../compiled/babel/code-frame') =
+  importLazy(require.resolve('../compiled/babel/code-frame'));
 
 export async function parseModule(opts: { content: string; path: string }) {
   await init;
@@ -15,7 +16,7 @@ export function parseModuleSync(opts: { content: string; path: string }) {
   if (opts.path.endsWith('.tsx') || opts.path.endsWith('.jsx')) {
     try {
       content = transformSync(content, {
-        loader: extname(opts.path).slice(1) as Loader,
+        loader: 'tsx',
         format: 'esm',
       }).code;
     } catch (e) {
@@ -44,6 +45,7 @@ export function isDepPath(path: string) {
 }
 
 export * from './https';
+export * from './proxy';
 export * from './types';
 
 type Errors = {
@@ -54,14 +56,14 @@ type Errors = {
   text: string;
 }[];
 
-function prettyPrintEsBuildErrors(
+export function prettyPrintEsBuildErrors(
   errors: Errors = [],
   opts: { content: string; path: string },
 ) {
   for (const error of errors) {
     if (error.location?.line && error.location?.column) {
       // @ts-ignore
-      const message = codeFrameColumns(
+      const message = babelCodeFrame.codeFrameColumns(
         opts.content,
         {
           start: {
@@ -78,5 +80,3 @@ function prettyPrintEsBuildErrors(
     }
   }
 }
-
-export * from './proxy';

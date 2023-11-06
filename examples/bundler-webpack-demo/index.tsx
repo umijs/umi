@@ -2,6 +2,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Router, Routes, useRoutes } from 'react-router-dom';
+import { TodoList } from './pages/todoList';
 import { useTraceUpdate } from './useTraceUpdate';
 
 function App(props: any) {
@@ -110,6 +111,10 @@ const routes = [
       {
         path: '/bar',
         element: <Bar />,
+      },
+      {
+        path: '/todolist',
+        element: <TodoList />,
       },
     ],
   },

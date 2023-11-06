@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
 import { resolveProjectDep } from './utils/resolveProjectDep';
@@ -7,30 +8,32 @@ export default (api: IApi) => {
   api.describe({
     key: 'reactQuery',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          devtool: Joi.alternatives(Joi.object(), Joi.boolean()),
-          queryClient: Joi.alternatives(Joi.object(), Joi.boolean()),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            devtool: zod.union([zod.record(zod.any()), zod.boolean()]),
+            queryClient: zod.union([zod.record(zod.any()), zod.boolean()]),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,
   });
 
   let pkgPath: string;
-  const defaultPkgPath = dirname(
-    require.resolve('@tanstack/react-query/package.json'),
+  const defaultPkgPath = winPath(
+    dirname(require.resolve('@tanstack/react-query/package.json')),
   );
-  const devtoolPkgPath = dirname(
-    require.resolve('@tanstack/react-query-devtools/package.json'),
+  const devtoolPkgPath = winPath(
+    dirname(require.resolve('@tanstack/react-query-devtools/package.json')),
   );
   try {
-    pkgPath =
-      resolveProjectDep({
-        pkg: api.pkg,
-        cwd: api.cwd,
-        dep: '@tanstack/react-query',
-      }) || defaultPkgPath;
+    const localQueryPath = resolveProjectDep({
+      pkg: api.pkg,
+      cwd: api.cwd,
+      dep: '@tanstack/react-query',
+    });
+    pkgPath = localQueryPath ? winPath(localQueryPath) : defaultPkgPath;
   } catch (e: any) {
     throw new Error(`[reactQuery] package resolve failed, ${e.message}`);
   }

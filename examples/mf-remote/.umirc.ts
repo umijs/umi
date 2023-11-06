@@ -16,13 +16,12 @@ const moduleFederationName = 'remoteCounter';
 export default defineConfig({
   mfsu: {
     strategy: 'eager',
-    mfName: `mf_${moduleFederationName}`,
-    remoteName: moduleFederationName,
-    shared,
   },
   mf: {
     name: moduleFederationName,
     shared,
+    library: { type: 'window', name: moduleFederationName },
   },
   publicPath: 'http://127.0.0.1:9000/',
+  hash: false,
 });

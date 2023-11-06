@@ -7,19 +7,36 @@ import Mustache from '../../compiled/mustache';
 import prompts from '../../compiled/prompts';
 import yParser from '../../compiled/yargs-parser';
 
-interface IOpts {
+export interface IGeneratorOpts {
   baseDir: string;
   args: yParser.Arguments;
+  slient?: boolean;
+}
+
+interface IGeneratorBaseOpts {
+  context: Record<string, any>;
+  target: string;
+}
+
+interface IGeneratorCopyTplOpts extends IGeneratorBaseOpts {
+  templatePath: string;
+}
+
+interface IGeneratorCopyDirectoryOpts extends IGeneratorBaseOpts {
+  path: string;
 }
 
 class Generator {
   baseDir: string;
   args: yParser.Arguments;
+  slient: boolean;
   prompts: any;
 
-  constructor({ baseDir, args }: IOpts) {
+  constructor({ baseDir, args, slient }: IGeneratorOpts) {
     this.baseDir = baseDir;
     this.args = args;
+    this.slient = !!slient;
+
     this.prompts = {};
   }
 
@@ -39,17 +56,19 @@ class Generator {
 
   async writing() {}
 
-  copyTpl(opts: { templatePath: string; target: string; context: object }) {
+  copyTpl(opts: IGeneratorCopyTplOpts) {
     const tpl = readFileSync(opts.templatePath, 'utf-8');
     const content = Mustache.render(tpl, opts.context);
     fsExtra.mkdirpSync(dirname(opts.target));
-    console.log(
-      `${chalk.green('Write:')} ${relative(this.baseDir, opts.target)}`,
-    );
+    if (!this.slient) {
+      console.log(
+        `${chalk.green('Write:')} ${relative(this.baseDir, opts.target)}`,
+      );
+    }
     writeFileSync(opts.target, content, 'utf-8');
   }
 
-  copyDirectory(opts: { path: string; context: object; target: string }) {
+  copyDirectory(opts: IGeneratorCopyDirectoryOpts) {
     const files = glob.sync('**/*', {
       cwd: opts.path,
       dot: true,
@@ -65,7 +84,9 @@ class Generator {
           context: opts.context,
         });
       } else {
-        console.log(`${chalk.green('Copy: ')} ${file}`);
+        if (!this.slient) {
+          console.log(`${chalk.green('Copy: ')} ${file}`);
+        }
         const absTarget = join(opts.target, file);
         fsExtra.mkdirpSync(dirname(absTarget));
         copyFileSync(absFile, absTarget);
