@@ -24,9 +24,9 @@ export default (api: IApi) => {
     const pluginConfig = {
       // https://github.com/styled-components/babel-plugin-styled-components/blob/f8e9fb480d1645be8be797d73e49686bdf98975b/src/utils/options.js#L11
       topLevelImportPaths: [
-        'umi',
         '@umijs/max',
         '@alipay/bigfish',
+        'umi',
         'alita',
         '@kmi/kmi',
       ],
