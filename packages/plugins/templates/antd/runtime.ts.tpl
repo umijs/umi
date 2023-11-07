@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-  Modal,
   ConfigProvider,
 {{#appConfig}}
   App,
 {{/appConfig}}
+{{^disableInternalStatic}}
+  Modal,
   message,
   notification,
+{{/disableInternalStatic}}
 {{#enableV5ThemeAlgorithm}}
   theme,
 {{/enableV5ThemeAlgorithm}}
@@ -50,6 +52,7 @@ export function rootContainer(rawContainer) {
   let container = rawContainer;
 
 {{#configProvider}}
+  {{^disableInternalStatic}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfigProvider.prefixCls
@@ -61,6 +64,15 @@ export function rootContainer(rawContainer) {
       prefixCls: `${finalConfigProvider.prefixCls}-notification`
     });
   }
+  {{/disableInternalStatic}}
+
+  {{#disableInternalStatic}}
+  if (finalConfigProvider.prefixCls) {
+    ConfigProvider.config({
+      prefixCls: finalConfigProvider.prefixCls,
+    });
+  };
+  {{/disableInternalStatic}}
 
   if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()

@@ -88,8 +88,12 @@ ${hasProvider ? `import { StyleSheetManager } from '${winPath(libPath)}';` : ``}
 
 ${styledComponentsRuntimeCode}
 export function rootContainer(container) {
-  const globalStyle = styledComponentsConfig.GlobalStyle ? <styledComponentsConfig.GlobalStyle /> : null;
-  const inner = (
+  const scConfig =
+    typeof styledComponentsConfig === 'function'
+      ? styledComponentsConfig()
+      : styledComponentsConfig;
+  const globalStyle = scConfig.GlobalStyle ? <scConfig.GlobalStyle /> : null;
+  return (
     <>
       {globalStyle}
       {container}

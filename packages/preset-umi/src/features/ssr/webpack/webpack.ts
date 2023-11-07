@@ -46,9 +46,12 @@ export const build = async (api: IApi, opts: any) => {
 
     memo.output
       .path(dirname(absOutputFile))
-      .filename(useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js')
+      // 避免多 chunk 时的命名冲突，虽然 ssr 在项目里禁用了 import() 语法，但 node_modules 下可能存在的 import() 没有被 babel 插件覆盖到
+      .filename(
+        useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
+      )
       .chunkFilename(
-        useHash ? 'umi.[contenthash:8].server.js' : 'umi.server.js',
+        useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
       )
       .libraryTarget('commonjs2');
 

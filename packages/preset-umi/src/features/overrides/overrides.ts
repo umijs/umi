@@ -31,7 +31,7 @@ export default (api: IApi) => {
       content = await transform(content, filePath);
       api.writeTmpFile({
         path: 'core/overrides.css',
-        content,
+        content: content || '/* empty */',
         noPluginDir: true,
       });
       cachedContent = content;

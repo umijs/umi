@@ -10,7 +10,7 @@ Umi 可以通过环境变量来完成一些特殊的配置和功能。
 
 ### 执行命令时设置
 
-例如需要改变 `umi dev` 开发服务器的端口，进可以通过如下命令实现。
+例如需要改变 `umi dev` 开发服务器的端口，可以通过如下命令实现。
 
 ```bash
 # OS X, Linux
@@ -20,7 +20,7 @@ $ PORT=3000 umi dev
 $ set PORT=3000&&umi dev
 ```
 
-如果需要同时在不同的操作系统中使用环境变量，推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)
+如果需要同时在不同的操作系统中使用环境变量，推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)。
 
 ```bash
 $ pnpm install cross-env -D
@@ -78,7 +78,7 @@ CONCAT=$FOO$BAR # CONCAT=foobar
 
 注意：
 
-* APP_ROOT 不能配在 .env 中，只能在命令行里添加
+* `APP_ROOT` 不能配在 `.env` 中，只能在命令行里添加
 
 
 ### ANALYZE
@@ -101,7 +101,7 @@ $ ANALYZE=1 umi build
 
 ### COMPRESS
 
-默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
+默认压缩 CSS 和 JS，值为 `none` 时不压缩，`build` 时有效。
 
 ### DID_YOU_KNOW
 
@@ -113,11 +113,11 @@ $ ANALYZE=1 umi build
 
 ### FS_LOGGER
 
-默认会开启保存物理日志，值为 none 时不保存，同时针对 webcontainer 场景（比如 stackbliz）暂不保存。
+默认会开启保存物理日志，值为 `none` 时不保存，同时针对 webcontainer 场景（比如 stackbliz）暂不保存。
 
 ### HMR
 
-默认开启 HMR 功能，值为 none 时关闭。
+默认开启 HMR 功能，值为 `none` 时关闭。
 
 ### HOST
 

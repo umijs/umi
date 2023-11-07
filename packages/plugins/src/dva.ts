@@ -78,7 +78,7 @@ export interface IRuntimeConfig {
       tpl: `
 // It's faked dva
 // aliased to @umijs/plugins/templates/dva
-import { create, Provider } from 'dva';
+import { create, Provider } from '${winPath(pkgPath)}';
 import createLoading from '${winPath(require.resolve('dva-loading'))}';
 ${
   api.config.dva?.immer
@@ -162,7 +162,9 @@ export function dataflowProvider(container, opts) {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { connect, useDispatch, useStore, useSelector } from 'dva';
+export { connect, useDispatch, useStore, useSelector } from '${winPath(
+        pkgPath,
+      )}';
 export { getDvaApp } from './dva';
 `,
     });

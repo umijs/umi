@@ -53,7 +53,7 @@ export default {
 
 ### 请求方法
 
-当 Http 的请求方法是 GET 时，可以省略方法部分，只需要路径即可，例如：
+当 HTTP 的请求方法是 GET 时，可以省略方法部分，只需要路径即可，例如：
 
 ```ts
 // ./mock/users.ts
@@ -140,7 +140,7 @@ MOCK=none umi dev
 
 ## 引入 Mock.js
 
-在 Mock 中我们经常使用 [Mock.js](http://mockjs.com/) 来帮我们方便的生成随机的模拟数据，如果你使用了 Umi 的 Mock
+在 Mock 中我们经常使用 [Mock.js](http://mockjs.com/) 来帮我们方便地生成随机的模拟数据。如果你使用了 Umi 的 Mock
 功能，建议你搭配这个库来提升模拟数据的真实性：
 
 ```ts
@@ -156,4 +156,4 @@ export default {
 
 ## 其他配置
 
-关于 Mock 功能完整的的其他配置项，请在文档的 [配置](../api/config#mock) 章节中查看。
+关于 Mock 功能完整的其他配置项，请在文档的 [配置](../api/config#mock) 章节中查看。

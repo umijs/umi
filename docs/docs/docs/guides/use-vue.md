@@ -5,7 +5,7 @@ toc: content
 
 # 使用 Vue
 
-本文介绍如何在 Umi 使用 Vue , Umi Vue 大部分配置和 React 相同，这里只列出一些 Vue 独有的配置
+本文介绍如何在 Umi 中使用 Vue , Umi Vue 大部分配置和 React 相同，这里只列出一些 Vue 独有的配置。
 
 ## 启动方式
 
@@ -30,14 +30,14 @@ export default {
 ### 配置式路由
 
 :::info
-这里仅列出和 React 路由配置差异部分
+这里仅列出和 React 路由配置差异部分。
 :::
 
 #### name
 
 命名路由
 
-除了 `path` 之外，你还可以为任何路由提供 `name`
+除了 `path` 之外，你还可以为任何路由提供 `name` ：
 
 ```ts
 export default {
@@ -51,7 +51,7 @@ export default {
 }
 ```
 
-要链接到一个命名的路由，可以向 `router-link` 组件的 to 属性传递一个对象：
+要链接到一个命名的路由，可以向 `router-link` 组件的 `to` 属性传递一个对象：
 
 ```html
 <router-link :to="{ name: 'user', params: { username: 'erina' }}">
@@ -168,7 +168,7 @@ const onHello = () => {
 
 ## 运行时配置
 
-可以通过在约定的 `src/app.tsx` 通过 export 配置来控制 vue vue-router 相关的配置
+可以通过在约定的 `src/app.tsx` 通过 export 配置来控制 vue vue-router 相关的配置。
 
 ### router
 
@@ -186,7 +186,7 @@ export const router: RouterConfig = {
 
 ### onMounted(\{app, router\})
 
-Vue app mount 成功回调, 这里可以拿到 app 的实例及 router 的实例, 可以进行全局组件注册, 路由拦截器等。
+Vue app mount 成功回调，这里可以拿到 app 的实例及 router 的实例，可以进行全局组件注册，路由拦截器等。
 
 ```ts
 export function onMounted({ app, router }: any) {
@@ -212,9 +212,9 @@ export function rootContainer(container) {
 }
 ```
 
-## examples
+## Examples
 
-更多详见 demo
+更多详见 demo ：
 
 * [boilerplate-vue](https://github.com/umijs/umi/tree/master/examples/boilerplate-vue)
 * [with-vue-pinia](https://github.com/umijs/umi/tree/master/examples/with-vue-pinia)

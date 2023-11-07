@@ -11,7 +11,9 @@ const TS_TSX_REGEX = /\.tsx?$/;
 const JS_JSX_REGEX = /\.jsx?$/;
 
 function isTarget(path: string) {
-  return JS_JSX_REGEX.test(path) || TS_TSX_REGEX.test(path);
+  return (
+    JS_JSX_REGEX.test(path) || TS_TSX_REGEX.test(path) || path.endsWith('.mjs')
+  );
 }
 
 const createTransformer = (
@@ -70,7 +72,7 @@ const createTransformer = (
       const result = transformSync(rawCode, {
         ...options,
         ...(config.globals['jest-esbuild'] as UserOptions),
-        loader: userOptions.loader || (extname(path).slice(1) as Loader),
+        loader: userOptions.loader || ext2Loader(extname(path)),
         sourcefile: path,
         sourcesContent: false,
       });
@@ -99,6 +101,18 @@ const createTransformer = (
     },
   };
 };
+
+const EXT_MAP: Record<string, Loader> = {
+  '.js': 'js',
+  '.jsx': 'jsx',
+  '.ts': 'ts',
+  '.tsx': 'tsx',
+  '.mjs': 'js',
+};
+
+function ext2Loader(ext: string): Loader {
+  return EXT_MAP[ext] || 'js';
+}
 
 export default {
   createTransformer,
