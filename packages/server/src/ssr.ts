@@ -2,7 +2,13 @@ import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
-import type { IRoutesById, IServerLoaderArgs, UmiRequest } from './types';
+import type {
+  IRoutesById,
+  IServerLoaderArgs,
+  MetadataLoader,
+  ServerLoader,
+  UmiRequest,
+} from './types';
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
@@ -41,12 +47,6 @@ interface IExecLoaderOpts {
 interface IExecMetaLoaderOpts extends IExecLoaderOpts {
   serverLoaderData?: any;
 }
-
-export type ServerLoader = (req?: IServerLoaderArgs) => Promise<any>;
-export type MetadataLoader = (
-  serverLoaderData: any,
-  req?: IServerLoaderArgs,
-) => Promise<any>;
 
 const createJSXProvider = (
   Provider: any,
@@ -366,7 +366,7 @@ async function executeLoader(params: IExecLoaderOpts) {
     return;
   }
   // TODO: 处理错误场景
-  return (mod.serverLoader as ServerLoader)(serverLoaderArgs);
+  return (mod.serverLoader satisfies ServerLoader)(serverLoaderArgs);
 }
 
 async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
@@ -380,7 +380,7 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  return (mod.metadataLoader as MetadataLoader)(
+  return (mod.metadataLoader satisfies MetadataLoader)(
     serverLoaderData,
     serverLoaderArgs,
   );

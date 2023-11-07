@@ -1,17 +1,10 @@
+import type { IMetadata } from '@umijs/server/dist/types';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom/server';
 import { AppContext } from './appContext';
 import { Routes } from './browser';
 import { createClientRoutes } from './routes';
 import { IRouteComponents, IRoutesById } from './types';
-
-interface IMetadata {
-  title?: string;
-  description?: string;
-  keywords?: string[];
-  lang?: string;
-  metas?: Array<{name: string; content: string}>;
-}
 
 interface IHtmlProps {
   routes: IRoutesById;
@@ -67,14 +60,15 @@ export async function getClientRootComponent(opts: IHtmlProps) {
       {rootContainer}
     </AppContext.Provider>
   );
-  return (
-    <Html {...opts}>
-      {app}
-    </Html>
-  );
+  return <Html {...opts}>{app}</Html>;
 }
 
-function Html({ children, loaderData, manifest, metadata }: React.PropsWithChildren<IHtmlProps>) {
+function Html({
+  children,
+  loaderData,
+  manifest,
+  metadata,
+}: React.PropsWithChildren<IHtmlProps>) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
 
@@ -90,7 +84,9 @@ function Html({ children, loaderData, manifest, metadata }: React.PropsWithChild
         {metadata?.keywords?.length && (
           <meta name="keywords" content={metadata.keywords.join(',')} />
         )}
-        {metadata?.metas?.map((em) => <meta key={em.name} name={em.name} content={em.content}/>)}
+        {metadata?.metas?.map((em) => (
+          <meta key={em.name} name={em.name} content={em.content} />
+        ))}
         {manifest.assets['umi.css'] && (
           <link rel="stylesheet" href={manifest.assets['umi.css']} />
         )}

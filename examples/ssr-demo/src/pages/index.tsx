@@ -1,6 +1,7 @@
 import {
-  IServerLoaderArgs,
   Link,
+  MetadataLoader,
+  ServerLoader,
   useClientLoaderData,
   useServerInsertedHTML,
   useServerLoaderData,
@@ -51,18 +52,26 @@ export async function clientLoader() {
   return { message: 'data from client loader of index.tsx' };
 }
 
-export async function serverLoader({ request }: IServerLoaderArgs) {
-  const { url } = request;
+export const serverLoader: ServerLoader = async (req) => {
+  const url = req!.request.url;
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
   return { message: `data from server loader of index.tsx, url: ${url}` };
-}
+};
 
 // SEO-设置页面的TDK
-export async function metadataLoader() {
+export const metadataLoader: MetadataLoader<{ message: string }> = (
+  serverLoaderData,
+) => {
   return {
     title: '开发者学堂 - 支付宝开放平台',
     description: '支付宝小程序开发入门实战经验在线课程，让更多的开发者获得成长',
     keywords: ['小程序开发', '入门', '实战', '小程序云'],
     lang: 'zh-CN',
-  }
-}
+    metas: [
+      {
+        name: 'msg',
+        content: serverLoaderData.message,
+      },
+    ],
+  };
+};
