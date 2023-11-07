@@ -93,7 +93,7 @@ export function rootContainer(container) {
       ? styledComponentsConfig()
       : styledComponentsConfig;
   const globalStyle = scConfig.GlobalStyle ? <scConfig.GlobalStyle /> : null;
-  return (
+  const inner = (
     <>
       {globalStyle}
       {container}
