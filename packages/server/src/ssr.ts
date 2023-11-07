@@ -41,6 +41,9 @@ interface IExecMetaLoaderOpts extends IExecLoaderOpts {
   serverLoaderData?: any
 }
 
+export type ServerLoader = (req?: IServerLoaderArgs) => Promise<any>;
+export type MetadataLoader = (serverLoaderData: any, req?: IServerLoaderArgs) => Promise<any>;
+
 const createJSXProvider = (
   Provider: any,
   serverInsertedHTMLCallbacks: Set<() => React.ReactNode>,
@@ -355,7 +358,7 @@ async function executeLoader(params: IExecLoaderOpts) {
     return;
   }
   // TODO: 处理错误场景
-  return mod.serverLoader(serverLoaderArgs);
+  return (mod.serverLoader as ServerLoader)(serverLoaderArgs);
 }
 
 async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
@@ -369,5 +372,5 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  return mod.metadataLoader(serverLoaderData, serverLoaderArgs);
+  return (mod.metadataLoader as MetadataLoader)(serverLoaderData, serverLoaderArgs);
 }
