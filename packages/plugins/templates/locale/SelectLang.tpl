@@ -284,7 +284,7 @@ const defaultLangUConfigMap = {
   },
   'nl-NL': {
     lang: 'nl-NL',
-    label: 'Vlaams',
+    label: 'Nederlands',
     icon: '🇳🇱',
     title: 'Taal'
   },

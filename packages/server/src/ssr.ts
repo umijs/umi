@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
-import type { IRoutesById } from './types';
+import type { IRoutesById, IServerLoaderArgs, UmiRequest } from './types';
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
@@ -10,12 +10,19 @@ interface RouteLoaders {
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
 
-// serverLoader的参数类型
-export interface IServerLoaderArgs {
-  request: Request;
+interface CreateRequestServerlessOptions {
+  /**
+   * only return body html
+   * @example <div id="root">{app}</div> ...
+   */
+  withoutHTML?: boolean;
+  /**
+   * folder path for `build-manifest.json`
+   */
+  sourceDir?: string;
 }
 
-interface CreateRequestHandlerOptions {
+interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   routesWithServerLoader: RouteLoaders;
   PluginManager: any;
   manifest:
@@ -247,12 +254,10 @@ export default function createRequestHandler(
       return;
     }
 
-    const request = new Request(
-      req.protocol + '://' + req.get('host') + req.originalUrl,
-      {
-        headers: req.headers,
-      },
-    );
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    const request = new Request(fullUrl, {
+      headers: req.headers,
+    });
     const jsx = await jsxGeneratorDeferrer(req.url, { request });
 
     if (!jsx) return next();
@@ -283,14 +288,21 @@ export default function createRequestHandler(
 
 // 新增的给CDN worker用的SSR请求handle
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
-  return async function (req: Request, params?: CreateRequestHandlerOptions) {
+  return async function (
+    req: UmiRequest,
+    params?: CreateRequestHandlerOptions,
+  ) {
     const jsxGeneratorDeferrer = createJSXGenerator({
       ...opts,
       ...params,
     });
-    const jsx = await jsxGeneratorDeferrer(new URL(req.url).pathname, {
+    const loaderArgs: IServerLoaderArgs = {
       request: req,
-    });
+    };
+    const jsx = await jsxGeneratorDeferrer(
+      new URL(req.url).pathname,
+      loaderArgs,
+    );
 
     if (!jsx) {
       throw new Error('no page resource');
@@ -301,7 +313,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
 }
 
 export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
-  return async function (req: Request) {
+  return async function (req: UmiRequest) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
     return await executeLoader({

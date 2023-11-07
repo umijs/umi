@@ -1,7 +1,7 @@
-import type { ProxyOptions } from './types';
+import assert from 'assert';
 import type { Express } from '../compiled/express';
 import { createProxyMiddleware } from '../compiled/http-proxy-middleware';
-import assert from 'assert';
+import type { ProxyOptions } from './types';
 
 export function createProxy(
   proxy: { [key: string]: ProxyOptions } | ProxyOptions[],

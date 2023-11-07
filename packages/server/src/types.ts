@@ -13,4 +13,14 @@ export interface IRouteCustom extends IRoute {
   [key: string]: any;
 }
 
+
 export { ServerLoader, MetadataLoader } from './ssr';
+
+export type UmiRequest = Partial<Request> & Pick<Request, 'url' | 'headers'>;
+
+/**
+ * serverLoader 的参数类型
+ */
+export interface IServerLoaderArgs {
+  request: UmiRequest;
+}

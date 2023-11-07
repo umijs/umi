@@ -36,6 +36,7 @@
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.27.2",
     "babel-plugin-import": "^1.13.6",
+    "babel-plugin-styled-components": "2.1.4",
     "dayjs": "^1.11.7",
     "dva-core": "^2.0.4",
     "dva-immer": "^1.0.0",
@@ -49,7 +50,7 @@
     "react-intl": "3.12.1",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
-    "styled-components": "6.0.0-rc.0",
+    "styled-components": "6.1.0",
     "tslib": "^2",
     "warning": "^4.0.3"
   },

@@ -43,10 +43,13 @@ export function useRouteProps<T extends Record<string, any> = any>() {
   return props as T;
 }
 
-export function useServerLoaderData() {
+type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
+export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   const route = useRouteData();
   const appData = useAppData();
-  return { data: appData.serverLoaderData[route.route.id] };
+  return {
+    data: appData.serverLoaderData[route.route.id] as Awaited<ReturnType<T>>,
+  };
 }
 
 export function useClientLoaderData() {
