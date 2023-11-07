@@ -105,7 +105,16 @@ export function useServerInsertedHTML(callback: () => React.ReactNode): void {
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
-export type { IServerLoaderArgs, UmiRequest } from '${winPath(ssrTypesPath)}'
+export type {
+  // server loader
+  IServerLoaderArgs,
+  UmiRequest,
+  ServerLoader,
+  // metadata loader
+  MetadataLoader,
+  IMetadata,
+  IMetaTag,
+} from '${winPath(ssrTypesPath)}'
 `,
     });
   });

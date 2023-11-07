@@ -13,11 +13,31 @@ export interface IRouteCustom extends IRoute {
   [key: string]: any;
 }
 
-export type UmiRequest = Partial<Request> & Pick<Request, 'url' | 'headers'>;
+type LoaderReturn<T> = T | Promise<T>;
 
-/**
- * serverLoader 的参数类型
- */
+export type UmiRequest = Partial<Request> & Pick<Request, 'url' | 'headers'>;
 export interface IServerLoaderArgs {
   request: UmiRequest;
 }
+export type ServerLoader<T = any> = (
+  req?: IServerLoaderArgs,
+) => LoaderReturn<T>;
+
+export interface IMetaTag {
+  name: string;
+  content: string;
+}
+export interface IMetadata {
+  title?: string;
+  description?: string;
+  keywords?: string[];
+  /**
+   * @default 'en'
+   */
+  lang?: string;
+  metas?: IMetaTag[];
+}
+export type MetadataLoader<T = any> = (
+  serverLoaderData: T,
+  req?: IServerLoaderArgs,
+) => LoaderReturn<IMetadata>;
