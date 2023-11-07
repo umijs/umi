@@ -1,5 +1,6 @@
-import { winPath } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { dirname } from 'path';
+import type { IStyleSheetManager } from 'styled-components';
 import { IApi } from 'umi';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -16,12 +17,31 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.modifyBabelPresetOpts((memo) => {
-    if (api.env === 'development') {
-      memo.pluginStyledComponents = {
-        ...api.config.styledComponents.babelPlugin,
-      };
-    }
+  // dev:  displayName
+  // prod: minify
+  api.modifyConfig((memo) => {
+    const isProd = api.env === 'production';
+    const pluginConfig = {
+      // https://github.com/styled-components/babel-plugin-styled-components/blob/f8e9fb480d1645be8be797d73e49686bdf98975b/src/utils/options.js#L11
+      topLevelImportPaths: [
+        '@umijs/max',
+        '@alipay/bigfish',
+        'umi',
+        'alita',
+        '@kmi/kmi',
+      ],
+      ...(isProd
+        ? {
+            displayName: false,
+          }
+        : {}),
+      ...(api.config.styledComponents?.babelPlugin || {}),
+      ...(api.userConfig.styledComponents?.babelPlugin || {}),
+    };
+    memo.extraBabelPlugins = [
+      ...(memo.extraBabelPlugins || []),
+      [require.resolve('babel-plugin-styled-components'), pluginConfig],
+    ];
     return memo;
   });
 
@@ -50,9 +70,22 @@ export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetMan
     )
       ? `import { styledComponents as styledComponentsConfig } from '@/app';`
       : `const styledComponentsConfig = {};`;
+
+    const isLegacy =
+      !lodash.isEmpty(api.config.targets?.ie) || api.config.legacy;
+    const disableCSSOM = !!api.config.qiankun?.slave;
+    const providerOptions: IStyleSheetManager = {
+      // https://styled-components.com/docs/faqs#vendor-prefixes-are-omitted-by-default
+      ...(isLegacy ? { enableVendorPrefixes: true } : {}),
+      ...(disableCSSOM ? { disableCSSOMInjection: true } : {}),
+    };
+    const hasProvider = !lodash.isEmpty(providerOptions);
+
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
+${hasProvider ? `import { StyleSheetManager } from '${winPath(libPath)}';` : ``}
+
 ${styledComponentsRuntimeCode}
 export function rootContainer(container) {
   const scConfig =
@@ -60,12 +93,23 @@ export function rootContainer(container) {
       ? styledComponentsConfig()
       : styledComponentsConfig;
   const globalStyle = scConfig.GlobalStyle ? <scConfig.GlobalStyle /> : null;
-  return (
+  const inner = (
     <>
       {globalStyle}
       {container}
     </>
   );
+  ${
+    hasProvider
+      ? `
+  return (
+    <StyleSheetManager {...${JSON.stringify(providerOptions)}}>
+      {inner}
+    </StyleSheetManager>
+  );
+  `
+      : 'return inner;'
+  }
 }
       `,
     });
