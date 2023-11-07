@@ -12,11 +12,6 @@ export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
 
 interface CreateRequestServerlessOptions {
   /**
-   * only return body html
-   * @example <div id="root">{app}</div> ...
-   */
-  withoutHTML?: boolean;
-  /**
    * folder path for `build-manifest.json`
    */
   sourceDir?: string;
@@ -35,21 +30,23 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  sourceDir?: string;
 }
 
 interface IExecLoaderOpts {
-  routeKey: string,
-  routesWithServerLoader: RouteLoaders,
-  serverLoaderArgs?: IServerLoaderArgs,
+  routeKey: string;
+  routesWithServerLoader: RouteLoaders;
+  serverLoaderArgs?: IServerLoaderArgs;
 }
 
 interface IExecMetaLoaderOpts extends IExecLoaderOpts {
-  serverLoaderData?: any
+  serverLoaderData?: any;
 }
 
 export type ServerLoader = (req?: IServerLoaderArgs) => Promise<any>;
-export type MetadataLoader = (serverLoaderData: any, req?: IServerLoaderArgs) => Promise<any>;
+export type MetadataLoader = (
+  serverLoaderData: any,
+  req?: IServerLoaderArgs,
+) => Promise<any>;
 
 const createJSXProvider = (
   Provider: any,
@@ -123,13 +120,16 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
               // 如果有metadataLoader，执行metadataLoader
               // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
               // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
-              if(routes[id].hasMetadataLoader) {
-                Object.assign(metadata, await executeMetadataLoader({
-                  routesWithServerLoader,
-                  routeKey: id,
-                  serverLoaderArgs,
-                  serverLoaderData: loaderData[id]
-                }));
+              if (routes[id].hasMetadataLoader) {
+                Object.assign(
+                  metadata,
+                  await executeMetadataLoader({
+                    routesWithServerLoader,
+                    routeKey: id,
+                    serverLoaderArgs,
+                    serverLoaderData: loaderData[id],
+                  }),
+                );
               }
               resolve();
             }),
@@ -360,11 +360,7 @@ function createClientRoute(route: any) {
 }
 
 async function executeLoader(params: IExecLoaderOpts) {
-  const {
-    routeKey,
-    routesWithServerLoader,
-    serverLoaderArgs
-  } = params;
+  const { routeKey, routesWithServerLoader, serverLoaderArgs } = params;
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
@@ -378,11 +374,14 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
     routesWithServerLoader,
     routeKey,
     serverLoaderArgs,
-    serverLoaderData
+    serverLoaderData,
   } = params;
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  return (mod.metadataLoader as MetadataLoader)(serverLoaderData, serverLoaderArgs);
+  return (mod.metadataLoader as MetadataLoader)(
+    serverLoaderData,
+    serverLoaderArgs,
+  );
 }
