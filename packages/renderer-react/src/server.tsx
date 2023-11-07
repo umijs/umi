@@ -74,12 +74,12 @@ export async function getClientRootComponent(opts: IHtmlProps) {
   );
 }
 
-function Html({ children, loaderData, manifest, metadata }: IHtmlProps & { children: React.ReactNode }) {
+function Html({ children, loaderData, manifest, metadata }: React.PropsWithChildren<IHtmlProps>) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
 
   return (
-    <html lang={metadata?.lang}>
+    <html lang={metadata?.lang || 'en'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -93,7 +93,7 @@ function Html({ children, loaderData, manifest, metadata }: IHtmlProps & { child
         {metadata?.keywords?.length && (
           <meta name="keywords" content={metadata.keywords.join(',')} />
         )}
-        {metadata?.metas?.map((em)=> <meta name={em.name} content={em.content}/>)}
+        {metadata?.metas?.map((em) => <meta key={em.name} name={em.name} content={em.content}/>)}
       </head>
       <body>
         <noscript

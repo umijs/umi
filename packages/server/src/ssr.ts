@@ -31,6 +31,16 @@ interface CreateRequestHandlerOptions {
   sourceDir?: string;
 }
 
+interface IExecLoaderOpts {
+  routeKey: string,
+  routesWithServerLoader: RouteLoaders,
+  serverLoaderArgs?: IServerLoaderArgs,
+}
+
+interface IExecMetaLoaderOpts extends IExecLoaderOpts {
+  serverLoaderData?: any
+}
+
 const createJSXProvider = (
   Provider: any,
   serverInsertedHTMLCallbacks: Set<() => React.ReactNode>,
@@ -87,29 +97,29 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       return;
     }
 
-    const loaderData: { [key: string]: any } = {};
-    const metadata: { [key: string]: any } = {};
+    const loaderData: Record<string, any> = {};
+    const metadata: Record<string, any> = {};
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader(
-                id,
+              loaderData[id] = await executeLoader({
+                routeKey: id,
                 routesWithServerLoader,
                 serverLoaderArgs,
-              );
+              });
               // 如果有metadataLoader，执行metadataLoader
               // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
               // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
               if(routes[id].hasMetadataLoader) {
-                Object.assign(metadata, await executeMetadataLoader(
-                  id,
+                Object.assign(metadata, await executeMetadataLoader({
                   routesWithServerLoader,
+                  routeKey: id,
                   serverLoaderArgs,
-                  loaderData[id],
-                ));
+                  serverLoaderData: loaderData[id]
+                }));
               }
               resolve();
             }),
@@ -225,11 +235,11 @@ export default function createRequestHandler(
   return async function (req: any, res: any, next: any) {
     // 切换路由场景下，会通过此 API 执行 server loader
     if (req.url.startsWith('/__serverLoader') && req.query.route) {
-      const data = await executeLoader(
-        req.query.route,
-        opts.routesWithServerLoader,
-        { request: req },
-      );
+      const data = await executeLoader({
+        routeKey: req.query.route,
+        routesWithServerLoader: opts.routesWithServerLoader,
+        serverLoaderArgs: { request: req },
+      });
       res.status(200).json(data);
       return;
     }
@@ -291,8 +301,10 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: Request) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
-    return await executeLoader(query.route, opts.routesWithServerLoader, {
-      request: req,
+    return await executeLoader({
+      routeKey: query.route,
+      routesWithServerLoader: opts.routesWithServerLoader,
+      serverLoaderArgs: { request: req },
     });
   };
 }
@@ -332,11 +344,12 @@ function createClientRoute(route: any) {
   };
 }
 
-async function executeLoader(
-  routeKey: string,
-  routesWithServerLoader: RouteLoaders,
-  serverLoaderArgs?: IServerLoaderArgs,
-) {
+async function executeLoader(params: IExecLoaderOpts) {
+  const {
+    routeKey,
+    routesWithServerLoader,
+    serverLoaderArgs
+  } = params;
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
@@ -345,15 +358,16 @@ async function executeLoader(
   return mod.serverLoader(serverLoaderArgs);
 }
 
-async function executeMetadataLoader(
-  routeKey: string,
-  routesWithServerLoader: RouteLoaders,
-  serverLoaderArgs?: IServerLoaderArgs,
-  serverLoaderData?: any, // serverLoader的返回值
-) {
+async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
+  const {
+    routesWithServerLoader,
+    routeKey,
+    serverLoaderArgs,
+    serverLoaderData
+  } = params;
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  return mod.metadataLoader(serverLoaderArgs, serverLoaderData);
+  return mod.metadataLoader(serverLoaderData, serverLoaderArgs);
 }

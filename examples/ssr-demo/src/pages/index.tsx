@@ -55,3 +55,13 @@ export async function serverLoader() {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
   return { message: 'data from server loader of index.tsx' };
 }
+
+// SEO-设置页面的TDK
+export async function metadataLoader() {
+  return {
+    title: '开发者学堂 - 支付宝开放平台',
+    description: '支付宝小程序开发入门实战经验在线课程，让更多的开发者获得成长',
+    keywords: ['小程序开发', '入门', '实战', '小程序云'],
+    lang: 'zh-CN',
+  }
+}
