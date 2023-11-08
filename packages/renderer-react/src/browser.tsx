@@ -265,11 +265,12 @@ const getBrowser = (
           // server loader
           // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
           if (!isFirst && opts.routes[id]?.hasServerLoader) {
-            const pageUrl = encodeURIComponent(window.location.href);
+            const query = new URLSearchParams({
+              route: id,
+              url: window.location.href,
+            }).toString();
             // 在有basename的情况下__serverLoader的请求路径需要加上basename
-            const url = `${withEndSlash(
-              basename,
-            )}__serverLoader?route=${id}&url=${pageUrl}`;
+            const url = `${withEndSlash(basename)}__serverLoader?${query}`;
             fetch(url, {
               credentials: 'include',
             })
