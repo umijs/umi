@@ -1,4 +1,5 @@
 import less from '@umijs/bundler-utils/compiled/less';
+import { winPath } from '@umijs/utils';
 
 export async function compileLess(opts: {
   lessContent: string;
@@ -16,7 +17,7 @@ export async function compileLess(opts: {
   } = opts;
   const resolvePlugin = new (require('less-plugin-resolve') as any)({
     aliases: alias,
-    urlRewriteTargetPath: targetPath,
+    urlRewriteTargetPath: winPath(targetPath),
   });
   const result = await less.render(lessContent, {
     filename: filePath,
