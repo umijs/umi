@@ -245,10 +245,16 @@ export default function createRequestHandler(
   return async function (req: any, res: any, next: any) {
     // 切换路由场景下，会通过此 API 执行 server loader
     if (req.url.startsWith('/__serverLoader') && req.query.route) {
+      // 在浏览器中触发的__serverLoader请求的request应该和SSR时拿到的request一致，都是当前页面的URL
+      // 否则会导致serverLoader中的request.url和SSR时拿到的request.url不一致
+      // 进而导致浏览器中触发的__serverLoader请求传入的参数和SSR时拿到的参数不一致，导致数据不一致
+      const serverLoaderRequest = new Request(req.query.url, {
+        headers: req.headers,
+      });
       const data = await executeLoader({
         routeKey: req.query.route,
         routesWithServerLoader: opts.routesWithServerLoader,
-        serverLoaderArgs: { request: req },
+        serverLoaderArgs: { request: serverLoaderRequest },
       });
       res.status(200).json(data);
       return;
@@ -316,10 +322,13 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: UmiRequest) {
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
+    const serverLoaderRequest = new Request(query.url, {
+      headers: req.headers,
+    });
     return await executeLoader({
       routeKey: query.route,
       routesWithServerLoader: opts.routesWithServerLoader,
-      serverLoaderArgs: { request: req },
+      serverLoaderArgs: { request: serverLoaderRequest },
     });
   };
 }
