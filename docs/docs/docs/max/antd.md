@@ -161,14 +161,16 @@ export const antd: RuntimeAntdConfig = (memo) => {
 };
 ```
 
-### 动态切换主题
+### 动态切换全局配置
 
 **注意：该功能仅 antd v5 可用**
 
-当存在主题相关的配置时开启
+通过 `useAntdConfig` / `useAntdConfigSetter` 方法来动态获取、修改 antd 的 `ConfigProvider` 配置，通常可用于动态修改主题。
+
+注：此功能需依赖 `ConfigProvider` ，请一并开启 `configProvider: {}` 。
 
 ```tsx
-import { Layout, Space, Button, version, theme } from 'antd';
+import { Layout, Space, Button, version, theme, MappingAlgorithm } from 'antd';
 import { useAntdConfig, useAntdConfigSetter } from 'umi';
 const { darkAlgorithm, defaultAlgorithm } = theme;
 
@@ -183,12 +185,23 @@ export default function Page() {
         <Switch
           checked={antdConfig?.theme?.algorithm.includes(darkAlgorithm)}
           onChange={(data) => {
+            // 此配置会与原配置深合并
             setAntdConfig({
               theme: {
                 algorithm: [
                   data ? darkAlgorithm : defaultAlgorithm,
                 ],
               },
+            });
+            // or 
+            setAntdConfig((config) => {
+              const algorithm = config.theme!.algorithm as MappingAlgorithm[];
+              if (algorithm.includes(darkAlgorithm)) {
+                config.theme!.algorithm = [defaultAlgorithm]
+              } else {
+                config.theme!.algorithm = [darkAlgorithm];
+              }
+              return config;
             });
           }}
         ></Switch>
