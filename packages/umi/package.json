@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.87",
+  "version": "4.0.0-canary.20231109.1",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
