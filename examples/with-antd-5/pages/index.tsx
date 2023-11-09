@@ -22,6 +22,9 @@ const checkHasAlgorithm = (
   antdConfig: ConfigProviderProps,
   algorithm: MappingAlgorithm,
 ) => {
+  if (!antdConfig?.theme?.algorithm) {
+    return false;
+  }
   const nowAlgorithm = Array.isArray(antdConfig?.theme?.algorithm)
     ? antdConfig?.theme?.algorithm
     : [antdConfig?.theme?.algorithm];
@@ -55,6 +58,17 @@ export default function Page() {
   };
   const isDark = checkHasAlgorithm(antdConfig, darkAlgorithm);
   const isCompact = checkHasAlgorithm(antdConfig, compactAlgorithm);
+  const changeTheme = (theme: MappingAlgorithm) => {
+    setAntdConfig((config) => {
+      const algorithm = config.theme!.algorithm as MappingAlgorithm[];
+      if (algorithm.includes(theme)) {
+        config.theme!.algorithm = algorithm.filter((item) => item !== theme);
+      } else {
+        config.theme!.algorithm = [...algorithm, theme];
+      }
+      return config;
+    });
+  };
   return (
     <div
       style={{
@@ -83,15 +97,8 @@ export default function Page() {
         isDarkTheme
         <Switch
           checked={isDark}
-          onChange={(data) => {
-            setAntdConfig({
-              theme: {
-                algorithm: [
-                  data ? darkAlgorithm : defaultAlgorithm,
-                  isCompact && compactAlgorithm,
-                ].filter(Boolean) as MappingAlgorithm[],
-              },
-            });
+          onChange={() => {
+            changeTheme(darkAlgorithm);
           }}
         ></Switch>
       </Space>
@@ -100,14 +107,7 @@ export default function Page() {
         <Switch
           checked={isCompact}
           onChange={(data) => {
-            setAntdConfig({
-              theme: {
-                algorithm: [
-                  isDark ? darkAlgorithm : defaultAlgorithm,
-                  data && compactAlgorithm,
-                ].filter(Boolean) as MappingAlgorithm[],
-              },
-            });
+            changeTheme(compactAlgorithm);
           }}
         ></Switch>
       </Space>

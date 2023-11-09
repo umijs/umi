@@ -23,55 +23,66 @@ import {
 } from '{{{styleProvider.cssinjs}}}';
 {{/styleProvider}}
 import { getPluginManager } from '../core/plugin';
+{{#antdConfigSetter}}
+import { AntdConfigContext, AntdConfigContextSetter } from './context';
+import merge from '{{{lodashPath.merge}}}'
+{{/antdConfigSetter}}
 
-{{#enableV5ThemeAlgorithm}}
-import { AntdContext, AntdContextSetter } from './context';
-{{/enableV5ThemeAlgorithm}}
+let cacheAntdConfig = null;
 
-const AntdProvider = ({ container }) => {
-{{^configProvider}}
-{{^enableV5ThemeAlgorithm}}
-  // 三个条件都不成立的时候，直接返回 
-  return container
-{{^styleProvider}}
-{{/styleProvider}}
-{{/enableV5ThemeAlgorithm}}
-{{/configProvider}}
-  
-  const {
-    appConfig,
-    ...finalConfigProvider
-  } = getAntdConfig();
-
-{{#enableV5ThemeAlgorithm}}
-  // Add token algorithm for antd5 only
-  finalConfigProvider.theme ??= {};
-  finalConfigProvider.theme.algorithm = [
-    {{#enableV5ThemeAlgorithm.compact}}
-    theme.compactAlgorithm,
-    {{/enableV5ThemeAlgorithm.compact}}
-    {{#enableV5ThemeAlgorithm.dark}}
-    theme.darkAlgorithm,
-    {{/enableV5ThemeAlgorithm.dark}}
-  ];
-  const [antdConfig, setConfig] = React.useState(finalConfigProvider);
-  const setAntdConfig = (data) => {
-    const mergeConfig = {
-      ...antdConfig,
-      ...data,
-      theme: {
-        ...(antdConfig?.theme || {}),
-        ...(data?.theme || {}),
-      },
-    };
-    setConfig(mergeConfig);
-  };
-{{/enableV5ThemeAlgorithm}}
-
-{{^enableV5ThemeAlgorithm}}
-const antdConfig = finalConfigProvider;
-{{/enableV5ThemeAlgorithm}}
+const getAntdConfig = () => {
+  if(!cacheAntdConfig){
+    cacheAntdConfig = getPluginManager().applyPlugins({
+      key: 'antd',
+      type: ApplyPluginsType.modify,
+      initialValue: {
   {{#configProvider}}
+        ...{{{configProvider}}},
+  {{/configProvider}}
+  {{#appConfig}}
+        appConfig: {{{appConfig}}},
+  {{/appConfig}}
+      },
+    });
+  }
+  return cacheAntdConfig;
+}
+
+function AntdProvider({ children }) {
+  let container = children;
+
+  const [antdConfig, _setAntdConfig] = React.useState(() => {
+    const {
+      appConfig: _,
+      ...finalConfigProvider
+    } = getAntdConfig();
+    {{#enableV5ThemeAlgorithm}}
+      finalConfigProvider.theme ??= {};
+      finalConfigProvider.theme.algorithm ??= [];
+      if (!Array.isArray(finalConfigProvider.theme.algorithm)) {
+        finalConfigProvider.theme.algorithm = [finalConfigProvider.theme.algorithm];
+      }
+      const algorithm = finalConfigProvider.theme.algorithm;
+      {{#enableV5ThemeAlgorithm.compact}}
+      if (!algorithm.includes(theme.compactAlgorithm)) {
+        algorithm.push(theme.compactAlgorithm);
+      }
+      {{/enableV5ThemeAlgorithm.compact}}
+      {{#enableV5ThemeAlgorithm.dark}}
+      if (!algorithm.includes(theme.darkAlgorithm)) {
+        algorithm.push(theme.darkAlgorithm);
+      }
+      {{/enableV5ThemeAlgorithm.dark}}
+    {{/enableV5ThemeAlgorithm}}
+    return finalConfigProvider
+  });
+  const setAntdConfig: typeof _setAntdConfig = (newConfig) => {
+    _setAntdConfig(prev => {
+      return merge({}, prev, typeof newConfig === 'function' ? newConfig(prev) : newConfig)
+    })
+  }
+
+{{#configProvider}}
   {{^disableInternalStatic}}
   if (antdConfig.prefixCls) {
     Modal.config({
@@ -108,14 +119,11 @@ const antdConfig = finalConfigProvider;
     });
   }
 
+  container = <ConfigProvider {...antdConfig}>{container}</ConfigProvider>;
 {{/configProvider}}
 
-  return (
-{{#enableV5ThemeAlgorithm}}
-    <AntdContextSetter.Provider value={setAntdConfig}>
-      <AntdContext.Provider value={antdConfig}>
-{{/enableV5ThemeAlgorithm}}
 {{#styleProvider}}
+  container = (
     <StyleProvider
       {{#styleProvider.hashPriority}}
       hashPriority="{{{styleProvider.hashPriority}}}"
@@ -124,42 +132,32 @@ const antdConfig = finalConfigProvider;
       transformers={[legacyLogicalPropertiesTransformer]}
       {{/styleProvider.legacyTransformer}}
     >
+      {container}
+    </StyleProvider>
+  );
 {{/styleProvider}}
-        <ConfigProvider {...antdConfig}>{container}</ConfigProvider>
-{{#styleProvider}}
-        </StyleProvider>
-{{/styleProvider}}
-{{#enableV5ThemeAlgorithm}}
-      </AntdContext.Provider>
-    </AntdContextSetter.Provider>
-{{/enableV5ThemeAlgorithm}}
+
+{{#antdConfigSetter}}
+  container = (
+    <AntdConfigContextSetter.Provider value={setAntdConfig}>
+      <AntdConfigContext.Provider value={antdConfig}>
+        {container}
+      </AntdConfigContext.Provider>
+    </AntdConfigContextSetter.Provider>
+  )
+{{/antdConfigSetter}}
+
+  return container;
+}
+
+export function rootContainer(children) {
+  return (
+    <AntdProvider>
+      {children}
+    </AntdProvider>
   );
 }
 
-let cacheAntdConfig = null;
-
-const getAntdConfig = () => {
-  if(!cacheAntdConfig){
-    cacheAntdConfig = getPluginManager().applyPlugins({
-      key: 'antd',
-      type: ApplyPluginsType.modify,
-      initialValue: {
-  {{#configProvider}}
-        ...{{{configProvider}}},
-  {{/configProvider}}
-  {{#appConfig}}
-        appConfig: {{{appConfig}}},
-  {{/appConfig}}
-      },
-    });
-  }
-  return cacheAntdConfig;
-}
-
-export function rootContainer(rawContainer) {
-  const container = (<AntdProvider container={rawContainer}/>)
-  return container;
-}
 {{#appConfig}}
 // The App component should be under ConfigProvider
 // plugin-locale has other ConfigProvider
