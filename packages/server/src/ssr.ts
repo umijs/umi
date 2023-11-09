@@ -204,11 +204,11 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
             html = html.replace(
               /(<\/head>)/,
               [
-                opts.helmetContext.helmet?.title?.toString(),
-                opts.helmetContext.helmet?.priority?.toString(),
-                opts.helmetContext.helmet?.meta?.toString(),
-                opts.helmetContext.helmet?.link?.toString(),
-                opts.helmetContext.helmet?.script?.toString(),
+                opts.helmetContext.helmet.title.toString(),
+                opts.helmetContext.helmet.priority.toString(),
+                opts.helmetContext.helmet.meta.toString(),
+                opts.helmetContext.helmet.link.toString(),
+                opts.helmetContext.helmet.script.toString(),
                 '$1',
               ]
                 .filter(Boolean)
