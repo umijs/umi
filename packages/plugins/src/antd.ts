@@ -284,6 +284,33 @@ export type IRuntimeConfig = {
 };
       `,
     });
+
+    if (isV5) {
+      api.writeTmpFile({
+        path: 'index.tsx',
+        content: `import React from 'react';
+import { AntdContext, AntdContextSetter } from './context';
+        
+export function useAntdConfig() {
+  return React.useContext(AntdContext);
+}
+        
+export function useAntdConfigSetter() {
+  return React.useContext(AntdContextSetter);
+}`,
+      });
+      api.writeTmpFile({
+        path: 'context.tsx',
+        content: `import React from 'react';
+import type { ConfigProviderProps } from 'antd/es/config-provider';
+        
+export const AntdContext = React.createContext<ConfigProviderProps>({});
+export const AntdContextSetter = React.createContext((data:ConfigProviderProps)=>{
+  console.error('To use this feature, please enable one of the three configurations: antd.dark, antd.compact, antd.configProvider,or antd.appConfig,');
+});
+`,
+      });
+    }
   });
 
   api.addRuntimePlugin(() => {

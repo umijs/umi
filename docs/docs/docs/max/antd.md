@@ -161,6 +161,45 @@ export const antd: RuntimeAntdConfig = (memo) => {
 };
 ```
 
+### 动态切换主题
+
+**注意：该功能仅 antd v5 可用**
+
+当存在主题相关的配置时开启
+
+```tsx
+import { Layout, Space, Button, version, theme } from 'antd';
+import { useAntdConfig, useAntdConfigSetter } from 'umi';
+const { darkAlgorithm, defaultAlgorithm } = theme;
+
+export default function Page() {
+  const setAntdConfig = useAntdConfigSetter();
+  const antdConfig = useAntdConfig();
+  return (
+    <Layout>
+      <h1>with antd@{version}</h1>
+      <Space>
+        isDarkTheme
+        <Switch
+          checked={antdConfig?.theme?.algorithm.includes(darkAlgorithm)}
+          onChange={(data) => {
+            setAntdConfig({
+              theme: {
+                algorithm: [
+                  data ? darkAlgorithm : defaultAlgorithm,
+                ],
+              },
+            });
+          }}
+        ></Switch>
+      </Space>
+    </Layout>
+  );
+}
+```
+
+使用 `setAntdConfig` 可以动态修改 [antd@5 ConfigProvider](https://ant.design/components/config-provider-cn) 组件支持的所有属性。
+
 ## FAQ
 
 ### 如何使用 antd 的其他版本？
