@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-esbuild",
-  "version": "4.0.0-canary.20231109.1",
+  "version": "4.0.88",
   "description": "@umijs/bundler-esbuild",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-esbuild#readme",
   "bugs": "https://github.com/umijs/umi/issues",
