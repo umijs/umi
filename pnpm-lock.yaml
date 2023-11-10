@@ -2474,8 +2474,8 @@ importers:
         specifier: 5.5.0
         version: 5.5.0(webpack@5.75.0)
       less-plugin-resolve:
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: 1.0.2
+        version: 1.0.2
       path-to-regexp:
         specifier: 1.7.0
         version: 1.7.0
@@ -31491,8 +31491,8 @@ packages:
       webpack: 5.88.2(@swc/core@1.3.67)(uglify-js@3.17.4)
     dev: true
 
-  /less-plugin-resolve@1.0.0:
-    resolution: {integrity: sha512-offjRh1TfGsTgK0cqpl+RXFB0TFL6rPWy0yhCLhqhSEdWGVQp28K7wZ/ceUrRmWfZ5CSckYMe/KI+ViwaPLljQ==}
+  /less-plugin-resolve@1.0.2:
+    resolution: {integrity: sha512-e1AHq0XNTU8S3d9JCc8CFYajoUBr0EK3pcuLT5PogyBBeE0knzZJL105kKKSZWfq2lQLq3/uEDrMK3JPq+fHaA==}
     dependencies:
       enhanced-resolve: 5.15.0
     dev: false

@@ -51,7 +51,7 @@
     "enhanced-resolve": "5.9.3",
     "fast-glob": "3.2.12",
     "html-webpack-plugin": "5.5.0",
-    "less-plugin-resolve": "1.0.0",
+    "less-plugin-resolve": "1.0.2",
     "path-to-regexp": "1.7.0",
     "postcss": "^8.4.21",
     "postcss-prefix-selector": "1.16.0",

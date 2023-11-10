@@ -16,21 +16,24 @@ export default (api: IApi) => {
       const filePath = api.appData.overridesCSS[0];
       let content = readFileSync(filePath, 'utf-8');
       if (content === cachedContent) return;
+      const subPath = 'core/overrides.css';
+      const targetPath = join(api.paths.absTmpPath!, subPath);
       const isLess = filePath.endsWith('.less');
       if (isLess) {
-        content = await compileLess(
-          content,
+        content = await compileLess({
+          lessContent: content,
           filePath,
-          {
+          modifyVars: {
             ...api.config.theme,
             ...api.config.lessLoader?.modifyVars,
           },
-          api.config.alias,
-        );
+          alias: api.config.alias,
+          targetPath,
+        });
       }
       content = await transform(content, filePath);
       api.writeTmpFile({
-        path: 'core/overrides.css',
+        path: subPath,
         content: content || '/* empty */',
         noPluginDir: true,
       });
