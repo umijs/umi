@@ -655,7 +655,7 @@ if (process.env.NODE_ENV === 'development') {
         }
       }
       // plugins
-      beforeExports.unshift('// plugins');
+      beforeExports.push('// plugins');
       const allPlugins = readdirSync(api.paths.absTmpPath).filter((file) =>
         file.startsWith('plugin-'),
       );
