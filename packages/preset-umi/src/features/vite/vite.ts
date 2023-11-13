@@ -11,6 +11,12 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  api.modifyAppData((memo) => {
+    memo.bundler = 'vite';
+
+    return memo;
+  });
+
   api.modifyConfig((memo) => {
     // like vite, use to pre-bundling dependencies in vite mode
     memo.alias['@fs'] = api.cwd;

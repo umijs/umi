@@ -20,6 +20,9 @@ export default (api: IApi) => {
   // dev:  displayName
   // prod: minify
   api.modifyConfig((memo) => {
+    // only apply babel plugin in webpack and vite
+    if (!['webpack', 'vite'].includes(api.appData.bundler!)) return memo;
+
     const isProd = api.env === 'production';
     const pluginConfig = {
       // https://github.com/styled-components/babel-plugin-styled-components/blob/f8e9fb480d1645be8be797d73e49686bdf98975b/src/utils/options.js#L11

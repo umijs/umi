@@ -58,6 +58,7 @@ export class Service {
     mpa?: {
       entry?: { [key: string]: string }[];
     };
+    bundler?: string;
     [key: string]: any;
   } = {};
   args: yParser.Arguments = { _: [], $0: '' };
