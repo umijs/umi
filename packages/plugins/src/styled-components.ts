@@ -21,7 +21,7 @@ export default (api: IApi) => {
   // prod: minify
   api.modifyConfig((memo) => {
     // only apply babel plugin in webpack and vite
-    if (!['webpack', 'vite'].includes(api.appData.bundler)) return memo;
+    if (!['webpack', 'vite'].includes(api.appData.bundler!)) return memo;
 
     const isProd = api.env === 'production';
     const pluginConfig = {
