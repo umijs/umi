@@ -134,13 +134,9 @@ export default (api: IApi) => {
       // specify a low-compatibility target for babel transform
       const ieTarget = userConfig.targets?.ie || api.config.targets?.ie || 11;
       memo.targets = {
+        ...userConfig.targets,
         ie: ieTarget,
       };
-      logger.info(
-        `${legacyModeLabel} set compatiable target to ${chalk.yellow(
-          `ie ${ieTarget}`,
-        )}`,
-      );
 
       logger.info(
         `${legacyModeLabel} is enabled, we automatically modify the ${[
