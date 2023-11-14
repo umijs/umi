@@ -133,8 +133,8 @@ export default (api: IApi) => {
 
       // specify a low-compatibility target for babel transform
       memo.targets = {
-        ...userConfig.targets,
         ie: 11,
+        ...userConfig.targets,
       };
 
       logger.info(
