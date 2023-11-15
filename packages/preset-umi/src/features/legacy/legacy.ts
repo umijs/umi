@@ -132,9 +132,10 @@ export default (api: IApi) => {
       memo.cssMinifier = CSSMinifier.cssnano;
 
       // specify a low-compatibility target for babel transform
+      const ieTarget = userConfig.targets?.ie || api.config.targets?.ie || 11;
       memo.targets = {
         ...userConfig.targets,
-        ie: 11,
+        ie: ieTarget,
       };
 
       logger.info(
