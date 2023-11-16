@@ -121,9 +121,9 @@ export const layout: RunTimeLayoutConfig = (initialState) => {
 
 发生错误后的回调（可做一些错误日志上报，打点等）。
 
-#### ErrorComponent
+#### ErrorBoundary
 
-- Type: `(error: Error) => React.ReactElement<any>;`
+- Type: `ReactNode`
 - Default: Ant Design Pro 的错误页。
 
 发生错误后展示的组件。
