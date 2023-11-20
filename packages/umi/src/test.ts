@@ -32,7 +32,9 @@ let service: Service;
 
 export async function getUmiAlias() {
   if (!service) {
-    service = new Service();
+    service = new Service({
+      defaultConfigFiles: [],
+    });
     await service.run2({
       name: 'setup',
       args: { quiet: true },
