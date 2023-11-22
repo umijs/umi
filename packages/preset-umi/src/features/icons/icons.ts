@@ -137,6 +137,15 @@ export default (api: IApi) => {
     const localIconDir = getLocalIconDir();
     const localIcons: string[] = [];
 
+    const antIconsFilePath = require.resolve('@ant-design/icons/es/icons/index.js');
+    const contents = fs.readFileSync(antIconsFilePath, 'utf-8');
+    const matches = contents.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/g);
+    const antIconsComponents = matches!.map((match) => {
+      const [_, componentName] = match.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/)!;
+      // 驼峰转横杠：ManOutlined --> man-outlined
+      return componentName.replace(/\B([A-Z])/g, '-$1').toLowerCase();
+    });
+
     if (fs.existsSync(localIconDir)) {
       localIcons.push(
         ...readIconsFromDir(localIconDir)
@@ -155,10 +164,11 @@ const alias = ${JSON.stringify(api.config.icons.alias || {})};
 type AliasKeys = keyof typeof alias;
 const localIcons = ${JSON.stringify(localIcons)} as const;
 type LocalIconsKeys = typeof localIcons[number];
+const antIcons = ${JSON.stringify(antIconsComponents)} as const;
+type AntIconsKeys = typeof antIcons[number];
 
 type IconCollections = 'academicons' |
   'akar-icons' |
-  'ant-design' |
   'arcticons' |
   'basil' |
   'bi' |
@@ -306,7 +316,7 @@ type IconCollections = 'academicons' |
 type Icon = \`\${IconCollections}:\${string}\`;
 
 interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
-  icon: AliasKeys | Icon | \`local:\${LocalIconsKeys}\`;
+  icon: AliasKeys | Icon | \`local:\${LocalIconsKeys}\` | \`ant-design:\${AntIconsKeys}\`;
   hover?: AliasKeys | string;
   className?: string;
   viewBox?: string;
