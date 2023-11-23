@@ -1,5 +1,6 @@
 import React from 'react';
 import { matchRoutes, useLocation } from 'react-router-dom';
+import { fetchServerLoader } from './browser';
 import { useRouteData } from './routeContext';
 import {
   IClientRoute,
@@ -45,10 +46,50 @@ export function useRouteProps<T extends Record<string, any> = any>() {
 
 type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
 export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
-  const route = useRouteData();
-  const appData = useAppData();
+  const routes = useSelectedRoutes();
+  const { serverLoaderData, basename } = useAppData();
+  const [data, setData] = React.useState(() => {
+    const ret = {} as Awaited<ReturnType<T>>;
+    let has = false;
+    routes.forEach((route) => {
+      // 多级路由嵌套时，需要合并多级路由serverLoader的数据
+      const routeData = serverLoaderData[route.route.id];
+      if (routeData) {
+        Object.assign(ret, routeData);
+        has = true;
+      }
+    });
+    return has ? ret : undefined;
+  });
+  React.useEffect(() => {
+    if (!window.__UMI_LOADER_DATA__) {
+      // 支持ssr降级，客户端兜底加载serverLoader数据
+      Promise.all(
+        routes
+          .filter((route) => route.route.hasServerLoader)
+          .map(
+            (route) =>
+              new Promise((resolve) => {
+                fetchServerLoader({
+                  id: route.route.id,
+                  basename,
+                  cb: resolve,
+                });
+              }),
+          ),
+      ).then((datas) => {
+        if (datas.length) {
+          const res = {} as Awaited<ReturnType<T>>;
+          datas.forEach((data) => {
+            Object.assign(res, data);
+          });
+          setData(res);
+        }
+      });
+    }
+  }, []);
   return {
-    data: appData.serverLoaderData[route.route.id] as Awaited<ReturnType<T>>,
+    data,
   };
 }
 
