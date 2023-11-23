@@ -586,7 +586,9 @@ if (process.env.NODE_ENV === 'development') {
         }),
       );
 
-      const exports = [];
+      const exports: string[] = [];
+      const beforeExports: string[] = [];
+      const afterExports: string[] = [];
       const exportMembers = ['default'];
       // @umijs/renderer-react
       exports.push('// @umijs/renderer-*');
@@ -599,7 +601,7 @@ if (process.env.NODE_ENV === 'development') {
           })
         ).join(', ')} } from '${rendererPath}';`,
       );
-      exports.push(`export type {  History } from '${rendererPath}'`);
+      exports.push(`export type { History } from '${rendererPath}'`);
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
@@ -633,10 +635,15 @@ if (process.env.NODE_ENV === 'development') {
           // development is for TestBrowser's type
           process.env.NODE_ENV === 'development'
         ) {
-          exports.push(`export { TestBrowser } from './testBrowser';`);
+          // `TestBrowser` is a circular dependency, we export it last
+          afterExports.push(
+            `// test`,
+            `export { TestBrowser } from './testBrowser';`,
+          );
         }
       }
       if (api.appData.framework === 'react') {
+        exports.push('// react ssr');
         if (api.config.ssr) {
           exports.push(
             `export { useServerInsertedHTML } from './core/serverInsertedHTMLContext';`,
@@ -648,7 +655,7 @@ if (process.env.NODE_ENV === 'development') {
         }
       }
       // plugins
-      exports.push('// plugins');
+      beforeExports.push('// plugins');
       const allPlugins = readdirSync(api.paths.absTmpPath).filter((file) =>
         file.startsWith('plugin-'),
       );
@@ -674,7 +681,7 @@ if (process.env.NODE_ENV === 'development') {
           exportMembers,
         });
         if (pluginExports.length) {
-          exports.push(
+          beforeExports.push(
             `export { ${pluginExports.join(', ')} } from '${winPath(
               join(api.paths.absTmpPath, plugin),
             )}';`,
@@ -683,13 +690,13 @@ if (process.env.NODE_ENV === 'development') {
       }
 
       // plugins types.ts
-      exports.push('// plugins types.d.ts');
+      beforeExports.push('// plugins types.d.ts');
       for (const plugin of allPlugins) {
         const file = winPath(join(api.paths.absTmpPath, plugin, 'types.d.ts'));
         if (existsSync(file)) {
           // 带 .ts 后缀的声明文件 会导致声明失效
           const noSuffixFile = file.replace(/\.ts$/, '');
-          exports.push(`export * from '${noSuffixFile}';`);
+          beforeExports.push(`export * from '${noSuffixFile}';`);
         }
       }
       // plugins runtimeConfig.d.ts
@@ -728,7 +735,9 @@ if (process.env.NODE_ENV === 'development') {
       //        we will get a `defineApp` of `undefined`
       // https://github.com/umijs/umi/issues/9702
       // https://github.com/umijs/umi/issues/10412
-      exports.unshift(
+      beforeExports.unshift(
+        // `app.ts` should be in the first, otherwise it will be circular dependency
+        `// defineApp`,
         `export { defineApp } from './core/defineApp'`,
         // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
         `export type { RuntimeConfig } from './core/defineApp'`,
@@ -736,7 +745,7 @@ if (process.env.NODE_ENV === 'development') {
       api.writeTmpFile({
         noPluginDir: true,
         path: 'exports.ts',
-        content: exports.join('\n'),
+        content: [...beforeExports, ...exports, ...afterExports].join('\n'),
       });
     },
     stage: 10000,
