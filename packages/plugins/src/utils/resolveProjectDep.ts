@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-import resolve from '../compiled/resolve';
+import { resolve } from 'umi/plugin-utils';
 
 export function resolveProjectDep(opts: {
   pkg: any;

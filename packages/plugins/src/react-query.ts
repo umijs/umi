@@ -1,6 +1,7 @@
+import { winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
-import { resolveProjectDep, winPath } from 'umi/plugin-utils';
+import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
