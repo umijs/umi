@@ -1,4 +1,3 @@
-import React from 'react';
 import { useClientLoaderData, useServerLoaderData } from 'umi';
 
 export default () => {
@@ -20,5 +19,5 @@ export async function clientLoader() {
 
 export async function serverLoader() {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
-  return { message: 'data from server loader of users/user2/info.tsx' };
+  return { messageUser2: 'data from server loader of users/user2/info.tsx' };
 }
