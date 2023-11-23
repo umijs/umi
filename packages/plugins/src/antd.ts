@@ -164,6 +164,11 @@ export default (api: IApi) => {
       }
     }
 
+    // 如果使用静态主题配置，需要搭配 ConfigProvider ，否则无效，我们自动开启它
+    if (antd.dark || antd.compact) {
+      antd.configProvider ??= {};
+    }
+
     return memo;
   });
 
@@ -202,6 +207,11 @@ export default (api: IApi) => {
     return [];
   });
 
+  const lodashPkg = dirname(require.resolve('lodash/package.json'));
+  const lodashPath = {
+    merge: winPath(join(lodashPkg, 'merge')),
+  };
+
   // antd config provider & app component
   api.onGenerateFiles(() => {
     const withConfigProvider = !!api.config.antd.configProvider;
@@ -209,8 +219,6 @@ export default (api: IApi) => {
     const styleProvider = api.config.antd.styleProvider;
     const userInputCompact = api.config.antd.compact;
     const userInputDark = api.config.antd.dark;
-
-    // Hack StyleProvider
 
     const ieTarget = !!api.config.targets?.ie || !!api.config.legacy;
 
@@ -242,19 +250,27 @@ export default (api: IApi) => {
     }
 
     // Template
+    const configProvider =
+      withConfigProvider && JSON.stringify(api.config.antd.configProvider);
+    const appConfig =
+      appComponentAvailable && JSON.stringify(api.config.antd.appConfig);
+    const enableV5ThemeAlgorithm =
+      isV5 && (userInputCompact || userInputDark)
+        ? { compact: userInputCompact, dark: userInputDark }
+        : false;
+    const hasConfigProvider = configProvider || enableV5ThemeAlgorithm;
+    // 拥有 `ConfigProvider` 时，我们默认提供修改 antd 全局配置的便捷方法（仅限 antd 5）
+    const antdConfigSetter = isV5 && hasConfigProvider;
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
-        configProvider:
-          withConfigProvider && JSON.stringify(api.config.antd.configProvider),
-        appConfig:
-          appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
+        configProvider,
+        appConfig,
         styleProvider: styleProviderConfig,
         // 是否启用了 v5 的 theme algorithm
-        enableV5ThemeAlgorithm:
-          isV5 && (userInputCompact || userInputDark)
-            ? { compact: userInputCompact, dark: userInputDark }
-            : false,
+        enableV5ThemeAlgorithm,
+        antdConfigSetter,
+        lodashPath,
         /**
          * 是否重构了全局静态配置。 重构后需要在运行时将全局静态配置传入到 ConfigProvider 中。
          * 实际上 4.13.0 重构后有一个 bug，真正的 warn 出现在 4.13.1，并且 4.13.1 修复了这个 bug。
@@ -284,6 +300,35 @@ export type IRuntimeConfig = {
 };
       `,
     });
+
+    if (antdConfigSetter) {
+      api.writeTmpFile({
+        path: 'index.tsx',
+        content: `import React from 'react';
+import { AntdConfigContext, AntdConfigContextSetter } from './context';
+
+export function useAntdConfig() {
+  return React.useContext(AntdConfigContext);
+}
+
+export function useAntdConfigSetter() {
+  return React.useContext(AntdConfigContextSetter);
+}`,
+      });
+      api.writeTmpFile({
+        path: 'context.tsx',
+        content: `import React from 'react';
+import type { ConfigProviderProps } from 'antd/es/config-provider';
+
+export const AntdConfigContext = React.createContext<ConfigProviderProps>(null!);
+export const AntdConfigContextSetter = React.createContext<React.Dispatch<React.SetStateAction<ConfigProviderProps>>>(
+  () => {
+    console.error(\`The 'useAntdConfigSetter()' method depends on the antd 'ConfigProvider', requires one of 'antd.configProvider' / 'antd.dark' / 'antd.compact' to be enabled.\`);
+  }
+);
+`,
+      });
+    }
   });
 
   api.addRuntimePlugin(() => {
