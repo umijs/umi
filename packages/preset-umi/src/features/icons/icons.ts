@@ -137,14 +137,7 @@ export default (api: IApi) => {
     const localIconDir = getLocalIconDir();
     const localIcons: string[] = [];
 
-    const antIconsFilePath = require.resolve('@ant-design/icons/es/icons/index.js');
-    const contents = fs.readFileSync(antIconsFilePath, 'utf-8');
-    const matches = contents.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/g);
-    const antIconsComponents = matches!.map((match) => {
-      const [_, componentName] = match.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/)!;
-      // 驼峰转横杠：ManOutlined --> man-outlined
-      return componentName.replace(/\B([A-Z])/g, '-$1').toLowerCase();
-    });
+    const antIconsComponents = getAntIconsComponents();
 
     if (fs.existsSync(localIconDir)) {
       localIcons.push(
@@ -460,4 +453,16 @@ function readIconsFromDir(dir: string) {
   collect(dir);
 
   return icons;
+}
+
+function getAntIconsComponents() {
+  const antIconsFilePath = require.resolve('@ant-design/icons/es/icons/index.js');
+  const contents = fs.readFileSync(antIconsFilePath, 'utf-8');
+  const matches = contents.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/g);
+  const antIconsComponents = matches!.map((match) => {
+    const [_, componentName] = match.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/)!;
+    // 驼峰转横杠：ManOutlined --> man-outlined
+    return componentName.replace(/\B([A-Z])/g, '-$1').toLowerCase();
+  });
+  return antIconsComponents;
 }
