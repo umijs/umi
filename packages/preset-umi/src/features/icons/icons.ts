@@ -3,6 +3,7 @@ import {
   importLazy,
   installWithNpmClient,
   logger,
+  resolve,
   winPath,
 } from '@umijs/utils';
 import fs from 'fs';
@@ -10,6 +11,18 @@ import path from 'path';
 
 import type { IApi } from '../../types';
 import { addDeps } from '../depsOnDemand/depsOnDemand';
+
+interface IIconsType {
+  iconsType: string;
+}
+
+interface IIconsJson {
+  prefix?: string;
+  icons?: Record<string, any>;
+  aliases?: Record<string, any>;
+}
+
+const ICON_TYPES_WHITE_LIST = ['ant-design'];
 
 export default (api: IApi) => {
   const iconPlugin: typeof import('./esbuildIconPlugin') = importLazy(
@@ -126,7 +139,57 @@ export default (api: IApi) => {
     });
   });
 
-  const antIconsComponents = getAntIconsComponents();
+  function getIconsType() {
+    const pkg = api.pkg;
+    const prefix = `@iconify-json`;
+    const iconifyDeps = Object.keys({
+      ...pkg?.dependencies,
+      ...pkg?.devDependencies,
+    }).filter((name) => name.startsWith(`${prefix}/`));
+    const icons: IIconsType[] = [];
+    iconifyDeps.forEach((name) => {
+      try {
+        const pkgPath = resolve.sync(`${name}/icons.json`, {
+          basedir: api.cwd,
+        });
+        const map = require(pkgPath) as IIconsJson;
+        if (!map?.prefix?.length) {
+          return;
+        }
+        const isWhite = ICON_TYPES_WHITE_LIST.some(
+          (prefix) => prefix === map.prefix,
+        );
+        if (!isWhite) {
+          return;
+        }
+        const iconKeys = Object.keys({
+          ...map?.icons,
+          ...map?.aliases,
+        });
+        const iconsType = iconKeys
+          .map((name) => {
+            return `\`${map.prefix}:${name}\``;
+          })
+          .join(' | ');
+        icons.push({
+          iconsType,
+        });
+      } catch {}
+    });
+    const finalIconifyDeps: IIconsType = icons.reduce(
+      (memo, curr) => {
+        return {
+          iconsType: `${memo.iconsType} | ${curr.iconsType}`,
+        };
+      },
+      {
+        iconsType: '',
+      },
+    );
+    return finalIconifyDeps;
+  }
+
+  const iconsType = getIconsType();
 
   api.onGenerateFiles(({ isFirstTime }) => {
     // ensure first time file exist for esbuild resolve
@@ -157,8 +220,7 @@ const alias = ${JSON.stringify(api.config.icons.alias || {})};
 type AliasKeys = keyof typeof alias;
 const localIcons = ${JSON.stringify(localIcons)} as const;
 type LocalIconsKeys = typeof localIcons[number];
-const antIcons = ${JSON.stringify(antIconsComponents)} as const;
-type AntIconsKeys = typeof antIcons[number];
+${iconsType.iconsMapType}
 
 type IconCollections = 'academicons' |
   'akar-icons' |
@@ -309,7 +371,7 @@ type IconCollections = 'academicons' |
 type Icon = \`\${IconCollections}:\${string}\`;
 
 interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
-  icon: AliasKeys | Icon | \`local:\${LocalIconsKeys}\` | \`ant-design:\${AntIconsKeys}\`;
+  icon: AliasKeys | Icon | \`local:\${LocalIconsKeys}\` ${iconsType.iconsType};
   hover?: AliasKeys | string;
   className?: string;
   viewBox?: string;
@@ -453,16 +515,4 @@ function readIconsFromDir(dir: string) {
   collect(dir);
 
   return icons;
-}
-
-function getAntIconsComponents() {
-  const antIconsFilePath = require.resolve('@ant-design/icons/es/icons/index.js');
-  const contents = fs.readFileSync(antIconsFilePath, 'utf-8');
-  const matches = contents.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/g);
-  const antIconsComponents = matches!.map((match) => {
-    const [_, componentName] = match.match(/default\sas\s([^\s]+)\s}\sfrom\s\'\.\/([^\']+)/)!;
-    // 驼峰转横杠：ManOutlined --> man-outlined
-    return componentName.replace(/\B([A-Z])/g, '-$1').toLowerCase();
-  });
-  return antIconsComponents;
 }
