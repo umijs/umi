@@ -1,8 +1,13 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { lodash, Mustache, NpmClientEnum, winPath } from 'umi/plugin-utils';
-import { resolveProjectDep } from './utils/resolveProjectDep';
+import {
+  lodash,
+  Mustache,
+  NpmClientEnum,
+  resolveProjectDep,
+  winPath,
+} from 'umi/plugin-utils';
 import { withTmpPath } from './utils/withTmpPath';
 
 // 获取所有 icons

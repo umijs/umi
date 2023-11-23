@@ -50,6 +50,7 @@ export * from './npmClient';
 export * from './randomColor/randomColor';
 export * from './readDirFiles';
 export * as register from './register';
+export * from './resolveProjectDep';
 export * from './setNoDeprecation';
 export * from './tryPaths';
 export * from './winPath';

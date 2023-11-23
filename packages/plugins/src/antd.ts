@@ -3,9 +3,13 @@ import AntdMomentWebpackPlugin from '@ant-design/moment-webpack-plugin';
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge, semver, winPath } from 'umi/plugin-utils';
+import {
+  deepmerge,
+  resolveProjectDep,
+  semver,
+  winPath,
+} from 'umi/plugin-utils';
 import { TEMPLATES_DIR } from './constants';
-import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 const ANTD_TEMPLATES_DIR = join(TEMPLATES_DIR, 'antd');

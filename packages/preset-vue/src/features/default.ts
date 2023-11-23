@@ -1,6 +1,7 @@
+import { resolveProjectDep } from '@umijs/utils';
 import { dirname } from 'path';
 import type { IApi } from 'umi';
-import { resolveProjectDep, resolveVuePath } from '../utils/resolveProjectDep';
+import { resolveVuePath } from '../utils/resolveVuePath';
 
 export default (api: IApi) => {
   api.describe({

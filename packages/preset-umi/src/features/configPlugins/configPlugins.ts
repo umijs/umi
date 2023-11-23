@@ -1,22 +1,9 @@
 import { getSchemas as getViteSchemas } from '@umijs/bundler-vite/dist/schema';
 import { getSchemas as getWebpackSchemas } from '@umijs/bundler-webpack/dist/schema';
-import { resolve } from '@umijs/utils';
+import { resolveProjectDep } from '@umijs/utils';
 import { dirname, join } from 'path';
 import type { IApi } from '../../types';
 import { getSchemas as getExtraSchemas } from './schema';
-
-function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
-  if (
-    opts.pkg.dependencies?.[opts.dep] ||
-    opts.pkg.devDependencies?.[opts.dep]
-  ) {
-    return dirname(
-      resolve.sync(`${opts.dep}/package.json`, {
-        basedir: opts.cwd,
-      }),
-    );
-  }
-}
 
 export default (api: IApi) => {
   const { userConfig } = api;
