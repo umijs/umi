@@ -62,15 +62,18 @@ export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
     return has ? ret : undefined;
   });
   React.useEffect(() => {
+    // @ts-ignore
     if (!window.__UMI_LOADER_DATA__) {
       // 支持ssr降级，客户端兜底加载serverLoader数据
       Promise.all(
         routes
+          // @ts-ignore
           .filter((route) => route.route.hasServerLoader)
           .map(
             (route) =>
               new Promise((resolve) => {
                 fetchServerLoader({
+                  // @ts-ignore
                   id: route.route.id,
                   basename,
                   cb: resolve,
