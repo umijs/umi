@@ -53,6 +53,7 @@ export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
     let has = false;
     routes.forEach((route) => {
       // 多级路由嵌套时，需要合并多级路由serverLoader的数据
+      // @ts-ignore
       const routeData = serverLoaderData[route.route.id];
       if (routeData) {
         Object.assign(ret, routeData);
