@@ -126,6 +126,8 @@ export default (api: IApi) => {
     });
   });
 
+  const antIconsComponents = getAntIconsComponents();
+
   api.onGenerateFiles(({ isFirstTime }) => {
     // ensure first time file exist for esbuild resolve
     if (isFirstTime) {
@@ -136,8 +138,6 @@ export default (api: IApi) => {
     }
     const localIconDir = getLocalIconDir();
     const localIcons: string[] = [];
-
-    const antIconsComponents = getAntIconsComponents();
 
     if (fs.existsSync(localIconDir)) {
       localIcons.push(
