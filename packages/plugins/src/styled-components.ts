@@ -2,6 +2,7 @@ import { lodash, winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import type { IStyleSheetManager } from 'styled-components';
 import { IApi } from 'umi';
+import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
@@ -20,8 +21,9 @@ export default (api: IApi) => {
   // dev:  displayName
   // prod: minify
   api.modifyConfig((memo) => {
-    // only apply babel plugin in webpack and vite
-    if (!['webpack', 'vite'].includes(api.appData.bundler!)) return memo;
+    if (api.userConfig.mako || process.env.OKAM) {
+      return memo;
+    }
 
     const isProd = api.env === 'production';
     const pluginConfig = {
@@ -56,7 +58,22 @@ export default (api: IApi) => {
     return ['styledComponents'];
   });
 
-  const libPath = dirname(require.resolve('styled-components/package'));
+  const SC_NAME = `styled-components`;
+  let libPath: string;
+  try {
+    libPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: SC_NAME,
+      }) || dirname(require.resolve(`${SC_NAME}/package.json`));
+  } catch (e) {}
+
+  api.modifyConfig((memo) => {
+    memo.alias[SC_NAME] = libPath;
+    return memo;
+  });
+
   api.onGenerateFiles(() => {
     api.writeTmpFile({
       path: 'index.tsx',
