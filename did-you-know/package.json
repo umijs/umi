@@ -151,7 +151,7 @@
       "majorVersion": 4
     },
     {
-      "text": "请求加载态、数据管理、避免竟态问题，用 react-query 帮你全部解决",
+      "text": "请求加载态、数据管理、避免竞态问题，用 react-query 帮你全部解决",
       "url": "https://umijs.org/docs/max/react-query",
       "majorVersion": 4
     },
