@@ -9,6 +9,7 @@ import React, {
 import ReactDOM from 'react-dom/client';
 import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
+import { fetchServerLoader } from './dataFetcher';
 import { createClientRoutes } from './routes';
 import { ILoaderData, IRouteComponents, IRoutesById } from './types';
 
@@ -265,25 +266,17 @@ const getBrowser = (
           // server loader
           // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
           if (!isFirst && opts.routes[id]?.hasServerLoader) {
-            const query = new URLSearchParams({
-              route: id,
-              url: window.location.href,
-            }).toString();
-            // 在有basename的情况下__serverLoader的请求路径需要加上basename
-            const url = `${withEndSlash(basename)}__serverLoader?${query}`;
-            fetch(url, {
-              credentials: 'include',
-            })
-              .then((d) => d.json())
-              .then((data) => {
+            fetchServerLoader({
+              id,
+              basename,
+              cb: (data) => {
                 // setServerLoaderData when startTransition because if ssr is enabled,
                 // the component may being hydrated and setLoaderData will break the hydration
-                // @ts-ignore
                 React.startTransition(() => {
                   setServerLoaderData((d) => ({ ...d, [id]: data }));
                 });
-              })
-              .catch(console.error);
+              },
+            });
           }
           // client loader
           // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
@@ -354,8 +347,4 @@ export function renderClient(opts: RenderClientOpts) {
   }
   // @ts-ignore
   ReactDOM.render(<Browser />, rootElement);
-}
-
-function withEndSlash(str: string) {
-  return str.endsWith('/') ? str : `${str}/`;
 }

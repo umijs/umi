@@ -1,3 +1,5 @@
+import type { RouteMatch, RouteObject } from 'react-router-dom';
+
 export interface IRouteSSRProps {
   clientLoader?: () => Promise<any>;
   hasServerLoader?: boolean;
@@ -20,6 +22,12 @@ export interface IClientRoute extends IRoute {
   children?: IClientRoute[];
   // compatible with @ant-design/pro-layout
   routes?: IClientRoute[];
+}
+
+export interface ISelectedRoute extends IRoute, RouteObject {}
+
+export interface ISelectedRoutes extends RouteMatch {
+  route: ISelectedRoute;
 }
 
 export interface IRoutesById {
