@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@umijs/plugins": "workspace:*",
+    "styled-components": "6.1.1",
     "umi": "workspace:*"
   }
 }
