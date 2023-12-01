@@ -33,54 +33,77 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        // https://github.com/ant-design/ant-design/blob/master/components/theme/interface/components.ts
-        const validComponentName = zod.string().refine(
-          (value) => {
-            const firstLetter = value.substring(0, 1);
-            return firstLetter === firstLetter.toUpperCase(); // first letter is uppercase
-          },
-          {
-            message:
-              'theme.components.[componentName] needs to be in PascalCase, e.g. theme.components.Button',
-          },
-        );
+        const commonSchema: Parameters<typeof zod.object>[0] = {
+          dark: zod.boolean(),
+          compact: zod.boolean(),
+          // babel-plugin-import
+          import: zod.boolean(),
+          // less or css, default less
+          style: zod
+            .enum(['less', 'css'])
+            .describe('less or css, default less'),
+        };
+        const createZodRecordWithSpecifiedPartial = (
+          partial: Parameters<typeof zod.object>[0],
+        ) => {
+          const keys = Object.keys(partial);
+          return zod.union([
+            zod.object(partial),
+            zod.record(zod.any()).refine((obj) => {
+              return !keys.some((key) => key in obj);
+            }),
+          ]);
+        };
+        const createV5Schema = () => {
+          // Reason: https://github.com/umijs/umi/pull/11924
+          // Refer:  https://github.com/ant-design/ant-design/blob/master/components/theme/interface/components.ts
+          const componentNameSchema = zod.string().refine(
+            (value) => {
+              const firstLetter = value.slice(0, 1);
+              return firstLetter === firstLetter.toUpperCase(); // first letter is uppercase
+            },
+            {
+              message:
+                'theme.components.[componentName] needs to be in PascalCase, e.g. theme.components.Button',
+            },
+          );
+          const themeSchema = createZodRecordWithSpecifiedPartial({
+            components: zod.record(componentNameSchema, zod.record(zod.any())),
+          });
+          const configProvider = createZodRecordWithSpecifiedPartial({
+            theme: themeSchema,
+          });
 
-        const antdCPThemeComponent = zod.record(
-          validComponentName,
-          zod.record(zod.any()),
-        );
-
-        const antdCPTheme = zod.object({
-          components: antdCPThemeComponent.optional(),
-        });
-
-        const antdCP = zod.object({
-          theme: antdCPTheme.optional(),
-        });
-
-        return zod
-          .object({
-            configProvider: isV5 ? antdCP : zod.record(zod.any()),
-            dark: zod.boolean(),
-            compact: zod.boolean(),
-            // babel-plugin-import
-            import: zod.boolean(),
-            // less or css, default less
-            style: zod
-              .enum(['less', 'css'])
-              .describe('less or css, default less'),
-            theme: antdCPTheme
-              .optional()
-              .describe('Only antd@5.x is supported'),
-            // Only antd@5.1.0 is supported
-            appConfig: zod
-              .record(zod.any())
-              .describe('Only antd@5.1.0 is supported'),
-            // DatePicker & Calendar use moment version
-            momentPicker: zod.boolean().describe('Only antd@5.x is supported'),
-            styleProvider: zod.record(zod.any()),
-          })
-          .deepPartial();
+          return zod
+            .object({
+              ...commonSchema,
+              theme: themeSchema.describe('Shortcut of `configProvider.theme`'),
+              appConfig: zod
+                .record(zod.any())
+                .describe('Only >= antd@5.1.0 is supported'),
+              momentPicker: zod
+                .boolean()
+                .describe('DatePicker & Calendar use moment version'),
+              styleProvider: zod.record(zod.any()),
+              configProvider,
+            })
+            .deepPartial();
+        };
+        const createV4Schema = () => {
+          return zod
+            .object({
+              ...commonSchema,
+              configProvider: zod.record(zod.any()),
+            })
+            .deepPartial();
+        };
+        if (isV5) {
+          return createV5Schema();
+        }
+        if (isV4) {
+          return createV4Schema();
+        }
+        return zod.object({});
       },
     },
     enableBy({ userConfig }) {
