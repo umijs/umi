@@ -33,10 +33,34 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
+        // https://github.com/ant-design/ant-design/blob/master/components/theme/interface/components.ts
+        const validComponentName = zod.string().refine(
+          (value) => {
+            const firstLetter = value.substring(0, 1);
+            return firstLetter === firstLetter.toUpperCase(); // first letter is uppercase
+          },
+          {
+            message:
+              'theme.components.[componentName] needs to be in PascalCase, e.g. theme.components.Button',
+          },
+        );
+
+        const antdCPThemeComponent = zod.record(
+          validComponentName,
+          zod.record(zod.any()),
+        );
+
+        const antdCPTheme = zod.object({
+          components: antdCPThemeComponent.optional(),
+        });
+
+        const antdCP = zod.object({
+          theme: antdCPTheme.optional(),
+        });
+
         return zod
           .object({
-            configProvider: zod.record(zod.any()),
-            // themes
+            configProvider: isV5 ? antdCP : zod.record(zod.any()),
             dark: zod.boolean(),
             compact: zod.boolean(),
             // babel-plugin-import
@@ -45,7 +69,9 @@ export default (api: IApi) => {
             style: zod
               .enum(['less', 'css'])
               .describe('less or css, default less'),
-            theme: zod.record(zod.any()),
+            theme: antdCPTheme
+              .optional()
+              .describe('Only antd@5.x is supported'),
             // Only antd@5.1.0 is supported
             appConfig: zod
               .record(zod.any())
