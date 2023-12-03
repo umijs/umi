@@ -74,7 +74,6 @@ export const layout: RunTimeLayoutConfig = (initialState) => {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
 
     // 默认布局调整
-    rightContentRender: () => <RightContent />,
     footerRender: () => <Footer />,
     menuHeaderRender: undefined,
 
