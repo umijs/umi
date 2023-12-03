@@ -68,7 +68,7 @@ export default (api: IApi) => {
     }
 
     logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
-    const code: string[] = [];
+    const code: string[] = ["import React from 'react';"];
     const { generateIconName, generateSvgr } = svgr;
     for (const iconStr of allIcons) {
       const [collect, icon] = iconStr.split(':');
