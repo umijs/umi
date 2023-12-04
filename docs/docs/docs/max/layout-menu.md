@@ -72,6 +72,7 @@ export const layout: RunTimeLayoutConfig = (initialState) => {
     // 常用属性
     title: 'Ant Design',
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
+    rightContentRender: () => <RightContent />,
 
     // 默认布局调整
     footerRender: () => <Footer />,
