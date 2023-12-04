@@ -68,7 +68,7 @@ export default (api: IApi) => {
     }
 
     logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
-    const code: string[] = ["import React from 'react';"];
+    const code: string[] = [];
     const { generateIconName, generateSvgr } = svgr;
     for (const iconStr of allIcons) {
       const [collect, icon] = iconStr.split(':');
@@ -119,6 +119,9 @@ export default (api: IApi) => {
           throw new Error(`[icons] Icon ${iconStr} not found`);
         }
       }
+    }
+    if (code.length) {
+      code.unshift("import React from 'react';");
     }
     api.writeTmpFile({
       path: 'icons.tsx',
