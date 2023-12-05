@@ -115,12 +115,6 @@ export const layout: RunTimeLayoutConfig = (initialState) => {
 
 `initialState` 是运行时配置 `app.ts(x)` 中的 `getInitialState` 返回的对象。
 
-#### onError
-
-- Type: `(error: Error, info: any) => void;`
-
-发生错误后的回调（可做一些错误日志上报，打点等）。
-
 #### ErrorBoundary
 
 - Type: `ReactNode`
