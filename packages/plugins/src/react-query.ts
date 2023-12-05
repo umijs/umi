@@ -64,6 +64,7 @@ export default (api: IApi) => {
       path: 'runtime.tsx',
       content: enableQueryClient
         ? `
+import React from 'react';
 import { defaultContext, QueryClient, QueryClientProvider } from '${pkgPath}';
 import { ReactQueryDevtools } from '${devtoolPkgPath}';
 ${reactQueryRuntimeCode}

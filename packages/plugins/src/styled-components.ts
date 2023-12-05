@@ -104,6 +104,7 @@ export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetMan
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
+import React from 'react';
 ${hasProvider ? `import { StyleSheetManager } from '${winPath(libPath)}';` : ``}
 
 ${styledComponentsRuntimeCode}

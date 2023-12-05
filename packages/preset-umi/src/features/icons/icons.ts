@@ -120,6 +120,9 @@ export default (api: IApi) => {
         }
       }
     }
+    if (code.length) {
+      code.unshift("import React from 'react';");
+    }
     api.writeTmpFile({
       path: 'icons.tsx',
       content: code.join('\n') || EMPTY_ICONS_FILE,
