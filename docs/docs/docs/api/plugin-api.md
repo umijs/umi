@@ -211,6 +211,67 @@ api.registerPlugins([
 注意： 相较于 `umi@3` ，`umi@4` 不再支持在 `registerPresets` 和 `registerPlugins` 中直接传入插件对象了，现在只允许传入插件的路径。
 
 ### registerGenerator
+``` ts
+  api.registerGenerator({
+    key: string,
+    name: string,
+    description: string,
+    type: GeneratorType,
+    checkEnable: fn,  
+    disabledDescription: fn | string,
+    fn
+  });
+```
+- `type`的取值有`generate`、`enable`。`enable` 表示对现在有的文件进行操作，`generate` 表示新生成文件
+- `checkEnable`, type 等于`GeneratorType.enable` 才有, 表示能否进行文件操作
+- `disabledDescription`: type 等于`GeneratorType.enable` 才有, 表示不能进行文件操作时的描述
+
+eg
+
+``` ts
+  api.registerGenerator({
+    key: 'component',
+    name: 'Generate Component',
+    description: 'Generate component boilerplate code',
+    type: GeneratorType.generate,
+
+    fn: async (options) => {
+      const { args } = options;
+
+      if (args.eject) {
+        await tryEject(ETempDir.Component, api.paths.cwd);
+        return;
+      }
+
+      const h = new GeneratorHelper(api);
+      let componentNames = args._.slice(1);
+
+      if (componentNames.length === 0) {
+        let name: string = '';
+        name = await h.ensureVariableWithQuestion(name, {
+          type: 'text',
+          message: 'Please input you component Name',
+          hint: 'foo',
+          initial: 'foo',
+          format: (s) => s?.trim() || '',
+        });
+        componentNames = [name];
+      }
+
+      for (const cn of componentNames) {
+        await new ComponentGenerator({
+          srcPath: api.paths.absSrcPath,
+          appRoot: api.paths.cwd,
+          componentName: cn,
+          args,
+        }).run();
+      }
+    },
+  });
+
+```
+
+这个示例表示注册一个`component`生成器
 
 ### skipPlugins
 ```ts
