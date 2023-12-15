@@ -222,56 +222,29 @@ api.registerPlugins([
     fn
   });
 ```
+注册代码生成器
+
 - `type`的取值有`generate`、`enable`。`enable` 表示对现在有的文件进行操作，`generate` 表示新生成文件
 - `checkEnable`, type 等于`GeneratorType.enable` 才有, 表示能否进行文件操作
-- `disabledDescription`: type 等于`GeneratorType.enable` 才有, 表示不能进行文件操作时的描述
+- `disabledDescription`， type 等于`GeneratorType.enable` 才有, 表示不能进行文件操作时的描述
 
 eg
 
 ``` ts
-  api.registerGenerator({
-    key: 'component',
-    name: 'Generate Component',
-    description: 'Generate component boilerplate code',
-    type: GeneratorType.generate,
 
-    fn: async (options) => {
-      const { args } = options;
-
-      if (args.eject) {
-        await tryEject(ETempDir.Component, api.paths.cwd);
-        return;
-      }
-
-      const h = new GeneratorHelper(api);
-      let componentNames = args._.slice(1);
-
-      if (componentNames.length === 0) {
-        let name: string = '';
-        name = await h.ensureVariableWithQuestion(name, {
-          type: 'text',
-          message: 'Please input you component Name',
-          hint: 'foo',
-          initial: 'foo',
-          format: (s) => s?.trim() || '',
-        });
-        componentNames = [name];
-      }
-
-      for (const cn of componentNames) {
-        await new ComponentGenerator({
-          srcPath: api.paths.absSrcPath,
-          appRoot: api.paths.cwd,
-          componentName: cn,
-          args,
-        }).run();
-      }
-    },
-  });
+ api.registerGenerator({
+    key: 'prettier',
+    name: 'Enable Prettier',
+    description: 'Setup Prettier Configurations',
+    type: GeneratorType.enable,
+    fn: async () => {
+      // update or write file
+    })
 
 ```
 
-这个示例表示注册一个`component`生成器
+这是一个注册一个代码生成器的简单示例，即可通过 `umi g prettier` 来生成代码。 具体可参考目前已有的实现，如[生成prettier](https://github.com/umijs/umi/blob/master/packages/preset-umi/src/commands/generators/prettier.ts)
+
 
 ### skipPlugins
 ```ts
