@@ -261,7 +261,7 @@ e.g.
 
 ```
 
-这是一个简单 `mock` 微生成器示例。 即可以通过 `umi g mock`，详细可以参考 [mock 微生成器](https://github.com/umijs/umi/blob/master/packages/preset-umi/src/commands/generators/mock.ts)
+这是一个简单 `mock` 微生成器示例。 即可以通过 `umi g mock` 来生成代码，详细可以参考 [mock 微生成器](https://github.com/umijs/umi/blob/master/packages/preset-umi/src/commands/generators/mock.ts)
 
 - 当`type` 为 `enable`，参数类型如下。 注意多了 `checkEnable` 和 `disabledDescription` 参数。
 
@@ -307,7 +307,7 @@ api.registerGenerator({
   });
 ```
 
-这是一个简单 `prettier` 微生成器。 即可以通过 `umi g prettier`，详细可以参考 [prettier 微生成器](https://github.com/umijs/umi/blob/master/packages/preset-umi/src/commands/generators/prettier.ts)
+这是一个简单 `prettier` 微生成器。 即可以通过 `umi g prettier` 来生成代码，详细可以参考 [prettier 微生成器](https://github.com/umijs/umi/blob/master/packages/preset-umi/src/commands/generators/prettier.ts)
 
 
 ### skipPlugins
