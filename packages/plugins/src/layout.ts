@@ -39,7 +39,7 @@ export default (api: IApi) => {
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
 
-  const packageName = api.pkg.name;
+  const packageName = api.pkg.name || 'plugin-layout';
 
   const isAntd5 = antdVersion.startsWith('5');
   const layoutFile = isAntd5 ? 'Layout.css' : 'Layout.less';
@@ -540,7 +540,7 @@ export function getRightRenderContent (opts: {
   } else { // 需要 antd 4.20.0 以上版本
     dropdownProps = { overlay: <Menu {...langMenu} /> };
   }
- 
+
 
 
   return (
