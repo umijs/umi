@@ -15,11 +15,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// Umi SSR middleware
-app.use(require(__dirname + '/server/umi.server.js').default);
-
 // Umi static files (including SSG pages)
 app.use(express.static('dist'));
+
+// Umi SSR middleware
+app.use(require(__dirname + '/server/umi.server.js').default);
 
 // Start server
 app.listen(port, () => {
