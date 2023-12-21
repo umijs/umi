@@ -38,6 +38,9 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+
+  const packageName = api.pkg.name || 'plugin-layout';
+
   const isAntd5 = antdVersion.startsWith('5');
   const layoutFile = isAntd5 ? 'Layout.css' : 'Layout.less';
 
@@ -251,7 +254,7 @@ const { formatMessage } = useIntl();
     <ProLayout
       route={route}
       location={location}
-      title={userConfig.title || 'plugin-layout'}
+      title={userConfig.title || '${packageName}'}
       navTheme="dark"
       siderWidth={256}
       onMenuHeaderClick={(e) => {
@@ -470,21 +473,28 @@ export function getRightRenderContent (opts: {
     );
   }
 
-
-  const avatar = (
-    <span className="umi-plugin-layout-action">
-        <Avatar
-          size="small"
-          className="umi-plugin-layout-avatar"
-          src={
-            opts.initialState?.avatar ||
-            'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
-          }
-          alt="avatar"
-        />
-        <span className="umi-plugin-layout-name">{opts.initialState?.name}</span>
+  const showAvatar = opts.initialState?.avatar || opts.initialState?.name || opts.runtimeConfig.logout;
+  const disableAvatarImg = opts.initialState?.avatar === false;
+  const nameClassName = disableAvatarImg ? 'umi-plugin-layout-name umi-plugin-layout-hide-avatar-img' : 'umi-plugin-layout-name';
+  const avatar =
+    showAvatar ? (
+      <span className="umi-plugin-layout-action">
+        {!disableAvatarImg ?
+          (
+            <Avatar
+              size="small"
+              className="umi-plugin-layout-avatar"
+              src={
+                opts.initialState?.avatar ||
+                "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+              }
+              alt="avatar"
+            />
+          ) : null}
+        <span className={nameClassName}>{opts.initialState?.name}</span>
       </span>
-  );
+    ) : null;
+
 
   if (opts.loading) {
     return (
@@ -493,6 +503,11 @@ export function getRightRenderContent (opts: {
       </div>
     );
   }
+
+  // 如果没有打开Locale，并且头像为空就取消掉这个返回的内容
+  {{^Locale}}
+    if(!avatar) return null;
+  {{/Locale}}
 
   const langMenu = {
     className: "umi-plugin-layout-menu",
@@ -531,6 +546,7 @@ export function getRightRenderContent (opts: {
   } else { // 需要 antd 4.20.0 以上版本
     dropdownProps = { overlay: <Menu {...langMenu} /> };
   }
+
 
 
   return (
@@ -616,6 +632,9 @@ ${
 }
 .umi-plugin-layout-name {
   margin-left: 8px;
+}
+.umi-plugin-layout-name.umi-plugin-layout-hide-avatar-img {
+  margin-left: 0;
 }
 `,
     });
