@@ -473,19 +473,25 @@ export function getRightRenderContent (opts: {
     );
   }
 
- const avatar =
-    opts.initialState?.avatar || opts.initialState?.name || opts.runtimeConfig.logout ? (
+  const showAvatar = opts.initialState?.avatar || opts.initialState?.name || opts.runtimeConfig.logout;
+  const disableAvatarImg = opts.initialState?.avatar === false;
+  const nameClassName = disableAvatarImg ? 'umi-plugin-layout-name umi-plugin-layout-hide-avatar' : 'umi-plugin-layout-name';
+  const avatar =
+    showAvatar ? (
       <span className="umi-plugin-layout-action">
-        <Avatar
-          size="small"
-          className="umi-plugin-layout-avatar"
-          src={
-            opts.initialState?.avatar ||
-            "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
-          }
-          alt="avatar"
-        />
-        <span className="umi-plugin-layout-name">{opts.initialState?.name}</span>
+        {!disableAvatarImg ?
+          (
+            <Avatar
+              size="small"
+              className="umi-plugin-layout-avatar"
+              src={
+                opts.initialState?.avatar ||
+                "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+              }
+              alt="avatar"
+            />
+          ) : null}
+        <span className={nameClassName}>{opts.initialState?.name}</span>
       </span>
     ) : null;
 
@@ -626,6 +632,9 @@ ${
 }
 .umi-plugin-layout-name {
   margin-left: 8px;
+}
+.umi-plugin-layout-name.umi-plugin-layout-hide-avatar {
+  margin-left: 0;
 }
 `,
     });
