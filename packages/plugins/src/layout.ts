@@ -475,7 +475,7 @@ export function getRightRenderContent (opts: {
 
   const showAvatar = opts.initialState?.avatar || opts.initialState?.name || opts.runtimeConfig.logout;
   const disableAvatarImg = opts.initialState?.avatar === false;
-  const nameClassName = disableAvatarImg ? 'umi-plugin-layout-name umi-plugin-layout-hide-avatar' : 'umi-plugin-layout-name';
+  const nameClassName = disableAvatarImg ? 'umi-plugin-layout-name umi-plugin-layout-hide-avatar-img' : 'umi-plugin-layout-name';
   const avatar =
     showAvatar ? (
       <span className="umi-plugin-layout-action">
@@ -633,7 +633,7 @@ ${
 .umi-plugin-layout-name {
   margin-left: 8px;
 }
-.umi-plugin-layout-name.umi-plugin-layout-hide-avatar {
+.umi-plugin-layout-name.umi-plugin-layout-hide-avatar-img {
   margin-left: 0;
 }
 `,
