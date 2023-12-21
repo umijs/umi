@@ -212,103 +212,52 @@ api.registerPlugins([
 
 ### registerGenerator
 
-注册微生成器。简单示例:
+注册微生成器用来快捷生成模板代码。
 
-``` ts
+示例：
+
+```ts
 import { GeneratorType } from '@umijs/core';
+import { logger } from '@umijs/utils';
+import { join } from 'path';
+import { writeFileSync } from 'fs';
 
 api.registerGenerator({
-  key: 'prettier',
-  name: 'Enable Prettier',
-  description: 'Setup Prettier Configurations',
-  type: GeneratorType.enable,
-  fn: async () => {
-      // update or write file
+  key: 'editorconfig',
+  name: 'Create .editorconfig',
+  description: 'Setup editorconfig config',
+  type: GeneratorType.generate,
+  fn: () => {
+    const configFilePath = join(api.cwd, '.editorconfig')
+    if (existsSync(configFilePath)) {
+      logger.info(`The .editorconfig file already exists.`)
+      return
+    }
+    writeFileSync(
+      configFilePath,
+      `
+# 🎨 http://editorconfig.org
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+`.trimStart(),
+      'utf-8'
+    )
+    logger.info(`Generate .editorconfig file successful.`)
   }
 })
 ```
 
-`type` 取值有 `generate`、`enable` 
-
-- 当`type` 为 `generate`，参数类型如下:
-
- ``` ts
- api.registerGenerator({
-  key: string;
-  name: string;
-  description: string;
-  type: GeneratorType.generate;
-  fn
-});
-```
-
-e.g.
-``` ts
-  api.registerGenerator({
-    key: 'mock',
-    type: GeneratorType.generate,
-    name: 'Generate mock',
-    description: 'Generate mock boilerplate code',
-    fn: async (opts) => {
-      opts.generateFile({
-        target: join(api.paths.cwd, 'mock', `xx.ts`),
-        baseDir: api.paths.cwd,
-        path: join('your path', 'your tpl'),
-        ...
-      });
-    },
-  });
-
-```
-
-这是一个简单 `mock` 微生成器示例。 即可以通过 `umi g mock` 来生成代码，详细可以参考 [mock 微生成器](https://github.com/umijs/umi/blob/master/packages/preset-umi/src/commands/generators/mock.ts)
-
-- 当`type` 为 `enable`，参数类型如下。 注意多了 `checkEnable` 和 `disabledDescription` 参数。
-
-```ts
- api.registerGenerator({
- key: string;
-  name: string;
-  description: string;
-  type: GeneratorType.enable;
-  checkEnable: {
-    (opts: { args: any }): boolean;
-  };
-  disabledDescription: string | (() => string);
-  fn
- })
-```
-
-e.g.
-``` ts
-api.registerGenerator({
-    key: 'prettier',
-    name: 'Enable Prettier',
-    description: 'Setup Prettier Configurations',
-    type: GeneratorType.enable,
-    checkEnable: () => {
-      // 存在 .prettierrc，不开启
-      return !existsSync(join(api.cwd, '.prettierrc'));
-    },
-    disabledDescription:
-      'prettier has been enabled; You can remove `.prettierrc` to run this again to re-setup.',
-    fn: async () => {
-      // 添加 .prettierrc 和 .prettierignore
-      writeFileSync(
-        join(api.cwd, '.prettierrc'),
-         'write prettierrc config...',
-      );
-      writeFileSync(
-        join(api.cwd, '.prettierignore'),
-        'write prettierignore config...',
-      );
-
-    },
-  });
-```
-
-这是一个简单 `prettier` 微生成器。 即可以通过 `umi g prettier` 来生成代码，详细可以参考 [prettier 微生成器](https://github.com/umijs/umi/blob/master/packages/preset-umi/src/commands/generators/prettier.ts)
-
+更多示例见 [`已有生成器源码`](https://github.com/umijs/umi/tree/master/packages/preset-umi/src/commands/generators) 。
 
 ### skipPlugins
 ```ts
