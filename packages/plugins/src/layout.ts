@@ -470,18 +470,15 @@ export function getRightRenderContent (opts: {
     );
   }
 
-
+  const avatarSrc = opts.initialState?.avatar ?? 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
   const avatar = (
     <span className="umi-plugin-layout-action">
-        <Avatar
+        {avatarSrc ? <Avatar
           size="small"
           className="umi-plugin-layout-avatar"
-          src={
-            opts.initialState?.avatar ||
-            'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
-          }
+          src={avatarSrc}
           alt="avatar"
-        />
+        /> : null }
         <span className="umi-plugin-layout-name">{opts.initialState?.name}</span>
       </span>
   );
