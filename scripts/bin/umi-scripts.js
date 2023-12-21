@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const { join } = require('path')
-const { existsSync } = require('fs')
-const { sync } = require('@umijs/utils/compiled/cross-spawn')
+const { join } = require('path');
+const { existsSync } = require('fs');
+const { sync } = require('@umijs/utils/compiled/cross-spawn');
 const chalk = require('@umijs/utils/compiled/chalk').default
 const assert = require('assert')
 
@@ -21,8 +21,8 @@ console.log(chalk.cyan(`umi-scripts: ${name}\n`))
 // https://github.com/umijs/umi/issues/9865
 const scriptPathAsStr = JSON.stringify(scriptsPath)
 const spawn = sync(
-  'pnpm',
-  ['tsx', scriptPathAsStr, ...throughArgs],
+  'tsx',
+  [scriptPathAsStr, ...throughArgs],
   {
     env: process.env,
     cwd: process.cwd(),
