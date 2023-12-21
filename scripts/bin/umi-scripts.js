@@ -21,8 +21,8 @@ console.log(chalk.cyan(`umi-scripts: ${name}\n`))
 // https://github.com/umijs/umi/issues/9865
 const scriptPathAsStr = JSON.stringify(scriptsPath)
 const spawn = sync(
-  'tsx',
-  [scriptPathAsStr, ...throughArgs],
+  'pnpm',
+  ['tsx', scriptPathAsStr, ...throughArgs],
   {
     env: process.env,
     cwd: process.cwd(),
