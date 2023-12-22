@@ -212,6 +212,53 @@ api.registerPlugins([
 
 ### registerGenerator
 
+注册微生成器用来快捷生成模板代码。
+
+示例：
+
+```ts
+import { GeneratorType } from '@umijs/core';
+import { logger } from '@umijs/utils';
+import { join } from 'path';
+import { writeFileSync } from 'fs';
+
+api.registerGenerator({
+  key: 'editorconfig',
+  name: 'Create .editorconfig',
+  description: 'Setup editorconfig config',
+  type: GeneratorType.generate,
+  fn: () => {
+    const configFilePath = join(api.cwd, '.editorconfig')
+    if (existsSync(configFilePath)) {
+      logger.info(`The .editorconfig file already exists.`)
+      return
+    }
+    writeFileSync(
+      configFilePath,
+      `
+# 🎨 http://editorconfig.org
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+`.trimStart(),
+      'utf-8'
+    )
+    logger.info(`Generate .editorconfig file successful.`)
+  }
+})
+```
+
+更多示例见 [`已有生成器源码`](https://github.com/umijs/umi/tree/master/packages/preset-umi/src/commands/generators) 。
+
 ### skipPlugins
 ```ts
 api.skipPlugins( keys: string[])
