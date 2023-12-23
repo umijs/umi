@@ -1,4 +1,3 @@
-import type { RequestHandler } from '@umijs/bundler-webpack';
 import { cheerio } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
@@ -96,6 +95,6 @@ export default (api: IApi) => {
 
         return next();
       },
-    ] satisfies RequestHandler[];
+    ];
   });
 };
