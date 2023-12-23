@@ -2251,6 +2251,9 @@ importers:
 
   packages/plugin-run:
     dependencies:
+      '@umijs/utils':
+        specifier: workspace:*
+        version: link:../utils
       tsx:
         specifier: ^3.12.2
         version: 3.12.2
