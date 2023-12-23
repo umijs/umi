@@ -12,7 +12,13 @@ interface IHtmlProps {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
-  metadata?: Record<string, any>;
+  metadata?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+    lang?: string;
+    metas?: Array<{ name: string; content: string }>;
+  };
 }
 
 // Get the root React component for ReactDOMServer.renderToString
