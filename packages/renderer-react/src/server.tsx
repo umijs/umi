@@ -1,4 +1,3 @@
-import type { IMetadata } from '@umijs/server/dist/types';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom/server';
 import { AppContext } from './appContext';
@@ -13,7 +12,7 @@ interface IHtmlProps {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
-  metadata?: IMetadata;
+  metadata?: Record<string, any>;
 }
 
 // Get the root React component for ReactDOMServer.renderToString
