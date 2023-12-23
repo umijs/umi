@@ -110,19 +110,22 @@
     "ts-node": "^10.7.0",
     "tsx": "^3.12.2",
     "tunnel": "^0.0.6",
-    "turbo": "^1.9.3",
+    "turbo": "^1.11.2",
     "typescript": "^4.9.4",
     "uglify-js": "^3.17.4",
     "umi": "workspace:*",
     "umi-scripts": "workspace:*",
     "zx": "^7.1.1"
   },
-  "packageManager": "pnpm@8.6.2",
+  "packageManager": "pnpm@8.12.1",
   "engines": {
     "node": ">=14",
-    "pnpm": "^8.6.2"
+    "pnpm": "^8.12.1"
   },
-  "//why-overrides-browserslist": "See scripts/bundleDeps.ts",
+  "//": {
+    "why-overrides-parcel-watcher": "https://github.com/parcel-bundler/watcher/issues/156",
+    "why-overrides-browserslist": "See scripts/bundleDeps.ts"
+  },
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
@@ -138,7 +141,8 @@
       ]
     },
     "overrides": {
-      "browserslist": "$browserslist"
+      "browserslist": "$browserslist",
+      "@parcel/watcher": "2.1.0"
     }
   },
   "_local": "This flag is used to check if the development in local, Please do not delete."

@@ -38,9 +38,22 @@ jobs:
         if: ${{ matrix.node-version != '14.x' }}
         uses: pnpm/action-setup@v2.2.4
 
+      - name: Get pnpm version (node 14)
+        if: ${{ matrix.node-version == '14.x' }}
+        uses: actions/github-script@v7
+        id: pnpm-version
+        with:
+          result-encoding: string
+          script: |
+            const packageJson = require('./package.json')
+            const pnpmVersion = packageJson.packageManager.split('@')[1]
+            console.log(`Use pnpm ${pnpmVersion}`)
+            return pnpmVersion
+
       - name: Install pnpm (node 14)
         if: ${{ matrix.node-version == '14.x' }}
-        run: npm install -g @pnpm/exe@8.6.2
+        run: |
+          npm install -g @pnpm/exe@${{ steps.pnpm-version.outputs.result }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
