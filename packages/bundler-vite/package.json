@@ -37,9 +37,9 @@
     "vite": "4.3.1"
   },
   "devDependencies": {
-    "@types/caniuse-lite": "1.0.1",
+    "@types/caniuse-lite": "1.0.5",
     "@vitejs/plugin-legacy": "4.1.1",
-    "caniuse-lite": "1.0.30001441",
+    "caniuse-lite": "1.0.30001571",
     "rollup": "3.7.0",
     "rollup-plugin-copy": "3.4.0"
   },
