@@ -3,7 +3,7 @@ import assert from 'assert';
 import { fork } from 'child_process';
 import { writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from 'umi';
+import type { IApi } from 'umi/src';
 
 export default (api: IApi) => {
   api.describe({
