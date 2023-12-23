@@ -20,8 +20,6 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@umijs/core": "workspace:*",
-    "@umijs/utils": "workspace:*",
     "tsx": "^3.12.2"
   },
   "publishConfig": {
