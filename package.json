@@ -111,7 +111,7 @@
     "tsx": "^3.12.2",
     "tunnel": "^0.0.6",
     "turbo": "^1.11.2",
-    "typescript": "^4.9.4",
+    "typescript": "^5.3.3",
     "uglify-js": "^3.17.4",
     "umi": "workspace:*",
     "umi-scripts": "workspace:*",
