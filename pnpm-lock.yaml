@@ -6,6 +6,7 @@ settings:
 
 overrides:
   browserslist: 4.21.5
+  '@parcel/watcher': 2.1.0
 
 importers:
 
@@ -14583,11 +14584,13 @@ packages:
       '@parcel/css-win32-x64-msvc': 1.9.0
     dev: true
 
-  /@parcel/watcher@2.0.4:
-    resolution: {integrity: sha512-cTDi+FUDBIUOBKEtj+nhiJ71AZVlkAsQFuGQTun5tV9mwQBQgZvhCzG+URPQc8myeN32yRVZEfVAPCs1RW+Jvg==}
+  /@parcel/watcher@2.1.0:
+    resolution: {integrity: sha512-8s8yYjd19pDSsBpbkOHnT6Z2+UJSuLQx61pCFM0s5wSRvKCEMDjd/cHY3/GI1szHIWbpXpsJdg3V6ISGGx9xDw==}
     engines: {node: '>= 10.0.0'}
     requiresBuild: true
     dependencies:
+      is-glob: 4.0.3
+      micromatch: 4.0.5
       node-addon-api: 3.2.1
       node-gyp-build: 4.6.0
     dev: true
@@ -33892,6 +33895,7 @@ packages:
 
   /node-gyp-build@4.6.0:
     resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
+    hasBin: true
     dev: true
 
   /node-gyp@9.3.1:
@@ -34252,7 +34256,7 @@ packages:
     dependencies:
       '@nrwl/cli': 15.7.2
       '@nrwl/tao': 15.7.2
-      '@parcel/watcher': 2.0.4
+      '@parcel/watcher': 2.1.0
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.35
       '@zkochan/js-yaml': 0.0.6

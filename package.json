@@ -122,7 +122,10 @@
     "node": ">=14",
     "pnpm": "^8.12.1"
   },
-  "//why-overrides-browserslist": "See scripts/bundleDeps.ts",
+  "//": {
+    "why-overrides-parcel-watcher": "https://github.com/parcel-bundler/watcher/issues/156",
+    "why-overrides-browserslist": "See scripts/bundleDeps.ts"
+  },
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
@@ -138,7 +141,8 @@
       ]
     },
     "overrides": {
-      "browserslist": "$browserslist"
+      "browserslist": "$browserslist",
+      "@parcel/watcher": "2.1.0"
     }
   },
   "_local": "This flag is used to check if the development in local, Please do not delete."
