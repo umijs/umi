@@ -29,7 +29,7 @@
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@vitejs/plugin-react": "4.0.0",
-    "core-js": "3.28.0",
+    "core-js": "3.34.0",
     "less": "4.1.3",
     "postcss-preset-env": "7.5.0",
     "rollup-plugin-visualizer": "5.9.0",
