@@ -1,9 +1,11 @@
+import type { IServicePluginAPI, PluginAPI } from '@umijs/core';
 import { fsExtra, resolve } from '@umijs/utils';
 import assert from 'assert';
 import { fork } from 'child_process';
 import { writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import type { IApi } from 'umi/src';
+
+type IApi = PluginAPI & IServicePluginAPI;
 
 export default (api: IApi) => {
   api.describe({

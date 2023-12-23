@@ -2251,6 +2251,9 @@ importers:
 
   packages/plugin-run:
     dependencies:
+      '@umijs/core':
+        specifier: workspace:*
+        version: link:../core
       '@umijs/utils':
         specifier: workspace:*
         version: link:../utils
