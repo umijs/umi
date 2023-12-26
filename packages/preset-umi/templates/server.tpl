@@ -1,4 +1,4 @@
-import { getClientRootComponent } from '{{{ serverRendererPath }}}';
+import { getClientRootComponent, getServerHTMLStart, getServerHTMLEnd } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
@@ -48,6 +48,8 @@ const createOpts = {
   getRoutes,
   manifest: getManifest,
   getClientRootComponent,
+  getServerHTMLStart,
+  getServerHTMLEnd,
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,

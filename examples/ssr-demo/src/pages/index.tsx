@@ -15,11 +15,13 @@ import './index.less';
 // @ts-ignore
 import styles from './index.less';
 // @ts-ignore
+import { useId } from 'react';
 import umiLogo from './umi.png';
 
 export default function HomePage() {
   const clientLoaderData = useClientLoaderData();
   const serverLoaderData = useServerLoaderData<typeof serverLoader>();
+  const id = useId();
 
   useServerInsertedHTML(() => {
     return <div>inserted html</div>;
@@ -28,6 +30,7 @@ export default function HomePage() {
   return (
     <div>
       <h1 className="title">Hello~</h1>
+      <h2 id={id}>{id}</h2>
       <p className={styles.blue}>This is index.tsx</p>
       <p className={cssStyle.title}>I should be pink</p>
       <p className={cssStyle.blue}>I should be cyan</p>
