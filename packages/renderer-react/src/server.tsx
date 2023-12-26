@@ -72,22 +72,27 @@ export function getServerHTMLStart({
   <head>
     <meta charSet="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    ${metadata?.title && `<title>${metadata.title}</title>`}
+    ${metadata?.title ? `<title>${metadata.title}</title>` : ''}
     ${
-      metadata?.description &&
-      `<meta name="description" content="${metadata.description}" />`
+      metadata?.description
+        ? `<meta name="description" content="${metadata.description}" />`
+        : ''
     }
     ${
-      metadata?.keywords?.length &&
-      `<meta name="keywords" content="${metadata.keywords.join(',')}" />`
+      metadata?.keywords?.length
+        ? `<meta name="keywords" content="${metadata.keywords.join(',')}" />`
+        : ''
     }
-    ${metadata?.metas?.map(
-      (em: any) =>
-        `<meta key="${em.name}" name="${em.name}" content="${em.content}" />`,
-    )}
     ${
-      manifest.assets['umi.css'] &&
-      `<link rel="stylesheet" href="${manifest.assets['umi.css']}" />`
+      metadata?.metas?.map(
+        (em: any) =>
+          `<meta key="${em.name}" name="${em.name}" content="${em.content}" />`,
+      ) || ''
+    }
+    ${
+      manifest.assets['umi.css']
+        ? `<link rel="stylesheet" href="${manifest.assets['umi.css']}" />`
+        : ''
     }
   </head>
   <body>
