@@ -273,7 +273,6 @@ export default function createRequestHandler(
       headers: req.headers,
     });
     const jsx = await jsxGeneratorDeferrer(req.url, { request });
-    console.log('jsx: ', jsx);
 
     if (!jsx) return next();
 
