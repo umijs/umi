@@ -1,57 +1,34 @@
-import fetch from 'isomorphic-unfetch';
+import axios from 'axios';
 
-const API = 'http://localhost:1337/api/todos';
-const AUTH_TOKEN_KEY = process.env.AUTH_TOKEN_KEY!;
+axios.defaults.baseURL = `http://localhost:8000`;
+const headers = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
 export async function listTodos() {
-  return await (
-    await fetch(API, {
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-      },
-    })
-  ).json();
+  const axRes = await axios.get('/api/todos');
+  return axRes.data;
 }
 
 export async function createTodos(data: { title: string }) {
-  const body = JSON.stringify({ data });
-  return await (
-    await fetch(API, {
-      method: 'POST',
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-        'Content-Type': 'application/json',
-      },
-      body,
-    })
-  ).json();
+  const body = JSON.stringify(data);
+  return (await axios.post('/api/todos_add', body, { ...headers })).data;
 }
 
 export async function updateTodo(
   id: string,
-  data: { title?: string; completed?: boolean },
+  data: { title?: string; done?: boolean },
 ) {
-  const body = JSON.stringify({ data });
-  return await (
-    await fetch(`${API}/${id}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-        'Content-Type': 'application/json',
-      },
-      body,
-    })
-  ).json();
+  const body = JSON.stringify({ data, id });
+  return (await axios.post('/api/todos_update', body, { ...headers })).data;
 }
 
 export async function deleteTodo(id: string) {
-  return await (
-    await fetch(`${API}/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-        'Content-Type': 'application/json',
-      },
+  return (
+    await axios.post('/api/todos_delete', JSON.stringify({ id }), {
+      ...headers,
     })
-  ).json();
+  ).data;
 }
