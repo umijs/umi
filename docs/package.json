@@ -13,6 +13,6 @@
     "styled-components": "6.0.0-rc.0"
   },
   "devDependencies": {
-    "dumi": "^2.2.5"
+    "dumi": "^2.2.16"
   }
 }

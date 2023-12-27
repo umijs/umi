@@ -21,11 +21,11 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@babel/runtime": "7.23.2",
+    "@babel/runtime": "7.23.6",
     "@bloomberg/record-tuple-polyfill": "0.0.4",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
-    "core-js": "3.28.0"
+    "core-js": "3.34.0"
   },
   "publishConfig": {
     "access": "public"
