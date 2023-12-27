@@ -9,7 +9,6 @@ import type {
   ServerLoader,
   UmiRequest,
 } from './types';
-import { IMetadata } from './types';
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
@@ -34,10 +33,6 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   getValidKeys: () => any;
   getRoutes: (PluginManager: any) => any;
   getClientRootComponent: (PluginManager: any) => any;
-  getServerHTMLStart: (opts: {
-    loaderData: { [routeKey: string]: any };
-  }) => string;
-  getServerHTMLEnd: (opts: { manifest: any; metadata?: IMetadata }) => string;
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
@@ -162,8 +157,6 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     return {
       element,
       manifest,
-      loaderData,
-      metadata,
     };
   };
 }
@@ -199,14 +192,11 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         let chunks: Buffer[] = [];
         const writable = new Writable();
 
-        chunks.push(Buffer.from(opts.getServerHTMLStart(jsx)));
-
         writable._write = (chunk, _encoding, next) => {
           chunks.push(Buffer.from(chunk));
           next();
         };
         writable.on('finish', async () => {
-          chunks.push(Buffer.from(opts.getServerHTMLEnd(jsx)));
           let html = Buffer.concat(chunks).toString('utf8');
           html += await getGenerateStaticHTML(serverInsertedHTMLCallbacks);
           // append helmet tags to head
@@ -285,10 +275,7 @@ export default function createRequestHandler(
       next();
     };
 
-    res.write(opts.getServerHTMLStart(jsx));
-
     writable.on('finish', async () => {
-      res.write(opts.getServerHTMLEnd(jsx));
       res.write(await getGenerateStaticHTML());
       res.end();
     });
