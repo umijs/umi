@@ -1,5 +1,6 @@
 import type { IMetadata } from '@umijs/server/dist/types';
 import React from 'react';
+import ReactDOM from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { AppContext } from './appContext';
 import { Routes } from './browser';
@@ -60,7 +61,21 @@ export async function getClientRootComponent(opts: IHtmlProps) {
       {rootContainer}
     </AppContext.Provider>
   );
-  return <Html {...opts}>{app}</Html>;
+  const innerPlaceholderForGetHtml = '__UMI_SERVER_HTML_PLACEHOLDER__';
+  const htmlStringWithoutApp = ReactDOM.renderToString(
+    <Html {...opts}>{innerPlaceholderForGetHtml}</Html>,
+  );
+  const [appBeforeHtml, appAfterHtml] = htmlStringWithoutApp.split(
+    innerPlaceholderForGetHtml,
+  );
+  const appElement = <div id="root">{app}</div>;
+  const htmlElement = <Html {...opts}>{appElement}</Html>;
+  return {
+    htmlElement,
+    appBeforeHtml: `<!DOCTYPE html>${appBeforeHtml}`,
+    appAfterHtml,
+    appElement,
+  };
 }
 
 function Html({
@@ -97,8 +112,7 @@ function Html({
             __html: `<b>Enable JavaScript to run this app.</b>`,
           }}
         />
-
-        <div id="root">{children}</div>
+        {children}
         <script
           dangerouslySetInnerHTML={{
             __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(

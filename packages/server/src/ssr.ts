@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
@@ -32,7 +32,12 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   getPlugins: () => any;
   getValidKeys: () => any;
   getRoutes: (PluginManager: any) => any;
-  getClientRootComponent: (PluginManager: any) => any;
+  getClientRootComponent: (PluginManager: any) => {
+    appBeforeHtml: string;
+    appAfterHtml: string;
+    htmlElement: ReactNode;
+    appElement: ReactNode;
+  };
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
@@ -150,12 +155,10 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       metadata,
     };
 
-    const element = (await opts.getClientRootComponent(
-      context,
-    )) as ReactElement;
+    const component = await opts.getClientRootComponent(context);
 
     return {
-      element,
+      component,
       manifest,
     };
   };
@@ -189,14 +192,17 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
           serverInsertedHTMLCallbacks,
         );
 
-        let chunks: Buffer[] = [];
+        const chunks: Buffer[] = [];
         const writable = new Writable();
+
+        chunks.push(Buffer.from(jsx.component.appBeforeHtml));
 
         writable._write = (chunk, _encoding, next) => {
           chunks.push(Buffer.from(chunk));
           next();
         };
         writable.on('finish', async () => {
+          chunks.push(Buffer.from(jsx.component.appAfterHtml));
           let html = Buffer.concat(chunks).toString('utf8');
           html += await getGenerateStaticHTML(serverInsertedHTMLCallbacks);
           // append helmet tags to head
@@ -222,7 +228,9 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         // why not use `renderToStaticMarkup` or `renderToString`?
         // they will return empty root by unknown reason (maybe umi has suspense logic?)
         const stream = ReactDomServer.renderToPipeableStream(
-          React.createElement(JSXProvider, { children: jsx.element }),
+          React.createElement(JSXProvider, {
+            children: jsx.component.appElement,
+          }),
           {
             onShellReady() {
               stream.pipe(writable);
@@ -265,10 +273,13 @@ export default function createRequestHandler(
       headers: req.headers,
     });
     const jsx = await jsxGeneratorDeferrer(req.url, { request });
+    console.log('jsx: ', jsx);
 
     if (!jsx) return next();
 
     const writable = new Writable();
+
+    res.write(jsx.component.appBeforeHtml);
 
     writable._write = (chunk, _encoding, next) => {
       res.write(chunk);
@@ -276,19 +287,23 @@ export default function createRequestHandler(
     };
 
     writable.on('finish', async () => {
+      res.write(jsx.component.appAfterHtml);
       res.write(await getGenerateStaticHTML());
       res.end();
     });
 
-    const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
-      bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-      onShellReady() {
-        stream.pipe(writable);
+    const stream = await ReactDomServer.renderToPipeableStream(
+      jsx.component.appElement,
+      {
+        bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+        onShellReady() {
+          stream.pipe(writable);
+        },
+        onError(x: any) {
+          console.error(x);
+        },
       },
-      onError(x: any) {
-        console.error(x);
-      },
-    });
+    );
   };
 }
 
@@ -314,7 +329,10 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
       throw new Error('no page resource');
     }
 
-    return ReactDomServer.renderToNodeStream(jsx.element);
+    // TODO: render 结果由 html 变为仅 app element，会影响到存量业务吗？
+    return ReactDomServer.renderToNodeStream(
+      jsx.component.htmlElement as ReactElement,
+    );
   };
 }
 
