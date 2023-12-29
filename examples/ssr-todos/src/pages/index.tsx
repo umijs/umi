@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // @ts-ignore
-import { useServerLoaderData } from 'umi';
+import { useServerLoaderData, __useFetcher } from 'umi';
 import {
   createTodos,
   deleteTodo,
@@ -18,25 +18,37 @@ interface Todo {
     notes: string;
   };
 }
-
+let todosList = null;
 function Todo({ todo, onData }: { todo: Todo; onData: (value: Todo) => {} }) {
+  const fetcher = __useFetcher();
   const deleteHandler = async () => {
     console.log('Delete todo', todo.id);
-    await deleteTodo(todo.id);
-    location.reload();
+    const { success, data } = await deleteTodo(todo.id);
+    if (success) {
+      todosList = data;
+      fetcher.load();
+    }
   };
 
   const changeDoneHandler = async (e: any) => {
     console.log('Change todo', todo.id, e.target.checked);
-    await updateTodo(todo.id, {
+    const { success, data } = await updateTodo(todo.id, {
       done: e.target.checked,
     });
-    location.reload();
+    if (success) {
+      todosList = data;
+      fetcher.load();
+    }
   };
 
   const changeTitleHandler = async () => {
-    await updateTodo(todo.id, { title: todo.attributes.title });
-    location.reload();
+    const { success, data } = await updateTodo(todo.id, {
+      title: todo.attributes.title,
+    });
+    if (success) {
+      todosList = data;
+      fetcher.load();
+    }
   };
 
   return (
@@ -67,9 +79,13 @@ function Todo({ todo, onData }: { todo: Todo; onData: (value: Todo) => {} }) {
 }
 
 function Todos() {
-  // useServerLoaderData 修改后获取的数据是旧的, 可能是个bug 正常情况是不需要location.reload()
+  // useServerLoaderData 修改后获取的数据是旧的, 可能是个bug 正常情况是不需要setList(todosList)
   const { data }: { data: { data: Todo[] } } = useServerLoaderData();
   const [list, setList] = useState(data.data);
+
+  if (todosList != null && JSON.stringify(list) != JSON.stringify(todosList)) {
+    setList(todosList);
+  }
 
   const handleDataFromChild = (childData: Todo) => {
     const idx = list.findIndex((item) => item.id == childData.id);
@@ -91,15 +107,17 @@ function Todos() {
 }
 
 function Creator() {
+  const fetcher = __useFetcher();
   const submitHandler = async (e: any) => {
-    // const fetcher = __useFetcher();
     e.preventDefault();
     const title = e.target.title.value;
     e.target.title.value = '';
     console.log('Create todo', title);
-    await createTodos({ title });
-    location.reload();
-    // fetcher.load();
+    const { success, data } = await createTodos({ title });
+    if (success) {
+      todosList = data;
+      fetcher.load();
+    }
   };
 
   return (

@@ -8,8 +8,7 @@ const headers = {
 };
 
 export async function listTodos() {
-  const axRes = await axios.get('/api/todos');
-  return axRes.data;
+  return (await axios.get('/api/todos')).data;
 }
 
 export async function createTodos(data: { title: string }) {
