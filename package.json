@@ -117,10 +117,10 @@
     "umi-scripts": "workspace:*",
     "zx": "^7.1.1"
   },
-  "packageManager": "pnpm@8.12.1",
+  "packageManager": "pnpm@8.11.0",
   "engines": {
     "node": ">=14",
-    "pnpm": "^8.12.1"
+    "pnpm": "^8.11.0"
   },
   "//": {
     "why-overrides-parcel-watcher": "https://github.com/parcel-bundler/watcher/issues/156",
