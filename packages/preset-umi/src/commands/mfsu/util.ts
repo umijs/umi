@@ -30,7 +30,9 @@ export abstract class MFSUUtilBase {
   abstract build(force?: boolean): Promise<void>;
   async prepare() {
     const api = this.api;
-    logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
+    logger.info(
+      chalk.cyan.bold(`${api.appData.umi.name} v${api.appData.umi.version}`),
+    );
 
     // clear tmp
     rimraf.sync(api.paths.absTmpPath);
