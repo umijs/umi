@@ -8,7 +8,7 @@
     "noUnusedParameters": true,
     "strict": true,
     "skipLibCheck": true,
-    "target": "es2019",
+    "target": "es2022",
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"]
   },
