@@ -1,33 +1,47 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = `http://localhost:8000`;
-const headers = {
-  headers: {
-    'Content-Type': 'application/json',
+const request = axios.create({
+  baseURL: `http://localhost:8000/api`,
+  timeout: 10 * 1e3,
+});
+
+request.interceptors.response.use(
+  (response) => {
+    const isSuccess = response.data?.code === 0;
+    if (!isSuccess) {
+      return Promise.reject(response.data);
+    }
+    return response.data;
   },
-};
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
-export async function listTodos() {
-  return (await axios.get('/api/todos')).data;
+export interface ITodo {
+  id?: string;
+  title?: string;
+  done?: boolean;
 }
 
-export async function createTodos(data: { title: string }) {
-  const body = JSON.stringify(data);
-  return (await axios.post('/api/todos_add', body, { ...headers })).data;
+type IResponse<T> = Promise<{
+  data: T | null;
+  code: number;
+  message?: string;
+}>;
+
+export function getTodoList() {
+  return request.get('/todo/list') as IResponse<ITodo[]>;
 }
 
-export async function updateTodo(
-  id: string,
-  data: { title?: string; done?: boolean },
-) {
-  const body = JSON.stringify({ data, id });
-  return (await axios.post('/api/todos_update', body, { ...headers })).data;
+export function createTodos(data: ITodo) {
+  return request.post('/todo/add', data) as IResponse<ITodo>;
 }
 
-export async function deleteTodo(id: string) {
-  return (
-    await axios.post('/api/todos_delete', JSON.stringify({ id }), {
-      ...headers,
-    })
-  ).data;
+export function updateTodo(data: ITodo & { id: string }) {
+  return request.post(`/todo/update`, data) as IResponse<ITodo>;
+}
+
+export function deleteTodo(id: string) {
+  return request.post(`/todo/delete`, { id }) as IResponse<null>;
 }

@@ -1,11 +1,10 @@
-const express = require('express');
-const serverHandler = require('./server-handler');
+import express from 'express';
+import type { IApi } from 'umi';
+const { todoServer } = require('./todo');
 
-module.exports = function (api) {
-  /**
-   * 使用umi中间件免去启动额外的服务
-   */
-  api.addMiddlewares(() => {
-    return [express.json(), serverHandler];
+export default (api: IApi) => {
+  api.onBeforeMiddleware(({ app }) => {
+    app.use(express.json());
+    todoServer(app);
   });
 };

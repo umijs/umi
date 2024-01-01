@@ -1,54 +1,44 @@
 import React, { useState } from 'react';
-// @ts-ignore
-import { useServerLoaderData, __useFetcher } from 'umi';
+import { useServerLoaderData } from 'umi';
 import {
   createTodos,
   deleteTodo,
-  listTodos,
+  getTodoList,
+  ITodo,
   updateTodo,
 } from '../services/todos';
-// @ts-ignore
 import styles from './index.css';
 
-interface Todo {
-  id: string;
-  attributes: {
-    title: string;
-    done: boolean;
-    notes: string;
-  };
+interface ITodoProps {
+  data: ITodo;
+  refresh: () => Promise<void>;
+  onChange: (data: Partial<ITodo>) => void;
 }
-let todosList = null;
-function Todo({ todo, onData }: { todo: Todo; onData: (value: Todo) => {} }) {
-  const fetcher = __useFetcher();
+
+function Todo({ refresh, data, onChange }: ITodoProps) {
+  const id = data.id!;
+
   const deleteHandler = async () => {
-    console.log('Delete todo', todo.id);
-    const { success, data } = await deleteTodo(todo.id);
-    if (success) {
-      todosList = data;
-      fetcher.load();
-    }
+    console.log('Delete todo', id);
+    await deleteTodo(id);
+    await refresh();
   };
 
-  const changeDoneHandler = async (e: any) => {
-    console.log('Change todo', todo.id, e.target.checked);
-    const { success, data } = await updateTodo(todo.id, {
+  const changeDoneHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Change todo', id, e.target.checked);
+    await updateTodo({
+      id,
       done: e.target.checked,
     });
-    if (success) {
-      todosList = data;
-      fetcher.load();
-    }
+    await refresh();
   };
 
   const changeTitleHandler = async () => {
-    const { success, data } = await updateTodo(todo.id, {
-      title: todo.attributes.title,
+    await updateTodo({
+      id,
+      title: data.title,
     });
-    if (success) {
-      todosList = data;
-      fetcher.load();
-    }
+    await refresh();
   };
 
   return (
@@ -56,17 +46,18 @@ function Todo({ todo, onData }: { todo: Todo; onData: (value: Todo) => {} }) {
       <span>
         <input
           type="checkbox"
-          checked={!!todo.attributes.done}
+          checked={!!data.done}
           onChange={changeDoneHandler}
         />
       </span>
       <span>
         <input
           type="text"
-          value={todo.attributes.title}
+          value={data.title}
           onChange={(e) => {
-            todo.attributes.title = e.target.value;
-            onData(todo);
+            onChange({
+              title: e.target.value,
+            });
           }}
         />
       </span>
@@ -78,68 +69,72 @@ function Todo({ todo, onData }: { todo: Todo; onData: (value: Todo) => {} }) {
   );
 }
 
-function Todos() {
-  // useServerLoaderData 修改后获取的数据是旧的, 可能是个bug 正常情况是不需要setList(todosList)
-  const { data }: { data: { data: Todo[] } } = useServerLoaderData();
-  const [list, setList] = useState(data.data);
-
-  if (todosList != null && JSON.stringify(list) != JSON.stringify(todosList)) {
-    setList(todosList);
-  }
-
-  const handleDataFromChild = (childData: Todo) => {
-    const idx = list.findIndex((item) => item.id == childData.id);
-    list[idx] = childData;
-    setList([...list]);
-  };
-
-  return (
-    <ul className={styles.todos}>
-      {list.map((todo) => {
-        return (
-          <li key={todo.id}>
-            <Todo todo={todo} onData={handleDataFromChild} />
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function Creator() {
-  const fetcher = __useFetcher();
-  const submitHandler = async (e: any) => {
-    e.preventDefault();
-    const title = e.target.title.value;
-    e.target.title.value = '';
-    console.log('Create todo', title);
-    const { success, data } = await createTodos({ title });
-    if (success) {
-      todosList = data;
-      fetcher.load();
-    }
-  };
-
-  return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <input name="title" type="text" placeholder="to do something..." />
-        <button type="submit">Add</button>
-      </form>
-    </div>
-  );
-}
-
 export default function HomePage() {
+  const serverLoaderData = useServerLoaderData<typeof serverLoader>().data;
+  const [todoList, setTodoList] = useState<ITodo[]>(
+    serverLoaderData?.data || [],
+  );
+
+  const refresh = async () => {
+    const { data } = await getTodoList();
+    setTodoList(data!);
+  };
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as any as { title: { value: string } };
+    await createTodos({
+      title: target.title.value,
+    });
+    target.title.value = '';
+    await refresh();
+  };
+
   return (
     <div>
       <h2 className={styles.title}>Todos</h2>
-      <Creator />
-      <Todos />
+      <div>
+        <form onSubmit={submitHandler}>
+          <input name="title" type="text" placeholder="to do something..." />
+          <button type="submit">Add</button>
+        </form>
+      </div>
+      <ul className={styles.todos}>
+        {todoList.map((todo) => {
+          return (
+            <li key={todo.id}>
+              <Todo
+                data={todo}
+                refresh={refresh}
+                onChange={(data) => {
+                  setTodoList((prev) => {
+                    const targetIdx = prev.findIndex(
+                      (item) => item.id === todo.id,
+                    );
+                    if (~targetIdx) {
+                      const newData = {
+                        ...prev[targetIdx],
+                        ...data,
+                      };
+                      return [
+                        ...prev.slice(0, targetIdx),
+                        newData,
+                        ...prev.slice(targetIdx + 1),
+                      ];
+                    }
+                    return prev;
+                  });
+                }}
+              />
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
 
-export const serverLoader = () => {
-  return listTodos();
+export const serverLoader = async () => {
+  const res = await getTodoList();
+  return res;
 };
