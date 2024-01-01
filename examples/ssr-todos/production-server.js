@@ -1,9 +1,14 @@
 const express = require('express');
-const serverHandler = require('./server-handler');
+const cors = require('cors');
 const app = express();
+const { todoServer } = require('./todo');
 const port = 8000;
 
+app.use(cors())
 app.use(express.json())
+
+// mock server api
+todoServer(app)
 
 // Logger middleware
 app.use((req, res, next) => {
@@ -16,11 +21,6 @@ app.use(require(__dirname + '/server/umi.server.js').default);
 
 // Umi static files (including SSG pages)
 app.use(express.static('dist'));
-
-
-// mock server api
-app.all("/api/*",serverHandler)
-
 
 // Start server
 app.listen(port, () => {
