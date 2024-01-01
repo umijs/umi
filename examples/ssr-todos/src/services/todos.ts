@@ -1,57 +1,47 @@
-import fetch from 'isomorphic-unfetch';
+import axios from 'axios';
 
-const API = 'http://localhost:1337/api/todos';
-const AUTH_TOKEN_KEY = process.env.AUTH_TOKEN_KEY!;
+const request = axios.create({
+  baseURL: `http://localhost:8000/api`,
+  timeout: 10 * 1e3,
+});
 
-export async function listTodos() {
-  return await (
-    await fetch(API, {
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-      },
-    })
-  ).json();
+request.interceptors.response.use(
+  (response) => {
+    const isSuccess = response.data?.code === 0;
+    if (!isSuccess) {
+      return Promise.reject(response.data);
+    }
+    return response.data;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+export interface ITodo {
+  id?: string;
+  title?: string;
+  done?: boolean;
 }
 
-export async function createTodos(data: { title: string }) {
-  const body = JSON.stringify({ data });
-  return await (
-    await fetch(API, {
-      method: 'POST',
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-        'Content-Type': 'application/json',
-      },
-      body,
-    })
-  ).json();
+type IResponse<T> = Promise<{
+  data: T | null;
+  code: number;
+  message?: string;
+}>;
+
+export function getTodoList() {
+  return request.get('/todo/list') as IResponse<ITodo[]>;
 }
 
-export async function updateTodo(
-  id: string,
-  data: { title?: string; completed?: boolean },
-) {
-  const body = JSON.stringify({ data });
-  return await (
-    await fetch(`${API}/${id}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-        'Content-Type': 'application/json',
-      },
-      body,
-    })
-  ).json();
+export function createTodos(data: ITodo) {
+  return request.post('/todo/add', data) as IResponse<ITodo>;
 }
 
-export async function deleteTodo(id: string) {
-  return await (
-    await fetch(`${API}/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: AUTH_TOKEN_KEY,
-        'Content-Type': 'application/json',
-      },
-    })
-  ).json();
+export function updateTodo(data: ITodo & { id: string }) {
+  return request.post(`/todo/update`, data) as IResponse<ITodo>;
+}
+
+export function deleteTodo(id: string) {
+  return request.post(`/todo/delete`, { id }) as IResponse<null>;
 }
