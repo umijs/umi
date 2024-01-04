@@ -136,6 +136,7 @@ const HeroWrapper = styled.div`
 export const Hero = () => {
   // TODO: github stars 存 localStorage
   //  采用 stale-while-revalidate 的策略
+  localStorage.length;
   return (
     <HeroWrapper>
       <div className="bg"></div>
