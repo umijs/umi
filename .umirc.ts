@@ -9,7 +9,4 @@ export default {
   conventionRoutes: {
     exclude: [/\/components\//],
   },
-  exportStatic: {
-    ignorePreRenderError: true,
-  },
 };
