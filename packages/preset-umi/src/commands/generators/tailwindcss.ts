@@ -29,7 +29,8 @@ export default (api: IApi) => {
       });
 
       h.setUmirc('tailwindcss', {});
-      h.setUmirc('extraPostCSSPlugins', ['tailwindcss']);
+      const existingPlugins = api.config?.extraPostCSSPlugins || [];
+      h.setUmirc('extraPostCSSPlugins', ['tailwindcss', ...existingPlugins]);
       h.appendInternalPlugin('@umijs/plugins/dist/tailwindcss');
       logger.info('Update .umirc.ts');
 
