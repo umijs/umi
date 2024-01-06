@@ -1,27 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
 import { SectionHeader } from '../SectionHeader';
+import styles from './index.less';
 
-const WhoIsUsingWrapper = styled.div`
-  max-width: 1200px;
-  margin: 0 auto 60px;
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    list-style: none;
-    padding: 0;
-    li img {
-      width: 224px;
-      height: 81px;
-      margin: -8px;
-    }
-  }
-`;
 export const WhoIsUsing = () => {
   return (
-    <WhoIsUsingWrapper>
+    <div className={styles.who_is_using}>
       <SectionHeader title="谁在使用" />
       <ul className="using-list">
         <li>
@@ -85,6 +67,6 @@ export const WhoIsUsing = () => {
           />
         </li>
       </ul>
-    </WhoIsUsingWrapper>
+    </div>
   );
 };
