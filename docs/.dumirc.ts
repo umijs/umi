@@ -32,9 +32,6 @@ export default defineConfig({
   define: {
     'process.env.UMI_VERSION': version,
   },
-  exportStatic: {
-    ignorePreRenderError: true,
-  },
   themeConfig: {
     name: 'UmiJS',
     socialLinks: {
