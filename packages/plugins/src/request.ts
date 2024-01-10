@@ -168,19 +168,19 @@ const getRequestInstance = (): AxiosInstance => {
 
   config?.requestInterceptors?.forEach((interceptor) => {
     if(interceptor instanceof Array){
-      requestInstance.interceptors.request.use((config) => {
+      requestInstance.interceptors.request.use(async (config) => {
         const { url } = config;
         if(interceptor[0].length === 2){
-          const { url: newUrl, options } = interceptor[0](url, config);
+          const { url: newUrl, options } = await interceptor[0](url, config);
           return { ...options, url: newUrl };
         }
         return interceptor[0](config);
       }, interceptor[1]);
     } else {
-      requestInstance.interceptors.request.use((config) => {
+      requestInstance.interceptors.request.use(async (config) => {
         const { url } = config;
         if(interceptor.length === 2){
-          const { url: newUrl, options } = interceptor(url, config);
+          const { url: newUrl, options } = await interceptor(url, config);
           return { ...options, url: newUrl };
         }
         return interceptor(config);
@@ -211,19 +211,19 @@ const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
   const { getResponse = false, requestInterceptors, responseInterceptors } = opts;
   const requestInterceptorsToEject = requestInterceptors?.map((interceptor) => {
     if(interceptor instanceof Array){
-      return requestInstance.interceptors.request.use((config) => {
+      return requestInstance.interceptors.request.use(async (config) => {
         const { url } = config;
         if(interceptor[0].length === 2){
-          const { url: newUrl, options } = interceptor[0](url, config);
+          const { url: newUrl, options } = await interceptor[0](url, config);
           return { ...options, url: newUrl };
         }
         return interceptor[0](config);
       }, interceptor[1]);
     } else {
-      return requestInstance.interceptors.request.use((config) => {
+      return requestInstance.interceptors.request.use(async (config) => {
         const { url } = config;
         if(interceptor.length === 2){
-          const { url: newUrl, options } = interceptor(url, config);
+          const { url: newUrl, options } = await interceptor(url, config);
           return { ...options, url: newUrl };
         }
         return interceptor(config);
