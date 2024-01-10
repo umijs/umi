@@ -173,7 +173,7 @@ export { getDvaApp } from './dva';
     api.writeTmpFile({
       path: 'types.d.ts',
       tpl: `
-import type { History } from 'umi';
+import type { History } from '${api.appData.umi.importSource}';
 
 export interface ConnectProps {
       dispatch?: Dispatch;
