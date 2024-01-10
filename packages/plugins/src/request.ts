@@ -132,12 +132,13 @@ type RequestError = AxiosError | Error
 interface IErrorHandler {
   (error: RequestError, opts: IRequestOptions): void;
 }
-type IRequestInterceptorAxios = (config: RequestOptions) => RequestOptions;
-type IRequestInterceptorUmiRequest = (url: string, config : RequestOptions) => { url: string, options: RequestOptions };
+type WithPromise<T> = T | Promise<T>;
+type IRequestInterceptorAxios = (config: IRequestOptions) => WithPromise<IRequestOptions>;
+type IRequestInterceptorUmiRequest = (url: string, config : IRequestOptions) => WithPromise<{ url: string, options: IRequestOptions }>;
 type IRequestInterceptor = IRequestInterceptorAxios | IRequestInterceptorUmiRequest;
 type IErrorInterceptor = (error: Error) => Promise<Error>;
-type IResponseInterceptor = <T = any>(response : AxiosResponse<T>) => AxiosResponse<T> ;
-type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [ IRequestInterceptor ] | IRequestInterceptor
+type IResponseInterceptor = <T = any>(response : AxiosResponse<T>) => WithPromise<AxiosResponse<T>> ;
+type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [IRequestInterceptor] | IRequestInterceptor
 type IResponseInterceptorTuple = [IResponseInterceptor, IErrorInterceptor] | [IResponseInterceptor] | IResponseInterceptor
 
 export interface RequestConfig<T = any> extends AxiosRequestConfig {
@@ -280,6 +281,10 @@ export type {
   AxiosResponse,
   AxiosError,
   RequestError,
+  IRequestInterceptorAxios as RequestInterceptorAxios,
+  IRequestInterceptorUmiRequest as RequestInterceptorUmiRequest,
+  IRequestInterceptor as RequestInterceptor,
+  IErrorInterceptor as ErrorInterceptor,
   IResponseInterceptor as ResponseInterceptor,
   IRequestOptions as RequestOptions,
   IRequest as Request,
@@ -320,6 +325,10 @@ export type {
   AxiosResponse,
   AxiosError,
   RequestError,
+  RequestInterceptorAxios,
+  RequestInterceptorUmiRequest,
+  RequestInterceptor,
+  ErrorInterceptor,
   ResponseInterceptor,
   RequestOptions,
   Request } from './request';
