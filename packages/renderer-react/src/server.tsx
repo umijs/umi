@@ -1,24 +1,23 @@
 import type { IMetadata } from '@umijs/server/dist/types';
 import React from 'react';
-import ReactDOM from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { AppContext } from './appContext';
 import { Routes } from './browser';
 import { createClientRoutes } from './routes';
 import { IRouteComponents, IRoutesById } from './types';
 
-interface IHtmlProps {
+interface IRootComponentOptions {
   routes: IRoutesById;
   routeComponents: IRouteComponents;
   pluginManager: any;
   location: string;
-  loaderData: { [routeKey: string]: any };
+  loaderData?: { [routeKey: string]: any };
   manifest: any;
   metadata?: IMetadata;
 }
 
 // Get the root React component for ReactDOMServer.renderToString
-export async function getClientRootComponent(opts: IHtmlProps) {
+export async function getClientRootComponent(opts: IRootComponentOptions) {
   const basename = '/';
   const components = { ...opts.routeComponents };
   const clientRoutes = createClientRoutes({
@@ -26,7 +25,7 @@ export async function getClientRootComponent(opts: IHtmlProps) {
     routeComponents: components,
   });
   let rootContainer = (
-    <StaticRouter basename={basename} location={opts.location}>
+    <StaticRouter basename={basename} location={opts.location!}>
       <Routes />
     </StaticRouter>
   );
@@ -55,30 +54,23 @@ export async function getClientRootComponent(opts: IHtmlProps) {
         pluginManager: opts.pluginManager,
         basename,
         clientLoaderData: {},
-        serverLoaderData: opts.loaderData,
+        serverLoaderData: opts.loaderData || {},
       }}
     >
       {rootContainer}
     </AppContext.Provider>
   );
-  const innerPlaceholderForGetHtml = '__UMI_SERVER_HTML_PLACEHOLDER__';
-  const htmlStringWithoutApp = ReactDOM.renderToString(
-    <Html {...opts}>{innerPlaceholderForGetHtml}</Html>,
-  );
-  const [appBeforeHtml, appAfterHtml] = htmlStringWithoutApp.split(
-    innerPlaceholderForGetHtml,
-  );
-  const appElement = <div id="root">{app}</div>;
-  const htmlElement = <Html {...opts}>{appElement}</Html>;
-  return {
-    htmlElement,
-    appBeforeHtml: `<!DOCTYPE html>${appBeforeHtml}`,
-    appAfterHtml,
-    appElement,
-  };
+  return <Html {...opts}>{app}</Html>;
 }
 
-function Html({
+interface IHtmlProps {
+  children: React.ReactNode;
+  loaderData?: { [routeKey: string]: any };
+  manifest?: any;
+  metadata?: IMetadata;
+}
+
+export function Html({
   children,
   loaderData,
   manifest,
@@ -102,7 +94,7 @@ function Html({
         {metadata?.metas?.map((em) => (
           <meta key={em.name} name={em.name} content={em.content} />
         ))}
-        {manifest.assets['umi.css'] && (
+        {manifest?.assets['umi.css'] && (
           <link rel="stylesheet" href={manifest.assets['umi.css']} />
         )}
       </head>
@@ -112,14 +104,17 @@ function Html({
             __html: `<b>Enable JavaScript to run this app.</b>`,
           }}
         />
-        {children}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
-              loaderData,
-            )}`,
-          }}
-        />
+
+        <div id="root">{children}</div>
+        {loaderData && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
+                loaderData,
+              )}`,
+            }}
+          />
+        )}
       </body>
     </html>
   );

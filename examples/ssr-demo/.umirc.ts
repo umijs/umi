@@ -7,4 +7,6 @@ export default {
   ssr: {
     serverBuildPath: './umi.server.js',
   },
+  metas: [{ name: 'keywords', content: 'umi,ssr' }],
+  scripts: [{ content: 'console.log("hello")' }],
 };

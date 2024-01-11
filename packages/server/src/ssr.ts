@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
@@ -32,12 +32,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   getPlugins: () => any;
   getValidKeys: () => any;
   getRoutes: (PluginManager: any) => any;
-  getClientRootComponent: (PluginManager: any) => {
-    appBeforeHtml: string;
-    appAfterHtml: string;
-    htmlElement: ReactNode;
-    appElement: ReactNode;
-  };
+  getClientRootComponent: (PluginManager: any) => any;
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
@@ -155,10 +150,12 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       metadata,
     };
 
-    const component = await opts.getClientRootComponent(context);
+    const element = (await opts.getClientRootComponent(
+      context,
+    )) as ReactElement;
 
     return {
-      component,
+      element,
       manifest,
     };
   };
@@ -195,14 +192,11 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         const chunks: Buffer[] = [];
         const writable = new Writable();
 
-        chunks.push(Buffer.from(jsx.component.appBeforeHtml));
-
         writable._write = (chunk, _encoding, next) => {
           chunks.push(Buffer.from(chunk));
           next();
         };
         writable.on('finish', async () => {
-          chunks.push(Buffer.from(jsx.component.appAfterHtml));
           let html = Buffer.concat(chunks).toString('utf8');
           html += await getGenerateStaticHTML(serverInsertedHTMLCallbacks);
           // append helmet tags to head
@@ -228,9 +222,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         // why not use `renderToStaticMarkup` or `renderToString`?
         // they will return empty root by unknown reason (maybe umi has suspense logic?)
         const stream = ReactDomServer.renderToPipeableStream(
-          React.createElement(JSXProvider, {
-            children: jsx.component.appElement,
-          }),
+          React.createElement(JSXProvider, { children: jsx.element }),
           {
             onShellReady() {
               stream.pipe(writable);
@@ -278,31 +270,25 @@ export default function createRequestHandler(
 
     const writable = new Writable();
 
-    res.write(jsx.component.appBeforeHtml);
-
     writable._write = (chunk, _encoding, next) => {
       res.write(chunk);
       next();
     };
 
     writable.on('finish', async () => {
-      res.write(jsx.component.appAfterHtml);
       res.write(await getGenerateStaticHTML());
       res.end();
     });
 
-    const stream = await ReactDomServer.renderToPipeableStream(
-      jsx.component.appElement,
-      {
-        bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-        onShellReady() {
-          stream.pipe(writable);
-        },
-        onError(x: any) {
-          console.error(x);
-        },
+    const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
+      bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+      onShellReady() {
+        stream.pipe(writable);
       },
-    );
+      onError(x: any) {
+        console.error(x);
+      },
+    });
   };
 }
 
@@ -328,10 +314,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
       throw new Error('no page resource');
     }
 
-    // TODO: render 结果由 html 变为仅 app element，会影响到存量业务吗？
-    return ReactDomServer.renderToNodeStream(
-      jsx.component.htmlElement as ReactElement,
-    );
+    return ReactDomServer.renderToNodeStream(jsx.element);
   };
 }
 
