@@ -23,7 +23,6 @@
   "devDependencies": {
     "terminal-link": "^3.0.0"
   },
-  "packageManager": "pnpm@7.3.0",
   "publishConfig": {
     "access": "public"
   },

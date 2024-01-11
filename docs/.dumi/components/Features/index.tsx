@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { SectionHeader } from '../SectionHeader';
 import {
   BOX_IMAGE,
@@ -11,53 +10,26 @@ import {
   PRACTICE_IMAGE,
   ROUTER_IMAGE,
 } from './image';
+import styles from './index.less';
 
-const FeaturesWrapper = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 26px;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    padding-left: 0;
-    justify-content: center;
-  }
-
-  .feature {
-    width: 280px;
-    margin-bottom: 60px;
-    list-style: none;
-  }
-
-  .feature div {
-    width: 100px;
-    height: 100px;
-    background-size: 100px 100px;
-    background-repeat: no-repeat;
-    margin: 0 auto 10px;
-  }
-
-  .feature h3 {
-    font-size: 20px;
-    color: #2a445d;
-    margin-bottom: 12px;
-    text-align: center;
-  }
-  .feature p {
-    font-size: 18px;
-    color: #4a5e71;
-  }
-`;
-
-const FeatureItemPicture = styled.div<{ imageUrl: string }>`
-  background-image: url(${(props) => props.imageUrl});
-`;
+const FeatureItemPicture = ({
+  imageUrl,
+  children,
+}: React.PropsWithChildren<{ imageUrl: string }>) => {
+  return (
+    <div
+      style={{
+        backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export const Features = () => {
   return (
-    <FeaturesWrapper>
+    <div className={styles.features}>
       <SectionHeader title="主要特性" />
       <ul>
         <li className="feature">
@@ -125,6 +97,6 @@ export const Features = () => {
           </p>
         </li>
       </ul>
-    </FeaturesWrapper>
+    </div>
   );
 };

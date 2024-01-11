@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 
 const LS_KEY = 'github-stars';
 
 export const GithubStar = () => {
-  const [count, setCount] = useState(localStorage.getItem(LS_KEY) || '12K+');
+  const [count, setCount] = useState(
+    (typeof window !== 'undefined' && localStorage.getItem(LS_KEY)) || '14K+',
+  );
 
   useEffect(() => {
     (async () => {

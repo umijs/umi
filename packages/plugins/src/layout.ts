@@ -136,8 +136,10 @@ ${isFlattedDepsDir ? '/// <reference types="antd" />' : ''}
       path: 'Layout.tsx',
       content: `
 ${PKG_TYPE_REFERENCE}
-import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, matchRoutes } from 'umi';
-import type { IRoute } from 'umi';
+import {
+  Link, useLocation, useNavigate, Outlet, useAppData, matchRoutes,
+  type IRoute
+} from '${api.appData.umi.importSource}';
 import React, { useMemo } from 'react';
 import {
   ProLayout,
@@ -741,7 +743,7 @@ export default LogoIcon;
       path: 'Exception.tsx',
       content: `
 import React from 'react';
-import { history, type IRoute } from 'umi';
+import { history, type IRoute } from '${api.appData.umi.importSource}';
 import { Result, Button } from 'antd';
 
 const Exception: React.FC<{

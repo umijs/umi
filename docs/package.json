@@ -1,6 +1,7 @@
 {
   "name": "@umijs/docs",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "build": "dumi build",
     "dev": "dumi dev",
@@ -9,10 +10,9 @@
   },
   "dependencies": {
     "@ant-design/icons-svg": "^4.2.1",
-    "react-countup": "^6.4.2",
-    "styled-components": "6.0.0-rc.0"
+    "react-countup": "^6.4.2"
   },
   "devDependencies": {
-    "dumi": "^2.2.5"
+    "dumi": "^2.2.16"
   }
 }

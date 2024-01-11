@@ -1,9 +1,5 @@
-export default {
-  ssr: {
-    platform: 'vercel',
-  },
-  // hash: true,
-  apiRoute: {
-    platform: 'vercel',
-  },
-};
+import { defineConfig } from 'umi';
+
+export default defineConfig({
+  ssr: {},
+});

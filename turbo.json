@@ -10,8 +10,7 @@
       "cache": false
     },
     "dev": {
-      "cache": false,
-      "persistent": true
+      "cache": false
     },
     "test": {
       "outputs": [".jest-cache/**"]

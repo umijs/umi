@@ -1,13 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const port = 3000;
+const { todoServer } = require('./todo');
+const port = 8000;
 
-// app.use(async (req, res, next) => {
-//   if (req.path.match(/([0-9]+|umi)\.js/)) {
-//     await new Promise((resolve) => setTimeout(resolve, 1000));
-//   }
-//   next();
-// });
+app.use(cors())
+app.use(express.json())
+
+// mock server api
+todoServer(app)
 
 // Logger middleware
 app.use((req, res, next) => {

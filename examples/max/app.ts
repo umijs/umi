@@ -1,5 +1,4 @@
-// @ts-ignore
-import type { RequestConfig } from '@@/plugin-request';
+import type { RequestConfig, RequestInterceptorAxios } from '@umijs/max';
 import { message } from 'antd';
 import { notification } from 'antd/es';
 
@@ -62,12 +61,16 @@ interface ResponseStructure {
   showType?: number;
 }
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const request: RequestConfig = {
   requestInterceptors: [
-    (config) => {
-      console.log('Interceptor：', config);
+    (async (config) => {
+      console.log('Async Interceptor before ：', config);
+      await sleep(500);
+      console.log('Async Interceptor after ：', config);
       return config;
-    },
+    }) satisfies RequestInterceptorAxios,
     (url, options) => {
       console.log(url, options);
       return { url, options };
@@ -76,6 +79,12 @@ export const request: RequestConfig = {
   responseInterceptors: [
     (res) => {
       console.log('responseInterceptor', res);
+      return res;
+    },
+    async (res) => {
+      console.log('Async responseInterceptor before', res);
+      await sleep(500);
+      console.log('Async responseInterceptor after', res);
       return res;
     },
   ],
