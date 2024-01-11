@@ -11,7 +11,7 @@ interface IRootComponentOptions {
   routeComponents: IRouteComponents;
   pluginManager: any;
   location: string;
-  loaderData?: { [routeKey: string]: any };
+  loaderData: { [routeKey: string]: any };
   manifest: any;
   metadata?: IMetadata;
 }
@@ -25,7 +25,7 @@ export async function getClientRootComponent(opts: IRootComponentOptions) {
     routeComponents: components,
   });
   let rootContainer = (
-    <StaticRouter basename={basename} location={opts.location!}>
+    <StaticRouter basename={basename} location={opts.location}>
       <Routes />
     </StaticRouter>
   );
@@ -54,7 +54,7 @@ export async function getClientRootComponent(opts: IRootComponentOptions) {
         pluginManager: opts.pluginManager,
         basename,
         clientLoaderData: {},
-        serverLoaderData: opts.loaderData || {},
+        serverLoaderData: opts.loaderData,
       }}
     >
       {rootContainer}
