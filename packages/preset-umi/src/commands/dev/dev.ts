@@ -6,6 +6,7 @@ import {
   logger,
   portfinder,
   rimraf,
+  semver,
   winPath,
 } from '@umijs/utils';
 import { existsSync, readdirSync, readFileSync } from 'fs';
@@ -347,7 +348,13 @@ PORT=8888 umi dev
         },
       });
 
+      const isGTEReact17 =
+        api.appData.react?.version &&
+        semver.gte(api.appData.react.version, '17.0.0');
       const opts: any = {
+        react: {
+          runtime: isGTEReact17 ? 'automatic' : 'classic',
+        },
         config: api.config,
         pkg: api.pkg,
         cwd: api.cwd,

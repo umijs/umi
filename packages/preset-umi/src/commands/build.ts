@@ -1,5 +1,5 @@
 import { getMarkup } from '@umijs/server';
-import { chalk, fsExtra, logger, rimraf } from '@umijs/utils';
+import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import type { IApi, IOnGenerateFiles } from '../types';
@@ -97,7 +97,13 @@ umi build --clean
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
       });
+      const isGTEReact17 =
+        api.appData.react?.version &&
+        semver.gte(api.appData.react.version, '17.0.0');
       const opts = {
+        react: {
+          runtime: isGTEReact17 ? 'automatic' : 'classic',
+        },
         config: api.config,
         cwd: api.cwd,
         entry,
