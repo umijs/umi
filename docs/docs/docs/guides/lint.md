@@ -31,10 +31,12 @@ $ pnpm add @umijs/lint -D
 
 然后安装 ESLint 及 Stylelint：
 
+> 目前 `@umijs/lint` 使用的 `stylelint` 版本是 v14  
+
 ```bash
-$ npm i eslint stylelint -D
+$ npm i -D eslint "stylelint@^14"
 # or
-$ pnpm add eslint stylelint -D
+$ pnpm add -D eslint "stylelint@^14"
 ```
 
 ### 启用配置
