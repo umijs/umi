@@ -24,7 +24,12 @@ const spawn = sync(
   'tsx',
   [scriptPathAsStr, ...throughArgs],
   {
-    env: process.env,
+    env: {
+      ...process.env,
+      // disable `(node:92349) ExperimentalWarning: `--experimental-loader` may be removed in the future;` warning
+      // more context: https://github.com/umijs/umi/pull/11981
+      NODE_NO_WARNINGS: '1'
+    },
     cwd: process.cwd(),
     stdio: 'inherit',
     shell: true
