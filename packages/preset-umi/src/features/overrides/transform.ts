@@ -47,6 +47,9 @@ export async function transform(cssContent: string, filePath: string) {
       } else if (/^body([\s+~>[:]|$)/.test(selector)) {
         // use html parent to promote body selector priority
         return `html ${selector}`;
+      } else if (selector === ':root') {
+        // https://github.com/umijs/umi/issues/12089
+        return 'html:root';
       }
       return prefixedSelector;
     },
