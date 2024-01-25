@@ -1,12 +1,78 @@
+import { lodash, logger, winPath } from '@umijs/utils';
+import assert from 'assert';
 import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
-import type { IApi } from '../../types';
+import { dirname, isAbsolute, join, relative } from 'path';
+import { PREFETCH_ROUTE_MAP_SCP_TYPE } from '../../constants';
+import { createResolver } from '../../libs/scan';
+import type { IApi, IRoute } from '../../types';
+
+export interface IRouteChunkFilesMap {
+  /**
+   * script attr prefix (package.json name)
+   */
+  p: string;
+  /**
+   * bundler type
+   */
+  b: string;
+  /**
+   * all chunk files
+   */
+  f: [string, string | number][];
+  /**
+   * route files index map
+   */
+  r: Record<string, number[]>;
+}
+
+/**
+ * forked from: https://github.com/remix-run/react-router/blob/fb0f1f94778f4762989930db209e6a111504aa63/packages/router/utils.ts#L688C1-L719
+ */
+const routeScoreCache = new Map<string, number>();
+
+function computeRouteScore(path: string): number {
+  if (!routeScoreCache.get(path)) {
+    const paramRe = /^:[\w-]+$/;
+    const dynamicSegmentValue = 3;
+    const emptySegmentValue = 1;
+    const staticSegmentValue = 10;
+    const splatPenalty = -2;
+    const isSplat = (s: string) => s === '*';
+    let segments = path.split('/');
+    let initialScore = segments.length;
+    if (segments.some(isSplat)) {
+      initialScore += splatPenalty;
+    }
+
+    routeScoreCache.set(
+      path,
+      segments
+        .filter((s) => !isSplat(s))
+        .reduce(
+          (score, segment) =>
+            score +
+            (paramRe.test(segment)
+              ? dynamicSegmentValue
+              : segment === ''
+              ? emptySegmentValue
+              : staticSegmentValue),
+          initialScore,
+        ),
+    );
+  }
+
+  return routeScoreCache.get(path)!;
+}
 
 export default (api: IApi) => {
+  let routeChunkFilesMap: IRouteChunkFilesMap;
+
   api.describe({
     config: {
       schema({ zod }) {
-        return zod.object({});
+        return zod.object({
+          preloadMode: zod.enum(['script', 'map']).optional(),
+        });
       },
     },
     enableBy: api.EnableBy.config,
@@ -16,9 +82,164 @@ export default (api: IApi) => {
     if (!api.config.manifest) {
       throw new Error('You must enable manifest to use routePrefetch feature!');
     }
+
+    assert(
+      api.pkg.name,
+      'You must set name in package.json to use routePrefetch feature!',
+    );
   });
 
-  api.onBuildComplete(() => {
+  api.addHTMLHeadScripts(() =>
+    api.config.routePrefetch.preloadMode === 'map'
+      ? // map mode
+        [
+          {
+            type: PREFETCH_ROUTE_MAP_SCP_TYPE,
+            content: JSON.stringify(routeChunkFilesMap),
+          },
+        ]
+      : // script mode
+        [
+          {
+            content: readFileSync(
+              require.resolve('../../../compiled/prefetchRouteFilesScp'),
+              'utf-8',
+            )
+              .replace(
+                '"{{routeChunkFilesMap}}"',
+                JSON.stringify(routeChunkFilesMap),
+              )
+              .replace('{{basename}}', api.config.base)
+              .replace('{{publicPath}}', api.config.publicPath),
+          },
+        ],
+  );
+
+  api.onBuildComplete(async ({ err, stats }) => {
+    if (!err && !stats.hasErrors()) {
+      const routeModulePath = join(api.paths.absTmpPath, 'core/route.tsx');
+      const routeModuleName = winPath(relative(api.cwd, routeModulePath));
+      const resolver = createResolver({ alias: api.config.alias });
+      const { chunks = [] } = stats.toJson();
+
+      // collect all chunk files and file chunks indexes
+      const chunkFiles: Record<string, { index: number; id: string | number }> =
+        {};
+      const fileChunksMap: Record<string, { indexes: number[] }> = {};
+
+      for (const chunk of chunks) {
+        const routeOrigins = chunk.origins!.filter((origin) =>
+          origin.moduleName?.endsWith(routeModuleName),
+        );
+
+        for (const origin of routeOrigins) {
+          const queue = [chunk.id!].concat(chunk.siblings!);
+          const visited: typeof queue = [];
+          const indexes: number[] = [];
+          let fileAbsPath: string;
+
+          // resolve route file path
+          try {
+            fileAbsPath = await resolver.resolve(
+              dirname(routeModulePath),
+              origin.request!,
+            );
+          } catch (err) {
+            logger.error(
+              `[routePrefetch]: route file resolve error, cannot prefetch for ${origin.request!}`,
+            );
+            continue;
+          }
+
+          // collect all related chunk files for route file
+          while (queue.length) {
+            const currentId = queue.shift()!;
+
+            if (!visited.includes(currentId)) {
+              const currentChunk = chunks.find((c) => c.id === currentId)!;
+
+              // merge files
+              chunk.files!.forEach((file) => {
+                chunkFiles[file] ??= {
+                  index: Object.keys(chunkFiles).length,
+                  id: currentId,
+                };
+              });
+
+              // record files as indexes
+              indexes.push(
+                ...currentChunk.files!.map((f) => chunkFiles[f].index),
+              );
+
+              // continue to search sibling chunks
+              queue.push(...currentChunk.siblings!);
+            }
+          }
+
+          fileChunksMap[fileAbsPath] = { indexes };
+        }
+      }
+
+      // generate map for path -> files (include parent route files)
+      const routeFilesMap: Record<string, number[]> = {};
+
+      for (const route of Object.values<IRoute>(api.appData.routes)) {
+        // skip redirect route
+        if (!route.file) continue;
+
+        let current = route;
+        const files: string[] = [];
+
+        do {
+          try {
+            const fileReqPath =
+              isAbsolute(current.file!) || current.file!.startsWith('@/')
+                ? current.file!
+                : current.file!.replace(/^(\.\/)?/, './');
+            const fileAbsPath = await resolver.resolve(
+              api.paths.absPagesPath,
+              fileReqPath,
+            );
+
+            files.push(fileAbsPath);
+          } catch {
+            logger.error(
+              `[routePrefetch]: route file resolve error, cannot prefetch for ${current.file}`,
+            );
+          }
+          current = current.parentId && api.appData.routes[current.parentId];
+        } while (current);
+
+        const indexes = files.reduce<number[]>((indexes, file) => {
+          return indexes.concat(fileChunksMap[file].indexes);
+        }, []);
+
+        routeFilesMap[route.absPath] =
+          // why different route may has same absPath?
+          // because umi implement route.wrappers via nested routes way, the wrapper route will has same absPath with the nested route
+          // so we always select the longest file indexes for the nested route
+          !routeFilesMap[route.absPath] ||
+          routeFilesMap[route.absPath].length < indexes.length
+            ? indexes
+            : routeFilesMap[route.absPath];
+      }
+
+      routeChunkFilesMap = {
+        p: api.pkg.name!,
+        b: api.appData.bundler!,
+        f: Object.entries(chunkFiles).map(([k, { id }]) => [k, id]),
+        // sort similar to react-router@6
+        r: lodash(routeFilesMap)
+          .toPairs()
+          .sort(
+            ([a]: [string, number[]], [b]: [string, number[]]) =>
+              computeRouteScore(a) - computeRouteScore(b),
+          )
+          .fromPairs()
+          .value() as any,
+      };
+    }
+
     const manifest = readFileSync(
       join(
         api.paths.absOutputPath,
