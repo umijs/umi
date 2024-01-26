@@ -5,7 +5,7 @@ import { dirname, isAbsolute, join, relative } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { createResolver } from '../../libs/scan';
 import type { IApi, IRoute } from '../../types';
-import { PREFETCH_ROUTE_MAP_SCP_TYPE } from './prefetchRouteFiles';
+import { PRELOAD_ROUTE_MAP_SCP_TYPE } from './utils';
 
 export interface IRouteChunkFilesMap {
   /**
@@ -95,7 +95,7 @@ export default (api: IApi) => {
       ? // map mode
         [
           {
-            type: PREFETCH_ROUTE_MAP_SCP_TYPE,
+            type: PRELOAD_ROUTE_MAP_SCP_TYPE,
             content: JSON.stringify(routeChunkFilesMap),
           },
         ]
@@ -103,7 +103,7 @@ export default (api: IApi) => {
         [
           {
             content: readFileSync(
-              join(TEMPLATES_DIR, 'routePrefetch/prefetchRouteFilesScp.js'),
+              join(TEMPLATES_DIR, 'routePrefetch/preloadRouteFilesScp.js'),
               'utf-8',
             )
               .replace(
@@ -147,7 +147,7 @@ export default (api: IApi) => {
             );
           } catch (err) {
             logger.error(
-              `[routePrefetch]: route file resolve error, cannot prefetch for ${origin.request!}`,
+              `[routePrefetch]: route file resolve error, cannot preload for ${origin.request!}`,
             );
             continue;
           }
@@ -205,7 +205,7 @@ export default (api: IApi) => {
             files.push(fileAbsPath);
           } catch {
             logger.error(
-              `[routePrefetch]: route file resolve error, cannot prefetch for ${current.file}`,
+              `[routePrefetch]: route file resolve error, cannot preload for ${current.file}`,
             );
           }
           current = current.parentId && api.appData.routes[current.parentId];
