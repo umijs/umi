@@ -5,15 +5,11 @@ export default defineConfig({
   cjs: {
     ignores: ['src/client/*'],
   },
-  esm: {
-    ignores: ['!src/client/prefetchRouteFiles.ts'],
-    output: 'dist',
-  },
   umd: {
     entry: 'src/client/prefetchRouteFilesScp.ts',
-    output: 'compiled/prefetchRouteFilesScp',
+    output: 'templates/routePrefetch',
     chainWebpack(memo) {
-      memo.output.filename('index.js');
+      memo.output.filename('prefetchRouteFilesScp.js');
       memo.output.delete('libraryTarget');
       memo.output.iife(true);
 

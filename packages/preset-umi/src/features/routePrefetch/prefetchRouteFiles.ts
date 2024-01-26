@@ -2,7 +2,9 @@
  * NOTE: DO NOT USE ADVANCED SYNTAX IN THIS FILE, TO AVOID INSERT HELPERS TO REDUCE SCRIPT SIZE.
  */
 
-import type { IRouteChunkFilesMap } from '../features/routePrefetch/routePrefetch';
+import type { IRouteChunkFilesMap } from './routePrefetch';
+
+export const PREFETCH_ROUTE_MAP_SCP_TYPE = 'umi-route-chunk-files-map';
 
 function prefetchRouteFiles(
   path: string,

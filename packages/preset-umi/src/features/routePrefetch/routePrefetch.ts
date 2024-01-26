@@ -2,9 +2,10 @@ import { lodash, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, writeFileSync } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
-import { PREFETCH_ROUTE_MAP_SCP_TYPE } from '../../constants';
+import { TEMPLATES_DIR } from '../../constants';
 import { createResolver } from '../../libs/scan';
 import type { IApi, IRoute } from '../../types';
+import { PREFETCH_ROUTE_MAP_SCP_TYPE } from './prefetchRouteFiles';
 
 export interface IRouteChunkFilesMap {
   /**
@@ -102,7 +103,7 @@ export default (api: IApi) => {
         [
           {
             content: readFileSync(
-              require.resolve('../../../compiled/prefetchRouteFilesScp'),
+              join(TEMPLATES_DIR, 'routePrefetch/prefetchRouteFilesScp.js'),
               'utf-8',
             )
               .replace(
