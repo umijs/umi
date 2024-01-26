@@ -72,7 +72,11 @@ export default (api: IApi) => {
     config: {
       schema({ zod }) {
         return zod.object({
-          preloadMode: zod.enum(['script', 'map']).optional(),
+          preload: zod
+            .object({
+              mode: zod.enum(['script', 'map']).optional(),
+            })
+            .optional(),
         });
       },
     },
@@ -85,36 +89,42 @@ export default (api: IApi) => {
     }
 
     assert(
-      api.pkg.name,
-      'You must set name in package.json to use routePrefetch feature!',
+      !api.config.routePrefetch.preload || api.pkg.name,
+      'You must set name in package.json to use routePrefetch.preload feature!',
     );
   });
 
-  api.addHTMLHeadScripts(() =>
-    api.config.routePrefetch.preloadMode === 'map'
-      ? // map mode
-        [
-          {
-            type: PRELOAD_ROUTE_MAP_SCP_TYPE,
-            content: JSON.stringify(routeChunkFilesMap),
-          },
-        ]
-      : // script mode
-        [
-          {
-            content: readFileSync(
-              join(TEMPLATES_DIR, 'routePrefetch/preloadRouteFilesScp.js'),
-              'utf-8',
-            )
-              .replace(
-                '"{{routeChunkFilesMap}}"',
-                JSON.stringify(routeChunkFilesMap),
+  api.addHTMLHeadScripts(() => {
+    const { routePrefetch } = api.config;
+
+    if (routePrefetch.preload) {
+      return routePrefetch.preload.mode === 'map'
+        ? // map mode
+          [
+            {
+              type: PRELOAD_ROUTE_MAP_SCP_TYPE,
+              content: JSON.stringify(routeChunkFilesMap),
+            },
+          ]
+        : // script mode
+          [
+            {
+              content: readFileSync(
+                join(TEMPLATES_DIR, 'routePrefetch/preloadRouteFilesScp.js'),
+                'utf-8',
               )
-              .replace('{{basename}}', api.config.base)
-              .replace('{{publicPath}}', api.config.publicPath),
-          },
-        ],
-  );
+                .replace(
+                  '"{{routeChunkFilesMap}}"',
+                  JSON.stringify(routeChunkFilesMap),
+                )
+                .replace('{{basename}}', api.config.base)
+                .replace('{{publicPath}}', api.config.publicPath),
+            },
+          ];
+    }
+
+    return [];
+  });
 
   api.onBuildComplete(async ({ err, stats }) => {
     if (!err && !stats.hasErrors()) {
