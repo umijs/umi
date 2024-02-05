@@ -220,7 +220,11 @@ export default (api: IApi) => {
       }
 
       // append html file
-      const htmlContent = await getMarkup(markupArgs);
+      const htmlContent = await getMarkup({
+        ...markupArgs,
+        // https://github.com/umijs/umi/issues/12108
+        path: route.path,
+      });
 
       htmlFiles.push({
         path: file,
