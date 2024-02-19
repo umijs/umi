@@ -3,6 +3,7 @@ import {
   importLazy,
   installWithNpmClient,
   logger,
+  resolve,
   winPath,
 } from '@umijs/utils';
 import fs from 'fs';
@@ -10,6 +11,17 @@ import path from 'path';
 
 import type { IApi } from '../../types';
 import { addDeps } from '../depsOnDemand/depsOnDemand';
+
+interface IIconsType {
+  type: string;
+  collections?: string;
+}
+
+interface IIconsJson {
+  prefix?: string;
+  icons?: Record<string, any>;
+  aliases?: Record<string, any>;
+}
 
 export default (api: IApi) => {
   const iconPlugin: typeof import('./esbuildIconPlugin') = importLazy(
@@ -129,6 +141,57 @@ export default (api: IApi) => {
     });
   });
 
+  function getIconsType() {
+    const pkg = api.pkg;
+    const prefix = `@iconify-json`;
+    const iconifyDeps = Object.keys({
+      ...pkg?.dependencies,
+      ...pkg?.devDependencies,
+    }).filter((name) => name.startsWith(`${prefix}/`));
+    const collectionsExcludes: string[] = [];
+    const icons: IIconsType[] = [];
+    iconifyDeps.forEach((name) => {
+      try {
+        const pkgPath = resolve.sync(`${name}/icons.json`, {
+          basedir: api.cwd,
+        });
+        const map = require(pkgPath) as IIconsJson;
+        if (!map?.prefix?.length) {
+          return;
+        }
+        collectionsExcludes.push(map.prefix);
+        const iconKeys = Object.keys({
+          ...map?.icons,
+          ...map?.aliases,
+        });
+        const type = iconKeys
+          .map((name) => {
+            return `\`${map.prefix}:${name}\``;
+          })
+          .join(' | ');
+        icons.push({
+          type,
+        });
+      } catch {}
+    });
+    const finalIconifyDeps: IIconsType = icons.reduce(
+      (memo, curr) => {
+        return {
+          type: `${memo.type} | ${curr.type}`,
+        };
+      },
+      {
+        type: '',
+      },
+    );
+    finalIconifyDeps.collections = getCollectionsType({
+      excludes: collectionsExcludes,
+    });
+    return finalIconifyDeps;
+  }
+
+  const iconsType = getIconsType();
+
   api.onGenerateFiles(({ isFirstTime }) => {
     // ensure first time file exist for esbuild resolve
     if (isFirstTime) {
@@ -159,157 +222,11 @@ type AliasKeys = keyof typeof alias;
 const localIcons = ${JSON.stringify(localIcons)} as const;
 type LocalIconsKeys = typeof localIcons[number];
 
-type IconCollections = 'academicons' |
-  'akar-icons' |
-  'ant-design' |
-  'arcticons' |
-  'basil' |
-  'bi' |
-  'bpmn' |
-  'brandico' |
-  'bx' |
-  'bxl' |
-  'bxs' |
-  'bytesize' |
-  'carbon' |
-  'charm' |
-  'ci' |
-  'cib' |
-  'cif' |
-  'cil' |
-  'circle-flags' |
-  'circum' |
-  'clarity' |
-  'codicon' |
-  'cryptocurrency-color' |
-  'cryptocurrency' |
-  'dashicons' |
-  'ei' |
-  'el' |
-  'emblemicons' |
-  'emojione-monotone' |
-  'emojione-v1' |
-  'emojione' |
-  'entypo-social' |
-  'entypo' |
-  'eos-icons' |
-  'ep' |
-  'et' |
-  'eva' |
-  'fa-brands' |
-  'fa-regular' |
-  'fa-solid' |
-  'fa' |
-  'fa6-brands' |
-  'fa6-regular' |
-  'fa6-solid' |
-  'fad' |
-  'fe' |
-  'feather' |
-  'file-icons' |
-  'flag' |
-  'flagpack' |
-  'flat-color-icons' |
-  'flat-ui' |
-  'fluent-emoji-flat' |
-  'fluent-emoji-high-contrast' |
-  'fluent-emoji' |
-  'fluent-mdl2' |
-  'fluent' |
-  'fontelico' |
-  'fontisto' |
-  'foundation' |
-  'fxemoji' |
-  'gala' |
-  'game-icons' |
-  'geo' |
-  'gg' |
-  'gis' |
-  'gridicons' |
-  'grommet-icons' |
-  'healthicons' |
-  'heroicons-outline' |
-  'heroicons-solid' |
-  'heroicons' |
-  'humbleicons' |
-  'ic' |
-  'icomoon-free' |
-  'icon-park-outline' |
-  'icon-park-solid' |
-  'icon-park-twotone' |
-  'icon-park' |
-  'iconoir' |
-  'icons8' |
-  'il' |
-  'ion' |
-  'iwwa' |
-  'jam' |
-  'la' |
-  'line-md' |
-  'logos' |
-  'ls' |
-  'lucide' |
-  'majesticons' |
-  'maki' |
-  'map' |
-  'material-symbols' |
-  'mdi-light' |
-  'mdi' |
-  'medical-icon' |
-  'memory' |
-  'mi' |
-  'mingcute' |
-  'mono-icons' |
-  'nimbus' |
-  'nonicons' |
-  'noto-v1' |
-  'noto' |
-  'octicon' |
-  'oi' |
-  'ooui' |
-  'openmoji' |
-  'pajamas' |
-  'pepicons-pop' |
-  'pepicons-print' |
-  'pepicons' |
-  'ph' |
-  'pixelarticons' |
-  'prime' |
-  'ps' |
-  'quill' |
-  'radix-icons' |
-  'raphael' |
-  'ri' |
-  'si-glyph' |
-  'simple-icons' |
-  'simple-line-icons' |
-  'skill-icons' |
-  'subway' |
-  'svg-spinners' |
-  'system-uicons' |
-  'tabler' |
-  'teenyicons' |
-  'topcoat' |
-  'twemoji' |
-  'typcn' |
-  'uil' |
-  'uim' |
-  'uis' |
-  'uit' |
-  'uiw' |
-  'vaadin' |
-  'vs' |
-  'vscode-icons' |
-  'websymbol' |
-  'whh' |
-  'wi' |
-  'wpf' |
-  'zmdi' |
-  'zondicons';
+type IconCollections = ${iconsType.collections};
 type Icon = \`\${IconCollections}:\${string}\`;
 
 interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
-  icon: AliasKeys | Icon | \`local:\${LocalIconsKeys}\`;
+  icon: AliasKeys ${iconsType.type} | Icon | \`local:\${LocalIconsKeys}\`;
   hover?: AliasKeys | string;
   className?: string;
   viewBox?: string;
@@ -453,4 +370,160 @@ function readIconsFromDir(dir: string) {
   collect(dir);
 
   return icons;
+}
+
+function getCollectionsType(opts: { excludes: string[] }) {
+  const { excludes = [] } = opts;
+  const collections = [
+    'academicons',
+    'akar-icons',
+    'arcticons',
+    'basil',
+    'bi',
+    'bpmn',
+    'brandico',
+    'bx',
+    'bxl',
+    'bxs',
+    'bytesize',
+    'carbon',
+    'charm',
+    'ci',
+    'cib',
+    'cif',
+    'cil',
+    'circle-flags',
+    'circum',
+    'clarity',
+    'codicon',
+    'cryptocurrency-color',
+    'cryptocurrency',
+    'dashicons',
+    'ei',
+    'el',
+    'emblemicons',
+    'emojione-monotone',
+    'emojione-v1',
+    'emojione',
+    'entypo-social',
+    'entypo',
+    'eos-icons',
+    'ep',
+    'et',
+    'eva',
+    'fa-brands',
+    'fa-regular',
+    'fa-solid',
+    'fa',
+    'fa6-brands',
+    'fa6-regular',
+    'fa6-solid',
+    'fad',
+    'fe',
+    'feather',
+    'file-icons',
+    'flag',
+    'flagpack',
+    'flat-color-icons',
+    'flat-ui',
+    'fluent-emoji-flat',
+    'fluent-emoji-high-contrast',
+    'fluent-emoji',
+    'fluent-mdl2',
+    'fluent',
+    'fontelico',
+    'fontisto',
+    'foundation',
+    'fxemoji',
+    'gala',
+    'game-icons',
+    'geo',
+    'gg',
+    'gis',
+    'gridicons',
+    'grommet-icons',
+    'healthicons',
+    'heroicons-outline',
+    'heroicons-solid',
+    'heroicons',
+    'humbleicons',
+    'ic',
+    'icomoon-free',
+    'icon-park-outline',
+    'icon-park-solid',
+    'icon-park-twotone',
+    'icon-park',
+    'iconoir',
+    'icons8',
+    'il',
+    'ion',
+    'iwwa',
+    'jam',
+    'la',
+    'line-md',
+    'logos',
+    'ls',
+    'lucide',
+    'majesticons',
+    'maki',
+    'map',
+    'material-symbols',
+    'mdi-light',
+    'mdi',
+    'medical-icon',
+    'memory',
+    'mi',
+    'mingcute',
+    'mono-icons',
+    'nimbus',
+    'nonicons',
+    'noto-v1',
+    'noto',
+    'octicon',
+    'oi',
+    'ooui',
+    'openmoji',
+    'pajamas',
+    'pepicons-pop',
+    'pepicons-print',
+    'pepicons',
+    'ph',
+    'pixelarticons',
+    'prime',
+    'ps',
+    'quill',
+    'radix-icons',
+    'raphael',
+    'ri',
+    'si-glyph',
+    'simple-icons',
+    'simple-line-icons',
+    'skill-icons',
+    'subway',
+    'svg-spinners',
+    'system-uicons',
+    'tabler',
+    'teenyicons',
+    'topcoat',
+    'twemoji',
+    'typcn',
+    'uil',
+    'uim',
+    'uis',
+    'uit',
+    'uiw',
+    'vaadin',
+    'vs',
+    'vscode-icons',
+    'websymbol',
+    'whh',
+    'wi',
+    'wpf',
+    'zmdi',
+    'zondicons',
+  ]
+    .filter((name) => !excludes.includes(name))
+    .map((name) => `'${name}'`)
+    .join(' | ');
+  return `(${collections})`;
 }
