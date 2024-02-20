@@ -136,7 +136,10 @@ export default (api: IApi) => {
       // collect all chunk files and file chunks indexes
       const chunkFiles: Record<string, { index: number; id: string | number }> =
         {};
-      const fileChunksMap: Record<string, { indexes: number[] }> = {};
+      const fileChunksMap: Record<
+        string,
+        { files: string[]; indexes?: number[] }
+      > = {};
 
       for (const chunk of chunks) {
         const routeOrigins = chunk.origins!.filter((origin) =>
@@ -146,7 +149,7 @@ export default (api: IApi) => {
         for (const origin of routeOrigins) {
           const queue = [chunk.id!].concat(chunk.siblings!);
           const visited: typeof queue = [];
-          const indexes: number[] = [];
+          const files: string[] = [];
           let fileAbsPath: string;
 
           // resolve route file path
@@ -177,19 +180,25 @@ export default (api: IApi) => {
                 };
               });
 
-              // record files as indexes
-              indexes.push(
-                ...currentChunk.files!.map((f) => chunkFiles[f].index),
-              );
+              // merge files
+              files.push(...currentChunk.files!);
 
               // continue to search sibling chunks
               queue.push(...currentChunk.siblings!);
+
+              // mark as visited
+              visited.push(currentId);
             }
           }
 
-          fileChunksMap[fileAbsPath] = { indexes };
+          fileChunksMap[fileAbsPath] = { files };
         }
       }
+
+      // generate indexes for file chunks
+      Object.values(fileChunksMap).forEach((item) => {
+        item.indexes = item.files.map((f) => chunkFiles[f].index);
+      });
 
       // generate map for path -> files (include parent route files)
       const routeFilesMap: Record<string, number[]> = {};
@@ -222,7 +231,7 @@ export default (api: IApi) => {
         } while (current);
 
         const indexes = files.reduce<number[]>((indexes, file) => {
-          return indexes.concat(fileChunksMap[file].indexes);
+          return indexes.concat(fileChunksMap[file].indexes!);
         }, []);
 
         routeFilesMap[route.absPath] =
