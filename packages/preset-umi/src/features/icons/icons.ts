@@ -287,6 +287,7 @@ type IconCollections = 'academicons' |
   'subway' |
   'svg-spinners' |
   'system-uicons' |
+  'solar' |
   'tabler' |
   'teenyicons' |
   'topcoat' |
