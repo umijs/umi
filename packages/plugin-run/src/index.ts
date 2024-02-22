@@ -46,7 +46,15 @@ export default (api: IApi) => {
         'utf-8',
       );
       const tsxPath = getBinPath();
-      fork(tsxPath, [absTmpFilePath, ...restArgs], { stdio: 'inherit' });
+      fork(tsxPath, [absTmpFilePath, ...restArgs], {
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          // disable `(node:92349) ExperimentalWarning: `--experimental-loader` may be removed in the future;` warning
+          // more context: https://github.com/umijs/umi/pull/11981
+          NODE_NO_WARNINGS: '1',
+        },
+      });
     },
   });
 };
