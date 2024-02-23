@@ -51,7 +51,7 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
-      customSyntax: require.resolve('@stylelint/postcss-css-in-js'),
+      customSyntax: require.resolve('postcss-styled-syntax'),
     },
   ],
 };

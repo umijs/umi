@@ -23,7 +23,6 @@
   "dependencies": {
     "@babel/core": "7.23.6",
     "@babel/eslint-parser": "7.23.3",
-    "@stylelint/postcss-css-in-js": "^0.38.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@umijs/babel-preset-umi": "workspace:*",
@@ -31,6 +30,7 @@
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "postcss": "^8.4.21",
+    "postcss-styled-syntax": "^0.6.4",
     "postcss-syntax": "0.36.2",
     "stylelint-config-standard": "25.0.0"
   },
