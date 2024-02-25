@@ -27,12 +27,10 @@ export async function getClientRootComponent(opts: IHtmlProps) {
   });
 
   // If router has a basename, location should be concatenated with that basename
-  let finalLocation;
-  if (basename.endsWith('/')) {
-    finalLocation = basename.slice(0, -1) + opts.location;
-  } else {
-    finalLocation = basename + opts.location;
-  }
+  const finalLocation = `${
+    basename.endsWith('/') ? basename.slice(0, -1) : basename
+  }${opts.location}`;
+
   let rootContainer = (
     <StaticRouter basename={basename} location={finalLocation}>
       <Routes />
