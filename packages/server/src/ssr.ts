@@ -54,6 +54,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
     pureHtml: boolean;
   };
   mountElementId: string;
+  basename?: string;
 }
 
 interface IExecLoaderOpts {
@@ -93,6 +94,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       getRoutes,
       createHistory,
       sourceDir,
+      basename,
     } = opts;
 
     // make import { history } from 'umi' work
@@ -169,6 +171,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:
         opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
       mountElementId: opts.mountElementId,
+      basename,
     };
     const element = (await opts.getClientRootComponent(
       context,
