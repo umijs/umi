@@ -14,18 +14,27 @@ interface IHtmlProps {
   loaderData: { [routeKey: string]: any };
   manifest: any;
   metadata?: IMetadata;
+  basename?: string;
 }
 
 // Get the root React component for ReactDOMServer.renderToString
 export async function getClientRootComponent(opts: IHtmlProps) {
-  const basename = '/';
+  const basename = opts.basename || '/';
   const components = { ...opts.routeComponents };
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: components,
   });
+
+  // If router has a basename, location should be concatenated with that basename
+  let finalLocation;
+  if (basename.endsWith('/')) {
+    finalLocation = basename.slice(0, -1) + opts.location;
+  } else {
+    finalLocation = basename + opts.location;
+  }
   let rootContainer = (
-    <StaticRouter basename={basename} location={opts.location}>
+    <StaticRouter basename={basename} location={finalLocation}>
       <Routes />
     </StaticRouter>
   );

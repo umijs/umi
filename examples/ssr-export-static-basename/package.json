@@ -1,0 +1,14 @@
+{
+  "name": "@example/ssr-export-static-basename",
+  "private": true,
+  "description": "当 umi 配置表中设置了 base 后, ssr 输出的预渲染页面中的 a 标签需要有正确的 base 前缀",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  }
+}
