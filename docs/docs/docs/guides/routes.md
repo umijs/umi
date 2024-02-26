@@ -191,6 +191,23 @@ const TheOldPage = ()=>{
 export default withAuth(TheOldPage)
 ```
 
+### layout
+
+* Type: `boolean`
+
+控制该路由是否使用 Layout 包裹。
+
+```js
+export default {
+  routes: [
+    { path: '/home', component: '@/pages/Home/index' },
+    { path: '/list', component: '@/pages/List/index', layout: false },
+  ],
+}
+```
+
+在上面的路由配置中，`/home` 路由会默认被 `Layout` 包裹，而 `/list` 则不会。
+
 ## 约定式路由
 
 除配置式路由外，Umi 也支持约定式路由。约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
