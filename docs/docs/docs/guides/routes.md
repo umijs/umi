@@ -206,6 +206,14 @@ export default {
     { path: '/login', component: '@/pages/Login', layout: false },
   ],
 }
+```
+
+注：
+
+1. 全局布局可能来自于 `layouts/index.tsx` 约定，或插件添加的 layout（如 `@umijs/max` 自带的 layout 插件将自动添加菜单布局），当配置 `layout: false` 时，将取消所有 layout ，此时组件内容占据整个页面，多用于登录页等场景。
+
+2. `layout: false` 仅对一级路由生效，更多例子详见 [全局 layout](#全局-layout) 。
+
 ## 约定式路由
 
 除配置式路由外，Umi 也支持约定式路由。约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
