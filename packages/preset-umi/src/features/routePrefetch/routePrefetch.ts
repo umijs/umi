@@ -1,3 +1,4 @@
+import type { StatsCompilation } from '@umijs/bundler-webpack/compiled/webpack';
 import { lodash, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, writeFileSync } from 'fs';
@@ -97,7 +98,7 @@ export default (api: IApi) => {
   api.addHTMLHeadScripts(() => {
     const { routePrefetch } = api.config;
 
-    if (routePrefetch.preload) {
+    if (routePrefetch.preload && api.name === 'build') {
       return routePrefetch.preload.mode === 'map'
         ? // map mode
           [
@@ -131,7 +132,12 @@ export default (api: IApi) => {
       const routeModulePath = join(api.paths.absTmpPath, 'core/route.tsx');
       const routeModuleName = winPath(relative(api.cwd, routeModulePath));
       const resolver = createResolver({ alias: api.config.alias });
-      const { chunks = [] } = stats.toJson();
+      console.log(stats.compilation.assets);
+      const { chunks = [] } = stats.toJson
+        ? // webpack
+          stats.toJson()
+        : // mako
+          (stats.compilation as unknown as StatsCompilation);
 
       // collect all chunk files and file chunks indexes
       const chunkFiles: Record<string, { index: number; id: string | number }> =
@@ -140,6 +146,8 @@ export default (api: IApi) => {
         string,
         { files: string[]; indexes?: number[] }
       > = {};
+      const pickPreloadFiles = (files: string[]) =>
+        files.filter((f) => f.endsWith('.js') || f.endsWith('.css'));
 
       for (const chunk of chunks) {
         const routeOrigins = chunk.origins!.filter((origin) =>
@@ -173,7 +181,7 @@ export default (api: IApi) => {
               const currentChunk = chunks.find((c) => c.id === currentId)!;
 
               // merge files
-              chunk.files!.forEach((file) => {
+              pickPreloadFiles(chunk.files!).forEach((file) => {
                 chunkFiles[file] ??= {
                   index: Object.keys(chunkFiles).length,
                   id: currentId,
@@ -181,7 +189,7 @@ export default (api: IApi) => {
               });
 
               // merge files
-              files.push(...currentChunk.files!);
+              files.push(...pickPreloadFiles(currentChunk.files!));
 
               // continue to search sibling chunks
               queue.push(...currentChunk.siblings!);
@@ -231,7 +239,10 @@ export default (api: IApi) => {
         } while (current);
 
         const indexes = files.reduce<number[]>((indexes, file) => {
-          return indexes.concat(fileChunksMap[file].indexes!);
+          // why fileChunksMap[file] may not existing?
+          // because Mako will merge minimal async chunk into entry chunk
+          // so the merged route chunk does not has to preload
+          return indexes.concat(fileChunksMap[file]?.indexes || []);
         }, []);
 
         routeFilesMap[route.absPath] =

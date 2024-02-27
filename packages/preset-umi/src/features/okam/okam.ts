@@ -3,7 +3,7 @@ import { IApi } from '../../types';
 
 export default (api: IApi) => {
   api.describe({
-    enableBy: api.EnableBy.config,
+    enableBy: ({ userConfig }) => Boolean(userConfig.mako || api.config.mako),
   });
 
   api.onCheck(() => {
