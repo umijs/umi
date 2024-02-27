@@ -208,7 +208,7 @@ export default (api: IApi) => {
 
         do {
           // skip inline function route file
-          if (!current.file!.startsWith('(')) {
+          if (current.file && !current.file.startsWith('(')) {
             try {
               const fileReqPath =
                 isAbsolute(current.file!) || current.file!.startsWith('@/')
