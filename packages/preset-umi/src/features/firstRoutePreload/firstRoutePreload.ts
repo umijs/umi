@@ -68,6 +68,8 @@ function computeRouteScore(path: string): number {
 export default (api: IApi) => {
   let routeChunkFilesMap: IRouteChunkFilesMap;
 
+  // enable when package name available
+  // because preload script use package name as attribute prefix value
   api.describe({
     enableBy: () => Boolean(api.pkg.name),
   });
@@ -75,7 +77,7 @@ export default (api: IApi) => {
   api.addHTMLHeadScripts(() => {
     if (api.name === 'build') {
       return api.config.tern
-        ? // map mode
+        ? // map mode (for internal tern app)
           [
             {
               type: PRELOAD_ROUTE_MAP_SCP_TYPE,
@@ -97,7 +99,13 @@ export default (api: IApi) => {
                   JSON.stringify(routeChunkFilesMap),
                 )
                 .replace('{{basename}}', api.config.base)
-                .replace('{{publicPath}}', api.config.publicPath),
+                .replace(
+                  '"{{publicPath}}"',
+                  `${
+                    // handle runtimePublicPath
+                    api.config.runtimePublicPath ? 'window.publicPath||' : ''
+                  }"${api.config.publicPath}"`,
+                ),
             },
           ];
     }
@@ -110,7 +118,6 @@ export default (api: IApi) => {
       const routeModulePath = join(api.paths.absTmpPath, 'core/route.tsx');
       const routeModuleName = winPath(relative(api.cwd, routeModulePath));
       const resolver = createResolver({ alias: api.config.alias });
-      console.log(stats.compilation.assets);
       const { chunks = [] } = stats.toJson
         ? // webpack
           stats.toJson()
