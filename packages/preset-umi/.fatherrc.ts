@@ -7,7 +7,7 @@ export default defineConfig({
   },
   umd: {
     entry: 'src/client/preloadRouteFilesScp.ts',
-    output: 'templates/routePrefetch',
+    output: 'templates/firstRoutePreload',
     chainWebpack(memo) {
       memo.output.filename('preloadRouteFilesScp.js');
       memo.output.delete('libraryTarget');

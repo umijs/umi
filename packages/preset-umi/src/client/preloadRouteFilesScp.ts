@@ -2,7 +2,7 @@
  * NOTE: DO NOT USE ADVANCED SYNTAX IN THIS FILE, TO AVOID INSERT HELPERS TO REDUCE SCRIPT SIZE.
  */
 
-import { getPreloadRouteFiles } from '../features/routePrefetch/utils';
+import { getPreloadRouteFiles } from '../features/firstRoutePreload/utils';
 
 const basename = '{{basename}}';
 const publicPath = '{{publicPath}}';
