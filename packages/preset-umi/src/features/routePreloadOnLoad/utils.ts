@@ -2,7 +2,7 @@
  * NOTE: DO NOT USE ADVANCED SYNTAX IN THIS FILE, TO AVOID INSERT HELPERS TO REDUCE SCRIPT SIZE.
  */
 
-import type { IRouteChunkFilesMap } from './firstRoutePreload';
+import type { IRouteChunkFilesMap } from './routePreloadOnLoad';
 
 interface IPreloadRouteFile {
   type: 'js' | 'css' | unknown;

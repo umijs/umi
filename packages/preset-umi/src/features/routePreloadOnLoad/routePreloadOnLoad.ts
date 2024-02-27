@@ -76,8 +76,9 @@ export default (api: IApi) => {
 
   api.addHTMLHeadScripts(() => {
     if (api.name === 'build') {
+      // internal tern app use map mode
       return api.config.tern
-        ? // map mode (for internal tern app)
+        ? // map mode
           [
             {
               type: PRELOAD_ROUTE_MAP_SCP_TYPE,
@@ -90,7 +91,7 @@ export default (api: IApi) => {
               content: readFileSync(
                 join(
                   TEMPLATES_DIR,
-                  'firstRoutePreload/preloadRouteFilesScp.js',
+                  'routePreloadOnLoad/preloadRouteFilesScp.js',
                 ),
                 'utf-8',
               )
@@ -153,7 +154,7 @@ export default (api: IApi) => {
             );
           } catch (err) {
             logger.error(
-              `[firstRoutePreload]: route file resolve error, cannot preload for ${origin.request!}`,
+              `[routePreloadOnLoad]: route file resolve error, cannot preload for ${origin.request!}`,
             );
             continue;
           }
@@ -222,7 +223,7 @@ export default (api: IApi) => {
               files.push(fileAbsPath);
             } catch {
               logger.error(
-                `[firstRoutePreload]: route file resolve error, cannot preload for ${current.file}`,
+                `[routePreloadOnLoad]: route file resolve error, cannot preload for ${current.file}`,
               );
             }
           }

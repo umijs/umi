@@ -3,7 +3,7 @@ import { IApi } from '../../types';
 
 export default (api: IApi) => {
   api.describe({
-    enableBy: ({ userConfig }) => Boolean(userConfig.mako || api.config.mako),
+    enableBy: () => Boolean(process.env.OKAM),
   });
 
   api.onCheck(() => {

@@ -58,7 +58,7 @@ export default () => {
       require.resolve('./features/swc/swc'),
       require.resolve('./features/ui/ui'),
       require.resolve('./features/hmrGuardian/hmrGuardian'),
-      require.resolve('./features/firstRoutePreload/firstRoutePreload'),
+      require.resolve('./features/routePreloadOnLoad/routePreloadOnLoad'),
 
       // commands
       require.resolve('./commands/build'),
