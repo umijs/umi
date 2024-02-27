@@ -165,6 +165,9 @@ export default (api: IApi) => {
             if (!visited.includes(currentId)) {
               const currentChunk = chunks.find((c) => c.id === currentId)!;
 
+              // skip sibling entry chunk
+              if (currentChunk.entry) continue;
+
               // merge files
               pickPreloadFiles(chunk.files!).forEach((file) => {
                 chunkFiles[file] ??= {
@@ -204,21 +207,24 @@ export default (api: IApi) => {
         const files: string[] = [];
 
         do {
-          try {
-            const fileReqPath =
-              isAbsolute(current.file!) || current.file!.startsWith('@/')
-                ? current.file!
-                : current.file!.replace(/^(\.\/)?/, './');
-            const fileAbsPath = await resolver.resolve(
-              api.paths.absPagesPath,
-              fileReqPath,
-            );
+          // skip inline function route file
+          if (!current.file!.startsWith('(')) {
+            try {
+              const fileReqPath =
+                isAbsolute(current.file!) || current.file!.startsWith('@/')
+                  ? current.file!
+                  : current.file!.replace(/^(\.\/)?/, './');
+              const fileAbsPath = await resolver.resolve(
+                api.paths.absPagesPath,
+                fileReqPath,
+              );
 
-            files.push(fileAbsPath);
-          } catch {
-            logger.error(
-              `[firstRoutePreload]: route file resolve error, cannot preload for ${current.file}`,
-            );
+              files.push(fileAbsPath);
+            } catch {
+              logger.error(
+                `[firstRoutePreload]: route file resolve error, cannot preload for ${current.file}`,
+              );
+            }
           }
           current = current.parentId && api.appData.routes[current.parentId];
         } while (current);
