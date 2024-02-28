@@ -5,7 +5,7 @@
 import type { IRouteChunkFilesMap } from './routePreloadOnLoad';
 
 interface IPreloadRouteFile {
-  type: 'js' | 'css' | unknown;
+  type: 'js' | 'css' | (string & {});
   url: string;
   attrs: ([string, string] | [string])[];
 }
@@ -35,7 +35,7 @@ export function getPreloadRouteFiles(
   return matched?.map((i) => {
     const id = map.f[i][1];
     const file = map.f[i][0];
-    const ext = file.split('.').pop();
+    const ext = file.split('.').pop() as IPreloadRouteFile['type'];
 
     return {
       type: ext,

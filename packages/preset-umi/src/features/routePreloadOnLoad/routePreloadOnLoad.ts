@@ -212,9 +212,11 @@ export default (api: IApi) => {
           if (current.file && !current.file.startsWith('(')) {
             try {
               const fileReqPath =
-                isAbsolute(current.file!) || current.file!.startsWith('@/')
-                  ? current.file!
-                  : current.file!.replace(/^(\.\/)?/, './');
+                isAbsolute(current.file) || current.file.startsWith('@/')
+                  ? current.file
+                  : // a => ./a
+                    // .a => ./.a
+                    current.file.replace(/^([^.]|\.[^./])/, './$1');
               const fileAbsPath = await resolver.resolve(
                 api.paths.absPagesPath,
                 fileReqPath,
@@ -236,15 +238,16 @@ export default (api: IApi) => {
           // so the merged route chunk does not has to preload
           return indexes.concat(fileChunksMap[file]?.indexes || []);
         }, []);
+        const { absPath } = route;
 
-        routeFilesMap[route.absPath] =
+        routeFilesMap[absPath] =
           // why different route may has same absPath?
           // because umi implement route.wrappers via nested routes way, the wrapper route will has same absPath with the nested route
           // so we always select the longest file indexes for the nested route
-          !routeFilesMap[route.absPath] ||
-          routeFilesMap[route.absPath].length < indexes.length
+          !routeFilesMap[absPath] ||
+          routeFilesMap[absPath].length < indexes.length
             ? indexes
-            : routeFilesMap[route.absPath];
+            : routeFilesMap[absPath];
       }
 
       routeChunkFilesMap = {

@@ -4,7 +4,8 @@
 
 import { getPreloadRouteFiles } from '../features/routePreloadOnLoad/utils';
 
-const basename = '{{basename}}';
+// always add trailing slash for base
+const basename = '{{basename}}'.replace(/([^/])$/, '$1/');
 const publicPath = '{{publicPath}}';
 const pathname = location.pathname;
 const routePath =
