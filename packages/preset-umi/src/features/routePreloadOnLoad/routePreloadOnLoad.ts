@@ -253,7 +253,9 @@ export default (api: IApi) => {
       routeChunkFilesMap = {
         p: api.pkg.name!,
         b: api.appData.bundler!,
-        f: Object.entries(chunkFiles).map(([k, { id }]) => [k, id]),
+        f: Object.entries(chunkFiles)
+          .sort((a, b) => a[1].index - b[1].index)
+          .map(([k, { id }]) => [k, id]),
         // sort similar to react-router@6
         r: lodash(routeFilesMap)
           .toPairs()
