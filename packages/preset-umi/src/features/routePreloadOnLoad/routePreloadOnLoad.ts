@@ -134,24 +134,25 @@ export default (api: IApi) => {
       > = {};
       const pickPreloadFiles = (files: string[]) =>
         files.filter((f) => f.endsWith('.js') || f.endsWith('.css'));
+      const routeFileResolveCache: Record<string, string> = {};
 
       for (const chunk of chunks) {
+        // skip entry chunk
+        if (chunk.entry) continue;
+
+        // pick js and css files
+        const pickedFiles = pickPreloadFiles(chunk.files!);
         const routeOrigins = chunk.origins!.filter((origin) =>
           origin.moduleName?.endsWith(routeModuleName),
         );
 
         for (const origin of routeOrigins) {
-          const queue = [chunk.id!].concat(chunk.siblings!);
-          const visited: typeof queue = [];
-          const files: string[] = [];
           let fileAbsPath: string;
 
           // resolve route file path
           try {
-            fileAbsPath = await resolver.resolve(
-              dirname(routeModulePath),
-              origin.request!,
-            );
+            fileAbsPath = routeFileResolveCache[origin.request!] ??=
+              await resolver.resolve(dirname(routeModulePath), origin.request!);
           } catch (err) {
             logger.error(
               `[routePreloadOnLoad]: route file resolve error, cannot preload for ${origin.request!}`,
@@ -159,39 +160,18 @@ export default (api: IApi) => {
             continue;
           }
 
-          // collect all related chunk files for route file
-          while (queue.length) {
-            const currentId = queue.shift()!;
+          // save visit index and chunk id for each chunk file
+          pickedFiles.forEach((file) => {
+            chunkFiles[file] ??= {
+              index: Object.keys(chunkFiles).length,
+              id: chunk.id!,
+            };
+          });
 
-            if (!visited.includes(currentId)) {
-              const currentChunk = chunks.find((c) => c.id === currentId)!;
-
-              // skip sibling entry chunk
-              if (currentChunk.entry) continue;
-
-              // pick js and css files
-              const pickedFiles = pickPreloadFiles(currentChunk.files!);
-
-              // save visit index and chunk id for each chunk file
-              pickedFiles.forEach((file) => {
-                chunkFiles[file] ??= {
-                  index: Object.keys(chunkFiles).length,
-                  id: currentId,
-                };
-              });
-
-              // merge files
-              files.push(...pickedFiles);
-
-              // continue to search sibling chunks
-              queue.push(...currentChunk.siblings!);
-
-              // mark as visited
-              visited.push(currentId);
-            }
-          }
-
-          fileChunksMap[fileAbsPath] = { files };
+          // merge all related chunk files for each route files
+          (fileChunksMap[fileAbsPath] ??= {
+            files: pickedFiles.slice(),
+          }).files.push(...pickedFiles);
         }
       }
 
