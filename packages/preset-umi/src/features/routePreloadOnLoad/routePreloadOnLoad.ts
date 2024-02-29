@@ -169,8 +169,11 @@ export default (api: IApi) => {
               // skip sibling entry chunk
               if (currentChunk.entry) continue;
 
-              // merge files
-              pickPreloadFiles(chunk.files!).forEach((file) => {
+              // pick js and css files
+              const pickedFiles = pickPreloadFiles(currentChunk.files!);
+
+              // save visit index and chunk id for each chunk file
+              pickedFiles.forEach((file) => {
                 chunkFiles[file] ??= {
                   index: Object.keys(chunkFiles).length,
                   id: currentId,
@@ -178,7 +181,7 @@ export default (api: IApi) => {
               });
 
               // merge files
-              files.push(...pickPreloadFiles(currentChunk.files!));
+              files.push(...pickedFiles);
 
               // continue to search sibling chunks
               queue.push(...currentChunk.siblings!);
@@ -232,12 +235,17 @@ export default (api: IApi) => {
           current = current.parentId && api.appData.routes[current.parentId];
         } while (current);
 
-        const indexes = files.reduce<number[]>((indexes, file) => {
-          // why fileChunksMap[file] may not existing?
-          // because Mako will merge minimal async chunk into entry chunk
-          // so the merged route chunk does not has to preload
-          return indexes.concat(fileChunksMap[file]?.indexes || []);
-        }, []);
+        const indexes = Array.from(
+          // use set to avoid duplicated indexes
+          files.reduce<Set<number>>((indexSet, file) => {
+            // why fileChunksMap[file] may not existing?
+            // because Mako will merge minimal async chunk into entry chunk
+            // so the merged route chunk does not has to preload
+            fileChunksMap[file]?.indexes!.forEach((i) => indexSet.add(i));
+
+            return indexSet;
+          }, new Set()),
+        );
         const { absPath } = route;
 
         routeFilesMap[absPath] =
