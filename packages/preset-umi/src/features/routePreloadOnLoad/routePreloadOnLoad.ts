@@ -1,4 +1,7 @@
-import type { StatsCompilation } from '@umijs/bundler-webpack/compiled/webpack';
+import type {
+  StatsChunk,
+  StatsCompilation,
+} from '@umijs/bundler-webpack/compiled/webpack';
 import { lodash, logger, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
@@ -65,6 +68,141 @@ function computeRouteScore(path: string): number {
   return routeScoreCache.get(path)!;
 }
 
+async function getRouteChunkFilesMap(
+  chunks: StatsChunk[],
+  opts: {
+    resolver: ReturnType<typeof createResolver>;
+    routeModuleName: string;
+    routeModulePath: string;
+  },
+) {
+  const { resolver, routeModuleName, routeModulePath } = opts;
+  const routeChunkFiles: Record<
+    string,
+    { index: number; id: string | number }
+  > = {};
+  const routeFileChunksMap: Record<
+    string,
+    { files: string[]; indexes?: number[] }
+  > = {};
+  const pickPreloadFiles = (files: string[]) =>
+    files.filter((f) => f.endsWith('.js') || f.endsWith('.css'));
+  const routeFileResolveCache: Record<string, string> = {};
+
+  for (const chunk of chunks) {
+    // skip entry chunk
+    if (chunk.entry) continue;
+
+    // pick js and css files
+    const pickedFiles = pickPreloadFiles(chunk.files!);
+    const routeOrigins = chunk.origins!.filter((origin) =>
+      origin.moduleName?.endsWith(routeModuleName),
+    );
+
+    for (const origin of routeOrigins) {
+      let fileAbsPath: string;
+
+      // resolve route file path
+      try {
+        fileAbsPath = routeFileResolveCache[origin.request!] ??=
+          await resolver.resolve(dirname(routeModulePath), origin.request!);
+      } catch (err) {
+        logger.error(
+          `[routePreloadOnLoad]: route file resolve error, cannot preload for ${origin.request!}`,
+        );
+        continue;
+      }
+
+      // save visit index and chunk id for each chunk file
+      pickedFiles.forEach((file) => {
+        routeChunkFiles[file] ??= {
+          index: Object.keys(routeChunkFiles).length,
+          id: chunk.id!,
+        };
+      });
+
+      // merge all related chunk files for each route files
+      (routeFileChunksMap[fileAbsPath] ??= {
+        files: pickedFiles.slice(),
+      }).files.push(...pickedFiles);
+    }
+  }
+
+  // generate indexes for file chunks
+  Object.values(routeFileChunksMap).forEach((item) => {
+    item.indexes = item.files.map((f) => routeChunkFiles[f].index);
+  });
+
+  return {
+    routeChunkFiles,
+    routeFileChunksMap,
+  };
+}
+
+async function getRoutePathFilesMap(
+  routes: Record<string, IRoute>,
+  fileChunksMap: Awaited<
+    ReturnType<typeof getRouteChunkFilesMap>
+  >['routeFileChunksMap'],
+  opts: { resolver: ReturnType<typeof createResolver>; absPagesPath: string },
+) {
+  const { resolver, absPagesPath } = opts;
+  const routeFilesMap: Record<string, number[]> = {};
+
+  for (const route of Object.values<IRoute>(routes)) {
+    // skip redirect route
+    if (!route.file) continue;
+
+    let current: IRoute | undefined = route;
+    const files: string[] = [];
+
+    do {
+      // skip inline function route file
+      if (current.file && !current.file.startsWith('(')) {
+        try {
+          const fileReqPath =
+            isAbsolute(current.file) || current.file.startsWith('@/')
+              ? current.file
+              : // a => ./a
+                // .a => ./.a
+                current.file.replace(/^([^.]|\.[^./])/, './$1');
+          const fileAbsPath = await resolver.resolve(absPagesPath, fileReqPath);
+
+          files.push(fileAbsPath);
+        } catch {
+          logger.error(
+            `[routePreloadOnLoad]: route file resolve error, cannot preload for ${current.file}`,
+          );
+        }
+      }
+      current = current.parentId ? routes[current.parentId] : undefined;
+    } while (current);
+
+    const indexes = Array.from(
+      // use set to avoid duplicated indexes
+      files.reduce<Set<number>>((indexSet, file) => {
+        // why fileChunksMap[file] may not existing?
+        // because Mako will merge minimal async chunk into entry chunk
+        // so the merged route chunk does not has to preload
+        fileChunksMap[file]?.indexes!.forEach((i) => indexSet.add(i));
+
+        return indexSet;
+      }, new Set()),
+    );
+    const { absPath } = route;
+
+    routeFilesMap[absPath] =
+      // why different route may has same absPath?
+      // because umi implement route.wrappers via nested routes way, the wrapper route will has same absPath with the nested route
+      // so we always select the longest file indexes for the nested route
+      !routeFilesMap[absPath] || routeFilesMap[absPath].length < indexes.length
+        ? indexes
+        : routeFilesMap[absPath];
+  }
+
+  return routeFilesMap;
+}
+
 export default (api: IApi) => {
   let routeChunkFilesMap: IRouteChunkFilesMap;
 
@@ -117,7 +255,6 @@ export default (api: IApi) => {
   api.onBuildComplete(async ({ err, stats }) => {
     if (!err && !stats.hasErrors()) {
       const routeModulePath = join(api.paths.absTmpPath, 'core/route.tsx');
-      const routeModuleName = winPath(relative(api.cwd, routeModulePath));
       const resolver = createResolver({ alias: api.config.alias });
       const { chunks = [] } = stats.toJson
         ? // webpack
@@ -125,135 +262,26 @@ export default (api: IApi) => {
         : // mako
           (stats.compilation as unknown as StatsCompilation);
 
-      // collect all chunk files and file chunks indexes
-      const chunkFiles: Record<string, { index: number; id: string | number }> =
-        {};
-      const fileChunksMap: Record<
-        string,
-        { files: string[]; indexes?: number[] }
-      > = {};
-      const pickPreloadFiles = (files: string[]) =>
-        files.filter((f) => f.endsWith('.js') || f.endsWith('.css'));
+      // 1. collect all route chunk files and file chunks indexes from stats
+      const { routeChunkFiles, routeFileChunksMap } =
+        await getRouteChunkFilesMap(chunks, {
+          resolver,
+          routeModulePath,
+          routeModuleName: winPath(relative(api.cwd, routeModulePath)),
+        });
 
-      for (const chunk of chunks) {
-        const routeOrigins = chunk.origins!.filter((origin) =>
-          origin.moduleName?.endsWith(routeModuleName),
-        );
+      // 2. generate map for path -> files (include parent route files)
+      const routeFilesMap = await getRoutePathFilesMap(
+        api.appData.routes,
+        routeFileChunksMap,
+        { resolver, absPagesPath: api.paths.absPagesPath },
+      );
 
-        for (const origin of routeOrigins) {
-          const queue = [chunk.id!].concat(chunk.siblings!);
-          const visited: typeof queue = [];
-          const files: string[] = [];
-          let fileAbsPath: string;
-
-          // resolve route file path
-          try {
-            fileAbsPath = await resolver.resolve(
-              dirname(routeModulePath),
-              origin.request!,
-            );
-          } catch (err) {
-            logger.error(
-              `[routePreloadOnLoad]: route file resolve error, cannot preload for ${origin.request!}`,
-            );
-            continue;
-          }
-
-          // collect all related chunk files for route file
-          while (queue.length) {
-            const currentId = queue.shift()!;
-
-            if (!visited.includes(currentId)) {
-              const currentChunk = chunks.find((c) => c.id === currentId)!;
-
-              // skip sibling entry chunk
-              if (currentChunk.entry) continue;
-
-              // merge files
-              pickPreloadFiles(chunk.files!).forEach((file) => {
-                chunkFiles[file] ??= {
-                  index: Object.keys(chunkFiles).length,
-                  id: currentId,
-                };
-              });
-
-              // merge files
-              files.push(...pickPreloadFiles(currentChunk.files!));
-
-              // continue to search sibling chunks
-              queue.push(...currentChunk.siblings!);
-
-              // mark as visited
-              visited.push(currentId);
-            }
-          }
-
-          fileChunksMap[fileAbsPath] = { files };
-        }
-      }
-
-      // generate indexes for file chunks
-      Object.values(fileChunksMap).forEach((item) => {
-        item.indexes = item.files.map((f) => chunkFiles[f].index);
-      });
-
-      // generate map for path -> files (include parent route files)
-      const routeFilesMap: Record<string, number[]> = {};
-
-      for (const route of Object.values<IRoute>(api.appData.routes)) {
-        // skip redirect route
-        if (!route.file) continue;
-
-        let current = route;
-        const files: string[] = [];
-
-        do {
-          // skip inline function route file
-          if (current.file && !current.file.startsWith('(')) {
-            try {
-              const fileReqPath =
-                isAbsolute(current.file) || current.file.startsWith('@/')
-                  ? current.file
-                  : // a => ./a
-                    // .a => ./.a
-                    current.file.replace(/^([^.]|\.[^./])/, './$1');
-              const fileAbsPath = await resolver.resolve(
-                api.paths.absPagesPath,
-                fileReqPath,
-              );
-
-              files.push(fileAbsPath);
-            } catch {
-              logger.error(
-                `[routePreloadOnLoad]: route file resolve error, cannot preload for ${current.file}`,
-              );
-            }
-          }
-          current = current.parentId && api.appData.routes[current.parentId];
-        } while (current);
-
-        const indexes = files.reduce<number[]>((indexes, file) => {
-          // why fileChunksMap[file] may not existing?
-          // because Mako will merge minimal async chunk into entry chunk
-          // so the merged route chunk does not has to preload
-          return indexes.concat(fileChunksMap[file]?.indexes || []);
-        }, []);
-        const { absPath } = route;
-
-        routeFilesMap[absPath] =
-          // why different route may has same absPath?
-          // because umi implement route.wrappers via nested routes way, the wrapper route will has same absPath with the nested route
-          // so we always select the longest file indexes for the nested route
-          !routeFilesMap[absPath] ||
-          routeFilesMap[absPath].length < indexes.length
-            ? indexes
-            : routeFilesMap[absPath];
-      }
-
+      // 3. generate final route chunk files map
       routeChunkFilesMap = {
         p: api.pkg.name!,
         b: api.appData.bundler!,
-        f: Object.entries(chunkFiles)
+        f: Object.entries(routeChunkFiles)
           .sort((a, b) => a[1].index - b[1].index)
           .map(([k, { id }]) => [k, id]),
         // sort similar to react-router@6
