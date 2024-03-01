@@ -1,5 +1,5 @@
 import { winPath } from '@umijs/utils';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { IApi } from 'umi';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
@@ -21,26 +21,59 @@ export default (api: IApi) => {
   });
 
   let pkgPath: string;
+  let devtoolsPkgPath: string;
+  const REACT_QUERY_DEP_NAME = '@tanstack/react-query';
+  const REACT_QUERY_DEVTOOLS_DEP_NAME = '@tanstack/react-query-devtools';
   const defaultPkgPath = winPath(
-    dirname(require.resolve('@tanstack/react-query/package.json')),
+    dirname(require.resolve(`${REACT_QUERY_DEP_NAME}/package.json`)),
   );
-  const devtoolPkgPath = winPath(
-    dirname(require.resolve('@tanstack/react-query-devtools/package.json')),
+  const defaultDevtoolPkgPath = winPath(
+    dirname(require.resolve(`${REACT_QUERY_DEVTOOLS_DEP_NAME}/package.json`)),
   );
+  // resolve RQ
   try {
     const localQueryPath = resolveProjectDep({
       pkg: api.pkg,
       cwd: api.cwd,
-      dep: '@tanstack/react-query',
+      dep: REACT_QUERY_DEP_NAME,
     });
     pkgPath = localQueryPath ? winPath(localQueryPath) : defaultPkgPath;
   } catch (e: any) {
-    throw new Error(`[reactQuery] package resolve failed, ${e.message}`);
+    throw new Error(
+      `[reactQuery] package '${REACT_QUERY_DEP_NAME}' resolve failed, ${e.message}`,
+    );
   }
+  // resolve RQ devtools
+  try {
+    const localDevtoolsPkgPath = resolveProjectDep({
+      pkg: api.pkg,
+      cwd: api.cwd,
+      dep: REACT_QUERY_DEVTOOLS_DEP_NAME,
+    });
+    devtoolsPkgPath = localDevtoolsPkgPath
+      ? winPath(localDevtoolsPkgPath)
+      : defaultDevtoolPkgPath;
+  } catch (e: any) {
+    throw new Error(
+      `[reactQuery] package '${REACT_QUERY_DEVTOOLS_DEP_NAME}' resolve failed, ${e.message}`,
+    );
+  }
+  // package.json
+  const pkg = require(join(pkgPath, 'package.json'));
+  const devtoolsPkg = require(join(devtoolsPkgPath, 'package.json'));
+  // version
+  const pkgVersion = pkg.version;
+  const devtoolsVersion = devtoolsPkg.version;
+  // check version
+  const useV4 = pkgVersion.startsWith('4');
+  const useV4Devtools = devtoolsVersion.startsWith('4');
+  const useV5 = pkgVersion.startsWith('5');
+  const useV5Devtools = devtoolsVersion.startsWith('5');
+  const canUseDevtools = (useV4 && useV4Devtools) || (useV5 && useV5Devtools);
 
   api.onStart(() => {
-    if (pkgPath !== defaultPkgPath) {
-      api.logger.info(`[reactQuery] use local package ${pkgPath}`);
+    if (pkgPath !== defaultPkgPath && !process.env.IS_UMI_BUILD_WORKER) {
+      api.logger.info(`[reactQuery] use local package, version: ${pkgVersion}`);
     }
   });
 
@@ -52,8 +85,18 @@ export default (api: IApi) => {
     return ['reactQuery'];
   });
 
+  // alias
+  api.modifyConfig((memo) => {
+    memo.alias[REACT_QUERY_DEP_NAME] = pkgPath;
+    if (canUseDevtools) {
+      memo.alias[REACT_QUERY_DEVTOOLS_DEP_NAME] = devtoolsPkgPath;
+    }
+    return memo;
+  });
+
   api.onGenerateFiles(() => {
-    const enableDevTools = api.config.reactQuery.devtool !== false;
+    const enableDevTools =
+      api.config.reactQuery.devtool !== false && canUseDevtools;
     const enableQueryClient = api.config.reactQuery.queryClient !== false;
     const reactQueryRuntimeCode = api.appData.appJS?.exports.includes(
       'reactQuery',
@@ -65,17 +108,32 @@ export default (api: IApi) => {
       content: enableQueryClient
         ? `
 import React from 'react';
-import { defaultContext, QueryClient, QueryClientProvider } from '${pkgPath}';
-import { ReactQueryDevtools } from '${devtoolPkgPath}';
+import {
+  ${useV5 ? '' : 'defaultContext,'}
+  QueryClient,
+  QueryClientProvider
+} from '${pkgPath}';
+${
+  enableDevTools
+    ? `import { ReactQueryDevtools } from '${devtoolsPkgPath}';`
+    : ''
+}
 ${reactQueryRuntimeCode}
 const client = new QueryClient(reactQueryConfig.queryClient || {});
 export function rootContainer(container) {
   return (
-    <QueryClientProvider client={client} context={defaultContext}>
+    <QueryClientProvider
+      client={client}
+      ${useV5 ? '' : 'context={defaultContext}'}
+    >
       {container}
       ${
         enableDevTools
-          ? '<ReactQueryDevtools context={defaultContext} initialIsOpen={false} {...(reactQueryConfig.devtool || {})} />'
+          ? `<ReactQueryDevtools
+  ${useV5 ? '' : 'context={defaultContext}'}
+  initialIsOpen={false}
+  {...(reactQueryConfig.devtool || {})}
+/>`
           : ''
       }
     </QueryClientProvider>
@@ -84,6 +142,7 @@ export function rootContainer(container) {
       `
         : '',
     });
+
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
@@ -109,9 +168,11 @@ export {
   useQueryClient,
   QueryErrorResetBoundary,
   useQueryErrorResetBoundary,
+  ${useV5 ? 'queryOptions,' : ''}
 } from '${pkgPath}';
       `,
     });
+
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
@@ -123,7 +184,7 @@ export type {
   QueriesOptions,
   QueryErrorResetBoundaryProps,
   QueryClientProviderProps,
-  ContextOptions as QueryContextOptions,
+  ${useV5 ? '' : 'ContextOptions as QueryContextOptions,'}
   UseQueryOptions,
   UseBaseQueryOptions,
   UseQueryResult,
