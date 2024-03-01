@@ -44,8 +44,10 @@ export async function createServer(opts: IOpts): Promise<any> {
     }),
   );
 
-  // compression
-  app.use(require('@umijs/bundler-webpack/compiled/compression')());
+  // enable compression if UMI_DEV_SERVER_COMPRESS is not none
+  if (process.env.UMI_DEV_SERVER_COMPRESS !== 'none') {
+    app.use(require('@umijs/bundler-webpack/compiled/compression')());
+  }
 
   // debug all js file
   app.use((req, res, next) => {

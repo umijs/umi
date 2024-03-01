@@ -1,0 +1,16 @@
+{
+  "name": "@example/dev-server-no-compress",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "nocompress": "cross-env UMI_DEV_SERVER_COMPRESS=none npm run dev",
+    "withcompress": "cross-env npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
