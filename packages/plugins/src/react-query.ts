@@ -109,7 +109,7 @@ export default (api: IApi) => {
         ? `
 import React from 'react';
 import {
-  ${useV5 ? '' : 'defaultContext,'}
+  ${useV4 ? 'defaultContext,' : ''}
   QueryClient,
   QueryClientProvider
 } from '${pkgPath}';
@@ -124,13 +124,13 @@ export function rootContainer(container) {
   return (
     <QueryClientProvider
       client={client}
-      ${useV5 ? '' : 'context={defaultContext}'}
+      ${useV4 ? 'context={defaultContext}' : ''}
     >
       {container}
       ${
         enableDevTools
           ? `<ReactQueryDevtools
-  ${useV5 ? '' : 'context={defaultContext}'}
+  ${useV4 ? 'context={defaultContext}' : ''}
   initialIsOpen={false}
   {...(reactQueryConfig.devtool || {})}
 />`
@@ -184,7 +184,7 @@ export type {
   QueriesOptions,
   QueryErrorResetBoundaryProps,
   QueryClientProviderProps,
-  ${useV5 ? '' : 'ContextOptions as QueryContextOptions,'}
+  ${useV4 ? 'ContextOptions as QueryContextOptions,' : ''}
   UseQueryOptions,
   UseBaseQueryOptions,
   UseQueryResult,
