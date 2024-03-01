@@ -64,9 +64,26 @@ BAR=bar
 CONCAT=$FOO$BAR # CONCAT=foobar
 ```
 
+有时您可能希望为 `development`（`umi dev`）或 `production`（`umi build`）环境添加一些默认值。
+
+Umi 允许您在 `.env`（所有环境）、`.env.development`（开发环境）和 `.env.production`（生产环境）中设置默认值。
+
+`.env.local` 始终覆盖默认设置。
+
 注意：
 
 * 不建议将 `.env.local` 加入版本管理中。
+
+### 在浏览器环境中使用环境变量
+
+非 `UMI_APP_` 环境变量仅在 Node.js 环境中可用，这意味着浏览器无法访问它们。
+
+为了使环境变量的值可以在浏览器中访问，您只需在变量前添加 `UMI_APP_` 前缀即可。例如：
+
+```bash
+# file .env
+UMI_APP_FOO = foo
+```
 
 ## 环境变量列表
 
