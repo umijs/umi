@@ -12,6 +12,7 @@ class Event {
 
 export default function HomePage() {
   const [events, setEvents] = useState<Event[]>([]);
+
   useEffect(() => {
     console.log('开始请求');
     const eventSource = new EventSource('/events/number');
@@ -26,8 +27,9 @@ export default function HomePage() {
       eventSource.close();
     };
   }, []);
+
   return (
-    <div className="container">
+    <>
       <table>
         <thead>
           <tr>
@@ -44,6 +46,6 @@ export default function HomePage() {
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   );
 }
