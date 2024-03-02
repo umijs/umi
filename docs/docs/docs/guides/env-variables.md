@@ -177,6 +177,14 @@ $ UMI_PLUGINS=./path/to/plugin1,./path/to/plugin2  umi dev
 $ UMI_PRESETS=./path/to/preset1,./path/to/preset2  umi dev
 ```
 
+### UMI_DEV_SERVER_COMPRESS
+
+默认 Umi 开发服务器自带 [compress](https://github.com/expressjs/compression) 压缩中间件，这会使开发时 SSE 数据的传输 [无法流式获取](https://github.com/umijs/umi/issues/12144) ，通过指定 `UMI_DEV_SERVER_COMPRESS=none` 来关闭 compress 压缩功能：
+
+```bash
+  UMI_DEV_SERVER_COMPRESS=none umi dev
+```
+
 ### WEBPACK_FS_CACHE_DEBUG
 
 开启 webpack 的物理缓存 debug 日志。
