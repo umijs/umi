@@ -94,7 +94,7 @@ export default {
 | :----------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | CDN 引入           | 以 cdn 形式引入 **script 形式且前置的** 、目标浏览器环境缺少的 polyfill js 文件，如 [es6-shim](https://github.com/paulmillr/es6-shim) 。                                                                                                                                                                                                              |
 | 人工 core-js       | 利用 [core-js](https://github.com/zloirock/core-js) 系工具，如通过 [core-js-builder](https://github.com/zloirock/core-js/tree/master/packages/core-js-builder) 构建自己需要的 polyfill 产物，再以 **前置 script 脚本** 形式引入项目。                                                                                                                 |
-| 动态 polyfill 服务 | 使用根据当前浏览器请求 UA 动态下发所需 polyfill 的服务，比如 [polyfill.io (alicdn)](http://polyfill.alicdn.com/v3/polyfill.min.js) 服务。另外，你还可以使用 [polyfill-service](https://github.com/Financial-Times/polyfill-service) 自建相同的动态 polyfill 下发服务。 |
+| 动态 polyfill 服务 | 使用根据当前浏览器请求 UA 动态下发所需 polyfill 的服务，比如 [polyfill.io (alicdn)](http://polyfill.alicdn.com/v3/polyfill.min.js) 或 [polyfill.io (CloudFlare)](https://cdnjs.cloudflare.com/polyfill/) 服务。另外，你还可以使用 [polyfill-service](https://github.com/polyfillpolyfill/polyfill-service) 自建相同的动态 polyfill 下发服务。 |
 
 注：
 
