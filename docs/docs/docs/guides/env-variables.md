@@ -64,26 +64,28 @@ BAR=bar
 CONCAT=$FOO$BAR # CONCAT=foobar
 ```
 
-有时您可能希望为 `development`（`umi dev`）或 `production`（`umi build`）环境添加一些默认值。
-
-Umi 允许您在 `.env`（所有环境）、`.env.development`（开发环境）和 `.env.production`（生产环境）中设置默认值。
-
-`.env.local` 始终覆盖默认设置。
+通过 `.env.development` / `.env.production` 来为开发和构建分别配置不同的环境变量。
 
 注意：
 
 * 不建议将 `.env.local` 加入版本管理中。
 
-### 在浏览器环境中使用环境变量
+### 在浏览器中使用环境变量
 
-非 `UMI_APP_` 环境变量仅在 Node.js 环境中可用，这意味着浏览器无法访问它们。
-
-为了使环境变量的值可以在浏览器中访问，您只需在变量前添加 `UMI_APP_` 前缀即可。例如：
+所有通过 `.env` 环境变量文件 或 命令行注入 的环境变量均默认只在 Umi 配置文件 (Node.js 环境) 内生效，在浏览器中无法直接通过 `process.env.VAR_NAME` 方式使用，通过进一步配置 [`define`](../api/config.md#define) 来注入到浏览器环境中：
 
 ```bash
-# file .env
-UMI_APP_FOO = foo
+# .env
+MY_TOKEN="xxxxx"
 ```
+
+```ts
+// .umirc.ts
+
+  define: { 'process.env.MY_TOKEN': process.env.MY_TOKEN }
+```
+
+注：我们约定所有以 `UMI_APP_` 开头的环境变量会默认注入到浏览器中，无需配置 `define` 手动注入。
 
 ## 环境变量列表
 
