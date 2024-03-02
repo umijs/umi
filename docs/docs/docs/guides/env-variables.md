@@ -64,9 +64,30 @@ BAR=bar
 CONCAT=$FOO$BAR # CONCAT=foobar
 ```
 
+通过 `.env.development` / `.env.production` 来为开发和构建分别配置不同的环境变量。
+
 注意：
 
 * 不建议将 `.env.local` 加入版本管理中。
+
+### 在浏览器中使用环境变量
+
+所有通过 `.env` 环境变量文件 或 命令行注入 的环境变量均默认只在 Umi 配置文件 (Node.js 环境) 内生效，在浏览器中无法直接通过 `process.env.VAR_NAME` 方式使用，通过进一步配置 [`define`](../api/config.md#define) 来注入到浏览器环境中：
+
+```bash
+# .env
+MY_TOKEN="xxxxx"
+```
+
+<br />
+
+```ts
+// .umirc.ts
+
+  define: { 'process.env.MY_TOKEN': process.env.MY_TOKEN }
+```
+
+注：我们约定所有以 `UMI_APP_` 开头的环境变量会默认注入到浏览器中，无需配置 `define` 手动注入。
 
 ## 环境变量列表
 
