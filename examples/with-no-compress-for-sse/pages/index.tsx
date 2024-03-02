@@ -29,7 +29,8 @@ export default function HomePage() {
   }, []);
 
   return (
-    <>
+    <div>
+      <h3>{`演示：当默认存在 compress 时，数据无法流式获取。`}</h3>
       <table>
         <thead>
           <tr>
@@ -46,6 +47,6 @@ export default function HomePage() {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
