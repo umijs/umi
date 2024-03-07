@@ -433,7 +433,6 @@ api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 的方式修改 webpack 配置。传入一个fn，该 fn 不需要返回值。它将接收两个参数：
 - `memo` 对应 webpack-chain 的 config
 - `args:{ webpack, env }`  `arg.webpack` 是 webpack 实例， `args.env` 代表当前的运行环境。
-
 e.g.
 ```ts
 api.chainWebpack(( memo, { webpack, env}) => {
@@ -443,6 +442,18 @@ api.chainWebpack(( memo, { webpack, env}) => {
   memo.plugins.delete('progess');
 })
 ```
+> 注意： 如果要添加自定义的文件类型相关loader请额外设置 type: "javascript/auto"，否则会进入异常的loader处理链路。示例如下: 
+
+```
+config.module
+  .rule('abc')
+  .test(/\.abc$/)
+  .type('javascript/auto')  // 添加此行配置
+  .use('abc-loader')
+  .loader('abc-loader')
+  .end();
+```
+
 
 ### modifyAppData （`umi@4` 新增）
 
