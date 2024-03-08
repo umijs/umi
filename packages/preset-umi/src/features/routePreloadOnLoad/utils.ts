@@ -4,7 +4,9 @@
 
 import type { IRouteChunkFilesMap } from './routePreloadOnLoad';
 
-interface IPreloadRouteFile {
+export type { IRouteChunkFilesMap };
+
+export interface IPreloadRouteFile {
   type: 'js' | 'css' | (string & {});
   url: string;
   attrs: ([string, string] | [string])[];
