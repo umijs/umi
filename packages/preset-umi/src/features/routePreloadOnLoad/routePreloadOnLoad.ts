@@ -206,10 +206,13 @@ async function getRoutePathFilesMap(
 export default (api: IApi) => {
   let routeChunkFilesMap: IRouteChunkFilesMap;
 
-  // enable when package name available
-  // because preload script use package name as attribute prefix value
   api.describe({
-    enableBy: () => Boolean(api.pkg.name),
+    enableBy: () =>
+      // enable when package name available
+      // because preload script use package name as attribute prefix value
+      Boolean(api.pkg.name) &&
+      // vite mode is not supported currently
+      !api.config.vite,
   });
 
   api.addHTMLHeadScripts(() => {
