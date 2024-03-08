@@ -212,11 +212,15 @@ export default (api: IApi) => {
       // because preload script use package name as attribute prefix value
       Boolean(api.pkg.name) &&
       // vite mode is not supported currently
-      !api.config.vite,
+      !api.config.vite &&
+      // mpa mode is unnecessary
+      !api.config.mpa &&
+      // only esm router needs this feature
+      api.config.routeLoader?.moduleType === 'esm',
   });
 
   api.addHTMLHeadScripts(() => {
-    if (api.name === 'build') {
+    if (api.name === 'build' && routeChunkFilesMap) {
       // internal tern app use map mode
       return api.config.tern
         ? // map mode
@@ -281,22 +285,24 @@ export default (api: IApi) => {
       );
 
       // 3. generate final route chunk files map
-      routeChunkFilesMap = {
-        p: api.pkg.name!,
-        b: api.appData.bundler!,
-        f: Object.entries(routeChunkFiles)
-          .sort((a, b) => a[1].index - b[1].index)
-          .map(([k, { id }]) => [k, id]),
-        // sort similar to react-router@6
-        r: lodash(routeFilesMap)
-          .toPairs()
-          .sort(
-            ([a]: [string, number[]], [b]: [string, number[]]) =>
-              computeRouteScore(a) - computeRouteScore(b),
-          )
-          .fromPairs()
-          .value() as any,
-      };
+      if (!lodash.isEmpty(routeChunkFiles) && !lodash.isEmpty(routeFilesMap)) {
+        routeChunkFilesMap = {
+          p: api.pkg.name!,
+          b: api.appData.bundler!,
+          f: Object.entries(routeChunkFiles)
+            .sort((a, b) => a[1].index - b[1].index)
+            .map(([k, { id }]) => [k, id]),
+          // sort similar to react-router@6
+          r: lodash(routeFilesMap)
+            .toPairs()
+            .sort(
+              ([a]: [string, number[]], [b]: [string, number[]]) =>
+                computeRouteScore(a) - computeRouteScore(b),
+            )
+            .fromPairs()
+            .value() as any,
+        };
+      }
     }
   });
 };
