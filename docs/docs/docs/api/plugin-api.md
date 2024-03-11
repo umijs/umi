@@ -442,7 +442,7 @@ api.chainWebpack(( memo, { webpack, env}) => {
   memo.plugins.delete('progess');
 })
 ```
-> 注意： 如果要添加自定义的文件类型相关loader请额外设置 type: "javascript/auto"，否则会进入异常的loader处理链路。示例如下: 
+> 注意： 如果要添加自定义的文件类型相关 loader 请额外设置 `type: "javascript/auto"`，否则会命中兜底的 asset rule。示例如下: 
 
 ```
 config.module
