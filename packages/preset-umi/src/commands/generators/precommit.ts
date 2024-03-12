@@ -22,7 +22,7 @@ export default (api: IApi) => {
       h.addDevDeps({
         husky: '^8',
         prettier: '^2',
-        typescript: '^4',
+        typescript: '^5',
         'lint-staged': '^13',
       });
 
@@ -71,7 +71,7 @@ export default (api: IApi) => {
           `
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-  
+
 npx --no-install ${cliName} verify-commit $1
 `.trimStart(),
         );
@@ -88,7 +88,7 @@ npx --no-install ${cliName} verify-commit $1
           `
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-  
+
 npx --no-install lint-staged --quiet
 `.trimStart(),
         );
