@@ -20,7 +20,7 @@ export default (api: IApi) => {
       const cliName = api.appData.umi.cliName;
 
       h.addDevDeps({
-        husky: '^8',
+        husky: '^9',
         prettier: '^2',
         typescript: '^5',
         'lint-staged': '^13',
