@@ -28,6 +28,8 @@ import type CodeFrameError from './features/transform/CodeFrameError';
 export { UmiApiRequest, UmiApiResponse } from './features/apiRoute';
 export { webpack, IConfig };
 
+export type IUserExtraRoute = string | { path: string; prerender: boolean };
+
 export type IScript =
   | Partial<{
       async: boolean;

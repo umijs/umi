@@ -3,6 +3,7 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
+  IOpts,
   IRoutesById,
   IServerLoaderArgs,
   MetadataLoader,
@@ -36,6 +37,9 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
+  metaData: IOpts;
+  scripts: IOpts['scripts'];
+  hydrateRoot: string;
 }
 
 interface IExecLoaderOpts {
@@ -120,16 +124,29 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
               // 如果有metadataLoader，执行metadataLoader
               // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
               // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
+              const metadataLoaderDatas = await executeMetadataLoader({
+                routesWithServerLoader,
+                routeKey: id,
+                serverLoaderArgs,
+                serverLoaderData: loaderData[id],
+              });
+              const {
+                metas = [],
+                headScripts = [],
+                styles = [],
+                links = [],
+              } = opts.metaData;
               if (routes[id].hasMetadataLoader) {
-                Object.assign(
-                  metadata,
-                  await executeMetadataLoader({
-                    routesWithServerLoader,
-                    routeKey: id,
-                    serverLoaderArgs,
-                    serverLoaderData: loaderData[id],
-                  }),
-                );
+                Object.assign(metadata, opts.metaData, metadataLoaderDatas, {
+                  metas: [...metas, ...(metadataLoaderDatas.metas || [])],
+                  headScripts: [
+                    ...headScripts,
+                    ...(metadataLoaderDatas.headScripts || []),
+                  ],
+                  styles: [...styles, ...(metadataLoaderDatas.styles || [])],
+                  links: [...links, ...(metadataLoaderDatas.links || [])],
+                  scripts: opts.scripts,
+                });
               }
               resolve();
             }),
@@ -148,6 +165,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       manifest,
       loaderData,
       metadata,
+      hydrateRoot: opts.hydrateRoot,
     };
 
     const element = (await opts.getClientRootComponent(

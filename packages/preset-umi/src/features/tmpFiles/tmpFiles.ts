@@ -496,6 +496,16 @@ if (process.env.NODE_ENV === 'development') {
         }
         return memo;
       }, []);
+      const {
+        headScripts,
+        scripts,
+        styles,
+        title,
+        favicons,
+        links,
+        metas,
+        ssr,
+      } = api.config;
       api.writeTmpFile({
         noPluginDir: true,
         path: 'umi.server.ts',
@@ -514,6 +524,16 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
+          metaData: JSON.stringify({
+            headScripts,
+            styles,
+            title,
+            favicons,
+            links,
+            metas,
+          }),
+          scripts: JSON.stringify(scripts || []),
+          hydrateRoot: ssr?.hydrateRoot || 'html',
         },
       });
     }

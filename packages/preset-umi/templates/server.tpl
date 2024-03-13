@@ -51,6 +51,10 @@ const createOpts = {
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
+  metaData: {{{metaData}}},
+  scripts: {{{scripts}}},
+  hydrateRoot: `{{{hydrateRoot}}}`
+
 };
 const requestHandler = createRequestHandler(createOpts);
 export const renderRoot = createUmiHandler(createOpts);

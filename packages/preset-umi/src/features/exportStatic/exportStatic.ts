@@ -2,7 +2,7 @@ import { getMarkup } from '@umijs/server';
 import { lodash, logger, Mustache, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { dirname, join, relative } from 'path';
-import type { IApi, IRoute } from '../../types';
+import type { IApi, IRoute, IUserExtraRoute } from '../../types';
 import { absServerBuildPath } from '../ssr/utils';
 
 let markupRender: any;
@@ -16,8 +16,6 @@ interface IExportHtmlItem {
   file: string;
   prerender: boolean;
 }
-
-type IUserExtraRoute = string | { path: string; prerender: boolean };
 
 /**
  * get export html data from routes

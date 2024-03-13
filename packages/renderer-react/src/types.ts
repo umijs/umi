@@ -1,3 +1,4 @@
+import type { IMetadata } from '@umijs/server/dist/types';
 import type { RouteMatch, RouteObject } from 'react-router-dom';
 
 export interface IRouteSSRProps {
@@ -41,3 +42,33 @@ export interface IRouteComponents {
 export interface ILoaderData {
   [routeKey: string]: any;
 }
+
+export interface IRootComponentOptions {
+  routes: IRoutesById;
+  routeComponents: IRouteComponents;
+  pluginManager: any;
+  location: string;
+  loaderData: { [routeKey: string]: any };
+  manifest: any;
+  metadata?: IMetadata;
+  hydrateRoot: string;
+}
+
+export interface IHtmlProps {
+  children: React.ReactNode;
+  loaderData?: { [routeKey: string]: any };
+  manifest?: any;
+  metadata?: IMetadata;
+}
+
+export type IScript =
+  | Partial<{
+      async: boolean;
+      charset: string;
+      content: string;
+      crossOrigin: string | null;
+      defer: boolean;
+      src: string;
+      type: string;
+    }>
+  | string;

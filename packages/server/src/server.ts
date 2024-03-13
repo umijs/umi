@@ -5,30 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 // import { createServerRoutes } from './routes';
 import { normalizeScripts } from './scripts';
 import { normalizeStyles } from './styles';
-
-export interface IOpts {
-  base: string;
-  routes: Record<
-    string,
-    {
-      path: string;
-      file: string;
-      id: string;
-      parentId?: string;
-    }
-  >;
-  links?: Record<string, string>[];
-  metas?: Record<string, string>[];
-  styles?: (Record<string, string> | string)[];
-  favicons?: string[];
-  title?: string;
-  headScripts?: (Record<string, string> | string)[];
-  scripts?: (Record<string, string> | string)[];
-  mountElementId?: string;
-  esmScript?: boolean;
-  modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
-  historyType?: 'hash' | 'browser';
-}
+import { IOpts } from './types';
 
 export async function getMarkup(
   opts: Omit<IOpts, 'routes'> & {
