@@ -41,7 +41,7 @@ export default (api: IApi) => {
         jest: jestMajorVersion,
         '@types/jest': jestMajorVersion,
         // we use `jest.config.ts` so jest needs ts and ts-node
-        typescript: '^4',
+        typescript: '^5',
         'ts-node': '^10',
         'cross-env': '^7',
       };

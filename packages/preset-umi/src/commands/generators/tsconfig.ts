@@ -33,7 +33,7 @@ export default (api: IApi) => {
 
       const reactMajorVersion = parseInt(reactVersion.split('.')[0], 10) || 18;
       h.addDevDeps({
-        typescript: '^4',
+        typescript: '^5',
         '@types/react': `^${reactMajorVersion}`,
         '@types/react-dom': `^${reactMajorVersion}`,
       });
