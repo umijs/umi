@@ -27,11 +27,15 @@ async function checkDir(opts: { dir: string }) {
     .filter((v) => varMap[v].length > 1)
     .map((v) => `${v} (${varMap[v].join(', ')})`);
   if (conflicts.length) {
-    throw new Error(
-      `Found conflicts in esbuild helpers: ${conflicts.join(
-        ', ',
-      )}, please set esbuildMinifyIIFE: true in your config file.`,
+    logger.fatal(
+      chalk.yellow(
+        `Found conflicts in esbuild helpers: ${conflicts.join(', ')}`,
+      ),
     );
+    logger.info(
+      `please set ${chalk.blue('esbuildMinifyIIFE: true')} in your config file`,
+    );
+    throw new Error(`Found conflicts in esbuild helpers.`);
   }
   logger.info(`[esbuildHelperChecker] No conflicts found.`);
 }
