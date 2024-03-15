@@ -139,6 +139,25 @@ export default {
 
 ### 运行时配置
 
+:::warning
+要使 antd 的运行时配置有效，您必须在构建时的配置中为 antd 添加 [`styleProvider`](#styleprovider)、[`configProvider`](#configprovider) 或 [`appConfig`](#appconfig) 配置之一。
+
+例如：
+
+```ts
+// .umirc.ts
+export default {
+  antd: {
+    styleProvider: {},
+    // or
+    configProvider: {},
+    // or
+    appConfig: {},
+  }
+}
+```
+:::
+
 在 app.ts(x) 文件中可以对 antd 进行更丰富的配置，比如配置 antd5 的预设算法和 message 最大显示数：
 
 ```ts
