@@ -72,12 +72,12 @@ export default defineConfig({
       ],
       'en-US': [
         {
-          title: '介绍',
+          title: 'Introduce',
           link: '/en-US/docs/introduce/introduce',
           activePath: '/en-US/docs/introduce',
         },
         {
-          title: '指南',
+          title: 'Guide',
           link: '/en-US/docs/guides/getting-started',
           activePath: '/en-US/docs/guides',
         },
@@ -92,7 +92,7 @@ export default defineConfig({
           activePath: '/en-US/docs/max',
         },
         {
-          title: '博客',
+          title: 'Blog',
           link: '/en-US/blog/umi-4-rc',
           activePath: '/en-US/blog',
         },
