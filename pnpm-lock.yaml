@@ -1383,6 +1383,16 @@ importers:
         specifier: ^18.0.10
         version: 18.0.10
 
+  examples/with-no-compress-for-sse:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+    devDependencies:
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+
   examples/with-react-17:
     dependencies:
       react:
