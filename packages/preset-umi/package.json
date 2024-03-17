@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-umi",
-  "version": "4.1.1",
+  "version": "4.1.4",
   "description": "@umijs/preset-umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -73,7 +73,7 @@
     "multer": "1.4.4",
     "os-locale": "^6.0.2",
     "sirv": "2.0.2",
-    "vite": "4.3.1"
+    "vite": "4.5.2"
   },
   "publishConfig": {
     "access": "public"

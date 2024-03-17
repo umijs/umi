@@ -64,9 +64,30 @@ BAR=bar
 CONCAT=$FOO$BAR # CONCAT=foobar
 ```
 
+通过 `.env.development` / `.env.production` 来为开发和构建分别配置不同的环境变量。
+
 注意：
 
 * 不建议将 `.env.local` 加入版本管理中。
+
+### 在浏览器中使用环境变量
+
+所有通过 `.env` 环境变量文件 或 命令行注入 的环境变量均默认只在 Umi 配置文件 (Node.js 环境) 内生效，在浏览器中无法直接通过 `process.env.VAR_NAME` 方式使用，通过进一步配置 [`define`](../api/config.md#define) 来注入到浏览器环境中：
+
+```bash
+# .env
+MY_TOKEN="xxxxx"
+```
+
+<br />
+
+```ts
+// .umirc.ts
+
+  define: { 'process.env.MY_TOKEN': process.env.MY_TOKEN }
+```
+
+注：我们约定所有以 `UMI_APP_` 开头的环境变量会默认注入到浏览器中，无需配置 `define` 手动注入。
 
 ## 环境变量列表
 
@@ -175,6 +196,14 @@ $ UMI_PLUGINS=./path/to/plugin1,./path/to/plugin2  umi dev
 
 ```bash
 $ UMI_PRESETS=./path/to/preset1,./path/to/preset2  umi dev
+```
+
+### UMI_DEV_SERVER_COMPRESS
+
+默认 Umi 开发服务器自带 [compress](https://github.com/expressjs/compression) 压缩中间件，这会使开发时 SSE 数据的传输 [无法流式获取](https://github.com/umijs/umi/issues/12144) ，通过指定 `UMI_DEV_SERVER_COMPRESS=none` 来关闭 compress 压缩功能：
+
+```bash
+  UMI_DEV_SERVER_COMPRESS=none umi dev
 ```
 
 ### WEBPACK_FS_CACHE_DEBUG

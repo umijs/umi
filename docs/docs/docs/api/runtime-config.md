@@ -88,21 +88,63 @@ export default {
    };
    ```
 
+### getInitialState
+
+- Type: `getInitialState: () => Promise<DataType extends any> | any`
+
+`getInitialState()` 的返回值将成为全局初始状态。例如：
+
+```ts
+// src/app.ts
+import { fetchInitialData } from "@/services/initial";
+
+export async function () {
+  const initialData = await fetchInitialData();
+  return initialData;
+}
+```
+
+现在，各种插件和您定义的组件都可以通过 `useModel('@@initialState')` 直接获取到这份全局的初始状态，如下所示：
+
+```tsx
+import { useModel } from "umi";
+
+export default function Page() {
+  const { initialState, loading, error, refresh, setInitialState } =
+    useModel("@@initialState");
+  return <>{initialState}</>;
+}
+```
+
+| 对象属性 | 类型 | 介绍 |
+| --- | --- | --- |
+| `initialState` | `any` | 导出的 `getInitialState()` 方法的返回值 |
+| `loading` | `boolean` | `getInitialState()` 或 `refresh()` 方法是否正在进行中。在首次获取到初始状态前，页面其他部分的渲染都会**被阻止** |
+| `error` | `Error` | 如果导出的 `getInitialState()` 方法运行时报错，报错的错误信息 |
+| `refresh` | `() => void` | 重新执行 `getInitialState` 方法，并获取新的全局初始状态 |
+| `setInitialState` | `(state: any) => void` | 手动设置 `initialState` 的值，手动设置完毕会将 `loading` 置为 `false` |
+
 ### layout
+
+- Type: `RuntimeConfig | ProLayoutProps`
 
 修改[内置布局](../max/layout-menu)的配置，比如配置退出登陆、自定义导航暴露的渲染区域等。
 
 > 注意：需要开启 [layout](../api/config#layout) 插件，才能使用它的运行时配置。
 
-```js
-export const layout = {
+```tsx
+import { RuntimeConfig } from 'umi';
+
+export const layout: RuntimeConfig = {
   logout: () => {}, // do something
 };
 ```
 
 更多具体配置参考[插件文档](../max/layout-menu#运行时配置)。
 
-### onRouteChange(\{ routes, clientRoutes, location, action, basename, isFirst \})
+### onRouteChange
+
+- type: `(args: { routes: Routes; clientRoutes: Routes; location: Location; action: Action; basename: string; isFirst: boolean }) => void`
 
 在初始加载和路由切换时做一些事情。
 
@@ -134,7 +176,9 @@ export function onRouteChange({ clientRoutes, location }) {
 }
 ```
 
-### patchRoutes(\{ routes \})
+### patchRoutes
+
+- type: `(args: { routes: Routes; routeComponents }) => void`
 
 ```ts
 export function patchRoutes({ routes, routeComponents }) {
@@ -148,7 +192,9 @@ export function patchRoutes({ routes, routeComponents }) {
 
 注：如需动态更新路由，建议使用 `patchClientRoutes()` ，否则你可能需要同时修改 `routes` 和 `routeComponents`。
 
-### patchClientRoutes(\{ routes \})
+### patchClientRoutes
+
+- type: `(args: { routes: Routes; }) => void`
 
 修改被 react-router 渲染前的树状路由表，接收内容同 [useRoutes](https://reactrouter.com/en/main/hooks/use-routes)。
 
@@ -222,7 +268,9 @@ export function render(oldRender) {
 
 Umi 内置了 `qiankun` 插件来提供微前端的能力，具体参考[插件配置](../max/micro-frontend)。
 
-### render(oldRender: `Function`)
+### render
+
+- Type: `(oldRender: Function)=>void`
 
 覆写 render。
 
@@ -244,14 +292,16 @@ export function render(oldRender) {
 
 如果你使用了 `import { request } from 'umi';` 来请求数据，那么你可以通过该配置来自定义中间件、拦截器、错误处理适配等。具体参考 [request](../max/request) 插件配置。
 
-### rootContainer(lastRootContainer, args)
+### rootContainer
+
+- Type: `(container: JSX.Element,args: { routes: Routes; plugin; history: History }) => JSX.Element;`
 
 修改交给 react-dom 渲染时的根组件。
 
 比如用于在外面包一个 Provider，
 
 ```js
-export function rootContainer(container) {
+export function rootContainer(container, args) {
   return React.createElement(ThemeProvider, null, container);
 }
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-vite",
-  "version": "4.1.1",
+  "version": "4.1.4",
   "description": "@umijs/bundler-vite",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-vite#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -34,7 +34,7 @@
     "postcss-preset-env": "7.5.0",
     "rollup-plugin-visualizer": "5.9.0",
     "systemjs": "^6.14.1",
-    "vite": "4.3.1"
+    "vite": "4.5.2"
   },
   "devDependencies": {
     "@types/caniuse-lite": "1.0.5",

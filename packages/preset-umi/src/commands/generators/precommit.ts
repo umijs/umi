@@ -1,6 +1,6 @@
 import { GeneratorType } from '@umijs/core';
-import { logger, execa } from '@umijs/utils';
-import { existsSync, writeFileSync, mkdirSync } from 'fs';
+import { execa, logger } from '@umijs/utils';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
 import { GeneratorHelper } from './utils';
@@ -20,13 +20,13 @@ export default (api: IApi) => {
       const cliName = api.appData.umi.cliName;
 
       h.addDevDeps({
-        husky: '^8',
+        husky: '^9',
         prettier: '^2',
-        typescript: '^4',
+        typescript: '^5',
         'lint-staged': '^13',
       });
 
-      h.addScript('prepare', 'husky install');
+      h.addScript('prepare', 'husky');
 
       // create .lintstagedrc
       if (
@@ -69,9 +69,6 @@ export default (api: IApi) => {
         writeFileSync(
           join(api.cwd, '.husky/commit-msg'),
           `
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-  
 npx --no-install ${cliName} verify-commit $1
 `.trimStart(),
         );
@@ -86,9 +83,6 @@ npx --no-install ${cliName} verify-commit $1
         writeFileSync(
           join(api.cwd, '.husky/pre-commit'),
           `
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-  
 npx --no-install lint-staged --quiet
 `.trimStart(),
         );
