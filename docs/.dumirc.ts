@@ -32,6 +32,10 @@ export default defineConfig({
   define: {
     'process.env.UMI_VERSION': version,
   },
+  locales: [
+    { id: 'zh-CN', name: '中文' },
+    { id: 'en-US', name: 'EN' },
+  ],
   themeConfig: {
     name: 'UmiJS',
     socialLinks: {
@@ -39,8 +43,7 @@ export default defineConfig({
     },
     footer: 'Open-source MIT Licensed | Copyright © 2017-present',
     nav: {
-      mode: 'override',
-      value: [
+      'zh-CN': [
         {
           title: '介绍',
           link: '/docs/introduce/introduce',
@@ -67,155 +70,31 @@ export default defineConfig({
           activePath: '/blog',
         },
       ],
-    },
-    sidebar: {
-      '/docs/guides': [
+      'en-US': [
         {
-          children: [
-            {
-              title: '快速上手',
-              link: '/docs/guides/getting-started',
-            },
-            {
-              title: '开发环境',
-              link: '/docs/guides/prepare',
-            },
-            {
-              title: '目录结构',
-              link: '/docs/guides/directory-structure',
-            },
-            {
-              title: '路由',
-              link: '/docs/guides/routes',
-            },
-            {
-              title: '插件',
-              link: '/docs/guides/use-plugins',
-            },
-            {
-              title: 'Mock',
-              link: '/docs/guides/mock',
-            },
-            {
-              title: '代理',
-              link: '/docs/guides/proxy',
-            },
-            {
-              title: '样式',
-              link: '/docs/guides/styling',
-            },
-            {
-              title: '路由数据加载',
-              link: '/docs/guides/client-loader',
-            },
-            {
-              title: 'TypeScript',
-              link: '/docs/guides/typescript',
-            },
-            {
-              title: '环境变量',
-              link: '/docs/guides/env-variables',
-            },
-            {
-              title: '脚手架',
-              link: '/docs/guides/boilerplate',
-            },
-            {
-              title: '微生成器',
-              link: '/docs/guides/generator',
-            },
-            {
-              title: '编码规范',
-              link: '/docs/guides/lint',
-            },
-            {
-              title: '调试',
-              link: '/docs/guides/debug',
-            },
-            {
-              title: '测试',
-              link: '/docs/guides/test',
-            },
-            {
-              title: '开发插件',
-              link: '/docs/guides/plugins',
-            },
-            {
-              title: '使用 Vue',
-              link: '/docs/guides/use-vue',
-            },
-            {
-              title: 'MPA 模式',
-              link: '/docs/guides/mpa',
-            },
-            // 暂不开放
-            // {
-            //   title: 'MFSU',
-            //   link: 'docs/guides/mfsu',
-            // },
-          ],
+          title: 'Introduce',
+          link: '/en-US/docs/introduce/introduce',
+          activePath: '/en-US/docs/introduce',
         },
-      ],
-      '/docs/max': [
         {
-          children: [
-            {
-              title: 'Umi Max 简介',
-              link: '/docs/max/introduce',
-            },
-            {
-              title: '布局与菜单',
-              link: '/docs/max/layout-menu',
-            },
-            {
-              title: 'antd',
-              link: '/docs/max/antd',
-            },
-            {
-              title: '图表',
-              link: '/docs/max/charts',
-            },
-            {
-              title: '数据流',
-              link: '/docs/max/data-flow',
-            },
-            {
-              title: '请求',
-              link: '/docs/max/request',
-            },
-            {
-              title: '权限',
-              link: '/docs/max/access',
-            },
-            {
-              title: '国际化',
-              link: '/docs/max/i18n',
-            },
-            {
-              title: '微前端',
-              link: '/docs/max/micro-frontend',
-            },
-            {
-              title: 'styled-components',
-              link: '/docs/max/styled-components',
-            },
-            {
-              title: 'react-query',
-              link: '/docs/max/react-query',
-            },
-            {
-              title: 'valtio',
-              link: '/docs/max/valtio',
-            },
-            {
-              title: 'dva',
-              link: '/docs/max/dva',
-            },
-            {
-              title: '站点统计',
-              link: '/docs/max/analytics',
-            },
-          ],
+          title: 'Guide',
+          link: '/en-US/docs/guides/getting-started',
+          activePath: '/en-US/docs/guides',
+        },
+        {
+          title: 'API',
+          link: '/en-US/docs/api/api',
+          activePath: '/en-US/docs/api',
+        },
+        {
+          title: 'Umi Max',
+          link: '/en-US/docs/max/introduce',
+          activePath: '/en-US/docs/max',
+        },
+        {
+          title: 'Blog',
+          link: '/en-US/blog/umi-4-rc',
+          activePath: '/en-US/blog',
         },
       ],
     },
