@@ -1,14 +1,16 @@
 ---
 order: 1
 toc: content
+translated_at: '2024-03-17T09:02:46.141Z'
 ---
-# Umi Max 简介
 
-Umi 作为一个可扩展的企业级前端应用框架，在蚂蚁集团内部已经已直接或间接地服务了 10000+ 应用。在工程实践的过程中，解决大量前端开发中开发中遇到的常见问题，这些经验累积成 Umi 各个插件。为了方便开发者更加方便的使用这些插件，在我们这些插件开源的基础上，直接将他们集成到一起，打造了 `@umijs/max`。 让开发者直接可以通过脚手架马上获得和蚂蚁集团开发 Umi 应用一样的开发体检。
+# Umi Max Introduction
 
-## 如何使用
+Umi, as an extensible enterprise-level front end application framework, has already served 10,000+ applications within Ant Group, either directly or indirectly. Throughout the process of engineering practice, it has solved numerous common problems encountered in front end development, and these experiences have been accumulated into various Umi plugins. In order to make it more convenient for developers to utilize these plugins, we have integrated them into `@umijs/max` based on their open-source foundation. This allows developers to immediately obtain the same development experience as developing Umi applications within Ant Group through a scaffold.
 
-在使用 `create-umi` 选择 `Ant Design Pro` 模板，就能使用 `@umijs/max` 来创建项目了。
+## How to use
+
+By selecting the `Ant Design Pro` template when using `create-umi`, you can use `@umijs/max` to create a project.
 
 ```bash {4}
 $ npx create-umi@latest
@@ -19,29 +21,29 @@ $ npx create-umi@latest
 ```
 
 :::info{title=💡}
-在 Umi Max 项目中命令行请使用 `max{:bash}`，而不是原来的 `umi{:bash}`，示例如下
+In Umi Max projects, use the command line `max{:bash}` instead of the original `umi{:bash}`, as shown below.
 :::
 
 ```bash /max/
 $ npx max g jest
 ```
 
-新建的项目默认安装以下插件, 可以按需开启：
+Newly created projects come with the following plugins installed by default, which can be enabled as needed:
 
-- [权限](./access)
-- [站点统计](./analytics)
-- [Antd](./antd)
-- [图表](./charts)
+- [Access Control](./access)
+- [Site Analytics](./analytics)
+- [Ant Design (Antd)](./antd)
+- [Charts](./charts)
 - [dva](./dva)
-- [initial-state](./data-flow#全局初始状态)
-- [数据流](./data-flow)
-- [布局和菜单](./layout-menu)
-- [国际化(多语言)](./i18n)
+- [Initial State](./data-flow#global-initial-state)
+- [Data Flow](./data-flow)
+- [Layout and Menu](./layout-menu)
+- [Internationalization (i18n)](./i18n)
 - [model](./data-flow)
-- [乾坤微前端](./micro-frontend)
-- [请求库](./request)
+- [Qiankun Micro-frontends](./micro-frontend)
+- [Request Library](./request)
 - [Tailwind CSS](./tailwindcss)
 - [CSS-IN-JS](./styled-components)
-- [请求方案](./react-query)
-- [全局数据存储方案](./valtio)
+- [Request Strategy](./react-query)
+- [Global Data Store Strategy](./valtio)
 - [Module Federation](./mf)

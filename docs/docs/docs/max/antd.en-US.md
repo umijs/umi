@@ -1,14 +1,16 @@
 ---
 order: 3
 toc: content
+translated_at: '2024-03-17T09:48:51.045Z'
 ---
+
 # antd
 
-整合 antd 组件库。
+Integration of the antd component library.
 
-## 启用方式
+## How to Enable
 
-配置开启，示例：
+Configure to enable, example:
 
 ```ts
 // config/config.ts
@@ -24,7 +26,7 @@ export default {
     // less or css, default less
     style: 'less',
     // shortcut of `configProvider.theme`
-    // use to configure theme token, antd v5 only
+    // used to configure theme token, antd v5 only
     theme: {},
     // antd <App /> valid for version 5.1.0 or higher, default: undefined
     appConfig: {},
@@ -39,37 +41,37 @@ export default {
 };
 ```
 
-## 介绍
+## Introduction
 
-包含以下功能：
+Includes the following features:
 
-1. 内置 [antd](https://ant.design/)，目前内置版本是 `^4.0.0`
-2. 基于 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 做按需编译
-3. 使用 antd@4 时，可一键切换为暗色主题，见下图
+1. Built-in [antd](https://ant.design/), the current built-in version is `^4.0.0`
+2. On-demand compilation based on [babel-plugin-import](https://github.com/ant-design/babel-plugin-import)
+3. When using antd@4, you can switch to the dark theme with one click, see the image below
 
 ![](https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*mYU9R4YFxscAAAAAAAAAAABkARQnAQ)
 
-## 配置
+## Configuration
 
-### 构建时配置
+### Build-time Configuration
 
-注意：构建时配置会经过 json 转换，所以这里只能进行符合 json 格式的配置，如有例如 algorithm 等函数配置，可在[运行时配置](#运行时配置)中进行设置。
+Note: Build-time configuration will go through JSON conversion, so here you can only set configurations that conform to the JSON format. For function configurations like `algorithm`, set them at [Runtime Configuration](#runtime-configuration).
 
 #### dark
 
-开启暗色主题。
+Enables dark theme.
 
 - Type: `boolean`
 - Default: `false`
 
 #### compact
 
-开启紧凑主题。
+Enables compact theme.
 
 - Type: `boolean`
 - Default: `false`
 
-比如：
+For example:
 
 ```ts
 export default {
@@ -80,66 +82,76 @@ export default {
 };
 ```
 
-启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。
+Dark theme activation is only supported with antd version 4. Compact theme is supported with `antd@>4.1.0`.
 
 #### import
 
 - Type: `boolean`
 
-配置 `antd` 的 `babel-plugin-import` 按需加载。
+Configure `antd`'s `babel-plugin-import` for on-demand loading.
 
 #### style
 
 - Type: `"less" | "css"`
 - Default: `less`
 
-配置使用 `antd` 的样式，默认 `less`。
+Configure the use of `antd` styles, default is `less`.
 
 #### configProvider
 
 - Type: `object`
 
-配置 `antd` 的 `configProvider`。
+Configure `antd`'s `configProvider`.
 
 #### theme
 
 - Type: `object`
 
-配置 `antd@5` 的 theme token，等同于配置 `configProvider.theme`，且该配置项拥有更高的优先级。
+Configure theme token for `antd@5`, equivalent to setting `configProvider.theme`, and this configuration item has higher priority.
 
-**注意：该配置项仅 antd v5 可用**
+**Note: This configuration is only available for antd v5**
 
 #### appConfig
 
 - Type: `object`
 
-配置 `antd` 的 App 包裹组件，请注意 `antd@5.1.0 ~ 5.2.3` 仅能通过 `appConfig: {}` 启用，只有 `antd >=5.3.0` 才支持更多 App 配置项目。
+Configure the App wrapper component for `antd`, please note that for `antd@5.1.0 ~ 5.2.3`, it can only be enabled through `appConfig: {}`, and only `antd >=5.3.0` supports more App configuration projects.
 
-**注意：该配置项仅 antd v5.1.0 及以上可用**
+**Note: This configuration is only available for antd v5.1.0 and above**
 
 #### momentPicker
 
 - Type: `boolean`
 
-配置 `antd` 的 `DatePicker`、`TimePicker`、`Calendar` 组件是否使用 `moment` 作为日期处理库，默认为 `false`。
+Configure whether `antd`'s `DatePicker`, `TimePicker`, `Calendar` components use `moment` as the date processing library, default is `false`.
 
-**注意：该配置项仅 antd v5 及以上可用**
+**Note: This configuration is only available for antd v5 and above**
 
 #### styleProvider
 
 - Type: `object`
 
-配置 `antd` 的 `StyleProvider` 组件，该组件用于兼容低版本浏览器，如 IE11。当你的项目配置了 `legacy` 或者 `targets` 包含 `ie` 时，会自动进行降级处理，不需要手动配置。
+Configure `antd`'s `StyleProvider` component, which is used to support legacy browsers, such as IE11. When your project is configured with `legacy` or `targets` that include `ie`, it will automatically be downgraded, no manual configuration required.
 
-**注意：**
+**Note:**
 
-1. 该配置项仅 antd v5 及以上可用。
+1. This configuration is only available for antd v5 and above.
 
-2. 降级 CSS 需要依赖 [`@ant-design/cssinjs`](https://ant.design/docs/react/compatible-style-cn) ，若你显示安装了 `antd` ，请安装并确保你的 `@ant-design/cssinjs` 版本与 `antd` 正确对应。
+2. The downgrade of CSS relies on [`@ant-design/cssinjs`](https://ant.design/docs/react/compatible-style-cn). If you have explicitly installed `antd`, please also install and ensure that your `@ant-design/cssinjs` version corresponds correctly with `antd`.
 
-### 运行时配置
+### Runtime Configuration
 
-在 app.ts(x) 文件中可以对 antd 进行更丰富的配置，比如配置 antd5 的预设算法和 message 最大显示数：
+In the runtime configuration of `app.ts(x)`, you can modify the values of antd's `ConfigProvider`. Before using this feature, **make sure you have enabled the `antd.configProvider` option**, otherwise changes to `ConfigProvider` will not take effect:
+
+```ts
+// .umirc.ts
+
+  antd: {
+    configProvider: {}
+  }
+```
+
+For example, to configure antd 5's theme preset algorithm and the maximum number of `message` notifications:
 
 ```ts
 // app.ts
@@ -148,11 +160,11 @@ import { theme } from 'antd';
 
 export const antd: RuntimeAntdConfig = (memo) => {
   memo.theme ??= {};
-  memo.theme.algorithm = theme.darkAlgorithm; // 配置 antd5 的预设 dark 算法
+  memo.theme.algorithm = theme.darkAlgorithm; // Configure the preset dark algorithm for antd5
 
   memo.appConfig = {
     message: {
-      // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
+      // Configure the maximum number of messages displayed, when exceeding the limit, the earliest messages will be automatically closed
       maxCount: 3,
     }
   }
@@ -161,13 +173,13 @@ export const antd: RuntimeAntdConfig = (memo) => {
 };
 ```
 
-### 动态切换全局配置
+### Dynamically Switch Global Configuration
 
-**注意：该功能仅 antd v5 可用**
+**Note: This feature is only available for antd v5**
 
-通过 `useAntdConfig` / `useAntdConfigSetter` 方法来动态获取、修改 antd 的 `ConfigProvider` 配置，通常可用于动态修改主题。
+Use `useAntdConfig` / `useAntdConfigSetter` methods to dynamically get and modify antd's `ConfigProvider` configuration, which can typically be used to dynamically modify themes.
 
-注：此功能需依赖 `ConfigProvider` ，请一并开启 `configProvider: {}` 。
+Note: This feature depends on `ConfigProvider`, please also enable `configProvider: {}`.
 
 ```tsx
 import { Layout, Space, Button, version, theme, MappingAlgorithm } from 'antd';
@@ -185,7 +197,7 @@ export default function Page() {
         <Switch
           checked={antdConfig?.theme?.algorithm.includes(darkAlgorithm)}
           onChange={(data) => {
-            // 此配置会与原配置深合并
+            // This configuration will deep merge with the original configuration
             setAntdConfig({
               theme: {
                 algorithm: [
@@ -211,10 +223,10 @@ export default function Page() {
 }
 ```
 
-使用 `setAntdConfig` 可以动态修改 [antd@5 ConfigProvider](https://ant.design/components/config-provider-cn) 组件支持的所有属性。
+Using `setAntdConfig`, you can dynamically modify any property supported by [antd@5 ConfigProvider](https://ant.design/components/config-provider-cn).
 
 ## FAQ
 
-### 如何使用 antd 的其他版本？
+### How to use other versions of antd?
 
-在项目中安装你需要的 antd 版本。
+Install the version of antd you need in your project.

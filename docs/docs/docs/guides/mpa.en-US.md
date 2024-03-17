@@ -1,16 +1,18 @@
 ---
 order: 18
 toc: content
+translated_at: '2024-03-17T10:26:22.951Z'
 ---
-# MPA 模式
 
-Umi 支持传统 MPA 模式，此模式下，会将 `src/pages` 目录下 `*/index.[jt]sx?` 文件作为 webpack entry 进行打包，无路由，无 history，无 umi.js，满足比如 h5 研发、kitchen 插件研发等场景需要。
+# MPA Mode
 
-注意：此 MPA 模式和 Umi 3 的 MPA 模式的实现不同，Umi 4 是真 MPA，Umi 3 是 Mock 了路由渲染机制。各有利弊，Umi 4 的 MPA 将不能使用大量插件能力，仅适合当构建工具使用。
+Umi supports the traditional MPA mode, under which the `src/pages` directory `*/index.[jt]sx?` files are taken as webpack entries for packing, without routing, history, or umi.js, meeting needs such as H5 development, kitchen plugin development, and so on.
 
-## 使用
+Note: This MPA mode is different from the MPA mode implementation in Umi 3, Umi 4 is true MPA, while Umi 3 mocks the routing rendering mechanism. Each has its pros and cons; Umi 4's MPA will not be able to use a large number of plugin capabilities and is only suitable for use as a build tool.
 
-mpa 为内置功能，通过配置即可开启。
+## Usage
+
+mpa is an built-in feature, which can be enabled through configuration.
 
 ```js
 export default {
@@ -23,20 +25,20 @@ export default {
 }
 ```
 
-MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 会生成一个页面，文件夹内的 `index.tsx` 为页面的入口文件，示例见 [examples/mpa](https://github.com/umijs/umi/tree/master/examples/mpa) 。
+The directory structure of MPA is `src/pages/${dir}/index.tsx`, each folder `${dir}` will generate a page, with the folder's `index.tsx` as the entry file of the page, see the example at [examples/mpa](https://github.com/umijs/umi/tree/master/examples/mpa).
 
-配置项：
+Configuration items:
 
- - `template` : 产物 HTML 模板，如 `template/index.html` 将使用项目根目录开始寻找，对应路径的 `index.html` 作为产物 HTML 模板。 
- - `getConfigFromEntryFile` : 从每个页面的入口文件（`src/*/index.tsx`）中读取页面独立配置。
- - `layout` : 全局默认 layout 。
- - `entry` : 每个入口文件的配置，如 `{ foo: { title: '...' } }` 可以配置 `src/foo/index.tsx` 页面的 `title` 属性。
+- `template`: Product HTML template, for example, `template/index.html` will start searching from the project root directory, using the corresponding path's `index.html` as the product HTML template.
+- `getConfigFromEntryFile`: Read independent configuration from the entry file (`src/*/index.tsx`) of each page.
+- `layout`: Global default layout.
+- `entry`: Configuration for each entry file, for example, `{ foo: { title: '...' } }` can configure the `title` attribute of the `src/foo/index.tsx` page.
 
-## 约定的入口文件
+## Conventional Entry Files
 
-默认的入口文件是 `src/pages` 目录下的 `*/index.[jt]sx?` 文件。
+The default entry files are `src/pages` directory's `*/index.[jt]sx?` files.
 
-比如：
+For example:
 
 ```
 + src/pages
@@ -45,7 +47,7 @@ MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 
   - hoo.tsx
 ```
 
-那么，`entry` 结构为：
+Then, the `entry` structure will be:
 
 ```ts
 {
@@ -54,13 +56,13 @@ MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 
 }
 ```
 
-构建之后，会同时为每个入口文件生成相应的 HTML 文件，此时产物为 `foo.html` 和 `bar.html` 。
+After building, HTML files corresponding to each entry file will be generated, with the products being `foo.html` and `bar.html`.
 
-### 页面级配置
+### Page-level Configuration
 
 ### config.json
 
-约定通过入口文件同层级的 `config.json` 声明配置，比如如下目录结构：
+Conventionally declares configuration through `config.json` at the same layer as the entry file, as the following directory structure:
 
 ```
 + src/pages
@@ -69,7 +71,7 @@ MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 
     - config.json
 ```
 
-`foo/config.json` 配置了该页面的独立 `layout` 布局和 `title` 标题：
+`foo/config.json` configures the independent `layout` and `title` of the page:
 
 ```json
 {
@@ -78,20 +80,20 @@ MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 
 }
 ```
 
-目前默认支持的配置项包括：
+Currently, the default supported configuration items include:
 
-* **template**：模板路径，可参考 [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 的模板写法，通过 lodash template 语法使用变量。
-* **layout**：页面布局，建议以 `@/` 开头引用 src 目录下的文件。
-* **title**：页面标题，默认是入口文件所在的目录名。
-* **mountElementId**：页面渲染时，挂载到节点的 id，默认是 `root` 。
+* **template**: Template path, can refer to the template writing method of [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin), using variables through lodash template syntax.
+* **layout**: Page layout, advised to reference files in the src directory starting with `@/`.
+* **title**: Page title, default is the directory name where the entry file is located.
+* **mountElementId**: When rendering the page, the id of the node to be mounted to, default is `root`.
 
 ### getConfigFromEntryFile
 
-Umi 还试验性地支持另一种配置读取方式，通过配置 `mpa: { getConfigFromEntryFile: true }` 开启。
+Umi also experimentally supports another way of reading configurations by enabling `mpa: { getConfigFromEntryFile: true }`.
 
-此时，你可以不使用 `config.json` ，而是在入口文件中通过 `export const config` 导出该页面的配置。
+In this case, you can avoid using `config.json`, and instead, export the page's configuration through `export const config` in the entry file.
 
-比如：
+For example:
 
 ```ts
 // src/pages/foo/index.tsx
@@ -103,7 +105,7 @@ export const config = {
 
 ### entry
 
-在 `.umirc.ts` 中也可以配置每个页面：
+You can also configure each page in `.umirc.ts`:
 
 ```ts
   mpa: {
@@ -113,19 +115,19 @@ export const config = {
   }
 ```
 
-### 按需启动
+### On-demand Startup
 
-支持通过设置 `env.MPA_FILTER` 来指定需要启动的页面，以提高构建速度：
+Supports using `env.MPA_FILTER` to specify pages to start, in order to improve build speed:
 
 ```text
 # file .env
-# 只会启动 bar、foo 这两个页面
+# Will only start bar, foo these two pages
 MPA_FILTER=bar,foo
 ```
 
-## 渲染
+## Rendering
 
-默认渲染方式为 react，入口文件只需导出 react 组件，即可进行渲染，无需自行写 `ReactDOM.render` 逻辑。
+The default rendering method is React; the entry file just needs to export React components to be rendered, without needing to write the `ReactDOM.render` logic by yourself.
 
 ```tsx
 export default function Page() {
@@ -133,15 +135,15 @@ export default function Page() {
 }
 ```
 
-默认启用 React 18，如果需要 React 17 的渲染方式，请在项目中安装 React 17 的依赖，框架会自动适配 React 版本。
+React 18 is enabled by default, if you need React 17 rendering methods, please install React 17 dependencies in your project, the framework will automatically adapt to the React version.
 
 ```bash
 $ pnpm i react@17 react-dom@17
 ```
 
-## 模板
+## Template
 
-默认模板如下：
+The default template is as follows:
 
 ```html
 <!DOCTYPE html>
@@ -155,4 +157,4 @@ $ pnpm i react@17 react-dom@17
 </html>
 ```
 
-通过 `template` 配置自定义全局 HTML 模板 ，也可以进行页面级配置定义不同页面使用不同的模板，请确保变量至少包含 `<%= title %>` 和 `<%= mountElementId %>`。
+Through the `template` configuration, you can customize a global HTML template or configure different templates for different pages at the page level. Please ensure that variables at least include `<%= title %>` and `<%= mountElementId %>`.

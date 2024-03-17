@@ -1,14 +1,16 @@
 ---
 order: -1
 toc: content
+translated_at: '2024-03-17T10:30:12.385Z'
 ---
-# 快速上手
 
-## 环境准备
+# Getting Started
 
-首先得有 node，并确保 node 版本是 14 或以上。（推荐用 [nvm](https://github.com/nvm-sh/nvm) 来管理 node 版本，windows 下推荐用 [nvm-windows](https://github.com/coreybutler/nvm-windows)）
+## Environment Setup
 
-mac 或 linux 下安装 nvm。
+First, you need to have node installed and make sure your node version is 14 or above. (It's recommended to use [nvm](https://github.com/nvm-sh/nvm) to manage node versions on Mac or Linux, and [nvm-windows](https://github.com/coreybutler/nvm-windows) for Windows users.)
+
+Install nvm on Mac or Linux.
 
 ```bash
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -16,7 +18,7 @@ $ nvm -v
 0.39.1
 ```
 
-安装 node。
+Install node.
 
 ```
 $ nvm install 16
@@ -25,12 +27,12 @@ $ node -v
 v16.10.0
 ```
 
-然后需要包管理工具。node 默认包含 npm，但也可以选择其他方案，
+Then you need a package management tool. While npm comes with node by default, you can also choose other options,
 
-- [pnpm](https://pnpm.io/installation), umi 团队推荐
+- [pnpm](https://pnpm.io/installation), recommended by the umi team
 - [Yarn](https://yarnpkg.com/getting-started/install)
 
-安装 pnpm。
+Install pnpm.
 
 ```bash
 curl -fsSL https://get.pnpm.io/install.sh | sh -
@@ -38,15 +40,15 @@ $ pnpm -v
 7.3.0
 ```
 
-## 创建项目
+## Create a Project
 
-先找个地方建个空目录。
+First, find a place to create a new empty directory.
 
 ```bash
 $ mkdir myapp && cd myapp
 ```
 
-通过官方工具创建项目，
+Create a project using the official tool,
 
 PNPM
 
@@ -58,11 +60,11 @@ $ pnpm dlx create-umi@latest
 Write: .gitignore
 Write: .npmrc
 Write: .umirc.ts
-Copy:  layouts/index.tsx
+Copy: layouts/index.tsx
 Write: package.json
-Copy:  pages/index.tsx
-Copy:  pages/users.tsx
-Copy:  pages/users/foo.tsx
+Copy: pages/index.tsx
+Copy: pages/users.tsx
+Copy: pages/users/foo.tsx
 > @ postinstall /private/tmp/sorrycc-vylwuW
 > umi setup
 info  - generate files
@@ -79,13 +81,13 @@ Write: .gitignore
 Write: .npmrc
 Write: .umirc.ts
 Write: package.json
-Copy:  src/assets/yay.jpg
-Copy:  src/layouts/index.less
+Copy: src/assets/yay.jpg
+Copy: src/layouts/index.less
 Write: src/layouts/index.tsx
-Copy:  src/pages/docs.tsx
-Copy:  src/pages/index.tsx
+Copy: src/pages/docs.tsx
+Copy: src/pages/index.tsx
 Write: tsconfig.json
-Copy:  typings.d.ts
+Copy: typings.d.ts
 ready - Git initialized successfully
 ```
 
@@ -103,13 +105,13 @@ Write: .gitignore
 Write: .npmrc
 Write: .umirc.ts
 Write: package.json
-Copy:  src/assets/yay.jpg
-Copy:  src/layouts/index.less
+Copy: src/assets/yay.jpg
+Copy: src/layouts/index.less
 Write: src/layouts/index.tsx
-Copy:  src/pages/docs.tsx
-Copy:  src/pages/index.tsx
+Copy: src/pages/docs.tsx
+Copy: src/pages/index.tsx
 Write: tsconfig.json
-Copy:  typings.d.ts
+Copy: typings.d.ts
 
 > postinstall
 > umi setup
@@ -128,63 +130,63 @@ Write: .gitignore
 Write: .npmrc
 Write: .umirc.ts
 Write: package.json
-Copy:  src/assets/yay.jpg
-Copy:  src/layouts/index.less
+Copy: src/assets/yay.jpg
+Copy: src/layouts/index.less
 Write: src/layouts/index.tsx
-Copy:  src/pages/docs.tsx
-Copy:  src/pages/index.tsx
+Copy: src/pages/docs.tsx
+Copy: src/pages/index.tsx
 Write: tsconfig.json
-Copy:  typings.d.ts
+Copy: typings.d.ts
 yarn install v1.22.18
 success Saved lockfile.
 $ umi setup
 info  - generate files
 ```
 
-注：使用 bun 初始化项目会更快，需要 bun >= `0.4.0` 版本。
+Note: Initializing a project with bun is faster, requires bun >= `0.4.0` version.
 
-国内建议选 **pnpm + taobao 源**，速度提升明显。这一步会自动安装依赖，同时安装成功后会自动执行 `umi setup` 做一些文件预处理等工作。
+For users in China, it's advised to choose **pnpm + taobao source** for a significant speed increase. This step will automatically install dependencies, and after installation, `umi setup` will execute to perform some file preprocessing, etc.
 
-### 从模板创建项目
+### Creating a Project From a Template
 
 ```bash
-  # 从 @umijs/electron-template 创建一个 electron 模板
+  # Create an electron template project from @umijs/electron-template
   pnpm create umi --template electron
 ```
 
-### 参数选项
+### Command Options
 
-使用 `create-umi` 创建项目时，可用的参数如下：
+The following options are available when creating a project with `create-umi`:
 
 |     option     | description                |
 | :------------: | :------------------------- |
-|   `--no-git`   | 创建项目，但不初始化 Git   |
-| `--no-install` | 创建项目，但不自动安装依赖 |
+|   `--no-git`   | Create a project without initializing Git   |
+| `--no-install` | Create a project without automatically installing dependencies |
 
-## 启动项目
+## Start the Project
 
-执行 `pnpm dev` 命令，
+Run the `pnpm dev` command,
 
 ```bash
 $ pnpm dev
         ╔═════════════════════════════════════════════════════╗
         ║ App listening at:                                   ║
-        ║  >   Local: https://127.0.0.1:8000                  ║
+        ║  > Local: https://127.0.0.1:8000                  ║
 ready - ║  > Network: https://192.168.1.1:8000                ║
         ║                                                     ║
-        ║ Now you can open browser with the above addresses👆 ║
+        ║ Now you can open a browser with the above addresses👆 ║
         ╚═════════════════════════════════════════════════════╝
 event - compiled successfully in 1121 ms (388 modules)
 event - MFSU compiled successfully in 1308 ms (875 modules)
 ```
 
-在浏览器里打开 [http://localhost:8000/](http://localhost:8000/)，能看到以下界面，
+Open [http://localhost:8000/](http://localhost:8000/) in your browser, and you will see the following interface,
 
 ![](https://img.alicdn.com/imgextra/i2/O1CN01ufcj8M1Lpt1yXd8sy_!!6000000001349-2-tps-1372-1298.png)
 
-## 启用 Prettier（可选）
+## Enable Prettier (Optional)
 
-如果需要用 prettier 做项目代码的自动格式化，执行 `pnpm umi g`，
+If you want to use prettier to automatically format your project's code, execute `pnpm umi g`,
 
 ```bash
 $ pnpm umi g
@@ -195,9 +197,9 @@ info  - Write .prettierignore
 info  - Install dependencies with pnpm
 ```
 
-## 部署发布
+## Deploy and Publish
 
-执行 `pnpm build` 命令，
+Run the `pnpm build` command,
 
 ```bash
 > umi build
@@ -205,7 +207,7 @@ event - compiled successfully in 1179 ms (567 modules)
 event - build index.html
 ```
 
-产物默认会生成到 `./dist` 目录下，
+The build artifacts will by default be generated in the `./dist` directory,
 
 ```
 ./dist
@@ -214,4 +216,4 @@ event - build index.html
 └── umi.js
 ```
 
-完成构建后，就可以把 dist 目录部署到服务器上了。
+After building, you can deploy the dist directory to your server.

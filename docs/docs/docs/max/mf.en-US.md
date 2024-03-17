@@ -1,21 +1,22 @@
 ---
 order: 17
 toc: content
+translated_at: '2024-03-17T08:55:33.242Z'
 ---
 
-# Module Federation 插件
+# Module Federation Plugin
 
-在 Umi 项目使用 Module Federation 功能。
+Using Module Federation functionality in Umi projects.
 
 :::warning{title=🚨}
-Module Federation 功能需要浏览器支持 `Top Level Await` 特性。在生产环境中使用请注意浏览器是否支持([浏览器支持情况](https://caniuse.com/?search=top%20level%20await))。
+Module Federation functionality requires browser support for `Top Level Await` feature. Please pay attention to browser support ([Browser support status](https://caniuse.com/?search=top%20level%20await)) when using it in production environment.
 :::
 
-## 配置
+## Configuration
 
-### 使用远端模块配置
+### Configuring the use of remote modules
 
-@umijs/max 项目
+@umijs/max projects
 
 ```ts
 // .umirc.ts
@@ -33,24 +34,24 @@ const shared = {
 };
 
 export default defineConfig({
-  // 已经内置 Module Federation 插件, 直接开启配置即可
+  // Module Federation plugin is already built-in, just enable the configuration
   mf: {
     remotes: [
       {
-        // 可选，未配置则使用当前 remotes[].name 字段
+        // Optional, if not configured, the current remotes[].name field is used
         aliasName: 'mfNameAlias',
         name: 'theMfName',
         entry: 'https://to.the.remote.com/remote.js',
       },
     ],
 
-    // 配置 MF 共享的模块
+    // Configure MF shared modules
     shared,
   },
 });
 ```
 
-普通 Umi 项目
+Regular Umi projects
 
 ```ts
 // .umirc.ts
@@ -68,28 +69,28 @@ const shared = {
 };
 
 export default defineConfig({
-  plugins: ['@umijs/plugins/dist/mf'], // 引入插件
+  plugins: ['@umijs/plugins/dist/mf'], // Import plugin
   mf: {
     remotes: [
       {
-        // 可选，未配置则使用当前 remotes[].name 字段
+        // Optional, if not configured, the current remotes[].name field is used
         aliasName: 'mfNameAlias',
         name: 'theMfName',
         entry: 'https://to.the.remote.com/remote.js',
       },
     ],
 
-    // 配置 MF 共享的模块
+    // Configure MF shared modules
     shared,
   },
 });
 ```
 
-在项目中就可以使用 `import XXX from 'mfNameAlias/XXXX'` 来使用远端模块的内容了。
+In the project, you can now use `import XXX from 'mfNameAlias/XXXX'` to use the content of remote modules.
 
-#### 运行时远端模块加载
+#### Runtime remote module loading
 
-如果需要在运行时（根据运行的环境）决定加载远端模块的地址，可以采用如下方式配置：
+If you need to decide the remote module's loading address at runtime (based on the running environment), you can configure it as follows:
 
 ```ts
 // .umirc.ts
@@ -117,35 +118,35 @@ defineConfig({
 });
 ```
 
-- 使用运行时远端模块加载逻辑时，不要配置 `remotes[]#entry` , 插件会优先使用该字段。
-- `keyResolver` 用于在运行时决定使用 `entries` 哪个 key; 推荐使用 _立即调用函数表达式_ 的形式，可以在函数中实现较复杂的功能。不支持异步的函数。
-- `keyResolver` 也可以使用静态的值，配置形式 `keyResolver: '"PROD"'`
+- When using runtime remote module loading logic, do not configure `remotes[]#entry`, the plugin will prioritize this field.
+- `keyResolver` is used to decide which key of `entries` to use at runtime; using an _Immediately Invoked Function Expression_ is recommended and can implement more complex functionality in the function. Does not support asynchronous functions.
+- `keyResolver` can also use static values, configured as `keyResolver: '"PROD"'`
 
-### 导出远端模块配置
+### Configuration for exporting remote modules
 
-当前项目对外提供远端模块，模块名使用如下配置字段
+For the current project to provide remote modules, use the following configuration field for the module name
 
 ```ts
 // .umirc.ts
-// 提取变量是为了和 MFSU 配合使用保持配置一致
+// Extracting the variable is for consistent configuration with MFSU
 const remoteMFName = 'remoteMFName';
 
 defineConfig({
   mf: {
     name: remoteMFName,
 
-    // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
-    // 注意这里的 name 必须和最终 MF 模块的 name 一致
+    // Optional, library type of remote module, if the module needs to be used in a Qiankun sub-application, the suggested value is recommended,
+    // Note that the name here must be consistent with the final MF module name
     // library: { type: "window", name: "exportMFName" },
   },
 });
 ```
 
 :::info{title=🚨}
-配置的模块名必须为一个合法的 Javascript 变量名！
+The configured module name must be a valid Javascript variable name!
 :::
 
-导出的模块按照约定，将源代码目录下的 `exposes` 一级子目录名作为导出项，导出文件为该目录下的 index 文件，举例
+The modules exported follow the convention, taking the directory names under `src/exposes` as the export items, and the export file is the index file under that directory, for example
 
 ```txt
 src/exposes/
@@ -157,7 +158,7 @@ src/exposes/
     └── index.tsx
 ```
 
-对应的 Module Federation 的 exposes 为
+The corresponding Module Federation exposes are
 
 ```js
 {
@@ -167,11 +168,11 @@ src/exposes/
 }
 ```
 
-### 关闭 MF 产物 hash
+### Disabling MF product hash
 
-默认情况下，当用户开启 `hash: true` 时， MF 产物中入口文件将自动携带 hash ，如 `remote.123abc.js` ，可通过设定 `remoteHash: false` 关闭（将得到 `remote.js` ），此时你可能需要修改 nginx / CDN / 网关 的响应头配置来去除该 `remote.js` 文件的缓存，否则新构建将无法生效。
+By default, when the user enables `hash: true`, the entry file in the MF product will automatically carry a hash, such as `remote.123abc.js`. You can disable it by setting `remoteHash: false` (resulting in `remote.js`), at which point you may need to modify nginx/CDN/gateway response header configuration to remove the cache for the `remote.js` file, otherwise the new build will not take effect.
 
-注：没有 hash 的更多危害与推荐做法详见 [issue #11711](https://github.com/umijs/umi/issues/11711)
+Note: More harm without hash and recommended practices are detailed in [issue #11711](https://github.com/umijs/umi/issues/11711)
 
 
 ```ts
@@ -180,25 +181,25 @@ mf: {
 }
 ```
 
-## 运行时 API
+## Runtime API
 
-### 何时需要使用运行时 API ？
+### When to use runtime API?
 
-采用配置的方式结合`import()`已经可以方便的使用 Module Federation 功能。如果你有以下需求就应该考虑使用运行时 API。
+Configuring with `import()` can easily use the Module Federation functionality. However, consider using runtime API if you have the following needs:
 
-- 远端模块的加载失败时，页面需要使用兜底组件
-- 远端模块的加载的地址无法通过同步函数来确定（需要异步调用）
-- 远端模块的加载的地址和模块名需要在运行时才能确定
+- When loading a remote module fails, the page needs to use a fallback component
+- The loading address of the remote module cannot be determined by a synchronous function (requires asynchronous call)
+- The loading address and module name of the remote module need to be determined at runtime
 
 ### safeMfImport
 
-有兜底的远端模块加载函数，接口定义如下：
+A fail-safe remote module loading function, interface definition as follows:
 
 ```ts
 safeMfImport(moduleSpecifier: string, fallback: any): Promise<any>
 ```
 
-结合 `React.lazy` 可以实现远端模块的懒加载
+Combined with `React.lazy` can implement lazy loading of remote modules
 
 ```ts
 import { safeMfImport } from '@umijs/max';
@@ -218,26 +219,26 @@ export default function Page() {
 ```
 
 :::info{title=🚨}
-- 注意这里需要将兜底的***组件***包装到对象的`default`字段上来模拟一个模块。
-- `remoteCounter/Counter` 需要和配置对应。
+- Note that the fallback ***component*** needs to be wrapped in the object's `default` field to mimic a module.
+- `remoteCounter/Counter` needs to correspond with the configuration.
 :::
 
-[实例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/safe-import.tsx)
+[Example code](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/safe-import.tsx)
 
 ### safeRemoteComponent
 
-该 API 为封装了 `safeMfImport` 的高阶组件, 接口定义如下：
+This API is a higher-order component that encapsulates `safeMfImport`, interface definition as follows:
 
 ```ts
 safeRemoteComponent<T extends React.ComponentType<any>>
   (opts: {
       moduleSpecifier:string;
-      fallbackComponent: React.ComponentType<any>;  // 远端组件加载失败的兜底组件
-      loadingElement: React.ReactNode ;             // 组件加载中的 loading 展示
+      fallbackComponent: React.ComponentType<any>;  // Fallback component if remote component fails to load
+      loadingElement: React.ReactNode ;             // Loading display for component loading
     } ): T
 ```
 
-示例:
+Example:
 
 ```ts
 const RemoteCounter = safeRemoteComponent<React.FC<{ init?: number }>>({
@@ -255,11 +256,11 @@ export default function Page() {
 };
 ```
 
-[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/safe-remote-component.tsx)
+[Example code](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/safe-remote-component.tsx)
 
 ### rawMfImport
 
-加载远端模块，接口如下。
+Loading remote modules, interface as follows.
 
 ```ts
 rawMfImport(opts: {
@@ -269,7 +270,7 @@ rawMfImport(opts: {
 }): Promise<any>
 ```
 
-示例
+Example
 
 ```ts
 const RemoteCounter = React.lazy(() => {
@@ -281,11 +282,11 @@ const RemoteCounter = React.lazy(() => {
 });
 ```
 
-[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/raw-mf-import.tsx)
+[Example code](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/raw-mf-import.tsx)
 
 ### safeRemoteComponentWithMfConfig
 
-封装了`rawMfImport`的 高阶组件：
+A higher-order component that encapsulates `rawMfImport`:
 
 ```ts
 type RawRemoteComponentOpts ={
@@ -300,7 +301,7 @@ type RawRemoteComponentOpts ={
 safeRemoteComponentWithMfConfig<T extends ComponentType<any>>(opts: RawRemoteComponentOpts): T
 ```
 
-示例
+Example
 
 ```ts
 const RemoteCounter = safeRemoteComponentWithMfConfig<
@@ -320,18 +321,18 @@ export default function Page() {
 };
 ```
 
-[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/raw-mf-component.tsx)
+[Example code](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/raw-mf-component.tsx)
 
 ### registerMfRemote
 
-动态的注册 Module Federation 模块远端配置。
+Dynamically registers Module Federation module remote configurations.
 
 ```ts
 type MFModuleRegisterRequest = { entry: string; remoteName: string; aliasName?:string; }
 registerMfRemote (opts: MFModuleRegisterRequest): void
 ```
 
-使用 `safeMfImport` 或者 `safeRemoteComponent` 时，`moduleSpecifier` 须是已经配置的远端模块。而 `rawMfImport` 的调用略啰嗦，可以使用 `registerMfRemote` 先注册，然后通过简洁的 `safeMfImport` 和 `safeRemoteComponent`。
+When using `safeMfImport` or `safeRemoteComponent`, `moduleSpecifier` must be a configured remote module. While calling `rawMfImport` is somewhat verbose, `registerMfRemote` can be used to register first, then use the succinct `safeMfImport` and `safeRemoteComponent`.
 
 ```ts
 registerMfRemote({
@@ -345,13 +346,13 @@ const RemoteCounter = React.lazy(() => {
 });
 ```
 
-[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/register-then-import.tsx)
+[Example code](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/register-then-import.tsx)
 
-## 和 MFSU 一起使用
+## Using with MFSU
 
-Module Federation 插件会根据插件配置自动修改 MFSU 的**默认**配置以使两个功能在开发阶段正常使用，原理介绍如下：
+The Module Federation plugin automatically modifies MFSU's **default** configuration based on plugin configuration to allow both features to work normally during the development stage, the principle is as follows:
 
-假设我们采用了如下 mf 插件的配置
+Assume we have the following mf plugin configuration
 
 ```ts
 // .umirc.ts
@@ -383,13 +384,13 @@ export default defineConfig({
 });
 ```
 
-那么对应最后生效的配置如下
+The corresponding final effective configuration is as follows
 
 ```ts
 {
   mfsu: {
-    // mf 插件自动填充以下和 MFSU 兼容的默认配置
-    // 开启了 MFSU 也能在 DEV 阶段调试 MF 的模块
+    // mf plugin automatically fills in the following default configurations compatible with MFSU
+    // MFSU can also debug MF modules in the DEV stage
     remoteName: 'remoteMFName', 
     remoteAliases: ['remote1', 'aliasRemote'],
     shared: {

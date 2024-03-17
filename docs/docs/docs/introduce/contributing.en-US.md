@@ -1,70 +1,71 @@
 ---
 order: 3
 toc: content
+translated_at: '2024-03-17T09:56:34.842Z'
 ---
 
-# 参与贡献
+# Contributing
 
 ❤️ Loving Umi and want to get involved? Thanks!
 
-## 环境准备
+## Environment Setup
 
-### Node.js 和 pnpm
+### Node.js and pnpm
 
-开发 Umi 需要 Node.js 16+ 和 `pnpm` v8。
+Developing Umi requires Node.js 16+ and `pnpm` v8.
 
-推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 管理 Node.js，避免权限问题的同时，还能够随时切换当前使用的 Node.js 的版本。在 Windows 系统下的开发者可以使用 [`nvm-windows`](https://github.com/coreybutler/nvm-windows)。
+It is recommended to use [`nvm`](https://github.com/nvm-sh/nvm) to manage Node.js versions to avoid permission issues and easily switch between Node.js versions. Windows developers can use [`nvm-windows`](https://github.com/coreybutler/nvm-windows).
 
-在 `pnpm` 的[官网](https://pnpm.io/installation)选择一种方式安装即可。
+Install `pnpm` via one of the methods on its [official website](https://pnpm.io/installation).
 
-### Clone 项目
+### Clone the Project
 
 ```bash
 $ git clone git@github.com:umijs/umi.git
 $ cd umi
 ```
 
-### 安装依赖并构建
+### Install Dependencies and Build
 
 ```bash
 $ pnpm i && pnpm build
 ```
 
-## 开发 Umi
+## Developing Umi
 
-### 启动 dev 命令
+### Start the dev Command
 
-本地开发 Umi 必开命令，用于编译 `src` 下的 TypeScript 文件到 `dist` 目录，同时监听文件变更，有变更时增量编译。
+A must-run command for local development of Umi, for compiling TypeScript files in the `src` directory to the `dist` directory, and incrementally compiles on file changes.
 
 ```bash
 $ pnpm dev
 ```
 
-如果觉得比较慢，也可以只跑特定 package 的 `pnpm dev` 命令，比如。
+If you find it rather slow, you can also run the `pnpm dev` command for a specific package, for example.
 
 ```bash
 $ cd packages/umi
 $ pnpm dev
 ```
 
-### 跑 Example
+### Run Example
 
-`examples` 目录下保存了各种用于测试的例子，跑 example 是开发 Umi 时确认功能正常的常用方式。每个 example 都配了 dev 脚本，所以进入 example 然后执行 `pnpm dev` 即可。
+The `examples` directory contains various examples used for testing. Running an example is a common way to ensure functions work correctly during Umi development. Each example is equipped with a dev script, so just enter the example and run `pnpm dev`.
 
 ```bash
 $ cd examples/boilerplate
 $ pnpm dev
 ```
 
-如果要用 vite 模式跑，加 `--vite` 参数，
+To run in vite mode, add the `--vite` argument,
 
 ```bash
 $ pnpm dev --vite
 ```
 
-### 测试
+### Testing
 
-目前跑测试很快，10s+ 就完成了。推荐本地跑一遍再提 PR，减少 Round Trip。
+Currently running tests is fast, completing in just over 10s+. It’s recommended to run tests locally before submitting a PR to reduce Round Trips.
 
 ```bash
 $ pnpm test
@@ -76,122 +77,122 @@ Time:        13.658 s
 Ran all test suites.
 ```
 
-如果需要只跑部分文件的用例，用 `pnpm jest`，因为 `pnpm test` 是开了 turborepo 功能的。
+To run tests for specific files, use `pnpm jest` because `pnpm test` runs with turborepo enabled.
 
-比如，
+For example,
 
 ```bash
 $ pnpm jest packages/plugin-docs/src/compiler.test.ts
 ```
 
-## 贡献 Umi 文档
+## Contributing to Umi Documentation
 
-Umi 的文档由 Umi@4 和 `@umijs/plugin-docs` 插件实现，本质上就是一个 Umi 项目。在根目录执行如下命令即可开始 Umi 文档的开发：
+Umi's documentation is implemented by Umi@4 and the `@umijs/plugin-docs` plugin, essentially an Umi project. Execute the following commands in the root directory to start development:
 
 ```bash
-# 安装 Umi 文档依赖
+# Install Umi document dependencies
 $ pnpm doc:deps
-# 启用 Umi 文档开发
-# 首次启动时编译耗时较长，请耐心等待
+# Start Umi document development
+# Compilation takes longer on first launch, please be patient
 $ pnpm doc:dev
 ```
 
-打开指定的端口号，即可实时查看文档更新的内容，以及 `@umijs/plugin-docs` 插件开发的成果。
+Open the specified port number to see real-time updates of documentation and results of the `@umijs/plugin-docs` plugin development.
 
-### 撰写 Umi 文档
+### Writing Umi Documentation
 
-Umi 文档的编写基于 MDX 格式。MDX 是 Markdown 格式的拓展，允许您在撰写 Umi 文档时插入 JSX 组件。
+Umi documentation is written in MDX format. MDX is an extension of the Markdown format allowing you to insert JSX components while writing Umi documentation.
 
 :::success{title=🏆︎}
-撰写 **文档（Document）** 时，可用的组件可以在 `packages/plugin-docs/client/theme-doc/components` 目录下找到。撰写 **博客（Blog）** 时，可用的组件可以在 `packages/plugin-docs/client/theme-blog/components` 目录下找到。
+When writing **Documentation**, you can find usable components in `packages/plugin-docs/client/theme-doc/components`. When writing **Blog posts**, usable components can be found in `packages/plugin-docs/client/theme-blog/components`.
 :::
 
-Umi 文档的代码高亮基于 [`Rehype Pretty Code`](https://github.com/atomiks/rehype-pretty-code)，完整的能力和使用说明请移步它的[官方文档](https://rehype-pretty-code.netlify.app)。
+Umi documentation code highlighting is based on [`Rehype Pretty Code`](https://github.com/atomiks/rehype-pretty-code), for full capabilities and instructions, please visit its [official documentation](https://rehype-pretty-code.netlify.app).
 
-在根目录执行如下命令可以格式化仓库中已有的 Umi 文档：
+Execute the following command in the root directory to format existing Umi documentation:
 
 ```bash
 $ pnpm format:docs
 ```
 
-格式化文档后，建议**仅提交您撰写或修改的 Umi 文档**。不同文档贡献者的写作风格有一定的差异，格式化以后不一定能保留原来期望的样式。
+After formatting the documentation, it is recommended to **only submit the Umi documents you have written or modified**. Different document contributors have varying writing styles and formatting may not always retain the original intended style.
 
-### 参与 Umi 文档插件开发
+### Participating in Umi Documentation Plugin Development
 
-新建一个终端，执行如下命令：
+Open a new terminal and execute the following commands:
 
 ```bash
 $ cd packages/plugin-docs
 $ pnpm dev:css
 ```
 
-现在，当您修改了 `tailwind.css` 文件或在开发时修改了 TailwindCSS 样式类时，会自动编译并生成 `tailwind.out.css` 样式表文件。
+Now, when you modify the `tailwind.css` file or TailwindCSS style classes during development, a `tailwind.out.css` stylesheet file will be automatically compiled and generated.
 
-Umi 会监听 `docs` 和 `packages/plugin-docs/client` 目录下文件的变化，而不会监听 `packages/plugin-docs/src` 目录。
+Umi listens for changes in the `docs` and `packages/plugin-docs/client` directories, but does not listen to changes in `packages/plugin-docs/src`.
 
 :::info{title=💡}
-如果您需要编译 `packages/plugin-docs/src` 中的文件，请移动到 `packages/plugin-docs` 目录下执行 `pnpm build` 命令，然后重启开发。
+If you need to compile files in `packages/plugin-docs/src`, please move to the `packages/plugin-docs` directory and execute the `pnpm build` command, then restart development.
 :::
 
-在根目录执行如下命令可以格式化 Umi 文档插件的代码：
+Executing the following command in the root directory to format the code of Umi documentation plugin:
 
 ```bash
 $ pnpm format:plugin-docs
 ```
 
-在根目录执行如下命令可以构建 Umi 文档：
+Execute the following command in the root directory to build Umi documentation:
 
 ```bash
 $ pnpm doc:build
 ```
 
-## 新增 package
+## Adding a New Package
 
-新增 package 有封装脚本，无需手动复制 `package.json` 等文件：
+Adding a new package has a script encapsulated, no need to manually copy `package.json`, etc.:
 
 ```bash
-# 创建 package 目录
+# Create package directory
 $ mkdir packages/foo
-# 初始化 package 开发
+# Initialize package development
 $ pnpm bootstrap
 ```
 
-## 更新依赖
+## Updating Dependencies
 
-> 不推荐非 Core Maintainer 做大量依赖更新。因为涉及依赖预打包，有较多需注意的点。
+> It is not recommended for non-Core Maintainers to update a large number of dependencies because it involves pre-packaging of dependencies and there are many points to note.
 
-执行 `pnpm dep:update` 可更新依赖。
+Run `pnpm dep:update` to update dependencies.
 
 ```bash
 $ pnpm dep:update
 ```
 
-由于 Umi 有针对依赖做预打包处理，更新依赖后还需检查更新的依赖是否为 devDependencies 并且有对此做依赖预打包。如果有，需要在对应 package 下执行 `pnpm build:deps` 并指定依赖，用于更新预打包的依赖文件。
+Since Umi pre-packages some dependencies, after updating dependencies, it's necessary to check if the updated dependency is in devDependencies and whether it has been pre-packaged. If so, execute `pnpm build:deps` in the corresponding package and specify the dependency to update pre-packaged dependency files.
 
 ```bash
 $ pnpm build:deps --dep webpack-manifest-plugin
 ```
 
-## 发布
+## Release
 
-只有 Core Maintainer 才能执行发布。
+Only Core Maintainers can carry out releases.
 
 ```bash
 $ pnpm release
 ```
 
-## 通过 dist-tag 回滚
+## Rolling Back through dist-tag
 
-比如要回滚到 4.0.81 。
+For example, to roll back to 4.0.81.
 
 ```bash
 $ pnpm -rc --filter "./packages/**" exec pnpm dist-tag add \$PNPM_PACKAGE_NAME@4.0.81 latest
 ```
 
-## 加入 Contributor 群
+## Joining the Contributor Group
 
-提交过 Bugfix 或 Feature 类 PR 的同学，如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id）加我钉钉，然后我会拉到群里。
+For those who have submitted Bugfix or Feature type PRs and are interested in participating in maintaining Umi, you can first scan the QR code below with DingTalk (mention your github id), and then I will add you to the group.
 
 <img src="https://img.alicdn.com/imgextra/i2/O1CN01DLiPrU1WsbDdnwRr9_!!6000000002844-2-tps-340-336.png" />
 
-如果你不知道可以贡献什么，可以到源码里搜 TODO 或 FIXME 找找。
+If you don't know what you can contribute, you can search TODO or FIXME in the source code.

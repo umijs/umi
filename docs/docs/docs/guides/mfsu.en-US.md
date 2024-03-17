@@ -1,22 +1,24 @@
 ---
 order: 19
 toc: content
+translated_at: '2024-03-17T10:28:01.027Z'
 ---
+
 # MFSU
 
-## 什么是 MFSU
+## What is MFSU
 
-MFSU 是一种基于 webpack5 新特性 Module Federation 的打包提速方案。其核心的思路是通过分而治之，将应用源代码的编译和应用依赖的编译分离，将变动较小的应用依赖构建为一个 Module Federation 的 remote 应用，以免去应用热更新时对依赖的编译。
+MFSU is a package acceleration solution based on the new feature of webpack5, Module Federation. Its core idea is to divide and conquer by separating the compilation of application source code and application dependencies, and building less frequently changed application dependencies into a Module Federation remote application, thus avoiding the compilation of dependencies during application hot updates.
 
-开启 MFSU 可以大幅减少热更新所需的时间了；因此我们在 Umi 的项目中默认开启了 MFSU 功能。当然你也可以通过配置 `mfsu: false` 来关闭它。
+Activating MFSU significantly reduces the time needed for hot updates; therefore, we have enabled the MFSU feature by default in Umi projects. Of course, you can also disable it by configuring `mfsu: false`.
 
-## MFSU 的两种策略
+## Two Strategies of MFSU
 
-MFSU 最关键的一点是如何将应用代码的实际使用的依赖分析出来。根据不同的分析方式 MFSU 有两种工作方式。
+The key point of MFSU is how to analyze the actual dependencies used in the application code. MFSU has two working modes based on different analysis methods.
 
-### normal 策略 (编译时分析)
+### Normal Strategy (Compile-time Analysis)
 
-采用以下配置启用
+Use the following configuration to enable
 
 ```ts {2}
 mfsu: {
@@ -24,15 +26,15 @@ mfsu: {
 }
 ```
 
-现代前端项目中的代码都需要经过转译(transpile)，才会在生产环境中使用。在转译的过程中转译器(比如：babel) 就会在代码中插入新的依赖。这些插入的依赖在项目代码层面是不可见， 但通过转译的插件才收集到。
+In modern front-end projects, code needs to be transpiled before it is used in production. During this process, the transpiler (like babel) will insert new dependencies into the code. These inserted dependencies are invisible at the project code level but are collected through the transpilation plugins.
 
-MFSU 编译时分析的工作方式，先对应用项目源码单独进行编译，编译的同时收集项目的本身依赖和编译引入的依赖。待项目代码编译完成以后，使用收集到的结果继续进行项目依赖部分的代码的构建。
+The compile-time analysis working mode of MFSU first compiles the application project source code separately, collecting the project's own dependencies and the dependencies introduced during compilation. After the compilation of the project code is completed, the collected results are used to continue the construction of the project dependency part of the code.
 
-从下图中以 React 引用的构建举例可以看出，整个过程是串行的。
+The entire process is serial, as shown in the example of building React references in the diagram below.
 
 ![normal-process](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*VRdhQZDag1UAAAAAAAAAAAAAARQnAQ)
 
-### eager 策略 (扫描方式)
+### Eager Strategy (Scanning Method)
 
 ```ts {2}
 mfsu: {
@@ -40,53 +42,53 @@ mfsu: {
 }
 ```
 
-和编译时分析的方式不同，扫描分析的方式会先读取项目中的所有源代码文件，然后通过静态分析的方式获取项目的依赖。这个过程非常的快，在一个有 17 万行代码，1400 多个文件项目中，分析一次只需要 700ms 左右。如此快速的分析的代价时，收集到的依赖会缺失后面项目代码编译插入的依赖；这部分的依赖最终和项目代码一起编译打包。
+Different from the compile-time analysis method, the scanning analysis method first reads all source code files in the project, and then obtains the project dependencies through static analysis. This process is very fast, taking only about 700ms for a project with 170,000 lines of code and more than 1400 files. The cost of such fast analysis is that the collected dependencies will miss the dependencies inserted during project code compilation; these dependencies will eventually be compiled and packaged together with the project code.
 
-分析完项目依赖之后，Umi 会拿着这份依赖信息，并行的去进行项目代码的编译和依赖的编译。
+After analyzing the project dependencies, Umi takes this dependency information and parallelly compiles both the project code and dependencies.
 
-从下图可以看出，编译部分是并行。
+As you can see from the diagram below, the compilation part is parallel.
 
 ![eager-process](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*XtZ1Spa9hMEAAAAAAAAAAAAAARQnAQ)
 
 
-## 两种构建工具
+## Two Build Tools
 
-MFSU 支持使用 Webpack 或者 esbuild 构建项目的依赖。默认配置使用 Webpack，和 Webpack 生态很好的兼容。
-Esbuild 通过 `mfsu: { esbuild: true }` 来开启，享受 Esbuild 的高效的构建速度。
+MFSU supports using Webpack or esbuild to build project dependencies. The default configuration uses Webpack, and it is very compatible with the Webpack ecosystem.
+Esbuild can be enabled with `mfsu: { esbuild: true }` to enjoy the high-speed construction of Esbuild.
 
 
-## 如何选择
+## How to Choose
 
-**编译时分析**的好处是收集的依赖是完整的，项目代码和依赖代码的构建打包完全分离；再项目代码修改以后只需要构建项目代码部分。缺点也很明显，构建的过程是串行的。
+The advantage of **compile-time analysis** is that the collected dependencies are complete, and the construction and packaging of project codes and dependency codes are completely separated; after modifying the project code, only the project code part needs to be constructed. The disadvantage is also obvious, the construction process is serial.
 
-**扫描的方式**的优点在于耗时的代码构建都是并行的，对于较大项目的冷启动时间改善非常明显。缺点则是有一部分运行时依赖会和项目代码一起编译。
+The advantage of the **scanning method** is that the time-consuming code build is all parallel, which greatly improves the cold start time for larger projects. The downside is that some runtime dependencies will be compiled together with the project code.
 
-基于优缺点的分析，给出以下建议
+Based on the analysis of advantages and disadvantages, the following suggestions are given:
 
-- 如果不使用 Module Federation 的功能的话，项目依赖变动不频繁，建议先尝试 esbuild 构建
-- 如果在 mono repo 项目中, 推荐使用 "normal" 策略; 推荐开启配置 ["monoreporedirect"](../api/config#monoreporedirect)
-- 如果你的项目较大，项目代码基数较大，推荐使用 "eager" 策略
-- 如果项目刚刚启动，会频繁的改动依赖，推荐使用 "eager" 策略
-- 其他类型的项目则随意选择。
+- If you do not use the Module Federation feature, and project dependencies do not change frequently, it is recommended to try esbuild build first
+- If you are in a mono repo project, it is recommended to use the "normal" strategy; it is recommended to enable the configuration ["monoreporedirect"](../api/config#monoreporedirect)
+- If your project is large and has a large code base, the "eager" strategy is recommended
+- If your project is just starting and dependencies will frequently change, the "eager" strategy is recommended
+- For other types of projects, feel free to choose.
 
-## 常见问题
+## Common Issues
 
-### 依赖缺失
+### Dependency Missing
 
 ```bash /lodash.capitalize/
 error - [MFSU][eager] build worker failed AssertionError [ERR_ASSERTION]: filePath not found of lodash.capitalize
 ```
 
-检查你的依赖确保，对应的依赖已经安装。( 如例子中的 `lodash.capitalize`)
+Check your dependencies to ensure that the corresponding dependency has been installed. (As in the example of `lodash.capitalize`)
 
-### React 多实例问题
+### Multiple Instances of React
 
-在浏览器中有如下报错
+The following error occurs in the browser
 
 ![multi-react-instance](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*ScIJTZobWE4AAAAAAAAAAAAAARQnAQ)
 
-根因在某些复杂场景下，React 的代码被打包多份，在运行时产出了多个 React 实例。解法通过 Module Federation 的 `shared` 配置来避免多实例的出现。
-如果有其他依赖出现多实例的问题，可以通过类似的方式解决。
+The root cause is that in some complex scenarios, React's code is packaged multiple times, resulting in multiple React instances at runtime. The solution is to avoid multiple instances using the `shared` configuration of Module Federation.
+If other dependencies also have multiple instances issues, they can be solved in a similar way.
 
 ```ts {3-5}
 mfsu: {
@@ -98,12 +100,12 @@ mfsu: {
 },
 ```
 :::info{title=⚠️}
-如果开启了 [MF插件](../max/mf), 需要开启 `shared`，请[参考](../max/mf#和-mfsu-一起使用)。
+If the [MF plugin](../max/mf) is enabled, you need to enable `shared`, please [refer to](../max/mf#using-with-mfsu).
 :::	
 
-### externals script 兼容问题
+### Externals script Compatibility Issue
 
-如果项目依赖 a，a 依赖 b，而项目配置了 b 的 script 类型的 externals 如下。
+If project dependency A depends on B, and the project has configured an externals script type for B as follows.
 
 ```ts
 externals: {
@@ -111,16 +113,16 @@ externals: {
 }
 ```
 
-在开启 MFSU 时会报错。
+It will cause an error when enabling MFSU.
 
 ```ts
 import * as b from 'b';
 console.log(b);
 ```
 
-上述代码的 b 正常应该是 Module 信息，拿到的却是 `Promise<Module>`。我理解这是 webpack 的问题，没有处理好 externals script 和 module federation 之间的兼容问题，可能也是因为 externals script 很少有人知道和在使用。
+Normally, b should be Module information, but what is obtained is `Promise<Module>`. I understand this is a problem with webpack, which has not handled the compatibility issue between externals script and module federation well, possibly also because externals script is rarely known and used.
 
-解法是不要和 MFSU 混着用，只在 `process.env.NODE_ENV === 'production'` 时开启。
+The solution is not to use it mixed with MFSU, only enable it when `process.env.NODE_ENV === 'production'`.
 
 ```ts
 externals: {
@@ -128,12 +130,12 @@ externals: {
 }
 ```
 
-### 依赖环问题
+### Dependency Cycle Issue
 
-#### 场景 1
+#### Scenario 1
 
-在使用 monorepo 时 ，项目依赖了 A 包，A 依赖了 B 包，而 B 包是项目 monorepo 中子包提供。这行就形成项目源码依赖 A ，A 又重新依赖项目源码的情况。
-这种情况建议使用 MFSU 的 exclude 配置。
+In a monorepo, the project depends on package A, A depends on package B, and B is provided by a subpackage in the project monorepo. This forms a situation where the project source code depends on A, and A depends back on the project source code.
+In this case, it is recommended to use the MFSU's exclude configuration.
 
 ```ts {2-4}
 mfsu: {
@@ -143,12 +145,12 @@ mfsu: {
 }
 ```
 
-#### 场景 2
+#### Scenario 2
 
-项目的某个依赖的不合理的实现，项目中依赖了 Bigfish 插件相关的功能（即：引用了 `.umi` 目录下的内容 ）；在开启 MFSU 后项目可能不能正常编译；解法和场景 1 类似配置。将这个包配置进 `mfsu.exclude` 字段中。
+An unreasonable implementation of a certain dependency in the project, the project relies on the functionality related to the Bigfish plugin (i.e., references the content under the `.umi` directory); after enabling MFSU, the project may not compile normally; The solution and Scenario 1 are a similar configuration. Add this package to the `mfsu.exclude` field.
 
 
-### worker 兼容问题
+### Worker Compatibility Issue
 
-如果项目代码需要在 Worker 中使用，那么需要将 Worker 需要的依赖添加到 MFSU 的 [`exclude` 配置中](../api/config#mfsu)。
-Worker 相关依赖只能通过这样方式来绕过，因为 Module Federation 是通过 `window` 对象来共享模块的，所以在 worker 中不能使用 Module Federation 中的模块。
+If the project code needs to be used in a Worker, then the dependencies required by the Worker need to be added to the MFSU's [`exclude` configuration](../api/config#mfsu).
+Worker related dependencies can only be bypassed in this way, because Module Federation shares modules through the `window` object, so modules from Module Federation cannot be used in workers.

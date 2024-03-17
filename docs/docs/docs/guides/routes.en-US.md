@@ -1,21 +1,22 @@
 ---
 order: 3
 toc: content
+translated_at: '2024-03-17T10:22:52.868Z'
 ---
 
-# 路由
+# Routing
 
-在 Umi 应用是[单页应用](https://en.wikipedia.org/wiki/Single-page_application)，页面地址的跳转都是在浏览器端完成的，不会重新请求服务端获取 html，html 只在应用初始化时加载一次。所有页面由不同的组件构成，页面的切换其实就是不同组件的切换，你只需要在配置中把不同的路由路径和对应的组件关联上。
+In Umi applications, which are [single-page applications](https://en.wikipedia.org/wiki/Single-page_application), the navigation between pages is done client-side in the browser without re-fetching the HTML from the server. The HTML is loaded only once during the app initialization. Each page comprises different components, so navigating between pages essentially means toggling between these components. You need to associate different routing paths with their respective components in the configuration.
 
-## 路由类型配置
+## Route Configuration Types
 
-请参考 [history](../api/config#history) 配置。
+Refer to [history](../api/config#history) configuration.
 
-## 配置路由
+## Configuring Routes
 
-在配置文件中通过 `routes` 进行配置，格式为路由信息的数组。
+Routes are configured in the configuration file via the `routes` attribute, which is an array of route information.
 
-比如：
+For example:
 
 ```ts
 // .umirc.ts
@@ -27,19 +28,19 @@ export default {
 }
 ```
 
-Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载过程是异步的，所以往往你需要编写 [`loading.tsx`](./directory-structure#loadingtsxjsx) 来给项目添加加载样式，提升用户体验。
+Umi 4 defaults to page-level code splitting for faster page loads. Since the loading process is asynchronous, you often need to write a [`loading.tsx`](./directory-structure#loadingtsxjsx) to add loading styles to your project, improving the user experience.
 
 :::info{title=💡}
-你可以在 Chrome Devtools > 网络 Tab 中将网络设置成低速，然后切换路由查看加载组件是否生效。
+You can set the network to slow in Chrome Devtools > Network tab, then switch routes to check if the loading component works.
 :::
 
 ### path
 
 * Type: `string`
 
-`path` 只支持两种占位符配置，第一种是动态参数 `:id` 的形式，第二种是 `*` 通配符，通配符只能出现路由字符串的最后。
+`path` supports only two types of placeholders: the first is dynamic parameters, in the form of `:id`, and the second is the `*` wildcard, which can only appear at the end of the route string.
 
-✅ 以下是目前***支持***的路由路径配置形式：
+✅ The following are currently ***supported*** route path configurations:
 
 ```txt
 /groups
@@ -50,7 +51,7 @@ Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载�
 /files/:id/*
 ```
 
-❌ 以下是目前***不支持***的路由路径配置形式：
+❌ The following route path configurations are currently ***not supported***:
 ```txt
 /users/:id?
 /tweets/:id(\d+)
@@ -62,15 +63,15 @@ Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载�
 
 * Type: `string`
 
-配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径。如果是相对路径，会从 `src/pages` 开始寻找。
+Configures the React component path to render when the location and path match. It can be an absolute path or a relative path. If it's a relative path, it will start looking from `src/pages`.
 
-如果指向 `src` 目录的文件，可以用 `@`，比如 `component: '@/layouts/basic'`，推荐使用 `@` 组织路由文件位置。
+If pointing to a file in the `src` directory, you can use `@`, e.g., `component: '@/layouts/basic'`. It's recommended to use `@` to organize the routing file location.
 
 ### routes
 
-配置子路由，通常在需要为多个路径增加 layout 组件时使用。
+Configure sub-routes, usually used when adding a layout component for multiple paths.
 
-比如：
+For example:
 
 ```js
 export default {
@@ -88,7 +89,7 @@ export default {
 }
 ```
 
-在全局布局 `src/layouts/index` 中，通过 `<Outlet/>` 来渲染子路由：
+In the global layout `src/layouts/index`, use `<Outlet/>` to render sub-routes:
 
 ```tsx
 import { Outlet } from 'umi'
@@ -102,15 +103,15 @@ export default function Page() {
 }
 ```
 
-这样，访问 `/list` 和 `/admin` 就会带上 `src/layouts/index` 这个 layout 组件。
+This way, accessing `/list` and `/admin` will include the `src/layouts/index` layout component.
 
 ### redirect
 
 * Type: `string`
 
-配置路由跳转。
+Configure route redirection.
 
-比如：
+For example:
 
 ```js
 export default {
@@ -121,14 +122,15 @@ export default {
 }
 ```
 
-访问 `/` 会跳转到 `/list`，并由 `src/pages/list` 文件进行渲染。
+Accessing `/` will redirect to `/list`, where `src/pages/list` will render the content.
 
 ### wrappers
 
 * Type: `string[]`
 
-配置路由组件的包装组件，通过包装组件可以为当前的路由组件组合进更多的功能。
-比如，可以用于路由级别的权限校验：
+Configure wrapper components for the route component, adding more features to the current route component.
+
+For example, it can be used for route-level permission verification:
 
 ```js
 export default {
@@ -143,7 +145,7 @@ export default {
 }
 ```
 
-然后在 `src/wrappers/auth` 中，
+Then, in `src/wrappers/auth`,
 
 ```jsx
 import { Navigate, Outlet } from 'umi'
@@ -158,14 +160,13 @@ export default (props) => {
 }
 ```
 
-这样，访问 `/user`，就通过 `auth` 组件做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`。
-
+This way, accessing `/user` checks permissions with the `auth` component. If the check passes, `src/pages/user` is rendered; otherwise, it redirects to `/login`.
 
 :::info{title=🚨}
-`wrappers` 中的每个组件会给当前的路由组件增加一层嵌套路由，如果你希望路由结构不发生变化，推荐使用高阶组件。先在高阶组件中实现 wrapper 中的逻辑，然后使用该高阶组件装饰对应的路由组件。
+Each component in `wrappers` adds a nested route layer to the current route component. If you want to keep the route structure unchanged, consider using a higher-order component. Implement the logic in the wrapper first, then decorate the corresponding route component with that higher-order component.
 :::
 
-举例：
+Example:
 
 ```jsx
 // src/hocs/withAuth.tsx
@@ -191,13 +192,36 @@ const TheOldPage = ()=>{
 export default withAuth(TheOldPage)
 ```
 
-## 约定式路由
+### layout
 
-除配置式路由外，Umi 也支持约定式路由。约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
+* Type: `boolean`
 
-**如果没有 routes 配置，Umi 会进入约定式路由模式**，然后分析 `src/pages` 目录拿到路由配置。
+Configure `layout: false` to individually disable the global layout for a specific route:
 
-比如以下文件结构：
+```js
+// .umirc.ts
+
+export default {
+  routes: [
+    // Disable the global layout for the login page, allowing you to implement the entire page
+    { path: '/login', component: '@/pages/Login', layout: false },
+  ],
+}
+```
+
+Note:
+
+1. The global layout might come from the convention `layouts/index.tsx`, or added by plugins (like the layout plugin in `@umijs/max` that automatically adds menu layouts). When configuring `layout: false`, all layouts are canceled, and the component content occupies the whole page, which is often used for scenarios like login pages.
+
+2. `layout: false` only affects the first-level routes. See more examples in [Global layout](#global-layout).
+
+## Convention-based Routing
+
+Apart from configuration-based routing, Umi also supports convention-based routing. Convention routing, also known as file-based routing, doesn't require manual configuration. The routing configuration is derived from the directory and file names and their naming within the file system.
+
+**If there is no routes configuration, Umi enters convention-based routing mode** and analyzes the `src/pages` directory to obtain routing configurations.
+
+For example, the following file structure:
 
 ```bash
 .
@@ -206,7 +230,7 @@ export default withAuth(TheOldPage)
     └── users.tsx
 ```
 
-会得到以下路由配置，
+Will produce the following routing configuration,
 
 ```js
 [
@@ -215,18 +239,16 @@ export default withAuth(TheOldPage)
 ]
 ```
 
-> 使用约定式路由时，约定 `src/pages` 下所有的 `(j|t)sx?` 文件即路由。如果你需要修改默认规则，可以使用 [conventionRoutes](../api/config#conventionroutes) 配置。
+> When using convention-based routing, the convention is that all `(j|t)sx?` files under `src/pages` are considered routes. If you need to modify the default rules, you can use the [conventionRoutes](../api/config#conventionroutes) configuration.
 
-### 动态路由
+### Dynamic Routes
 
-约定，带 `$` 前缀的目录或文件为动态路由。若 `$` 后不指定参数名，则代表 `*` 通配，比如以下目录结构：
+By convention, directories or files prefixed with `$` are dynamic routes. If a parameter name is not specified after `$`, it represents a wildcard `*`. For example, the following directory structure:
 
-比如：
+* `src/pages/users/$id.tsx` becomes `/users/:id`
+* `src/pages/users/$id/settings.tsx` becomes `/users/:id/settings`
 
-* `src/pages/users/$id.tsx` 会成为 `/users/:id`
-* `src/pages/users/$id/settings.tsx` 会成为 `/users/:id/settings`
-
-举个完整的例子，比如以下文件结构，
+A complete example, such as the file structure below,
 
 ```
 + pages/
@@ -237,7 +259,7 @@ export default withAuth(TheOldPage)
   - index.tsx
 ```
 
-会生成路由配置如下：
+Will generate the following route configuration:
 
 ```javascript
 [
@@ -247,11 +269,11 @@ export default withAuth(TheOldPage)
 ];
 ```
 
-### 全局 layout
+### Global layout
 
-约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `<Outlet />` 渲染嵌套路由。
+The convention is for `src/layouts/index.tsx` to be the global layout. Return a React component and use `<Outlet />` to render nested routes.
 
-如以下目录结构：
+For example, the following directory structure:
 
 ```bash
 .
@@ -263,7 +285,7 @@ export default withAuth(TheOldPage)
         └── users.tsx
 ```
 
-会生成如下路由：
+Will generate the following routes:
 
 ```js
 [
@@ -278,7 +300,7 @@ export default withAuth(TheOldPage)
 ]
 ```
 
-可以通过 `layout: false` 来细粒度关闭某个路由的 **全局布局** 显示，该选项只在一级生效：
+You can use `layout: false` for fine-grained control to disable the **global layout** for a specific route. This option only takes effect at the first level:
 
 ```ts
   routes: [
@@ -291,14 +313,14 @@ export default withAuth(TheOldPage)
     {
       path: '/users',
       routes: [
-        // 🔴 不生效，此时该路由的 layout 并不是全局布局，而是 `/users`
+        // 🔴 Doesn't take effect, as the layout here is not the global layout but `/users`
         { layout: false }
       ]
     }
   ]
 ```
 
-一个自定义的全局 `layout` 格式如下：
+A custom global `layout` could look like this:
 
 ```tsx
 import { Outlet } from 'umi'
@@ -308,11 +330,11 @@ export default function Layout() {
 }
 ```
 
-### 不同的全局 layout
+### Different Global Layouts
 
-你可能需要针对不同路由输出不同的全局 layout，Umi 不支持这样的配置，但你仍可以在 `src/layouts/index.tsx` 中对 `location.path` 做区分，渲染不同的 layout 。
+You might need different global layouts for different routes. Umi does not support this configuration, but you can differentiate `location.path` in `src/layouts/index.tsx` to render different layouts.
 
-比如想要针对 `/login` 输出简单布局，
+For example, for a simple layout on `/login`,
 
 ```js
 import { useLocation, Outlet } from 'umi';
@@ -323,7 +345,7 @@ export default function() {
     return <SimpleLayout><Outlet /></SimpleLayout>
   }
 
-  // 使用 `useAppData` / `useSelectedRoutes` 可以获得更多路由信息
+  // Using `useAppData` / `useSelectedRoutes` for more routing information
   // const { clientRoutes } = useAppData()
   // const routes = useSelectedRoutes()
 
@@ -337,11 +359,11 @@ export default function() {
 }
 ```
 
-### 404 路由
+### 404 Route
 
-约定 `src/pages/404.tsx` 为 404 页面，需返回 React 组件。
+The convention is for `src/pages/404.tsx` to be the 404 page. It must return a React component.
 
-比如以下目录结构，
+For example, the following directory structure,
 
 ```bash
 .
@@ -351,7 +373,7 @@ export default function() {
     └── users.tsx
 ```
 
-会生成路由，
+Will generate the routes,
 
 ```js
 [
@@ -361,19 +383,19 @@ export default function() {
 ]
 ```
 
-这样，如果访问 `/foo`，则 `/` 和 `/users` 都不能匹配，于是会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
+This way, if you access `/foo`, neither `/` nor `/users` can match, so it will fallback to the 404 route rendered by `src/pages/404.tsx`.
 
-> 404 只有约定式路由会自动生效，如果使用配置式路由，需要自行配置 404 的通配路由。
+> The 404 page automatically applies in convention-based routing only. If using configuration-based routing, you'll need to manually configure the 404 wildcard route.
 
-## 页面跳转
+## Page Navigation
 
-命令式跳转请使用 [`history`](../api/api#history) API
+For imperative navigation, use the [`history`](../api/api#history) API
 
-组件内还可以使用 [`useNavigate`](../api/api#usenavigate) hook
+Within components, you can also use the [`useNavigate`](../api/api#usenavigate) hook
 
-## Link 组件
+## Link Component
 
-比如：
+For example:
 
 ```jsx
 import { Link } from 'umi';
@@ -387,17 +409,17 @@ export default function Page() {
 }
 ```
 
-然后点击 `Users Page` 就会跳转到 `/users` 地址。
+Then, clicking on `Users Page` navigates to the `/users` address.
 
-注意：
+Note:
 
-* `Link` 只用于单页应用的内部跳转，如果是外部地址跳转请使用 `a` 标签
+* `Link` is used only for internal navigations within a single-page application; use the `a` tag for external navigations.
 
-## 路由组件参数
+## Route Component Parameters
 
-Umi 4 使用 [react-router@6](https://reactrouter.com/docs/en/v6/api) 作为路由组件，路由参数的获取使其 hooks。
+Umi 4 uses [react-router@6](https://reactrouter.com/docs/en/v6/api) for routing components, and routing parameters can be accessed using its hooks.
 
-### match 信息
+### match Information
 
 [useMatch](https://reactrouter.com/docs/en/v6/api#usematch)
 
@@ -418,7 +440,7 @@ const match = useMatch('/comp/:id')
 }
 ```
 
-### location 信息
+### location Information
 
 [useLocation](https://reactrouter.com/docs/en/v6/api#uselocation)
 
@@ -435,25 +457,25 @@ const location  = useLocation();
 ```
 
 :::warning{title=🚨}
-推荐使用 `useLocation`, 而不是直接访问 `history.location`. 两者的区别是 `pathname` 的部分。
-`history.location.pathname` 是完整的浏览器的路径名；而 `useLocation` 中返回的 `pathname` 是相对项目配置的`base`的路径。
+It is recommended to use `useLocation` instead of directly accessing `history.location`. The difference is in the `pathname` part.
+`history.location.pathname` is the complete browser path; whereas, `useLocation` returns the `pathname` relative to the project's configured `base`.
 
-举例：项目如果配置 `base: '/testbase'`, 
+Example: If the project is configured with `base: '/testbase'`,
 
-当前浏览器地址为 `https://localhost:8000/testbase/page/apple`
+Current browser address is `https://localhost:8000/testbase/page/apple`
 
-`history.location.pathname` 为 `/testbase/page/apple`
+`history.location.pathname` is `/testbase/page/apple`
 
-`useLocation().pathname` 为 `/page/apple`
+`useLocation().pathname` is `/page/apple`
 :::
 
-### 路由动态参数
+### Dynamic Routing Parameters
 
 [useParams](https://reactrouter.com/docs/en/v6/api#useparams)
 
 ```jsx
-// 路由配置 /comp/:id
-// 当前 location /comp/paramId
+// Route configuration /comp/:id
+// Current location /comp/paramId
 
 const params  = useParams();
 // params
@@ -462,18 +484,17 @@ const params  = useParams();
 }
 ```
 
-### query 信息
+### query Information
 
 [useSearchParams](https://reactrouter.com/docs/en/v6/api#usesearchparams)
 
 ```jsx
-// 当前 location /comp?a=b;
+// Current location /comp?a=b;
 const [searchParams, setSearchParams] = useSearchParams();
 searchParams.get('a')  // b
 searchParams.toString()  // a=b
 
-setSearchParams({a:'c',d:'e'}) // location 变成 /comp?a=c&d=e
+setSearchParams({a:'c',d:'e'}) // location changes to /comp?a=c&d=e
 ```
 
-`searchParams`的 api [参考](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/searchParams)
-
+Refer to [searchParams API](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/searchParams) for `searchParams` apis.

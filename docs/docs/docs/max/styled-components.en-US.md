@@ -1,14 +1,16 @@
 ---
 order: 10
 toc: content
+translated_at: '2024-03-17T08:11:13.382Z'
 ---
+
 # styled-components
 
-@umijs/max 内置了 [styled-components](https://styled-components.com/) 样式方案。
+@umijs/max comes with the [styled-components](https://styled-components.com/) styling solution built-in.
 
-## 启用方式
+## Enabling
 
-如果是 @umijs/max，配置开启。
+For @umijs/max, enable by configuring.
 
 ```ts {2}
 export default {
@@ -16,7 +18,7 @@ export default {
 }
 ```
 
-如果是 umi，先安装 `@umijs/plugins` 依赖，再通过配置开启。
+For umi, first install `@umijs/plugins` dependency, then enable through configuration.
 
 ```bash
 $ pnpm i @umijs/plugins -D
@@ -29,23 +31,23 @@ export default {
 }
 ```
 
-## 特性
+## Features
 
-插件帮你做了几件事，
+The plugin does a few things for you,
 
-1、大部分 styled-components 的导出可以从 `umi` 或 `@umijs/max` 里 import 使用。
+1. Most of the styled-components exports can be imported from `umi` or `@umijs/max`.
 
-2、支持通过配置的方式开启 styled-components 的 babel 插件，仅 dev 模式有效。
+2. Supports enabling the styled-components babel plugin through configuration in dev mode only.
 
-3、支持通过运行时配置的方式声明全局样式。
+3. Supports declaring global styles via runtime configuration.
 
-## 配置项
+## Configuration Options
 
-可以在 `styledComponents` 中做以下配置。
+The following configurations can be made in `styledComponents`.
 
-- `babelPlugin`: Object，开启 styled-components 的 babel 插件，仅 dev 模式有效
+- `babelPlugin`: Object, enable the styled-components babel plugin, effective in dev mode only
 
-比如：
+For example:
 
 ```ts
 export default {
@@ -55,7 +57,7 @@ export default {
 }
 ```
 
-当你的导入来源不是 `umi` / `@umijs/max` 时，需将导入来源配置到 `topLevelImportPaths` 才可以使该 babel 插件生效，如：
+When your import source is not `umi` / `@umijs/max`, you need to configure the import source to `topLevelImportPaths` to make the babel plugin work, such as:
 
 ```ts
 import { styled } from 'alita'
@@ -71,13 +73,13 @@ export default {
 }
 ```
 
-## 运行时配置项
+## Runtime Configuration Options
 
-包含以下配置。
+Includes the following configurations.
 
-- `GlobalStyle`：ReactComponent
+- `GlobalStyle`: ReactComponent
 
-比如：
+For example:
 
 ```ts
 import { createGlobalStyle } from "umi";
@@ -90,4 +92,3 @@ export const styledComponents = {
   `
 }
 ```
-

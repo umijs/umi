@@ -1,11 +1,12 @@
 ---
 order: 6
 toc: content
+translated_at: '2024-03-17T08:46:03.932Z'
 ---
 
-# 请求
+# Request
 
-`@umijs/max` 内置了插件方案。它基于 [axios](https://axios-http.com/) 和 [ahooks](https://ahooks-v2.surge.sh) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
+`@umijs/max` has built-in plugin solution. It offers a unified network request and error handling solution based on [axios](https://axios-http.com/) and ahooks' `useRequest` from [ahooks](https://ahooks-v2.surge.sh).
 
 ```js
 import { request, useRequest } from 'umi';
@@ -14,8 +15,8 @@ request;
 useRequest;
 ```
 
-## 配置
-### 构建时配置
+## Configuration
+### Build-time configuration
 ```js
 export default {
   request: {
@@ -24,9 +25,9 @@ export default {
 };
 ```
 
-构建时配置可以为 useRequest 配置 `dataField` ，该配置的默认值是 `data`。该配置的主要目的是方便 useRequest 直接消费数据。如果你想要在消费数据时拿到后端的原始数据，需要在这里配置 `dataField` 为 `''` 。
+Build-time configuration allows configuring `dataField` for useRequest, with its default being `data`. This setting primarily facilitates direct data consumption by useRequest. If you wish to access the raw data returned by the backend when consuming data, configure `dataField` to `''` here.
 
-比如你的后端返回的数据格式如下。
+For example, if your backend returns data in the following format.
 
 ```js
 {
@@ -36,11 +37,11 @@ export default {
 }
 ```
 
-那么 useRequest 就可以直接消费 `data`。其值为 123，而不是 `{ success, data, code }` 。
+Then useRequest can directly consume the `data`, which would be 123, instead of `{ success, data, code }`.
 
-### 运行时配置
+### Runtime configuration
 
-在 `src/app.ts` 中你可以通过配置 request 项，来为你的项目进行统一的个性化的请求设定。
+In `src/app.ts`, you can customize the request settings for your project by configuring the request item.
 
 ```ts
 import type { RequestConfig } from 'umi';
@@ -59,86 +60,86 @@ export const request: RequestConfig = {
 };
 ```
 
-除了 `errorConfig`, `requestInterceptors`, `responseInterceptors` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest` **方法**。
+Besides `errorConfig`, `requestInterceptors`, and `responseInterceptors`, other configurations are directly passed through to [axios](https://axios-http.com/docs/req_config)'s request configuration. **The rules configured here apply to all** `request` and `useRequest` **methods**.
 
-下面分别介绍 `plugin-request` 的运行时配置项。本节的末尾，我们会给出一个完整的运行时配置示例，并且对它的功能进行一个详细的描述。
+The runtime configuration options of `plugin-request` are introduced below. At the end of this section, we will provide a complete runtime configuration example, describing its functionality in detail.
 
 #### errorConfig
-如果你想要为自己的请求设定统一的错误处理方案，可以在这里进行配置。
+If you want to set a unified error handling scheme for your requests, you can configure it here.
 
-其中 `errorThrower` 接收你后端返回的数据并且需要抛出一个你自己设定的 error， 你可以在这里根据后端的数据进行一定的处理。
+`errorThrower` takes the data returned by your backend and needs to throw an error you define. You can process the backend data here as needed.
 
-我们的 `request` 会 catch `errorThrower` 抛出的错误，并且执行你的 `errorHandler` 方法，该方法接收两个参数，第一个参数是 catch 到的 error，第二个参数则是 request 的 opts。
+Our `request` will catch the error thrown by `errorThrower` and execute your `errorHandler` method, which accepts two arguments. The first argument is the caught error, and the second argument is the request's opts.
 
-这里面的 `errorHandler` 和 `errorThrower` 需要配套使用。文档的末尾有一个完整的例子。
+`errorHandler` and `errorThrower` need to be used together. A complete example is provided at the end of the document.
 
-如果你觉得这种方式进行错误处理过于繁琐，可以直接在拦截器中实现自己的错误处理。
+If you find this way of error handling too complicated, you can directly implement your error handling in the interceptors.
 
 :::info{title=🚨}
-`errorThrower` 是利用 `responseInterceptors` 实现的，它的触发条件是: 当 `data.success` 为 `false` 时。
+`errorThrower` is implemented using `responseInterceptors`, triggered when `data.success` is `false`.
 :::
 
 #### requestInterceptors
-为 request 方法添加请求阶段的拦截器。
+Add request phase interceptors to the request method.
 
-传入一个数组，每个元素都是一个拦截器，它们会被按顺序依次注册到 axios 实例上。拦截器的写法同 axios request interceptor 一致，它需要接收 request config 作为参数，并且将它返回。
+Pass in an array where each element is an interceptor. They will be registered on the axios instance in order. The syntax for writing interceptors is consistent with axios request interceptor. It needs to take the request config as an argument and return it.
 
-我们建议你使用 `RequestConfig`，它能帮助你规范地书写你的拦截器。
+We recommend using `RequestConfig`, which helps you write your interceptors in a standardized manner.
 
 e.g.
 ```ts
 const request: RequestConfig = {
   requestInterceptors: [
-    // 直接写一个 function，作为拦截器
+    // directly write a function as an interceptor
     (url, options) =>
       {
         // do something
         return { url, options }
       },
-    // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
+    // a tuple, the first element is the request interceptor, the second is the error handler
     [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}],
-    // 数组，省略错误处理
+    // array, omitting error handler
     [(url, options) => {return { url, options }}]
   ]
 
 }
 ```
 
-另外，为了更好的兼容 umi-request，我们允许 umi-request 的拦截器写法，尽管它不能够通过 typescript 的语法检查。
+Furthermore, to better accommodate umi-request, we allow umi-request interceptor syntax, even though it might not pass TypeScript's syntax check.
 
 #### responseInterceptors
-为 request 方法添加响应阶段的拦截器。
+Add response phase interceptors to the request method.
 
-传入一个数组，每个元素都是一个拦截器，它们会被按顺序依次注册到 axios 实例上。拦截器的写法同 axios response interceptor一致。接收 axios 的 response 作为参数，并且将它返回。
+Pass in an array where each element is an interceptor. They will be registered on the axios instance in order. The syntax for writing interceptors is consistent with axios response interceptor. It takes the axios response as an argument and returns it.
 
-我们建议你使用 `RequestConfig`，它能帮助你规范地书写你的拦截器。
+We recommend using `RequestConfig`, which helps you write your interceptors in a standardized manner.
 
 e.g.
 ```ts
 const request: RequestConfig = {
   responseInterceptors: [
-    // 直接写一个 function，作为拦截器
+    // directly write a function as an interceptor
     (response) =>
       {
-        // 不再需要异步处理读取返回体内容，可直接在data中读出，部分字段可在 config 中找到
+        // No need for asynchronous processing to read response body content, can directly read from data, some fields can be found in the config
         const { data = {} as any, config } = response;
         // do something
         return response
       },
-    // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
+    // a tuple, the first element is the request interceptor, the second is the error handler
     [(response) => {return response}, (error) => {return Promise.reject(error)}],
-    // 数组，省略错误处理
+    // array, omitting error handler
     [(response) => {return response}]
   ]
 
 }
 ```
 
-**注意： 我们会按照你的数组顺序依次注册拦截器，但是其执行顺序参考 axios，request 是后添加的在前，response 是后添加的在后**
+**Note: We will register interceptors according to your array sequence, but their execution order follows axios's convention, with request interceptors added later executing first, and response interceptors added later executing last**
 
 ## API
 ### useRequest
-插件内置了 [@ahooksjs/useRequest](https://ahooks-v2.js.org/hooks/async) ，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
+The plugin has built-in [@ahooksjs/useRequest](https://ahooks-v2.js.org/hooks/async), allowing you to consume data simply and conveniently within components. The example is as follows:
 ```typescript
 import { useRequest } from 'umi';
 
@@ -155,17 +156,17 @@ export default function Page() {
   return <div>{data.name}</div>;
 };
 ```
-上面代码中 data 并不是你后端返回的数据，而是其内部的 data，（因为构建时配置默认是 'data')
+In the above code, `data` is not the data returned by your backend, but its internal `data`, (because the default build-time configuration is 'data')
 
-需要注意的是，ahooks 已经更新到3.0，而我们为了让 `umi@3` 的项目升级起来不那么困难，继续沿用了 ahooks2.0
+It should be noted that ahooks has been updated to 3.0, but for making it less difficult for `umi@3` projects to upgrade, we continued to use ahooks 2.0
 
 
 ### request
-通过 `import { request } from '@@/plugin-request'` 你可以使用内置的请求方法。
+By `import { request } from '@@/plugin-request'`, you can use the built-in request method.
 
-`request` 接收的 `options`除了透传 [axios](https://axios-http.com/docs/req_config) 的所有 config 之外，我们还额外添加了几个属性 `skipErrorHandler`，`getResponse`，`requestInterceptors` 和 `responseInterceptors` 。
+`request` accepts `options` in addition to passing through all of [axios](https://axios-http.com/docs/req_config)'s config, we also added a few extra attributes `skipErrorHandler`, `getResponse`, `requestInterceptors` and `responseInterceptors`.
 
-示例如下：
+The example is as follows:
 ```typescript
 request('/api/user', {
   params: { name : 1 },
@@ -178,28 +179,28 @@ request('/api/user', {
 }
 ```
 
-当你的某个请求想要跳过错误处理时，可以通过将`skipErrorHandler`设为 `true` 来实现
+When you want a particular request to skip error handling, you can achieve this by setting `skipErrorHandler` to `true`.
 
-request 默认返回的是你后端的数据，如果你想要拿到 axios 完整的 response 结构，可以通过传入 `{ getResponse: true }` 来实现。
+request returns the data from your backend by default, if you wish to receive the complete response structure from axios, it can be achieved by passing `{ getResponse: true }`.
 
-`requestInterceptors` 和 `responseInterceptors` 的写法同运行时配置中的拦截器写法相同，它们为 request 注册拦截器。区别在于这里注册的拦截器是 "一次性" 的。另外，这里写的拦截器会在运行时配置中的拦截器之后被注册。
+`requestInterceptors` and `responseInterceptors` are written in the same way as the interceptors in runtime configuration, but the difference is that the interceptors registered here are "one-off". Furthermore, the interceptors written here will be registered after those in the runtime configuration.
 
-**注意： 当你使用了 errorHandler 时，在这里注册的 response 拦截器会失效，因为在 errorHandler 就会 throw error**
+**Note: When you have used errorHandler, the response interceptors registered here will be ineffective, because errorHandler will throw error**
 
 ### RequestConfig
-这是一个接口的定义，可以帮助你更好地配置运行时配置。
+This is an interface definition that can help you better configure runtime settings.
 ```typescript
 import type { RequestConfig } from 'umi';
 
 export const request:RequestConfig = {};
 ```
-注意，在导入时要加 type
+Note that you should add type when importing
 
-## umi@3 到 umi@4
-在 `umi@3` 到 `umi@4` 的升级中，我们弃用了 umi-request ，选用了 axios 作为默认的请求方案。在这个更换中，我们的功能也发生了一些变化。
+## umi@3 to umi@4
+In the upgrade from `umi@3` to `umi@4`, we discontinued umi-request and chose axios as the default request solution. Some functionality changes occurred in this switch.
 
-### 运行时配置的变动
-相比于 `umi@3`， `umi@4` 的运行时配置发生了较大的变化。
+### Changes in runtime configuration
+Compared to `umi@3`, `umi@4`'s runtime configuration has undergone significant changes.
 ```diff
     export const request: RequestConfig = {
       errorConfig: {
@@ -211,19 +212,19 @@ export const request:RequestConfig = {};
 --    middlewares: [],
 ++    requestInterceptors: [],
 ++    responseInterceptors: [],
-      ... // umi-request 和 axios 的区别。
+      ... // Differences between umi-request and axios.
     };
 ```
 
-- umi-request 的配置项变成了 axios 的配置项
-- 去除了 middlewares 中间件。你可以使用 axios 的 [拦截器](https://axios-http.com/docs/interceptors) 来实现相同的功能。
-- errorConfig 删除了原来的所有配置，新增了 errorHandler 和 errorThrower 来进行统一错误处理的设定。
+- umi-request's configuration items have become axios's configuration items.
+- Removed the middlewares middleware. You can use axios's [interceptors](https://axios-http.com/docs/interceptors) to achieve the same functionality.
+- errorConfig removed all original settings, adding errorHandler and errorThrower for unified error handling settings.
 
-中间件的替换方式。对于一个 `umi@3` 的中间件，`next()` 方法之前的需要放在 `requestInterceptors` 中，`next()` 方法之后的内容则需要放在 `responseInterceptors` 中。
+Replacing middleware. For a `umi@3` middleware, content before the `next()` method should be placed in `requestInterceptors`, while content after the `next()` method should be placed in `responseInterceptors`.
 
 ```ts
 
-// 中间件
+// Middleware
 async function middleware(ctx, next) {
   const { url, options } = req;
   if (url.indexOf('/api') !== 0) {
@@ -235,7 +236,7 @@ async function middleware(ctx, next) {
   }
 }
 
-// 拦截器
+// Interceptor
 {
   requestInterceptors:[
     (config) => {
@@ -255,12 +256,12 @@ async function middleware(ctx, next) {
 }
 ```
 
-### request 方法的参数变动
-[umi-request](https://github.com/umijs/umi-request#request-options) 和 [axios](https://axios-http.com/docs/req_config) 的配置项有着一定的区别。具体可以查看其各自的文档进行比较。
+### Changes in request method parameters
+[umi-request](https://github.com/umijs/umi-request#request-options) and [axios](https://axios-http.com/docs/req_config) have some differences in configuration items. You can compare them by referring to their respective documentation.
 
-### GET 请求参数序列化
+### GET request parameter serialization
 
-[Umi@3](https://github.com/umijs/umi-request/blob/master/src/middleware/simpleGet.js) 默认会用相同的 Key 来序列化数组。Umi@4 请求基于 axios，默认是带括号 `[]` 的形式序列化。
+[Umi@3](https://github.com/umijs/umi-request/blob/master/src/middleware/simpleGet.js) uses the same Key to serialize arrays by default. Umi@4 requests based on axios, by default, serialize in the form with brackets `[]`.
 
 ```tsx
 // Umi@3
@@ -272,7 +273,7 @@ import { useRequest } from '@umijs/max';
 // a: [1,2,3] => a[]=1&a[]=2&a[]=3
 ```
 
-如果希望保持 Umi@3 这种形式，可以这样做：
+If you wish to maintain the Umi@3 form, you can do so:
 
 ```ts
 // src/app.[ts|tsx]
@@ -288,13 +289,13 @@ export const request: RequestConfig = {
 }
 ```
 
-## 运行时配置示例
-这里给出一个完整的运行时配置示例，以帮助你能够更好的去为自己的项目设定个性化的请求方案。
+## Runtime configuration example
+Here's a complete example of runtime configuration, to help you better customize the request scheme for your project.
 
 ```ts
 import { RequestConfig } from './request';
 
-// 错误处理方案： 错误类型
+// Error handling scheme: Error types
 enum ErrorShowType {
   SILENT = 0,
   WARN_MESSAGE = 1,
@@ -302,7 +303,7 @@ enum ErrorShowType {
   NOTIFICATION = 3,
   REDIRECT = 9,
 }
-// 与后端约定的响应数据格式
+// Response data structure agreed with the backend
 interface ResponseStructure {
   success: boolean;
   data: any;
@@ -311,28 +312,28 @@ interface ResponseStructure {
   showType?: ErrorShowType;
 }
 
-// 运行时配置
+// Runtime configuration
 export const request: RequestConfig = {
-  // 统一的请求设定
+  // Unified request settings
   timeout: 1000,
   headers: {'X-Requested-With': 'XMLHttpRequest'},
 
-  // 错误处理： umi@3 的错误处理方案。
+  // Error handling: umi@3's error handling scheme.
   errorConfig: {
-    // 错误抛出
+    // Error throwing
     errorThrower: (res: ResponseStructure) => {
       const { success, data, errorCode, errorMessage, showType } = res;
       if (!success) {
         const error: any = new Error(errorMessage);
         error.name = 'BizError';
         error.info = { errorCode, errorMessage, showType, data };
-        throw error; // 抛出自制的错误
+        throw error; // Throw custom error
       }
     },
-    // 错误接收及处理
+    // Error catching and handling
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
-      // 我们的 errorThrower 抛出的错误。
+      // The errors thrown by our errorThrower.
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
@@ -361,38 +362,38 @@ export const request: RequestConfig = {
           }
         }
       } else if (error.response) {
-        // Axios 的错误
-        // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+        // Axios error
+        // The request was made, and the server responded with a status code that falls out of the range of 2xx
         message.error(`Response status:${error.response.status}`);
       } else if (error.request) {
-        // 请求已经成功发起，但没有收到响应
-        // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
-        // 而在node.js中是 http.ClientRequest 的实例
+        // The request was made but no response was received
+        // \`error.request\` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
         message.error('None response! Please retry.');
       } else {
-        // 发送请求时出了点问题
+        // Something happened in setting up the request that triggered an error
         message.error('Request error, please retry.');
       }
     },
 
   },
 
-  // 请求拦截器
+  // Request interceptors
   requestInterceptors: [
     (config) => {
-    // 拦截请求配置，进行个性化处理。
+    // Intercept request configurations for personalized processing.
       const url = config.url.concat('?token = 123');
       return { ...config, url};
     }
   ],
 
-  // 响应拦截器
+  // Response interceptors
   responseInterceptors: [
     (response) => {
-       // 拦截响应数据，进行个性化处理
+       // Intercept the response data for personalized processing
        const { data } = response;
        if(!data.success){
-         message.error('请求失败！');
+         message.error('Request failed!');
        }
        return response;
     }
@@ -400,6 +401,6 @@ export const request: RequestConfig = {
 };
 ```
 
-上面的例子中的错误处理方案来自于 `umi@3` 的内置错误处理。在这个版本中，我们把它删除了，以方便用户更加自由地定制错误处理方案。如果你仍然想要使用它，可以将这段运行时配置粘贴到你的项目中。
+The above example's error handling scheme is derived from `umi@3`'s built-in error handling. In this version, we removed it to allow users greater freedom in customizing their error handling schemes. If you still want to use it, you can paste this runtime configuration into your project.
 
-你也可以通过写响应拦截器的方式来进行自己的错误处理，**不一定局限于 errorConfig**。
+You can also write your own error handling through response interceptors, **not limited to errorConfig**.

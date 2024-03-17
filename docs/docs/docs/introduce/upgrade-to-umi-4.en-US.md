@@ -1,24 +1,26 @@
 ---
 order: 4
 toc: content
+translated_at: '2024-03-17T09:50:41.558Z'
 ---
-# 升级到 Umi 4
 
-## 升级步骤
+# Upgrade to Umi 4
 
-升级到 Umi 4 只需要简单的几步操作就能完成，简单的描述整个过程就是 - “重装依赖，修改配置”：
+## Upgrade Steps
 
-1. **依赖处理**
-2. **启动命令**
-3. **非官方插件升级**
-4. **配置层迁移**
-5. **代码层修改**
+Upgrading to Umi 4 can be completed in just a few easy steps, which can simply be described as - "Reinstall dependencies, modify configuration":
 
-### 依赖处理
+1. **Dependency Handling**
+2. **Start Command**
+3. **Upgrading Non-Official Plugins**
+4. **Configuration Layer Migration**
+5. **Code Layer Modifications**
 
-项目的 `package.json` 需要升级 Umi，并替换掉对应的 Umi 插件。
+### Dependency Handling
 
-如果 `umi@3` 中是使用 `umi` + `@umijs/preset-react` 的组合进行开发的，那可以直接使用新版的 `max` 直接升级。
+Your project's `package.json` needs to upgrade Umi and replace the corresponding Umi plugins.
+
+If `umi@3` was developed using a combination of `umi` + `@umijs/preset-react`, then you can directly upgrade using the new `max`.
 
 ```diff
 {
@@ -30,13 +32,13 @@ toc: content
 }
 ```
 
-删除 `node_module`，执行下 `npm install` 重装依赖。
+Delete `node_module`, then execute `npm install` to reinstall dependencies.
 
-### 启动命令
+### Start Command
 
-如果使用了 `@umijs/max` 可以使用 `max` 命令来替换 `umi`，`max dev`，`max build` 等。
+If using `@umijs/max`, you can replace `umi` with the `max` command, such as `max dev`, `max build`, etc.
 
-`umi@4` 将一些项目前置操作放到了 `setup` 命令中，如 umi@3 中的 `umi g tmp` 等命令，需要使用 `umi setup` 替换
+`umi@4` moved some pre-project operations to the `setup` command, such as `umi g tmp` commands in umi@3, which need to be replaced with `umi setup`
 
 `package.json`
 
@@ -53,17 +55,17 @@ toc: content
 }
 ```
 
-### 非官方插件升级
+### Upgrading Non-Official Plugins
 
-在项目中用到的一些非 Umi 官方提供的 Umi 插件，请联系相关作者及时根据[插件 api 变动](../api/plugin-api)。
+For some non-Umi official Umi plugins used in the project, please contact the relevant authors to update them in a timely manner according to [plugin api changes](../api/plugin-api).
 
-项目迁移时可先关闭对相应插件包的引用，如临时注释配置中的 `plugins`，移除 package.json 中以 `umi-plugin-`，`@umijs/plugin-` 和 `@umijs/preset-` 开头的所有依赖。
+When migrating the project, you can first turn off references to the corresponding plugin packages, such as temporarily commenting out the `plugins` in the configuration, and removing all dependencies starting with `umi-plugin-`, `@umijs/plugin-`, and `@umijs/preset-` in package.json.
 
-### 配置层迁移
+### Configuration Layer Migration
 
-**max 提供的的配置项**如下 `config/config.ts` ：
+**Configurations provided by max** are as follows in `config/config.ts`:
 
-> 需要注意的是，之前的一些插件约定开启的规则，在 `umi@4` 中几乎都要通过显式的配置开启，因为希望在 `umi@4` 中有更少的“黑盒”。
+> It’s worth noting that some rules that were conventionally enabled by plugins need to be explicitly configured in `umi@4`, as we want less 'black box' behavior in `umi@4`.
 
 ```typescript
 import { defineConfig, utils } from 'umi';
@@ -78,7 +80,7 @@ export default defineConfig({
   },
   dva: {},
   layout: {
-    // https://umijs.org/docs/max/layout-menu#构建时配置
+    // https://umijs.org/docs/max/layout-menu#configuration-at-build-time
     title: 'UmiJS',
     locale: true,
   },
@@ -93,7 +95,7 @@ export default defineConfig({
 });
 ```
 
-**存在差异的配置项**如下 `config/config.ts` ：
+**Configurations with differences** are as follows in `config/config.ts`:
 
 ```typescript
 import { defineConfig, utils } from 'umi';
@@ -102,19 +104,19 @@ export default defineConfig({
 -  fastRefresh: {},
 +  fastRefresh: true,
   dva: {
-   // 不再支持 hmr 这个参数
+   // The parameter hmr is no longer supported
 -    hmr: true,
    },
-// 默认 webpack5
+// Default webpack5
 -   webpack5: {},
 })
 ```
 
-### 代码层修改
+### Code Layer Modifications
 
-Umi 4 中将 `react-router@5` 升级到 `react-router@6`，所以路由相关的一些 api 存在着使用上的差异。
+Umi 4 upgrades `react-router@5` to `react-router@6`, so there are some differences in the use of related api.
 
-props 默认为空对象，以下属性都不能直接从 props 中取出 ![image](https://img.alicdn.com/imgextra/i4/O1CN01H9ScQv21ymaLkwZ8p_!!6000000007054-2-tps-1210-374.png)
+Props are empty objects by default, the following properties cannot be taken directly from props ![image](https://img.alicdn.com/imgextra/i4/O1CN01H9ScQv21ymaLkwZ8p_!!6000000007054-2-tps-1210-374.png)
 
 #### children
 
@@ -123,9 +125,9 @@ import { Outlet } from 'umi';
 <Outlet />;
 ```
 
-主要在全局 layout 中需要修改
+Mainly needs modifications in the global layout
 
-如 `layouts/index.tsx`：
+Such as `layouts/index.tsx`:
 
 ```diff
 import React from 'react';
@@ -141,7 +143,7 @@ export default function Layout(props) {
 }
 ```
 
-使用了 `React.cloneElement` 方式渲染的路由组件改造，示例
+Change the way that route components rendered with `React.cloneElement`, for example:
 
 ```diff
 import React from 'react';
@@ -157,7 +159,7 @@ export default function RouteComponent(props) {
 }
 ```
 
-组件改成从 `useOutletContext` 取值
+Change components to get values from `useOutletContext`
 
 ```diff
 import React from 'react';
@@ -188,7 +190,7 @@ export default function Page(props) {
 
 #### location
 
-> 建议组件或 hooks 里用 useLocation 取，其他地方就用 window.location 获取。
+> It’s recommended to use useLocation in components or hooks, and window.location elsewhere.
 
 ```diff
 export default function Page(props) {
@@ -202,7 +204,7 @@ export default function Page(props) {
 }
 ```
 
-或者
+Or
 
 ```diff
 + import { useLocation } from 'umi';
@@ -232,7 +234,7 @@ export default function Page(props) {
 }
 ```
 
-在 class component 组件中的使用方式:
+In the use of class component components:
 
 ```diff
 import { matchPath } from 'umi';
@@ -249,9 +251,9 @@ class Page extends Component {
   }
 }
 ```
-更多 `Umi` 相关 [api](https://umijs.org/docs/api/api)
+For more `Umi` related [api](https://umijs.org/docs/api/api)
 
-需要注意 match 数据的差异：
+Pay attention to the difference in match data:
 
 ```
 // match v5
@@ -267,21 +269,21 @@ pathnameBase: "/list/search/articles"
 pattern: {path: 'list/search/:type'}
 ```
 
-更多改动和 api 变更，请查阅 [react-router@6](https://reactrouter.com/docs/en/v6/api#uselocation)
+For more changes and API updates, please refer to [react-router@6](https://reactrouter.com/docs/en/v6/api#uselocation)
 
-完成以上操作后，执行下 `max dev`，访问 [http://localhost:8000](http://localhost:8000)，请验证所有功能都符合预期。
+After completing the above operations, execute `max dev`, and visit [http://localhost:8000](http://localhost:8000), please verify all functions meet expectations.
 
-如果你的项目无法正常启动，你可能还需要做如下操作：
+If your project cannot start normally, you may need to do the following:
 
-## 配置变更
+## Configuration Changes
 
 TODO
 
 ## FAQ
 
-### location 中的 query 找不到？
+### Can't find query in location?
 
-location 中的 query 不再支持了，后续推荐用 [search](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+Query in location is no longer supported, later it’s recommended to use [search](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 ```diff
 - const { query } = history.location;
@@ -289,13 +291,13 @@ location 中的 query 不再支持了，后续推荐用 [search](https://develop
 + const query = parse(history.location.search);
 ```
 
-### \*.d 文件找不到，或者它的引用找不到
+### Can't find *.d file, or its reference
 
-在 `umi@3` 中通过 `import` 会自动找到同名的 `.d.ts` 文件，如：
+In `umi@3`, importing would automatically find the corresponding `.d.ts` file, such as:
 
 `import { ButtonType } from './button';`
 
-如果存在 `.button.d.ts` 文件，在 `umi@3` 中会正确执行，但是在 umi@4 中会发生报错，你可能需要更加规范的引用类型。
+If there is a `.button.d.ts` file, it will correctly execute in `umi@3`, but it will cause an error in umi@4, you may need more standardized type references.
 
 ```diff
 - import { ButtonType } from './button';

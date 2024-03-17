@@ -1,14 +1,16 @@
 ---
 order: 16
 toc: content
+translated_at: '2024-03-17T10:25:42.549Z'
 ---
-# 开发插件
-Umi 的核心就在于它的插件机制。基于 Umi 的插件机制，你可以获得扩展项目的编译时和运行时的能力。你可以利用我们提供的 [插件API](../api/plugin-api) 来自由地编写插件，进而实现修改代码打包配置、修改启动代码、约定目录结构、修改 HTML 等丰富的功能。
 
-## 核心概念
-插件的本质就是一个方法，该方法接收了一个参数：api。在插件中，你可以调用 api 提供的方法进行一些 hook 的注册，随后 Umi 会在特定的时机执行这些 hook。
+# Plugin Development
+The essence of Umi lies in its plugin mechanism. Based on the plugin mechanism of Umi, you can enhance the build-time and runtime capabilities of your project. You can freely write plugins using the [Plugin API](../api/plugin-api) we provide, thus achieving rich functionalities like modifying the code packaging configuration, modifying startup code, convention directory structure, modifying HTML, etc.
 
-比如：
+## Core Concepts
+The essence of a plugin is a method that receives one parameter: api. Within the plugin, you can call methods provided by api to register some hooks, which Umi will execute at specific times.
+
+For example:
 ```js
 import { IApi } from 'umi';
 
@@ -28,12 +30,12 @@ export default (api: IApi) => {
   });
 };
 ```
-这个插件的作用是根据用户配置的 changeFavicon 值来更改配置中的 favicons，（一个很简单且没有实际用途的例子XD）。可以看到插件其实就是一个接收了参数 api 的方法。在这个方法中，我们调用了 `api.modifyConfig` 注册了一个 hook： `(memo)=>{...}`。当你在配置中配置了 `changeFavicon` 之后， Umi 会注册该插件。在 Umi 收集配置的生命周期里，我们在插件里注册的 hook 将被执行，此时配置中的 `favicon` 就会被修改为用户配置中的 `changeFavicon` 。
+The purpose of this plugin is to change the favicons in the configuration based on the user-configured changeFavicon value (a very simple example with no practical use XD). As you can see, a plugin is essentially a method that receives the parameter api. In this method, we called `api.modifyConfig` to register a hook: `(memo)=>{...}`. After you have configured `changeFavicon` in the configuration, Umi will register the plugin. During Umi's configuration collection lifecycle, the hook we registered in the plugin will be executed, changing the `favicon` in the configuration to the `changeFavicon` configured by the user.
 
-### plugin 和 preset
-preset 的作用是预设一些插件，它通常用来注册一批 presets 和 plugins。在 preset 中，上述提到的接受 api 的方法可以有返回值，该返回值是一个包含 plugins 和 presets 属性的对象，其作用就是注册相应的插件或者插件集。
+### plugin and preset
+The role of a preset is to preset some plugins, which is typically used to register a batch of presets and plugins. In presets, the method mentioned above that accepts the api can have a return value, which is an object containing plugins and presets properties, for the purpose of registering the corresponding plugins or plugin sets.
 
-比如：
+For example:
 ```js
 import { IApi } from 'umi';
 
@@ -44,132 +46,132 @@ export default (api: IApi) => {
   }
 };
 ```
-它们的注册顺序是值得注意的：presets 始终先于 plugins 注册。Umi 维护了两个队列分别用来依次注册 presets 和 plugins，这个例子中的注册的 `preset_foo` 将被置于 presets 队列队首，而 `plugin_foo` 和 `plugin_bar` 将被依次置于 plugins 队列队尾。这里把 preset 放在队首的目的在于保证 presets 之间的顺序和关系是可控的。
+Their registration order is worth noting: presets are always registered before plugins. Umi maintains two queues to register presets and plugins sequentially, the registered `preset_foo` in this example would be placed at the head of the presets queue, and `plugin_foo` and `plugin_bar` would be placed at the tail of the plugins queue one by one. The purpose of putting preset at the head is to ensure the order and relationship between presets are controllable.
 
-另外一个值得注意的点是：在 plugin 中，你也可以 return 一些 plugins 或者 presets，但是 Umi 不会对它做任何事情。
+Another noteworthy point is: in plugins, you can also return some plugins or presets, but Umi won't do anything about it.
 
-### 插件的 id 和 key
-每个插件都对应一个 id 和 key。
+### Plugin's id and key
+Each plugin corresponds to an id and key.
 
-id 是插件所在路径的简写，作为插件的唯一标识；而 key 则是用于插件配置的键名。 
+The id is an abbreviation for the plugin's path and serves as the unique identifier of the plugin; while the key is the key name used for plugin configuration.
 
-比如插件 `node_modules/@umijs/plugin-foo/index.js` ，通常来说，它的 id 是 `@umijs/plugin-foo` , key 是 `foo`。此时就允许开发者在配置中来配置键名为 `foo` 的项，用来对插件进行配置。
+For example, the plugin `node_modules/@umijs/plugin-foo/index.js`, typically, its id is `@umijs/plugin-foo`, and the key is `foo`. This allows developers to configure the item with the key name `foo` in the configuration to configure the plugin.
 
-## 启用插件
-插件有两种启用方式： 环境变量中启用和配置中启用。（与 `umi@3` 不同，我们不再支持对 `package.json` 中依赖项的插件实现自动启用）
+## Enabling Plugins
+There are two ways to enable plugins: enable in environment variables and enable in configuration. (Different from `umi@3`, we no longer support automatic enabling of plugins in the dependencies of `package.json`)
 
-注意：这里的插件指的是第三方插件，Umi 的内置插件统一在配置中通过对其 key 进行配置来启用。
+Note: Here we refer to third-party plugins, as Umi's built-in plugins are universally enabled in the configuration through their keys.
 
-### 环境变量
-还可以通过环境变量 `UMI_PRESETS` 和 `UMI_PLUGINS` 注册额外插件。
-比如：
+### Environment Variables
+You can also register additional plugins through the environment variables `UMI_PRESETS` and `UMI_PLUGINS`.
+For example:
 ```shell
 $ UMI_PRESETS = foo/preset.js umi dev
 ```
-注意： 项目里不建议使用，通常用于基于 Umi 的框架二次封装。
+Note: It is not recommended for use in projects, usually for secondary packaging based on Umi framework.
 
-### 配置
-在配置里通过 `presets` 和 `plugins` 配置插件，比如：
+### Configuration
+Plugins are configured in the configuration through `presets` and `plugins`, for example:
 ```js
 export default {
   presets: ['./preset/foo','bar/presets'],
   plugins: ['./plugin', require.resolve('plugin_foo')]
 }
 ```
-配置的内容为插件的路径。
+The content of the configuration is the path of the plugin.
 
-### 插件的顺序
-Umi 插件的注册遵循一定的顺序：
-- 所有的 presets 都先于 plugins 被注册。
-- 内置插件 -> 环境变量中的插件 -> 用户配置中的插件
-- 同时注册（同一个数组里）的插件按顺序依次注册。
-- preset 中注册的 preset 立即执行， 注册的 plugin 最后执行。
+### Order of Plugins
+The registration of Umi plugins follows a certain order:
+- All presets are registered before plugins.
+- Built-in plugins -> plugins in environment variables -> plugins in user config.
+- Plugins registered at the same time (in the same array) are registered in sequence.
+- Presets registered in a preset are executed immediately, while plugins registered are executed at the end.
 
-## 禁用插件
-有两种方式禁用插件
-### 配置 key 为 false
-比如：
+## Disabling Plugins
+There are two ways to disable plugins
+### Configuring key as false
+For example:
 ```js
 export default{
   mock: false
 }
 ```
-会禁用 Umi 内置的 mock 插件。
+This would disable Umi's built-in mock plugin.
 
-### 在插件中禁用其他插件
-可通过 `api.skipPlugins(pluginId[])` 的方式禁用，详见[插件 API](../api/plugin-api)。
+### Disabling Other Plugins in a Plugin
+This can be done by using `api.skipPlugins(pluginId[])`, see [Plugin API](../api/plugin-api) for more details.
 
-## 查看插件注册情况
-### 命令行
+## Viewing Plugin Registration Status
+### Command Line
 ```shell
 $ umi plugin list
 ```
 
-## 配置插件
-通过配置插件的 key 来配置插件，比如：
+## Configuring Plugins
+Configure plugins through the key of the plugin, for example:
 ```js
 export default{
   mock: { exclude: ['./foo'] }
 }
 ```
-这里 mock 就是 Umi 内置插件 mock 的 key。
+Here mock is the key of Umi's built-in mock plugin.
 
-再比如我们安装一个插件 `umi-plugin-bar`, 其 key 默认是 `bar`, 就可以配置：
+For instance, if we install a plugin `umi-plugin-bar`, its default key is `bar`, then it can be configured:
 ```js
 export default{
   bar: { ... }
 }
 ```
 
-### 插件 key 的默认命名规则
-如果插件是一个包的话，key 的默认值将是去除前缀的包名。比如 `@umijs/plugin-foo` 的 key 默认为 `foo`， `@alipay/umi-plugin-bar` 的 key 默认为 `bar`。值得注意的是，该默认规则要求你的包名符合 Umi 插件的命名规范。
+### Default Naming Rules for Plugin Keys
+If the plugin is a package, the default value of the key will be the package name without prefix. For example, the default key for `@umijs/plugin-foo` is `foo`, and the default key for `@alipay/umi-plugin-bar` is `bar`. It is worth noting that this default rule requires your package name to conform to the Umi plugin naming convention.
 
-如果插件不是一个包的话，key 的默认值将是插件的文件名。比如 `./plugins/foo.js` 的 key 默认为 `foo` 。
+If the plugin is not a package, the default value of the key will be the filename of the plugin. For example, the default key for `./plugins/foo.js` is `foo`.
 
-为了避免不必要的麻烦，我们建议你为自己编写的插件显式地声明其 key。
+To avoid unnecessary trouble, we recommend that you explicitly declare the key for your own written plugins.
 
-## Umi 插件的机制及其生命周期
+## The Mechanism and Lifecycle of Umi Plugins
 
-![Umi 插件机制](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*GKNdTZgPQCIAAAAAAAAAAAAAARQnAQ)
+![Umi Plugin Mechanism](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*GKNdTZgPQCIAAAAAAAAAAAAAARQnAQ)
 
-### 生命周期
+### Lifecycle
 
-- init stage: 该阶段 Umi 将加载各类配置信息。包括：加载 `.env` 文件； require `package.json`  ；加载用户的配置信息； resolve 所有的插件（内置插件、环境变量、用户配置依次进行）。
-- initPresets stage:  该阶段 Umi 将注册 presets。presets 在注册的时候可以通过 `return { presets, plugins }` 来添加额外的插件。其中 presets 将添加到 presets 队列的队首，而 plugins 将被添加到 plugins 队列的队尾。
-- initPlugins stage: 该阶段 Umi 将注册 plugins。这里的 plugins 包括上个阶段由 presets 添加的额外的 plugins， 一个值得注意的点在于： 尽管 plugins 也可以 `return { presets, plugins }` ，但是 Umi 不会对其进行任何操作。插件的 init 其实就是执行插件的代码（但是插件的代码本质其实只是调用 api 进行各种 hook 的注册，而 hook 的执行并非在此阶段执行，因此这里叫插件的注册）。
-- resolveConfig stage: 该阶段 Umi 将整理各个插件中对于 `config schema` 的定义，然后执行插件的 `modifyConfig` 、`modifyDefaultConfig`、 `modifyPaths` 等 hook，进行配置的收集。
-- collectionAppData stage: 该阶段 Umi 执行 `modifyAppData` hook，来维护 App 的元数据。（ `AppData` 是 `umi@4` 新增的 api ）
-- onCheck stage: 该阶段 Umi 执行 `onCheck` hook。
-- onStart stage: 该阶段 Umi 执行 `onStart` hook。
-- runCommand stage:  该阶段 Umi 运行当前 cli 要执行的 command，（例如 `umi dev`, 这里就会执行 dev command）Umi 的各种核心功能都在 command 中实现。包括我们的插件调用 api 注册的绝大多数 hook。
+- init stage: At this stage, Umi loads various configuration information. Including loading `.env` files; requiring `package.json`; loading user configurations; resolving all plugins (built-in plugins, environment variables, and user configs in sequence).
+- initPresets stage: At this stage, Umi registers presets. Presets can register additional plugins by returning `{ presets, plugins }`, where presets will be added to the top of the presets queue, and plugins will be added to the end of the plugins queue.
+- initPlugins stage: At this stage, Umi registers plugins. These plugins include additional plugins added by presets in the previous stage. A point worth noting is that even though plugins can also `return { presets, plugins }`, Umi will not do anything about it. The init of a plugin is essentially executing the plugin's code (but the essence of the plugin's code is just calling the api to register various hooks, and the execution of hooks does not occur at this stage, so this is called plugin registration).
+- resolveConfig stage: At this stage, Umi organizes definitions of `config schema` from various plugins, then executes hooks like `modifyConfig`, `modifyDefaultConfig`, `modifyPaths` etc., to collect configurations.
+- collectionAppData stage: At this stage, Umi executes the `modifyAppData` hook, to maintain the metadata of the App. (`AppData` is a new api added in `umi@4`)
+- onCheck stage: At this stage, Umi executes the `onCheck` hook.
+- onStart stage: At this stage, Umi executes the `onStart` hook.
+- runCommand stage: At this stage, Umi runs the current cli command to be executed, (for example `umi dev`, here the dev command will be executed) The various core functionalities of Umi are implemented in the command. Including most of the hooks registered by our plugins calling the api.
 
-以上就是 Umi 的插件机制的整体流程。
+The above is the overall process of Umi's plugin mechanism.
 
-### `register()` 、 `registerMethod()` 以及 `applyPlugins()`
+### `register()`, `registerMethod()`, and `applyPlugins()`
 
-`register()` 接收一个 key 和 一个 hook，它维护了一个 `key-hook[]` 的 map，每当调用 `register()` 的时候，就会为 key 额外注册一个 hook。
+`register()` accepts a key and a hook, maintaining a `key-hook[]` map, each call to `register()` will register an additional hook for the key.
 
-`register()` 注册的 hooks 供 applyPlugins 使用。 这些 hook 的执行顺序参照 [tapable](https://github.com/webpack/tapable)。
+`register()` registered hooks are for use by applyPlugins. The execution sequence of these hooks follows [tapable](https://github.com/webpack/tapable).
 
-`registerMethod()` 接收一个 key 和 一个 fn，它会在 api 上注册一个方法。如果你没有向 `registerMethod()` 中传入 fn，那么 `registerMethod()` 会在 api 上注册一个“注册器”： 它会将 `register()` 传入 key 并柯里化后的结果作为 fn 注册到 api 上。这样就可以通过调用这个“注册器”，快捷地为 key 注册 hook 了。
+`registerMethod()` accepts a key and a fn, it registers a method on the api. If no fn is passed to `registerMethod()`, it will register a "register" on the api: it will register the result of `register()` passed in key and curried as fn to the api. This allows for registering hooks for the key quickly by calling this "register".
 
-关于上述 api 的更具体的使用，请参照[插件 API](../api/plugin-api)。
+For more specific use of the above api, please refer to [Plugin API](../api/plugin-api).
 
-### PluginAPI 的原理
-Umi 会为每个插件赋予一个 PluginAPI 对象，这个对象引用了插件本身和 Umi 的 service。
+### The Principle of PluginAPI
+Umi assigns a PluginAPI object to each plugin, which references both the plugin itself and Umi's service.
 
-Umi 为 PluginAPI 对象的 `get()` 方法进行了 proxy，具体规则如下：
-- pluginMethod:  如果 prop 是 Umi 所维护的 `pluginMethods[]` ( `通过 registerMethod()` 注册的方法 ）中的方法，则返回这个方法。
-- service props: 如果 prop 是 serviceProps 数组中的属性（这些属性是 Umi 允许插件直接访问的属性），则返回 service 对应的属性。
-- static props: 如果 prop 是参数 staticProps 数组中的属性（这些属性是静态变量，诸如一些类型定义和常量），则将其返回。
-- 否则返回 api 的属性。
+Umi has proxied the `get()` method of the PluginAPI object according to the following rules:
+- pluginMethod: If prop is a method in Umi's maintained `pluginMethods[]` (methods registered through `registerMethod()`), then it returns this method.
+- service props: If prop is an attribute in the serviceProps array (these attributes are properties that Umi allows plugins direct access to), then it returns the corresponding property of the service.
+- static props: If prop is an attribute in the staticProps array (these attributes are static variables, such as some type definitions and constants), then it returns it.
+- Otherwise, it returns the property of the api.
 
-因此，Umi 提供给插件的 api 绝大多数都是依靠 `registerMethod()` 来实现的，你可以直接使用我们的这些 api 快速地在插件中注册 hook。这也是 Umi 将框架和功能进行解耦的体现： Umi 的 service 只提供插件的管理功能，而 api 都依靠插件来提供。
+Therefore, most of the apis provided to plugins by Umi are implemented by relying on `registerMethod()`, you can directly use our apis to quickly register hooks in plugins. This is also a manifestation of Umi's decoupling of framework and functionalities: Umi's service only provides plugin management functionalities, while the apis all rely on plugins to provide.
 
 ### preset-umi
-`umi-core` 提供了一套插件的注册及管理机制。而 Umi 的核心功能都靠 [preset-umi](https://github.com/umijs/umi/tree/master/packages/preset-umi) 来实现。
+`umi-core` provides a set of plugin registration and management mechanisms. And Umi's core functionalities are all implemented by [preset-umi](https://github.com/umijs/umi/tree/master/packages/preset-umi).
 
-`preset-umi` 其实就是内置的一个插件集，它提供的插件分为三大类：
-- registerMethods 这类插件注册了一些上述提到的“注册器”，以供开发者快速地注册 hook，这类方法也占据了 PluginAPI 中的大多数。
-- features 这类插件为 Umi 提供了一些特性，例如 appData、lowImport、mock 等。
-- commands 这类插件注册了各类 command， 提供了 Umi CLI 的各种功能。Umi 能够在终端中正常运行，依靠的就是 command 提供的功能。
+`preset-umi` is essentially an inbuilt plugin set, which provides plugins in three categories:
+- registerMethods, registering some of the "registers" mentioned above for developers to quickly register hooks, occupying most of the PluginAPI.
+- features, providing Umi with some features, such as appData, lowImport, mock, etc.
+- commands, registering various commands, providing various functionalities of Umi CLI. Umi's ability to operate normally in the terminal relies on the functionalities provided by commands.

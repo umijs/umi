@@ -1,43 +1,43 @@
 ---
 order: 17
 toc: content
+translated_at: '2024-03-17T09:57:48.935Z'
 ---
 
-# 使用 Vue
+# Using Vue
 
-本文介绍如何在 Umi 中使用 Vue , Umi Vue 大部分配置和 React 相同，这里只列出一些 Vue 独有的配置。
+This article introduces how to use Vue in Umi, where most of the configuration for Umi Vue is the same as React. Here we only list some configurations unique to Vue.
 
-## 启动方式
+## How to Start
 
-### 安装
+### Installation
 
 ```bash
-pnpm add  @umijs/preset-vue -D
+pnpm add @umijs/preset-vue -D
 ```
 
-### 配置预设
+### Configure Preset
 
 ```ts
-// .umirc.ts or config/config.ts 中
+// In .umirc.ts or config/config.ts
 export default {
   presets: [require.resolve('@umijs/preset-vue')],
 };
-
 ```
 
-## 路由
+## Routing
 
-### 配置式路由
+### Config-based Routing
 
 :::info
-这里仅列出和 React 路由配置差异部分。
+Here, we only list the parts that are different from React router configuration.
 :::
 
 #### name
 
-命名路由
+Named routes
 
-除了 `path` 之外，你还可以为任何路由提供 `name` ：
+In addition to `path`, you can provide a `name` for any route:
 
 ```ts
 export default {
@@ -51,7 +51,7 @@ export default {
 }
 ```
 
-要链接到一个命名的路由，可以向 `router-link` 组件的 `to` 属性传递一个对象：
+To link to a named route, you can pass an object to the `to` property of the `router-link` component:
 
 ```html
 <router-link :to="{ name: 'user', params: { username: 'erina' }}">
@@ -59,17 +59,17 @@ export default {
 </router-link>
 ```
 
-效果和命令式地调用 `router.push` 一致：
+The effect is the same as imperatively calling `router.push`:
 
 ```ts
 router.push({ name: 'user', params: { username: 'erina' } })
 ```
 
-在这方法都能导航到路径 `/user/erina`。
+Both methods navigate to the path `/user/erina`.
 
 #### redirect
 
-重定向也是通过 `routes` 配置来完成，下面例子是从 `/home` 重定向到 `/`：
+You also use the `routes` configuration for redirections; for example, redirecting from `/home` to `/`:
 
 ```ts
 export default {
@@ -82,7 +82,7 @@ export default {
 }
 ```
 
-重定向的目标也可以是一个命名的路由：
+The target of the redirect can also be a named route:
 
 ```ts
 export default {
@@ -99,11 +99,11 @@ export default {
 
 #### alias
 
-重定向是指当用户访问 `/home` 时，URL 会被 `/` 替换，然后匹配成 `/`。那么什么是别名呢？
+Redirect means that when a user accesses `/home`, the URL will be replaced with `/` and then matched to `/`. But what is an alias?
 
-将 `/` 别名为 `/home`，意味着当用户访问 `/home` 时，URL 仍然是 `/home`，但会被匹配为用户正在访问 `/`。
+Aliasing `/` to `/home` means that when the user visits `/home`, the URL still is `/home`, but it will be matched as if the user is visiting `/`.
 
-上面对应的路由配置为：
+The corresponding route configuration is:
 ```ts
 export default {
   routes: [
@@ -116,7 +116,7 @@ export default {
 }
 ```
 
-通过别名，你可以自由地将 UI 结构映射到一个任意的 URL，而不受配置的嵌套结构的限制。使别名以 `/` 开头，以使嵌套路径中的路径成为绝对路径。你甚至可以将两者结合起来，用一个数组提供多个别名：
+With aliases, you are free to map your UI structure to any URL without being constrained by the nesting structure of the configuration. Make aliases start with `/` to turn nested paths into absolute paths. You can even combine the two by providing multiple aliases with an array:
 
 ```ts
 export default {
@@ -125,7 +125,7 @@ export default {
       path: '/users',
       component: 'users',
       routes: [
-        // 为这 3 个 URL 呈现 UserList
+        // Render UserList for these 3 URLs
         // - /users
         // - /users/list
         // - /people
@@ -136,7 +136,7 @@ export default {
 }
 ```
 
-### 页面跳转
+### Page Navigation
 
 ```html
 <script lang="ts" setup>
@@ -156,23 +156,23 @@ const onHello = () => {
 </script>
 ```
 
-更多[详见](https://router.vuejs.org/guide/advanced/composition-api.html#accessing-the-router-and-current-route-inside-setup)
+For more details, [see here](https://router.vuejs.org/guide/advanced/composition-api.html#accessing-the-router-and-current-route-inside-setup)
 
 ### router-link
 
-[详见](https://router.vuejs.org/guide/#router-link)
+For more details, [see here](https://router.vuejs.org/guide/#router-link)
 
 ### router-view
 
-[详见](https://router.vuejs.org/guide/#router-view)
+For more details, [see here](https://router.vuejs.org/guide/#router-view)
 
-## 运行时配置
+## Runtime Configuration
 
-可以通过在约定的 `src/app.tsx` 通过 export 配置来控制 vue vue-router 相关的配置。
+You can control Vue and Vue-router related configuration through exporting settings in the conventional `src/app.tsx`.
 
 ### router
 
-配置路由配置
+Configure router settings
 
 ```ts
 // src/app.tsx
@@ -184,9 +184,9 @@ export const router: RouterConfig = {
 };
 ```
 
-### onMounted(\{app, router\})
+### onMounted({app, router})
 
-Vue app mount 成功回调，这里可以拿到 app 的实例及 router 的实例，可以进行全局组件注册，路由拦截器等。
+Callback for successful Vue app mount, where you can get instances of app and router for global component registration, route interceptors, etc.
 
 ```ts
 export function onMounted({ app, router }: any) {
@@ -200,9 +200,9 @@ export function onMounted({ app, router }: any) {
 
 ### rootContainer(container)
 
-修改交给 vue-router 渲染时的根组件。
+Modify the root component rendered by vue-router.
 
-比如用于在外面包一个父组件
+For example, to wrap a parent component around the outside
 
 ```ts
 import { h } from 'vue'
@@ -214,7 +214,7 @@ export function rootContainer(container) {
 
 ## Examples
 
-更多详见 demo ：
+For more examples, see demos:
 
 * [boilerplate-vue](https://github.com/umijs/umi/tree/master/examples/boilerplate-vue)
 * [with-vue-pinia](https://github.com/umijs/umi/tree/master/examples/with-vue-pinia)

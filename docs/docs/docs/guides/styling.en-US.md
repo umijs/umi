@@ -1,17 +1,18 @@
 ---
 order: 7
 toc: content
+translated_at: '2024-03-17T10:21:09.036Z'
 ---
 
-# 样式
+# Styles
 
-本文介绍在 Umi 项目中使用样式的各种方式。
+This document introduces various ways of using styles in Umi projects.
 
-## 使用 CSS 样式
+## Using CSS Styles
 
-你可以在 Umi 项目中使用 `.css` 文件声明各种样式，然后在 `.js` 文件中引入即可生效。
+You can declare various styles in `.css` files in Umi projects, and then import them in `.js` files to make them effective.
 
-例如，在 `src/pages/index.css` 文件按照以下代码声明 `.title` 类的样式为红色：
+For example, declare the style of the `.title` class as red in the `src/pages/index.css` file according to the following code:
 
 ```css
 .title {
@@ -19,7 +20,7 @@ toc: content
 }
 ```
 
-然后在 `src/pages/index.tsx` 文件中引入即可生效。
+Then import it in the `src/pages/index.tsx` file to make it effective.
 
 ```jsx
 // src/pages/index.tsx
@@ -31,12 +32,12 @@ export default function () {
 }
 ```
 
-按照此种引入方式的样式会在整个 Umi 项目中生效，即无论你从哪个 `.js`
-文件引入，他声明的样式可以在任何页面和组件中使用。如果你想要避免这种情况，可以使用 [CSS Modules](#使用-css-modules) 的功能来限制样式的作用域。
+The style imported in this way will be effective throughout the Umi project, i.e., regardless of which `.js`
+file you import from, its declared style can be used on any page and component. If you want to avoid this situation, you can use the [CSS Modules](#using-css-modules) feature to limit the scope of the style.
 
-## 使用 CSS Modules
+## Using CSS Modules
 
-在 `js` 文件中引入样式时，如果赋予他一个变量名，就可以将样式以 CSS Module 的形式引入。
+When importing styles in `js` files, if you assign it a variable name, you can import the style as a CSS Module.
 
 ```jsx
 // src/pages/index.tsx
@@ -50,14 +51,14 @@ export default function () {
 }
 ```
 
-上面的示例中，`index.css` 文件中声明的样式不会对全局样式造成影响，只会对从 `styles` 变量中使用的样式生效。
+In the example above, the styles declared in the `index.css` file will not affect the global styles and will only be effective for styles used from the `styles` variable.
 
-## 使用 CSS 预处理器
+## Using CSS Preprocessors
 
-Umi 默认支持 LESS (推荐)，SASS 和 SCSS 样式的导入，你可以直接按照引入 CSS 文件的方式引入并使用这些由 CSS 预处理器处理的样式。
+Umi natively supports importing LESS (recommended), SASS, and SCSS styles. You can directly import and use these styles processed by CSS preprocessors in the same way as you import CSS files.
 
 :::info{title=💡}
-在 Umi 中使用 SASS (SCSS) 需要额外安装预处理依赖 如: `npm add -D sass`
+To use SASS (SCSS) in Umi, you need to install additional preprocessor dependencies, such as: `npm add -D sass`
 :::
 
 ```jsx
@@ -72,7 +73,7 @@ export default function () {
 }
 ```
 
-同样也支持 CSS Module 的用法：
+CSS Module usage is also supported:
 
 ```jsx
 // src/pages/index.tsx
@@ -90,35 +91,34 @@ export default function () {
 }
 ```
 
-Umi 也同时提供了对 `.styl` 和 `.stylus` 文件的内置支持。使用前必须安装 `stylus` 相应的预处理器依赖，其他用法用上面的例子
+Umi also provides built-in support for `.styl` and `.stylus` files. `stylus` related preprocessor dependency must be installed first. Other usage is similar to the examples above.
 
 ```bash
 # .styl and .stylus
 npm add -D stylus
 ```
 
-## 进阶设置
+## Advanced Settings
 
-如果你需要使用除了常见的 LESS, SASS 或 SCSS 以外的其他样式预处理器，你可以透过 Umi
-插件提供的 [chainWebpack 接口](../api/config#chainwebpack)来加入自己需要的 Loader。
+If you need to use other style preprocessors besides the common LESS, SASS, or SCSS, you can add your own Loader through the [chainWebpack interface](../api/config#chainwebpack) provided by Umi plugins.
 
-## 使用 Tailwindcss
+## Using Tailwindcss
 
-Umi 提供了内置的 [Tailwindcss](https://tailwindcss.com/)
-插件，并且可以直接方便地使用 [微生成器](./generator#tailwind-css-配置生成器) 来启用。
+Umi provides an internal [Tailwindcss](https://tailwindcss.com/)
+plugin, and you can easily enable it using the [Micro-generator](./generator#tailwind-css-configuration-generator).
 
-## 使用 UnoCSS
+## Using UnoCSS
 
-与 Tailwindcss 相同，Umi 也提供了内置的 [UnoCSS](https://github.com/unocss/unocss) 插件，可以按照相同方式开启。
+Similar to Tailwindcss, Umi also provides an internal [UnoCSS](https://github.com/unocss/unocss) plugin, which can be enabled in the same way.
 
-1. 安装 `plugin-unocss`
-2. 安装 `unocss` 及 `@unocss/cli`
+1. Install `plugin-unocss`
+2. Install `unocss` and `@unocss/cli`
 
 ```bash
 pnpm i unocss @unocss/cli
 ```
 
-3. 在 Umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
+3. Enable the plugin in Umi settings and declare the file directory where `unocss` will be used
 
 ```js
 // .umirc.ts
@@ -128,14 +128,14 @@ export default {
     require.resolve('@umijs/plugins/dist/unocss')
   ],
   unocss: {
-    // 检测 className 的文件范围，若项目不包含 src 目录，可使用 `pages/**/*.tsx`
+    // Range of files to detect className, if the project does not include the src directory, use `pages/**/*.tsx`
     watch: ['src/**/*.tsx']
   },
 };
 ```
 
-4. 在项目目录下加入 `unocss.config.ts`
-   配置文件，并加入项目需要的 [UnoCSS Presets](https://github.com/unocss/unocss#presets)
+4. Add a `unocss.config.ts`
+   configuration file in the project directory and include the [UnoCSS Presets](https://github.com/unocss/unocss#presets) needed by the project
 
 ```js
 // unocss.config.ts
@@ -151,4 +151,4 @@ export function createConfig({strict = true, dev = true} = {}) {
 export default createConfig(); 
 ```
 
-5. 启动项目进行开发，插件会监听设置文件中的 `unocss.watch` 字段，动态生成样式文件并自动套用
+5. Start the project for development. The plugin will listen to the `unocss.watch` field in the settings file, dynamically generate style files, and automatically apply them.

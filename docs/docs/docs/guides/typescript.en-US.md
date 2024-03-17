@@ -1,14 +1,16 @@
 ---
 order: 9
 toc: content
+translated_at: '2024-03-17T09:59:29.526Z'
 ---
+
 # TypeScript
 
-Umi 默认开启 TypeScript，如果是使用官方脚手架创建项目，内置的文件是以 `xx.(ts|tsx)` 为主的。
+Umi enables TypeScript by default. If the project is created using the official scaffolding, the built-in files are mainly in the format of `xx.(ts|tsx)`.
 
-## 配置中的 TypeScript 提示
+## TypeScript Hints in Configuration
 
-如果想要在配置时拥有 TypeScript 语法提示，可以在配置的地方包一层 `defineConfig()`：
+If you want to have TypeScript syntax hints during configuration, you can wrap the configuration with `defineConfig()`:
 
 ```ts
 // .umirc.ts

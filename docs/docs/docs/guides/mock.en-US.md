@@ -1,19 +1,20 @@
 ---
 order: 5
 toc: content
+translated_at: '2024-03-17T10:26:57.083Z'
 ---
+
 # Mock
 
-Umi 提供了开箱即用的 Mock 功能，能够用方便简单的方式来完成 Mock 数据的设置。
+Umi provides an out-of-the-box Mock feature, which enables the setup of Mock data in a convenient and simple manner.
 
 :::info{title=💡}
-什么是 Mock 数据：在前后端约定好 API 接口以后，前端可以使用 Mock 数据来在本地模拟出 API 应该要返回的数据，这样一来前后端开发就可以同时进行，不会因为后端 API
-还在开发而导致前端的工作被阻塞。
+What is Mock data: After the front-end and back-end have agreed on the API interface, the front end can use Mock data to simulate the data that the API should return locally. This allows front-end and back-end development to proceed simultaneously, without being blocked by the ongoing development of the backend API.
 :::
 
-## 目录约定
+## Directory Conventions
 
-Umi 约定 `/mock` 目录下的所有文件为 [Mock 文件](#mock-文件)，例如这样的目录结构：
+Umi conventionally treats all files under the `/mock` directory as [Mock files](#mock-files), like this directory structure:
 
 ```text
 .
@@ -26,34 +27,34 @@ Umi 约定 `/mock` 目录下的所有文件为 [Mock 文件](#mock-文件)，例
         └── index.tsx
 ```
 
-则 `/mock` 目录中的 `todos.ts`, `items.ts` 和 `users.ts` 就会被 Umi 视为 [Mock 文件](#mock-文件) 来处理。
+Thus, `todos.ts`, `items.ts`, and `users.ts` in the `/mock` directory will be processed by Umi as [Mock files](#mock-files).
 
-## Mock 文件
+## Mock Files
 
-Mock 文件默认导出一个对象，而对象的每个 Key 对应了一个 Mock 接口，值则是这个接口所对应的返回数据，例如这样的 Mock 文件：
+Mock files export an object by default, where each key of the object corresponds to a Mock interface, and the value is the data that should be returned by this interface, like in this Mock file:
 
 ```ts
 // ./mock/users.ts
 
 export default {
 
-  // 返回值可以是数组形式
+  // The return value can be an array
   'GET /api/users': [
     { id: 1, name: 'foo' },
     { id: 2, name: 'bar' }
   ],
 
-  // 返回值也可以是对象形式
+  // The return value can also be an object
   'GET /api/users/1': { id: 1, name: 'foo' },
 
 }
 ```
 
-就声明了两个 Mock 接口，透过 `GET /api/users` 可以拿到一个带有两个用户数据的数组，透过 `GET /api/users/1` 可以拿到某个用户的模拟数据。
+This declares two Mock interfaces. Through `GET /api/users`, you can get an array with two user data. Through `GET /api/users/1`, you can get simulated data for a user.
 
-### 请求方法
+### Request Methods
 
-当 HTTP 的请求方法是 GET 时，可以省略方法部分，只需要路径即可，例如：
+When the HTTP request method is GET, you can omit the method part and only need the path, like:
 
 ```ts
 // ./mock/users.ts
@@ -70,7 +71,7 @@ export default {
 }
 ```
 
-也可以用不同的请求方法，例如 `POST`，`PUT`，`DELETE`：
+You can also use different request methods, such as `POST`, `PUT`, `DELETE`:
 
 ```ts
 // ./mock/users.ts
@@ -84,15 +85,15 @@ export default {
 }
 ```
 
-### 自定义函数
+### Custom Functions
 
-除了直接静态声明返回值，也可以用函数的方式来声明如何计算返回值，例如：
+In addition to directly declaring static return values, you can also use functions to declare how to compute the return values, like:
 
 ```ts
 export default {
 
   'POST /api/users/create': (req, res) => {
-    // 添加跨域请求头
+    // Add CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.end('ok');
   }
@@ -100,11 +101,11 @@ export default {
 }
 ```
 
-关于 `req` 和 `res` 的 API 可参考 [Express@4 官方文档](https://expressjs.com/en/api.html) 来进一步了解。
+For the APIs of `req` and `res`, refer to the [Express@4 official documentation](https://expressjs.com/en/api.html) for further understanding.
 
 ### defineMock
 
-另外，也可以使用 `defineMock` 类型帮助函数来提供编写 mock 对象的代码提示，如：
+Furthermore, you can use the `defineMock` type helper function to provide code hints for writing mock objects, like:
 ```ts
 import { defineMock } from "umi";
 
@@ -119,10 +120,10 @@ export default defineMock({
   },
 });
 ```
-`defineMock` 仅仅提供类型提示，入参与出参完全一致。
-## 关闭 Mock
+`defineMock` simply provides type hints; the input and output are completely identical.
+## Disabling Mock
 
-Umi 默认开启 Mock 功能，如果不需要的话可以从配置文件关闭：
+Mock functionality is enabled by default in Umi. If it's not needed, it can be disabled from the config file:
 
 ```ts
 // .umirc.ts
@@ -132,28 +133,27 @@ export default {
 };
 ```
 
-或是用环境变量的方式关闭：
+Or by using an environmental variable:
 
 ```bash
 MOCK=none umi dev
 ```
 
-## 引入 Mock.js
+## Integrating Mock.js
 
-在 Mock 中我们经常使用 [Mock.js](http://mockjs.com/) 来帮我们方便地生成随机的模拟数据。如果你使用了 Umi 的 Mock
-功能，建议你搭配这个库来提升模拟数据的真实性：
+In Mock, we often use [Mock.js](http://mockjs.com/) to help us conveniently generate random simulated data. If you are using Umi's Mock functionality, it's recommended to pair it with this library to enhance the realism of the simulated data:
 
 ```ts
 import mockjs from 'mockjs';
 
 export default {
-  // 使用 mockjs 等三方库
+  // Using third-party libraries like mockjs
   'GET /api/tags': mockjs.mock({
     'list|100': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
   }),
 };
 ```
 
-## 其他配置
+## Other Configurations
 
-关于 Mock 功能完整的其他配置项，请在文档的 [配置](../api/config#mock) 章节中查看。
+For a complete list of other configuration options for Mock functionality, please see the [configuration](../api/config#mock) section of the documentation.

@@ -1,49 +1,51 @@
 ---
 order: 5
 toc: content
+translated_at: '2024-03-17T09:54:04.320Z'
 ---
+
 # FAQ
 
-## 可以关闭 dynamicImport 吗？
+## Can I disable dynamicImport?
 
-可以，但不建议关闭。
+Yes, but it is not recommended to do so.
 
-1、安装依赖
+1. Install dependencies
 
 ```bash
   pnpm i babel-plugin-dynamic-import-node -D
 ```
 
-2、配置里加上 `extraBabelPlugins` ，但只针对 production 开启
+2. Add `extraBabelPlugins` to the configuration, but only enable it for production
 
 ```ts
 // .umirc.ts
 export default {
-  extraBabelPlugins: process.env.NODE_ENV === 'production' 
-    ? ['babel-plugin-dynamic-import-node'] 
+  extraBabelPlugins: process.env.NODE_ENV === 'production'
+    ? ['babel-plugin-dynamic-import-node']
     : []
 }
 ```
 
-## 没有 dynamicImport 怎么配置它的 loading ？
+## How to configure loading for dynamicImport when it's not present?
 
-定义 `src/loading.tsx` :
+Define `src/loading.tsx`:
 
-参考 [目录结构 > loading.tsx](../guides/directory-structure#loadingtsxjsx)
+See [Directory Structure > loading.tsx](../guides/directory-structure#loadingtsxjsx)
 
-## 可以用 react 17 吗？
+## Can I use React 17?
 
-由于 umi v4 升级了默认的 react 版本到 v18，使用 umi4 时注意下依赖库和 react 18 的兼容情况，如果还需要使用 react 17，请执行以下命令并重启。
+Since Umi v4 has upgraded the default version of React to v18, be aware of compatibility between dependency libraries and React 18 when using Umi4. If you still need to use React 17, run the following commands and restart.
 
 ```bash
   pnpm add react@^17 react-dom@^17
 ```
 
-## 代理静态资源到本地后，一直 restart 刷新页面
+## Constantly restarting and refreshing the page after proxying static resources locally
 
 <img src='./img/rstart.png' />
 
-解法：配置 `SOCKET_SERVER=127.0.0.1:${port}` 启动项目
+Solution: Configure `SOCKET_SERVER=127.0.0.1:${port}` to start the project
 
 ```bash
   SOCKET_SERVER=http://127.0.0.1:8000 pnpm dev
@@ -53,40 +55,39 @@ export default {
 
 <img src='./img/less-error.png' />
 
-解法：新版 less 中 `/` 默认被识别为属性简写，通过配置 `lessLoader: { math: 'always' }` 恢复旧版行为（默认将 `/` 用作计算符号）。
+Solution: In the new version of less, `/` is recognized as property shorthand by default. To restore the old behavior (where `/` was used as a calculation symbol by default), configure `lessLoader: { math: 'always' }`.
 
-## routes 里的 layout 配置选项不生效
+## The layout configuration option in routes does not take effect
 
-layout 配置被移动到了 `app.ts` ，详见 [runtime-config > layout](https://umijs.org/docs/api/runtime-config#layout)
+The layout configuration has been moved to `app.ts`, see [Runtime Config > layout](https://umijs.org/docs/api/runtime-config#layout)
 
+## Where did document.ejs go and how do I customize the HTML template
 
-## document.ejs 去哪了，如何自定义 HTML 模板
+In addition to the injection through the configuration of external [script](https://umijs.org/docs/api/config#scripts), [css](https://umijs.org/docs/api/config#styles), you can also use the project-level plugin to more flexibly modify HTML products, see: [issuecomment-1151088426](https://github.com/umijs/umi-next/issues/868#issuecomment-1151088426)
 
-除了可以通过 配置项 注入外部 [script](https://umijs.org/docs/api/config#scripts) 、[css](https://umijs.org/docs/api/config#styles) 外，还可以使用项目级插件更灵活的修改 HTML 产物，参见：[issuecomment-1151088426](https://github.com/umijs/umi-next/issues/868#issuecomment-1151088426)
+## Why are external js files configured in scripts by default inserted after umi.js
 
-## scripts 里配置的外部 js 文件为什么默认插入到 umi.js 的后面
+React only starts running after the page has fully loaded, so inserting after `umi.js` will not affect the project.
 
-react 只有在页面加载完毕后才会开始运行，所以插到 `umi.js` 后面不会影响项目。
+If you need to insert it before `umi.js`, see [issuecomment-1176960539](https://github.com/umijs/umi/issues/8442#issuecomment-1176960539)
 
-若需要插到 `umi.js` 前面，可参见 [issuecomment-1176960539](https://github.com/umijs/umi/issues/8442#issuecomment-1176960539)
+## How do I code split with Umi4?
 
-## umi4 我怎么分包
+Umi 4 splits code by page by default. If you feel the need for further optimization, you can use sub-package strategies or manual splitting, see: [Code Splitting Guide](../../blog/code-splitting)
 
-Umi 4 默认按页拆包，如果你觉得还需要优化，可以使用分包策略或手动拆包，详见：[代码拆分指南](../../blog/code-splitting)
+If you have the requirement to pack all js products into a single `umi.js` file, please disable [dynamicImport](#can-i-disable-dynamicimport).
 
-如果你有将所有 js 产物打包成单 `umi.js` 文件的需求，请关闭 [dynamicImport](#可以关闭-dynamicimport-吗) 。
+## Where did _layout.tsx go and how do I nest routes?
 
-## _layout.tsx 去哪了，我怎么嵌套路由
+Umi 4 uses react-router v6, and nested route content is displayed through `<Outlet />`. See: [issuecomment-1206194329](https://github.com/umijs/umi/issues/8850#issuecomment-1206194329)
 
-Umi 4 使用 react-router v6 ，通过 `<Outlet />` 展示嵌套路由内容，可参见：[issuecomment-1206194329](https://github.com/umijs/umi/issues/8850#issuecomment-1206194329)
+## How to use GraphQL
 
-## 怎么用 GraphQL
+For configuring `graph-ql` loader, see: [discussions/8218](https://github.com/umijs/umi/discussions/8218)
 
-配置 `graph-ql` loader 的方式可参见： [discussions/8218](https://github.com/umijs/umi/discussions/8218)
+## How to use WebAssembly
 
-## 怎么用 WebAssembly
-
-配置如下：
+Configure as follows:
 
 ```ts
 // .umirc.ts
@@ -113,21 +114,21 @@ export default {
 }
 ```
 
-一个实际例子可参见：[discussions/8541](https://github.com/umijs/umi/discussions/8541)
+See an actual example: [discussions/8541](https://github.com/umijs/umi/discussions/8541)
 
-## 怎么自定义 loader
+## How to customize loaders
 
-根据场景不同，你可能要先从 静态资源规则 中排除你需要加载的文件类型，再添加你自己的 loader / 或修改，可参考如下实例：
+Depending on the scenario, you may need to exclude the file type you need to load from the static asset rules first and then add your own loader or modify it. Refer to the following examples:
 
  - [discussions/8218](https://github.com/umijs/umi/discussions/8218)
 
  - [discussions/8452](https://github.com/umijs/umi/discussions/8452)
 
-## 第三方包里如何使用 css modules
+## How to use css modules in third-party packages
 
-1. 直接将第三方包的 `jsx` / `ts` / `tsx` 源码发布到 npm ，无需转译为 `js` Umi 4 支持直接使用。
+1. Directly publish the source code of third-party packages' `jsx` / `ts` / `tsx` to npm, no need to translate to `js`. Umi 4 supports direct use.
 
-2. 若第三方包产物是 `js` 的情况，需要将其纳入 babel 额外处理，才可以支持 css modules：
+2. If the third-party package output is `js`, you need to include it for additional processing by babel to support css modules:
 
 ```ts
 // .umirc.ts
@@ -136,9 +137,9 @@ export default {
 }
 ```
 
-## npm link 的包不热更新怎么解决
+## How to solve the lack of hot updates in npm linked packages
 
-Umi 4 默认开启 `mfsu` ，默认忽略 `node_modules` 的变化，配置从 `mfsu` 排除该包即可：
+Umi 4 has `mfsu` enabled by default and ignores changes in `node_modules` by default. Exclude the package from `mfsu` as follows:
 
 ```ts
 // .umirc.ts
@@ -150,33 +151,33 @@ export default {
 }
 ```
 
-## 我的环境很多，多环境 config 文件的优先级是怎样的
+## What is the priority order of config files for different environments?
 
-加载优先级详见 [UMI_ENV](../../docs/guides/env-variables#umi_env) ，无论是 `config/config.ts` 还是 `.umirc.ts` 同理。
+For the detailed loading priority, see [UMI_ENV](../../docs/guides/env-variables#umi_env), and the same applies to `config/config.ts` or `.umirc.ts`.
 
-## IE 兼容性问题
+## Problems with IE compatibility
 
-现代浏览器主流背景下，Umi 4 默认不兼容 IE 。
+Umi 4 is not IE compatible by default in the context of modern browsers.
 
-若你有调整构建兼容目标、兼容非现代浏览器、兼容 IE 浏览器的需求，请参考 [非现代浏览器兼容](../../blog/legacy-browser) 。
+If you need to adjust the build for compatibility targets, for older browsers, or for IE, please refer to [Legacy Browser Compatibility](../../blog/legacy-browser).
 
-## SSR 问题
+## SSR Issues
 
-SSR 目前还处于实验性特性，不建议在生产环境使用，若发现问题可即时在 [issue](https://github.com/umijs/umi/issues) 反馈。
+SSR is still an experimental feature and not recommended for production environments. If any issues are encountered, they should be reported on [issues](https://github.com/umijs/umi/issues).
 
-## Vue / Vite 问题
+## Vue / Vite Issues
 
-Umi 4 新增了 Vite 模式和 Vue 支持，可能存在 edge case ，若发现问题可即时在 [issue](https://github.com/umijs/umi/issues) 反馈。
+Umi 4 now supports Vite mode and Vue. There may be edge cases, so report any issues on [issue](https://github.com/umijs/umi/issues).
 
-## `history` 中取的 pathname 为什么和 `useLocation` 中的不一样
+## Why does the pathname obtained from `history` differ from the one obtained from `useLocation`?
 
-这种情况是在项目配置了 `base` 。 `history.location.pathname` 取到的值是浏览器地址中的 `pathname`，它是包含 `base` 的；而路由相关 hooks 取到的值是**前端路由**定义中的 `pathname`，它是不包含 `base` 的。[参考](../guides/routes#location-信息)。
+This situation occurs when the project is configured with `base`. `history.location.pathname` reflects the browser's pathname, which includes the `base`. Route-related hooks, however, return the **frontend route** definition's pathname, which does not include the `base`. [Reference](../guides/routes#location-information).
 
-## 调整产物的压缩编码格式
+## How to change the compression encoding format of the output
 
-默认 js / css 的压缩器 `esbuild` 会采用 `ascii` 格式编码压缩，这可能导致中文字符被转码，增大产物体积。
+By default, the js/css compressor `esbuild` uses `ascii` encoding for compression, which may lead to the encoding of Chinese characters and increase the size of the output.
 
-可通过配置调整到 `utf8` 编码，防止字符被转换：
+Adjust the encoding to `utf8` to prevent character conversion:
 
 ```ts
 // .umirc.ts
@@ -186,7 +187,7 @@ export default {
 }
 ```
 
-或通过切换压缩器来解决：
+Or switch the compressor to resolve this:
 
 ```ts
 // .umirc.ts
@@ -196,11 +197,11 @@ export default {
 }
 ```
 
-## devServer 选项怎么配置
+## How to configure devServer options
 
-Umi 4 不再支持配置 `devServer` 选项，但你可以通过以下方式找到替代：
+Umi 4 no longer supports configuring `devServer`, but you can find alternatives as follows:
 
-1. [`proxy`](../api/config#proxy) 选项配置代理，可通过 `onProxyReq` 修改请求头信息，可参考 [#10760](https://github.com/umijs/umi/issues/10760#issuecomment-1471158059) 。
+1. Use the [`proxy`](../api/config#proxy) option to set up a proxy, and modify request header information through `onProxyReq`, see [#10760](https://github.com/umijs/umi/issues/10760#issuecomment-1471158059).
 
-2. 编写 [项目级插件](../guides/use-plugins#项目级插件) ，插入 express 中间件以实现对请求的修改，可参考 [#10060](https://github.com/umijs/umi/issues/10060#issuecomment-1471519707) 。
+2. Write a [project-level plugin](../guides/use-plugins#project-level-plugins) to insert an express middleware to modify requests, see [#10060](https://github.com/umijs/umi/issues/10060#issuecomment-1471519707).
 

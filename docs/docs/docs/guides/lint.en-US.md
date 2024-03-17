@@ -1,27 +1,29 @@
 ---
 order: 13
 toc: content
+translated_at: '2024-03-17T10:29:06.038Z'
 ---
-# 编码规范
 
-我们通常会在项目中使用 ESLint、Stylelint 来协助我们把控编码质量，为了实现低成本、高性能、更稳定地接入上述工具，Umi 提供了开箱即用的 Lint 能力，包含以下特性：
+# Coding Standards
 
-1. **推荐配置**：提供 ESLint 及 Stylelint 推荐配置，可以直接继承使用
-2. **统一的 CLI**：提供 `umi lint` CLI，集成式调用 ESLint 和 Stylelint
-3. **规则稳定**：始终确保规则的稳定性，不会出现上游配置更新导致存量项目 lint 失败的情况
+We often use ESLint and Stylelint in projects to help us control coding quality. To achieve low-cost, high-performance, and more stable integration of the above tools, Umi provides out-of-the-box Lint capabilities, including the following features:
 
-其中，ESLint 配置具备如下特点：
+1. **Recommended Configurations**: Provides ESLint and Stylelint recommended configurations that can be directly inherited and used
+2. **Unified CLI**: Provides `umi lint` CLI, integrating calls to ESLint and Stylelint
+3. **Stable Rules**: Always ensures the stability of rules to avoid situations where upstream configuration updates cause lint failures in existing projects
 
-1. **仅质量相关**：我们从数百条规则中筛选出数十条与编码质量相关的规则进行白名单开启，回归 Lint 本质，且不会与 Prettier 的规则冲突
-2. **性能优先**：部分 TypeScript 的规则实用性低但项目全量编译的成本却很高，我们对这些规则进行禁用以提升性能
-3. **内置常用插件**：包含 react、react-hooks、@typescript/eslint、jest，满足日常所需
+The ESLint configuration has the following characteristics:
 
-另外，Stylelint 配置还内置 CSS-in-JS 支持，可以检测出 JS 文件中的样式表语法错误。听起来很有吸引力？来看看如何接入吧。
+1. **Quality-Related Only**: We have selected dozens of quality-related rules from hundreds of rules to whitelist, returning to the essence of Lint, without conflict with Prettier's rules
+2. **Performance Priority**: Some TypeScript rules are of low practicability but incur high project-wide compilation costs, so we disable these rules to improve performance
+3. **Built-in Common Plugins**: Includes react, react-hooks, @typescript/eslint, jest, meeting daily needs
 
-## 使用方式
-### 安装
+Additionally, the Stylelint configuration also includes built-in support for CSS-in-JS, allowing for the detection of stylesheet syntax errors in JS files. Sounds attractive? Let's see how to integrate it.
 
-为了节省安装体积，目前仅在 Umi Max 中内置了 Lint 模块，使用 `max lint` 来执行 lint 过程。**如果你使用的是 Umi，需要先安装 `@umijs/lint`**：
+## How to Use
+### Installation
+
+To save on installation size, at present, the Lint module is only built into Umi Max. Use `max lint` to execute the lint process. **If you are using Umi, you need to first install `@umijs/lint`**:
 
 ```bash
 $ npm i @umijs/lint -D
@@ -29,70 +31,72 @@ $ npm i @umijs/lint -D
 $ pnpm add @umijs/lint -D
 ```
 
-然后安装 ESLint 及 Stylelint：
+Then install ESLint and Stylelint:
+
+> The current version of `stylelint` used by `@umijs/lint` is v14  
 
 ```bash
-$ npm i eslint stylelint -D
+$ npm i -D eslint "stylelint@^14"
 # or
-$ pnpm add eslint stylelint -D
+$ pnpm add -D eslint "stylelint@^14"
 ```
 
-### 启用配置
+### Enable Configuration
 
-在 `.eslintrc.js` 及 `.stylelintrc.js` 里继承 Umi 提供的配置：
+Inherit the configuration provided by Umi in your `.eslintrc.js` and `.stylelintrc.js`:
 
 ```js
 // .eslintrc.js
 module.exports = {
-  // Umi 项目
+  // For Umi projects
   extends: require.resolve('umi/eslint'),
 
-  // Umi Max 项目
+  // For Umi Max projects
   extends: require.resolve('@umijs/max/eslint'),
 }
 
 // .stylelintrc.js
 module.exports = {
-  // Umi 项目
+  // For Umi projects
   extends: require.resolve('umi/stylelint'),
 
-  // Umi Max 项目
+  // For Umi Max projects
   extends: require.resolve('@umijs/max/stylelint'),
 }
 ```
 
-在配置文件创建完毕后，我们其实已经可以通过 `eslint`、`stylelint` 命令来执行 lint 了，但我们仍然推荐使用 `umi lint` 命令，以获得更便捷的体验。
+After the configuration files are created, we can already use the `eslint` and `stylelint` commands to execute lint, but we still recommend using the `umi lint` command for a more convenient experience.
 
 ### CLI
 
-`umi lint` 命令的用法如下：
+The usage of the `umi lint` command is as follows:
 
 ```bash
 $ umi lint [glob] [--fix] [--eslint-only] [--stylelint-only] [--cssinjs]
 ```
 
-参数说明：
+Parameters explanation:
 
 ```bash
-  [glob]: 可选，指定要 lint 的文件，默认为 `{src,test}/**/*.{js,jsx,ts,tsx,css,less}`
-  --quiet: 可选，禁用 `warn` 规则的报告，仅输出 `error`
-  --fix: 可选，自动修复 lint 错误
-  --eslint-only: 可选，仅执行 ESLint
-  --stylelint-only: 可选，仅执行 Stylelint
-  --cssinjs: 可选，为 Stylelint 启用 CSS-in-JS 支持
+  [glob]: Optional, specify the files to lint, default is `{src,test}/**/*.{js,jsx,ts,tsx,css,less}`
+  --quiet: Optional, disable reporting of `warn` rules, only output `error`
+  --fix: Optional, auto-fix lint errors
+  --eslint-only: Optional, execute ESLint only
+  --stylelint-only: Optional, execute Stylelint only
+  --cssinjs: Optional, enable CSS-in-JS support for Stylelint
 ```
 
-通常来说，直接执行 `umi lint` 应该就能满足大部分情况。
+Generally, directly executing `umi lint` should meet most needs.
 
-## 与 Git 工作流结合
+## Integrating with Git Workflow
 
-我们也推荐使用 [lint-staged](https://github.com/okonet/lint-staged#readme) 和 [Husky](https://typicode.github.io/husky/)，将 `umi lint` 与 Git 工作流结合使用，以便在**提交代码时**自动 lint **本次变更**的代码。
+We also recommend using [lint-staged](https://github.com/okonet/lint-staged#readme) and [Husky](https://typicode.github.io/husky/), integrating `umi lint` with the Git workflow to automatically lint **the current changes** when **committing code**.
 
 ### lint-staged
 
-lint-staged 用来驱动 `umi lint` 命令，每次仅将变更的内容交给 `umi lint` 进行检查。
+lint-staged is used to drive the `umi lint` command, checking only the changed content each time.
 
-安装方式：
+Installation method:
 
 ```bash
 $ npm i lint-staged -D
@@ -100,7 +104,7 @@ $ npm i lint-staged -D
 $ pnpm add lint-staged -D
 ```
 
-在 `package.json` 中配置 lint-staged：
+Configure lint-staged in `package.json`:
 
 ```diff
 {
@@ -112,13 +116,13 @@ $ pnpm add lint-staged -D
 }
 ```
 
-此时如果执行 `git add sample.js` 后，再执行 `npx lint-staged`，就能实现仅检查 `sample.js` 本次的变更了。
+Now, if you execute `git add sample.js` and then `npx lint-staged`, it will only check the current changes in `sample.js`.
 
 ### Husky
 
-Husky 用来绑定 Git Hooks、在指定时机（例如 `pre-commit`）执行我们想要的命令，安装方式请参考 Husky 文档：https://typicode.github.io/husky/#/?id=automatic-recommended
+Husky is used to bind Git Hooks to execute desired commands at specified timings (e.g., `pre-commit`). For installation methods, please refer to the Husky documentation: https://typicode.github.io/husky/#/?id=automatic-recommended
 
-初始化完成后，需要手动修改 `.husky/pre-commit` 文件的内容：
+After initialization, modify the content of `.husky/pre-commit` manually:
 
 ```diff
 #!/bin/sh
@@ -128,15 +132,15 @@ Husky 用来绑定 Git Hooks、在指定时机（例如 `pre-commit`）执行我
 + npx lint-staged
 ```
 
-至此大功告成，每次执行 `git commit` 命令的时候，`umi lint` 就能自动对本次变更的代码进行检查，在确保编码质量的同时也能确保执行效率。
+Now you're all set. Each time you execute the `git commit` command, `umi lint` will automatically check the code changes, ensuring coding quality while also ensuring execution efficiency.
 
 ## Prettier
 
-在启用 `umi lint` 的基础上，我们也建议与 [Prettier](https://prettier.io/docs/en/install.html) 一同使用，以确保团队的代码风格是基本一致的。
+On top of enabling `umi lint`, we also suggest using [Prettier](https://prettier.io/docs/en/install.html) together to ensure that the team's coding style is basically consistent.
 
-可参考 Prettier 文档将其配置到 lint-staged 中：https://prettier.io/docs/en/install.html#git-hooks
+Refer to the Prettier documentation to configure it with lint-staged: https://prettier.io/docs/en/install.html#git-hooks
 
-## 附录
+## Appendix
 
-1. Umi 内置的 ESLint 规则列表：https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
-2. Umi 内置的 Stylelint 配置：https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts
+1. ESLint rules built into Umi: https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
+2. Stylelint configuration built into Umi: https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts

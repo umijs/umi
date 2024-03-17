@@ -1,31 +1,33 @@
 ---
 order: 5
 toc: content
+translated_at: '2024-03-17T09:24:49.645Z'
 ---
 
-# 数据流
+```markdown
+# Data Stream
 
-`@umi/max` 内置了**数据流管理**[插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/model.ts)，它是一种基于 `hooks` 范式的轻量级数据管理方案，可以在 Umi 项目中管理全局的共享数据。
+`@umi/max` has a built-in **data stream management** [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/model.ts), which is a lightweight data management solution based on the `hooks` paradigm. It allows managing global shared data in Umi projects.
 
-## 开始使用
+## Getting Started
 
-### 创建 Model
+### Creating a Model
 
-数据流管理插件采用约定式目录结构，我们约定可以在 `src/models`, `src/pages/xxxx/models/`目录中，和 `src/pages/xxxx/model.{js,jsx,ts,tsx}` 文件引入 Model 文件。
-Model 文件允许使用 `.(tsx|ts|jsx|js)` 四种后缀格式，**命名空间（namespace）** 生成规则如下。
+The data stream management plugin adopts a conventional directory structure. We agree that you can include Model files in the `src/models`, `src/pages/xxxx/models/` directory, and `src/pages/xxxx/model.{js,jsx,ts,tsx}` files.
+Model files can use `.(tsx|ts|jsx|js)` four suffix formats, the **namespace** generation rule is as follows.
 
-| 路径 | 命名空间 | 说明 |
+| Path | Namespace | Explanation |
 | :--- |:--- | :--- |
-| `src/models/count.ts` | `count` | `src/models` 目录下不支持目录嵌套定义 model |
+| `src/models/count.ts` | `count` | `src/models` directory does not support nested directory definition model |
 | `src/pages/pageA/model.ts` | `pageA.model` |  |
 | `src/pages/pageB/models/product.ts` | `pageB.product` |  |
-| `src/pages/pageB/models/fruit/apple.ts` | `pageB.fruit.apple` |  `pages/xxx/models` 下 model 定义支持嵌套定义 |
+| `src/pages/pageB/models/fruit/apple.ts` | `pageB.fruit.apple` |  `pages/xxx/models` under model definition supports nested definition |
 
-所谓的 Model，就是一个自定义的 `hooks`，没有任何使用者需要关注的“黑魔法”。
+A Model is essentially a custom `hooks` that doesn't involve any "black magic" that users need to worry about.
 
-当我们需要获取 Model 中的全局数据时，调用该命名空间即可。例如，对于 Model 文件 `userModel.ts`，它的命名空间为 `userModel`。
+When you need to get the global data in the Model, you can call its namespace. For example, for the Model file `userModel.ts`, its namespace is `userModel`.
 
-编写一个默认导出的函数：
+Write a function with a default export:
 
 ```ts
 // src/models/userModel.ts
@@ -38,13 +40,13 @@ export default function Page() {
 };
 ```
 
-这就是一个 Model。插件所做的工作就是将其中的状态或数据变成了**全局数据**，不同的组件在使用该 Model 时，拿到的是同一份状态或数据。
+This is a Model. The plugin's job is to turn the state or data within it into **global data**, so when different components use this Model, they get the same set of state or data.
 
 :::info{title=💡}
-Model 文件需要默认导出一个函数，此函数定义了一个 `hook`。对于不符合此规范的文件，将会被过滤掉，并无法通过命名空间调用。
+The Model file needs to default export a function, which defines a `hook`. Files that do not comply with this specification will be filtered out and cannot be called by namespace.
 :::
 
-Model 中允许使用其它 `hooks`，以计数器为例：
+The Model can use other `hooks`, taking a counter as an example:
 
 ```ts
 // src/models/counterModel.ts
@@ -60,7 +62,7 @@ export default function Page() {
 };
 ```
 
-在项目实践中，我们通常需要请求后端接口，来获取所需的数据。现在让我们来扩展前面获取用户信息的例子：
+In project practice, we usually need to request backend interfaces to obtain the required data. Now let's extend the previous example of getting user information:
 
 ```ts
 // src/models/userModel.ts
@@ -85,7 +87,7 @@ export default function Page() {
 };
 ```
 
-如果您在项目中使用了 [ahooks](https://ahooks.js.org)，可以像这样组织您的代码：
+If you use [ahooks](https://ahooks.js.org) in your project, you can organize your code like this:
 
 ```ts
 // src/models/userModel.ts
@@ -108,9 +110,9 @@ export default function Page() {
 };
 ```
 
-### 使用 Model
+### Using Model
 
-现在，您想要在某个组件中使用全局的 Model。以用户信息为例，只需要调用 `useModel` 这一钩子函数：
+Now, if you want to use a global Model in a specific component. Taking user information as an example, just call the `useModel` hook function:
 
 ```tsx
 // src/components/Username/index.tsx
@@ -125,17 +127,17 @@ export default function Page() {
 }
 ```
 
-其中，`useModel()` 方法传入的参数为 Model 的**命名空间**。
+In this case, the `useModel()` method's parameter is the Model's **namespace**.
 
 :::info{title=💡}
-如果您使用 VSCode 作为 Umi 项目开发的 IDE，推荐搭配 [@umijs/plugin-model](https://marketplace.visualstudio.com/items?itemName=litiany4.umijs-plugin-model)插件使用。它允许您快速跳转到定义 Model 的文件：
+If you use VSCode as the IDE for developing Umi projects, it is recommended to use in conjunction with the [@umijs/plugin-model](https://marketplace.visualstudio.com/items?itemName=litiany4.umijs-plugin-model) plugin. It allows you to quickly jump to the file that defines the Model:
 
-![vscode - @umijs/plugin-model 插件演示](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif)
+![vscode - @umijs/plugin-model plugin demonstration](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif)
 :::
 
-## 性能优化
+## Performance Optimization
 
-`useModel()` 方法可以接受可选的第二个参数，当组件只需要使用 Model 中的部分参数，而对其它参数的变化不感兴趣时，可以传入一个函数进行过滤。以实现计数器的操作按钮为例：
+The `useModel()` method can accept an optional second parameter. When the component only needs to use part of the Model's parameters and is not interested in the changes of other parameters, a function can be passed in for filtering. Taking the operation buttons of the counter as an example:
 
 ```tsx
 // src/components/CounterActions/index.tsx
@@ -156,17 +158,17 @@ export default function Page() {
 };
 ```
 
-上面的组件并不关心计数器 Model 中的 `counter` 值，只需要使用 Model 提供的 `increment()` 和 `decrement()` 方法。于是我们传入了一个函数作为 `useModel()` 方法的第二个参数，该函数的返回值将作为 `useModel()` 方法的返回值。
+The above component is not concerned with the `counter` value in the counter Model, only needing to use the `increment()` and `decrement()` methods provided by the Model. Thus, we passed in a function as the second parameter of the `useModel()` method, whose return value will serve as the `useModel()` method's return value.
 
-这样，我们过滤掉了 `counter` 这一频繁变化的值，避免了组件重复渲染带来的性能损失。
+This way, we filter out the frequently changing `counter` value, avoiding performance loss caused by repeated rendering of the component.
 
-## 全局初始状态
+## Global Initial State
 
-`@umi/max` 内置了**全局初始状态管理**[插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/initial-state.ts)，允许您快速构建并在组件内获取 Umi 项目全局的初始状态。
+`@umi/max` has a built-in **global initial state management** [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/initial-state.ts), allowing you to quickly build and obtain the global initial state of Umi projects within components.
 
-全局初始状态是一种特殊的 Model。
+The global initial state is a special Model.
 
-全局初始状态在整个 Umi 项目的最开始创建。编写 `src/app.ts` 的导出方法 `getInitialState()`，其返回值将成为全局初始状态。例如：
+The global initial state is created at the very beginning of the entire Umi project. Write the `getInitialState()` export method in `src/app.ts`, whose return value will become the global initial state. For example:
 
 ```ts
 // src/app.ts
@@ -178,7 +180,7 @@ export async function getInitialState() {
 }
 ```
 
-现在，各种插件和您定义的组件都可以通过 `useModel('@@initialState')` 直接获取到这份全局的初始状态，如下所示：
+Now, various plugins and components you define can directly obtain this global initial state through `useModel('@@initialState')`, as shown below:
 
 ```tsx
 import { useModel } from 'umi';
@@ -190,30 +192,30 @@ export default function Page() {
 };
 ```
 
-| 对象属性 | 类型 | 介绍 |
+| Object Property | Type | Introduction |
 | --- | --- | --- |
-| `initialState` | `any` | 导出的 `getInitialState()` 方法的返回值 |
-| `loading` | `boolean` | `getInitialState()` 或 `refresh()` 方法是否正在进行中。在首次获取到初始状态前，页面其他部分的渲染都会**被阻止** |
-| `error` | `Error` | 如果导出的 `getInitialState()` 方法运行时报错，报错的错误信息 |
-| `refresh` | `() => void` | 重新执行 `getInitialState` 方法，并获取新的全局初始状态 |
-| `setInitialState` | `(state: any) => void` | 手动设置 `initialState` 的值，手动设置完毕会将 `loading` 置为 `false` |
+| `initialState` | `any` | The return value of the exported `getInitialState()` method |
+| `loading` | `boolean` | Whether the `getInitialState()` or `refresh()` method is in progress. Before the initial state is first obtained, the rendering of other parts of the page will be **blocked** |
+| `error` | `Error` | If the exported `getInitialState()` method throws an error, the error message |
+| `refresh` | `() => void` | Re-execute the `getInitialState` method and obtain a new global initial state |
+| `setInitialState` | `(state: any) => void` | Manually set the value of `initialState`, after manual setting, `loading` will be set to `false` |
 
-## Qiankun 父子应用间通信
+## Qiankun Parent-Child Application Communication
 
-`@umi/max` 内置了 **Qiankun 微前端**[插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts)，当使用数据流插件时，它允许微应用通过 `useModel('@@qiankunStateFromMaster')` 方法获取父应用传递给子应用的数据 Model，进而实现父子应用间的通信。
+`@umi/max` has a built-in **Qiankun Microfrontend** [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts), when using the data stream plugin, it allows micro-applications to obtain the parent application's data Model passed to the child application through the `useModel('@@qiankunStateFromMaster')` method, thereby achieving communication between parent and child applications.
 
-具体的使用方法请查阅[微前端的父子应用通信章节](./micro-frontend#父子应用通信)。
+For specific usage methods, please refer to the section on parent-child application communication in microfrontend.
 
 ## API
 
 ### `useModel`
 
-`useModel()` 是一个钩子函数，提供了使用 Model 的能力。它接受两个参数：
+`useModel()` is a hook function that provides the capability to use Model. It accepts two parameters:
 
-| 参数 | 类型 | 介绍 |
+| Parameter | Type | Introduction |
 | --- | --- | --- |
-| `namespace` | `String` | Model 文件的命名空间 |
-| `updater` | `(model: any) => any` | 可选参数。传入一个函数，函数的返回值为当前组件中需要使用到的 Model 状态或数据，并作为 `useModel()` 方法的返回值。对优化组件性能具有重要意义。 |
+| `namespace` | `String` | The namespace of the Model file |
+| `updater` | `(model: any) => any` | An optional parameter. Pass in a function, whose return value is the Model state or data currently needed in the component, and serves as the return value of the `useModel()` method. It is of significant importance for optimizing component performance. |
 
 ```tsx
 // src/components/AdminInfo/index.tsx
