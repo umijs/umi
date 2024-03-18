@@ -144,6 +144,8 @@ export const layout: RuntimeConfig = {
 
 ### onRouteChange
 
+<HashAnchorCompat from="#onroutechange-routes-clientroutes-location-action-basename-isfirst-" to="#onroutechange"></HashAnchorCompat>
+
 - type: `(args: { routes: Routes; clientRoutes: Routes; location: Location; action: Action; basename: string; isFirst: boolean }) => void`
 
 在初始加载和路由切换时做一些事情。
@@ -178,6 +180,8 @@ export function onRouteChange({ clientRoutes, location }) {
 
 ### patchRoutes
 
+<HashAnchorCompat from="#patchroutes-routes-" to="#patchroutes"></HashAnchorCompat>
+
 - type: `(args: { routes: Routes; routeComponents }) => void`
 
 ```ts
@@ -193,6 +197,8 @@ export function patchRoutes({ routes, routeComponents }) {
 注：如需动态更新路由，建议使用 `patchClientRoutes()` ，否则你可能需要同时修改 `routes` 和 `routeComponents`。
 
 ### patchClientRoutes
+
+<HashAnchorCompat from="#patchclientroutes-routes-" to="#patchclientroutes"></HashAnchorCompat>
 
 - type: `(args: { routes: Routes; }) => void`
 
@@ -270,6 +276,8 @@ Umi 内置了 `qiankun` 插件来提供微前端的能力，具体参考[插件�
 
 ### render
 
+<HashAnchorCompat from="#renderoldrender-function" to="#render"></HashAnchorCompat>
+
 - Type: `(oldRender: Function)=>void`
 
 覆写 render。
@@ -293,6 +301,8 @@ export function render(oldRender) {
 如果你使用了 `import { request } from 'umi';` 来请求数据，那么你可以通过该配置来自定义中间件、拦截器、错误处理适配等。具体参考 [request](../max/request) 插件配置。
 
 ### rootContainer
+
+<HashAnchorCompat from="#rootcontainerlastrootcontainer-args" to="#rootcontainer"></HashAnchorCompat>
 
 - Type: `(container: JSX.Element,args: { routes: Routes; plugin; history: History }) => JSX.Element;`
 
