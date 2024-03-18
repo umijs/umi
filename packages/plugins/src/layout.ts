@@ -117,10 +117,15 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
+    let realNpmClient = api.appData.npmClient;
     // tnpm 作为 npmClient 时，可能使用不同的安装模式
-    const realNpmClient =
-      (api.appData.npmClient === NpmClientEnum.tnpm && api.pkg.tnpm?.mode) ||
-      api.appData.npmClient;
+    if (
+      api.appData.npmClient === NpmClientEnum.tnpm &&
+      api.pkg.tnpm?.mode &&
+      [NpmClientEnum.npm, NpmClientEnum.yarn].includes(api.pkg.tnpm.mode)
+    ) {
+      realNpmClient = api.pkg.tnpm.mode;
+    }
     // use absolute path to types references in `npm/yarn` will cause case problems.
     // https://github.com/umijs/umi/discussions/10947
     // https://github.com/umijs/umi/discussions/11570
