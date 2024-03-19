@@ -3,15 +3,15 @@ import { IApi } from '../../types';
 
 export async function getBabelOpts(opts: { api: IApi }) {
   // TODO: 支持用户自定义
-  const isGTEReact17 = semver.gte(opts.api.appData.react.version, '17.0.0');
+  const isGTEReact16 = semver.gte(opts.api.appData.react.version, '16.14.0');
   const babelPresetOpts = await opts.api.applyPlugins({
     key: 'modifyBabelPresetOpts',
     initialValue: {
       presetEnv: {},
       presetReact: {
-        runtime: isGTEReact17 ? 'automatic' : 'classic',
+        runtime: isGTEReact16 ? 'automatic' : 'classic',
         // importSource cannot be set when runtime is classic
-        ...(isGTEReact17 ? {} : { importSource: undefined }),
+        ...(isGTEReact16 ? {} : { importSource: undefined }),
       },
       presetTypeScript: {},
       pluginTransformRuntime: {},

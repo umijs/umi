@@ -97,12 +97,12 @@ umi build --clean
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
       });
-      const isGTEReact17 =
+      const isGTEReact16 =
         api.appData.react?.version &&
-        semver.gte(api.appData.react.version, '17.0.0');
+        semver.gte(api.appData.react.version, '16.14.0');
       const opts = {
         react: {
-          runtime: isGTEReact17 ? 'automatic' : 'classic',
+          runtime: isGTEReact16 ? 'automatic' : 'classic',
         },
         config: api.config,
         cwd: api.cwd,
