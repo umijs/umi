@@ -34,10 +34,10 @@ export const build = async (api: IApi, opts: any) => {
   bundlerOpts.watch = api.env === 'development';
 
   // override chainWebpack
-  bundlerOpts.chainWebpack = async (memo: WebpackChain) => {
+  bundlerOpts.chainWebpack = async (memo: WebpackChain, opts: any) => {
     const absOutputFile = absServerBuildPath(api);
 
-    await oChainWebpack(memo);
+    await oChainWebpack(memo, { ...opts, ssr: true });
     memo.entryPoints.clear();
     memo.entry('umi').add(resolve(api.paths.absTmpPath, 'umi.server.ts'));
     memo.target('node');
