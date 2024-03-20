@@ -288,9 +288,9 @@ export default function createRequestHandler(
 
     const writable = new Writable();
 
-    writable._write = (chunk, _encoding, next) => {
+    writable._write = (chunk, _encoding, callback) => {
       res.write(chunk);
-      next();
+      callback();
     };
 
     writable.on('finish', async () => {

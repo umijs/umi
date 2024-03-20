@@ -62,7 +62,7 @@ export function Html({
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {metadata?.title && <title>{metadata.title}</title>}
-        {metadata?.favicons?.map((favicon, key) => {
+        {metadata?.favicons?.map((favicon: string, key: number) => {
           return <link key={key} rel="shortcut icon" href={favicon} />;
         })}
         {metadata?.description && (
@@ -71,14 +71,14 @@ export function Html({
         {metadata?.keywords?.length && (
           <meta name="keywords" content={metadata.keywords.join(',')} />
         )}
-        {metadata?.metas?.map((em) => (
+        {metadata?.metas?.map((em: any) => (
           <meta key={em.name} name={em.name} content={em.content} />
         ))}
 
-        {metadata?.links?.map((link: Record<string, string>, key) => {
+        {metadata?.links?.map((link: Record<string, string>, key: number) => {
           return <link key={key} {...link} />;
         })}
-        {metadata?.styles?.map((style: string, key) => {
+        {metadata?.styles?.map((style: string, key: number) => {
           const { type, href, content } = generatorStyle(style);
           if (type === 'link') {
             return <link key={key} rel="stylesheet" href={href} />;
@@ -86,7 +86,7 @@ export function Html({
             return <style key={key}>{content}</style>;
           }
         })}
-        {metadata?.headScripts?.map((script: IScript, key) => {
+        {metadata?.headScripts?.map((script: IScript, key: number) => {
           const { content, ...rest } = genaretorScript(script);
           return (
             <script key={key} {...(rest as any)}>
@@ -115,8 +115,8 @@ export function Html({
             }}
           />
         )}
-        {metadata?.scripts?.map((script: IScript, key) => {
-          const { content, ...rest } = genaretorScript(script, { async: true });
+        {metadata?.scripts?.map((script: IScript, key: number) => {
+          const { content, ...rest } = genaretorScript(script);
           return (
             <script key={key} {...(rest as any)}>
               {content}

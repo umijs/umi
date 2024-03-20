@@ -2568,15 +2568,9 @@ importers:
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
-      '@umijs/utils':
-        specifier: workspace:*
-        version: link:../utils
       history:
         specifier: 5.3.0
         version: 5.3.0
-      lodash.merge:
-        specifier: ^4.6.2
-        version: 4.6.2
       react:
         specifier: 18.1.0
         version: 18.1.0
@@ -2586,10 +2580,6 @@ importers:
       react-router-dom:
         specifier: 6.3.0
         version: 6.3.0(react-dom@18.1.0)(react@18.1.0)
-    devDependencies:
-      '@types/lodash.merge':
-        specifier: ^4.6.9
-        version: 4.6.9
 
   packages/testing:
     dependencies:
@@ -16627,12 +16617,6 @@ packages:
     dependencies:
       '@types/lodash': 4.14.191
     dev: false
-
-  /@types/lodash.merge@4.6.9:
-    resolution: {integrity: sha512-23sHDPmzd59kUgWyKGiOMO2Qb9YtqRO/x4IhkgNUiPQ1+5MUVqi6bCZeq9nBJ17msjIMbEIO5u+XW4Kz6aGUhQ==}
-    dependencies:
-      '@types/lodash': 4.14.191
-    dev: true
 
   /@types/lodash@4.14.191:
     resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
