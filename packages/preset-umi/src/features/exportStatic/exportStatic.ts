@@ -148,15 +148,21 @@ export default (api: IApi) => {
     const { publicPath } = api.config;
     const htmlData = api.appData.exportHtmlData;
     const htmlFiles: { path: string; content: string }[] = [];
+    const { markupArgs: defaultMarkupArgs } = opts;
+    let asyncMarkupArgs: typeof defaultMarkupArgs;
 
     for (const { file, route, prerender } of htmlData) {
-      let { markupArgs } = opts;
+      let markupArgs = defaultMarkupArgs;
+
+      // mark async for the scripts of pre-rendered html
       if (api.config.ssr && prerender) {
-        markupArgs.scripts.forEach((script: any) => {
-          if (script.src) {
-            script.async = true;
-          }
-        });
+        // copy args to avoid affect original object
+        markupArgs = asyncMarkupArgs ??= {
+          ...markupArgs,
+          scripts: markupArgs.scripts.map((script: any) =>
+            script.src ? { ...script, async: true } : script,
+          ),
+        };
       }
 
       // handle relative publicPath, such as `./`

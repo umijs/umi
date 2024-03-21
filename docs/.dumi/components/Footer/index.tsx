@@ -1,6 +1,5 @@
 import { Link } from 'umi';
 import styles from './index.less';
-import { NewsLetterForm } from './NewsLetterForm';
 
 export const Footer = () => {
   return (
@@ -39,9 +38,6 @@ export const Footer = () => {
               </a>
             </div>
           </div>
-        </div>
-        <div className="right">
-          <NewsLetterForm />
         </div>
       </div>
     </div>
