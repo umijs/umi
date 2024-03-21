@@ -348,12 +348,12 @@ PORT=8888 umi dev
         },
       });
 
-      const isGTEReact16 =
+      const shouldUseAutomaticRuntime =
         api.appData.react?.version &&
         semver.gte(api.appData.react.version, '16.14.0');
       const opts: any = {
         react: {
-          runtime: isGTEReact16 ? 'automatic' : 'classic',
+          runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
         config: api.config,
         pkg: api.pkg,
