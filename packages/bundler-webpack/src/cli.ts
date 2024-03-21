@@ -2,7 +2,7 @@ import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { chalk, register, tryPaths, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
-import { basename, extname, join } from 'path';
+import { basename, extname, join, resolve } from 'path';
 import { build } from './build';
 import { dev } from './dev';
 
@@ -18,7 +18,7 @@ const entry = tryPaths([
 ]);
 
 let config = {};
-const configFile = join(cwd, args.config || 'config.ts');
+const configFile = resolve(cwd, args.config || 'config.ts');
 register.register({
   implementor: esbuild,
 });
