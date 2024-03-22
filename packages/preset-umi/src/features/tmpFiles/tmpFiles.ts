@@ -524,7 +524,7 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
-          metaData: JSON.stringify({
+          metadata: JSON.stringify({
             headScripts,
             styles,
             title,
@@ -533,7 +533,7 @@ if (process.env.NODE_ENV === 'development') {
             metas,
           }),
           scripts: JSON.stringify(scripts || []),
-          hydrateRoot: ssr?.hydrateRoot || 'html',
+          hydrateFromHtml: !!ssr?.hydrateFromHtml,
         },
       });
     }

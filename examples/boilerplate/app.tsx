@@ -40,5 +40,6 @@ export function patchClientRoutes({ routes }: any) {
 // }
 
 export const modifyClientRenderOpts = (opts: any) => {
+  console.log('modifyClientRenderOpts: ', opts);
   return opts;
 };

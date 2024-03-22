@@ -1,5 +1,6 @@
 {
   "private": true,
+  "repository": "git@github.com:umijs/umi.git",
   "scripts": {
     "bootstrap": "umi-scripts bootstrap",
     "build": "umi-scripts turbo build",

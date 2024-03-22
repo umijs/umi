@@ -50,7 +50,7 @@ export async function getClientRootComponent(opts: IRootComponentOptions) {
       {rootContainer}
     </AppContext.Provider>
   );
-  if (opts.hydrateRoot === 'html') {
+  if (opts.hydrateFromHtml) {
     return <Html {...opts}>{app}</Html>;
   } else {
     return app;

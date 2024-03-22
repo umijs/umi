@@ -9,7 +9,7 @@ export default {
   scripts: [`https://a.com/b.js`],
   ssr: {
     builder: 'webpack',
-    hydrateRoot: 'root',
+    hydrateFromHtml: true,
   },
   styles: [`body { color: red; }`, `https://a.com/b.css`],
 

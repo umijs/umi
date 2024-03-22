@@ -51,9 +51,9 @@ const createOpts = {
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
-  metaData: {{{metaData}}},
+  metadata: {{{metadata}}},
   scripts: {{{scripts}}},
-  hydrateRoot: `{{{hydrateRoot}}}`
+  hydrateFromHtml: `{{{hydrateFromHtml}}}`
 
 };
 const requestHandler = createRequestHandler(createOpts);

@@ -1,3 +1,4 @@
+import mergeWith from 'lodash.mergewith';
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
@@ -37,9 +38,9 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  metaData: IOpts;
+  metadata: IOpts;
   scripts: IOpts['scripts'];
-  hydrateRoot: string;
+  hydrateFromHtml: boolean;
 }
 
 interface IExecLoaderOpts {
@@ -109,7 +110,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     }
 
     const loaderData: Record<string, any> = {};
-    const metadata: Record<string, any> = {};
+    let metadata: Record<string, any> = {};
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
@@ -124,29 +125,24 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
               // 如果有metadataLoader，执行metadataLoader
               // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
               // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
-              const metadataLoaderDatas = await executeMetadataLoader({
-                routesWithServerLoader,
-                routeKey: id,
-                serverLoaderArgs,
-                serverLoaderData: loaderData[id],
-              });
-              const {
-                metas = [],
-                headScripts = [],
-                styles = [],
-                links = [],
-              } = opts.metaData;
               if (routes[id].hasMetadataLoader) {
-                Object.assign(metadata, opts.metaData, metadataLoaderDatas, {
-                  metas: [...metas, ...(metadataLoaderDatas.metas || [])],
-                  headScripts: [
-                    ...headScripts,
-                    ...(metadataLoaderDatas.headScripts || []),
-                  ],
-                  styles: [...styles, ...(metadataLoaderDatas.styles || [])],
-                  links: [...links, ...(metadataLoaderDatas.links || [])],
-                  scripts: opts.scripts,
+                const metadataLoaderData = await executeMetadataLoader({
+                  routesWithServerLoader,
+                  routeKey: id,
+                  serverLoaderArgs,
+                  serverLoaderData: loaderData[id],
                 });
+
+                metadata = mergeWith(
+                  metadataLoaderData,
+                  opts.metadata,
+                  (pre, next) => {
+                    if (Array.isArray(pre) || Array.isArray(next)) {
+                      return Array.prototype.concat.call(pre || [], next || []);
+                    }
+                  },
+                );
+                metadata.scripts = opts.scripts;
               }
               resolve();
             }),
@@ -165,7 +161,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       manifest,
       loaderData,
       metadata,
-      hydrateRoot: opts.hydrateRoot,
+      hydrateFromHtml: opts.hydrateFromHtml,
     };
 
     const element = (await opts.getClientRootComponent(

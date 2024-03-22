@@ -98,9 +98,9 @@ export type RenderClientOpts = {
   rootElement?: HTMLElement;
   /**
    * ssr 渲染根节点
-   * @doc 默认html, 内部应用使用root
+   * @doc 默认ture, 为html, false时使用app root
    */
-  hydrateRoot?: string;
+  hydrateFromHtml?: boolean;
   /**
    * 当前的路由配置
    */
