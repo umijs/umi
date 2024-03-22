@@ -51,6 +51,7 @@ const createOpts = {
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
+  basename: '{{{basename}}}'
 };
 const requestHandler = createRequestHandler(createOpts);
 export const renderRoot = createUmiHandler(createOpts);

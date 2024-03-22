@@ -1139,6 +1139,12 @@ importers:
         specifier: workspace:*
         version: link:../../packages/umi
 
+  examples/ssr-export-static-basename:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
   examples/ssr-todos:
     dependencies:
       axios:

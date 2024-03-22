@@ -36,6 +36,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
+  basename?: string;
 }
 
 interface IExecLoaderOpts {
@@ -78,6 +79,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       getRoutes,
       createHistory,
       sourceDir,
+      basename,
     } = opts;
 
     // make import { history } from 'umi' work
@@ -148,6 +150,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       manifest,
       loaderData,
       metadata,
+      basename,
     };
 
     const element = (await opts.getClientRootComponent(
