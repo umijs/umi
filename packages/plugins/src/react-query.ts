@@ -143,57 +143,76 @@ export function rootContainer(container) {
         : '',
     });
 
+    const exportMembers: string[] = [
+      // from @tanstack/query-core
+      'QueryClient',
+      'QueryCache',
+      'MutationCache',
+      'QueryObserver',
+      'InfiniteQueryObserver',
+      'QueriesObserver',
+      'MutationObserver',
+      // from @tanstack/react-query
+      'useQuery',
+      'useQueries',
+      'useInfiniteQuery',
+      'useMutation',
+      'useIsFetching',
+      'useIsMutating',
+      ...(useV5
+        ? [
+            'useMutationState',
+            'useSuspenseQuery',
+            'useSuspenseInfiniteQuery',
+            'useSuspenseQueries',
+            'queryOptions',
+            'infiniteQueryOptions',
+          ]
+        : []),
+      'QueryClientProvider',
+      'useQueryClient',
+      'QueryErrorResetBoundary',
+      'useQueryErrorResetBoundary',
+      'useIsRestoring',
+      'IsRestoringProvider',
+    ].filter(Boolean);
+
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
 export {
-  // from @tanstack/query-core
-  QueryClient,
-  MutationObserver,
-  MutationCache,
-  InfiniteQueryObserver,
-  QueriesObserver,
-  QueryObserver,
-  QueryCache,
-  // from @tanstack/react-query
-  useIsRestoring,
-  IsRestoringProvider,
-  useInfiniteQuery,
-  useIsMutating,
-  useIsFetching,
-  useMutation,
-  useQueries,
-  useQuery,
-  QueryClientProvider,
-  useQueryClient,
-  QueryErrorResetBoundary,
-  useQueryErrorResetBoundary,
-  ${useV5 ? 'queryOptions,' : ''}
+  ${exportMembers.join(',\n  ')}
 } from '${pkgPath}';
       `,
     });
+
+    const exportTypes: string[] = [
+      // from @tanstack/query-core
+      'Query',
+      'QueryState',
+      'Mutation',
+      // from @tanstack/react-query
+      'QueriesResults',
+      'QueriesOptions',
+      'QueryErrorResetBoundaryProps',
+      'QueryClientProviderProps',
+      useV4 && 'ContextOptions as QueryContextOptions,',
+      'UseQueryOptions',
+      'UseBaseQueryOptions',
+      'UseQueryResult',
+      'UseBaseQueryResult',
+      'UseInfiniteQueryOptions',
+      'UseMutationResult',
+      'UseMutateFunction',
+      'UseMutateAsyncFunction',
+      'UseBaseMutationResult',
+    ].filter(Boolean);
 
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
 export type {
-  // from @tanstack/query-core
-  Query, QueryState, Mutation,
-  // from @tanstack/react-query
-  QueriesResults,
-  QueriesOptions,
-  QueryErrorResetBoundaryProps,
-  QueryClientProviderProps,
-  ${useV4 ? 'ContextOptions as QueryContextOptions,' : ''}
-  UseQueryOptions,
-  UseBaseQueryOptions,
-  UseQueryResult,
-  UseBaseQueryResult,
-  UseInfiniteQueryOptions,
-  UseMutationResult,
-  UseMutateFunction,
-  UseMutateAsyncFunction,
-  UseBaseMutationResult,
+  ${exportTypes.join(',\n  ')}
 } from '${pkgPath}';
       `,
     });
