@@ -141,7 +141,7 @@ export function rootContainer(container) {
   );
 }
       `
-        : '',
+        : 'export {}',
     });
 
     const exportMembers: string[] = [
