@@ -1,6 +1,7 @@
-import { winPath } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { dirname, join } from 'path';
 import { IApi } from 'umi';
+import { isFlattedNodeModulesDir } from './utils/npmClient';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -216,5 +217,64 @@ export type {
 } from '${pkgPath}';
       `,
     });
+
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      content: enableQueryClient
+        ? `
+import React from 'react';
+import { QueryClientConfig } from '${pkgPath}';
+${
+  enableDevTools
+    ? `
+import { ReactQueryDevtools } from '${devtoolsPkgPath}';
+`
+    : ''
+}
+
+export type RuntimeReactQueryType = {
+  ${
+    enableDevTools
+      ? `
+  devtool?: React.ComponentProps<typeof ReactQueryDevtools>
+`
+      : ''
+  }
+  queryClient?: QueryClientConfig
+}`
+        : 'export type RuntimeReactQueryType = {}',
+    });
   });
+
+  // v5
+  const isFlattedDepsDir = isFlattedNodeModulesDir(api);
+  if (useV5 && !isFlattedDepsDir) {
+    let corePath: string;
+    const REACT_QUERY_CORE_DEP_NAME = '@tanstack/query-core';
+
+    // resolve RQ core
+    try {
+      corePath = winPath(
+        dirname(
+          require.resolve(`${REACT_QUERY_CORE_DEP_NAME}/package.json`, {
+            paths: [pkgPath],
+          }),
+        ),
+      );
+    } catch (e: any) {
+      throw new Error(
+        `[reactQuery] package '${REACT_QUERY_CORE_DEP_NAME}' resolve failed, ${e.message}`,
+      );
+    }
+
+    api.modifyTSConfig((config) => {
+      // if without the source of `@tanstack/query-core`, the IDE can't find the types
+      lodash.set(
+        config,
+        `compilerOptions.paths["${REACT_QUERY_CORE_DEP_NAME}"]`,
+        [corePath],
+      );
+      return config;
+    });
+  }
 };
