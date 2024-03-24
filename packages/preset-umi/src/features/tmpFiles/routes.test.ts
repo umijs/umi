@@ -86,53 +86,78 @@ test('getRoutes', async () => {
 });
 
 test('componentToChunkName normal', () => {
-  expect(componentToChunkName('@/pages/index.ts')).toEqual('p__index');
-
-  expect(componentToChunkName('@/pages/index.tsx')).toEqual('p__index');
-
-  expect(componentToChunkName('@/pages/index.jsx')).toEqual('p__index');
-
-  expect(componentToChunkName('@/pages/index.js')).toEqual('p__index');
-
-  expect(componentToChunkName('@/pages/users/[id].ts')).toEqual('p__users__id');
-
-  expect(componentToChunkName('@/pages/users/[id].tsx')).toEqual(
-    'p__users__id',
+  expect(componentToChunkName('@/pages/index.ts', { id: '1' })).toEqual(
+    'p__index_i_1',
   );
 
-  expect(componentToChunkName('@/pages/users/[id].js')).toEqual('p__users__id');
-
-  expect(componentToChunkName('@/pages/users/[id].jsx')).toEqual(
-    'p__users__id',
+  expect(componentToChunkName('@/pages/index.tsx', { id: '1' })).toEqual(
+    'p__index_i_1',
   );
 
-  expect(componentToChunkName('@/pages/users/[id].vue')).toEqual(
-    'p__users__id',
+  expect(componentToChunkName('@/pages/index.jsx', { id: '1' })).toEqual(
+    'p__index_i_1',
   );
 
-  expect(componentToChunkName('@/components/404/index.tsx')).toEqual(
-    'components__404__index',
+  expect(componentToChunkName('@/pages/index.js', { id: '1' })).toEqual(
+    'p__index_i_1',
   );
 
-  expect(componentToChunkName('@/layouts/index.tsx')).toEqual('layouts__index');
+  expect(componentToChunkName('@/pages/users/[id].ts', { id: '1' })).toEqual(
+    'p__users__id_i_1',
+  );
+
+  expect(componentToChunkName('@/pages/users/[id].tsx', { id: '1' })).toEqual(
+    'p__users__id_i_1',
+  );
+
+  expect(componentToChunkName('@/pages/users/[id].js', { id: '1' })).toEqual(
+    'p__users__id_i_1',
+  );
+
+  expect(componentToChunkName('@/pages/users/[id].jsx', { id: '1' })).toEqual(
+    'p__users__id_i_1',
+  );
+
+  expect(componentToChunkName('@/pages/users/[id].vue', { id: '1' })).toEqual(
+    'p__users__id_i_1',
+  );
 
   expect(
-    componentToChunkName('@/.umi-production/plugin-layout/Layout.tsx'),
-  ).toEqual('t__plugin-layout__Layout');
+    componentToChunkName('@/components/404/index.tsx', { id: '1' }),
+  ).toEqual('components__404__index_i_1');
+
+  expect(componentToChunkName('@/layouts/index.tsx', { id: '1' })).toEqual(
+    'layouts__index_i_1',
+  );
+
+  expect(
+    componentToChunkName('@/.umi-production/plugin-layout/Layout.tsx', {
+      id: '1',
+    }),
+  ).toEqual('t__plugin-layout__Layout_i_1');
 });
 
 test('componentToChunkName cwd', () => {
   expect(
-    componentToChunkName('/users/test/pages/users/[id].jsx', '/users/test'),
-  ).toEqual('p__users__id');
+    componentToChunkName('/users/test/pages/users/[id].jsx', {
+      cwd: '/users/test',
+      id: '1',
+    }),
+  ).toEqual('p__users__id_i_1');
 
   expect(
-    componentToChunkName('/users/test/pages/users/[id].vue', '/users/test'),
-  ).toEqual('p__users__id');
+    componentToChunkName('/users/test/pages/users/[id].vue', {
+      cwd: '/users/test',
+      id: '1',
+    }),
+  ).toEqual('p__users__id_i_1');
 });
 
 test('componentToChunkName cwd escape char', () => {
   expect(
-    componentToChunkName('/users/c++/pages/users/[id].tsx', '/users/c++'),
-  ).toEqual('p__users__id');
+    componentToChunkName('/users/c++/pages/users/[id].tsx', {
+      cwd: '/users/c++',
+      id: '1',
+    }),
+  ).toEqual('p__users__id_i_1');
 });
