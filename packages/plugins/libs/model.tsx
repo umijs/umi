@@ -35,19 +35,18 @@ class Dispatcher {
 
 interface ExecutorProps {
   hook: () => any;
-  onUpdate: (val: any) => void;
   namespace: string;
 }
 
 function Executor(props: ExecutorProps) {
-  const { hook, onUpdate, namespace } = props;
+  const { hook,  namespace } = props;
 
-  const updateRef = useRef(onUpdate);
-  const initialLoad = useRef(false);
+  const { dispatcher } = useContext<{ dispatcher: Dispatcher }>(Context);
 
   let data: any;
   try {
     data = hook();
+    dispatcher.data[namespace] = data;
   } catch (e) {
     console.error(
       `plugin-model: Invoking '${namespace || 'unknown'}' model failed:`,
@@ -55,18 +54,9 @@ function Executor(props: ExecutorProps) {
     );
   }
 
-  // 首次执行时立刻返回初始值
-  useMemo(() => {
-    updateRef.current(data);
-  }, []);
-
   // React 16.13 后 update 函数用 useEffect 包裹
   useEffect(() => {
-    if (initialLoad.current) {
-      updateRef.current(data);
-    } else {
-      initialLoad.current = true;
-    }
+    dispatcher.update(namespace);
   });
 
   return null;
@@ -86,10 +76,7 @@ export function Provider(props: {
             key={namespace}
             hook={props.models[namespace]}
             namespace={namespace}
-            onUpdate={(val) => {
-              dispatcher.data[namespace] = val;
-              dispatcher.update(namespace);
-            }}
+    
           />
         );
       })}
