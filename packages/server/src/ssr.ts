@@ -1,3 +1,4 @@
+import type { RequestHandler } from '@umijs/bundler-utils/compiled/express';
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
@@ -239,20 +240,24 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
 
 export default function createRequestHandler(
   opts: CreateRequestHandlerOptions,
-) {
+): RequestHandler {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
 
-  return async function (req: any, res: any, next: any) {
+  return async function (req, res, next) {
     // 切换路由场景下，会通过此 API 执行 server loader
-    if (req.url.startsWith('/__serverLoader') && req.query.route) {
+    if (
+      req.url.startsWith('/__serverLoader') &&
+      req.query.route &&
+      req.query.url
+    ) {
       // 在浏览器中触发的__serverLoader请求的request应该和SSR时拿到的request一致，都是当前页面的URL
       // 否则会导致serverLoader中的request.url和SSR时拿到的request.url不一致
       // 进而导致浏览器中触发的__serverLoader请求传入的参数和SSR时拿到的参数不一致，导致数据不一致
-      const serverLoaderRequest = new Request(req.query.url, {
-        headers: req.headers,
+      const serverLoaderRequest = new Request(req.query.url.toString(), {
+        headers: req.headers as HeadersInit,
       });
       const data = await executeLoader({
-        routeKey: req.query.route,
+        routeKey: req.query.route.toString(),
         routesWithServerLoader: opts.routesWithServerLoader,
         serverLoaderArgs: { request: serverLoaderRequest },
       });
@@ -262,7 +267,7 @@ export default function createRequestHandler(
 
     const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
     const request = new Request(fullUrl, {
-      headers: req.headers,
+      headers: req.headers as HeadersInit,
     });
     const jsx = await jsxGeneratorDeferrer(req.url, { request });
 
@@ -276,11 +281,11 @@ export default function createRequestHandler(
     };
 
     writable.on('finish', async () => {
-      res.write(await getGenerateStaticHTML());
+      res.write(getGenerateStaticHTML());
       res.end();
     });
 
-    const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
+    const stream = ReactDomServer.renderToPipeableStream(jsx.element, {
       bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
       onShellReady() {
         stream.pipe(writable);
