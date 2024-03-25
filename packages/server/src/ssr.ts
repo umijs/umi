@@ -306,7 +306,12 @@ export default function createRequestHandler(
               },
             },
           );
-          let res = new Response(stream, { status: 200 });
+          let res = new Response(stream, {
+            headers: {
+              'content-type': 'text/html; charset=utf-8',
+            },
+            status: 200,
+          });
 
           // allow modify response
           if (opts?.modifyResponse) {
@@ -338,6 +343,8 @@ export default function createRequestHandler(
         },
         async sendPage(jsx) {
           const writable = new Writable();
+
+          res.type('html');
 
           writable._write = (chunk, _encoding, cb) => {
             res.write(chunk);
