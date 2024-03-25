@@ -1,3 +1,4 @@
+/// <reference lib="webworker" />
 import type { RequestHandler } from '@umijs/bundler-utils/compiled/express';
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
