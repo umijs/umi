@@ -1,9 +1,15 @@
 // @ts-ignore
-import React, { useMemo } from 'react';
-import { generatePath, Navigate, useParams, Outlet } from 'react-router-dom';
+import React from 'react';
+import {
+  generatePath,
+  Navigate,
+  Outlet,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
+import { useAppData, useRouteProps } from './appContext';
 import { RouteContext, useRouteData } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
-import { useAppData } from './appContext';
 
 export function createClientRoutes(opts: {
   routesById: IRoutesById;
@@ -48,9 +54,16 @@ export function createClientRoutes(opts: {
 
 function NavigateWithParams(props: { to: string }) {
   const params = useParams();
+  let to = generatePath(props.to, params);
+  const routeProps = useRouteProps();
+  const location = useLocation();
+  if (routeProps?.keepQuery) {
+    const queryAndHash = location.search + location.hash;
+    to += queryAndHash;
+  }
   const propsWithParams = {
     ...props,
-    to: generatePath(props.to, params),
+    to,
   };
   return <Navigate replace={true} {...propsWithParams} />;
 }
