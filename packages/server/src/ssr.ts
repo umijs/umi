@@ -266,7 +266,7 @@ export default function createRequestHandler(
       otherwise(): Promise<void> | void;
     };
 
-    if (args.length !== 3) {
+    if (typeof FetchEvent !== 'undefined' && args[0] instanceof FetchEvent) {
       // worker mode
       const [ev, opts] = args;
       const { pathname, searchParams } = new URL(ev.request.url);
