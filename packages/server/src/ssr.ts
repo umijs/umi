@@ -268,7 +268,7 @@ export default function createRequestHandler(
 
     if (typeof FetchEvent !== 'undefined' && args[0] instanceof FetchEvent) {
       // worker mode
-      const [ev, opts] = args;
+      const [ev, opts] = args as IWorkerRequestHandlerArgs;
       const { pathname, searchParams } = new URL(ev.request.url);
 
       ret = {
@@ -327,7 +327,7 @@ export default function createRequestHandler(
       };
     } else {
       // express mode
-      const [req, res, next] = args;
+      const [req, res, next] = args as IExpressRequestHandlerArgs;
 
       ret = {
         req: {
