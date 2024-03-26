@@ -415,14 +415,20 @@ export default function createRequestHandler(
 }
 
 // 新增的给CDN worker用的SSR请求handle
-/**
- * @deprecated  Please use `createRequestHandler` instead
- */
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
+  let isWarned = false;
+
   return async function (
     req: UmiRequest,
     params?: CreateRequestHandlerOptions,
   ) {
+    if (!isWarned) {
+      console.warn(
+        '[umi] `renderRoot` is deprecated, please use `requestHandler` instead',
+      );
+      isWarned = true;
+    }
+
     const jsxGeneratorDeferrer = createJSXGenerator({
       ...opts,
       ...params,
@@ -443,11 +449,17 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
   };
 }
 
-/**
- * @deprecated  Please use `createRequestHandler` instead
- */
 export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
+  let isWarned = false;
+
   return async function (req: UmiRequest) {
+    if (!isWarned) {
+      console.warn(
+        '[umi] `serverLoader` is deprecated, please use `requestHandler` instead',
+      );
+      isWarned = true;
+    }
+
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
     const serverLoaderRequest = new Request(query.url, {
