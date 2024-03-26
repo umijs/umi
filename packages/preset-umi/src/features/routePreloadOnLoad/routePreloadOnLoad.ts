@@ -259,7 +259,7 @@ export default (api: IApi) => {
   
       return [];
     },
-    stage: 9999,
+    stage: Infinity,
   });
 
   api.onBuildComplete(async ({ err, stats }) => {
