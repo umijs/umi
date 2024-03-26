@@ -416,7 +416,7 @@ export default function createRequestHandler(
 
 // 新增的给CDN worker用的SSR请求handle
 /**
- * @deprecated  Please use `createRequestHandler({ ..., mode: 'worker' })` instead
+ * @deprecated  Please use `createRequestHandler` instead
  */
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
   return async function (
@@ -444,7 +444,7 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
 }
 
 /**
- * @deprecated  Please use `createRequestHandler({ ..., mode: 'worker' })` instead
+ * @deprecated  Please use `createRequestHandler` instead
  */
 export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   return async function (req: UmiRequest) {
