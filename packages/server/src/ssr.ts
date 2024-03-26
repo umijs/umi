@@ -242,7 +242,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
 type IExpressRequestHandlerArgs = Parameters<RequestHandler>;
 type IWorkerRequestHandlerArgs = [
   ev: FetchEvent,
-  opts?: { modifyResponse?: (res: Response) => Response },
+  opts?: { modifyResponse?: (res: Response) => Promise<Response> | Response },
 ];
 
 export default function createRequestHandler(
@@ -281,7 +281,7 @@ export default function createRequestHandler(
             url: searchParams.get('url'),
           },
         },
-        sendServerLoader(data) {
+        async sendServerLoader(data) {
           let res = new Response(JSON.stringify(data), {
             headers: {
               'content-type': 'application/json; charset=utf-8',
@@ -291,7 +291,7 @@ export default function createRequestHandler(
 
           // allow modify response
           if (opts?.modifyResponse) {
-            res = opts.modifyResponse(res);
+            res = await opts.modifyResponse(res);
           }
 
           ev.respondWith(res);
@@ -316,7 +316,7 @@ export default function createRequestHandler(
 
           // allow modify response
           if (opts?.modifyResponse) {
-            res = opts.modifyResponse(res);
+            res = await opts.modifyResponse(res);
           }
 
           ev.respondWith(res);
