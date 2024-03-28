@@ -53,7 +53,7 @@ const createOpts = {
   ServerInsertedHTMLContext,
   metadata: {{{metadata}}},
   scripts: {{{scripts}}},
-  hydrateFromHtml: `{{{hydrateFromHtml}}}`
+  hydrateFromHtml: {{{hydrateFromHtml}}}
 
 };
 const requestHandler = createRequestHandler(createOpts);

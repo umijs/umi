@@ -1,17 +1,5 @@
 import React from 'react';
-import { IHtmlProps } from './types';
-
-export type IScript =
-  | Partial<{
-      async: boolean;
-      charset: string;
-      content: string;
-      crossOrigin: string | null;
-      defer: boolean;
-      src: string;
-      type: string;
-    }>
-  | string;
+import { IHtmlProps, IScript } from './types';
 
 const RE_URL = /^(http:|https:)?\/\//;
 
@@ -24,7 +12,7 @@ function isUrl(str: string) {
   );
 }
 
-function genaretorScript(script: IScript, extraProps = {}) {
+function normalizeScripts(script: IScript, extraProps = {}) {
   if (typeof script === 'string') {
     return isUrl(script)
       ? {
@@ -87,7 +75,7 @@ export function Html({
           }
         })}
         {metadata?.headScripts?.map((script: IScript, key: number) => {
-          const { content, ...rest } = genaretorScript(script);
+          const { content, ...rest } = normalizeScripts(script);
           return (
             <script key={key} {...(rest as any)}>
               {content}
@@ -116,7 +104,7 @@ export function Html({
           />
         )}
         {metadata?.scripts?.map((script: IScript, key: number) => {
-          const { content, ...rest } = genaretorScript(script);
+          const { content, ...rest } = normalizeScripts(script);
           return (
             <script key={key} {...(rest as any)}>
               {content}

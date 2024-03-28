@@ -97,8 +97,8 @@ export type RenderClientOpts = {
    */
   rootElement?: HTMLElement;
   /**
-   * ssr 渲染根节点
-   * @doc 默认ture, 为html, false时使用app root
+   * ssr 是否从 html 根节点开始 hydrate
+   * @doc 默认 true，从 html 开始渲染，false 时从 app root 开始
    */
   hydrateFromHtml?: boolean;
   /**
@@ -341,12 +341,11 @@ export function renderClient(opts: RenderClientOpts) {
   if (opts.components) return Browser;
   if (opts.hydrate) {
     ReactDOM.hydrateRoot(
-      document,
+      document.querySelector('html')!,
       <Html {...opts}>
         <Browser />
       </Html>,
     );
-    // ReactDOM.hydrateRoot(rootElement, <Browser />);
     return;
   }
 

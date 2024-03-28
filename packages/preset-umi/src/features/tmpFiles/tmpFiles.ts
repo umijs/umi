@@ -533,7 +533,7 @@ if (process.env.NODE_ENV === 'development') {
             metas,
           }),
           scripts: JSON.stringify(scripts || []),
-          hydrateFromHtml: !!ssr?.hydrateFromHtml,
+          hydrateFromHtml: ssr?.hydrateFromHtml ?? true,
         },
       });
     }
