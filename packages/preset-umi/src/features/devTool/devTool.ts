@@ -80,17 +80,21 @@ export default (api: IApi) => {
           }
         }
 
-        // bundle status
-        const isDone =
-          api.appData.bundleStatus.done &&
-          (enableVite ||
-            api.config.mfsu === false ||
-            api.appData.mfsuBundleStatus.done);
-
-        if (!isDone) {
-          res.setHeader('Content-Type', 'text/html');
-          res.send(loadingHtml);
-          return;
+        if (
+          req.headers.accept?.includes('text/html') ||
+          req.headers.accept === '*/*'
+        ) {
+          // bundle status
+          const isDone =
+            api.appData.bundleStatus.done &&
+            (enableVite ||
+              api.config.mfsu === false ||
+              api.appData.mfsuBundleStatus.done);
+          if (!isDone) {
+            res.setHeader('Content-Type', 'text/html');
+            res.send(loadingHtml);
+            return;
+          }
         }
 
         return next();
