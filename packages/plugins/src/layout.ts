@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { lodash, Mustache, NpmClientEnum, winPath } from 'umi/plugin-utils';
+import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { isFlattedNodeModulesDir } from './utils/npmClient';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -117,21 +118,10 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
-    let realNpmClient = api.appData.npmClient;
-    // tnpm 作为 npmClient 时，可能使用不同的安装模式
-    if (
-      api.appData.npmClient === NpmClientEnum.tnpm &&
-      api.pkg.tnpm?.mode &&
-      [NpmClientEnum.npm, NpmClientEnum.yarn].includes(api.pkg.tnpm.mode)
-    ) {
-      realNpmClient = api.pkg.tnpm.mode;
-    }
     // use absolute path to types references in `npm/yarn` will cause case problems.
     // https://github.com/umijs/umi/discussions/10947
     // https://github.com/umijs/umi/discussions/11570
-    const isFlattedDepsDir = [NpmClientEnum.npm, NpmClientEnum.yarn].includes(
-      realNpmClient,
-    );
+    const isFlattedDepsDir = isFlattedNodeModulesDir(api);
     const PKG_TYPE_REFERENCE = `
 /// <reference types="${
       isFlattedDepsDir ? ANT_PRO_COMPONENT : resolvedPkgPath
