@@ -6,7 +6,7 @@ import { Routes } from './browser';
 import { createClientRoutes } from './routes';
 import { IRouteComponents, IRoutesById } from './types';
 
-interface IHtmlProps {
+interface IRootComponentOptions {
   routes: IRoutesById;
   routeComponents: IRouteComponents;
   pluginManager: any;
@@ -17,7 +17,7 @@ interface IHtmlProps {
 }
 
 // Get the root React component for ReactDOMServer.renderToString
-export async function getClientRootComponent(opts: IHtmlProps) {
+export async function getClientRootComponent(opts: IRootComponentOptions) {
   const basename = '/';
   const components = { ...opts.routeComponents };
   const clientRoutes = createClientRoutes({
@@ -63,7 +63,14 @@ export async function getClientRootComponent(opts: IHtmlProps) {
   return <Html {...opts}>{app}</Html>;
 }
 
-function Html({
+interface IHtmlProps {
+  children: React.ReactNode;
+  loaderData?: { [routeKey: string]: any };
+  manifest?: any;
+  metadata?: IMetadata;
+}
+
+export function Html({
   children,
   loaderData,
   manifest,
@@ -87,7 +94,7 @@ function Html({
         {metadata?.metas?.map((em) => (
           <meta key={em.name} name={em.name} content={em.content} />
         ))}
-        {manifest.assets['umi.css'] && (
+        {manifest?.assets['umi.css'] && (
           <link rel="stylesheet" href={manifest.assets['umi.css']} />
         )}
       </head>
@@ -99,13 +106,15 @@ function Html({
         />
 
         <div id="root">{children}</div>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
-              loaderData,
-            )}`,
-          }}
-        />
+        {loaderData && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
+                loaderData,
+              )}`,
+            }}
+          />
+        )}
       </body>
     </html>
   );

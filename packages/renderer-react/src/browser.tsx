@@ -11,6 +11,7 @@ import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
 import { fetchServerLoader } from './dataFetcher';
 import { createClientRoutes } from './routes';
+import { Html } from './server';
 import { ILoaderData, IRouteComponents, IRoutesById } from './types';
 
 let root: ReactDOM.Root | null = null;
@@ -336,7 +337,12 @@ export function renderClient(opts: RenderClientOpts) {
   if (opts.components) return Browser;
 
   if (opts.hydrate) {
-    ReactDOM.hydrateRoot(rootElement, <Browser />);
+    ReactDOM.hydrateRoot(
+      document,
+      <Html {...opts}>
+        <Browser />
+      </Html>,
+    );
     return;
   }
 

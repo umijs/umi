@@ -189,7 +189,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
           serverInsertedHTMLCallbacks,
         );
 
-        let chunks: Buffer[] = [];
+        const chunks: Buffer[] = [];
         const writable = new Writable();
 
         writable._write = (chunk, _encoding, next) => {

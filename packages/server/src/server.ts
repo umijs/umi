@@ -140,21 +140,20 @@ export async function getMarkup(
     `<!DOCTYPE html>
 <html>
 <head>`,
-    metas.join('\n'),
-    favicons.join('\n'),
+    metas.join(''),
+    favicons.join(''),
     title,
-    links.join('\n'),
-    styles.join('\n'),
-    headScripts.join('\n'),
-    `</head>
-<body>`,
+    links.join(''),
+    styles.join(''),
+    headScripts.join(''),
+    `</head><body>`,
     markup,
-    scripts.join('\n'),
+    scripts.join(''),
     `</body>
 </html>`,
   ]
     .filter(Boolean)
-    .join('\n');
+    .join('');
   if (opts.modifyHTML) {
     markup = await opts.modifyHTML(markup, { path: opts.path });
   }
