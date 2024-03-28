@@ -1,3 +1,5 @@
+/// <reference lib="webworker" />
+import type { RequestHandler } from '@umijs/bundler-utils/compiled/express';
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
@@ -237,17 +239,156 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
   };
 }
 
+type IExpressRequestHandlerArgs = Parameters<RequestHandler>;
+type IWorkerRequestHandlerArgs = [
+  ev: FetchEvent,
+  opts?: { modifyResponse?: (res: Response) => Promise<Response> | Response },
+];
+
 export default function createRequestHandler(
   opts: CreateRequestHandlerOptions,
 ) {
   const jsxGeneratorDeferrer = createJSXGenerator(opts);
+  const normalizeHandlerArgs = (
+    ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
+  ) => {
+    let ret: {
+      req: {
+        url: string;
+        pathname: string;
+        headers: HeadersInit;
+        query: { route?: string | null; url?: string | null };
+      };
+      sendServerLoader(data: any): Promise<void> | void;
+      sendPage(
+        jsx: NonNullable<Awaited<ReturnType<typeof jsxGeneratorDeferrer>>>,
+      ): Promise<void> | void;
+      otherwise(): Promise<void> | void;
+    };
 
-  return async function (req: any, res: any, next: any) {
-    // 切换路由场景下，会通过此 API 执行 server loader
-    if (req.url.startsWith('/__serverLoader') && req.query.route) {
-      // 在浏览器中触发的__serverLoader请求的request应该和SSR时拿到的request一致，都是当前页面的URL
-      // 否则会导致serverLoader中的request.url和SSR时拿到的request.url不一致
-      // 进而导致浏览器中触发的__serverLoader请求传入的参数和SSR时拿到的参数不一致，导致数据不一致
+    if (typeof FetchEvent !== 'undefined' && args[0] instanceof FetchEvent) {
+      // worker mode
+      const [ev, opts] = args as IWorkerRequestHandlerArgs;
+      const { pathname, searchParams } = new URL(ev.request.url);
+
+      ret = {
+        req: {
+          url: ev.request.url,
+          pathname,
+          headers: ev.request.headers,
+          query: {
+            route: searchParams.get('route'),
+            url: searchParams.get('url'),
+          },
+        },
+        async sendServerLoader(data) {
+          let res = new Response(JSON.stringify(data), {
+            headers: {
+              'content-type': 'application/json; charset=utf-8',
+            },
+            status: 200,
+          });
+
+          // allow modify response
+          if (opts?.modifyResponse) {
+            res = await opts.modifyResponse(res);
+          }
+
+          ev.respondWith(res);
+        },
+        async sendPage(jsx) {
+          // handle route path request
+          const stream = await ReactDomServer.renderToReadableStream(
+            jsx.element,
+            {
+              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              onError(x: any) {
+                console.error(x);
+              },
+            },
+          );
+          let res = new Response(stream, {
+            headers: {
+              'content-type': 'text/html; charset=utf-8',
+            },
+            status: 200,
+          });
+
+          // allow modify response
+          if (opts?.modifyResponse) {
+            res = await opts.modifyResponse(res);
+          }
+
+          ev.respondWith(res);
+        },
+        otherwise() {
+          throw new Error('no page resource');
+        },
+      };
+    } else {
+      // express mode
+      const [req, res, next] = args as IExpressRequestHandlerArgs;
+
+      ret = {
+        req: {
+          url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+          pathname: req.url,
+          headers: req.headers as HeadersInit,
+          query: {
+            route: req.query.route?.toString(),
+            url: req.query.url?.toString(),
+          },
+        },
+        sendServerLoader(data) {
+          res.status(200).json(data);
+        },
+        async sendPage(jsx) {
+          const writable = new Writable();
+
+          res.type('html');
+
+          writable._write = (chunk, _encoding, cb) => {
+            res.write(chunk);
+            cb();
+          };
+
+          writable.on('finish', async () => {
+            res.write(getGenerateStaticHTML());
+            res.end();
+          });
+
+          const stream = ReactDomServer.renderToPipeableStream(jsx.element, {
+            bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+            onShellReady() {
+              stream.pipe(writable);
+            },
+            onError(x: any) {
+              console.error(x);
+            },
+          });
+        },
+        otherwise: next,
+      };
+    }
+
+    return ret;
+  };
+
+  return async function unifiedRequestHandler(
+    ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
+  ) {
+    let jsx;
+    const { req, sendServerLoader, sendPage, otherwise } = normalizeHandlerArgs(
+      ...args,
+    );
+
+    if (
+      req.pathname.startsWith('/__serverLoader') &&
+      req.query.route &&
+      req.query.url
+    ) {
+      // handle server loader request when route change or csr fallback
+      // provide the same request as real SSR, so that the server loader can get the same data
       const serverLoaderRequest = new Request(req.query.url, {
         headers: req.headers,
       });
@@ -256,48 +397,38 @@ export default function createRequestHandler(
         routesWithServerLoader: opts.routesWithServerLoader,
         serverLoaderArgs: { request: serverLoaderRequest },
       });
-      res.status(200).json(data);
-      return;
+
+      await sendServerLoader(data);
+    } else if (
+      (jsx = await jsxGeneratorDeferrer(req.pathname, {
+        request: new Request(req.url, {
+          headers: req.headers,
+        }),
+      }))
+    ) {
+      // response route page
+      await sendPage(jsx);
+    } else {
+      await otherwise();
     }
-
-    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-    const request = new Request(fullUrl, {
-      headers: req.headers,
-    });
-    const jsx = await jsxGeneratorDeferrer(req.url, { request });
-
-    if (!jsx) return next();
-
-    const writable = new Writable();
-
-    writable._write = (chunk, _encoding, next) => {
-      res.write(chunk);
-      next();
-    };
-
-    writable.on('finish', async () => {
-      res.write(await getGenerateStaticHTML());
-      res.end();
-    });
-
-    const stream = await ReactDomServer.renderToPipeableStream(jsx.element, {
-      bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-      onShellReady() {
-        stream.pipe(writable);
-      },
-      onError(x: any) {
-        console.error(x);
-      },
-    });
   };
 }
 
 // 新增的给CDN worker用的SSR请求handle
 export function createUmiHandler(opts: CreateRequestHandlerOptions) {
+  let isWarned = false;
+
   return async function (
     req: UmiRequest,
     params?: CreateRequestHandlerOptions,
   ) {
+    if (!isWarned) {
+      console.warn(
+        '[umi] `renderRoot` is deprecated, please use `requestHandler` instead',
+      );
+      isWarned = true;
+    }
+
     const jsxGeneratorDeferrer = createJSXGenerator({
       ...opts,
       ...params,
@@ -319,7 +450,16 @@ export function createUmiHandler(opts: CreateRequestHandlerOptions) {
 }
 
 export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
+  let isWarned = false;
+
   return async function (req: UmiRequest) {
+    if (!isWarned) {
+      console.warn(
+        '[umi] `serverLoader` is deprecated, please use `requestHandler` instead',
+      );
+      isWarned = true;
+    }
+
     const query = Object.fromEntries(new URL(req.url).searchParams);
     // 切换路由场景下，会通过此 API 执行 server loader
     const serverLoaderRequest = new Request(query.url, {

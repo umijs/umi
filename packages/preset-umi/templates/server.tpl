@@ -53,7 +53,13 @@ const createOpts = {
   ServerInsertedHTMLContext,
 };
 const requestHandler = createRequestHandler(createOpts);
+/**
+ * @deprecated  Please use `requestHandler` instead.
+ */
 export const renderRoot = createUmiHandler(createOpts);
+/**
+ * @deprecated  Please use `requestHandler` instead.
+ */
 export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
