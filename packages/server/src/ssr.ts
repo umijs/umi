@@ -165,14 +165,18 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
 
 const getGenerateStaticHTML = (
   serverInsertedHTMLCallbacks?: Set<() => React.ReactNode>,
+  wrapper: (children: React.ReactElement) => React.ReactElement = (children) =>
+    children,
 ) => {
   return (
     ReactDomServer.renderToString(
-      React.createElement(React.Fragment, {
-        children: Array.from(serverInsertedHTMLCallbacks || []).map(
-          (callback) => callback(),
-        ),
-      }),
+      wrapper(
+        React.createElement(React.Fragment, {
+          children: Array.from(serverInsertedHTMLCallbacks || []).map(
+            (callback) => callback(),
+          ),
+        }),
+      ),
     ) || ''
   );
 };
@@ -200,7 +204,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         };
         writable.on('finish', async () => {
           let html = Buffer.concat(chunks).toString('utf8');
-          html += await getGenerateStaticHTML(serverInsertedHTMLCallbacks);
+          html += getGenerateStaticHTML(serverInsertedHTMLCallbacks);
           // append helmet tags to head
           if (opts.helmetContext) {
             html = html.replace(
@@ -343,6 +347,12 @@ export default function createRequestHandler(
           res.status(200).json(data);
         },
         async sendPage(jsx) {
+          const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> =
+            new Set();
+          const JSXProvider = createJSXProvider(
+            opts.ServerInsertedHTMLContext.Provider,
+            serverInsertedHTMLCallbacks,
+          );
           const writable = new Writable();
 
           res.type('html');
@@ -353,19 +363,39 @@ export default function createRequestHandler(
           };
 
           writable.on('finish', async () => {
-            res.write(getGenerateStaticHTML());
+            res.write(
+              getGenerateStaticHTML(serverInsertedHTMLCallbacks, (children) => {
+                return React.createElement(
+                  'div',
+                  { id: 'umi-server-inserted-html', hidden: true },
+                  children,
+                );
+              }),
+            );
+            res.write(`<script>
+var serverInsertedHtml = document.getElementById('umi-server-inserted-html');
+if (serverInsertedHtml) {
+  Array.from(serverInsertedHtml.children).forEach((node) => {
+    document.head.appendChild(node);
+  });
+  serverInsertedHtml.remove();
+}
+</script>`);
             res.end();
           });
 
-          const stream = ReactDomServer.renderToPipeableStream(jsx.element, {
-            bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-            onShellReady() {
-              stream.pipe(writable);
+          const stream = ReactDomServer.renderToPipeableStream(
+            React.createElement(JSXProvider, undefined, jsx.element),
+            {
+              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              onShellReady() {
+                stream.pipe(writable);
+              },
+              onError(x: any) {
+                console.error(x);
+              },
             },
-            onError(x: any) {
-              console.error(x);
-            },
-          });
+          );
         },
         otherwise: next,
       };
