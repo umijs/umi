@@ -1,8 +1,10 @@
+import mergeWith from 'lodash.mergewith';
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
+  IOpts,
   IRoutesById,
   IServerLoaderArgs,
   MetadataLoader,
@@ -36,6 +38,9 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
+  metadata: IOpts;
+  scripts: IOpts['scripts'];
+  hydrateFromHtml: boolean;
 }
 
 interface IExecLoaderOpts {
@@ -105,7 +110,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     }
 
     const loaderData: Record<string, any> = {};
-    const metadata: Record<string, any> = {};
+    let metadata: Record<string, any> = {};
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
@@ -121,15 +126,23 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
               // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
               // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
               if (routes[id].hasMetadataLoader) {
-                Object.assign(
-                  metadata,
-                  await executeMetadataLoader({
-                    routesWithServerLoader,
-                    routeKey: id,
-                    serverLoaderArgs,
-                    serverLoaderData: loaderData[id],
-                  }),
+                const metadataLoaderData = await executeMetadataLoader({
+                  routesWithServerLoader,
+                  routeKey: id,
+                  serverLoaderArgs,
+                  serverLoaderData: loaderData[id],
+                });
+
+                metadata = mergeWith(
+                  metadataLoaderData,
+                  opts.metadata,
+                  (pre, next) => {
+                    if (Array.isArray(pre) || Array.isArray(next)) {
+                      return Array.prototype.concat.call(pre || [], next || []);
+                    }
+                  },
                 );
+                metadata.scripts = opts.scripts;
               }
               resolve();
             }),
@@ -148,6 +161,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       manifest,
       loaderData,
       metadata,
+      hydrateFromHtml: opts.hydrateFromHtml,
     };
 
     const element = (await opts.getClientRootComponent(
@@ -270,9 +284,9 @@ export default function createRequestHandler(
 
     const writable = new Writable();
 
-    writable._write = (chunk, _encoding, next) => {
+    writable._write = (chunk, _encoding, callback) => {
       res.write(chunk);
-      next();
+      callback();
     };
 
     writable.on('finish', async () => {

@@ -29,7 +29,6 @@ export interface IOpts {
   modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
   historyType?: 'hash' | 'browser';
 }
-
 export async function getMarkup(
   opts: Omit<IOpts, 'routes'> & {
     path?: string;

@@ -10,9 +10,9 @@ import ReactDOM from 'react-dom/client';
 import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
 import { fetchServerLoader } from './dataFetcher';
+import { Html } from './html';
 import { createClientRoutes } from './routes';
 import { ILoaderData, IRouteComponents, IRoutesById } from './types';
-
 let root: ReactDOM.Root | null = null;
 
 // react 18 some scenarios need unmount such as micro app
@@ -96,6 +96,11 @@ export type RenderClientOpts = {
    * @doc 一般不需要改，微前端的时候会变化
    */
   rootElement?: HTMLElement;
+  /**
+   * ssr 是否从 html 根节点开始 hydrate
+   * @doc 默认 true，从 html 开始渲染，false 时从 app root 开始
+   */
+  hydrateFromHtml?: boolean;
   /**
    * 当前的路由配置
    */
@@ -334,9 +339,13 @@ export function renderClient(opts: RenderClientOpts) {
   const Browser = getBrowser(opts, <Routes />);
   // 为了测试，直接返回组件
   if (opts.components) return Browser;
-
   if (opts.hydrate) {
-    ReactDOM.hydrateRoot(rootElement, <Browser />);
+    ReactDOM.hydrateRoot(
+      document.querySelector('html')!,
+      <Html {...opts}>
+        <Browser />
+      </Html>,
+    );
     return;
   }
 

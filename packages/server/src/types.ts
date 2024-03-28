@@ -1,3 +1,29 @@
+export interface IOpts {
+  base: string;
+  routes: Record<
+    string,
+    {
+      path: string;
+      file: string;
+      id: string;
+      parentId?: string;
+    }
+  >;
+  links?: Record<string, string>[];
+  metas?: Record<string, string>[];
+  styles?: (Record<string, string> | string)[];
+  favicons?: string[];
+  title?: string;
+  headScripts?: (Record<string, string> | string)[];
+  scripts?: (Record<string, string> | string)[];
+  mountElementId?: string;
+  esmScript?: boolean;
+  modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
+  historyType?: 'hash' | 'browser';
+}
+
+export type IUserExtraRoute = string | { path: string; prerender: boolean };
+
 export interface IRoute {
   id: string;
   path?: string;
@@ -36,6 +62,11 @@ export interface IMetadata {
    */
   lang?: string;
   metas?: IMetaTag[];
+  headScripts?: IOpts['headScripts'];
+  links?: IOpts['links'];
+  styles?: string[];
+  favicons?: string[];
+  scripts?: IOpts['scripts'];
 }
 export type MetadataLoader<T = any> = (
   serverLoaderData: T,
