@@ -1,6 +1,7 @@
 export default {
   svgr: {},
   hash: true,
+  mfsu: false,
   routePrefetch: {},
   manifest: {},
   clientLoader: {},

@@ -341,7 +341,7 @@ export function renderClient(opts: RenderClientOpts) {
   if (opts.components) return Browser;
   if (opts.hydrate) {
     ReactDOM.hydrateRoot(
-      document.querySelector('html')!,
+      document,
       <Html {...opts}>
         <Browser />
       </Html>,
