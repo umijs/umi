@@ -1,5 +1,5 @@
 import { Input } from 'antd';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import {
   Link,
   MetadataLoader,
@@ -17,14 +17,11 @@ import './index.less';
 // @ts-ignore
 import styles from './index.less';
 // @ts-ignore
-import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import umiLogo from './umi.png';
 
 export default function HomePage() {
   const clientLoaderData = useClientLoaderData();
   const serverLoaderData = useServerLoaderData<typeof serverLoader>();
-
-  const [cssCache] = useState(() => createCache());
 
   useServerInsertedHTML(() => {
     return (
@@ -36,41 +33,29 @@ export default function HomePage() {
     );
   });
 
-  useServerInsertedHTML(() => {
-    const style = extractStyle(cssCache, { plain: true });
-    return (
-      <style
-        id="antd-cssinjs"
-        dangerouslySetInnerHTML={{ __html: style }}
-      ></style>
-    );
-  });
-
   const id = useId();
 
   return (
-    <StyleProvider cache={cssCache}>
-      <div>
-        <h1 className="title">Hello~</h1>
-        <p className="server_inserted_style">id: {id}</p>
-        <p className={styles.blue}>This is index.tsx</p>
-        <p className={cssStyle.title}>I should be pink</p>
-        <p className={cssStyle.blue}>I should be cyan</p>
-        <Button />
-        <Input placeholder="这个样式不应该闪烁" />
-        <img src={bigImage} alt="" />
-        <img src={umiLogo} alt="umi" />
-        <Link to="/users/user">/users/user</Link>
-        <div style={{ backgroundColor: '#eee', padding: 12 }}>
-          <p>
-            点击这个按钮以后，需要加载 users, user2, info 三个路由组件需要的数据
-          </p>
-          <Link to="/users/user2/info">/users/user2/info</Link>
-        </div>
-        <p>client loader data: {JSON.stringify(clientLoaderData)}</p>
-        <p>server loader data: {JSON.stringify(serverLoaderData)}</p>
+    <div>
+      <h1 className="title">Hello~</h1>
+      <p className="server_inserted_style">id: {id}</p>
+      <p className={styles.blue}>This is index.tsx</p>
+      <p className={cssStyle.title}>I should be pink</p>
+      <p className={cssStyle.blue}>I should be cyan</p>
+      <Button />
+      <Input placeholder="这个样式不应该闪烁" />
+      <img src={bigImage} alt="" />
+      <img src={umiLogo} alt="umi" />
+      <Link to="/users/user">/users/user</Link>
+      <div style={{ backgroundColor: '#eee', padding: 12 }}>
+        <p>
+          点击这个按钮以后，需要加载 users, user2, info 三个路由组件需要的数据
+        </p>
+        <Link to="/users/user2/info">/users/user2/info</Link>
       </div>
-    </StyleProvider>
+      <p>client loader data: {JSON.stringify(clientLoaderData)}</p>
+      <p>server loader data: {JSON.stringify(serverLoaderData)}</p>
+    </div>
   );
 }
 
