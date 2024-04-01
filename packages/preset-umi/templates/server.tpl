@@ -52,7 +52,7 @@ const createOpts = {
   createHistory,
   ServerInsertedHTMLContext,
   metadata: {{{metadata}}},
-  hydrateFromRoot: {{{hydrateFromRoot}}}
+  renderFromRoot: {{{renderFromRoot}}}
 
 };
 const requestHandler = createRequestHandler(createOpts);

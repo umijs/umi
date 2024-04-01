@@ -97,10 +97,10 @@ export type RenderClientOpts = {
    */
   rootElement?: HTMLElement;
   /**
-   * ssr 是否从 app root 根节点开始 hydrate
-   * @doc 默认 false, 从 app root 开始水合，为 true 时从 html 开始
+   * ssr 是否从 app root 根节点开始 render
+   * @doc 默认 false, 从 app root 开始 render，为 true 时从 html 开始
    */
-  hydrateFromRoot?: boolean;
+  renderFromRoot?: boolean;
   /**
    * 当前的路由配置
    */

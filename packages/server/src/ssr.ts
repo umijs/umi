@@ -40,7 +40,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
   metadata: IMetadata;
-  hydrateFromRoot: boolean;
+  renderFromRoot: boolean;
 }
 
 interface IExecLoaderOpts {
@@ -157,7 +157,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       manifest,
       loaderData,
       metadata: opts.metadata,
-      hydrateFromRoot: opts.hydrateFromRoot,
+      renderFromRoot: opts.renderFromRoot,
     };
 
     const element = (await opts.getClientRootComponent(

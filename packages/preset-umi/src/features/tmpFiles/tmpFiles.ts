@@ -525,7 +525,7 @@ if (process.env.NODE_ENV === 'development') {
             metas,
             scripts: scripts || [],
           }),
-          hydrateFromRoot: api.config.ssr?.hydrateFromRoot ?? false,
+          renderFromRoot: api.config.ssr?.renderFromRoot ?? false,
         },
       });
     }
