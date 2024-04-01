@@ -50,10 +50,9 @@ interface IExecMetaLoaderOpts extends IExecLoaderOpts {
   serverLoaderData?: any;
 }
 
-const createJSXProvider = (
-  Provider: any,
-  serverInsertedHTMLCallbacks: Set<() => React.ReactNode>,
-) => {
+const createJSXProvider = (Provider: any) => {
+  const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> = new Set();
+
   const JSXProvider = (props: any) => {
     const addInsertedHtml = React.useCallback(
       (handler: () => React.ReactNode) => {
@@ -67,7 +66,7 @@ const createJSXProvider = (
       value: addInsertedHtml,
     });
   };
-  return JSXProvider;
+  return [JSXProvider, serverInsertedHTMLCallbacks] as const;
 };
 
 function createJSXGenerator(opts: CreateRequestHandlerOptions) {
@@ -163,16 +162,27 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
   };
 }
 
+const SERVER_INSERTED_HTML = 'umi-server-inserted-html';
 const getGenerateStaticHTML = (
-  serverInsertedHTMLCallbacks?: Set<() => React.ReactNode>,
+  serverInsertedHTMLCallbacks: Set<() => React.ReactNode>,
+  opts?: {
+    wrapper?: boolean;
+  },
 ) => {
+  const children = React.createElement(React.Fragment, {
+    children: Array.from(serverInsertedHTMLCallbacks || []).map((callback) =>
+      callback(),
+    ),
+  });
   return (
     ReactDomServer.renderToString(
-      React.createElement(React.Fragment, {
-        children: Array.from(serverInsertedHTMLCallbacks || []).map(
-          (callback) => callback(),
-        ),
-      }),
+      opts?.wrapper
+        ? React.createElement(
+            'div',
+            { id: SERVER_INSERTED_HTML, hidden: true },
+            children,
+          )
+        : children,
     ) || ''
   );
 };
@@ -184,11 +194,8 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
     const jsx = await jsxGeneratorDeferrer(url);
     if (jsx) {
       return new Promise(async (resolve, reject) => {
-        const serverInsertedHTMLCallbacks: Set<() => React.ReactNode> =
-          new Set();
-        const JSXProvider = createJSXProvider(
+        const [JSXProvider, serverInsertedHTMLCallbacks] = createJSXProvider(
           opts.ServerInsertedHTMLContext.Provider,
-          serverInsertedHTMLCallbacks,
         );
 
         let chunks: Buffer[] = [];
@@ -200,7 +207,10 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
         };
         writable.on('finish', async () => {
           let html = Buffer.concat(chunks).toString('utf8');
-          html += await getGenerateStaticHTML(serverInsertedHTMLCallbacks);
+          const serverHTML = getGenerateStaticHTML(serverInsertedHTMLCallbacks);
+          if (serverHTML) {
+            html = html.replace(/<\/head>/, `${serverHTML}</head>`);
+          }
           // append helmet tags to head
           if (opts.helmetContext) {
             html = html.replace(
@@ -266,9 +276,11 @@ export default function createRequestHandler(
       otherwise(): Promise<void> | void;
     };
 
+    const replaceServerHTMLScript = `<script>!function(){var e=document.getElementById("${SERVER_INSERTED_HTML}");e&&(Array.from(e.children).forEach(e=>{document.head.appendChild(e)}),e.remove())}();</script>`;
+
     if (typeof FetchEvent !== 'undefined' && args[0] instanceof FetchEvent) {
       // worker mode
-      const [ev, opts] = args as IWorkerRequestHandlerArgs;
+      const [ev, workerOpts] = args as IWorkerRequestHandlerArgs;
       const { pathname, searchParams } = new URL(ev.request.url);
 
       ret = {
@@ -290,16 +302,19 @@ export default function createRequestHandler(
           });
 
           // allow modify response
-          if (opts?.modifyResponse) {
-            res = await opts.modifyResponse(res);
+          if (workerOpts?.modifyResponse) {
+            res = await workerOpts.modifyResponse(res);
           }
 
           ev.respondWith(res);
         },
         async sendPage(jsx) {
+          const [JSXProvider, serverInsertedHTMLCallbacks] = createJSXProvider(
+            opts.ServerInsertedHTMLContext.Provider,
+          );
           // handle route path request
           const stream = await ReactDomServer.renderToReadableStream(
-            jsx.element,
+            React.createElement(JSXProvider, undefined, jsx.element),
             {
               bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
               onError(x: any) {
@@ -307,6 +322,22 @@ export default function createRequestHandler(
               },
             },
           );
+
+          const transformStream = new TransformStream({
+            flush(controller) {
+              if (serverInsertedHTMLCallbacks.size) {
+                const serverHTML = getGenerateStaticHTML(
+                  serverInsertedHTMLCallbacks,
+                  { wrapper: true },
+                );
+                controller.enqueue(serverHTML);
+                controller.enqueue(replaceServerHTMLScript);
+              }
+            },
+          });
+
+          stream.pipeThrough(transformStream);
+
           let res = new Response(stream, {
             headers: {
               'content-type': 'text/html; charset=utf-8',
@@ -315,8 +346,8 @@ export default function createRequestHandler(
           });
 
           // allow modify response
-          if (opts?.modifyResponse) {
-            res = await opts.modifyResponse(res);
+          if (workerOpts?.modifyResponse) {
+            res = await workerOpts.modifyResponse(res);
           }
 
           ev.respondWith(res);
@@ -343,6 +374,9 @@ export default function createRequestHandler(
           res.status(200).json(data);
         },
         async sendPage(jsx) {
+          const [JSXProvider, serverInsertedHTMLCallbacks] = createJSXProvider(
+            opts.ServerInsertedHTMLContext.Provider,
+          );
           const writable = new Writable();
 
           res.type('html');
@@ -353,19 +387,29 @@ export default function createRequestHandler(
           };
 
           writable.on('finish', async () => {
-            res.write(getGenerateStaticHTML());
+            if (serverInsertedHTMLCallbacks.size) {
+              res.write(
+                getGenerateStaticHTML(serverInsertedHTMLCallbacks, {
+                  wrapper: true,
+                }),
+              );
+              res.write(replaceServerHTMLScript);
+            }
             res.end();
           });
 
-          const stream = ReactDomServer.renderToPipeableStream(jsx.element, {
-            bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-            onShellReady() {
-              stream.pipe(writable);
+          const stream = ReactDomServer.renderToPipeableStream(
+            React.createElement(JSXProvider, undefined, jsx.element),
+            {
+              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              onShellReady() {
+                stream.pipe(writable);
+              },
+              onError(x: any) {
+                console.error(x);
+              },
             },
-            onError(x: any) {
-              console.error(x);
-            },
-          });
+          );
         },
         otherwise: next,
       };

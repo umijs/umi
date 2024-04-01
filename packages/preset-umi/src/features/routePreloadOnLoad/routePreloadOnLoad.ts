@@ -256,7 +256,7 @@ export default (api: IApi) => {
               },
             ];
       }
-  
+
       return [];
     },
     stage: Infinity,
