@@ -53,7 +53,7 @@ const createOpts = {
   ServerInsertedHTMLContext,
   tplOpts: {{{tplOpts}}},
   renderFromRoot: {{{renderFromRoot}}},
-   mountElementId: '{{{mountElementId}}}'
+  mountElementId: '{{{mountElementId}}}'
 
 };
 const requestHandler = createRequestHandler(createOpts);
