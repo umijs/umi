@@ -36,28 +36,28 @@ function generatorStyle(style: string) {
     : { type: 'style', content: style };
 }
 
-const NormalizeMetadata = (props: IHtmlProps) => {
-  const { metadata } = props;
+const HydrateMetadata = (props: IHtmlProps) => {
+  const { tplOpts } = props;
   return (
     <>
-      {metadata?.title && <title>{metadata.title}</title>}
-      {metadata?.favicons?.map((favicon: string, key: number) => {
+      {tplOpts?.title && <title>{tplOpts.title}</title>}
+      {tplOpts?.favicons?.map((favicon: string, key: number) => {
         return <link key={key} rel="shortcut icon" href={favicon} />;
       })}
-      {metadata?.description && (
-        <meta name="description" content={metadata.description} />
+      {tplOpts?.description && (
+        <meta name="description" content={tplOpts.description} />
       )}
-      {metadata?.keywords?.length && (
-        <meta name="keywords" content={metadata.keywords.join(',')} />
+      {tplOpts?.keywords?.length && (
+        <meta name="keywords" content={tplOpts.keywords.join(',')} />
       )}
-      {metadata?.metas?.map((em: any) => (
+      {tplOpts?.metas?.map((em: any) => (
         <meta key={em.name} name={em.name} content={em.content} />
       ))}
 
-      {metadata?.links?.map((link: Record<string, string>, key: number) => {
+      {tplOpts?.links?.map((link: Record<string, string>, key: number) => {
         return <link key={key} {...link} />;
       })}
-      {metadata?.styles?.map((style: string, key: number) => {
+      {tplOpts?.styles?.map((style: string, key: number) => {
         const { type, href, content } = generatorStyle(style);
         if (type === 'link') {
           return <link key={key} rel="stylesheet" href={href} />;
@@ -65,7 +65,7 @@ const NormalizeMetadata = (props: IHtmlProps) => {
           return <style key={key}>{content}</style>;
         }
       })}
-      {metadata?.headScripts?.map((script: IScript, key: number) => {
+      {tplOpts?.headScripts?.map((script: IScript, key: number) => {
         const { content, ...rest } = normalizeScripts(script);
         return (
           <script key={key} {...(rest as any)}>
@@ -81,29 +81,38 @@ export function Html({
   children,
   loaderData,
   manifest,
-  metadata,
+  tplOpts,
   renderFromRoot,
+  mountElementId,
 }: React.PropsWithChildren<IHtmlProps>) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
-
   if (renderFromRoot) {
     return (
       <>
-        <NormalizeMetadata metadata={metadata} />
-        <div id="root">{children}</div>
+        <HydrateMetadata tplOpts={tplOpts} />
+        <div id={mountElementId}>{children}</div>
       </>
     );
   }
+  // @ts-ignore
+  const serverBuildManifest =
+    typeof window === 'undefined'
+      ? manifest
+      : window.__UMI_BUILD_MANIFEST_DATA__;
   return (
-    <html lang={metadata?.lang || 'en'}>
+    <html suppressHydrationWarning lang={tplOpts?.lang || 'en'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {manifest?.assets['umi.css'] && (
-          <link rel="stylesheet" href={manifest?.assets['umi.css']} />
+        {serverBuildManifest?.assets['umi.css'] && (
+          <link
+            suppressHydrationWarning
+            rel="stylesheet"
+            href={manifest?.assets['umi.css']}
+          />
         )}
-        <NormalizeMetadata metadata={metadata} />
+        <HydrateMetadata tplOpts={tplOpts} />
       </head>
       <body>
         <noscript
@@ -112,18 +121,21 @@ export function Html({
           }}
         />
 
-        <div id="root">{children}</div>
+        <div id={mountElementId}>{children}</div>
         <script
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
               loaderData || {},
             )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
-              metadata,
-            )}`,
+              tplOpts || {},
+            )}; window.__UMI_BUILD_MANIFEST_DATA__ = ${
+              JSON.stringify(manifest) || {}
+            }`,
           }}
         />
 
-        {metadata?.scripts?.map((script: IScript, key: number) => {
+        {tplOpts?.scripts?.map((script: IScript, key: number) => {
           const { content, ...rest } = normalizeScripts(script);
           return (
             <script key={key} {...(rest as any)}>

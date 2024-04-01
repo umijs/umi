@@ -5,9 +5,9 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
-  IMetadata,
   IRoutesById,
   IServerLoaderArgs,
+  ITplOpts,
   MetadataLoader,
   ServerLoader,
   UmiRequest,
@@ -39,8 +39,9 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  metadata: IMetadata;
+  tplOpts: ITplOpts;
   renderFromRoot: boolean;
+  mountElementId: string;
 }
 
 interface IExecLoaderOpts {
@@ -133,9 +134,9 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
                 });
                 Object.entries(metadataLoaderData).forEach(([k, v]) => {
                   if (Array.isArray(v)) {
-                    opts.metadata[k] = (opts.metadata[k] || []).concat(v);
+                    opts.tplOpts[k] = (opts.tplOpts[k] || []).concat(v);
                   } else {
-                    opts.metadata[k] = v;
+                    opts.tplOpts[k] = v;
                   }
                 });
               }
@@ -155,8 +156,9 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      metadata: opts.metadata,
+      tplOpts: opts.tplOpts,
       renderFromRoot: opts.renderFromRoot,
+      mountElementId: opts.mountElementId,
     };
 
     const element = (await opts.getClientRootComponent(
@@ -576,5 +578,16 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  return (mod.metadataLoader satisfies MetadataLoader)(serverLoaderData);
+  const result = (mod.metadataLoader satisfies MetadataLoader)(
+    serverLoaderData,
+  );
+  // types IMetadata
+  return ['title', 'description', 'keywords', 'lang', 'metas'].reduce(
+    (acc, key) => {
+      if (Object.prototype.hasOwnProperty.call(result, key))
+        acc[key] = result[key];
+      return acc;
+    },
+    {} as any,
+  );
 }

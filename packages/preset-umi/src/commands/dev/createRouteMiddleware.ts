@@ -37,7 +37,6 @@ function createRouteMiddleware(opts: { api: IApi }) {
         stats,
         publicPath: opts.api.config.publicPath!,
       });
-
       const requestHandler = await createRequestHandler({
         ...markupArgs,
         styles: markupArgs.styles.concat(

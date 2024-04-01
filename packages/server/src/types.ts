@@ -62,6 +62,13 @@ export interface IMetadata {
    */
   lang?: string;
   metas?: IMetaTag[];
+}
+
+export interface ITplOpts {
+  title?: string;
+  description?: string;
+  keywords?: string[];
+  metas?: IMetaTag[];
   headScripts?: (Record<string, string> | string)[];
   links?: Record<string, string>[];
   styles?: string[];

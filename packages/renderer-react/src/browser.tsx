@@ -92,6 +92,11 @@ export type RenderClientOpts = {
    */
   runtimePublicPath?: boolean;
   /**
+   * react dom 渲染的的目标节点 id
+   * @doc 一般不需要改，微前端的时候会变化
+   */
+  mountElementId?: string;
+  /**
    * react dom 渲染的的目标 dom
    * @doc 一般不需要改，微前端的时候会变化
    */
@@ -347,8 +352,8 @@ export function renderClient(opts: RenderClientOpts) {
     const metadata = window.__UMI_METADATA_LOADER_DATA__ || {};
 
     ReactDOM.hydrateRoot(
-      document,
-      <Html {...{ metadata, loaderData }}>
+      opts.renderFromRoot ? rootElement : document,
+      <Html {...{ metadata, loaderData, mountElementId: opts.mountElementId }}>
         <Browser />
       </Html>,
     );

@@ -516,7 +516,7 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
-          metadata: JSON.stringify({
+          tplOpts: JSON.stringify({
             headScripts,
             styles,
             title,
@@ -526,6 +526,7 @@ if (process.env.NODE_ENV === 'development') {
             scripts: scripts || [],
           }),
           renderFromRoot: api.config.ssr?.renderFromRoot ?? false,
+          mountElementId: api.config.mountElementId,
         },
       });
     }

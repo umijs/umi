@@ -1,5 +1,6 @@
 import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
+import { omit } from '@umijs/utils/compiled/lodash';
 import { writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import type { IApi, IOnGenerateFiles } from '../types';
@@ -171,7 +172,12 @@ umi build --clean
               publicPath: api.config.publicPath,
             });
         const { vite } = api.args;
-        const markupArgs = await getMarkupArgs({ api });
+        const args = await getMarkupArgs({ api });
+
+        // renderFromRoot = true, 将 html 中的 title, metas 标签逻辑全部交给 metadataLoader 合并逻辑处理
+        const markupArgs = api.config?.ssr?.renderFromRoot
+          ? omit(args, ['title', 'metas'])
+          : args;
         const finalMarkUpArgs = {
           ...markupArgs,
           styles: markupArgs.styles.concat(
