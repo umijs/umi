@@ -5,6 +5,7 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
+  IMetadata,
   IRoutesById,
   IServerLoaderArgs,
   ITplOpts,

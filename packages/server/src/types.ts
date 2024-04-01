@@ -62,6 +62,12 @@ export interface IMetadata {
    */
   lang?: string;
   metas?: IMetaTag[];
+  headScripts?: (Record<string, string> | string)[];
+  links?: Record<string, string>[];
+  styles?: string[];
+  favicons?: string[];
+  scripts?: (Record<string, string> | string)[];
+  [key: string]: any;
 }
 
 export interface ITplOpts {
