@@ -51,7 +51,7 @@ export interface IRootComponentOptions {
   loaderData: { [routeKey: string]: any };
   manifest: any;
   metadata?: IMetadata;
-  hydrateFromHtml: boolean;
+  hydrateFromRoot: boolean;
 }
 
 export interface IHtmlProps {

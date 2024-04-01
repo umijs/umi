@@ -62,11 +62,12 @@ export interface IMetadata {
    */
   lang?: string;
   metas?: IMetaTag[];
-  headScripts?: IOpts['headScripts'];
-  links?: IOpts['links'];
+  headScripts?: (Record<string, string> | string)[];
+  links?: Record<string, string>[];
   styles?: string[];
   favicons?: string[];
-  scripts?: IOpts['scripts'];
+  scripts?: (Record<string, string> | string)[];
+  [key: string]: any;
 }
 export type MetadataLoader<T = any> = (
   serverLoaderData: T,

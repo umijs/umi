@@ -94,15 +94,16 @@ export function Html({
         />
 
         <div id="root">{children}</div>
-        {loaderData && (
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
-                loaderData,
-              )}`,
-            }}
-          />
-        )}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
+              loaderData || {},
+            )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
+              metadata,
+            )}`,
+          }}
+        />
+
         {metadata?.scripts?.map((script: IScript, key: number) => {
           const { content, ...rest } = normalizeScripts(script);
           return (

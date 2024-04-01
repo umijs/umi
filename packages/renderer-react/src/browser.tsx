@@ -100,7 +100,7 @@ export type RenderClientOpts = {
    * ssr 是否从 html 根节点开始 hydrate
    * @doc 默认 true，从 html 开始渲染，false 时从 app root 开始
    */
-  hydrateFromHtml?: boolean;
+  hydrateFromRoot?: boolean;
   /**
    * 当前的路由配置
    */
@@ -336,13 +336,19 @@ const getBrowser = (
  */
 export function renderClient(opts: RenderClientOpts) {
   const rootElement = opts.rootElement || document.getElementById('root')!;
+
   const Browser = getBrowser(opts, <Routes />);
   // 为了测试，直接返回组件
   if (opts.components) return Browser;
   if (opts.hydrate) {
+    // @ts-ignore
+    const loaderData = window.__UMI_LOADER_DATA__ || {};
+    // @ts-ignore
+    const metadata = window.__UMI_METADATA_LOADER_DATA__ || {};
+
     ReactDOM.hydrateRoot(
       document,
-      <Html {...opts}>
+      <Html {...{ metadata, loaderData }}>
         <Browser />
       </Html>,
     );

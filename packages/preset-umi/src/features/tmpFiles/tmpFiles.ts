@@ -2,11 +2,11 @@ import { importLazy, lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
+import { getMarkupArgs } from '../../commands/dev/getMarkupArgs';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { getModuleExports } from './getModuleExports';
 import { importsToStr } from './importsToStr';
-
 const routesApi: typeof import('./routes') = importLazy(
   require.resolve('./routes'),
 );
@@ -496,16 +496,8 @@ if (process.env.NODE_ENV === 'development') {
         }
         return memo;
       }, []);
-      const {
-        headScripts,
-        scripts,
-        styles,
-        title,
-        favicons,
-        links,
-        metas,
-        ssr,
-      } = api.config;
+      const { headScripts, scripts, styles, title, favicons, links, metas } =
+        await getMarkupArgs({ api });
       api.writeTmpFile({
         noPluginDir: true,
         path: 'umi.server.ts',
@@ -531,9 +523,9 @@ if (process.env.NODE_ENV === 'development') {
             favicons,
             links,
             metas,
+            scripts: scripts || [],
           }),
-          scripts: JSON.stringify(scripts || []),
-          hydrateFromHtml: ssr?.hydrateFromHtml ?? true,
+          hydrateFromRoot: api.config.ssr?.hydrateFromRoot ?? false,
         },
       });
     }

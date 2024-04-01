@@ -1,12 +1,11 @@
 /// <reference lib="webworker" />
 import type { RequestHandler } from '@umijs/bundler-utils/compiled/express';
-import mergeWith from 'lodash.mergewith';
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
-  IOpts,
+  IMetadata,
   IRoutesById,
   IServerLoaderArgs,
   MetadataLoader,
@@ -40,9 +39,8 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  metadata: IOpts;
-  scripts: IOpts['scripts'];
-  hydrateFromHtml: boolean;
+  metadata: IMetadata;
+  hydrateFromRoot: boolean;
 }
 
 interface IExecLoaderOpts {
@@ -112,7 +110,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     }
 
     const loaderData: Record<string, any> = {};
-    let metadata: Record<string, any> = {};
+    // let metadata: Record<string, any> = {};
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
@@ -134,17 +132,13 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
                   serverLoaderArgs,
                   serverLoaderData: loaderData[id],
                 });
-
-                metadata = mergeWith(
-                  metadataLoaderData,
-                  opts.metadata,
-                  (pre, next) => {
-                    if (Array.isArray(pre) || Array.isArray(next)) {
-                      return Array.prototype.concat.call(pre || [], next || []);
-                    }
-                  },
-                );
-                metadata.scripts = opts.scripts;
+                Object.entries(metadataLoaderData).forEach(([k, v]) => {
+                  if (Array.isArray(v)) {
+                    opts.metadata[k] = (opts.metadata[k] || []).concat(v);
+                  } else {
+                    opts.metadata[k] = v;
+                  }
+                });
               }
               resolve();
             }),
@@ -162,8 +156,8 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      metadata,
-      hydrateFromHtml: opts.hydrateFromHtml,
+      metadata: opts.metadata,
+      hydrateFromRoot: opts.hydrateFromRoot,
     };
 
     const element = (await opts.getClientRootComponent(
@@ -533,18 +527,10 @@ async function executeLoader(params: IExecLoaderOpts) {
 }
 
 async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
-  const {
-    routesWithServerLoader,
-    routeKey,
-    serverLoaderArgs,
-    serverLoaderData,
-  } = params;
+  const { routesWithServerLoader, routeKey, serverLoaderData } = params;
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  return (mod.metadataLoader satisfies MetadataLoader)(
-    serverLoaderData,
-    serverLoaderArgs,
-  );
+  return (mod.metadataLoader satisfies MetadataLoader)(serverLoaderData);
 }
