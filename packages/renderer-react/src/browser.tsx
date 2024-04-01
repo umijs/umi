@@ -10,9 +10,9 @@ import ReactDOM from 'react-dom/client';
 import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
 import { fetchServerLoader } from './dataFetcher';
+import { Html } from './html';
 import { createClientRoutes } from './routes';
 import { ILoaderData, IRouteComponents, IRoutesById } from './types';
-
 let root: ReactDOM.Root | null = null;
 
 // react 18 some scenarios need unmount such as micro app
@@ -96,6 +96,11 @@ export type RenderClientOpts = {
    * @doc 一般不需要改，微前端的时候会变化
    */
   rootElement?: HTMLElement;
+  /**
+   * ssr 是否从 app root 根节点开始 render
+   * @doc 默认 false, 从 app root 开始 render，为 true 时从 html 开始
+   */
+  renderFromRoot?: boolean;
   /**
    * 当前的路由配置
    */
@@ -331,12 +336,22 @@ const getBrowser = (
  */
 export function renderClient(opts: RenderClientOpts) {
   const rootElement = opts.rootElement || document.getElementById('root')!;
+
   const Browser = getBrowser(opts, <Routes />);
   // 为了测试，直接返回组件
   if (opts.components) return Browser;
-
   if (opts.hydrate) {
-    ReactDOM.hydrateRoot(rootElement, <Browser />);
+    // @ts-ignore
+    const loaderData = window.__UMI_LOADER_DATA__ || {};
+    // @ts-ignore
+    const metadata = window.__UMI_METADATA_LOADER_DATA__ || {};
+
+    ReactDOM.hydrateRoot(
+      document,
+      <Html {...{ metadata, loaderData }}>
+        <Browser />
+      </Html>,
+    );
     return;
   }
 

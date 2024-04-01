@@ -5,6 +5,7 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
+  IMetadata,
   IRoutesById,
   IServerLoaderArgs,
   MetadataLoader,
@@ -38,6 +39,8 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
+  metadata: IMetadata;
+  renderFromRoot: boolean;
 }
 
 interface IExecLoaderOpts {
@@ -106,7 +109,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     }
 
     const loaderData: Record<string, any> = {};
-    const metadata: Record<string, any> = {};
+    // let metadata: Record<string, any> = {};
     await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
@@ -122,15 +125,19 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
               // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
               // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
               if (routes[id].hasMetadataLoader) {
-                Object.assign(
-                  metadata,
-                  await executeMetadataLoader({
-                    routesWithServerLoader,
-                    routeKey: id,
-                    serverLoaderArgs,
-                    serverLoaderData: loaderData[id],
-                  }),
-                );
+                const metadataLoaderData = await executeMetadataLoader({
+                  routesWithServerLoader,
+                  routeKey: id,
+                  serverLoaderArgs,
+                  serverLoaderData: loaderData[id],
+                });
+                Object.entries(metadataLoaderData).forEach(([k, v]) => {
+                  if (Array.isArray(v)) {
+                    opts.metadata[k] = (opts.metadata[k] || []).concat(v);
+                  } else {
+                    opts.metadata[k] = v;
+                  }
+                });
               }
               resolve();
             }),
@@ -148,7 +155,8 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      metadata,
+      metadata: opts.metadata,
+      renderFromRoot: opts.renderFromRoot,
     };
 
     const element = (await opts.getClientRootComponent(
@@ -563,18 +571,10 @@ async function executeLoader(params: IExecLoaderOpts) {
 }
 
 async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
-  const {
-    routesWithServerLoader,
-    routeKey,
-    serverLoaderArgs,
-    serverLoaderData,
-  } = params;
+  const { routesWithServerLoader, routeKey, serverLoaderData } = params;
   const mod = await routesWithServerLoader[routeKey]();
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  return (mod.metadataLoader satisfies MetadataLoader)(
-    serverLoaderData,
-    serverLoaderArgs,
-  );
+  return (mod.metadataLoader satisfies MetadataLoader)(serverLoaderData);
 }
