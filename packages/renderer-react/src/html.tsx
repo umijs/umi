@@ -99,7 +99,8 @@ export function Html({
   const serverBuildManifest =
     typeof window === 'undefined'
       ? manifest
-      : window.__UMI_BUILD_MANIFEST_DATA__;
+      : // @ts-ignore
+        window.__UMI_BUILD_MANIFEST_DATA__;
   return (
     <html suppressHydrationWarning lang={tplOpts?.lang || 'en'}>
       <head>
