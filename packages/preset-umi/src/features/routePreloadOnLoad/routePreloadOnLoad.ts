@@ -219,44 +219,47 @@ export default (api: IApi) => {
       api.config.routeLoader?.moduleType === 'esm',
   });
 
-  api.addHTMLHeadScripts(() => {
-    if (api.name === 'build' && routeChunkFilesMap) {
-      // internal tern app use map mode
-      return api.config.tern
-        ? // map mode
-          [
-            {
-              type: PRELOAD_ROUTE_MAP_SCP_TYPE,
-              content: JSON.stringify(routeChunkFilesMap),
-            },
-          ]
-        : // script mode
-          [
-            {
-              content: readFileSync(
-                join(
-                  TEMPLATES_DIR,
-                  'routePreloadOnLoad/preloadRouteFilesScp.js',
-                ),
-                'utf-8',
-              )
-                .replace(
-                  '"{{routeChunkFilesMap}}"',
-                  JSON.stringify(routeChunkFilesMap),
+  api.addHTMLHeadScripts({
+    fn: () => {
+      if (api.name === 'build' && routeChunkFilesMap) {
+        // internal tern app use map mode
+        return api.config.tern
+          ? // map mode
+            [
+              {
+                type: PRELOAD_ROUTE_MAP_SCP_TYPE,
+                content: JSON.stringify(routeChunkFilesMap),
+              },
+            ]
+          : // script mode
+            [
+              {
+                content: readFileSync(
+                  join(
+                    TEMPLATES_DIR,
+                    'routePreloadOnLoad/preloadRouteFilesScp.js',
+                  ),
+                  'utf-8',
                 )
-                .replace('{{basename}}', api.config.base)
-                .replace(
-                  '"{{publicPath}}"',
-                  `${
-                    // handle runtimePublicPath
-                    api.config.runtimePublicPath ? 'window.publicPath||' : ''
-                  }"${api.config.publicPath}"`,
-                ),
-            },
-          ];
-    }
-
-    return [];
+                  .replace(
+                    '"{{routeChunkFilesMap}}"',
+                    JSON.stringify(routeChunkFilesMap),
+                  )
+                  .replace('{{basename}}', api.config.base)
+                  .replace(
+                    '"{{publicPath}}"',
+                    `${
+                      // handle runtimePublicPath
+                      api.config.runtimePublicPath ? 'window.publicPath||' : ''
+                    }"${api.config.publicPath}"`,
+                  ),
+              },
+            ];
+      }
+  
+      return [];
+    },
+    stage: Infinity,
   });
 
   api.onBuildComplete(async ({ err, stats }) => {
