@@ -103,7 +103,7 @@ export function Html({
         {manifest?.assets['umi.css'] && (
           <link rel="stylesheet" href={manifest?.assets['umi.css']} />
         )}
-        {normalizeMetadata(metadata)}
+        <NormalizeMetadata metadata={metadata} />
       </head>
       <body>
         <noscript
