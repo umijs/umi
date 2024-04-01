@@ -1,3 +1,5 @@
+import { Input } from 'antd';
+import { useId } from 'react';
 import {
   Link,
   MetadataLoader,
@@ -22,16 +24,26 @@ export default function HomePage() {
   const serverLoaderData = useServerLoaderData<typeof serverLoader>();
 
   useServerInsertedHTML(() => {
-    return <div>inserted html</div>;
+    return (
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `.server_inserted_style { color: #1677ff }`,
+        }}
+      ></style>
+    );
   });
+
+  const id = useId();
 
   return (
     <div>
       <h1 className="title">Hello~</h1>
+      <p className="server_inserted_style">id: {id}</p>
       <p className={styles.blue}>This is index.tsx</p>
       <p className={cssStyle.title}>I should be pink</p>
       <p className={cssStyle.blue}>I should be cyan</p>
       <Button />
+      <Input placeholder="这个样式不应该闪烁" />
       <img src={bigImage} alt="" />
       <img src={umiLogo} alt="umi" />
       <Link to="/users/user">/users/user</Link>
