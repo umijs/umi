@@ -55,10 +55,11 @@ export interface IRootComponentOptions {
 }
 
 export interface IHtmlProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   loaderData?: { [routeKey: string]: any };
   manifest?: any;
   metadata?: IMetadata;
+  renderFromRoot?: boolean;
 }
 
 export type IScript =
