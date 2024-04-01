@@ -276,7 +276,7 @@ export default function createRequestHandler(
       otherwise(): Promise<void> | void;
     };
 
-    const replaceServerHTMLScript = `<script>!function(){var e=document.getElementById(SERVER_INSERTED_HTML);e&&(Array.from(e.children).forEach(e=>{document.head.appendChild(e)}),e.remove())}();</script>`;
+    const replaceServerHTMLScript = `<script>!function(){var e=document.getElementById("${SERVER_INSERTED_HTML}");e&&(Array.from(e.children).forEach(e=>{document.head.appendChild(e)}),e.remove())}();</script>`;
 
     if (typeof FetchEvent !== 'undefined' && args[0] instanceof FetchEvent) {
       // worker mode
