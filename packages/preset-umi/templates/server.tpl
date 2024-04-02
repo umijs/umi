@@ -51,8 +51,9 @@ const createOpts = {
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
-  metadata: {{{metadata}}},
-  renderFromRoot: {{{renderFromRoot}}}
+  tplOpts: {{{tplOpts}}},
+  renderFromRoot: {{{renderFromRoot}}},
+  mountElementId: '{{{mountElementId}}}'
 
 };
 const requestHandler = createRequestHandler(createOpts);

@@ -1,4 +1,4 @@
-import type { IMetadata } from '@umijs/server/dist/types';
+import type { ITplOpts } from '@umijs/server/dist/types';
 import type { RouteMatch, RouteObject } from 'react-router-dom';
 
 export interface IRouteSSRProps {
@@ -50,15 +50,17 @@ export interface IRootComponentOptions {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
-  metadata?: IMetadata;
+  tplOpts?: ITplOpts;
   renderFromRoot: boolean;
+  mountElementId: string;
 }
 
 export interface IHtmlProps {
   children?: React.ReactNode;
   loaderData?: { [routeKey: string]: any };
   manifest?: any;
-  metadata?: IMetadata;
+  tplOpts?: ITplOpts;
+  mountElementId?: string;
   renderFromRoot?: boolean;
 }
 
