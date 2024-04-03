@@ -99,7 +99,10 @@ umi build --clean
       });
       const shouldUseAutomaticRuntime =
         api.appData.react?.version &&
-        semver.gte(api.appData.react.version, '16.14.0');
+        // why not 16.14.0 ?
+        // it will break the config of externals, when externals
+        // does not handle the react/runtime
+        semver.gte(api.appData.react.version, '17.0.0');
       const opts = {
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
