@@ -353,9 +353,7 @@ export default function createRequestHandler(
             },
           });
 
-          stream.pipeThrough(transformStream);
-
-          let res = new Response(stream, {
+          let res = new Response(stream.pipeThrough(transformStream), {
             headers: {
               'content-type': 'text/html; charset=utf-8',
             },
