@@ -288,7 +288,7 @@ export default function createRequestHandler(
 
     const replaceServerHTMLScript = `<script>!function(){var e=document.getElementById("${SERVER_INSERTED_HTML}");e&&(Array.from(e.children).forEach(e=>{document.head.appendChild(e)}),e.remove())}();</script>`;
 
-    if (process.env.SSR_BUILD_MODE === 'worker') {
+    if (process.env.SSR_BUILD_TARGET === 'worker') {
       // worker mode
       const [ev, workerOpts] = args as IWorkerRequestHandlerArgs;
       const { pathname, searchParams } = new URL(ev.request.url);
