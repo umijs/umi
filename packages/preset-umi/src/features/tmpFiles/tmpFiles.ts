@@ -446,6 +446,9 @@ if (process.env.NODE_ENV === 'development') {
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
       initialValue: [
+        // why add default?
+        // ref: https://github.com/umijs/mako/issues/1026
+        ...(process.env.OKAM ? ['default'] : []),
         'patchRoutes',
         'patchClientRoutes',
         'modifyContextOpts',
