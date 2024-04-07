@@ -25,6 +25,7 @@ export default (api: IApi) => {
         return zod
           .object({
             serverBuildPath: zod.string(),
+            serverBuildMode: zod.enum(['express', 'worker']),
             platform: zod.string(),
             builder: zod.enum(['esbuild', 'webpack']),
             renderFromRoot: zod.boolean(),
@@ -47,6 +48,22 @@ export default (api: IApi) => {
 
   api.onStart(() => {
     logger.warn(`SSR feature is in beta, may be unstable`);
+  });
+
+  api.modifyConfig((memo) => {
+    // define SSR_BUILD_MODE to strip useless logic
+    memo.define ??= {};
+    memo.define.SSR_BUILD_MODE = api.config.ssr.serverBuildMode || 'express';
+
+    if (api.config.serverBuildMode === 'worker') {
+      // use browser version of react-dom/server for worker mode
+      // ref: https://github.com/facebook/react/blob/f86afca090b668d8be10b642750844759768d1ad/packages/react-server-dom-webpack/package.json#L52
+      memo.alias['react-dom/server$'] = winPath(
+        join(memo.alias['react-dom'], 'server.browser.js'),
+      );
+    }
+
+    return memo;
   });
 
   api.addMiddlewares(() => [
