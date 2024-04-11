@@ -256,6 +256,42 @@ type IWorkerRequestHandlerArgs = [
   opts?: { modifyResponse?: (res: Response) => Promise<Response> | Response },
 ];
 
+const normalizeRequest = (
+  ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
+) => {
+  let request: {
+    url: string;
+    pathname: string;
+    headers: HeadersInit;
+    query: { route?: string | null; url?: string | null };
+  };
+  if (process.env.SSR_BUILD_TARGET === 'worker') {
+    const [ev] = args as IWorkerRequestHandlerArgs;
+    const { pathname, searchParams } = new URL(ev.request.url);
+    request = {
+      url: ev.request.url,
+      pathname,
+      headers: ev.request.headers,
+      query: {
+        route: searchParams.get('route'),
+        url: searchParams.get('url'),
+      },
+    };
+  } else {
+    const [req] = args as IExpressRequestHandlerArgs;
+    request = {
+      url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+      pathname: req.url,
+      headers: req.headers as HeadersInit,
+      query: {
+        route: req.query.route?.toString(),
+        url: req.query.url?.toString(),
+      },
+    };
+  }
+  return request;
+};
+
 export default function createRequestHandler(
   opts: CreateRequestHandlerOptions,
 ) {
@@ -282,7 +318,7 @@ export default function createRequestHandler(
     if (process.env.SSR_BUILD_TARGET === 'worker') {
       // worker mode
       const [ev, workerOpts] = args as IWorkerRequestHandlerArgs;
-      const { pathname, searchParams } = new URL(ev.request.url);
+
       let asyncRespondWith: (
         v: Parameters<FetchEvent['respondWith']>[0],
       ) => void;
@@ -292,15 +328,7 @@ export default function createRequestHandler(
       ev.respondWith(new Promise((r) => (asyncRespondWith = r)));
 
       ret = {
-        req: {
-          url: ev.request.url,
-          pathname,
-          headers: ev.request.headers,
-          query: {
-            route: searchParams.get('route'),
-            url: searchParams.get('url'),
-          },
-        },
+        req: normalizeRequest(...args),
         async sendServerLoader(data) {
           let res = new Response(JSON.stringify(data), {
             headers: {
@@ -364,18 +392,10 @@ export default function createRequestHandler(
       };
     } else {
       // express mode
-      const [req, res, next] = args as IExpressRequestHandlerArgs;
+      const [_, res, next] = args as IExpressRequestHandlerArgs;
 
       ret = {
-        req: {
-          url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-          pathname: req.url,
-          headers: req.headers as HeadersInit,
-          query: {
-            route: req.query.route?.toString(),
-            url: req.query.url?.toString(),
-          },
-        },
+        req: normalizeRequest(...args),
         sendServerLoader(data) {
           res.status(200).json(data);
         },
@@ -524,10 +544,15 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
 }
 
 export async function createAppRootElement(opts: CreateRequestHandlerOptions) {
-  return async (request: Request) => {
+  return async (
+    args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs,
+  ) => {
     const jsxGeneratorDeferrer = createJSXGenerator(opts);
+    const request = normalizeRequest(...args);
     const jsx = await jsxGeneratorDeferrer(request.url, {
-      request,
+      request: new Request(request.url, {
+        headers: request.headers,
+      }),
     });
     return jsx?.element;
   };
