@@ -288,10 +288,17 @@ export default function createRequestHandler(
 
     const replaceServerHTMLScript = `<script>!function(){var e=document.getElementById("${SERVER_INSERTED_HTML}");e&&(Array.from(e.children).forEach(e=>{document.head.appendChild(e)}),e.remove())}();</script>`;
 
-    if (typeof FetchEvent !== 'undefined' && args[0] instanceof FetchEvent) {
+    if (process.env.SSR_BUILD_TARGET === 'worker') {
       // worker mode
       const [ev, workerOpts] = args as IWorkerRequestHandlerArgs;
       const { pathname, searchParams } = new URL(ev.request.url);
+      let asyncRespondWith: (
+        v: Parameters<FetchEvent['respondWith']>[0],
+      ) => void;
+
+      // respondWith must be called synchronously
+      // ref: https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith
+      ev.respondWith(new Promise((r) => (asyncRespondWith = r)));
 
       ret = {
         req: {
@@ -316,7 +323,7 @@ export default function createRequestHandler(
             res = await workerOpts.modifyResponse(res);
           }
 
-          ev.respondWith(res);
+          asyncRespondWith(res);
         },
         async sendPage(jsx) {
           const [JSXProvider, serverInsertedHTMLCallbacks] = createJSXProvider(
@@ -346,9 +353,7 @@ export default function createRequestHandler(
             },
           });
 
-          stream.pipeThrough(transformStream);
-
-          let res = new Response(stream, {
+          let res = new Response(stream.pipeThrough(transformStream), {
             headers: {
               'content-type': 'text/html; charset=utf-8',
             },
@@ -360,7 +365,7 @@ export default function createRequestHandler(
             res = await workerOpts.modifyResponse(res);
           }
 
-          ev.respondWith(res);
+          asyncRespondWith(res);
         },
         otherwise() {
           throw new Error('no page resource');

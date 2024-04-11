@@ -17,6 +17,7 @@ export default (api: IApi) => {
   const webpackBuilder: typeof import('./webpack/webpack') = importLazy(
     require.resolve('./webpack/webpack'),
   );
+  let serverBuildTarget: string;
 
   api.describe({
     key: 'ssr',
@@ -25,6 +26,7 @@ export default (api: IApi) => {
         return zod
           .object({
             serverBuildPath: zod.string(),
+            serverBuildTarget: zod.enum(['express', 'worker']),
             platform: zod.string(),
             builder: zod.enum(['esbuild', 'webpack']),
             renderFromRoot: zod.boolean(),
@@ -47,6 +49,36 @@ export default (api: IApi) => {
 
   api.onStart(() => {
     logger.warn(`SSR feature is in beta, may be unstable`);
+  });
+
+  api.modifyDefaultConfig((memo) => {
+    if (serverBuildTarget === 'worker') {
+      const oReactDom = memo.alias['react-dom'];
+
+      // put react-dom after react-dom/server
+      delete memo.alias['react-dom'];
+
+      // use browser version of react-dom/server for worker mode
+      // ref: https://github.com/facebook/react/blob/f86afca090b668d8be10b642750844759768d1ad/packages/react-server-dom-webpack/package.json#L52
+      memo.alias['react-dom/server$'] = winPath(
+        join(
+          api.service.configDefaults.alias['react-dom'],
+          'server.browser.js',
+        ),
+      );
+      memo.alias['react-dom'] = oReactDom;
+    }
+
+    return memo;
+  });
+
+  api.modifyConfig((memo) => {
+    // define SSR_BUILD_TARGET to strip useless logic
+    memo.define ??= {};
+    serverBuildTarget = memo.define['process.env.SSR_BUILD_TARGET'] =
+      memo.ssr.serverBuildTarget || 'express';
+
+    return memo;
   });
 
   api.addMiddlewares(() => [
