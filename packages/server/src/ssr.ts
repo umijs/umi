@@ -290,7 +290,11 @@ const normalizeRequest = (
       },
     };
   }
-  if (request.query.url) {
+  if (
+    request.pathname.startsWith('/__serverLoader') &&
+    request.query.route &&
+    request.query.url
+  ) {
     serverLoaderRequest = new Request(request.query.url as string, {
       headers: request.headers as HeadersInit,
     });
