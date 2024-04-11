@@ -272,6 +272,25 @@ declare module '*.txt' {
         initialValue: [],
       })
     ).join('\n');
+    const importsAhead = importsToStr(
+      await api.applyPlugins({
+        key: 'addEntryImportsAhead',
+        initialValue: [
+          api.appData.globalCSS.length && {
+            source: api.appData.globalCSS[0],
+          },
+          api.appData.globalJS.length && {
+            source: api.appData.globalJS[0],
+          },
+        ].filter(Boolean),
+      }),
+    ).join('\n');
+    const imports = importsToStr(
+      await api.applyPlugins({
+        key: 'addEntryImports',
+        initialValue: [],
+      }),
+    ).join('\n');
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
@@ -290,25 +309,8 @@ declare module '*.txt' {
             initialValue: [],
           }),
         ).join('\n'),
-        importsAhead: importsToStr(
-          await api.applyPlugins({
-            key: 'addEntryImportsAhead',
-            initialValue: [
-              api.appData.globalCSS.length && {
-                source: api.appData.globalCSS[0],
-              },
-              api.appData.globalJS.length && {
-                source: api.appData.globalJS[0],
-              },
-            ].filter(Boolean),
-          }),
-        ).join('\n'),
-        imports: importsToStr(
-          await api.applyPlugins({
-            key: 'addEntryImports',
-            initialValue: [],
-          }),
-        ).join('\n'),
+        importsAhead,
+        imports,
         basename: api.config.base,
         historyType: api.config.history.type,
         hydrate: !!api.config.ssr,
@@ -511,6 +513,8 @@ if (process.env.NODE_ENV === 'development') {
           entryCode,
           entryCodeAhead,
           routesWithServerLoader,
+          importsAhead,
+          imports,
           umiPluginPath,
           serverRendererPath,
           umiServerPath,

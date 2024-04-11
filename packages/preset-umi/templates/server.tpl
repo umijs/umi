@@ -1,9 +1,11 @@
+{{{ importsAhead }}}
 import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
 import { createPluginManager } from './core/plugin';
 import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader, createAppRootElement } from '{{{ umiServerPath }}}';
+{{{ imports }}}
 {{{ entryCodeAhead }}}
 let helmetContext;
 
