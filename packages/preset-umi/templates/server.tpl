@@ -57,9 +57,14 @@ export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
 
-export const getAppRootElement = createAppRootElement.bind(null, createOpts)(request);
+export const getAppRootElement = createAppRootElement.bind(null, createOpts)();
 
 export default requestHandler;
 
 {{{ entryCode }}}
+
+
+
+
+
 
