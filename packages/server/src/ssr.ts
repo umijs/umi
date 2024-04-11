@@ -523,15 +523,14 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   };
 }
 
-export async function createAppRootElement(
-  opts: CreateRequestHandlerOptions,
-  request: Request,
-) {
-  const jsxGeneratorDeferrer = createJSXGenerator(opts);
-  const jsx = await jsxGeneratorDeferrer(request.url, {
-    request,
-  });
-  return jsx?.element;
+export async function createAppRootElement(opts: CreateRequestHandlerOptions) {
+  return async (request: Request) => {
+    const jsxGeneratorDeferrer = createJSXGenerator(opts);
+    const jsx = await jsxGeneratorDeferrer(request.url, {
+      request,
+    });
+    return jsx?.element;
+  };
 }
 
 function matchRoutesForSSR(reqUrl: string, routesById: IRoutesById) {

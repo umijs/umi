@@ -1,13 +1,11 @@
 import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
-import { getPlugins as getClientPlugins } from './core/plugin';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
-import { PluginManager } from '{{{ umiPluginPath }}}';
+import { createPluginManager } from './core/plugin';
 import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader, createAppRootElement } from '{{{ umiServerPath }}}';
 {{{ entryCodeAhead }}}
 let helmetContext;
-let pluginManager = null;
 
 try {
   helmetContext = require('./core/helmetContext').context;
@@ -19,14 +17,6 @@ const routesWithServerLoader = {
 {{/routesWithServerLoader}}
 };
 
-export function getPlugins() {
-  return getClientPlugins();
-}
-
-export function getValidKeys() {
-  return [{{#validKeys}}'{{{ . }}}',{{/validKeys}}];
-}
-
 export function getManifest(sourceDir) {
   return JSON.parse(require('fs').readFileSync(
   sourceDir ? require('path').join(sourceDir,'build-manifest.json') : '{{{ assetsPath }}}', 'utf-8'));
@@ -36,17 +26,6 @@ export function createHistory(opts) {
   return createClientHistory(opts);
 }
 
-export function getPluginManager() {
-  if (!pluginManager) {
-      pluginManager = PluginManager.create({
-      plugins: getPlugins(),
-      validKeys: getValidKeys(),
-    });
-  }
-  return pluginManager;
-}
-getPluginManager();
-
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
   let m = getManifest();
@@ -54,7 +33,7 @@ global.g_getAssets = (fileName) => {
 };
 const createOpts = {
   routesWithServerLoader,
-  pluginManager,
+  pluginManager: createPluginManager(),
   getRoutes,
   manifest: getManifest,
   getClientRootComponent,
@@ -78,7 +57,7 @@ export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
 
-export const getAppRootElement = createAppRootElement(createOpts, request);
+export const getAppRootElement = createAppRootElement.bind(null, createOpts)(request);
 
 export default requestHandler;
 

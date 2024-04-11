@@ -260,7 +260,18 @@ declare module '*.txt' {
 }
 `.trimEnd(),
     });
-
+    const entryCode = (
+      await api.applyPlugins({
+        key: 'addEntryCode',
+        initialValue: [],
+      })
+    ).join('\n');
+    const entryCodeAhead = (
+      await api.applyPlugins({
+        key: 'addEntryCodeAhead',
+        initialValue: [],
+      })
+    ).join('\n');
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
@@ -271,18 +282,8 @@ declare module '*.txt' {
         rendererPath,
         publicPath: api.config.publicPath,
         runtimePublicPath: api.config.runtimePublicPath ? 'true' : 'false',
-        entryCode: (
-          await api.applyPlugins({
-            key: 'addEntryCode',
-            initialValue: [],
-          })
-        ).join('\n'),
-        entryCodeAhead: (
-          await api.applyPlugins({
-            key: 'addEntryCodeAhead',
-            initialValue: [],
-          })
-        ).join('\n'),
+        entryCode,
+        entryCodeAhead,
         polyfillImports: importsToStr(
           await api.applyPlugins({
             key: 'addPolyfillImports',
@@ -507,18 +508,8 @@ if (process.env.NODE_ENV === 'development') {
             /"component": "await import\((.*)\)"/g,
             '"component": await import("$1")',
           ),
-          entryCode: (
-            await api.applyPlugins({
-              key: 'addEntryCode',
-              initialValue: [],
-            })
-          ).join('\n'),
-          entryCodeAhead: (
-            await api.applyPlugins({
-              key: 'addEntryCodeAhead',
-              initialValue: [],
-            })
-          ).join('\n'),
+          entryCode,
+          entryCodeAhead,
           routesWithServerLoader,
           umiPluginPath,
           serverRendererPath,
