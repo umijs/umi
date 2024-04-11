@@ -289,8 +289,10 @@ const normalizeRequest = (
         url: req.query.url?.toString(),
       },
     };
-    serverLoaderRequest = new Request(req.query.url as string, {
-      headers: req.headers as HeadersInit,
+  }
+  if (request.query.url) {
+    serverLoaderRequest = new Request(request.query.url as string, {
+      headers: request.headers as HeadersInit,
     });
   }
   return {
