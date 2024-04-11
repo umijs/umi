@@ -62,9 +62,3 @@ export const getAppRootElement = createAppRootElement.bind(null, createOpts)();
 export default requestHandler;
 
 {{{ entryCode }}}
-
-
-
-
-
-
