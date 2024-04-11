@@ -554,11 +554,17 @@ export async function createAppRootElement(opts: CreateRequestHandlerOptions) {
   return async (
     args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs,
   ) => {
+    let jsx;
     const jsxGeneratorDeferrer = createJSXGenerator(opts);
     const { request, serverLoaderRequest } = normalizeRequest(...args);
-    const jsx = await jsxGeneratorDeferrer(request.pathname, {
-      request: serverLoaderRequest as Request,
-    });
+    if (serverLoaderRequest) {
+      jsx = await jsxGeneratorDeferrer(request.pathname, {
+        request: serverLoaderRequest,
+      });
+    } else {
+      jsx = await jsxGeneratorDeferrer(request.pathname);
+    }
+
     return jsx?.element;
   };
 }
