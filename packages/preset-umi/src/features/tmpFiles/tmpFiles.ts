@@ -94,6 +94,7 @@ export default (api: IApi) => {
       },
       include: [
         `${baseUrl}.${frameworkName}rc.ts`,
+        `${baseUrl}.${frameworkName}rc.*.ts`,
         `${baseUrl}**/*.d.ts`,
         `${baseUrl}**/*.ts`,
         `${baseUrl}**/*.tsx`,
