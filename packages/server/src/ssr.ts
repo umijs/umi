@@ -265,6 +265,7 @@ const normalizeRequest = (
     headers: HeadersInit;
     query: { route?: string | null; url?: string | null };
   };
+  let serverLoaderRequest: Request | undefined;
   if (process.env.SSR_BUILD_TARGET === 'worker') {
     const [ev] = args as IWorkerRequestHandlerArgs;
     const { pathname, searchParams } = new URL(ev.request.url);
@@ -288,8 +289,14 @@ const normalizeRequest = (
         url: req.query.url?.toString(),
       },
     };
+    serverLoaderRequest = new Request(req.query.url as string, {
+      headers: req.headers as HeadersInit,
+    });
   }
-  return request;
+  return {
+    request,
+    serverLoaderRequest,
+  };
 };
 
 export default function createRequestHandler(
@@ -328,7 +335,7 @@ export default function createRequestHandler(
       ev.respondWith(new Promise((r) => (asyncRespondWith = r)));
 
       ret = {
-        req: normalizeRequest(...args),
+        req: normalizeRequest(...args).request,
         async sendServerLoader(data) {
           let res = new Response(JSON.stringify(data), {
             headers: {
@@ -395,7 +402,7 @@ export default function createRequestHandler(
       const [_, res, next] = args as IExpressRequestHandlerArgs;
 
       ret = {
-        req: normalizeRequest(...args),
+        req: normalizeRequest(...args).request,
         sendServerLoader(data) {
           res.status(200).json(data);
         },
@@ -548,11 +555,9 @@ export async function createAppRootElement(opts: CreateRequestHandlerOptions) {
     args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs,
   ) => {
     const jsxGeneratorDeferrer = createJSXGenerator(opts);
-    const request = normalizeRequest(...args);
-    const jsx = await jsxGeneratorDeferrer(request.url, {
-      request: new Request(request.url, {
-        headers: request.headers,
-      }),
+    const { request, serverLoaderRequest } = normalizeRequest(...args);
+    const jsx = await jsxGeneratorDeferrer(request.pathname, {
+      request: serverLoaderRequest as Request,
     });
     return jsx?.element;
   };
