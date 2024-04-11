@@ -507,6 +507,18 @@ if (process.env.NODE_ENV === 'development') {
             /"component": "await import\((.*)\)"/g,
             '"component": await import("$1")',
           ),
+          entryCode: (
+            await api.applyPlugins({
+              key: 'addEntryCode',
+              initialValue: [],
+            })
+          ).join('\n'),
+          entryCodeAhead: (
+            await api.applyPlugins({
+              key: 'addEntryCodeAhead',
+              initialValue: [],
+            })
+          ).join('\n'),
           routesWithServerLoader,
           umiPluginPath,
           serverRendererPath,

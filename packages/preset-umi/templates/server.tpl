@@ -4,9 +4,10 @@ import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
 import { PluginManager } from '{{{ umiPluginPath }}}';
-import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader } from '{{{ umiServerPath }}}';
-
+import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader, createAppRootElement } from '{{{ umiServerPath }}}';
+{{{ entryCodeAhead }}}
 let helmetContext;
+let pluginManager = null;
 
 try {
   helmetContext = require('./core/helmetContext').context;
@@ -35,6 +36,17 @@ export function createHistory(opts) {
   return createClientHistory(opts);
 }
 
+export function getPluginManager() {
+  if (!pluginManager) {
+      pluginManager = PluginManager.create({
+      plugins: getPlugins(),
+      validKeys: getValidKeys(),
+    });
+  }
+  return pluginManager;
+}
+getPluginManager();
+
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
   let m = getManifest();
@@ -42,9 +54,7 @@ global.g_getAssets = (fileName) => {
 };
 const createOpts = {
   routesWithServerLoader,
-  PluginManager,
-  getPlugins,
-  getValidKeys,
+  pluginManager,
   getRoutes,
   manifest: getManifest,
   getClientRootComponent,
@@ -68,4 +78,9 @@ export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
 
+export const getAppRootElement = createAppRootElement(createOpts, request);
+
 export default requestHandler;
+
+{{{ entryCode }}}
+

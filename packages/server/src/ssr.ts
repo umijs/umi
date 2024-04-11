@@ -28,12 +28,10 @@ interface CreateRequestServerlessOptions {
 
 interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   routesWithServerLoader: RouteLoaders;
-  PluginManager: any;
+  pluginManager: any;
   manifest:
     | ((sourceDir?: string) => { assets: Record<string, string> })
     | { assets: Record<string, string> };
-  getPlugins: () => any;
-  getValidKeys: () => any;
   getRoutes: (PluginManager: any) => any;
   getClientRootComponent: (PluginManager: any) => any;
   createHistory: (opts: any) => any;
@@ -77,9 +75,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
   return async (url: string, serverLoaderArgs?: IServerLoaderArgs) => {
     const {
       routesWithServerLoader,
-      PluginManager,
-      getPlugins,
-      getValidKeys,
+      pluginManager,
       getRoutes,
       createHistory,
       sourceDir,
@@ -88,10 +84,6 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     // make import { history } from 'umi' work
     createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
 
-    const pluginManager = PluginManager.create({
-      plugins: getPlugins(),
-      validKeys: getValidKeys(),
-    });
     const { routes, routeComponents } = await getRoutes(pluginManager);
 
     // allow user to extend routes
@@ -160,7 +152,6 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       renderFromRoot: opts.renderFromRoot,
       mountElementId: opts.mountElementId,
     };
-
     const element = (await opts.getClientRootComponent(
       context,
     )) as ReactElement;
@@ -525,6 +516,17 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
       serverLoaderArgs: { request: serverLoaderRequest },
     });
   };
+}
+
+export async function createAppRootElement(
+  opts: CreateRequestHandlerOptions,
+  request: Request,
+) {
+  const jsxGeneratorDeferrer = createJSXGenerator(opts);
+  const jsx = await jsxGeneratorDeferrer(request.url, {
+    request,
+  });
+  return jsx?.element;
 }
 
 function matchRoutesForSSR(reqUrl: string, routesById: IRoutesById) {
