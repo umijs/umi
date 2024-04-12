@@ -19,7 +19,7 @@ const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
 const bundlerVite: typeof import('@umijs/bundler-vite') =
   lazyImportFromCurrentPkg('@umijs/bundler-vite');
 
-enum MetadataLoaderMergeKeys {
+enum MetadataLoaderOmitKeys {
   Title = 'title',
   Meta = 'meta',
 }
@@ -182,8 +182,8 @@ umi build --clean
         // renderFromRoot = true, 将 html 中的 title, metas 标签逻辑全部交给 metadataLoader 合并逻辑处理
         const markupArgs = api.config.ssr?.renderFromRoot
           ? omit(args, [
-              MetadataLoaderMergeKeys.Title,
-              MetadataLoaderMergeKeys.Meta,
+              MetadataLoaderOmitKeys.Title,
+              MetadataLoaderOmitKeys.Meta,
             ])
           : args;
         const finalMarkUpArgs = {
