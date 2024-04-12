@@ -5,9 +5,10 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
+  IHtmlPageOptions,
+  IMetadata,
   IRoutesById,
   IServerLoaderArgs,
-  ITplOpts,
   MetadataLoader,
   ServerLoader,
   UmiRequest,
@@ -15,6 +16,14 @@ import type {
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
+}
+
+enum MetaLoaderResultKeys {
+  Title = 'title',
+  Description = 'description',
+  Keywords = 'keywords',
+  Lang = 'lang',
+  Metas = 'metas',
 }
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
@@ -37,7 +46,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  tplOpts: ITplOpts;
+  htmlPageOptions: IHtmlPageOptions;
   renderFromRoot: boolean;
   mountElementId: string;
 }
@@ -124,13 +133,16 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
                   serverLoaderArgs,
                   serverLoaderData: loaderData[id],
                 });
-                Object.entries(metadataLoaderData).forEach(([k, v]) => {
-                  if (Array.isArray(v)) {
-                    opts.tplOpts[k] = (opts.tplOpts[k] || []).concat(v);
-                  } else {
-                    opts.tplOpts[k] = v;
-                  }
-                });
+                metadataLoaderData &&
+                  Object.entries(metadataLoaderData).forEach(([k, v]) => {
+                    if (Array.isArray(v)) {
+                      opts.htmlPageOptions[k] = (
+                        opts.htmlPageOptions[k] || []
+                      ).concat(v);
+                    } else {
+                      opts.htmlPageOptions[k] = v;
+                    }
+                  });
               }
               resolve();
             }),
@@ -148,7 +160,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      tplOpts: opts.tplOpts,
+      htmlPageOptions: opts.htmlPageOptions,
       renderFromRoot: opts.renderFromRoot,
       mountElementId: opts.mountElementId,
     };
@@ -626,16 +638,19 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  const result = (mod.metadataLoader satisfies MetadataLoader)(
+  const loaderDatas = (mod.metadataLoader satisfies MetadataLoader)(
     serverLoaderData,
   );
-  // types IMetadata
-  return ['title', 'description', 'keywords', 'lang', 'metas'].reduce(
-    (acc, key) => {
-      if (Object.prototype.hasOwnProperty.call(result, key))
-        acc[key] = result[key];
-      return acc;
-    },
-    {} as any,
-  );
+
+  const result: IMetadata = {};
+  [
+    MetaLoaderResultKeys.Title,
+    MetaLoaderResultKeys.Description,
+    MetaLoaderResultKeys.Keywords,
+    MetaLoaderResultKeys.Lang,
+    MetaLoaderResultKeys.Metas,
+  ].forEach((key) => {
+    if (loaderDatas?.[key]) result[key] = loaderDatas[key];
+  });
+  return result;
 }

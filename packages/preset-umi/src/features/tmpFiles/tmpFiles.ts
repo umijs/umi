@@ -488,6 +488,10 @@ if (process.env.NODE_ENV === 'development') {
     if (api.config.ssr) {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
+
+      const renderFromRoot = api.config.ssr?.renderFromRoot ?? false;
+      const mountElementId = api.config.mountElementId;
+
       const routesWithServerLoader = Object.keys(routes).reduce<
         { id: string; path: string }[]
       >((memo, id) => {
@@ -523,7 +527,7 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
-          tplOpts: JSON.stringify({
+          htmlPageOptions: JSON.stringify({
             headScripts,
             styles,
             title,
@@ -532,8 +536,8 @@ if (process.env.NODE_ENV === 'development') {
             metas,
             scripts: scripts || [],
           }),
-          renderFromRoot: api.config.ssr?.renderFromRoot ?? false,
-          mountElementId: api.config.mountElementId,
+          renderFromRoot,
+          mountElementId,
         },
       });
     }
