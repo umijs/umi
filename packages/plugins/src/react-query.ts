@@ -1,6 +1,7 @@
-import { winPath } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { dirname, join } from 'path';
 import { IApi } from 'umi';
+import { isFlattedNodeModulesDir } from './utils/npmClient';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -140,62 +141,140 @@ export function rootContainer(container) {
   );
 }
       `
-        : '',
+        : 'export {}',
     });
+
+    const exportMembers: string[] = [
+      // from @tanstack/query-core
+      'QueryClient',
+      'QueryCache',
+      'MutationCache',
+      'QueryObserver',
+      'InfiniteQueryObserver',
+      'QueriesObserver',
+      'MutationObserver',
+      // from @tanstack/react-query
+      'useQuery',
+      'useQueries',
+      'useInfiniteQuery',
+      'useMutation',
+      'useIsFetching',
+      'useIsMutating',
+      ...(useV5
+        ? [
+            'useMutationState',
+            'useSuspenseQuery',
+            'useSuspenseInfiniteQuery',
+            'useSuspenseQueries',
+            'queryOptions',
+            'infiniteQueryOptions',
+          ]
+        : []),
+      'QueryClientProvider',
+      'useQueryClient',
+      'QueryErrorResetBoundary',
+      'useQueryErrorResetBoundary',
+      'useIsRestoring',
+      'IsRestoringProvider',
+    ].filter(Boolean);
 
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
 export {
-  // from @tanstack/query-core
-  QueryClient,
-  MutationObserver,
-  MutationCache,
-  InfiniteQueryObserver,
-  QueriesObserver,
-  QueryObserver,
-  QueryCache,
-  // from @tanstack/react-query
-  useIsRestoring,
-  IsRestoringProvider,
-  useInfiniteQuery,
-  useIsMutating,
-  useIsFetching,
-  useMutation,
-  useQueries,
-  useQuery,
-  QueryClientProvider,
-  useQueryClient,
-  QueryErrorResetBoundary,
-  useQueryErrorResetBoundary,
-  ${useV5 ? 'queryOptions,' : ''}
+  ${exportMembers.join(',\n  ')}
+} from '${pkgPath}';
+      `,
+    });
+
+    const exportTypes: string[] = [
+      // from @tanstack/query-core
+      'Query',
+      'QueryState',
+      'Mutation',
+      // from @tanstack/react-query
+      'QueriesResults',
+      'QueriesOptions',
+      'QueryErrorResetBoundaryProps',
+      'QueryClientProviderProps',
+      useV4 && 'ContextOptions as QueryContextOptions,',
+      'UseQueryOptions',
+      'UseBaseQueryOptions',
+      'UseQueryResult',
+      'UseBaseQueryResult',
+      'UseInfiniteQueryOptions',
+      'UseMutationResult',
+      'UseMutateFunction',
+      'UseMutateAsyncFunction',
+      'UseBaseMutationResult',
+    ].filter(Boolean);
+
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      content: `
+export type {
+  ${exportTypes.join(',\n  ')}
 } from '${pkgPath}';
       `,
     });
 
     api.writeTmpFile({
       path: 'types.d.ts',
-      content: `
-export type {
-  // from @tanstack/query-core
-  Query, QueryState, Mutation,
-  // from @tanstack/react-query
-  QueriesResults,
-  QueriesOptions,
-  QueryErrorResetBoundaryProps,
-  QueryClientProviderProps,
-  ${useV4 ? 'ContextOptions as QueryContextOptions,' : ''}
-  UseQueryOptions,
-  UseBaseQueryOptions,
-  UseQueryResult,
-  UseBaseQueryResult,
-  UseInfiniteQueryOptions,
-  UseMutationResult,
-  UseMutateFunction,
-  UseMutateAsyncFunction,
-  UseBaseMutationResult,
-} from '${pkgPath}';
-      `,
+      content: enableQueryClient
+        ? `
+import React from 'react';
+import { QueryClientConfig } from '${pkgPath}';
+${
+  enableDevTools
+    ? `
+import { ReactQueryDevtools } from '${devtoolsPkgPath}';
+`
+    : ''
+}
+
+export type RuntimeReactQueryType = {
+  ${
+    enableDevTools
+      ? `
+  devtool?: React.ComponentProps<typeof ReactQueryDevtools>
+`
+      : ''
+  }
+  queryClient?: QueryClientConfig
+}`
+        : 'export type RuntimeReactQueryType = {}',
     });
   });
+
+  // v5
+  const isFlattedDepsDir = isFlattedNodeModulesDir(api);
+  if (useV5 && !isFlattedDepsDir) {
+    let corePath: string;
+    const REACT_QUERY_CORE_DEP_NAME = '@tanstack/query-core';
+
+    // resolve RQ core
+    try {
+      corePath = winPath(
+        dirname(
+          require.resolve(`${REACT_QUERY_CORE_DEP_NAME}/package.json`, {
+            paths: [pkgPath],
+          }),
+        ),
+      );
+    } catch (e: any) {
+      throw new Error(
+        `[reactQuery] package '${REACT_QUERY_CORE_DEP_NAME}' resolve failed, ${e.message}`,
+      );
+    }
+
+    api.modifyTSConfig((config) => {
+      // if without the source of `@tanstack/query-core`, the IDE can't find the types
+      lodash.set(
+        config,
+        `compilerOptions.paths["${REACT_QUERY_CORE_DEP_NAME}"]`,
+        [corePath],
+      );
+      return config;
+    });
+  }
 };
