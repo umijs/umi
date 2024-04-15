@@ -156,6 +156,8 @@ export async function setup(opts: IOpts) {
       : undefined,
     pkg: opts.pkg,
     disableCopy: opts.disableCopy,
+    port: opts.port,
+    host: opts.host,
   });
 
   const depConfig = await configModule.getConfig({
@@ -175,6 +177,8 @@ export async function setup(opts: IOpts) {
       cacheDirectory: join(cacheDirectoryPath, 'mfsu-deps'),
     },
     pkg: opts.pkg,
+    port: opts.port,
+    host: opts.host,
   });
 
   webpackConfig.resolve!.alias ||= {};

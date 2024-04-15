@@ -3,8 +3,10 @@ import { resolveDefine } from './definePlugin';
 test('normal', () => {
   expect(
     resolveDefine({
-      define: { foo: 'bar' },
-    }),
+      userConfig: {
+        define: { foo: 'bar' },
+      },
+    } as any),
   ).toEqual({
     foo: '"bar"',
     'process.env': {
@@ -19,8 +21,10 @@ test('env variables', () => {
   process.env.APP_FOO = 'BAR';
   expect(
     resolveDefine({
-      define: {},
-    }),
+      userConfig: {
+        define: {},
+      },
+    } as any),
   ).toEqual({
     'process.env': {
       NODE_ENV: '"test"',
@@ -32,32 +36,38 @@ test('env variables', () => {
 
 test('should get SOCKET_SERVER if SOCKET_SERVER exists', () => {
   process.env.SOCKET_SERVER = 'socket.server';
-  process.env.HOST = 'test.host';
   expect(
     resolveDefine({
-      define: {},
-    })['process.env']['SOCKET_SERVER'],
+      userConfig: {
+        define: {},
+      },
+      host: 'test.host',
+    } as any)['process.env']['SOCKET_SERVER'],
   ).toEqual('"socket.server"');
 });
 
 test('should get SOCKET_SERVER if HOST exists', () => {
   delete process.env.SOCKET_SERVER;
-  process.env.HOST = 'test.host';
   expect(
     resolveDefine({
-      define: {},
-    })['process.env']['SOCKET_SERVER'],
+      userConfig: {
+        define: {},
+      },
+      host: 'test.host',
+    } as any)['process.env']['SOCKET_SERVER'],
   ).toEqual('"http://test.host:8000"');
 });
 
 test('should get https SOCKET_SERVER if exists', () => {
   delete process.env.SOCKET_SERVER;
-  process.env.HOST = 'test.host';
-  process.env.PORT = '6666';
   expect(
     resolveDefine({
-      define: {},
-      https: true,
-    })['process.env']['SOCKET_SERVER'],
+      userConfig: {
+        define: {},
+        https: true,
+      },
+      host: 'test.host',
+      port: 6666,
+    } as any)['process.env']['SOCKET_SERVER'],
   ).toEqual('"https://test.host:6666"');
 });
