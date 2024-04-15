@@ -181,10 +181,13 @@ umi build --clean
 
         // renderFromRoot = true, 将 html 中的 title, metas 标签逻辑全部交给 metadataLoader 合并逻辑处理
         const markupArgs = api.config.ssr?.renderFromRoot
-          ? omit(args, [
+          ? (omit(args, [
               MetadataLoaderOmitKeys.Title,
               MetadataLoaderOmitKeys.Meta,
-            ])
+            ]) as Omit<
+              typeof args,
+              MetadataLoaderOmitKeys.Title & MetadataLoaderOmitKeys.Meta
+            >)
           : args;
         const finalMarkUpArgs = {
           ...markupArgs,
