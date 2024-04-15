@@ -15,7 +15,7 @@ const prefixRE = /^UMI_APP_/;
 const ENV_SHOULD_PASS = ['NODE_ENV', 'HMR', 'SOCKET_SERVER', 'ERROR_OVERLAY'];
 const SOCKET_IGNORE_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost'];
 // 环境变量传递自定义逻辑，默认直接透传
-const EVN_GETTER: Record<string, (opts: IOpts) => string | undefined> = {
+const CUSTOM_ENV_GETTER: Record<string, (opts: IOpts) => string | undefined> = {
   SOCKET_SERVER: (opts: IOpts) => {
     const { userConfig, host, port } = opts;
     const socketServer = process.env.SOCKET_SERVER;
@@ -40,7 +40,9 @@ export function resolveDefine(opts: IOpts) {
   ENV_SHOULD_PASS.concat(
     Object.keys(process.env).filter((k) => prefixRE.test(k)),
   ).forEach((key: string) => {
-    const envValue = EVN_GETTER[key] ? EVN_GETTER[key](opts) : process.env[key];
+    const envValue = CUSTOM_ENV_GETTER[key]
+      ? CUSTOM_ENV_GETTER[key](opts)
+      : process.env[key];
     if (typeof envValue === 'undefined') {
       return;
     }
