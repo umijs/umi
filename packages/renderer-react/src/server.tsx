@@ -16,7 +16,7 @@ export async function getClientRootComponent(opts: IRootComponentOptions) {
     routeComponents: components,
   });
 
-  opts.pluginManager.applyPlugins({
+  await opts.pluginManager.applyPlugins({
     key: 'patchClientRoutes',
     type: 'event',
     args: {
