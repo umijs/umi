@@ -5,7 +5,7 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
-  IHtmlPageOptions,
+  IhtmlPageOpts,
   IMetadata,
   IRoutesById,
   IServerLoaderArgs,
@@ -46,7 +46,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  htmlPageOptions: IHtmlPageOptions;
+  htmlPageOpts: IhtmlPageOpts;
   renderFromRoot: boolean;
   mountElementId: string;
 }
@@ -136,11 +136,11 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
                 metadataLoaderData &&
                   Object.entries(metadataLoaderData).forEach(([k, v]) => {
                     if (Array.isArray(v)) {
-                      opts.htmlPageOptions[k] = (
-                        opts.htmlPageOptions[k] || []
+                      opts.htmlPageOpts[k] = (
+                        opts.htmlPageOpts[k] || []
                       ).concat(v);
                     } else {
-                      opts.htmlPageOptions[k] = v;
+                      opts.htmlPageOpts[k] = v;
                     }
                   });
               }
@@ -160,7 +160,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      htmlPageOptions: opts.htmlPageOptions,
+      htmlPageOpts: opts.htmlPageOpts,
       renderFromRoot: opts.renderFromRoot,
       mountElementId: opts.mountElementId,
     };
@@ -341,13 +341,12 @@ export default function createRequestHandler(
       ): Promise<void> | void;
       otherwise(): Promise<void> | void;
     };
-
+    const { request } = normalizeRequest(...args);
     const replaceServerHTMLScript = `<script>!function(){var e=document.getElementById("${SERVER_INSERTED_HTML}");e&&(Array.from(e.children).forEach(e=>{document.head.appendChild(e)}),e.remove())}();</script>`;
 
     if (process.env.SSR_BUILD_TARGET === 'worker') {
       // worker mode
       const [ev, workerOpts] = args as IWorkerRequestHandlerArgs;
-      const { request } = normalizeRequest(...args);
       let asyncRespondWith: (
         v: Parameters<FetchEvent['respondWith']>[0],
       ) => void;
@@ -424,7 +423,7 @@ export default function createRequestHandler(
       const [_, res, next] = args as IExpressRequestHandlerArgs;
 
       ret = {
-        req: normalizeRequest(...args).request,
+        req: request,
         sendServerLoader(data) {
           res.status(200).json(data);
         },
@@ -572,17 +571,11 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
 
 export function createAppRootElement(opts: CreateRequestHandlerOptions) {
   return async (
-    args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs,
+    ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
   ) => {
-    let jsx;
     const jsxGeneratorDeferrer = createJSXGenerator(opts);
     const { request, serverLoaderArgs } = normalizeRequest(...args);
-    if (serverLoaderArgs) {
-      jsx = await jsxGeneratorDeferrer(request.pathname, serverLoaderArgs);
-    } else {
-      jsx = await jsxGeneratorDeferrer(request.pathname);
-    }
-
+    const jsx = await jsxGeneratorDeferrer(request.pathname, serverLoaderArgs);
     return jsx?.element;
   };
 }

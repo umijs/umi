@@ -527,7 +527,7 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
-          htmlPageOptions: JSON.stringify({
+          htmlPageOpts: JSON.stringify({
             headScripts,
             styles,
             title,

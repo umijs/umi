@@ -1,4 +1,4 @@
-import type { IHtmlPageOptions } from '@umijs/server/dist/types';
+import type { IhtmlPageOpts } from '@umijs/server/dist/types';
 import type { RouteMatch, RouteObject } from 'react-router-dom';
 
 export interface IRouteSSRProps {
@@ -44,7 +44,7 @@ export interface ILoaderData {
 }
 
 interface IHtmlHydrateOptions {
-  htmlPageOptions?: IHtmlPageOptions;
+  htmlPageOpts?: IhtmlPageOpts;
   renderFromRoot?: boolean;
   mountElementId?: string;
 }

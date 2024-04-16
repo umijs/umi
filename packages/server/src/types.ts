@@ -64,7 +64,7 @@ export interface IMetadata {
   metas?: IMetaTag[];
 }
 
-export interface IHtmlPageOptions extends IMetadata {
+export interface IhtmlPageOpts extends IMetadata {
   headScripts?: (Record<string, string> | string)[];
   links?: Record<string, string>[];
   styles?: string[];

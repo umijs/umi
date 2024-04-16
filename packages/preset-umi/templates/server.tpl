@@ -42,7 +42,7 @@ const createOpts = {
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
-  htmlPageOptions: {{{htmlPageOptions}}},
+  htmlPageOpts: {{{htmlPageOpts}}},
   renderFromRoot: {{{renderFromRoot}}},
   mountElementId: '{{{mountElementId}}}'
 
