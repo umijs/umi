@@ -1,8 +1,18 @@
-import type { ITplOpts } from '@umijs/server/dist/types';
+import type { ITplOpts, ServerLoader } from '@umijs/server/dist/types';
 import type { RouteMatch, RouteObject } from 'react-router-dom';
 
+type ClientLoaderFunctionArgs = {
+  serverLoader: ServerLoader;
+};
+
+export type ClientLoader = ((
+  args: ClientLoaderFunctionArgs,
+) => Promise<any>) & {
+  hydrate?: boolean;
+};
+
 export interface IRouteSSRProps {
-  clientLoader?: () => Promise<any>;
+  clientLoader?: ClientLoader;
   hasServerLoader?: boolean;
 }
 

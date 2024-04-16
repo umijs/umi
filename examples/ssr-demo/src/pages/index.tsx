@@ -1,10 +1,12 @@
 import { Input } from 'antd';
 import { useId } from 'react';
 import {
+  ClientLoader,
   Link,
   MetadataLoader,
   ServerLoader,
   useClientLoaderData,
+  useLoaderData,
   useServerInsertedHTML,
   useServerLoaderData,
 } from 'umi';
@@ -22,6 +24,7 @@ import umiLogo from './umi.png';
 export default function HomePage() {
   const clientLoaderData = useClientLoaderData();
   const serverLoaderData = useServerLoaderData<typeof serverLoader>();
+  const loaderData = useLoaderData<typeof serverLoader>();
 
   useServerInsertedHTML(() => {
     return (
@@ -55,19 +58,21 @@ export default function HomePage() {
       </div>
       <p>client loader data: {JSON.stringify(clientLoaderData)}</p>
       <p>server loader data: {JSON.stringify(serverLoaderData)}</p>
+      <p>merge loader data: {JSON.stringify(loaderData)}</p>
     </div>
   );
 }
 
-export async function clientLoader() {
+export const clientLoader: ClientLoader = async ({ serverLoader }) => {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
-  return { message: 'data from client loader of index.tsx' };
-}
+  return { clientMessage: 'data from client loader of index.tsx' };
+};
+clientLoader.hydrate = true;
 
 export const serverLoader: ServerLoader = async (req) => {
   const url = req!.request.url;
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
-  return { message: `data from server loader of index.tsx, url: ${url}` };
+  return { serverMessage: `data from server loader of index.tsx, url: ${url}` };
 };
 
 // SEO-设置页面的TDK

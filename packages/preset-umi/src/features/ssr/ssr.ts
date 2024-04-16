@@ -146,7 +146,7 @@ export type {
   // metadata loader
   MetadataLoader,
   IMetadata,
-  IMetaTag,
+  IMetaTag
 } from '${winPath(ssrTypesPath)}'
 `,
     });

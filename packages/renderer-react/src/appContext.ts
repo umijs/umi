@@ -102,3 +102,14 @@ export function useClientLoaderData() {
   const appData = useAppData();
   return { data: appData.clientLoaderData[route.route.id] };
 }
+
+export function useLoaderData<T extends ServerLoaderFunc = any>() {
+  const serverLoaderData = useServerLoaderData();
+  const clientLoaderData = useClientLoaderData();
+  return {
+    data: {
+      ...serverLoaderData.data,
+      ...clientLoaderData.data,
+    },
+  } as Awaited<ReturnType<T>>;
+}

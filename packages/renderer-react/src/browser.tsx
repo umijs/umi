@@ -273,9 +273,18 @@ const getBrowser = (
               });
             }
           }
+          const clientLoader = opts.routes[id]?.clientLoader;
+          const hasClientLoader = !!clientLoader;
           // server loader
           // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
-          if (!isFirst && opts.routes[id]?.hasServerLoader) {
+
+          if (
+            !isFirst &&
+            opts.routes[id]?.hasServerLoader &&
+            !hasClientLoader &&
+            // @ts-ignore
+            !window.__UMI_LOADER_DATA__
+          ) {
             fetchServerLoader({
               id,
               basename,
@@ -290,9 +299,39 @@ const getBrowser = (
           }
           // client loader
           // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
-          const clientLoader = opts.routes[id]?.clientLoader;
-          if (clientLoader && !clientLoaderData[id]) {
-            clientLoader().then((data: any) => {
+          const hasClientLoaderDataInRoute = !!clientLoaderData[id];
+
+          // Check if hydration is needed or there's no server loader for the current route
+          const shouldHydrateOrNoServerLoader =
+            (hasClientLoader && clientLoader.hydrate) ||
+            !opts.routes[id]?.hasServerLoader;
+
+          // Check if server loader data is missing in the global window object
+          const isServerLoaderDataMissing =
+            opts.routes[id]?.hasServerLoader &&
+            // @ts-ignore
+            !window.__UMI_LOADER_DATA__;
+
+          if (
+            hasClientLoader &&
+            !hasClientLoaderDataInRoute &&
+            (shouldHydrateOrNoServerLoader || isServerLoaderDataMissing)
+          ) {
+            // ...
+            clientLoader({
+              serverLoader: () =>
+                fetchServerLoader({
+                  id,
+                  basename,
+                  cb: (data) => {
+                    // setServerLoaderData when startTransition because if ssr is enabled,
+                    // the component may being hydrated and setLoaderData will break the hydration
+                    React.startTransition(() => {
+                      setServerLoaderData((d) => ({ ...d, [id]: data }));
+                    });
+                  },
+                }),
+            }).then((data: any) => {
               setClientLoaderData((d: any) => ({ ...d, [id]: data }));
             });
           }
