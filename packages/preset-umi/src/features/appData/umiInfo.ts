@@ -8,7 +8,7 @@ export default (api: IApi) => {
         version: '${api.appData.umi.version}',
       };
     }
-    export const g_umi = ${api.appData.umi.version};
+    export const g_umi = '${api.appData.umi.version}';
     `,
   ]);
 };
