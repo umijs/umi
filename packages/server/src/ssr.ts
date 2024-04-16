@@ -576,7 +576,7 @@ export function createAppRootElement(opts: CreateRequestHandlerOptions) {
     const jsxGeneratorDeferrer = createJSXGenerator(opts);
     const { request, serverLoaderArgs } = normalizeRequest(...args);
     const jsx = await jsxGeneratorDeferrer(request.pathname, serverLoaderArgs);
-    return jsx?.element;
+    return () => jsx?.element;
   };
 }
 

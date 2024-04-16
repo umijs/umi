@@ -22,6 +22,7 @@ export async function getClientRootComponent(opts: IRootComponentOptions) {
     args: {
       routes: clientRoutes,
     },
+    async: true,
   });
   let rootContainer = (
     <StaticRouter basename={basename} location={opts.location}>
