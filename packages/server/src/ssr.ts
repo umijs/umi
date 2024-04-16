@@ -278,6 +278,7 @@ const normalizeRequest = (
     query: { route?: string | null; url?: string | null };
   };
   let serverLoaderRequest: Request | undefined;
+  let serverLoaderArgs: IServerLoaderArgs | undefined;
   if (process.env.SSR_BUILD_TARGET === 'worker') {
     const [ev] = args as IWorkerRequestHandlerArgs;
     const { pathname, searchParams } = new URL(ev.request.url);
@@ -310,10 +311,13 @@ const normalizeRequest = (
     serverLoaderRequest = new Request(request.query.url as string, {
       headers: request.headers as HeadersInit,
     });
+    serverLoaderArgs = {
+      request: serverLoaderRequest,
+    };
   }
   return {
     request,
-    serverLoaderRequest,
+    serverLoaderArgs,
   };
 };
 
@@ -343,7 +347,7 @@ export default function createRequestHandler(
     if (process.env.SSR_BUILD_TARGET === 'worker') {
       // worker mode
       const [ev, workerOpts] = args as IWorkerRequestHandlerArgs;
-
+      const { request } = normalizeRequest(...args);
       let asyncRespondWith: (
         v: Parameters<FetchEvent['respondWith']>[0],
       ) => void;
@@ -353,7 +357,7 @@ export default function createRequestHandler(
       ev.respondWith(new Promise((r) => (asyncRespondWith = r)));
 
       ret = {
-        req: normalizeRequest(...args).request,
+        req: request,
         async sendServerLoader(data) {
           let res = new Response(JSON.stringify(data), {
             headers: {
@@ -484,13 +488,11 @@ export default function createRequestHandler(
     ) {
       // handle server loader request when route change or csr fallback
       // provide the same request as real SSR, so that the server loader can get the same data
-      const serverLoaderRequest = new Request(req.query.url, {
-        headers: req.headers,
-      });
+      const { serverLoaderArgs } = normalizeRequest(...args);
       const data = await executeLoader({
         routeKey: req.query.route,
         routesWithServerLoader: opts.routesWithServerLoader,
-        serverLoaderArgs: { request: serverLoaderRequest },
+        serverLoaderArgs,
       });
 
       await sendServerLoader(data);
@@ -568,17 +570,15 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   };
 }
 
-export async function createAppRootElement(opts: CreateRequestHandlerOptions) {
+export function createAppRootElement(opts: CreateRequestHandlerOptions) {
   return async (
     args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs,
   ) => {
     let jsx;
     const jsxGeneratorDeferrer = createJSXGenerator(opts);
-    const { request, serverLoaderRequest } = normalizeRequest(...args);
-    if (serverLoaderRequest) {
-      jsx = await jsxGeneratorDeferrer(request.pathname, {
-        request: serverLoaderRequest,
-      });
+    const { request, serverLoaderArgs } = normalizeRequest(...args);
+    if (serverLoaderArgs) {
+      jsx = await jsxGeneratorDeferrer(request.pathname, serverLoaderArgs);
     } else {
       jsx = await jsxGeneratorDeferrer(request.pathname);
     }
@@ -643,13 +643,7 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
   );
 
   const result: IMetadata = {};
-  [
-    MetaLoaderResultKeys.Title,
-    MetaLoaderResultKeys.Description,
-    MetaLoaderResultKeys.Keywords,
-    MetaLoaderResultKeys.Lang,
-    MetaLoaderResultKeys.Metas,
-  ].forEach((key) => {
+  Object.values(MetaLoaderResultKeys).forEach((key) => {
     if (loaderDatas?.[key]) result[key] = loaderDatas[key];
   });
   return result;
