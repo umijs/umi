@@ -138,6 +138,9 @@ export async function render(oldRender: typeof noop) {
 }
 
 export function patchClientRoutes({ routes }: { routes: any[] }) {
+  if (typeof window === 'undefined') {
+    return;
+  }
   const microAppRoutes = [].concat(
     deepFilterLeafRoutes(routes),
     deepFilterLeafRoutes(microAppRuntimeRoutes),

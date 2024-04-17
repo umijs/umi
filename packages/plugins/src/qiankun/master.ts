@@ -210,4 +210,15 @@ export { MicroAppWithMemoHistory } from './MicroAppWithMemoHistory';
       `,
     });
   });
+
+  api.modifyConfig({
+    before: 'ssr',
+    fn: (memo) => {
+      if (memo.ssr) {
+        memo.externals ??= {};
+        memo.externals.qiankun = 'fs';
+      }
+      return memo;
+    },
+  });
 };
