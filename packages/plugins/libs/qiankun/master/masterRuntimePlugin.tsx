@@ -138,6 +138,7 @@ export async function render(oldRender: typeof noop) {
 }
 
 export function patchClientRoutes({ routes }: { routes: any[] }) {
+  // 在 ssr 的场景下，不执行主应用的 patchClientRoutes
   if (typeof window === 'undefined') {
     return;
   }
