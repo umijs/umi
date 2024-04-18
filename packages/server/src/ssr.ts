@@ -392,7 +392,6 @@ export default function createRequestHandler(
             initialValue() {
               return stream;
             },
-            async: true,
           });
 
           const transformStream = new TransformStream({
