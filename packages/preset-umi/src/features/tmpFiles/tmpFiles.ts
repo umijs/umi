@@ -514,6 +514,7 @@ if (process.env.NODE_ENV === 'development') {
             /"component": "await import\((.*)\)"/g,
             '"component": await import("$1")',
           ),
+          version: api.appData.umi.version,
           entryCode,
           entryCodeAhead,
           routesWithServerLoader,

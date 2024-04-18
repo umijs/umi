@@ -63,4 +63,6 @@ export const getAppRootElement = createAppRootElement.bind(null, createOpts)();
 
 export default requestHandler;
 
+export const g_umi = '{{{version}}}'
+
 {{{ entryCode }}}

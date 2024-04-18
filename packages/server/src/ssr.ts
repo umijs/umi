@@ -329,12 +329,7 @@ export default function createRequestHandler(
     ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
   ) => {
     let ret: {
-      req: {
-        url: string;
-        pathname: string;
-        headers: HeadersInit;
-        query: { route?: string | null; url?: string | null };
-      };
+      req: ReturnType<typeof normalizeRequest>['request'];
       sendServerLoader(data: any): Promise<void> | void;
       sendPage(
         jsx: NonNullable<Awaited<ReturnType<typeof jsxGeneratorDeferrer>>>,
@@ -378,23 +373,15 @@ export default function createRequestHandler(
           );
           // handle route path request
 
-          const render = opts.pluginManager.applyPlugins({
-            key: 'render',
-            type: 'compose',
-            initialValue: () =>
-              ReactDomServer.renderToReadableStream(
-                React.createElement(JSXProvider, undefined, jsx.element),
-                {
-                  bootstrapScripts: [
-                    jsx.manifest.assets['umi.js'] || '/umi.js',
-                  ],
-                  onError(x: any) {
-                    console.error(x);
-                  },
-                },
-              ),
-          });
-          const stream = await render();
+          const stream = await ReactDomServer.renderToReadableStream(
+            React.createElement(JSXProvider, undefined, jsx.element),
+            {
+              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              onError(x: any) {
+                console.error(x);
+              },
+            },
+          );
           const transformStream = new TransformStream({
             flush(controller) {
               if (serverInsertedHTMLCallbacks.size) {
@@ -460,29 +447,18 @@ export default function createRequestHandler(
             res.end();
           });
 
-          const render = opts.pluginManager.applyPlugins({
-            key: 'render',
-            type: 'compose',
-            initialValue: () => {
-              const stream = ReactDomServer.renderToPipeableStream(
-                React.createElement(JSXProvider, undefined, jsx.element),
-                {
-                  bootstrapScripts: [
-                    jsx.manifest.assets['umi.js'] || '/umi.js',
-                  ],
-                  onShellReady() {
-                    stream.pipe(writable);
-                  },
-                  onError(x: any) {
-                    console.error(x);
-                  },
-                },
-              );
-              return stream;
+          const stream = ReactDomServer.renderToPipeableStream(
+            React.createElement(JSXProvider, undefined, jsx.element),
+            {
+              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              onShellReady() {
+                stream.pipe(writable);
+              },
+              onError(x: any) {
+                console.error(x);
+              },
             },
-          });
-
-          render();
+          );
         },
         otherwise: next,
       };
@@ -494,7 +470,6 @@ export default function createRequestHandler(
   return async function unifiedRequestHandler(
     ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
   ) {
-    let jsx;
     const { req, sendServerLoader, sendPage, otherwise } = normalizeHandlerArgs(
       ...args,
     );
@@ -514,17 +489,25 @@ export default function createRequestHandler(
       });
 
       await sendServerLoader(data);
-    } else if (
-      (jsx = await jsxGeneratorDeferrer(req.pathname, {
-        request: new Request(req.url, {
-          headers: req.headers,
-        }),
-      }))
-    ) {
-      // response route page
-      await sendPage(jsx);
     } else {
-      await otherwise();
+      const render = opts.pluginManager.applyPlugins({
+        key: 'render',
+        type: 'compose',
+        initialValue: async () => {
+          const jsx = await jsxGeneratorDeferrer(req.pathname, {
+            request: new Request(req.url, {
+              headers: req.headers,
+            }),
+          });
+          if (jsx) {
+            // response route page
+            await sendPage(jsx);
+          } else {
+            await otherwise();
+          }
+        },
+      });
+      await render();
     }
   };
 }
