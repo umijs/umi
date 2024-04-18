@@ -57,6 +57,8 @@ export interface IOpts {
   };
   pkg?: Record<string, any>;
   disableCopy?: boolean;
+  host?: string;
+  port?: number;
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
@@ -84,6 +86,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     useHash,
     staticPathPrefix:
       opts.staticPathPrefix !== undefined ? opts.staticPathPrefix : 'static/',
+    port: opts.port,
+    host: opts.host,
   };
 
   // name
