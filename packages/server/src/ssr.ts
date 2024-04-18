@@ -386,12 +386,13 @@ export default function createRequestHandler(
               },
             },
           );
-          opts.pluginManager.pluginManager.applyPlugins({
+          opts.pluginManager.applyPlugins({
             key: 'render',
             type: 'compose',
             initialValue() {
               return stream;
             },
+            async: true,
           });
 
           const transformStream = new TransformStream({
