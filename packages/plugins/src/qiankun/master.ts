@@ -220,7 +220,6 @@ export { MicroAppWithMemoHistory } from './MicroAppWithMemoHistory';
         ...originalExternals,
         qiankun: 'fs',
       });
-      return config;
     }
 
     return config;

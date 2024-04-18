@@ -77,6 +77,10 @@ function patchMicroAppRouteComponent(routes: any[]) {
 }
 
 export async function render(oldRender: typeof noop) {
+  // 在 ssr 的场景下，直接返回旧的 render
+  if (typeof window === 'undefined') {
+    return oldRender();
+  }
   const runtimeOptions = await getMasterRuntime();
   let masterOptions: MasterOptions = {
     ...getMasterOptions(),
