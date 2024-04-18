@@ -211,13 +211,18 @@ export { MicroAppWithMemoHistory } from './MicroAppWithMemoHistory';
     });
   });
 
-  api.modifyConfig((memo) => {
+  api.chainWebpack((config, { ssr }) => {
     // 在 ssr 的场景下，把 qiankun external 到一个任意模块
     // 这样就不会把 qiankun 的依赖构建进产物中
-    if (memo.ssr) {
-      memo.externals ??= {};
-      memo.externals.qiankun = 'fs';
+    if (ssr) {
+      const originalExternals = config.get('externals');
+      config.externals({
+        ...originalExternals,
+        qiankun: 'fs',
+      });
+      return config;
     }
-    return memo;
+
+    return config;
   });
 };
