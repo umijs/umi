@@ -386,6 +386,13 @@ export default function createRequestHandler(
               },
             },
           );
+          opts.pluginManager.pluginManager.applyPlugins({
+            key: 'render',
+            type: 'compose',
+            initialValue() {
+              return stream;
+            },
+          });
 
           const transformStream = new TransformStream({
             flush(controller) {
