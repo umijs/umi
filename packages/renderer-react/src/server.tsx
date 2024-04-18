@@ -16,13 +16,12 @@ export async function getClientRootComponent(opts: IRootComponentOptions) {
     routeComponents: components,
   });
 
-  await opts.pluginManager.applyPlugins({
+  opts.pluginManager.applyPlugins({
     key: 'patchClientRoutes',
     type: 'event',
     args: {
       routes: clientRoutes,
     },
-    async: true,
   });
   let rootContainer = (
     <StaticRouter basename={basename} location={opts.location}>

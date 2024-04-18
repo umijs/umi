@@ -96,7 +96,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     const { routes, routeComponents } = await getRoutes(pluginManager);
 
     // allow user to extend routes
-    await pluginManager.applyPlugins({
+    pluginManager.applyPlugins({
       key: 'patchRoutes',
       type: 'event',
       args: {
@@ -377,24 +377,24 @@ export default function createRequestHandler(
             opts.ServerInsertedHTMLContext.Provider,
           );
           // handle route path request
-          const stream = await ReactDomServer.renderToReadableStream(
-            React.createElement(JSXProvider, undefined, jsx.element),
-            {
-              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-              onError(x: any) {
-                console.error(x);
-              },
-            },
-          );
-          await opts.pluginManager.applyPlugins({
+
+          const render = opts.pluginManager.applyPlugins({
             key: 'render',
             type: 'compose',
-            initialValue() {
-              return stream;
-            },
-            async: true,
+            initialValue: () =>
+              ReactDomServer.renderToReadableStream(
+                React.createElement(JSXProvider, undefined, jsx.element),
+                {
+                  bootstrapScripts: [
+                    jsx.manifest.assets['umi.js'] || '/umi.js',
+                  ],
+                  onError(x: any) {
+                    console.error(x);
+                  },
+                },
+              ),
           });
-
+          const stream = await render();
           const transformStream = new TransformStream({
             flush(controller) {
               if (serverInsertedHTMLCallbacks.size) {
@@ -460,18 +460,29 @@ export default function createRequestHandler(
             res.end();
           });
 
-          const stream = ReactDomServer.renderToPipeableStream(
-            React.createElement(JSXProvider, undefined, jsx.element),
-            {
-              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
-              onShellReady() {
-                stream.pipe(writable);
-              },
-              onError(x: any) {
-                console.error(x);
-              },
+          const render = opts.pluginManager.applyPlugins({
+            key: 'render',
+            type: 'compose',
+            initialValue: () => {
+              const stream = ReactDomServer.renderToPipeableStream(
+                React.createElement(JSXProvider, undefined, jsx.element),
+                {
+                  bootstrapScripts: [
+                    jsx.manifest.assets['umi.js'] || '/umi.js',
+                  ],
+                  onShellReady() {
+                    stream.pipe(writable);
+                  },
+                  onError(x: any) {
+                    console.error(x);
+                  },
+                },
+              );
+              return stream;
             },
-          );
+          });
+
+          render();
         },
         otherwise: next,
       };
