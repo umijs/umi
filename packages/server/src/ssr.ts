@@ -5,9 +5,10 @@ import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Writable } from 'stream';
 import type {
+  IhtmlPageOpts,
+  IMetadata,
   IRoutesById,
   IServerLoaderArgs,
-  ITplOpts,
   MetadataLoader,
   ServerLoader,
   UmiRequest,
@@ -15,6 +16,14 @@ import type {
 
 interface RouteLoaders {
   [key: string]: () => Promise<any>;
+}
+
+enum MetaLoaderResultKeys {
+  Title = 'title',
+  Description = 'description',
+  Keywords = 'keywords',
+  Lang = 'lang',
+  Metas = 'metas',
 }
 
 export type ServerInsertedHTMLHook = (callbacks: () => React.ReactNode) => void;
@@ -28,18 +37,16 @@ interface CreateRequestServerlessOptions {
 
 interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   routesWithServerLoader: RouteLoaders;
-  PluginManager: any;
+  pluginManager: any;
   manifest:
     | ((sourceDir?: string) => { assets: Record<string, string> })
     | { assets: Record<string, string> };
-  getPlugins: () => any;
-  getValidKeys: () => any;
   getRoutes: (PluginManager: any) => any;
   getClientRootComponent: (PluginManager: any) => any;
   createHistory: (opts: any) => any;
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
-  tplOpts: ITplOpts;
+  htmlPageOpts: IhtmlPageOpts;
   renderFromRoot: boolean;
   mountElementId: string;
 }
@@ -77,9 +84,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
   return async (url: string, serverLoaderArgs?: IServerLoaderArgs) => {
     const {
       routesWithServerLoader,
-      PluginManager,
-      getPlugins,
-      getValidKeys,
+      pluginManager,
       getRoutes,
       createHistory,
       sourceDir,
@@ -88,14 +93,10 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
     // make import { history } from 'umi' work
     createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
 
-    const pluginManager = PluginManager.create({
-      plugins: getPlugins(),
-      validKeys: getValidKeys(),
-    });
     const { routes, routeComponents } = await getRoutes(pluginManager);
 
     // allow user to extend routes
-    await pluginManager.applyPlugins({
+    pluginManager.applyPlugins({
       key: 'patchRoutes',
       type: 'event',
       args: {
@@ -132,13 +133,16 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
                   serverLoaderArgs,
                   serverLoaderData: loaderData[id],
                 });
-                Object.entries(metadataLoaderData).forEach(([k, v]) => {
-                  if (Array.isArray(v)) {
-                    opts.tplOpts[k] = (opts.tplOpts[k] || []).concat(v);
-                  } else {
-                    opts.tplOpts[k] = v;
-                  }
-                });
+                metadataLoaderData &&
+                  Object.entries(metadataLoaderData).forEach(([k, v]) => {
+                    if (Array.isArray(v)) {
+                      opts.htmlPageOpts[k] = (
+                        opts.htmlPageOpts[k] || []
+                      ).concat(v);
+                    } else {
+                      opts.htmlPageOpts[k] = v;
+                    }
+                  });
               }
               resolve();
             }),
@@ -156,11 +160,10 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      tplOpts: opts.tplOpts,
+      htmlPageOpts: opts.htmlPageOpts,
       renderFromRoot: opts.renderFromRoot,
       mountElementId: opts.mountElementId,
     };
-
     const element = (await opts.getClientRootComponent(
       context,
     )) as ReactElement;
@@ -265,6 +268,59 @@ type IWorkerRequestHandlerArgs = [
   opts?: { modifyResponse?: (res: Response) => Promise<Response> | Response },
 ];
 
+const normalizeRequest = (
+  ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
+) => {
+  let request: {
+    url: string;
+    pathname: string;
+    headers: HeadersInit;
+    query: { route?: string | null; url?: string | null };
+  };
+  let serverLoaderRequest: Request | undefined;
+  let serverLoaderArgs: IServerLoaderArgs | undefined;
+  if (process.env.SSR_BUILD_TARGET === 'worker') {
+    const [ev] = args as IWorkerRequestHandlerArgs;
+    const { pathname, searchParams } = new URL(ev.request.url);
+    request = {
+      url: ev.request.url,
+      pathname,
+      headers: ev.request.headers,
+      query: {
+        route: searchParams.get('route'),
+        url: searchParams.get('url'),
+      },
+    };
+  } else {
+    const [req] = args as IExpressRequestHandlerArgs;
+    request = {
+      url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+      pathname: req.url,
+      headers: req.headers as HeadersInit,
+      query: {
+        route: req.query.route?.toString(),
+        url: req.query.url?.toString(),
+      },
+    };
+  }
+  if (
+    request.pathname.startsWith('/__serverLoader') &&
+    request.query.route &&
+    request.query.url
+  ) {
+    serverLoaderRequest = new Request(request.query.url as string, {
+      headers: request.headers as HeadersInit,
+    });
+    serverLoaderArgs = {
+      request: serverLoaderRequest,
+    };
+  }
+  return {
+    request,
+    serverLoaderArgs,
+  };
+};
+
 export default function createRequestHandler(
   opts: CreateRequestHandlerOptions,
 ) {
@@ -273,25 +329,19 @@ export default function createRequestHandler(
     ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
   ) => {
     let ret: {
-      req: {
-        url: string;
-        pathname: string;
-        headers: HeadersInit;
-        query: { route?: string | null; url?: string | null };
-      };
+      req: ReturnType<typeof normalizeRequest>['request'];
       sendServerLoader(data: any): Promise<void> | void;
       sendPage(
         jsx: NonNullable<Awaited<ReturnType<typeof jsxGeneratorDeferrer>>>,
       ): Promise<void> | void;
       otherwise(): Promise<void> | void;
     };
-
+    const { request } = normalizeRequest(...args);
     const replaceServerHTMLScript = `<script>!function(){var e=document.getElementById("${SERVER_INSERTED_HTML}");e&&(Array.from(e.children).forEach(e=>{document.head.appendChild(e)}),e.remove())}();</script>`;
 
     if (process.env.SSR_BUILD_TARGET === 'worker') {
       // worker mode
       const [ev, workerOpts] = args as IWorkerRequestHandlerArgs;
-      const { pathname, searchParams } = new URL(ev.request.url);
       let asyncRespondWith: (
         v: Parameters<FetchEvent['respondWith']>[0],
       ) => void;
@@ -301,15 +351,7 @@ export default function createRequestHandler(
       ev.respondWith(new Promise((r) => (asyncRespondWith = r)));
 
       ret = {
-        req: {
-          url: ev.request.url,
-          pathname,
-          headers: ev.request.headers,
-          query: {
-            route: searchParams.get('route'),
-            url: searchParams.get('url'),
-          },
-        },
+        req: request,
         async sendServerLoader(data) {
           let res = new Response(JSON.stringify(data), {
             headers: {
@@ -330,6 +372,7 @@ export default function createRequestHandler(
             opts.ServerInsertedHTMLContext.Provider,
           );
           // handle route path request
+
           const stream = await ReactDomServer.renderToReadableStream(
             React.createElement(JSXProvider, undefined, jsx.element),
             {
@@ -339,7 +382,6 @@ export default function createRequestHandler(
               },
             },
           );
-
           const transformStream = new TransformStream({
             flush(controller) {
               if (serverInsertedHTMLCallbacks.size) {
@@ -373,18 +415,10 @@ export default function createRequestHandler(
       };
     } else {
       // express mode
-      const [req, res, next] = args as IExpressRequestHandlerArgs;
+      const [_, res, next] = args as IExpressRequestHandlerArgs;
 
       ret = {
-        req: {
-          url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-          pathname: req.url,
-          headers: req.headers as HeadersInit,
-          query: {
-            route: req.query.route?.toString(),
-            url: req.query.url?.toString(),
-          },
-        },
+        req: request,
         sendServerLoader(data) {
           res.status(200).json(data);
         },
@@ -436,7 +470,6 @@ export default function createRequestHandler(
   return async function unifiedRequestHandler(
     ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
   ) {
-    let jsx;
     const { req, sendServerLoader, sendPage, otherwise } = normalizeHandlerArgs(
       ...args,
     );
@@ -448,27 +481,32 @@ export default function createRequestHandler(
     ) {
       // handle server loader request when route change or csr fallback
       // provide the same request as real SSR, so that the server loader can get the same data
-      const serverLoaderRequest = new Request(req.query.url, {
-        headers: req.headers,
-      });
+      const { serverLoaderArgs } = normalizeRequest(...args);
       const data = await executeLoader({
         routeKey: req.query.route,
         routesWithServerLoader: opts.routesWithServerLoader,
-        serverLoaderArgs: { request: serverLoaderRequest },
+        serverLoaderArgs,
       });
 
       await sendServerLoader(data);
-    } else if (
-      (jsx = await jsxGeneratorDeferrer(req.pathname, {
-        request: new Request(req.url, {
-          headers: req.headers,
-        }),
-      }))
-    ) {
-      // response route page
-      await sendPage(jsx);
     } else {
-      await otherwise();
+      const render = opts.pluginManager.applyPlugins({
+        key: 'render',
+        type: 'compose',
+        initialValue: () =>
+          jsxGeneratorDeferrer(req.pathname, {
+            request: new Request(req.url, {
+              headers: req.headers,
+            }),
+          }),
+      });
+      const jsx = await render();
+      if (jsx) {
+        // response route page
+        await sendPage(jsx);
+      } else {
+        await otherwise();
+      }
     }
   };
 }
@@ -532,6 +570,17 @@ export function createUmiServerLoader(opts: CreateRequestHandlerOptions) {
   };
 }
 
+export function createAppRootElement(opts: CreateRequestHandlerOptions) {
+  return async (
+    ...args: IExpressRequestHandlerArgs | IWorkerRequestHandlerArgs
+  ) => {
+    const jsxGeneratorDeferrer = createJSXGenerator(opts);
+    const { request, serverLoaderArgs } = normalizeRequest(...args);
+    const jsx = await jsxGeneratorDeferrer(request.pathname, serverLoaderArgs);
+    return () => jsx?.element;
+  };
+}
+
 function matchRoutesForSSR(reqUrl: string, routesById: IRoutesById) {
   return (
     matchRoutes(createClientRoutes({ routesById }), reqUrl)?.map(
@@ -583,16 +632,13 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  const result = (mod.metadataLoader satisfies MetadataLoader)(
+  const loaderDatas = (mod.metadataLoader satisfies MetadataLoader)(
     serverLoaderData,
   );
-  // types IMetadata
-  return ['title', 'description', 'keywords', 'lang', 'metas'].reduce(
-    (acc, key) => {
-      if (Object.prototype.hasOwnProperty.call(result, key))
-        acc[key] = result[key];
-      return acc;
-    },
-    {} as any,
-  );
+
+  const result: IMetadata = {};
+  Object.values(MetaLoaderResultKeys).forEach((key) => {
+    if (loaderDatas?.[key]) result[key] = loaderDatas[key];
+  });
+  return result;
 }

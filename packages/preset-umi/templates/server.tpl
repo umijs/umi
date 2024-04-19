@@ -1,11 +1,12 @@
+{{{ importsAhead }}}
 import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
-import { getPlugins as getClientPlugins } from './core/plugin';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
-import { PluginManager } from '{{{ umiPluginPath }}}';
-import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader } from '{{{ umiServerPath }}}';
-
+import { createPluginManager } from './core/plugin';
+import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader, createAppRootElement } from '{{{ umiServerPath }}}';
+{{{ imports }}}
+{{{ entryCodeAhead }}}
 let helmetContext;
 
 try {
@@ -17,14 +18,6 @@ const routesWithServerLoader = {
   '{{{ id }}}': () => import('{{{ path }}}'),
 {{/routesWithServerLoader}}
 };
-
-export function getPlugins() {
-  return getClientPlugins();
-}
-
-export function getValidKeys() {
-  return [{{#validKeys}}'{{{ . }}}',{{/validKeys}}];
-}
 
 export function getManifest(sourceDir) {
   return JSON.parse(require('fs').readFileSync(
@@ -42,16 +35,14 @@ global.g_getAssets = (fileName) => {
 };
 const createOpts = {
   routesWithServerLoader,
-  PluginManager,
-  getPlugins,
-  getValidKeys,
+  pluginManager: createPluginManager(),
   getRoutes,
   manifest: getManifest,
   getClientRootComponent,
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
-  tplOpts: {{{tplOpts}}},
+  htmlPageOpts: {{{htmlPageOpts}}},
   renderFromRoot: {{{renderFromRoot}}},
   mountElementId: '{{{mountElementId}}}'
 
@@ -68,4 +59,10 @@ export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
 
+export const getAppRootElement = createAppRootElement.bind(null, createOpts)();
+
 export default requestHandler;
+
+export const g_umi = '{{{version}}}'
+
+{{{ entryCode }}}

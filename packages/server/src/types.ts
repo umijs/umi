@@ -62,6 +62,9 @@ export interface IMetadata {
    */
   lang?: string;
   metas?: IMetaTag[];
+}
+
+export interface IhtmlPageOpts extends IMetadata {
   headScripts?: (Record<string, string> | string)[];
   links?: Record<string, string>[];
   styles?: string[];
@@ -70,18 +73,6 @@ export interface IMetadata {
   [key: string]: any;
 }
 
-export interface ITplOpts {
-  title?: string;
-  description?: string;
-  keywords?: string[];
-  metas?: IMetaTag[];
-  headScripts?: (Record<string, string> | string)[];
-  links?: Record<string, string>[];
-  styles?: string[];
-  favicons?: string[];
-  scripts?: (Record<string, string> | string)[];
-  [key: string]: any;
-}
 export type MetadataLoader<T = any> = (
   serverLoaderData: T,
   req?: IServerLoaderArgs,
