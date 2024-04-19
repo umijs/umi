@@ -493,21 +493,20 @@ export default function createRequestHandler(
       const render = opts.pluginManager.applyPlugins({
         key: 'render',
         type: 'compose',
-        initialValue: async () => {
-          const jsx = await jsxGeneratorDeferrer(req.pathname, {
+        initialValue: () =>
+          jsxGeneratorDeferrer(req.pathname, {
             request: new Request(req.url, {
               headers: req.headers,
             }),
-          });
-          if (jsx) {
-            // response route page
-            await sendPage(jsx);
-          } else {
-            await otherwise();
-          }
-        },
+          }),
       });
-      await render();
+      const jsx = await render();
+      if (jsx) {
+        // response route page
+        await sendPage(jsx);
+      } else {
+        await otherwise();
+      }
     }
   };
 }
