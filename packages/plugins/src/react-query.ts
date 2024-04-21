@@ -125,9 +125,6 @@ const getReactQueryPkgInfo = (api: IApi) => {
     useV5,
     corePath,
   };
-
-  console.log('reactQueryInfo: ', reactQueryInfo);
-
   return reactQueryInfo;
 };
 
