@@ -266,7 +266,7 @@ export {
       `,
     });
 
-    const exportTypes: string[] = [
+    const exportTypes = [
       // from @tanstack/query-core
       'Query',
       'QueryState',
