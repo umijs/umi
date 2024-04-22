@@ -11,6 +11,7 @@ export default {
     builder: 'webpack',
     renderFromRoot: false,
   },
+  exportStatic: {},
   styles: [`body { color: red; }`, `https://a.com/b.css`],
 
   metas: [
