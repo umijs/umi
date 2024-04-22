@@ -252,6 +252,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
             onShellReady() {
               stream.pipe(writable);
             },
+            bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
             onError: reject,
           },
         );

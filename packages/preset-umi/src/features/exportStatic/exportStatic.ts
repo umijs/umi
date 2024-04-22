@@ -64,8 +64,9 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
   markupRender ??= require(absServerBuildPath(api))._markupGenerator;
 
   try {
-    return await markupRender(path);
+    const html = await markupRender(path);
     logger.info(`Pre-render for ${path}`);
+    return html;
   } catch (err) {
     logger.error(`Pre-render ${path} error: ${err}`);
     if (!ignorePreRenderError) {
@@ -132,21 +133,9 @@ export default (api: IApi) => {
     const htmlData = api.appData.exportHtmlData;
     const htmlFiles: { path: string; content: string }[] = [];
     const { markupArgs: defaultMarkupArgs } = opts;
-    let asyncMarkupArgs: typeof defaultMarkupArgs;
 
     for (const { file, route, prerender } of htmlData) {
       let markupArgs = defaultMarkupArgs;
-
-      // mark async for the scripts of pre-rendered html
-      if (api.config.ssr && prerender) {
-        // copy args to avoid affect original object
-        markupArgs = asyncMarkupArgs ??= {
-          ...markupArgs,
-          scripts: markupArgs.scripts.map((script: any) =>
-            script.src ? { ...script, async: true } : script,
-          ),
-        };
-      }
 
       // handle relative publicPath, such as `./`
       if (publicPath.startsWith('.')) {
