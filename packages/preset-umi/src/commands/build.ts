@@ -186,7 +186,7 @@ umi build --clean
               MetadataLoaderOmitKeys.Meta,
             ]) as Omit<
               typeof args,
-              MetadataLoaderOmitKeys.Title & MetadataLoaderOmitKeys.Meta
+              MetadataLoaderOmitKeys.Title | MetadataLoaderOmitKeys.Meta
             >)
           : args;
         const finalMarkUpArgs = {

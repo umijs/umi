@@ -68,9 +68,11 @@ const HydrateMetadata = (props: IHtmlProps) => {
       {htmlPageOpts?.headScripts?.map((script: IScript, key: number) => {
         const { content, ...rest } = normalizeScripts(script);
         return (
-          <script key={key} {...(rest as any)}>
-            {content}
-          </script>
+          <script
+            key={key}
+            {...(rest as any)}
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
         );
       })}
     </>
