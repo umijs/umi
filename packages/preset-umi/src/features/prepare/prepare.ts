@@ -17,7 +17,7 @@ export default (api: IApi) => {
     const buildResult: BuildResult = {
       ...prepareData.buildResult,
       // we don't need output file in prepare stage
-      outputFiles: [],
+      outputFiles: undefined,
     };
 
     const nextFileImports =

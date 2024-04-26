@@ -52,7 +52,7 @@ export class Service {
     >;
     framework?: IFrameworkType;
     prepare?: {
-      buildResult: BuildResult;
+      buildResult: Omit<BuildResult, 'outputFiles'>;
       fileImports?: Record<string, Declaration[]>;
     };
     mpa?: {
