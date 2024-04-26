@@ -48,6 +48,8 @@ export function useRouteProps<T extends Record<string, any> = any>() {
 }
 
 type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
+
+// @deprecated  Please use `useLoaderData` instead.
 export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   const routes = useSelectedRoutes();
   const { serverLoaderData, basename } = useAppData();
@@ -97,6 +99,7 @@ export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   };
 }
 
+// @deprecated  Please use `useLoaderData` instead.
 export function useClientLoaderData() {
   const route = useRouteData();
   const appData = useAppData();
