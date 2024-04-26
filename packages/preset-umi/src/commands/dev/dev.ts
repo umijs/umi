@@ -355,7 +355,10 @@ PORT=8888 umi dev
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
-        config: api.config,
+        config: {
+          ...api.config,
+          outputPath: api.paths.absOutputPath,
+        },
         pkg: api.pkg,
         cwd: api.cwd,
         rootDir: process.cwd(),

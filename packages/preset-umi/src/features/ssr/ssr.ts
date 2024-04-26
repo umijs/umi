@@ -17,6 +17,9 @@ export default (api: IApi) => {
   const webpackBuilder: typeof import('./webpack/webpack') = importLazy(
     require.resolve('./webpack/webpack'),
   );
+  const makoBuiler: typeof import('./mako/mako') = importLazy(
+    require.resolve('./mako/mako'),
+  );
   let serverBuildTarget: string;
 
   api.describe({
@@ -28,7 +31,7 @@ export default (api: IApi) => {
             serverBuildPath: zod.string(),
             serverBuildTarget: zod.enum(['express', 'worker']),
             platform: zod.string(),
-            builder: zod.enum(['esbuild', 'webpack']),
+            builder: zod.enum(['esbuild', 'webpack', 'mako']),
             renderFromRoot: zod.boolean(),
           })
           .deepPartial();
@@ -167,7 +170,34 @@ export type {
       );
 
       await webpackBuilder.build(api, opts);
+    } else if (process.env.OKAM && builder === 'mako') {
+      await makoBuiler.build(api, opts);
     }
+  });
+  api.onDevCompileDone(() => {
+    const finalJsonObj: any = {};
+    const assetFilePath = join(api.paths.absOutputPath, 'asset-manifest.json');
+    const buildFilePath = join(api.paths.absOutputPath, 'build-manifest.json');
+    const json = existsSync(assetFilePath)
+      ? fsExtra.readJSONSync(assetFilePath)
+      : {};
+    finalJsonObj.assets = json;
+    writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
+      flag: 'w',
+    });
+  });
+
+  api.onBuildComplete(() => {
+    const finalJsonObj: any = {};
+    const assetFilePath = join(api.paths.absOutputPath, 'asset-manifest.json');
+    const buildFilePath = join(api.paths.absOutputPath, 'build-manifest.json');
+    const json = existsSync(assetFilePath)
+      ? fsExtra.readJSONSync(assetFilePath)
+      : {};
+    finalJsonObj.assets = json;
+    writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
+      flag: 'w',
+    });
   });
 
   // 在 webpack 完成打包以后，使用 esbuild 编译 umi.server.js

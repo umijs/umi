@@ -65,7 +65,7 @@ export async function clientLoader() {
 }
 
 export const serverLoader: ServerLoader = async (req) => {
-  const url = req!.request.url;
+  const url = req?.request?.url;
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
   return { message: `data from server loader of index.tsx, url: ${url}` };
 };

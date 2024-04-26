@@ -110,7 +110,10 @@ umi build --clean
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
-        config: api.config,
+        config: {
+          ...api.config,
+          outputPath: api.paths.absOutputPath,
+        },
         cwd: api.cwd,
         entry,
         ...(api.config.vite
