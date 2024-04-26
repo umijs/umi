@@ -153,7 +153,7 @@ export type {
   });
 
   api.onBeforeCompiler(async ({ opts }) => {
-    const { builder = 'esbuild' } = api.config.ssr;
+    const { builder = 'webpack' } = api.config.ssr;
 
     if (builder === 'esbuild') {
       await esbuildBuilder.build({

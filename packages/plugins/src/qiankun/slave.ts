@@ -228,13 +228,13 @@ export interface IRuntimeConfig {
   api.addEntryCode(() => [
     `
 const qiankun_noop = () => new Error('qiankun lifecycle is not available for server runtime!');
-const isSSR = typeof window === 'undefined';
-export const bootstrap = isSSR ? qiankun_noop: qiankun_genBootstrap(render);
-export const mount = isSSR ? qiankun_noop : qiankun_genMount('${api.config.mountElementId}');
-export const unmount = isSSR ? qiankun_noop : qiankun_genUnmount('${api.config.mountElementId}');
-export const update = isSSR ? qiankun_noop : qiankun_genUpdate();
+const ssr = typeof window === 'undefined';
+export const bootstrap = ssr ? qiankun_noop: qiankun_genBootstrap(render);
+export const mount = ssr ? qiankun_noop : qiankun_genMount('${api.config.mountElementId}');
+export const unmount = ssr ? qiankun_noop : qiankun_genUnmount('${api.config.mountElementId}');
+export const update = ssr ? qiankun_noop : qiankun_genUpdate();
 // 增加 ssr 的判断
-if (!isSSR && !window.__POWERED_BY_QIANKUN__) {
+if (!ssr && !window.__POWERED_BY_QIANKUN__) {
   bootstrap().then(mount);
 }
     `,
