@@ -167,6 +167,13 @@ export const MicroApp = forwardRef(
       props: { settings: settingsFromConfig = {}, ...propsFromConfig } = {},
     } = appConfig || {};
 
+    const __globalRoutesInfo = {
+      appNameKeyAlias,
+      masterHistoryType,
+      base: globalSettings.base,
+      microAppRoutes: globalSettings.microAppRoutes,
+    };
+
     useEffect(() => {
       setComponentError(null);
       setLoading(true);
@@ -185,12 +192,7 @@ export const MicroApp = forwardRef(
             ...propsFromConfig,
             ...stateForSlave,
             ...propsFromParams,
-            __globalRoutesInfo: {
-              appNameKeyAlias,
-              masterHistoryType,
-              base: globalSettings.base,
-              microAppRoutes: globalSettings.microAppRoutes,
-            },
+            __globalRoutesInfo,
             setLoading,
           },
         },
@@ -263,6 +265,7 @@ export const MicroApp = forwardRef(
                 ...propsFromConfig,
                 ...stateForSlave,
                 ...propsFromParams,
+                __globalRoutesInfo,
                 setLoading,
               };
 
