@@ -260,7 +260,37 @@ declare module '*.txt' {
 }
 `.trimEnd(),
     });
-
+    const entryCode = (
+      await api.applyPlugins({
+        key: 'addEntryCode',
+        initialValue: [],
+      })
+    ).join('\n');
+    const entryCodeAhead = (
+      await api.applyPlugins({
+        key: 'addEntryCodeAhead',
+        initialValue: [],
+      })
+    ).join('\n');
+    const importsAhead = importsToStr(
+      await api.applyPlugins({
+        key: 'addEntryImportsAhead',
+        initialValue: [
+          api.appData.globalCSS.length && {
+            source: api.appData.globalCSS[0],
+          },
+          api.appData.globalJS.length && {
+            source: api.appData.globalJS[0],
+          },
+        ].filter(Boolean),
+      }),
+    ).join('\n');
+    const imports = importsToStr(
+      await api.applyPlugins({
+        key: 'addEntryImports',
+        initialValue: [],
+      }),
+    ).join('\n');
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
@@ -271,43 +301,16 @@ declare module '*.txt' {
         rendererPath,
         publicPath: api.config.publicPath,
         runtimePublicPath: api.config.runtimePublicPath ? 'true' : 'false',
-        entryCode: (
-          await api.applyPlugins({
-            key: 'addEntryCode',
-            initialValue: [],
-          })
-        ).join('\n'),
-        entryCodeAhead: (
-          await api.applyPlugins({
-            key: 'addEntryCodeAhead',
-            initialValue: [],
-          })
-        ).join('\n'),
+        entryCode,
+        entryCodeAhead,
         polyfillImports: importsToStr(
           await api.applyPlugins({
             key: 'addPolyfillImports',
             initialValue: [],
           }),
         ).join('\n'),
-        importsAhead: importsToStr(
-          await api.applyPlugins({
-            key: 'addEntryImportsAhead',
-            initialValue: [
-              api.appData.globalCSS.length && {
-                source: api.appData.globalCSS[0],
-              },
-              api.appData.globalJS.length && {
-                source: api.appData.globalJS[0],
-              },
-            ].filter(Boolean),
-          }),
-        ).join('\n'),
-        imports: importsToStr(
-          await api.applyPlugins({
-            key: 'addEntryImports',
-            initialValue: [],
-          }),
-        ).join('\n'),
+        importsAhead,
+        imports,
         basename: api.config.base,
         historyType: api.config.history.type,
         hydrate: !!api.config.ssr,
@@ -485,6 +488,10 @@ if (process.env.NODE_ENV === 'development') {
     if (api.config.ssr) {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
+
+      const renderFromRoot = api.config.ssr?.renderFromRoot ?? false;
+      const mountElementId = api.config.mountElementId;
+
       const routesWithServerLoader = Object.keys(routes).reduce<
         { id: string; path: string }[]
       >((memo, id) => {
@@ -507,7 +514,12 @@ if (process.env.NODE_ENV === 'development') {
             /"component": "await import\((.*)\)"/g,
             '"component": await import("$1")',
           ),
+          version: api.appData.umi.version,
+          entryCode,
+          entryCodeAhead,
           routesWithServerLoader,
+          importsAhead,
+          imports,
           umiPluginPath,
           serverRendererPath,
           umiServerPath,
@@ -516,7 +528,7 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
-          tplOpts: JSON.stringify({
+          htmlPageOpts: JSON.stringify({
             headScripts,
             styles,
             title,
@@ -525,8 +537,8 @@ if (process.env.NODE_ENV === 'development') {
             metas,
             scripts: scripts || [],
           }),
-          renderFromRoot: api.config.ssr?.renderFromRoot ?? false,
-          mountElementId: api.config.mountElementId,
+          renderFromRoot,
+          mountElementId,
         },
       });
     }

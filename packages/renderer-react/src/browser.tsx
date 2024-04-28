@@ -390,9 +390,15 @@ export function renderClient(opts: RenderClientOpts) {
     // @ts-ignore
     const metadata = window.__UMI_METADATA_LOADER_DATA__ || {};
 
+    const hydtateHtmloptions = {
+      metadata,
+      loaderData,
+      mountElementId: opts.mountElementId,
+    };
+
     ReactDOM.hydrateRoot(
       opts.renderFromRoot ? rootElement : document,
-      <Html {...{ metadata, loaderData, mountElementId: opts.mountElementId }}>
+      <Html {...hydtateHtmloptions}>
         <Browser />
       </Html>,
     );

@@ -37,27 +37,27 @@ function generatorStyle(style: string) {
 }
 
 const HydrateMetadata = (props: IHtmlProps) => {
-  const { tplOpts } = props;
+  const { htmlPageOpts } = props;
   return (
     <>
-      {tplOpts?.title && <title>{tplOpts.title}</title>}
-      {tplOpts?.favicons?.map((favicon: string, key: number) => {
+      {htmlPageOpts?.title && <title>{htmlPageOpts.title}</title>}
+      {htmlPageOpts?.favicons?.map((favicon: string, key: number) => {
         return <link key={key} rel="shortcut icon" href={favicon} />;
       })}
-      {tplOpts?.description && (
-        <meta name="description" content={tplOpts.description} />
+      {htmlPageOpts?.description && (
+        <meta name="description" content={htmlPageOpts.description} />
       )}
-      {tplOpts?.keywords?.length && (
-        <meta name="keywords" content={tplOpts.keywords.join(',')} />
+      {htmlPageOpts?.keywords?.length && (
+        <meta name="keywords" content={htmlPageOpts.keywords.join(',')} />
       )}
-      {tplOpts?.metas?.map((em: any) => (
+      {htmlPageOpts?.metas?.map((em: any) => (
         <meta key={em.name} name={em.name} content={em.content} />
       ))}
 
-      {tplOpts?.links?.map((link: Record<string, string>, key: number) => {
+      {htmlPageOpts?.links?.map((link: Record<string, string>, key: number) => {
         return <link key={key} {...link} />;
       })}
-      {tplOpts?.styles?.map((style: string, key: number) => {
+      {htmlPageOpts?.styles?.map((style: string, key: number) => {
         const { type, href, content } = generatorStyle(style);
         if (type === 'link') {
           return <link key={key} rel="stylesheet" href={href} />;
@@ -65,7 +65,7 @@ const HydrateMetadata = (props: IHtmlProps) => {
           return <style key={key}>{content}</style>;
         }
       })}
-      {tplOpts?.headScripts?.map((script: IScript, key: number) => {
+      {htmlPageOpts?.headScripts?.map((script: IScript, key: number) => {
         const { content, ...rest } = normalizeScripts(script);
         return (
           <script key={key} {...(rest as any)}>
@@ -81,7 +81,7 @@ export function Html({
   children,
   loaderData,
   manifest,
-  tplOpts,
+  htmlPageOpts,
   renderFromRoot,
   mountElementId,
 }: React.PropsWithChildren<IHtmlProps>) {
@@ -90,19 +90,20 @@ export function Html({
   if (renderFromRoot) {
     return (
       <>
-        <HydrateMetadata tplOpts={tplOpts} />
+        <HydrateMetadata htmlPageOpts={htmlPageOpts} />
         <div id={mountElementId}>{children}</div>
       </>
     );
   }
-  // @ts-ignore
+
   const serverBuildManifest =
     typeof window === 'undefined'
       ? manifest
       : // @ts-ignore
         window.__UMI_BUILD_MANIFEST_DATA__;
   return (
-    <html suppressHydrationWarning lang={tplOpts?.lang || 'en'}>
+    // FIXME: Resolve the hydrate warning for suppressHydrationWarning(3)
+    <html suppressHydrationWarning lang={htmlPageOpts?.lang || 'en'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -113,7 +114,7 @@ export function Html({
             href={manifest?.assets['umi.css']}
           />
         )}
-        <HydrateMetadata tplOpts={tplOpts} />
+        <HydrateMetadata htmlPageOpts={htmlPageOpts} />
       </head>
       <body>
         <noscript
@@ -129,14 +130,14 @@ export function Html({
             __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
               loaderData || {},
             )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
-              tplOpts || {},
+              htmlPageOpts || {},
             )}; window.__UMI_BUILD_MANIFEST_DATA__ = ${
               JSON.stringify(manifest) || {}
             }`,
           }}
         />
 
-        {tplOpts?.scripts?.map((script: IScript, key: number) => {
+        {htmlPageOpts?.scripts?.map((script: IScript, key: number) => {
           const { content, ...rest } = normalizeScripts(script);
           return (
             <script key={key} {...(rest as any)}>

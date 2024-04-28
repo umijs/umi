@@ -10,9 +10,18 @@ import { IRootComponentOptions } from './types';
 export async function getClientRootComponent(opts: IRootComponentOptions) {
   const basename = '/';
   const components = { ...opts.routeComponents };
+  // todo 参数对齐
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: components,
+  });
+
+  opts.pluginManager.applyPlugins({
+    key: 'patchClientRoutes',
+    type: 'event',
+    args: {
+      routes: clientRoutes,
+    },
   });
   let rootContainer = (
     <StaticRouter basename={basename} location={opts.location}>

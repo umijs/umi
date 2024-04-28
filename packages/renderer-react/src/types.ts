@@ -1,4 +1,4 @@
-import type { ITplOpts, ServerLoader } from '@umijs/server/dist/types';
+import type { ServerLoader, IhtmlPageOpts } from '@umijs/server/dist/types';
 import type { RouteMatch, RouteObject } from 'react-router-dom';
 
 type ClientLoaderFunctionArgs = {
@@ -53,25 +53,25 @@ export interface ILoaderData {
   [routeKey: string]: any;
 }
 
-export interface IRootComponentOptions {
+interface IHtmlHydrateOptions {
+  htmlPageOpts?: IhtmlPageOpts;
+  renderFromRoot?: boolean;
+  mountElementId?: string;
+}
+
+export interface IRootComponentOptions extends IHtmlHydrateOptions {
   routes: IRoutesById;
   routeComponents: IRouteComponents;
   pluginManager: any;
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
-  tplOpts?: ITplOpts;
-  renderFromRoot: boolean;
-  mountElementId: string;
 }
 
-export interface IHtmlProps {
+export interface IHtmlProps extends IHtmlHydrateOptions {
   children?: React.ReactNode;
   loaderData?: { [routeKey: string]: any };
   manifest?: any;
-  tplOpts?: ITplOpts;
-  mountElementId?: string;
-  renderFromRoot?: boolean;
 }
 
 export type IScript =

@@ -180,7 +180,11 @@ export interface IRuntimeConfig {
         ];
   });
 
-  api.chainWebpack((config) => {
+  api.chainWebpack((config, { ssr }) => {
+    // ssr 场景下，通过 cjs 的方式来使用模块，跳过 umd方式的构建
+    if (ssr) {
+      return;
+    }
     assert(api.pkg.name, 'You should have name in package.json.');
     // 默认不修改 library chunk 的 name，从而确保可以通过 window[appName] 访问到导出
     // mfsu 关闭的时候才可以修改，否则可能导致配合 mfsu 时，子应用的 umd chunk 无法被正确加载
@@ -223,11 +227,14 @@ export interface IRuntimeConfig {
 
   api.addEntryCode(() => [
     `
-export const bootstrap = qiankun_genBootstrap(render);
-export const mount = qiankun_genMount('${api.config.mountElementId}');
-export const unmount = qiankun_genUnmount('${api.config.mountElementId}');
-export const update = qiankun_genUpdate();
-if (!window.__POWERED_BY_QIANKUN__) {
+const qiankun_noop = () => new Error('qiankun lifecycle is not available for server runtime!');
+const ssrBuildTarget = process.env.SSR_BUILD_TARGET;
+export const bootstrap = ssrBuildTarget ? qiankun_noop: qiankun_genBootstrap(render);
+export const mount = ssrBuildTarget ? qiankun_noop : qiankun_genMount('${api.config.mountElementId}');
+export const unmount = ssrBuildTarget ? qiankun_noop : qiankun_genUnmount('${api.config.mountElementId}');
+export const update = ssrBuildTarget ? qiankun_noop : qiankun_genUpdate();
+// 增加 ssr 的判断
+if (typeof window !== 'undefined' && !window.__POWERED_BY_QIANKUN__) {
   bootstrap().then(mount);
 }
     `,
