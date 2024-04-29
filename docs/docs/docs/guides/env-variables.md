@@ -64,7 +64,7 @@ BAR=bar
 CONCAT=$FOO$BAR # CONCAT=foobar
 ```
 
-通过 `.env.development` / `.env.production` 来为开发和构建分别配置不同的环境变量。
+Umi 不支持 `.env.development` / `.env.production` 的环境变量配置文件，如需在不同的环境下有不同的变量值，请使用 `cross-env` 在不同的启动命令上区分，或定义在各个 `UMI_ENV` 对应的 Umi 配置文件内。
 
 注意：
 
