@@ -8,7 +8,7 @@ export default {
   title: '测试title',
   scripts: [`https://a.com/b.js`],
   ssr: {
-    builder: 'webpack',
+    builder: 'mako',
     renderFromRoot: false,
   },
   exportStatic: {},

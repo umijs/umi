@@ -18,7 +18,6 @@ export const build = async (api: IApi, opts: any) => {
   const useHash = api.config.hash && api.env === Env.production;
 
   const entry = path.resolve(api.paths.absTmpPath, 'umi.server.ts');
-  const oChainWebpack = opts.chainWebpack;
   const options = {
     cwd: api.cwd,
     entry: {
@@ -26,7 +25,7 @@ export const build = async (api: IApi, opts: any) => {
     },
     config: {
       ...api.config,
-      hash: true,
+      hash: useHash,
       outputPath: path.dirname(absOutputFile),
       manifest: {
         fileName: 'build-manifest.json',
@@ -37,34 +36,7 @@ export const build = async (api: IApi, opts: any) => {
       platform: 'node',
     },
     chainWebpack: async (memo: any) => {
-      const absOutputFile = absServerBuildPath(api);
-
-      await oChainWebpack(memo, { ...opts, ssr: true });
-      memo.entryPoints.clear();
-      memo
-        .entry('umi')
-        .add(path.resolve(api.paths.absTmpPath, 'umi.server.ts'));
-      memo.target('node');
-      memo.name('umi');
-      memo.devtool(false);
-
-      memo.output
-        .path(path.dirname(absOutputFile))
-        // 避免多 chunk 时的命名冲突，虽然 ssr 在项目里禁用了 import() 语法，但 node_modules 下可能存在的 import() 没有被 babel 插件覆盖到
-        .filename(
-          useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
-        )
-        .chunkFilename(
-          useHash ? '[name].[contenthash:8].server.js' : '[name].server.js',
-        )
-        .libraryTarget('commonjs2');
-
-      // remove useless progress plugin
-      memo.plugins.delete('progress-plugin');
-
-      // do not minify
-      memo.optimization.minimize(false);
-
+      memo.target = 'node';
       return memo;
     },
     onBuildComplete: () => {
