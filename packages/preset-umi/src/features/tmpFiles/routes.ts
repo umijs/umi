@@ -17,7 +17,7 @@ export async function getApiRoutes(opts: { api: IApi }) {
   });
 
   function localPath(path: string) {
-    if (path.charAt(0) !== '.') {
+    if (path.charAt(0) !== '.' || path.charAt(1) !== '/') {
       return `./${path}`;
     }
     {
@@ -79,7 +79,7 @@ export async function getRoutes(opts: {
   }
 
   function localPath(path: string) {
-    if (path.charAt(0) !== '.') {
+    if (path.charAt(0) !== '.' || path.charAt(1) !== '/') {
       return `./${path}`;
     } else {
       return path;
