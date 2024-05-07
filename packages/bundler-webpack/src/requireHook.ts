@@ -16,6 +16,7 @@ const hookPropertyMap = new Map([
   ['webpack/package.json', resolve('compiled/webpack/package')],
   ['webpack/lib/webpack', resolve('compiled/webpack')],
   ['webpack/lib/webpack.js', resolve('compiled/webpack')],
+  ['tapable', '@umijs/bundler-utils/compiled/tapable'],
 ]);
 
 deepImports.forEach((item: string) => {
