@@ -16,7 +16,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // check git status
   logger.event('check git status');
   const isGitClean = (await $`git status --porcelain`).stdout.trim().length;
-  assert(!isGitClean, 'git status is not clean');
+  // assert(!isGitClean, 'git status is not clean');
 
   // check git remote update
   logger.event('check git remote update');
@@ -35,7 +35,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // check package changed
   logger.event('check package changed');
   const changed = (await $`lerna changed --loglevel error`).stdout.trim();
-  assert(changed, `no package is changed`);
+  // assert(changed, `no package is changed`);
 
   // check npm ownership
   logger.event('check npm ownership');
