@@ -25,8 +25,7 @@ export function resolveDefine(opts: { define: any; publicPath?: string }) {
   env.PUBLIC_PATH = opts.publicPath || '/';
 
   for (const key in env) {
-    env[`process.env.${key}`] = JSON.stringify(env[key]);
-    delete env[key];
+    env[key] = JSON.stringify(env[key]);
   }
 
   const define: Record<string, any> = {};
@@ -37,7 +36,8 @@ export function resolveDefine(opts: { define: any; publicPath?: string }) {
   }
 
   return {
-    ...env,
+    'process.env': env,
+    'process.env.SSR_RESOURCE_DIR': 'process.env.SSR_RESOURCE_DIR',
     ...define,
   };
 }
