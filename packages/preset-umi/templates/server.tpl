@@ -23,16 +23,17 @@ const routesWithServerLoader = {
 
 export function getManifest(sourceDir) {
   let manifestPath;
-  if (process.env.SSR_RESOURCE_DIR) {
-    manifestPath = path.join(process.env.SSR_RESOURCE_DIR,'build-manifest.json')
-  } else if (sourceDir) {
+  if (process.env.MANIFEST) {
+    return JSON.parse(process.env.MANIFEST)
+  } 
+  if (sourceDir) {
     manifestPath = path.join(sourceDir,'build-manifest.json')
   }
-   else {
+  else {
     manifestPath = '{{{ assetsPath }}}'
-   }
+  }
 
-   return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
+  return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
 }
 
 export function createHistory(opts) {
