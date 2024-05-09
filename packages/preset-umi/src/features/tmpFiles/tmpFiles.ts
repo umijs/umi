@@ -626,7 +626,9 @@ if (process.env.NODE_ENV === 'development') {
           })
         ).join(', ')} } from '${rendererPath}';`,
       );
-      exports.push(`export type { History } from '${rendererPath}'`);
+      exports.push(
+        `export type { History, ClientLoader } from '${rendererPath}'`,
+      );
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));

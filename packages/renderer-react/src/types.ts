@@ -1,8 +1,26 @@
-import type { IhtmlPageOpts } from '@umijs/server/dist/types';
+import type { IhtmlPageOpts, ServerLoader } from '@umijs/server/dist/types';
 import type { RouteMatch, RouteObject } from 'react-router-dom';
 
+declare global {
+  interface Window {
+    __UMI_LOADER_DATA__: any;
+    __UMI_METADATA_LOADER_DATA__: any;
+    __UMI_BUILD_MANIFEST_DATA__: any;
+  }
+}
+
+type ClientLoaderFunctionArgs = {
+  serverLoader: ServerLoader;
+};
+
+export type ClientLoader = ((
+  args: ClientLoaderFunctionArgs,
+) => Promise<any>) & {
+  hydrate?: boolean;
+};
+
 export interface IRouteSSRProps {
-  clientLoader?: () => Promise<any>;
+  clientLoader?: ClientLoader;
   hasServerLoader?: boolean;
 }
 

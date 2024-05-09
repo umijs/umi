@@ -103,8 +103,7 @@ export function Html({
   const serverBuildManifest =
     typeof window === 'undefined'
       ? manifest
-      : // @ts-ignore
-        window.__UMI_BUILD_MANIFEST_DATA__;
+      : window.__UMI_BUILD_MANIFEST_DATA__;
   return (
     // FIXME: Resolve the hydrate warning for suppressHydrationWarning(3)
     <html suppressHydrationWarning lang={htmlPageOpts?.lang || 'en'}>
