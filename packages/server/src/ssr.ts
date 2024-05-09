@@ -377,7 +377,9 @@ export default function createRequestHandler(
           const stream = await ReactDomServer.renderToReadableStream(
             React.createElement(JSXProvider, undefined, jsx.element),
             {
-              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              // why not bootstrap umi.js?
+              // ER will auto inject umi.js
+              // bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
               onError(x: any) {
                 console.error(x);
               },
