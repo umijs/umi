@@ -29,11 +29,11 @@ export function getManifest(sourceDir) {
   if (sourceDir) {
     manifestPath = path.join(sourceDir,'build-manifest.json')
   }
-  else {
+   else {
     manifestPath = '{{{ assetsPath }}}'
   }
 
-  return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
+   return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
 }
 
 export function createHistory(opts) {
