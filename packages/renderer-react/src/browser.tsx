@@ -223,7 +223,6 @@ const getBrowser = (
   const Browser = () => {
     const [clientLoaderData, setClientLoaderData] = useState<ILoaderData>({});
     const [serverLoaderData, setServerLoaderData] = useState<ILoaderData>(
-      // @ts-ignore
       window.__UMI_LOADER_DATA__ || {},
     );
 
@@ -275,14 +274,14 @@ const getBrowser = (
           }
           const clientLoader = opts.routes[id]?.clientLoader;
           const hasClientLoader = !!clientLoader;
+          const hasServerLoader = opts.routes[id]?.hasServerLoader;
           // server loader
           // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
 
           if (
             !isFirst &&
-            opts.routes[id]?.hasServerLoader &&
+            hasServerLoader &&
             !hasClientLoader &&
-            // @ts-ignore
             !window.__UMI_LOADER_DATA__
           ) {
             fetchServerLoader({
@@ -303,14 +302,11 @@ const getBrowser = (
 
           // Check if hydration is needed or there's no server loader for the current route
           const shouldHydrateOrNoServerLoader =
-            (hasClientLoader && clientLoader.hydrate) ||
-            !opts.routes[id]?.hasServerLoader;
+            (hasClientLoader && clientLoader.hydrate) || !hasServerLoader;
 
           // Check if server loader data is missing in the global window object
           const isServerLoaderDataMissing =
-            opts.routes[id]?.hasServerLoader &&
-            // @ts-ignore
-            !window.__UMI_LOADER_DATA__;
+            hasServerLoader && !window.__UMI_LOADER_DATA__;
 
           if (
             hasClientLoader &&
@@ -385,9 +381,7 @@ export function renderClient(opts: RenderClientOpts) {
   // 为了测试，直接返回组件
   if (opts.components) return Browser;
   if (opts.hydrate) {
-    // @ts-ignore
     const loaderData = window.__UMI_LOADER_DATA__ || {};
-    // @ts-ignore
     const metadata = window.__UMI_METADATA_LOADER_DATA__ || {};
 
     const hydtateHtmloptions = {

@@ -67,7 +67,6 @@ export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
     return has ? ret : undefined;
   });
   React.useEffect(() => {
-    // @ts-ignore
     if (!window.__UMI_LOADER_DATA__) {
       // 支持 ssr 降级，客户端兜底加载 serverLoader 数据
       Promise.all(
