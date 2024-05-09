@@ -11,6 +11,7 @@ test('normal', () => {
       NODE_ENV: '"test"',
       PUBLIC_PATH: '"/"',
     },
+    'process.env.SSR_RESOURCE_DIR': 'process.env.SSR_RESOURCE_DIR',
   });
 });
 
@@ -27,5 +28,6 @@ test('env variables', () => {
       UMI_APP_FOO: '"BAR"',
       PUBLIC_PATH: '"/"',
     },
+    'process.env.SSR_RESOURCE_DIR': 'process.env.SSR_RESOURCE_DIR',
   });
 });
