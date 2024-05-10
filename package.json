@@ -35,6 +35,7 @@
     "release": "umi-scripts release",
     "setup": "pnpm --filter @umijs/ui run setup",
     "setup:webstorm": "umi-scripts setupWebStorm",
+    "sync:mako": "umi-scripts syncMako",
     "sync:tnpm": "umi-scripts syncTnpm",
     "test": "jest",
     "test:clean": "umi-scripts turbo test --no-cache --parallel -- --clearCache",
