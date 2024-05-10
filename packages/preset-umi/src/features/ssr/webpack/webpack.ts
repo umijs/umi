@@ -38,6 +38,8 @@ export const build = async (api: IApi, opts: any) => {
     const absOutputFile = absServerBuildPath(api);
 
     await oChainWebpack(memo, { ...opts, ssr: true });
+    // ssr dont need externals
+    memo.externals({});
     memo.entryPoints.clear();
     memo.entry('umi').add(resolve(api.paths.absTmpPath, 'umi.server.ts'));
     memo.target('node');
