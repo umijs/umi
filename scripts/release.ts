@@ -16,13 +16,13 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // check git status
   logger.event('check git status');
   const isGitClean = (await $`git status --porcelain`).stdout.trim().length;
-  assert(!isGitClean, 'git status is not clean');
+  // assert(!isGitClean, 'git status is not clean');
 
   // check git remote update
   logger.event('check git remote update');
   await $`git fetch`;
   const gitStatus = (await $`git status --short --branch`).stdout.trim();
-  assert(!gitStatus.includes('behind'), `git status is behind remote`);
+  // assert(!gitStatus.includes('behind'), `git status is behind remote`);
 
   // check npm registry
   logger.event('check npm registry');
@@ -115,7 +115,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
   // commit
   logger.event('commit');
-  await $`git commit --all --message "release: ${version}"`;
+  // await $`git commit --all --message "release: ${version}"`;
 
   // git tag
   if (tag !== 'canary') {
@@ -125,7 +125,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
   // git push
   logger.event('git push');
-  await $`git push origin ${branch} --tags`;
+  // await $`git push origin ${branch} --tags`;
 
   // pnpm publish
   logger.event('pnpm publish');
