@@ -29,6 +29,7 @@ export default (api: IApi) => {
             serverBuildTarget: zod.enum(['express', 'worker']),
             platform: zod.string(),
             builder: zod.enum(['esbuild', 'webpack']),
+            renderFromRoot: zod.boolean(),
             __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: zod.boolean(),
           })
           .deepPartial();

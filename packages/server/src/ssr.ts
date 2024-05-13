@@ -47,6 +47,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
   htmlPageOpts: IhtmlPageOpts;
+  renderFromRoot: boolean;
   __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: boolean;
   mountElementId: string;
 }
@@ -161,6 +162,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       manifest,
       loaderData,
       htmlPageOpts: opts.htmlPageOpts,
+      renderFromRoot: opts.renderFromRoot,
       __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:
         opts.__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
       mountElementId: opts.mountElementId,

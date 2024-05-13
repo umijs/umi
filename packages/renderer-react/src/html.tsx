@@ -11,6 +11,14 @@ function isUrl(str: string) {
     str.startsWith('../')
   );
 }
+const EnableJsScript = () => (
+  <noscript
+    dangerouslySetInnerHTML={{
+      __html: `<b>Enable JavaScript to run this app.</b>`,
+    }}
+  />
+);
+
 const GlobalDataScript = (props: IHtmlProps) => {
   const { loaderData, htmlPageOpts, manifest } = props;
   return (
@@ -102,6 +110,7 @@ export function Html({
   loaderData,
   manifest,
   htmlPageOpts,
+  renderFromRoot,
   __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
   mountElementId,
 }: React.PropsWithChildren<IHtmlProps>) {
@@ -112,12 +121,7 @@ export function Html({
       <html>
         <head></head>
         <body>
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: `<b>Enable JavaScript to run this app.</b>`,
-            }}
-          />
-
+          <EnableJsScript />
           <div id={mountElementId}>{children}</div>
           <GlobalDataScript
             manifest={manifest}
@@ -126,6 +130,20 @@ export function Html({
           />
         </body>
       </html>
+    );
+  }
+
+  if (renderFromRoot) {
+    return (
+      <>
+        <EnableJsScript />
+        <div id={mountElementId}>{children}</div>
+        <GlobalDataScript
+          manifest={manifest}
+          loaderData={loaderData}
+          htmlPageOpts={htmlPageOpts}
+        />
+      </>
     );
   }
 
@@ -149,12 +167,7 @@ export function Html({
         <HydrateMetadata htmlPageOpts={htmlPageOpts} />
       </head>
       <body>
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html: `<b>Enable JavaScript to run this app.</b>`,
-          }}
-        />
-
+        <EnableJsScript />
         <div id={mountElementId}>{children}</div>
         <GlobalDataScript
           manifest={manifest}
