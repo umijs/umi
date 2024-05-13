@@ -179,8 +179,9 @@ umi build --clean
         const { vite } = api.args;
         const args = await getMarkupArgs({ api });
 
-        // renderFromRoot = true, 将 html 中的 title, metas 标签逻辑全部交给 metadataLoader 合并逻辑处理
-        const markupArgs = api.config.ssr?.renderFromRoot
+        // __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = true, 将 html 中的 title, metas 标签逻辑全部交给 metadataLoader 合并逻辑处理
+        const markupArgs = api.config.ssr
+          ?.__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
           ? (omit(args, [
               MetadataLoaderOmitKeys.Title,
               MetadataLoaderOmitKeys.Meta,

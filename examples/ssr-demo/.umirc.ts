@@ -9,7 +9,7 @@ export default {
   scripts: [`https://a.com/b.js`],
   ssr: {
     builder: 'webpack',
-    renderFromRoot: false,
+    __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: false,
   },
   exportStatic: {},
   styles: [`body { color: red; }`, `https://a.com/b.css`],

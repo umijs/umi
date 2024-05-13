@@ -11,7 +11,23 @@ function isUrl(str: string) {
     str.startsWith('../')
   );
 }
-
+const GlobalDataScript = (props: IHtmlProps) => {
+  const { loaderData, htmlPageOpts, manifest } = props;
+  return (
+    <script
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{
+        __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
+          loaderData || {},
+        )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
+          htmlPageOpts || {},
+        )}; window.__UMI_BUILD_MANIFEST_DATA__ = ${
+          JSON.stringify(manifest) || {}
+        }`,
+      }}
+    />
+  );
+};
 function normalizeScripts(script: IScript, extraProps = {}) {
   if (typeof script === 'string') {
     return isUrl(script)
@@ -86,17 +102,30 @@ export function Html({
   loaderData,
   manifest,
   htmlPageOpts,
-  renderFromRoot,
+  __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
   mountElementId,
 }: React.PropsWithChildren<IHtmlProps>) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
-  if (renderFromRoot) {
+  if (__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
     return (
-      <>
-        <HydrateMetadata htmlPageOpts={htmlPageOpts} />
-        <div id={mountElementId}>{children}</div>
-      </>
+      <html>
+        <head></head>
+        <body>
+          <noscript
+            dangerouslySetInnerHTML={{
+              __html: `<b>Enable JavaScript to run this app.</b>`,
+            }}
+          />
+
+          <div id={mountElementId}>{children}</div>
+          <GlobalDataScript
+            manifest={manifest}
+            loaderData={loaderData}
+            htmlPageOpts={htmlPageOpts}
+          />
+        </body>
+      </html>
     );
   }
 
@@ -127,17 +156,10 @@ export function Html({
         />
 
         <div id={mountElementId}>{children}</div>
-        <script
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
-              loaderData || {},
-            )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
-              htmlPageOpts || {},
-            )}; window.__UMI_BUILD_MANIFEST_DATA__ = ${
-              JSON.stringify(manifest) || {}
-            }`,
-          }}
+        <GlobalDataScript
+          manifest={manifest}
+          loaderData={loaderData}
+          htmlPageOpts={htmlPageOpts}
         />
 
         {htmlPageOpts?.scripts?.map((script: IScript, key: number) => {
