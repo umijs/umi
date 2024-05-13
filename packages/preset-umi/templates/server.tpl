@@ -55,6 +55,7 @@ const createOpts = {
   createHistory,
   ServerInsertedHTMLContext,
   htmlPageOpts: {{{htmlPageOpts}}},
+  renderFromRoot: {{{renderFromRoot}}},
   __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {{{__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED}}},
   mountElementId: '{{{mountElementId}}}'
 

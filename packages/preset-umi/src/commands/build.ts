@@ -1,6 +1,5 @@
 import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
-import { omit } from '@umijs/utils/compiled/lodash';
 import { writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import type { IApi, IOnGenerateFiles } from '../types';
@@ -18,12 +17,6 @@ const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
 const bundlerVite: typeof import('@umijs/bundler-vite') =
   lazyImportFromCurrentPkg('@umijs/bundler-vite');
-
-enum MetadataLoaderOmitKeys {
-  Title = 'title',
-  Meta = 'meta',
-}
-
 export default (api: IApi) => {
   api.registerCommand({
     name: 'build',
@@ -179,20 +172,9 @@ umi build --clean
         const { vite } = api.args;
         const args = await getMarkupArgs({ api });
 
-        // __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = true, 将 html 中的 title, metas 标签逻辑全部交给 metadataLoader 合并逻辑处理
-        const markupArgs = api.config.ssr
-          ?.__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-          ? (omit(args, [
-              MetadataLoaderOmitKeys.Title,
-              MetadataLoaderOmitKeys.Meta,
-            ]) as Omit<
-              typeof args,
-              MetadataLoaderOmitKeys.Title & MetadataLoaderOmitKeys.Meta
-            >)
-          : args;
         const finalMarkUpArgs = {
-          ...markupArgs,
-          styles: markupArgs.styles.concat(
+          ...args,
+          styles: args.styles.concat(
             api.config.vite
               ? []
               : [...(assetsMap['umi.css'] || []).map((src) => ({ src }))],
@@ -200,7 +182,7 @@ umi build --clean
           scripts: (api.config.vite
             ? []
             : [...(assetsMap['umi.js'] || []).map((src) => ({ src }))]
-          ).concat(markupArgs.scripts),
+          ).concat(args.scripts),
           esmScript: !!opts.config.esm || vite,
           path: '/',
         };

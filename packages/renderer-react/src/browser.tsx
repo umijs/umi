@@ -102,6 +102,10 @@ export type RenderClientOpts = {
    */
   rootElement?: HTMLElement;
   /**
+   * 是否从根节点开始渲染, 默认 false, 即从 html 开始渲染
+   */
+  renderFromRoot?: boolean;
+  /**
    * 内部流程, 渲染特殊 html 节点, 不要使用!!!
    */
   __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?: boolean;
@@ -390,9 +394,7 @@ export function renderClient(opts: RenderClientOpts) {
     };
 
     ReactDOM.hydrateRoot(
-      opts.__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-        ? rootElement
-        : document,
+      opts.renderFromRoot ? rootElement : document,
       <Html {...hydtateHtmloptions}>
         <Browser />
       </Html>,
