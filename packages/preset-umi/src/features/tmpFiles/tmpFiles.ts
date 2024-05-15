@@ -618,7 +618,9 @@ if (process.env.NODE_ENV === 'development') {
         ).join(', ')} } from '${umiPluginPath}';`,
       );
       // @@/core/history.ts
-      exports.push(`export { history, createHistory } from './core/history';`);
+      exports.push(
+        `export { history, createHistory, setHistory } from './core/history';`,
+      );
       checkMembers({
         members: ['history', 'createHistory'],
         exportMembers,
