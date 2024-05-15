@@ -200,7 +200,7 @@ declare namespace Config {
     ): this;
     devtoolNamespace(value: WebpackOutput['devtoolNamespace']): this;
     filename(value: WebpackOutput['filename']): this;
-    assetModuleFilenamet(value: WebpackOutput['assetModuleFilename']): this;
+    assetModuleFilename(value: WebpackOutput['assetModuleFilename']): this;
     globalObject(value: WebpackOutput['globalObject']): this;
     uniqueName(value: WebpackOutput['uniqueName']): this;
     hashDigest(value: WebpackOutput['hashDigest']): this;
