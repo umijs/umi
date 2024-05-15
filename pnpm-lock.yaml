@@ -2085,8 +2085,8 @@ importers:
         specifier: 5.88.2
         version: 5.88.2(@swc/core@1.3.67)(uglify-js@3.17.4)
       webpack-5-chain:
-        specifier: 8.0.1
-        version: 8.0.1
+        specifier: 8.0.2
+        version: 8.0.2
       webpack-bundle-analyzer:
         specifier: 4.7.0
         version: 4.7.0
@@ -46852,6 +46852,15 @@ packages:
     dependencies:
       deepmerge: 1.5.2
       javascript-stringify: 2.1.0
+    dev: false
+
+  /webpack-5-chain@8.0.2:
+    resolution: {integrity: sha512-gpzlChffrVUu5YwIw9i240/wdcglw53mSEV/7WoK7L/ddfb6Al8/sRjztyPYV8VgJAmkapH5T1AOUfMFryQ/VA==}
+    engines: {node: '>=10'}
+    dependencies:
+      deepmerge: 1.5.2
+      javascript-stringify: 2.1.0
+    dev: true
 
   /webpack-bundle-analyzer@4.7.0:
     resolution: {integrity: sha512-j9b8ynpJS4K+zfO5GGwsAcQX4ZHpWV+yRiHDiL+bE0XHJ8NiPYLTNVQdlFYWxtpg9lfAQNlwJg16J9AJtFSXRg==}
