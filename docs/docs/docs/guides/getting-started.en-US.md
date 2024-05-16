@@ -8,7 +8,7 @@ translated_at: '2024-03-17T10:30:12.385Z'
 
 ## Environment Setup
 
-First, you need to have node installed and make sure your node version is 14 or above. (It's recommended to use [nvm](https://github.com/nvm-sh/nvm) to manage node versions on Mac or Linux, and [nvm-windows](https://github.com/coreybutler/nvm-windows) for Windows users.)
+First, you need to have node installed and make sure your node version is 18 or above. (It's recommended to use [nvm](https://github.com/nvm-sh/nvm) to manage node versions on Mac or Linux, and [nvm-windows](https://github.com/coreybutler/nvm-windows) for Windows users.)
 
 Install nvm on Mac or Linux.
 
@@ -21,10 +21,10 @@ $ nvm -v
 Install node.
 
 ```
-$ nvm install 16
-$ nvm use 16
+$ nvm install 18
+$ nvm use 18
 $ node -v
-v16.10.0
+v18.10.0
 ```
 
 Then you need a package management tool. While npm comes with node by default, you can also choose other options,

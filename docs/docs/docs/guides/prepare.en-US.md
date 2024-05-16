@@ -10,7 +10,7 @@ This article will guide you through setting up a local development environment f
 
 ## Nodejs
 
-Umi.js development requires [Node.js](https://nodejs.org/en/), so please ensure that Node.js is installed on your computer and its version is above 14.
+Umi.js development requires [Node.js](https://nodejs.org/en/), so please ensure that Node.js is installed on your computer and its version is above 18.
 
 :::info{title=💡}
 If you are a macOS user, it is recommended to use [nvm](https://github.com/nvm-sh/nvm) to manage the versions of Node.js; Windows users are recommended to use [nvm-windows](https://github.com/coreybutler/nvm-windows).
@@ -28,8 +28,8 @@ nvm -v
 After installing [nvm](https://github.com/nvm-sh/nvm), use the following commands to install [Node.js](https://nodejs.org/en/):
 
 ```bash
-nvm install 16
-nvm use 16
+nvm install 18
+nvm use 18
 ```
 
 After the installation is complete, use the following commands to check if the installation was successful and the correct version was installed:
@@ -37,7 +37,7 @@ After the installation is complete, use the following commands to check if the i
 ```bash
 node -v
 
-v16.14.0
+v18.14.0
 ```
 
 ## Dependency Management
