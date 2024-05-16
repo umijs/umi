@@ -41,6 +41,12 @@ export function createHistory(opts: any) {
   return h;
 }
 
+export function setHistory(h: UmiHistory) {
+  if (h) {
+    history = h;
+  }
+}
+
 // Patch `to` to support basename
 // Refs:
 // https://github.com/remix-run/history/blob/3e9dab4/packages/history/index.ts#L484
