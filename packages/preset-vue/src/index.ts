@@ -1,5 +1,4 @@
 import type { IApi } from 'umi';
-import './requireHook';
 
 export default (api: IApi) => {
   api.describe({
