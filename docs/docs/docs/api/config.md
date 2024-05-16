@@ -690,6 +690,24 @@ favicons: [
 ]
 ```
 
+## forget
+
+- 类型：`{ ReactCompilerConfig: object }`
+- 默认值：`null`
+
+是否开启 React Compiler（React Forget）功能。参考 https://react.dev/learn/react-compiler 。
+
+```ts
+forget: {
+  ReactCompilerConfig: {},
+},
+```
+
+注意：
+
+1、forget 和 mfsu、mako 暂时不兼容，如果开启了 forget，同时 mfsu、mako 有打开时会抛错。
+2、forget 需要 react 19，使用时，请手动安装 react@rc 和 react-dom@rc 到项目依赖。
+
 ## forkTSChecker
 
 - 类型：`object`
