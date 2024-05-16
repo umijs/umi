@@ -298,7 +298,10 @@ export default (api: IApi) => {
           'utf-8',
         );
         if (api.config.hash) {
-          hash = createHash('md5').update(content).digest('hex');
+          hash = createHash('md5')
+            .update(content)
+            .digest('hex')
+            .substring(0, 8);
         }
         writeFileSync(
           join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
