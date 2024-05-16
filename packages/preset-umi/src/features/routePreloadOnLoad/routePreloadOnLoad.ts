@@ -3,12 +3,13 @@ import type {
   StatsCompilation,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { lodash, logger, winPath } from '@umijs/utils';
+import { createHash } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { createResolver } from '../../libs/scan';
 import type { IApi, IRoute } from '../../types';
-import { PRELOAD_ROUTE_MAP_SCP_TYPE } from './utils';
+import { PRELOAD_ROUTE_HELPER, PRELOAD_ROUTE_MAP_SCP_TYPE } from './utils';
 
 export interface IRouteChunkFilesMap {
   /**
@@ -205,7 +206,7 @@ async function getRoutePathFilesMap(
 
 export default (api: IApi) => {
   let routeChunkFilesMap: IRouteChunkFilesMap;
-
+  let hash = '';
   api.describe({
     enableBy: () =>
       // enable when package name available
@@ -223,6 +224,7 @@ export default (api: IApi) => {
     fn: () => {
       if (api.name === 'build' && routeChunkFilesMap) {
         const { publicPath } = api.config;
+        const hashedPart = hash ? `.${hash}.js` : '.js';
         const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
         // internal tern app use map mode
         return api.config.tern
@@ -236,7 +238,7 @@ export default (api: IApi) => {
           : // script mode
             [
               {
-                src: `${displayPublicPath}${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`,
+                src: `${displayPublicPath}${PRELOAD_ROUTE_HELPER}${hashedPart}`,
               },
             ];
       }
@@ -291,12 +293,16 @@ export default (api: IApi) => {
         };
       }
       if (api.name === 'build' && routeChunkFilesMap && !api.config.tern) {
+        const content = readFileSync(
+          join(TEMPLATES_DIR, 'routePreloadOnLoad/preloadRouteFilesScp.js'),
+          'utf-8',
+        );
+        if (api.config.hash) {
+          hash = createHash('md5').update(content).digest('hex');
+        }
         writeFileSync(
           join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
-          readFileSync(
-            join(TEMPLATES_DIR, 'routePreloadOnLoad/preloadRouteFilesScp.js'),
-            'utf-8',
-          )
+          content
             .replace(
               '"{{routeChunkFilesMap}}"',
               JSON.stringify(routeChunkFilesMap),
