@@ -46,6 +46,7 @@
     "@umijs/utils": "workspace:*",
     "@umijs/zod2ts": "workspace:*",
     "babel-plugin-dynamic-import-node": "2.3.3",
+    "babel-plugin-react-compiler": "0.0.0-experimental-c23de8d-20240515",
     "click-to-react-component": "^1.0.8",
     "core-js": "3.34.0",
     "current-script-polyfill": "1.0.0",
