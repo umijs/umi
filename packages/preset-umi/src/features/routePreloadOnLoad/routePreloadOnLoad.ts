@@ -236,10 +236,7 @@ export default (api: IApi) => {
           : // script mode
             [
               {
-                src: join(
-                  displayPublicPath,
-                  `/${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`,
-                ),
+                src: `${displayPublicPath}${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`,
               },
             ];
       }
