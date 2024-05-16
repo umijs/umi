@@ -316,9 +316,7 @@ export default (api: IApi) => {
             .substring(0, 8);
         }
         writeFileSync(
-          winPath(
-            join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
-          ),
+          join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
           content,
         ),
           'utf-8';
