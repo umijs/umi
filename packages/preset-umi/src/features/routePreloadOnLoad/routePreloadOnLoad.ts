@@ -288,7 +288,6 @@ export default (api: IApi) => {
             .value() as any,
         };
       }
-      //
       if (api.name === 'build' && routeChunkFilesMap && !api.config.tern) {
         writeFileSync(
           join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
