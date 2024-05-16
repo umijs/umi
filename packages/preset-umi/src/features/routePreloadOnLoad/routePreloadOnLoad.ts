@@ -3,7 +3,7 @@ import type {
   StatsCompilation,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { lodash, logger, winPath } from '@umijs/utils';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { createResolver } from '../../libs/scan';
@@ -234,29 +234,11 @@ export default (api: IApi) => {
           : // script mode
             [
               {
-                content: readFileSync(
-                  join(
-                    TEMPLATES_DIR,
-                    'routePreloadOnLoad/preloadRouteFilesScp.js',
-                  ),
-                  'utf-8',
-                )
-                  .replace(
-                    '"{{routeChunkFilesMap}}"',
-                    JSON.stringify(routeChunkFilesMap),
-                  )
-                  .replace('{{basename}}', api.config.base)
-                  .replace(
-                    '"{{publicPath}}"',
-                    `${
-                      // handle runtimePublicPath
-                      api.config.runtimePublicPath ? 'window.publicPath||' : ''
-                    }"${api.config.publicPath}"`,
-                  ),
+                src: `/${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`,
               },
             ];
       }
-  
+
       return [];
     },
     stage: Infinity,
@@ -305,6 +287,29 @@ export default (api: IApi) => {
             .fromPairs()
             .value() as any,
         };
+      }
+      //
+      if (api.name === 'build' && routeChunkFilesMap && !api.config.tern) {
+        writeFileSync(
+          join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
+          readFileSync(
+            join(TEMPLATES_DIR, 'routePreloadOnLoad/preloadRouteFilesScp.js'),
+            'utf-8',
+          )
+            .replace(
+              '"{{routeChunkFilesMap}}"',
+              JSON.stringify(routeChunkFilesMap),
+            )
+            .replace('{{basename}}', api.config.base)
+            .replace(
+              '"{{publicPath}}"',
+              `${
+                // handle runtimePublicPath
+                api.config.runtimePublicPath ? 'window.publicPath||' : ''
+              }"${api.config.publicPath}"`,
+            ),
+        ),
+          'utf-8';
       }
     }
   });
