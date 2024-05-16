@@ -296,7 +296,19 @@ export default (api: IApi) => {
         const content = readFileSync(
           join(TEMPLATES_DIR, 'routePreloadOnLoad/preloadRouteFilesScp.js'),
           'utf-8',
-        );
+        )
+          .replace(
+            '"{{routeChunkFilesMap}}"',
+            JSON.stringify(routeChunkFilesMap),
+          )
+          .replace('{{basename}}', api.config.base)
+          .replace(
+            '"{{publicPath}}"',
+            `${
+              // handle runtimePublicPath
+              api.config.runtimePublicPath ? 'window.publicPath||' : ''
+            }"${api.config.publicPath}"`,
+          );
         if (api.config.hash) {
           hash = createHash('md5')
             .update(content)
@@ -305,19 +317,7 @@ export default (api: IApi) => {
         }
         writeFileSync(
           join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
-          content
-            .replace(
-              '"{{routeChunkFilesMap}}"',
-              JSON.stringify(routeChunkFilesMap),
-            )
-            .replace('{{basename}}', api.config.base)
-            .replace(
-              '"{{publicPath}}"',
-              `${
-                // handle runtimePublicPath
-                api.config.runtimePublicPath ? 'window.publicPath||' : ''
-              }"${api.config.publicPath}"`,
-            ),
+          content,
         ),
           'utf-8';
       }
