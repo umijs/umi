@@ -206,7 +206,7 @@ async function getRoutePathFilesMap(
 
 export default (api: IApi) => {
   let routeChunkFilesMap: IRouteChunkFilesMap;
-  let hash = '';
+  let hashedPart = '.js';
   api.describe({
     enableBy: () =>
       // enable when package name available
@@ -224,7 +224,6 @@ export default (api: IApi) => {
     fn: () => {
       if (api.name === 'build' && routeChunkFilesMap) {
         const { publicPath } = api.config;
-        const hashedPart = hash ? `.${hash}.js` : '.js';
         const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
         // internal tern app use map mode
         return api.config.tern
@@ -310,13 +309,14 @@ export default (api: IApi) => {
             }"${api.config.publicPath}"`,
           );
         if (api.config.hash) {
-          hash = createHash('md5')
+          hashedPart = `.${createHash('md5')
             .update(content)
             .digest('hex')
-            .substring(0, 8);
+            .substring(0, 8)}.js`;
         }
+
         writeFileSync(
-          join(api.paths.absOutputPath, `${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`),
+          join(api.paths.absOutputPath, `${PRELOAD_ROUTE_HELPER}${hashedPart}`),
           content,
         ),
           'utf-8';
