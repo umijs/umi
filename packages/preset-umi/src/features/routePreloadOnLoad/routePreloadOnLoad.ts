@@ -93,14 +93,6 @@ async function getRouteChunkFilesMap(
     // skip entry chunk
     if (chunk.entry) continue;
 
-    // skip illegal absPath route
-    if (!route.absPath?.startsWith('/')) {
-      logger.error(
-        `[routePreloadOnLoad]: route absPath error, cannot preload for ${route.absPath}`,
-      );
-      continue;
-    }
-
     // pick js and css files
     const pickedFiles = pickPreloadFiles(chunk.files!);
     const routeOrigins = chunk.origins!.filter((origin) =>
@@ -160,6 +152,14 @@ async function getRoutePathFilesMap(
   for (const route of Object.values<IRoute>(routes)) {
     // skip redirect route
     if (!route.file) continue;
+
+    // skip illegal absPath route
+    if (!route.absPath?.startsWith('/')) {
+      logger.error(
+        `[routePreloadOnLoad]: route absPath error, cannot preload for ${route.absPath}`,
+      );
+      continue;
+    }
 
     let current: IRoute | undefined = route;
     const files: string[] = [];
