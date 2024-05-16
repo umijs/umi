@@ -26,8 +26,11 @@ export default (api: IApi) => {
       cwd: api.cwd,
       dep: 'react-dom',
     }) || dirname(require.resolve('react-dom/package.json'));
-  const reactDOMVersion = require(join(reactDOMPath, 'package.json')).version;
-  const isLT18 = !reactDOMVersion.startsWith('18.');
+  const isLT18 = (() => {
+    const reactDOMVersion = require(join(reactDOMPath, 'package.json')).version;
+    const majorVersion = parseInt(reactDOMVersion.split('.')[0], 10);
+    return majorVersion < 18;
+  })();
   const configDefaults: Record<string, any> = {
     alias: {
       umi: '@@/exports',
