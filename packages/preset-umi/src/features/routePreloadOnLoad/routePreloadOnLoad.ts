@@ -222,6 +222,8 @@ export default (api: IApi) => {
   api.addHTMLHeadScripts({
     fn: () => {
       if (api.name === 'build' && routeChunkFilesMap) {
+        const { publicPath } = api.config;
+        const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
         // internal tern app use map mode
         return api.config.tern
           ? // map mode
@@ -235,7 +237,7 @@ export default (api: IApi) => {
             [
               {
                 src: join(
-                  api.config.publicPath,
+                  displayPublicPath,
                   `/${PRELOAD_ROUTE_MAP_SCP_TYPE}.js`,
                 ),
               },
