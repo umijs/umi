@@ -134,17 +134,7 @@ export function Html({
   }
 
   if (renderFromRoot) {
-    return (
-      <>
-        <EnableJsScript />
-        <div id={mountElementId}>{children}</div>
-        <GlobalDataScript
-          manifest={manifest}
-          loaderData={loaderData}
-          htmlPageOpts={htmlPageOpts}
-        />
-      </>
-    );
+    return <>{children}</>;
   }
 
   const serverBuildManifest =
