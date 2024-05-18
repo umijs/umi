@@ -19,6 +19,10 @@ const FetchCompileAsyncWasmPlugin = require('webpack/lib/web/FetchCompileAsyncWa
 const FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmPlugin')
 const StringXor = require('webpack/lib/util/StringXor')
 
+// babel-plugin-react-css-modules
+const TemplatedPathPlugin = require('webpack/lib/TemplatedPathPlugin')
+const createHash = require('webpack/lib/util/createHash')
+
 export {
   BasicEffectRulePlugin,
   BasicMatcherRulePlugin,
@@ -33,5 +37,8 @@ export {
   WebWorkerTemplatePlugin,
   FetchCompileAsyncWasmPlugin,
   FetchCompileWasmPlugin,
-  StringXor
+  StringXor,
+
+  TemplatedPathPlugin,
+  createHash,
 }
