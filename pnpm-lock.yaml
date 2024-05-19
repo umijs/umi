@@ -794,6 +794,30 @@ importers:
         specifier: ^1.15.2
         version: 1.15.2
 
+  examples/mf-v2-host:
+    dependencies:
+      '@umijs/max':
+        specifier: workspace:*
+        version: link:../../packages/max
+      react:
+        specifier: 18.1.0
+        version: 18.1.0
+      react-dom:
+        specifier: 18.1.0
+        version: 18.1.0(react@18.1.0)
+
+  examples/mf-v2-remote:
+    dependencies:
+      '@umijs/max':
+        specifier: workspace:*
+        version: link:../../packages/max
+      react:
+        specifier: 18.1.0
+        version: 18.1.0
+      react-dom:
+        specifier: 18.1.0
+        version: 18.1.0(react@18.1.0)
+
   examples/mfsu-circular-dependency:
     dependencies:
       '@types/react':

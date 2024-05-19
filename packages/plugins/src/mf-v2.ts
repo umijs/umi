@@ -21,18 +21,6 @@ interface IPluginConfig {
   overrideConfig?: Record<string, any>;
 }
 
-enum EEncodeChar {
-  AT = '@',
-  SLASH = '/',
-  HYPHEN = '-',
-}
-
-enum ETransformedChar {
-  AT = 'scope_',
-  SLASH = '__',
-  HYPHEN = '_',
-}
-
 export enum EVersion {
   v1 = 'v1',
   v2 = 'v2',
@@ -42,7 +30,6 @@ interface IOptions {
   standalone?: boolean;
 }
 
-const NOT_ALLOW_NAME_CHARS = ['.', ':'] as const;
 const LOGGER_LABEL = chalk.bold.blue('[module-federation-v2]');
 
 export function configSchema(zod: typeof z) {
@@ -140,45 +127,6 @@ module.exports = require('${p}')
     return config as IPluginConfig;
   };
 
-  const nameTransformUtil = {
-    encode: (name: string) => {
-      const hasNotAllowChar = NOT_ALLOW_NAME_CHARS.some((char) =>
-        name.includes(char),
-      );
-      if (hasNotAllowChar) {
-        throw new Error(
-          `module federation name '${name}' contains not allow chars ${NOT_ALLOW_NAME_CHARS.join(
-            ',',
-          )}`,
-        );
-      }
-      // encode
-      if (name.includes(EEncodeChar.AT)) {
-        name = name.replaceAll(EEncodeChar.AT, ETransformedChar.AT);
-      }
-      if (name.includes(EEncodeChar.SLASH)) {
-        name = name.replaceAll(EEncodeChar.SLASH, ETransformedChar.SLASH);
-      }
-      if (name.includes(EEncodeChar.HYPHEN)) {
-        name = name.replaceAll(EEncodeChar.HYPHEN, ETransformedChar.HYPHEN);
-      }
-      return name;
-    },
-    decode: (name: string) => {
-      // decode
-      if (name.includes(ETransformedChar.AT)) {
-        name = name.replaceAll(ETransformedChar.AT, EEncodeChar.AT);
-      }
-      if (name.includes(ETransformedChar.SLASH)) {
-        name = name.replaceAll(ETransformedChar.SLASH, EEncodeChar.SLASH);
-      }
-      if (name.includes(ETransformedChar.HYPHEN)) {
-        name = name.replaceAll(ETransformedChar.HYPHEN, EEncodeChar.HYPHEN);
-      }
-      return name;
-    },
-  };
-
   const constructExposes = async () => {
     const exposes: Record<string, string> = {};
     const exposesPath = path.join(api.paths.absSrcPath, 'exposes');
@@ -214,10 +162,6 @@ module.exports = require('${p}')
         console.log(`${LOGGER_LABEL} ${chalk.red(errorMsg)}`);
         throw new Error(errorMsg);
       }
-      const getName = (): string => {
-        const decodedName = nameTransformUtil.decode(name);
-        return decodedName;
-      };
 
       const getFormatEntry = (): string => {
         if (entry?.length) {
@@ -233,7 +177,7 @@ module.exports = require('${p}')
         throw new Error(errorMsg);
       };
 
-      const finalName = getName();
+      const finalName = name;
       const finalEntry = getFormatEntry();
 
       if (memo[finalName]) {
@@ -301,12 +245,11 @@ module.exports = require('${p}')
 
     if (!isValidIdentifyName(finalName)) {
       throw new Error(
-        `module federation name '${name}' is not valid javascript identifier.`,
+        `module federation name '${finalName}' is not valid javascript identifier.`,
       );
     }
 
-    const encodeName = nameTransformUtil.encode(finalName);
-    return encodeName;
+    return finalName;
   };
 
   api.modifyWebpackConfig(async (config) => {
@@ -419,6 +362,12 @@ module.exports = require('${p}')
         path: mfAsyncEntryFileName,
       });
     },
+  });
+
+  api.modifyTSConfig((memo) => {
+    const typesDir = winPath(path.join(api.cwd, './@mf-types/*'));
+    memo.compilerOptions.paths['*'] = [typesDir];
+    return memo;
   });
 };
 

@@ -54,7 +54,7 @@ export default function mf(api: IApi) {
     api.userConfig.mf?.version === EVersion.v2 ||
     api.config.mf?.version === EVersion.v2;
   if (useV2) {
-    v2Plugin(api, false);
+    v2Plugin(api, { standalone: false });
     return;
   }
 
