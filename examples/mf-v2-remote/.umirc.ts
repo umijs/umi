@@ -20,4 +20,5 @@ export default defineConfig({
     library: { type: 'window', name: 'remote' },
   },
   publicPath: 'auto',
+  esbuildMinifyIIFE: true,
 });

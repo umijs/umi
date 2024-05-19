@@ -4,7 +4,7 @@
   "scripts": {
     "build": "max build",
     "dev": "max dev",
-    "preview": "max preview --port 9000",
+    "preview": "max preview --port 8001",
     "start": "npm run dev"
   },
   "dependencies": {
