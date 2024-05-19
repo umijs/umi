@@ -4,6 +4,11 @@ import { join } from 'path';
 import type { IApi } from 'umi';
 import { lodash, winPath } from 'umi/plugin-utils';
 import { TEMPLATES_DIR } from './constants';
+import v2Plugin, {
+  configSchema as configSchemaV2,
+  EVersion,
+  isValidIdentifyName,
+} from './mf-v2';
 import { toRemotesCodeString } from './utils/mfUtils';
 
 const { isEmpty } = lodash;
@@ -17,6 +22,10 @@ export default function mf(api: IApi) {
     key: 'mf',
     config: {
       schema({ zod }) {
+        const useVersion = api.userConfig.mf?.version;
+        if (useVersion === EVersion.v2) {
+          return configSchemaV2(zod);
+        }
         return zod
           .object({
             name: zod.string(),
@@ -33,12 +42,21 @@ export default function mf(api: IApi) {
             shared: zod.record(zod.any()),
             library: zod.record(zod.any()),
             remoteHash: zod.boolean(),
+            version: zod.enum([EVersion.v1, EVersion.v2]),
           })
           .partial();
       },
     },
     enableBy: api.EnableBy.config,
   });
+
+  const useV2 =
+    api.userConfig.mf?.version === EVersion.v2 ||
+    api.config.mf?.version === EVersion.v2;
+  if (useV2) {
+    v2Plugin(api, false);
+    return;
+  }
 
   api.modifyWebpackConfig(async (config, { webpack }) => {
     const exposes = await constructExposes();
@@ -316,79 +334,5 @@ export default function mf(api: IApi) {
 
   function addMFEntry(config: any, mfName: string, path: string) {
     config.entry[mfName] = path;
-  }
-
-  function isValidIdentifyName(name: string) {
-    const reservedKeywords = [
-      'abstract',
-      'await',
-      'boolean',
-      'break',
-      'byte',
-      'case',
-      'catch',
-      'char',
-      'class',
-      'const',
-      'continue',
-      'debugger',
-      'default',
-      'delete',
-      'do',
-      'double',
-      'else',
-      'enum',
-      'export',
-      'extends',
-      'false',
-      'final',
-      'finally',
-      'float',
-      'for',
-      'function',
-      'goto',
-      'if',
-      'implements',
-      'import',
-      'in',
-      'instanceof',
-      'int',
-      'interface',
-      'let',
-      'long',
-      'native',
-      'new',
-      'null',
-      'package',
-      'private',
-      'protected',
-      'public',
-      'return',
-      'short',
-      'static',
-      'super',
-      'switch',
-      'synchronized',
-      'this',
-      'throw',
-      'transient',
-      'true',
-      'try',
-      'typeof',
-      'var',
-      'void',
-      'volatile',
-      'while',
-      'with',
-      'yield',
-    ];
-    // 匹配合法的标识符，但是不能检查保留字
-    // Copy from https://github.com/tc39/proposal-regexp-unicode-property-escapes#other-examples
-    const regexIdentifierName =
-      /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/u;
-    if (reservedKeywords.includes(name) || !regexIdentifierName.test(name)) {
-      return false;
-    }
-    return true;
   }
 }
