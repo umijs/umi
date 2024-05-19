@@ -160,17 +160,16 @@ module.exports = require('${p}')
       }
 
       const getFormatEntry = (): string => {
-        if (entry?.length) {
-          const hasAt = entry.includes('@');
-          if (hasAt) {
-            return entry;
-          }
-          return `${remote.name}@${entry}`;
+        if (!entry?.length) {
+          const errorMsg = `you should provider entry for remote ${name}`;
+          console.log(`${LOGGER_LABEL} ${chalk.red(errorMsg)}`);
+          throw new Error(errorMsg);
         }
-
-        const errorMsg = `you should provider entry for remote ${name}`;
-        console.log(`${LOGGER_LABEL} ${chalk.red(errorMsg)}`);
-        throw new Error(errorMsg);
+        const hasAt = entry.includes('@');
+        if (hasAt) {
+          return entry;
+        }
+        return `${remote.name}@${entry}`;
       };
 
       const finalName = name;
@@ -213,7 +212,7 @@ module.exports = require('${p}')
       } else if (Array.isArray(entry.umi)) {
         const i = entry.umi.findIndex((f: string) => f.endsWith('umi.ts'));
 
-        if (~i) {
+        if (i >= 0) {
           entry.umi[i] = asyncEntryPath;
         } else {
           const warnMsg = `Not found umi entry in 'entry.umi' ${JSON.stringify(
