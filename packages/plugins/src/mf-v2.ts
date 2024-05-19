@@ -37,14 +37,10 @@ export function configSchema(zod: typeof z) {
     .object({
       name: zod.string(),
       remotes: zod.array(
-        zod.union([
-          zod.object({
-            name: zod.string(),
-            entry: zod.string(),
-            library: zod.record(zod.any()).optional(),
-          }),
-          zod.record(zod.any()),
-        ]),
+        zod.object({
+          name: zod.string(),
+          entry: zod.string(),
+        }),
       ),
       shared: zod.record(zod.any()),
       library: zod.record(zod.any()),
