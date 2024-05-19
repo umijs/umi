@@ -23,14 +23,7 @@ const StringXor = require('webpack/lib/util/StringXor')
 const TemplatedPathPlugin = require('webpack/lib/TemplatedPathPlugin')
 const createHash = require('webpack/lib/util/createHash')
 
-// mf v2
-// const JavascriptModulesPlugin = require('webpack/lib/javascript/JavascriptModulesPlugin')
-// const Module = require('webpack/lib/Module')
-// const WebpackError = require('webpack/lib/WebpackError')
-// const RuntimeGlobals = require('webpack/lib/RuntimeGlobals')
-// const Dependency = require('webpack/lib/Dependency')
-// const RuntimeModule = require('webpack/lib/RuntimeModule')
-// const ExternalModule = require('webpack/lib/ExternalModule')
+// module federation v2
 const StartupChunkDependenciesPlugin = require('webpack/lib/runtime/StartupChunkDependenciesPlugin')
 const identifier = require('webpack/lib/util/identifier')
 const compileBooleanMatcher = require('webpack/lib/util/compileBooleanMatcher')
@@ -52,20 +45,21 @@ const LazySet = require('webpack/lib/util/LazySet')
 const fs = require('webpack/lib/util/fs')
 const comparators = require('webpack/lib/util/comparators')
 const ConsumeSharedModule = require('webpack/lib/sharing/ConsumeSharedModule')
-
+// name includes `.` / `-` should be replaced
 const JavascriptHotModuleReplacementRuntime = require('webpack/lib/hmr/JavascriptHotModuleReplacement.runtime.js')
 const createSchemaValidation = require('webpack/lib/util/create-schema-validation')
-
 const ExternalsTypeCheck = require("webpack/schemas/plugins/container/ExternalsType.check.js")
 const ConsumeSharedPluginCheck = require("webpack/schemas/plugins/sharing/ConsumeSharedPlugin.check.js")
 
 export {
+  // export webpack rules
   BasicEffectRulePlugin,
   BasicMatcherRulePlugin,
   UseEffectRulePlugin,
   ObjectMatcherRulePlugin,
   RuleSetCompiler,
 
+  // refer to nextjs
   BasicEvaluatedExpression,
   NodeTargetPlugin,
   NodeTemplatePlugin,
@@ -75,9 +69,11 @@ export {
   FetchCompileWasmPlugin,
   StringXor,
 
+  // babel-plugin-react-css-modules
   TemplatedPathPlugin,
   createHash,
 
+  // module federation v2
   StartupChunkDependenciesPlugin,
   identifier,
   compileBooleanMatcher,
