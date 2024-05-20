@@ -216,6 +216,21 @@ const mapRoutes = (routes: IRoute[]) => {
   })
 }
 
+// 如果通过plugin插入其他layout，会导致路由层级变更
+const deepFilter = (routes: IRoute[]) => {
+  if (!routes || routes.length === 0) {
+    return []
+  }
+  for (const route of routes) {
+    const newRoues = deepFilter(route.children)
+
+    if (newRoues && newRoues.length > 0) {
+      return newRoues
+    }
+  }
+  return routes.filter(route => route.id === 'ant-design-pro-layout')
+}
+
 export default (props: any) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -244,7 +259,7 @@ const { formatMessage } = useIntl();
 
 
   // 现在的 layout 及 wrapper 实现是通过父路由的形式实现的, 会导致路由数据多了冗余层级, proLayout 消费时, 无法正确展示菜单, 这里对冗余数据进行过滤操作
-  const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === 'ant-design-pro-layout'), (route) => {
+  const newRoutes = filterRoutes(deepFilter(clientRoutes), (route) => {
     return (!!route.isLayout && route.id !== 'ant-design-pro-layout') || !!route.isWrapper;
   })
   const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
