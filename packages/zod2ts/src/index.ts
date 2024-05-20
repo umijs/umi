@@ -1,1 +1,0 @@
-export { zodToTs } from './zod';

@@ -1,1 +1,0 @@
-export * from '@umijs/bundler-utils/compiled/esbuild';

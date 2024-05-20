@@ -1,5 +1,0 @@
-import uppercase from 'lodash.uppercase';
-
-export function format(a: string): string {
-  return uppercase(a);
-}

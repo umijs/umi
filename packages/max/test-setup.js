@@ -1,1 +1,0 @@
-require('umi/test-setup');

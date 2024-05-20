@@ -1,2 +1,0 @@
-// fetch
-require('isomorphic-unfetch');

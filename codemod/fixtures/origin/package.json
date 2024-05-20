@@ -1,6 +1,0 @@
-{
-  "name": "codemod-test-app",
-  "dependencies": {
-    "umi": "^3.0.0"
-  }
-}

@@ -1,14 +1,3 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["*"],
-      "@@/*": [".umi/*"],
-      "test-utils": ["test/lib/testUtils"],
-      "umi": ["./packages/umi"],
-      "@umijs/utils": ["./packages/utils"],
-      "@umijs/renderer-react": ["./packages/renderer-react"]
-    }
-  }
+  "extends": "./src/.umi/tsconfig.json"
 }

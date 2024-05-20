@@ -1,7 +1,0 @@
-{
-  "extends": "@alipay/bigfish/eslint",
-  "rules": {
-    "no-unused-expressions": 0,
-    "@typescript-eslint/naming-convention": 0
-  }
-}
