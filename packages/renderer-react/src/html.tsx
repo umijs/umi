@@ -119,7 +119,7 @@ export function Html({
 }: React.PropsWithChildren<IHtmlProps>) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
-  if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureHtml) {
+  if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.pureHtml) {
     return (
       <html>
         <head></head>
@@ -136,7 +136,7 @@ export function Html({
     );
   }
 
-  if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureApp) {
+  if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.pureApp) {
     return (
       <>
         <EnableJsScript />

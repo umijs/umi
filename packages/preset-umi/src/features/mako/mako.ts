@@ -5,7 +5,6 @@ import { IApi } from '../../types';
 export default (api: IApi) => {
   api.describe({
     key: 'mako',
-
     config: {
       schema({ zod }) {
         return zod

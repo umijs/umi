@@ -36,7 +36,6 @@ const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
 const bundlerVite: typeof import('@umijs/bundler-vite') =
   lazyImportFromCurrentPkg('@umijs/bundler-vite');
-const bundlerMako = lazyImportFromCurrentPkg('@umijs/bundler-mako');
 
 const MFSU_EAGER_DEFAULT_INCLUDE = [
   'react',
