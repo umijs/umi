@@ -35,6 +35,7 @@ const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
 const bundlerVite: typeof import('@umijs/bundler-vite') =
   lazyImportFromCurrentPkg('@umijs/bundler-vite');
+const bundlerMako = lazyImportFromCurrentPkg('@umijs/bundler-mako');
 
 const MFSU_EAGER_DEFAULT_INCLUDE = [
   'react',
@@ -434,8 +435,9 @@ PORT=8888 umi dev
 
       if (enableVite) {
         await bundlerVite.dev(opts);
-      } else if (process.env.OKAM) {
+      } else if (api.config.mako) {
         require('@umijs/bundler-webpack/dist/requireHook');
+        // @ts-ignore
         const { dev } = require(process.env.OKAM);
         await dev(opts);
       } else {

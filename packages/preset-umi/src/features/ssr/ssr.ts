@@ -170,34 +170,50 @@ export type {
       );
 
       await webpackBuilder.build(api, opts);
-    } else if (process.env.OKAM && builder === 'mako') {
+    } else if (api.config.mako && builder === 'mako') {
       await makoBuiler.build(api, opts);
     }
   });
   api.onDevCompileDone(() => {
-    const finalJsonObj: any = {};
-    const assetFilePath = join(api.paths.absOutputPath, 'asset-manifest.json');
-    const buildFilePath = join(api.paths.absOutputPath, 'build-manifest.json');
-    const json = existsSync(assetFilePath)
-      ? fsExtra.readJSONSync(assetFilePath)
-      : {};
-    finalJsonObj.assets = json;
-    writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
-      flag: 'w',
-    });
+    if (api.config.mako) {
+      const finalJsonObj: any = {};
+      const assetFilePath = join(
+        api.paths.absOutputPath,
+        'asset-manifest.json',
+      );
+      const buildFilePath = join(
+        api.paths.absOutputPath,
+        'build-manifest.json',
+      );
+      const json = existsSync(assetFilePath)
+        ? fsExtra.readJSONSync(assetFilePath)
+        : {};
+      finalJsonObj.assets = json;
+      writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
+        flag: 'w',
+      });
+    }
   });
 
   api.onBuildComplete(() => {
-    const finalJsonObj: any = {};
-    const assetFilePath = join(api.paths.absOutputPath, 'asset-manifest.json');
-    const buildFilePath = join(api.paths.absOutputPath, 'build-manifest.json');
-    const json = existsSync(assetFilePath)
-      ? fsExtra.readJSONSync(assetFilePath)
-      : {};
-    finalJsonObj.assets = json;
-    writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
-      flag: 'w',
-    });
+    if (api.config.mako) {
+      const finalJsonObj: any = {};
+      const assetFilePath = join(
+        api.paths.absOutputPath,
+        'asset-manifest.json',
+      );
+      const buildFilePath = join(
+        api.paths.absOutputPath,
+        'build-manifest.json',
+      );
+      const json = existsSync(assetFilePath)
+        ? fsExtra.readJSONSync(assetFilePath)
+        : {};
+      finalJsonObj.assets = json;
+      writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
+        flag: 'w',
+      });
+    }
   });
 
   // 在 webpack 完成打包以后，使用 esbuild 编译 umi.server.js

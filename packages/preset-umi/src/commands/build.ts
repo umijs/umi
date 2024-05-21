@@ -142,8 +142,9 @@ umi build --clean
       let stats: any;
       if (api.config.vite) {
         stats = await bundlerVite.build(opts);
-      } else if (process.env.OKAM) {
+      } else if (api.config.mako || process.env.OKAM) {
         require('@umijs/bundler-webpack/dist/requireHook');
+        // @ts-ignore
         const { build } = require(process.env.OKAM);
         stats = await build(opts);
       } else {

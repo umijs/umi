@@ -6,15 +6,15 @@ import path, { dirname, join } from 'path';
 import { IApi } from 'umi';
 import { absServerBuildPath } from '../utils';
 
-export const build = async (api: IApi, opts: any) => {
+export const build = async (api: IApi) => {
   logger.wait('[SSR] Compiling by mako...');
   const now = new Date().getTime();
   const absOutputFile = absServerBuildPath(api);
+  require('@umijs/bundler-webpack/dist/requireHook');
 
   // @ts-ignore
   const { build } = require(process.env.OKAM);
 
-  require('@umijs/bundler-webpack/dist/requireHook');
   const useHash = api.config.hash && api.env === Env.production;
 
   const entry = path.resolve(api.paths.absTmpPath, 'umi.server.ts');
@@ -33,10 +33,9 @@ export const build = async (api: IApi, opts: any) => {
       devtool: false,
       cjs: true,
       dynamicImportToRequire: true,
-      platform: 'node',
     },
     chainWebpack: async (memo: any) => {
-      memo.target = 'node';
+      memo.target('node');
       return memo;
     },
     onBuildComplete: () => {

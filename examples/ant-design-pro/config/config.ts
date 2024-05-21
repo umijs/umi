@@ -305,6 +305,7 @@ export default defineConfig({
   ignoreMomentLocale: true,
   // @ts-ignore
   proxy: proxy[REACT_APP_ENV || 'dev'],
+  // mako: false,
   manifest: {
     basePath: '/',
   },

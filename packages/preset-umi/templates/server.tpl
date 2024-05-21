@@ -20,6 +20,7 @@ const routesWithServerLoader = {
 };
 
 export function getManifest(sourceDir) {
+  console.log(100, process)
   return JSON.parse(require('fs').readFileSync(
   sourceDir ? require('path').join(sourceDir,'build-manifest.json') : '{{{ assetsPath }}}', 'utf-8'));
 }
