@@ -47,7 +47,10 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   helmetContext?: any;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
   htmlPageOpts: IhtmlPageOpts;
-  renderFromRoot: boolean;
+  __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
+    pureApp: boolean;
+    pureHtml: boolean;
+  };
   mountElementId: string;
 }
 
@@ -161,7 +164,8 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       manifest,
       loaderData,
       htmlPageOpts: opts.htmlPageOpts,
-      renderFromRoot: opts.renderFromRoot,
+      __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:
+        opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
       mountElementId: opts.mountElementId,
     };
     const element = (await opts.getClientRootComponent(
@@ -377,7 +381,9 @@ export default function createRequestHandler(
           const stream = await ReactDomServer.renderToReadableStream(
             React.createElement(JSXProvider, undefined, jsx.element),
             {
-              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              // why not bootstrap umi.js
+              // ER will auto inject
+              // bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
               onError(x: any) {
                 console.error(x);
               },

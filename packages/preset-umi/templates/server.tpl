@@ -5,6 +5,8 @@ import { createHistory as createClientHistory } from './core/history';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
 import { createPluginManager } from './core/plugin';
 import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader, createAppRootElement } from '{{{ umiServerPath }}}';
+import fs from 'fs';
+import path from 'path';
 {{{ imports }}}
 {{{ entryCodeAhead }}}
 let helmetContext;
@@ -20,9 +22,18 @@ const routesWithServerLoader = {
 };
 
 export function getManifest(sourceDir) {
-  console.log(100, process)
-  return JSON.parse(require('fs').readFileSync(
-  sourceDir ? require('path').join(sourceDir,'build-manifest.json') : '{{{ assetsPath }}}', 'utf-8'));
+  let manifestPath;
+  if (process.env.SSR_MANIFEST) {
+    return JSON.parse(process.env.SSR_MANIFEST)
+  } 
+  if (sourceDir) {
+    manifestPath = path.join(sourceDir,'build-manifest.json')
+  }
+  else {
+    manifestPath = '{{{ assetsPath }}}'
+  }
+
+  return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
 }
 
 export function createHistory(opts) {
@@ -44,7 +55,7 @@ const createOpts = {
   createHistory,
   ServerInsertedHTMLContext,
   htmlPageOpts: {{{htmlPageOpts}}},
-  renderFromRoot: {{{renderFromRoot}}},
+ __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {{__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED}},
   mountElementId: '{{{mountElementId}}}'
 
 };

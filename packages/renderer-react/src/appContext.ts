@@ -48,6 +48,8 @@ export function useRouteProps<T extends Record<string, any> = any>() {
 }
 
 type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
+
+// @deprecated  Please use `useLoaderData` instead.
 export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   const routes = useSelectedRoutes();
   const { serverLoaderData, basename } = useAppData();
@@ -65,7 +67,6 @@ export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
     return has ? ret : undefined;
   });
   React.useEffect(() => {
-    // @ts-ignore
     if (!window.__UMI_LOADER_DATA__) {
       // 支持 ssr 降级，客户端兜底加载 serverLoader 数据
       Promise.all(
@@ -97,8 +98,20 @@ export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   };
 }
 
+// @deprecated  Please use `useLoaderData` instead.
 export function useClientLoaderData() {
   const route = useRouteData();
   const appData = useAppData();
   return { data: appData.clientLoaderData[route.route.id] };
+}
+
+export function useLoaderData<T extends ServerLoaderFunc = any>() {
+  const serverLoaderData = useServerLoaderData();
+  const clientLoaderData = useClientLoaderData();
+  return {
+    data: {
+      ...serverLoaderData.data,
+      ...clientLoaderData.data,
+    },
+  } as Awaited<ReturnType<T>>;
 }

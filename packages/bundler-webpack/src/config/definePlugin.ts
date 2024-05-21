@@ -37,6 +37,7 @@ export function resolveDefine(opts: { define: any; publicPath?: string }) {
 
   return {
     'process.env': env,
+    'process.env.SSR_MANIFEST': 'process.env.SSR_MANIFEST',
     ...define,
   };
 }

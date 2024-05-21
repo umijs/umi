@@ -27,6 +27,7 @@ export {
 export {
   useAppData,
   useClientLoaderData,
+  useLoaderData,
   useRouteProps,
   useSelectedRoutes,
   useServerLoaderData,
@@ -34,5 +35,6 @@ export {
 export { renderClient, __getRoot } from './browser';
 export { LinkWithPrefetch as Link } from './link';
 export { useRouteData } from './routeContext';
+export type { ClientLoader } from './types';
 export { __useFetcher } from './useFetcher';
 export { withRouter, type RouteComponentProps } from './withRouter';

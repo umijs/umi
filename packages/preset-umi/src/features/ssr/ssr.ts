@@ -32,7 +32,10 @@ export default (api: IApi) => {
             serverBuildTarget: zod.enum(['express', 'worker']),
             platform: zod.string(),
             builder: zod.enum(['esbuild', 'webpack', 'mako']),
-            renderFromRoot: zod.boolean(),
+            __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: zod.object({
+              pureApp: zod.boolean(),
+              pureHtml: zod.boolean(),
+            }),
           })
           .deepPartial();
       },
@@ -171,7 +174,7 @@ export type {
 
       await webpackBuilder.build(api, opts);
     } else if (api.config.mako && builder === 'mako') {
-      await makoBuiler.build(api, opts);
+      await makoBuiler.build(api);
     }
   });
   api.onDevCompileDone(() => {

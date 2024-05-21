@@ -489,7 +489,11 @@ if (process.env.NODE_ENV === 'development') {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
 
-      const renderFromRoot = api.config.ssr?.renderFromRoot ?? false;
+      const __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = api.config.ssr
+        ?.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ?? {
+        pureApp: false,
+        pureHtml: false,
+      };
       const mountElementId = api.config.mountElementId;
 
       const routesWithServerLoader = Object.keys(routes).reduce<
@@ -537,7 +541,9 @@ if (process.env.NODE_ENV === 'development') {
             metas,
             scripts: scripts || [],
           }),
-          renderFromRoot,
+          __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: JSON.stringify(
+            __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+          ),
           mountElementId,
         },
       });
@@ -626,7 +632,9 @@ if (process.env.NODE_ENV === 'development') {
           })
         ).join(', ')} } from '${rendererPath}';`,
       );
-      exports.push(`export type { History } from '${rendererPath}'`);
+      exports.push(
+        `export type { History, ClientLoader } from '${rendererPath}'`,
+      );
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
