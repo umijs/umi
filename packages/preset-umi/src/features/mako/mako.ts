@@ -5,14 +5,17 @@ import { IApi } from '../../types';
 export default (api: IApi) => {
   api.describe({
     key: 'mako',
+
     config: {
       schema({ zod }) {
-        return zod.object({
-          hooks: zod.object({
-            load: zod.function(),
-            generateEnd: zod.function(),
-          }),
-        });
+        return zod
+          .object({
+            hooks: zod.object({
+              load: zod.function(),
+              generateEnd: zod.function(),
+            }),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,
