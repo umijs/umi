@@ -1,4 +1,5 @@
-import { existsSync } from 'fs';
+import { fsExtra } from '@umijs/utils';
+import { existsSync, writeFileSync } from 'fs';
 import { basename, join } from 'path';
 import { IApi } from '../../types';
 
@@ -37,3 +38,16 @@ export function absServerBuildPath(api: IApi) {
   // ex. /foo/umi.xxx.js -> umi.xxx.js
   return join(api.paths.cwd, 'server', basename(manifest.assets['umi.js']));
 }
+
+export const generateBuildManifest = (api: IApi) => {
+  const finalJsonObj: any = {};
+  const assetFilePath = join(api.paths.absOutputPath, 'asset-manifest.json');
+  const buildFilePath = join(api.paths.absOutputPath, 'build-manifest.json');
+  const json = existsSync(assetFilePath)
+    ? fsExtra.readJSONSync(assetFilePath)
+    : {};
+  finalJsonObj.assets = json;
+  writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
+    flag: 'w',
+  });
+};

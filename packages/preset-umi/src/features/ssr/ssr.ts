@@ -8,7 +8,7 @@ import assert from 'assert';
 import { existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import type { IApi } from '../../types';
-import { absServerBuildPath } from './utils';
+import { absServerBuildPath, generateBuildManifest } from './utils';
 
 export default (api: IApi) => {
   const esbuildBuilder: typeof import('./builder/builder') = importLazy(
@@ -179,43 +179,13 @@ export type {
   });
   api.onDevCompileDone(() => {
     if (api.config.mako) {
-      const finalJsonObj: any = {};
-      const assetFilePath = join(
-        api.paths.absOutputPath,
-        'asset-manifest.json',
-      );
-      const buildFilePath = join(
-        api.paths.absOutputPath,
-        'build-manifest.json',
-      );
-      const json = existsSync(assetFilePath)
-        ? fsExtra.readJSONSync(assetFilePath)
-        : {};
-      finalJsonObj.assets = json;
-      writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
-        flag: 'w',
-      });
+      generateBuildManifest(api);
     }
   });
 
   api.onBuildComplete(() => {
     if (api.config.mako) {
-      const finalJsonObj: any = {};
-      const assetFilePath = join(
-        api.paths.absOutputPath,
-        'asset-manifest.json',
-      );
-      const buildFilePath = join(
-        api.paths.absOutputPath,
-        'build-manifest.json',
-      );
-      const json = existsSync(assetFilePath)
-        ? fsExtra.readJSONSync(assetFilePath)
-        : {};
-      finalJsonObj.assets = json;
-      writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
-        flag: 'w',
-      });
+      generateBuildManifest(api);
     }
   });
 
