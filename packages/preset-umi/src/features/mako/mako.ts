@@ -7,7 +7,12 @@ export default (api: IApi) => {
     key: 'mako',
     config: {
       schema({ zod }) {
-        return zod.object({});
+        return zod.object({
+          hooks: zod.object({
+            load: zod.function(),
+            generateEnd: zod.function(),
+          }),
+        });
       },
     },
     enableBy: api.EnableBy.config,
