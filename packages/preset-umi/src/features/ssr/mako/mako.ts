@@ -25,6 +25,7 @@ export const build = async (api: IApi) => {
     },
     config: {
       ...api.config,
+      JSMinifier: 'none',
       hash: useHash,
       outputPath: path.dirname(absOutputFile),
       manifest: {

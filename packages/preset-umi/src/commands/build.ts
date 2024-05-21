@@ -1,3 +1,4 @@
+import { DEFAULT_OUTPUT_PATH } from '@umijs/bundler-webpack';
 import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
 import { writeFileSync } from 'fs';
@@ -104,8 +105,8 @@ umi build --clean
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
         config: {
+          outputPath: DEFAULT_OUTPUT_PATH,
           ...api.config,
-          outputPath: api.paths.absOutputPath,
         },
         cwd: api.cwd,
         entry,
@@ -135,7 +136,7 @@ umi build --clean
       let stats: any;
       if (api.config.vite) {
         stats = await bundlerVite.build(opts);
-      } else if (api.config.mako || process.env.OKAM) {
+      } else if (api.config.mako) {
         require('@umijs/bundler-webpack/dist/requireHook');
         // @ts-ignore
         const { build } = require(process.env.OKAM);

@@ -1,4 +1,5 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
+import { DEFAULT_OUTPUT_PATH } from '@umijs/bundler-webpack';
 import {
   address,
   chalk,
@@ -357,8 +358,8 @@ PORT=8888 umi dev
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
         config: {
+          outputPath: DEFAULT_OUTPUT_PATH,
           ...api.config,
-          outputPath: api.paths.absOutputPath,
         },
         pkg: api.pkg,
         cwd: api.cwd,
