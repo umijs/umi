@@ -206,7 +206,7 @@ async function getRoutePathFilesMap(
 
 export default (api: IApi) => {
   let routeChunkFilesMap: IRouteChunkFilesMap;
-  let hashedPart = '.js';
+  let preloadJSFileExt = '.js';
   api.describe({
     enableBy: () =>
       // enable when package name available
@@ -237,7 +237,7 @@ export default (api: IApi) => {
           : // script mode
             [
               {
-                src: `${displayPublicPath}${PRELOAD_ROUTE_HELPER}${hashedPart}`,
+                src: `${displayPublicPath}${PRELOAD_ROUTE_HELPER}${preloadJSFileExt}`,
               },
             ];
       }
@@ -309,17 +309,20 @@ export default (api: IApi) => {
             }"${api.config.publicPath}"`,
           );
         if (api.config.hash) {
-          hashedPart = `.${createHash('md5')
+          preloadJSFileExt = `.${createHash('md5')
             .update(content)
             .digest('hex')
             .substring(0, 8)}.js`;
         }
 
         writeFileSync(
-          join(api.paths.absOutputPath, `${PRELOAD_ROUTE_HELPER}${hashedPart}`),
+          join(
+            api.paths.absOutputPath,
+            `${PRELOAD_ROUTE_HELPER}${preloadJSFileExt}`,
+          ),
           content,
-        ),
-          'utf-8';
+          'utf-8',
+        );
       }
     }
   });
