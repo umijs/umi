@@ -19,7 +19,9 @@ const EnableJsScript = () => (
   />
 );
 
-const GlobalDataScript = (props: IHtmlProps) => {
+const GlobalDataScript = (
+  props: Omit<IHtmlProps, '__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED'>,
+) => {
   const { loaderData, htmlPageOpts, manifest } = props;
   return (
     <script
@@ -60,7 +62,9 @@ function generatorStyle(style: string) {
     : { type: 'style', content: style };
 }
 
-const HydrateMetadata = (props: IHtmlProps) => {
+const HydrateMetadata = (
+  props: Omit<IHtmlProps, '__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED'>,
+) => {
   const { htmlPageOpts } = props;
   return (
     <>
@@ -110,13 +114,12 @@ export function Html({
   loaderData,
   manifest,
   htmlPageOpts,
-  renderFromRoot,
-  __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+  __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
   mountElementId,
 }: React.PropsWithChildren<IHtmlProps>) {
   // TODO: 处理 head 标签，比如 favicon.ico 的一致性
   // TODO: root 支持配置
-  if (__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
+  if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.pureHtml) {
     return (
       <html>
         <head></head>
@@ -133,7 +136,7 @@ export function Html({
     );
   }
 
-  if (renderFromRoot) {
+  if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.pureApp) {
     return (
       <>
         <EnableJsScript />

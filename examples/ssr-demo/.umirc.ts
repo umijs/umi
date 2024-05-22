@@ -5,14 +5,13 @@ export default {
   routePrefetch: {},
   manifest: {},
   clientLoader: {},
+  mako: {},
   title: '测试title',
   scripts: [`https://a.com/b.js`],
   ssr: {
-    builder: 'webpack',
-    renderFromRoot: false,
-    __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: false,
+    builder: 'mako',
   },
-  exportStatic: {},
+  // exportStatic: {},
   styles: [`body { color: red; }`, `https://a.com/b.css`],
 
   metas: [

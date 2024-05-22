@@ -8,7 +8,7 @@ import assert from 'assert';
 import { existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import type { IApi } from '../../types';
-import { absServerBuildPath } from './utils';
+import { absServerBuildPath, generateBuildManifest } from './utils';
 
 export default (api: IApi) => {
   const esbuildBuilder: typeof import('./builder/builder') = importLazy(
@@ -16,6 +16,9 @@ export default (api: IApi) => {
   );
   const webpackBuilder: typeof import('./webpack/webpack') = importLazy(
     require.resolve('./webpack/webpack'),
+  );
+  const makoBuiler: typeof import('./mako/mako') = importLazy(
+    require.resolve('./mako/mako'),
   );
   let serverBuildTarget: string;
 
@@ -28,9 +31,11 @@ export default (api: IApi) => {
             serverBuildPath: zod.string(),
             serverBuildTarget: zod.enum(['express', 'worker']),
             platform: zod.string(),
-            builder: zod.enum(['esbuild', 'webpack']),
-            renderFromRoot: zod.boolean(),
-            __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: zod.boolean(),
+            builder: zod.enum(['esbuild', 'webpack', 'mako']),
+            __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: zod.object({
+              pureApp: zod.boolean(),
+              pureHtml: zod.boolean(),
+            }),
           })
           .deepPartial();
       },
@@ -168,6 +173,19 @@ export type {
       );
 
       await webpackBuilder.build(api, opts);
+    } else if (api.config.mako && builder === 'mako') {
+      await makoBuiler.build(api);
+    }
+  });
+  api.onDevCompileDone(() => {
+    if (api.config.mako) {
+      generateBuildManifest(api);
+    }
+  });
+
+  api.onBuildComplete(() => {
+    if (api.config.mako) {
+      generateBuildManifest(api);
     }
   });
 

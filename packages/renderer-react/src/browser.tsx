@@ -101,14 +101,18 @@ export type RenderClientOpts = {
    * @doc 一般不需要改，微前端的时候会变化
    */
   rootElement?: HTMLElement;
-  /**
-   * 是否从根节点开始渲染, 默认 false, 即从 html 开始渲染
-   */
-  renderFromRoot?: boolean;
-  /**
-   * 内部流程, 渲染特殊 html 节点, 不要使用!!!
-   */
-  __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?: boolean;
+
+  __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
+    /**
+     * 内部流程, 渲染特殊 app 节点, 不要使用!!!
+     */
+    pureApp?: boolean;
+    /**
+     * 内部流程, 渲染特殊 html 节点, 不要使用!!!
+     */
+
+    pureHtml?: boolean;
+  };
   /**
    * 当前的路由配置
    */
@@ -394,7 +398,9 @@ export function renderClient(opts: RenderClientOpts) {
     };
 
     ReactDOM.hydrateRoot(
-      opts.renderFromRoot ? rootElement : document,
+      opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureApp
+        ? rootElement
+        : document,
       <Html {...hydtateHtmloptions}>
         <Browser />
       </Html>,

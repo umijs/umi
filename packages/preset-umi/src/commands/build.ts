@@ -1,3 +1,4 @@
+import type { IServicePluginAPI } from '@umijs/core';
 import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
 import { writeFileSync } from 'fs';
@@ -103,7 +104,10 @@ umi build --clean
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
-        config: api.config,
+        config: {
+          outputPath: api.userConfig.outputPath || 'dist',
+          ...api.config,
+        } as IServicePluginAPI['config'],
         cwd: api.cwd,
         entry,
         ...(api.config.vite
@@ -132,8 +136,9 @@ umi build --clean
       let stats: any;
       if (api.config.vite) {
         stats = await bundlerVite.build(opts);
-      } else if (process.env.OKAM) {
+      } else if (api.config.mako) {
         require('@umijs/bundler-webpack/dist/requireHook');
+        // @ts-ignore
         const { build } = require(process.env.OKAM);
         stats = await build(opts);
       } else {

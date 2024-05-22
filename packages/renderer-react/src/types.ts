@@ -63,8 +63,10 @@ export interface ILoaderData {
 
 interface IHtmlHydrateOptions {
   htmlPageOpts?: IhtmlPageOpts;
-  renderFromRoot?: boolean;
-  __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?: boolean;
+  __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?: {
+    pureApp: boolean;
+    pureHtml: boolean;
+  };
   mountElementId?: string;
 }
 

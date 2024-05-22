@@ -14,8 +14,8 @@ function createRouteMiddleware(opts: { api: IApi }) {
       onStats?.(stats);
     });
 
-    async function getStats() {
-      if (!compiler && process.env.OKAM) {
+    async function getStats(api: IApi) {
+      if (!compiler && api.config.mako) {
         return {
           compilation: { assets: { 'umi.js': 'umi.js', 'umi.css': 'umi.css' } },
           hasErrors: () => false,
@@ -32,7 +32,7 @@ function createRouteMiddleware(opts: { api: IApi }) {
     return async (req, res, next) => {
       const markupArgs = (await getMarkupArgs(opts)) as any;
       let assetsMap: Record<string, string[]> = {};
-      const stats: any = await getStats();
+      const stats: any = await getStats(opts.api);
       assetsMap = getAssetsMap({
         stats,
         publicPath: opts.api.config.publicPath!,

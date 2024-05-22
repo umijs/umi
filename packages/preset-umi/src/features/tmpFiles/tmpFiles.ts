@@ -489,9 +489,11 @@ if (process.env.NODE_ENV === 'development') {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
 
-      const renderFromRoot = api.config.ssr?.renderFromRoot ?? false;
-      const __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
-        api.config.ssr?.__SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ?? false;
+      const __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = api.config.ssr
+        ?.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ?? {
+        pureApp: false,
+        pureHtml: false,
+      };
       const mountElementId = api.config.mountElementId;
 
       const routesWithServerLoader = Object.keys(routes).reduce<
@@ -539,8 +541,9 @@ if (process.env.NODE_ENV === 'development') {
             metas,
             scripts: scripts || [],
           }),
-          renderFromRoot,
-          __SPECIAL_HTML_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+          __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: JSON.stringify(
+            __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+          ),
           mountElementId,
         },
       });
