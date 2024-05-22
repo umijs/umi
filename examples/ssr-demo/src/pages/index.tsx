@@ -63,7 +63,7 @@ export default function HomePage() {
   );
 }
 
-export const clientLoader: ClientLoader = async ({ serverLoader }) => {
+export const clientLoader: ClientLoader = async ({}) => {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
   return { clientMessage: 'data from client loader of index.tsx' };
 };
