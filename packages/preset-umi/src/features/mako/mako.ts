@@ -30,8 +30,7 @@ export default (api: IApi) => {
 
   api.onStart(() => {
     process.env.OKAM =
-      process.env.OKAM ||
-      require.resolve('/Users/xiaoxiao/work/mako/packages/bundler-mako');
+      process.env.OKAM || require.resolve('@umijs/bundler-mako');
     try {
       const pkg = require(path.join(
         require.resolve(process.env.OKAM),
