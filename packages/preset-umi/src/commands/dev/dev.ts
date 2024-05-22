@@ -358,6 +358,7 @@ PORT=8888 umi dev
         config: {
           outputPath: api.userConfig.outputPath || 'dist',
           ...api.config,
+          hooks: api.config.mako?.hooks || {},
         },
         pkg: api.pkg,
         cwd: api.cwd,

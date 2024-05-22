@@ -107,6 +107,7 @@ umi build --clean
         config: {
           outputPath: api.userConfig.outputPath || 'dist',
           ...api.config,
+          hooks: api.config.mako?.hooks || {},
         } as IServicePluginAPI['config'],
         cwd: api.cwd,
         entry,
