@@ -1,4 +1,3 @@
-import { DEFAULT_OUTPUT_PATH } from '@umijs/bundler-webpack';
 import type { IServicePluginAPI } from '@umijs/core';
 import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
@@ -106,7 +105,7 @@ umi build --clean
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
         config: {
-          outputPath: DEFAULT_OUTPUT_PATH,
+          outputPath: api.userConfig.outputPath || 'dist',
           ...api.config,
         } as IServicePluginAPI['config'],
         cwd: api.cwd,
