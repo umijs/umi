@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "4.0.0-canary.20240402.1",
+  "version": "4.2.6-alpha.1",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
