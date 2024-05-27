@@ -291,6 +291,12 @@ declare module '*.txt' {
         initialValue: [],
       }),
     ).join('\n');
+
+    const __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = api.config.ssr
+      ?.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ?? {
+      pureApp: false,
+      pureHtml: false,
+    };
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
@@ -313,6 +319,9 @@ declare module '*.txt' {
         imports,
         basename: api.config.base,
         historyType: api.config.history.type,
+        __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: JSON.stringify(
+          __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+        ),
         hydrate: !!api.config.ssr,
         reactRouter5Compat: !!api.config.reactRouter5Compat,
         loadingComponent: api.appData.globalLoading,
@@ -489,11 +498,6 @@ if (process.env.NODE_ENV === 'development') {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
 
-      const __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = api.config.ssr
-        ?.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ?? {
-        pureApp: false,
-        pureHtml: false,
-      };
       const mountElementId = api.config.mountElementId;
 
       const routesWithServerLoader = Object.keys(routes).reduce<
