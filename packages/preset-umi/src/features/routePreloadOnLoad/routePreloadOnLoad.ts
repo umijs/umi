@@ -153,6 +153,14 @@ async function getRoutePathFilesMap(
     // skip redirect route
     if (!route.file) continue;
 
+    // skip illegal absPath route
+    if (!route.absPath?.startsWith('/')) {
+      logger.error(
+        `[routePreloadOnLoad]: route absPath error, cannot preload for ${route.absPath}`,
+      );
+      continue;
+    }
+
     let current: IRoute | undefined = route;
     const files: string[] = [];
 
