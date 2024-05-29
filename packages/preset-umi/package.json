@@ -30,7 +30,7 @@
     "@umijs/ast": "workspace:*",
     "@umijs/babel-preset-umi": "workspace:*",
     "@umijs/bundler-esbuild": "workspace:*",
-    "@umijs/bundler-mako": "0.4.17",
+    "@umijs/bundler-mako": "0.5.1-canary.20240529.2",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
