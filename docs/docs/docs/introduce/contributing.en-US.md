@@ -12,7 +12,7 @@ translated_at: '2024-03-17T09:56:34.842Z'
 
 ### Node.js and pnpm
 
-Developing Umi requires Node.js 16+ and `pnpm` v8.
+Developing Umi requires Node.js 18+ and `pnpm` v8.
 
 It is recommended to use [`nvm`](https://github.com/nvm-sh/nvm) to manage Node.js versions to avoid permission issues and easily switch between Node.js versions. Windows developers can use [`nvm-windows`](https://github.com/coreybutler/nvm-windows).
 

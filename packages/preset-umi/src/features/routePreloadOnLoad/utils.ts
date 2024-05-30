@@ -13,6 +13,7 @@ export interface IPreloadRouteFile {
 }
 
 export const PRELOAD_ROUTE_MAP_SCP_TYPE = 'umi-route-chunk-files-map';
+export const PRELOAD_ROUTE_HELPER = 'preload_helper';
 
 export function getPreloadRouteFiles(
   path: string,

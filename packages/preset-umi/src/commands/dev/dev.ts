@@ -350,7 +350,7 @@ PORT=8888 umi dev
 
       const shouldUseAutomaticRuntime =
         api.appData.react?.version &&
-        semver.gte(api.appData.react.version, '16.14.0');
+        semver.gte(api.appData.react.version, '17.0.0');
       const opts: any = {
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',

@@ -195,6 +195,9 @@ export async function getRoutes(opts: {
   return routes;
 }
 
+const IMPORT_EMPTY_ROUTE_CJS = `() => Promise.resolve(require('./EmptyRoute'))`;
+const IMPORT_EMPTY_ROUTE_ESM = `() => import('./EmptyRoute')`;
+
 export async function getRouteComponents(opts: {
   routes: Record<string, any>;
   prefix: string;
@@ -204,14 +207,18 @@ export async function getRouteComponents(opts: {
     .map((key) => {
       const useSuspense = opts.api.appData.framework === 'react' ? true : false; // opts.api.appData.react.version.startsWith('18.');
       const route = opts.routes[key];
+      const useCjsModule = opts.api.config.routeLoader?.moduleType === 'cjs';
       if (!route.file) {
         // 测试环境还不支持 import ，所以用 require
         if (process.env.NODE_ENV === 'test') {
-          return `'${key}': require( './EmptyRoute').default,`;
+          return `'${key}': require('./EmptyRoute').default,`;
         }
+        const importEmptyRoute = useCjsModule
+          ? IMPORT_EMPTY_ROUTE_CJS
+          : IMPORT_EMPTY_ROUTE_ESM;
         return useSuspense
-          ? `'${key}': React.lazy(() => import( './EmptyRoute')),`
-          : `'${key}': () => import( './EmptyRoute'),`;
+          ? `'${key}': React.lazy(${importEmptyRoute}),`
+          : `'${key}': ${importEmptyRoute},`;
       }
       if (route.hasClientLoader) {
         route.file = join(
@@ -246,7 +253,7 @@ export async function getRouteComponents(opts: {
       }
 
       // ref: https://github.com/umijs/umi/issues/11466
-      if (opts.api.config.routeLoader?.moduleType === 'cjs') {
+      if (useCjsModule) {
         return useSuspense
           ? `'${key}': React.lazy(() => Promise.resolve(require('${winPath(
               path,

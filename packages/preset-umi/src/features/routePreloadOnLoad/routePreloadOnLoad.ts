@@ -3,12 +3,13 @@ import type {
   StatsCompilation,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { lodash, logger, winPath } from '@umijs/utils';
-import { readFileSync } from 'fs';
+import { createHash } from 'crypto';
+import { readFileSync, writeFileSync } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { createResolver } from '../../libs/scan';
 import type { IApi, IRoute } from '../../types';
-import { PRELOAD_ROUTE_MAP_SCP_TYPE } from './utils';
+import { PRELOAD_ROUTE_HELPER, PRELOAD_ROUTE_MAP_SCP_TYPE } from './utils';
 
 export interface IRouteChunkFilesMap {
   /**
@@ -213,7 +214,7 @@ async function getRoutePathFilesMap(
 
 export default (api: IApi) => {
   let routeChunkFilesMap: IRouteChunkFilesMap;
-
+  let preloadJSFileExt = '.js';
   api.describe({
     enableBy: () =>
       // enable when package name available
@@ -230,6 +231,8 @@ export default (api: IApi) => {
   api.addHTMLHeadScripts({
     fn: () => {
       if (api.name === 'build' && routeChunkFilesMap) {
+        const { publicPath } = api.config;
+        const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
         // internal tern app use map mode
         return api.config.tern
           ? // map mode
@@ -242,25 +245,7 @@ export default (api: IApi) => {
           : // script mode
             [
               {
-                content: readFileSync(
-                  join(
-                    TEMPLATES_DIR,
-                    'routePreloadOnLoad/preloadRouteFilesScp.js',
-                  ),
-                  'utf-8',
-                )
-                  .replace(
-                    '"{{routeChunkFilesMap}}"',
-                    JSON.stringify(routeChunkFilesMap),
-                  )
-                  .replace('{{basename}}', api.config.base)
-                  .replace(
-                    '"{{publicPath}}"',
-                    `${
-                      // handle runtimePublicPath
-                      api.config.runtimePublicPath ? 'window.publicPath||' : ''
-                    }"${api.config.publicPath}"`,
-                  ),
+                src: `${displayPublicPath}${PRELOAD_ROUTE_HELPER}${preloadJSFileExt}`,
               },
             ];
       }
@@ -313,6 +298,39 @@ export default (api: IApi) => {
             .fromPairs()
             .value() as any,
         };
+      }
+      if (api.name === 'build' && routeChunkFilesMap && !api.config.tern) {
+        const content = readFileSync(
+          join(TEMPLATES_DIR, 'routePreloadOnLoad/preloadRouteFilesScp.js'),
+          'utf-8',
+        )
+          .replace(
+            '"{{routeChunkFilesMap}}"',
+            JSON.stringify(routeChunkFilesMap),
+          )
+          .replace('{{basename}}', api.config.base)
+          .replace(
+            '"{{publicPath}}"',
+            `${
+              // handle runtimePublicPath
+              api.config.runtimePublicPath ? 'window.publicPath||' : ''
+            }"${api.config.publicPath}"`,
+          );
+        if (api.config.hash) {
+          preloadJSFileExt = `.${createHash('md5')
+            .update(content)
+            .digest('hex')
+            .substring(0, 8)}.js`;
+        }
+
+        writeFileSync(
+          join(
+            api.paths.absOutputPath,
+            `${PRELOAD_ROUTE_HELPER}${preloadJSFileExt}`,
+          ),
+          content,
+          'utf-8',
+        );
       }
     }
   });

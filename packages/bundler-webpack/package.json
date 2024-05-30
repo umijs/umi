@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "4.2.6-alpha.4",
+  "version": "4.2.6-alpha.9",
   "description": "@umijs/bundler-webpack",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -80,7 +80,7 @@
     "terser-webpack-plugin": "5.3.6",
     "url-loader": "4.1.1",
     "webpack": "5.88.2",
-    "webpack-5-chain": "8.0.1",
+    "webpack-5-chain": "8.0.2",
     "webpack-bundle-analyzer": "4.7.0",
     "webpack-dev-middleware": "6.0.1",
     "webpack-manifest-plugin": "5.0.0",

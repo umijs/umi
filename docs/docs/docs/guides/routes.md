@@ -121,7 +121,17 @@ export default {
 }
 ```
 
-访问 `/` 会跳转到 `/list`，并由 `src/pages/list` 文件进行渲染。
+访问 `/` 会跳转到 `/list` 。
+
+重定向时，默认不会携带原 url 的查询参数，如需保持原参数，添加 `keepQuery` 选项即可：
+
+```ts
+  routes: [
+    { path: '/', redirect: '/list', keepQuery: true },
+
+    // 注：若你需在跳转时处理参数，可以自行实现一个跳转组件
+  ]
+```
 
 ### wrappers
 

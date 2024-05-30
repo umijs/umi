@@ -1,6 +1,6 @@
-import { chalk } from '@umijs/utils';
 import path from 'path';
 import { IApi } from '../../types';
+import { chalk } from '@umijs/utils';
 
 export default (api: IApi) => {
   api.describe({

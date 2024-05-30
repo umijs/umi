@@ -137,17 +137,7 @@ export function Html({
   }
 
   if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.pureApp) {
-    return (
-      <>
-        <EnableJsScript />
-        <div id={mountElementId}>{children}</div>
-        <GlobalDataScript
-          manifest={manifest}
-          loaderData={loaderData}
-          htmlPageOpts={htmlPageOpts}
-        />
-      </>
-    );
+    return <>{children}</>;
   }
 
   const serverBuildManifest =
