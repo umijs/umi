@@ -39,9 +39,9 @@ async function esbuildTranspiler(
   const loader = LOADER_MAP[ext] ?? 'default';
 
   const transformOptions = {
+    loader: loader as EsbuildLoader,
     ...otherOptions,
     target: options.target ?? 'es2015',
-    loader: loader as EsbuildLoader,
     sourcemap: this.sourceMap,
     sourcefile: filePath,
   };
