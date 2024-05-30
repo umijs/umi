@@ -310,6 +310,19 @@ export default (api: IApi) => {
     const hasConfigProvider = configProvider || enableV5ThemeAlgorithm;
     // 拥有 `ConfigProvider` 时，我们默认提供修改 antd 全局配置的便捷方法（仅限 antd 5）
     const antdConfigSetter = isV5 && hasConfigProvider;
+
+    // We ensure the `theme` config always exists to preserve the theme context.
+    //   1. if we do not config the antd `theme`, no theme react context is added.
+    //   2. when using the antd setter to change the theme, the theme react context will be added,
+    //      then antd components re-render.
+    //   3. affected by the theme react context change, the model data context renders,
+    //      gets the initial data again (a hack), and calls `setState`
+    // there is a conflict between 2 and 3, react does not allow `setState` calls during rendering.
+    // See https://github.com/umijs/umi/issues/12394
+    //     https://github.com/ant-design/ant-design/blob/253b45eceb2c7760e8173ee0cd1003aecc00ef9c/components/config-provider/index.tsx#L615
+    const isModelPluginEnabled = api.isPluginEnable('model');
+    const modelPluginCompat = isModelPluginEnabled && antdConfigSetter;
+
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
@@ -319,6 +332,7 @@ export default (api: IApi) => {
         // 是否启用了 v5 的 theme algorithm
         enableV5ThemeAlgorithm,
         antdConfigSetter,
+        modelPluginCompat,
         lodashPath,
         /**
          * 是否重构了全局静态配置。 重构后需要在运行时将全局静态配置传入到 ConfigProvider 中。
