@@ -2411,8 +2411,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-esbuild
       '@umijs/bundler-mako':
-        specifier: 0.4.17
-        version: 0.4.17
+        specifier: 0.5.2
+        version: 0.5.2
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
@@ -17519,16 +17519,17 @@ packages:
       - supports-color
     dev: true
 
-  /@umijs/bundler-mako@0.4.17:
-    resolution: {integrity: sha512-5cf3AKJe7RKh4EKQXY+8wKLi/hsEuDdBhnJ6W1O8V0kOEoA2qNSJ8aqsGw9Glar5mRAjskcxdN197zijHg0lWA==}
+  /@umijs/bundler-mako@0.5.2:
+    resolution: {integrity: sha512-hrj4BEVOhIf+gADvuhugJGCBDA4pil3m+KMYkN8O510MhjE2h7a7oid/wEkZAhH6pVOzIQkW/+7mVV6QxDJT+w==}
     dependencies:
       '@umijs/bundler-utils': 4.1.2
-      '@umijs/mako': 0.4.17
+      '@umijs/mako': 0.5.2
       chalk: 4.1.2
       compression: 1.7.4
       connect-history-api-fallback: 2.0.0
       cors: 2.8.5
       express: 4.18.2
+      get-tsconfig: 4.7.5
       lodash: 4.17.21
       rimraf: 5.0.1
       webpack-5-chain: 8.0.1
@@ -17867,8 +17868,8 @@ packages:
       - typescript
     dev: true
 
-  /@umijs/mako-darwin-arm64@0.4.17:
-    resolution: {integrity: sha512-EcpWyntJ/2fZ8cnL8UAlTh187AIdUJlwjdTJRBMO8+TFV1ytUEOrHNmEEescXdOwdbDVAyIJ5KeHpsRYS60axg==}
+  /@umijs/mako-darwin-arm64@0.5.2:
+    resolution: {integrity: sha512-brLmAgAlaGmOE7YzVeLmuegyuCx68UO+gOpIa1oT2yAWLcRk83Xipm40gPF98lC4WBTNXBhakF4XwGEyWLSAHg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -17876,8 +17877,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-darwin-x64@0.4.17:
-    resolution: {integrity: sha512-OMD4PZbD8NE1UhkkhkIK51Zh5AzkZYJe9AW106oSHPirpV5WgVfr+Xe7P4ngfZXigKJrx25qS/s1yW9h1OvtZQ==}
+  /@umijs/mako-darwin-x64@0.5.2:
+    resolution: {integrity: sha512-vRu2PrfHYWynIdXwjPW/5Sk5I33tkTp7Hzwv628xEx/t+iXh2orljC+nqM9lNA9KjYIvYjgSzjKV56DNFKfGIw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -17885,8 +17886,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-linux-x64-gnu@0.4.17:
-    resolution: {integrity: sha512-bv/VWLaKcWRfHw2fwmgxetF+dhnG5XsBE23uivbXJqyjPiuHZpWdMit9GbG2WC303HNogorYEUAEGZoXEmXTpw==}
+  /@umijs/mako-linux-x64-gnu@0.5.2:
+    resolution: {integrity: sha512-saKiLtHqNjx/LbHLt75MnWbNzrwWY0xJDaMkkxj4MCJP3YnugDMJOzL7qjJyil5FlzPzsis91AXrbVQZQIXhUA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -17894,8 +17895,17 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako@0.4.17:
-    resolution: {integrity: sha512-vVNbn0JKWU0b11S448GtvNmXEfJoQ90k7brME9KqCyLel1feAqWwbNh+d/zXsT9JTIDRPhE2Ze4q9AS5MGqoKg==}
+  /@umijs/mako-linux-x64-musl@0.5.2:
+    resolution: {integrity: sha512-lwOXiFN5ugET4HdZ8doafsdW1yR7OEFzz0ebPirSOzAqD4htgbMRKtwB1sqYIldq+kZhwjZnT2Ro77eU48OSrg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/mako@0.5.2:
+    resolution: {integrity: sha512-bDXhPQDOpWFP5MCeb2zZ1BiBTOjMDQq8qQh6UR6RH9sYNVgQfSs5Kg5rRFQB8Dg/kWq1tNnji928gM4r/EEFMQ==}
     engines: {node: '>= 16'}
     hasBin: true
     dependencies:
@@ -17909,9 +17919,10 @@ packages:
       workerpool: 9.1.1
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@umijs/mako-darwin-arm64': 0.4.17
-      '@umijs/mako-darwin-x64': 0.4.17
-      '@umijs/mako-linux-x64-gnu': 0.4.17
+      '@umijs/mako-darwin-arm64': 0.5.2
+      '@umijs/mako-darwin-x64': 0.5.2
+      '@umijs/mako-linux-x64-gnu': 0.5.2
+      '@umijs/mako-linux-x64-musl': 0.5.2
     dev: false
 
   /@umijs/max-plugin-openapi@2.0.3:
@@ -19307,6 +19318,9 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependenciesMeta:
+      ajv:
+        optional: true
     dependencies:
       ajv: 8.11.0
 
@@ -27163,6 +27177,12 @@ packages:
     resolution: {integrity: sha512-wuMsz4leaj5hbGgg4IvDU0bqJagpftG5l5cXIAvo8uZrqn0NJqwtfupTN00VnkQJPcIRrxYrm1Ue24btpCha2A==}
     dependencies:
       resolve-pkg-maps: 1.0.0
+
+  /get-tsconfig@4.7.5:
+    resolution: {integrity: sha512-ZCuZCnlqNzjb4QprAzXKdpp/gh6KTxSJuw3IBsPnV/7fV4NxC9ckB+vPTt8w7fJA0TaSD7c55BR47JD6MEDyDw==}
+    dependencies:
+      resolve-pkg-maps: 1.0.0
+    dev: false
 
   /get-value@2.0.6:
     resolution: {integrity: sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==}
@@ -44974,6 +44994,9 @@ packages:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
+    peerDependenciesMeta:
+      postcss:
+        optional: true
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
