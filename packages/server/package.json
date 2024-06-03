@@ -1,6 +1,6 @@
 {
   "name": "@umijs/server",
-  "version": "4.2.8",
+  "version": "4.2.9",
   "description": "@umijs/server",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/server#readme",
   "bugs": "https://github.com/umijs/umi/issues",
