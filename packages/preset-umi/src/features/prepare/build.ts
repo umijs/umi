@@ -35,6 +35,9 @@ export async function build(opts: {
       '.jsx': 'tsx',
       '.ts': 'ts',
       '.tsx': 'tsx',
+      '.less': 'empty',
+      '.scss': 'empty',
+      '.sass': 'empty',
     },
     // do I need this?
     // incremental: true,
