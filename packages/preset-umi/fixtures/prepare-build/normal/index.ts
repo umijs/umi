@@ -9,5 +9,7 @@ import './a.html';
 // relative imports
 import { bar } from './bar/bar';
 import { foo } from './foo';
+import { load } from './context/context'
 console.log(foo);
 console.log(bar);
+console.log(load)
