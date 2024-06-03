@@ -8,8 +8,11 @@ import './a.ext-must-not-exist';
 import './a.html';
 // relative imports
 import { bar } from './bar/bar';
+import { load } from './context/context';
+import { loadByRequire } from './context2/';
 import { foo } from './foo';
-import { load } from './context/context'
+
 console.log(foo);
 console.log(bar);
-console.log(load)
+console.log(load);
+console.log(loadByRequire);
