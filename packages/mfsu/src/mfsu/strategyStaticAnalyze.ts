@@ -192,7 +192,7 @@ function extractJSCodeFiles(folderBase: string, files: ReadonlySet<string>) {
 
   for (let file of files.values()) {
     if (
-      winPath(file.startsWith(winPath(folderBase))) &&
+      winPath(file).startsWith(winPath(folderBase)) &&
       REG_CODE_EXT.test(file) &&
       file.indexOf('node_modules') === -1
     ) {
