@@ -5,6 +5,7 @@ import esbuild, {
   BuildResult,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
+import { existsSync } from 'fs';
 import path from 'path';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
 import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
@@ -22,6 +23,10 @@ export async function build(opts: {
 }): Promise<[BuildResult, BuildContext | undefined]> {
   const outdir = path.join(path.dirname(opts.entryPoints[0]), 'out');
   const alias = opts.config?.alias || {};
+  const tsconfig = existsSync(path.join(opts.config.cwd, 'tsconfig.json'))
+    ? 'tsconfig.json'
+    : undefined;
+
   const buildOptions: BuildOptions = {
     // 需要指定 absWorkingDir 兼容 APP_ROOT 的情况
     absWorkingDir: opts.config.cwd,
@@ -30,13 +35,14 @@ export async function build(opts: {
     target: 'esnext',
     loader: {
       // use tsx loader for js/jsx/ts/tsx files
-      // since only ts support decorator
+      // since only ts support paramDecorator
       ...possibleExtUsingEmptyLoader,
       '.js': 'tsx',
       '.jsx': 'tsx',
       '.ts': 'ts',
       '.tsx': 'tsx',
     },
+    tsconfig,
     // do I need this?
     // incremental: true,
     bundle: true,
