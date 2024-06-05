@@ -215,7 +215,6 @@ async function esbuildTransform(
         '.jsx': 'tsx',
       },
       logLevel: 'error',
-      tsconfig: join(__dirname, 'empty.tsconfig.json'),
       tsconfigRaw: opts.tsconfigRaw,
     });
   } catch (e) {
