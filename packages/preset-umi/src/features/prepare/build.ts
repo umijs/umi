@@ -6,6 +6,7 @@ import esbuild, {
 } from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import path from 'path';
+import { possibleExtUsingEmptyLoader } from '../../libs/folderCache/constant';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
 import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
 
@@ -78,34 +79,3 @@ export async function build(opts: {
     return [result, undefined];
   }
 }
-
-const possibleExtUsingEmptyLoader = {
-  '.aac': 'empty',
-  '.css': 'empty',
-  '.less': 'empty',
-  '.sass': 'empty',
-  '.scss': 'empty',
-  '.eot': 'empty',
-  '.flac': 'empty',
-  '.gif': 'empty',
-  '.htm': 'empty',
-  '.html': 'empty',
-  '.ico': 'empty',
-  '.icon': 'empty',
-  '.jpeg': 'empty',
-  '.jpg': 'empty',
-  '.empty': 'empty',
-  '.mdx': 'empty',
-  '.mp3': 'empty',
-  '.mp4': 'empty',
-  '.ogg': 'empty',
-  '.otf': 'empty',
-  '.png': 'empty',
-  '.svg': 'empty',
-  '.ttf': 'empty',
-  '.wav': 'empty',
-  '.webm': 'empty',
-  '.webp': 'empty',
-  '.woff': 'empty',
-  '.woff2': 'empty',
-} as const;
