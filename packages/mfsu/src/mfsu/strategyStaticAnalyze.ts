@@ -1,4 +1,4 @@
-import { logger, printHelp } from '@umijs/utils';
+import { logger, printHelp, winPath } from '@umijs/utils';
 import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import mfImport from '../babelPlugins/awaitImport/MFImport';
 import { StaticDepInfo } from '../staticDepInfo/staticDepInfo';
@@ -192,7 +192,7 @@ function extractJSCodeFiles(folderBase: string, files: ReadonlySet<string>) {
 
   for (let file of files.values()) {
     if (
-      file.startsWith(folderBase) &&
+      winPath(file).startsWith(winPath(folderBase)) &&
       REG_CODE_EXT.test(file) &&
       file.indexOf('node_modules') === -1
     ) {
