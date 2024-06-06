@@ -9,7 +9,7 @@ import { logger, winPath } from '@umijs/utils';
 import fg from 'fast-glob';
 import { readFileSync } from 'fs';
 import { extname, join, relative } from 'path';
-import { DEFAULT_SRC_IGNORES } from './constant';
+import { DEFAULT_SRC_IGNORES, possibleExtUsingEmptyLoader } from './constant';
 import { FolderWatch } from './FolderWatch';
 import type { FileChangeEvent, FileContentCache } from './types';
 
@@ -30,8 +30,11 @@ export class LazySourceCodeCache {
 
   fileContentCache: FileContentCache = {};
   private pendingFilesEvents: FileChangeEvent[] = [];
+  private root: string;
+  private tsConfigRaw = '{}';
 
-  constructor(opts: { cwd: string; cachePath: string }) {
+  constructor(opts: { cwd: string; cachePath: string; root: string }) {
+    this.root = opts.root;
     this.srcPath = opts.cwd;
     this.cachePath = opts.cachePath;
 
@@ -44,6 +47,17 @@ export class LazySourceCodeCache {
     this.folderWatch.listen((e) => {
       this.pendingFilesEvents.push(e);
     });
+
+    try {
+      this.tsConfigRaw = readFileSync(
+        join(this.root, 'tsconfig.json'),
+        'utf-8',
+      );
+    } catch (e) {
+      logger.debug(
+        'load project tsconfig.json failed, fallback to empty config',
+      );
+    }
   }
 
   async init(files: string[]) {
@@ -168,6 +182,7 @@ export class LazySourceCodeCache {
     await esbuildTransform(files, {
       srcPath: this.srcPath,
       cachePath: this.cachePath,
+      tsconfigRaw: this.tsConfigRaw,
     });
 
     for (const f of files) {
@@ -185,7 +200,7 @@ export class LazySourceCodeCache {
 
 async function esbuildTransform(
   files: string[],
-  opts: { cachePath: string; srcPath: string },
+  opts: { cachePath: string; srcPath: string; tsconfigRaw: string },
 ) {
   try {
     await esBuild({
@@ -194,12 +209,13 @@ async function esbuildTransform(
       outdir: opts.cachePath,
       outbase: opts.srcPath,
       loader: {
+        ...possibleExtUsingEmptyLoader,
         // in case some js using some feature, eg: decorator
         '.js': 'tsx',
         '.jsx': 'tsx',
       },
       logLevel: 'error',
-      tsconfig: join(__dirname, 'empty.tsconfig.json'),
+      tsconfigRaw: opts.tsconfigRaw,
     });
   } catch (e) {
     // error ignored due to user have to update code to fix then trigger another batchProcess;
