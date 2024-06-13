@@ -41,7 +41,10 @@ export default (api: IApi) => {
       ...memo,
       extraBabelPlugins: [
         ...(memo.extraBabelPlugins || []),
-        [require.resolve('babel-plugin-react-compiler'), ReactCompilerConfig],
+        [
+          require.resolve('babel-plugin-react-compiler', { paths: [api.cwd] }),
+          ReactCompilerConfig,
+        ],
       ],
     };
   });
