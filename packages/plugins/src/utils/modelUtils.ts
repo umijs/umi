@@ -5,7 +5,7 @@ import traverse from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import {
   Loader,
-  transformSync,
+  transformSync as transformSync2,
   type TransformResult,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import { readFileSync } from 'fs';
@@ -13,6 +13,13 @@ import { basename, dirname, extname, format, join, relative } from 'path';
 import { IApi } from 'umi';
 import { chalk, glob, winPath } from 'umi/plugin-utils';
 import { getIdentifierDeclaration } from './astUtils';
+
+export function transformSync(content: any, opts: any) {
+  if (!opts.tsconfig && !opts.tsconfigRaw) {
+    opts.tsconfigRaw = { compilerOptions: { experimentalDecorators: true } };
+  }
+  return transformSync2(content, opts);
+}
 
 interface IOpts {
   contentTest?: (content: string) => Boolean;
