@@ -1,4 +1,4 @@
-import { ModelUtils, Model, getNamespace } from './modelUtils';
+import { ModelUtils, Model, getNamespace, transformSync } from './modelUtils';
 import { chalk } from '@umijs/utils';
 
 test('getNamespace', () => {
@@ -196,4 +196,26 @@ test('TopologicalSort: detect circle', () => {
       .map((i) => chalk.red(i))
       .join(', ')}`,
   );
+});
+
+test('transformSync', () => {
+  transformSync(`
+function prop() {}
+
+export class UseDecorator {
+  @prop()
+  a = 1;
+
+  fn(
+    @prop()
+    jsParam,
+  ) {
+    console.log(a);
+  }
+}
+    `, {
+    loader: 'ts',
+    sourcemap: false,
+    minify: false,
+  });
 });
