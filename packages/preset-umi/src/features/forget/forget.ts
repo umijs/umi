@@ -1,5 +1,15 @@
 import { IApi } from '../../types';
 
+const loadModule = (moduleName: string, path: string) => {
+  try {
+    return require.resolve(moduleName, {
+      paths: [path],
+    });
+  } catch (err) {
+    return require.resolve(moduleName);
+  }
+};
+
 export default (api: IApi) => {
   api.describe({
     key: 'forget',
@@ -42,7 +52,7 @@ export default (api: IApi) => {
       extraBabelPlugins: [
         ...(memo.extraBabelPlugins || []),
         [
-          require.resolve('babel-plugin-react-compiler', { paths: [api.cwd] }),
+          loadModule('babel-plugin-react-compiler', api.cwd),
           ReactCompilerConfig,
         ],
       ],
