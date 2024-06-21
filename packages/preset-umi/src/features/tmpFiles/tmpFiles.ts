@@ -518,6 +518,7 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
+          basename: api.config.base,
         },
       });
     }
