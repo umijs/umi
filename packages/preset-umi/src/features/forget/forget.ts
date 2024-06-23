@@ -54,7 +54,7 @@ export default (api: IApi) => {
       ...memo,
       extraBabelPlugins: [
         ...(memo.extraBabelPlugins || []),
-        [[require.resolve(libPath), ReactCompilerConfig], ReactCompilerConfig],
+        [require.resolve(libPath), ReactCompilerConfig],
       ],
     };
   });
