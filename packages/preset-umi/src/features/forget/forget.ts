@@ -1,14 +1,6 @@
+import { dirname } from 'path';
 import { IApi } from '../../types';
-
-const loadModule = (moduleName: string, path: string) => {
-  try {
-    return require.resolve(moduleName, {
-      paths: [path],
-    });
-  } catch (err) {
-    return require.resolve(moduleName);
-  }
-};
+import { resolveProjectDep } from '../../utils/resolveProjectDep';
 
 export default (api: IApi) => {
   api.describe({
@@ -45,16 +37,24 @@ export default (api: IApi) => {
     }
   });
 
+  const BABEL_PLUGIN_NAME = `babel-plugin-react-compiler`;
+  let libPath: string;
+  try {
+    libPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: BABEL_PLUGIN_NAME,
+      }) || dirname(require.resolve(`${BABEL_PLUGIN_NAME}/package.json`));
+  } catch (e) {}
+
   api.modifyConfig((memo) => {
     let ReactCompilerConfig = api.userConfig.forget.ReactCompilerConfig || {};
     return {
       ...memo,
       extraBabelPlugins: [
         ...(memo.extraBabelPlugins || []),
-        [
-          loadModule('babel-plugin-react-compiler', api.cwd),
-          ReactCompilerConfig,
-        ],
+        [[require.resolve(libPath), ReactCompilerConfig], ReactCompilerConfig],
       ],
     };
   });
