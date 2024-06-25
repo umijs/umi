@@ -428,11 +428,11 @@ export default function Page() {
 
 ## 路由组件参数
 
-Umi 4 使用 [react-router@6](https://reactrouter.com/docs/en/v6/api) 作为路由组件，路由参数的获取使其 hooks。
+Umi 4 使用 [react-router@6](https://reactrouter.com/en/main) 作为路由组件，路由参数的获取使其 hooks。
 
 ### match 信息
 
-[useMatch](https://reactrouter.com/docs/en/v6/api#usematch)
+[useMatch](https://reactrouter.com/en/main/hooks/use-match)
 
 ```jsx
 const match = useMatch('/comp/:id')
@@ -453,7 +453,7 @@ const match = useMatch('/comp/:id')
 
 ### location 信息
 
-[useLocation](https://reactrouter.com/docs/en/v6/api#uselocation)
+[useLocation](https://reactrouter.com/en/main/hooks/use-location)
 
 ```jsx
 const location  = useLocation();
@@ -482,7 +482,7 @@ const location  = useLocation();
 
 ### 路由动态参数
 
-[useParams](https://reactrouter.com/docs/en/v6/api#useparams)
+[useParams](https://reactrouter.com/en/main/hooks/use-params)
 
 ```jsx
 // 路由配置 /comp/:id
@@ -497,7 +497,7 @@ const params  = useParams();
 
 ### query 信息
 
-[useSearchParams](https://reactrouter.com/docs/en/v6/api#usesearchparams)
+[useSearchParams](https://reactrouter.com/en/main/hooks/use-search-params)
 
 ```jsx
 // 当前 location /comp?a=b;

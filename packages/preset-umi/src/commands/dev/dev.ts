@@ -257,6 +257,7 @@ PORT=8888 umi dev
           },
         });
       }
+
       watchPublicDirChange();
 
       // start dev server
@@ -304,6 +305,7 @@ PORT=8888 umi dev
 
       if (api.config.mfsu?.strategy === 'eager') {
         srcCodeCache = new LazySourceCodeCache({
+          root: api.paths.cwd,
           cwd: api.paths.absSrcPath,
           cachePath: join(
             api.paths.absNodeModulesPath,

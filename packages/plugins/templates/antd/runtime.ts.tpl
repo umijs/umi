@@ -44,6 +44,11 @@ const getAntdConfig = () => {
   {{/appConfig}}
       },
     });
+    {{#modelPluginCompat}}
+    if (!cacheAntdConfig.theme) {
+      cacheAntdConfig.theme = {};
+    }
+    {{/modelPluginCompat}}
   }
   return cacheAntdConfig;
 }

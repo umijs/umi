@@ -22,8 +22,7 @@ group:
 <p>
   <span style={{ color: 'red', fontWeight: 'bold' }}>MFSU V3 & 默认开启。</span>
   MFSU 更新了他的第三个大版本，如果你有用 Umi 3 内置的 MFSU 并遇到问题，建议重新尝试，这个版本有很多改进，解决基本所有之前可能会遇到的诡异问题，并且编译速度和页面打开速度都更快。昨天我还有写一篇
-  [《比 Vite 更快的 MFSU》](https://mp.weixin.qq.com/s?__biz=MjM5NDgyODI4MQ==&mid=2247484624&idx=1&sn=2addfa8cc2511fbea91faf831195788f)。基于此，我们自信地把这个功能在
-  Umi 4 中默认开启。还有值得一提的是，MFSU 可脱离 Umi 运行。
+  <a href="https://mp.weixin.qq.com/s?__biz=MjM5NDgyODI4MQ==&mid=2247484624&idx=1&sn=2addfa8cc2511fbea91faf831195788f" target="_blank">《比 Vite 更快的 MFSU》</a>。基于此，我们自信地把这个功能在Umi 4 中默认开启。还有值得一提的是，MFSU 可脱离 Umi 运行。
 </p>
 
 ![](https://img.alicdn.com/imgextra/i2/O1CN01Znj8HD1mCwz72voXv_!!6000000004919-2-tps-1600-807.png)
