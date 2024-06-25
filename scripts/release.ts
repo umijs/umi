@@ -13,23 +13,16 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   const pkgs = getPkgs();
   logger.info(`pkgs: ${pkgs.join(', ')}`);
 
-
-
-
-
-
-
-
   // check git status
   logger.event('check git status');
   const isGitClean = (await $`git status --porcelain`).stdout.trim().length;
-  // assert(!isGitClean, 'git status is not clean');
+  assert(!isGitClean, 'git status is not clean');
 
   // check git remote update
   logger.event('check git remote update');
   await $`git fetch`;
   const gitStatus = (await $`git status --short --branch`).stdout.trim();
-  // assert(!gitStatus.includes('behind'), `git status is behind remote`);
+  assert(!gitStatus.includes('behind'), `git status is behind remote`);
 
   // check npm registry
   logger.event('check npm registry');
@@ -42,7 +35,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // check package changed
   logger.event('check package changed');
   const changed = (await $`lerna changed --loglevel error`).stdout.trim();
-  // assert(changed, `no package is changed`);
+  assert(changed, `no package is changed`);
 
   // check npm ownership
   logger.event('check npm ownership');
@@ -122,17 +115,17 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
   // commit
   logger.event('commit');
-  // await $`git commit --all --message "release: ${version}"`;
+  await $`git commit --all --message "release: ${version}"`;
 
   // git tag
   if (tag !== 'canary') {
     logger.event('git tag');
-    // await $`git tag v${version}`;
+    await $`git tag v${version}`;
   }
 
   // git push
   logger.event('git push');
-  // await $`git push origin ${branch} --tags`;
+  await $`git push origin ${branch} --tags`;
 
   // pnpm publish
   logger.event('pnpm publish');

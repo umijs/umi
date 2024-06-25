@@ -18,5 +18,4 @@ export default {
       content: 'content',
     },
   ],
-  links: [{ href: '/foo.css', rel: 'preload' }],
 };
