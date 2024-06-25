@@ -32,8 +32,12 @@ export function getManifest(sourceDir) {
   else {
     manifestPath = '{{{ assetsPath }}}'
   }
-
-  return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
+  if (fs.existsSync(manifestPath)) {
+    return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
+  }
+  return {
+    assets: {}
+  }
 }
 
 export function createHistory(opts) {
@@ -47,6 +51,7 @@ global.g_getAssets = (fileName) => {
 };
 const createOpts = {
   routesWithServerLoader,
+  reactVersion: '{{{reactVersion}}}',
   pluginManager: createPluginManager(),
   getRoutes,
   manifest: getManifest,

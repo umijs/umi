@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
 import type { RequestHandler } from '@umijs/bundler-utils/compiled/express';
+import semver from '@umijs/utils/compiled/semver';
 import React, { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
@@ -45,6 +46,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   getClientRootComponent: (PluginManager: any) => any;
   createHistory: (opts: any) => any;
   helmetContext?: any;
+  reactVersion: string;
   ServerInsertedHTMLContext: React.Context<ServerInsertedHTMLHook | null>;
   htmlPageOpts: IhtmlPageOpts;
   __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
@@ -454,10 +456,23 @@ export default function createRequestHandler(
             res.end();
           });
 
+          const canUseCrossOriginInBootstrap = semver.gte(
+            opts.reactVersion,
+            '19.0.0-rc',
+          );
+          const umiPath = jsx.manifest.assets['umi.js'] || '/umi.js';
           const stream = ReactDomServer.renderToPipeableStream(
             React.createElement(JSXProvider, undefined, jsx.element),
             {
-              bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
+              // @ts-ignore
+              bootstrapScripts: canUseCrossOriginInBootstrap
+                ? [
+                    {
+                      src: umiPath,
+                      crossOrigin: 'anonymous',
+                    },
+                  ]
+                : [umiPath],
               onShellReady() {
                 stream.pipe(writable);
               },

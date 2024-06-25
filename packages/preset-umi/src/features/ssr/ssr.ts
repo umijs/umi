@@ -8,6 +8,7 @@ import assert from 'assert';
 import { existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import type { IApi } from '../../types';
+import { isWindows } from '../../utils/platform';
 import { absServerBuildPath, generateBuildManifest } from './utils';
 
 export default (api: IApi) => {
@@ -83,6 +84,19 @@ export default (api: IApi) => {
     memo.define ??= {};
     serverBuildTarget = memo.define['process.env.SSR_BUILD_TARGET'] =
       memo.ssr.serverBuildTarget || 'express';
+
+    // csr && ssr must use the same mako bundler
+    // mako builder need config manifest
+    if (memo.ssr.builder === 'mako') {
+      assert(
+        !memo.mako,
+        `The \`ssr.builder mako\` config is now allowed when \`mako\` is enable!`,
+      );
+      memo.manifest ??= {};
+      if (isWindows) {
+        memo.ssr.builder = 'webpack';
+      }
+    }
 
     return memo;
   });

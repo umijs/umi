@@ -1,6 +1,7 @@
+import { chalk } from '@umijs/utils';
 import path from 'path';
 import { IApi } from '../../types';
-import { chalk } from '@umijs/utils';
+import { isWindows } from '../../utils/platform';
 
 export default (api: IApi) => {
   api.describe({
@@ -9,7 +10,7 @@ export default (api: IApi) => {
       schema({ zod }) {
         return zod
           .object({
-            hooks: zod.object({
+            plugins: zod.object({
               load: zod.function(),
               generateEnd: zod.function(),
             }),
@@ -21,6 +22,11 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((memo) => {
+    // @TODO remove this when mako support windows
+    if (isWindows) {
+      memo.mako = false;
+      process.env.OKAM = '';
+    }
     return {
       ...memo,
       mfsu: false,

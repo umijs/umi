@@ -527,6 +527,7 @@ if (process.env.NODE_ENV === 'development') {
             '"component": await import("$1")',
           ),
           version: api.appData.umi.version,
+          reactVersion: api.appData.react.version,
           entryCode,
           entryCodeAhead,
           routesWithServerLoader,

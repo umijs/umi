@@ -5,7 +5,7 @@ declare global {
   interface Window {
     __UMI_LOADER_DATA__: any;
     __UMI_METADATA_LOADER_DATA__: any;
-    __UMI_BUILD_MANIFEST_DATA__: any;
+    __UMI_BUILD_ClIENT_CSS__: any;
   }
 }
 

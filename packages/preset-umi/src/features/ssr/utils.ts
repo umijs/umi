@@ -1,8 +1,8 @@
 import { fsExtra } from '@umijs/utils';
+import { forEach } from '@umijs/utils/compiled/lodash';
 import { existsSync, writeFileSync } from 'fs';
 import { basename, join } from 'path';
 import { IApi } from '../../types';
-
 /** esbuild plugin for resolving umi imports */
 export function esbuildUmiPlugin(api: IApi) {
   return {
@@ -40,12 +40,18 @@ export function absServerBuildPath(api: IApi) {
 }
 
 export const generateBuildManifest = (api: IApi) => {
+  const publicPath = api.userConfig.publicPath || '/';
+  const manifestFileName =
+    api.config.manifest?.fileName || 'asset-manifest.json';
   const finalJsonObj: any = {};
-  const assetFilePath = join(api.paths.absOutputPath, 'asset-manifest.json');
+  const assetFilePath = join(api.paths.absOutputPath, manifestFileName);
   const buildFilePath = join(api.paths.absOutputPath, 'build-manifest.json');
   const json = existsSync(assetFilePath)
     ? fsExtra.readJSONSync(assetFilePath)
     : {};
+  forEach(json, (path, key) => {
+    json[key] = `${publicPath}${path}`;
+  });
   finalJsonObj.assets = json;
   writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {
     flag: 'w',

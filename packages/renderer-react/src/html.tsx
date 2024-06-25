@@ -23,6 +23,7 @@ const GlobalDataScript = (
   props: Omit<IHtmlProps, '__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED'>,
 ) => {
   const { loaderData, htmlPageOpts, manifest } = props;
+  const clientCssPath = manifest?.assets?.['umi.css'] || '';
   return (
     <script
       suppressHydrationWarning
@@ -31,9 +32,7 @@ const GlobalDataScript = (
           loaderData || {},
         )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
           htmlPageOpts || {},
-        )}; window.__UMI_BUILD_MANIFEST_DATA__ = ${
-          JSON.stringify(manifest) || {}
-        }`,
+        )}; window.__UMI_BUILD_ClIENT_CSS__ = '${clientCssPath}'`,
       }}
     />
   );
@@ -101,6 +100,7 @@ const HydrateMetadata = (
               __html: content,
             }}
             key={key}
+            crossOrigin="anonymous"
             {...(rest as any)}
           />
         );
@@ -140,22 +140,18 @@ export function Html({
     return <>{children}</>;
   }
 
-  const serverBuildManifest =
+  const clientCss =
     typeof window === 'undefined'
-      ? manifest
-      : window.__UMI_BUILD_MANIFEST_DATA__;
+      ? manifest?.assets['umi.css']
+      : window.__UMI_BUILD_ClIENT_CSS__;
   return (
     // FIXME: Resolve the hydrate warning for suppressHydrationWarning(3)
     <html suppressHydrationWarning lang={htmlPageOpts?.lang || 'en'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {serverBuildManifest?.assets['umi.css'] && (
-          <link
-            suppressHydrationWarning
-            rel="stylesheet"
-            href={manifest?.assets['umi.css']}
-          />
+        {clientCss && (
+          <link suppressHydrationWarning rel="stylesheet" href={clientCss} />
         )}
         <HydrateMetadata htmlPageOpts={htmlPageOpts} />
       </head>
@@ -176,6 +172,7 @@ export function Html({
                 __html: content,
               }}
               key={key}
+              crossOrigin="anonymous"
               {...(rest as any)}
             />
           );

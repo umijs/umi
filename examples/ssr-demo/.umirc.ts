@@ -6,13 +6,11 @@ export default {
   manifest: {},
   clientLoader: {},
   mako: {},
-  title: '测试title',
-  scripts: [`https://a.com/b.js`],
   ssr: {
     builder: 'mako',
   },
-  // exportStatic: {},
-  styles: [`body { color: red; }`, `https://a.com/b.css`],
+  exportStatic: {},
+  styles: [`body { color: red; }`],
 
   metas: [
     {
@@ -21,10 +19,4 @@ export default {
     },
   ],
   links: [{ href: '/foo.css', rel: 'preload' }],
-
-  headScripts: [
-    {
-      src: 'https://www.baidu.com',
-    },
-  ],
 };

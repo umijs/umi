@@ -396,14 +396,19 @@ export function renderClient(opts: RenderClientOpts) {
       loaderData,
       mountElementId: opts.mountElementId,
     };
+    const _isInternal =
+      opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureApp ||
+      opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureHtml;
 
     ReactDOM.hydrateRoot(
-      opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureApp
-        ? rootElement
-        : document,
-      <Html {...hydtateHtmloptions}>
+      _isInternal ? rootElement : document,
+      _isInternal ? (
         <Browser />
-      </Html>,
+      ) : (
+        <Html {...hydtateHtmloptions}>
+          <Browser />
+        </Html>
+      ),
     );
     return;
   }
