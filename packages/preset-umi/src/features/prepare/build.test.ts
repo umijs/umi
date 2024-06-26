@@ -18,6 +18,9 @@ test('build', async () => {
   expect(text).toContain(`import "./a.html"`);
   expect(text).toContain(`var bar = "bar"`);
   expect(text).toContain(`var foo = "foo"`);
+
+  expect(text).toContain(`__decorateParam(0, tsProp())`);
+  expect(text).toContain(`__decorateParam(0, prop())`);
 });
 
 test('build with alias', async () => {

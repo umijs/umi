@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "4.2.5",
+  "version": "4.2.15",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@umijs/utils": "workspace:*",
-    "esbuild": "0.17.19",
+    "esbuild": "0.21.4",
     "regenerate": "^1.4.2",
     "regenerate-unicode-properties": "10.1.1",
     "spdy": "^4.0.2"
