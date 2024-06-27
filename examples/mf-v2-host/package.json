@@ -1,0 +1,15 @@
+{
+  "name": "@example/mf-v2-host",
+  "private": true,
+  "scripts": {
+    "build": "max build",
+    "dev": "max dev",
+    "preview": "max preview --port 8000",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/max": "workspace:*",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
+  }
+}
