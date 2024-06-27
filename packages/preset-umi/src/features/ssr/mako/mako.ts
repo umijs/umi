@@ -25,8 +25,8 @@ export const build = async (api: IApi) => {
     entry: {
       'umi.server': entry,
     },
-    plugins: api.config.mako.plugins,
     config: {
+      makoPlugins: api.config.mako.plugins,
       ...api.config,
       jsMinifier: 'none',
       hash: useHash,
@@ -35,7 +35,6 @@ export const build = async (api: IApi) => {
         fileName: 'build-manifest.json',
       },
       devtool: false,
-      inlineCSS: {},
       cjs: true,
       dynamicImportToRequire: false,
     },

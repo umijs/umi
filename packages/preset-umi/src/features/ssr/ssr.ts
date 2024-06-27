@@ -89,7 +89,7 @@ export default (api: IApi) => {
     // mako builder need config manifest
     if (memo.ssr.builder === 'mako') {
       assert(
-        !memo.mako,
+        memo.mako,
         `The \`ssr.builder mako\` config is now allowed when \`mako\` is enable!`,
       );
       memo.manifest ??= {};

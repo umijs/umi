@@ -107,11 +107,9 @@ umi build --clean
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
-        plugins: api.config.mako?.plugins,
         config: {
           outputPath: api.userConfig.outputPath || 'dist',
           ...api.config,
-          inlineCSS: {},
         } as IServicePluginAPI['config'],
         cwd: api.cwd,
         entry,

@@ -5,7 +5,13 @@ export default {
   routePrefetch: {},
   manifest: {},
   clientLoader: {},
-  mako: {},
+  mako: {
+    plugins: [
+      {
+        load: () => {},
+      },
+    ],
+  },
   ssr: {
     builder: 'mako',
   },

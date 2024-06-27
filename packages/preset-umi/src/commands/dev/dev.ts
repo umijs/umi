@@ -357,7 +357,6 @@ PORT=8888 umi dev
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
-        plugins: api.config.mako?.plugins,
         config: {
           outputPath: api.userConfig.outputPath || 'dist',
           ...api.config,

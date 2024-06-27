@@ -10,10 +10,14 @@ export default (api: IApi) => {
       schema({ zod }) {
         return zod
           .object({
-            plugins: zod.object({
-              load: zod.function(),
-              generateEnd: zod.function(),
-            }),
+            plugins: zod.array(
+              zod
+                .object({
+                  load: zod.function(),
+                  generateEnd: zod.function(),
+                })
+                .partial(),
+            ),
           })
           .partial();
       },
@@ -31,6 +35,7 @@ export default (api: IApi) => {
       ...memo,
       mfsu: false,
       hmrGuardian: false,
+      makoPlugins: memo.mako?.plugins || [],
     };
   });
 
