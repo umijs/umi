@@ -322,7 +322,7 @@ export function modifyContextOpts(memo: any) {
       exportStatic: { htmlSuffix },
     } = api.config;
     // copy / to /index.html and /xxx to /xxx.html or /xxx/index.html
-    for (const key of Object.keys(routes)) {
+    for (let key of Object.keys(routes)) {
       const route = routes[key];
       if (isHtmlRoute(route)) {
         key = `${key}.html`;
