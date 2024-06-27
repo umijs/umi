@@ -66,8 +66,8 @@
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
     "@types/qs": "^6.9.7",
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@types/resolve": "^1.20.2",
     "@types/rimraf": "3.0.2",
     "@types/tunnel": "^0.0.3",
@@ -101,8 +101,8 @@
     "prettier-plugin-organize-imports": "^3.2.2",
     "prettier-plugin-packagejson": "^2.4.3",
     "qs": "^6.11.0",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-text-loop-next": "0.0.3",
     "regenerator-runtime": "^0.13.11",
     "resolve": "^1.22.0",
@@ -142,8 +142,8 @@
       ]
     },
     "overrides": {
-      "browserslist": "$browserslist",
-      "@parcel/watcher": "2.1.0"
+      "@parcel/watcher": "2.1.0",
+      "browserslist": "$browserslist"
     }
   },
   "_local": "This flag is used to check if the development in local, Please do not delete."

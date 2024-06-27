@@ -1,5 +1,5 @@
-import { ModelUtils, Model, getNamespace, transformSync } from './modelUtils';
 import { chalk } from '@umijs/utils';
+import { getNamespace, Model, ModelUtils, transformSync } from './modelUtils';
 
 test('getNamespace', () => {
   expect(getNamespace('/a/b/src/models/foo.ts', '/a/b/src')).toEqual('foo');
@@ -199,7 +199,8 @@ test('TopologicalSort: detect circle', () => {
 });
 
 test('transformSync', () => {
-  transformSync(`
+  transformSync(
+    `
 function prop() {}
 
 export class UseDecorator {
@@ -213,9 +214,11 @@ export class UseDecorator {
     console.log(a);
   }
 }
-    `, {
-    loader: 'ts',
-    sourcemap: false,
-    minify: false,
-  });
+    `,
+    {
+      loader: 'ts',
+      sourcemap: false,
+      minify: false,
+    },
+  );
 });

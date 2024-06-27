@@ -1,10 +1,27 @@
 export default {
   svgr: {},
   hash: true,
+  mfsu: false,
   routePrefetch: {},
   manifest: {},
   clientLoader: {},
-  ssr: {
-    serverBuildPath: './umi.server.js',
+  mako: {
+    plugins: [
+      {
+        load: () => {},
+      },
+    ],
   },
+  ssr: {
+    builder: 'mako',
+  },
+  exportStatic: {},
+  styles: [`body { color: red; }`],
+
+  metas: [
+    {
+      name: 'test',
+      content: 'content',
+    },
+  ],
 };
