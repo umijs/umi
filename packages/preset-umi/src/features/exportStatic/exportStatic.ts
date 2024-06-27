@@ -20,9 +20,7 @@ interface IExportHtmlItem {
 type IUserExtraRoute = string | { path: string; prerender: boolean };
 
 function isHtmlRoute(route: IRoute): boolean {
-  const is404 = route.absPath === '/*';
-
-  if (
+  return (
     // skip layout
     !route.isLayout &&
     // skip duplicate route
@@ -31,12 +29,9 @@ function isHtmlRoute(route: IRoute): boolean {
     (!IS_WIN || !route.path.includes('/:')) &&
     // skip `*` route, because `*` is not working for most site serve services
     (!route.path.includes('*') ||
-      // except `404.html`
-      is404)
-  ) {
-    return true;
-  }
-  return false;
+      // skip `404.html`
+      route.absPath === '/*')
+  );
 }
 function getHtmlPath(path: string, htmlSuffix: boolean): string {
   if (!path) return path;
