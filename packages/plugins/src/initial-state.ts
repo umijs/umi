@@ -52,7 +52,7 @@ export default function InitialStateProvider(props: any) {
       appLoaded.current = true;
     }
   }, [loading]);
-  if (loading && !appLoaded.current) {
+  if (loading && !appLoaded.current && typeof window !== 'undefined') {
     return <Loading />;
   }
   return props.children;

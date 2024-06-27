@@ -9,6 +9,8 @@
     "start:prod": "node ./production-server.js"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.18.5",
+    "antd": "^5",
     "express": "4.18.2",
     "umi": "workspace:*"
   }

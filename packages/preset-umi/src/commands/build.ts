@@ -1,3 +1,4 @@
+import type { IServicePluginAPI } from '@umijs/core';
 import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
 import { writeFileSync } from 'fs';
@@ -17,7 +18,6 @@ const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
 const bundlerVite: typeof import('@umijs/bundler-vite') =
   lazyImportFromCurrentPkg('@umijs/bundler-vite');
-
 export default (api: IApi) => {
   api.registerCommand({
     name: 'build',
@@ -107,7 +107,10 @@ umi build --clean
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
-        config: api.config,
+        config: {
+          outputPath: api.userConfig.outputPath || 'dist',
+          ...api.config,
+        } as IServicePluginAPI['config'],
         cwd: api.cwd,
         entry,
         ...(api.config.vite
@@ -136,8 +139,9 @@ umi build --clean
       let stats: any;
       if (api.config.vite) {
         stats = await bundlerVite.build(opts);
-      } else if (process.env.OKAM) {
+      } else if (api.config.mako) {
         require('@umijs/bundler-webpack/dist/requireHook');
+        // @ts-ignore
         const { build } = require(process.env.OKAM);
         stats = await build(opts);
       } else {
@@ -174,10 +178,11 @@ umi build --clean
               publicPath: api.config.publicPath,
             });
         const { vite } = api.args;
-        const markupArgs = await getMarkupArgs({ api });
+        const args = await getMarkupArgs({ api });
+
         const finalMarkUpArgs = {
-          ...markupArgs,
-          styles: markupArgs.styles.concat(
+          ...args,
+          styles: args.styles.concat(
             api.config.vite
               ? []
               : [...(assetsMap['umi.css'] || []).map((src) => ({ src }))],
@@ -185,7 +190,7 @@ umi build --clean
           scripts: (api.config.vite
             ? []
             : [...(assetsMap['umi.js'] || []).map((src) => ({ src }))]
-          ).concat(markupArgs.scripts),
+          ).concat(args.scripts),
           esmScript: !!opts.config.esm || vite,
           path: '/',
         };
