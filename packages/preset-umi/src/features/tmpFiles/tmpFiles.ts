@@ -2,11 +2,11 @@ import { importLazy, lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
+import { getMarkupArgs } from '../../commands/dev/getMarkupArgs';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { getModuleExports } from './getModuleExports';
 import { importsToStr } from './importsToStr';
-
 const routesApi: typeof import('./routes') = importLazy(
   require.resolve('./routes'),
 );
@@ -261,7 +261,43 @@ declare module '*.txt' {
 }
 `.trimEnd(),
     });
+    const entryCode = (
+      await api.applyPlugins({
+        key: 'addEntryCode',
+        initialValue: [],
+      })
+    ).join('\n');
+    const entryCodeAhead = (
+      await api.applyPlugins({
+        key: 'addEntryCodeAhead',
+        initialValue: [],
+      })
+    ).join('\n');
+    const importsAhead = importsToStr(
+      await api.applyPlugins({
+        key: 'addEntryImportsAhead',
+        initialValue: [
+          api.appData.globalCSS.length && {
+            source: api.appData.globalCSS[0],
+          },
+          api.appData.globalJS.length && {
+            source: api.appData.globalJS[0],
+          },
+        ].filter(Boolean),
+      }),
+    ).join('\n');
+    const imports = importsToStr(
+      await api.applyPlugins({
+        key: 'addEntryImports',
+        initialValue: [],
+      }),
+    ).join('\n');
 
+    const __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = api.config.ssr
+      ?.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ?? {
+      pureApp: false,
+      pureHtml: false,
+    };
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
@@ -272,45 +308,21 @@ declare module '*.txt' {
         rendererPath,
         publicPath: api.config.publicPath,
         runtimePublicPath: api.config.runtimePublicPath ? 'true' : 'false',
-        entryCode: (
-          await api.applyPlugins({
-            key: 'addEntryCode',
-            initialValue: [],
-          })
-        ).join('\n'),
-        entryCodeAhead: (
-          await api.applyPlugins({
-            key: 'addEntryCodeAhead',
-            initialValue: [],
-          })
-        ).join('\n'),
+        entryCode,
+        entryCodeAhead,
         polyfillImports: importsToStr(
           await api.applyPlugins({
             key: 'addPolyfillImports',
             initialValue: [],
           }),
         ).join('\n'),
-        importsAhead: importsToStr(
-          await api.applyPlugins({
-            key: 'addEntryImportsAhead',
-            initialValue: [
-              api.appData.globalCSS.length && {
-                source: api.appData.globalCSS[0],
-              },
-              api.appData.globalJS.length && {
-                source: api.appData.globalJS[0],
-              },
-            ].filter(Boolean),
-          }),
-        ).join('\n'),
-        imports: importsToStr(
-          await api.applyPlugins({
-            key: 'addEntryImports',
-            initialValue: [],
-          }),
-        ).join('\n'),
+        importsAhead,
+        imports,
         basename: api.config.base,
         historyType: api.config.history.type,
+        __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: JSON.stringify(
+          __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+        ),
         hydrate: !!api.config.ssr,
         reactRouter5Compat: !!api.config.reactRouter5Compat,
         loadingComponent: api.appData.globalLoading,
@@ -489,6 +501,9 @@ if (process.env.NODE_ENV === 'development') {
     if (api.config.ssr) {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
+
+      const mountElementId = api.config.mountElementId;
+
       const routesWithServerLoader = Object.keys(routes).reduce<
         { id: string; path: string }[]
       >((memo, id) => {
@@ -500,6 +515,8 @@ if (process.env.NODE_ENV === 'development') {
         }
         return memo;
       }, []);
+      const { headScripts, scripts, styles, title, favicons, links, metas } =
+        await getMarkupArgs({ api });
       api.writeTmpFile({
         noPluginDir: true,
         path: 'umi.server.ts',
@@ -509,7 +526,13 @@ if (process.env.NODE_ENV === 'development') {
             /"component": "await import\((.*)\)"/g,
             '"component": await import("$1")',
           ),
+          version: api.appData.umi.version,
+          reactVersion: api.appData.react.version,
+          entryCode,
+          entryCodeAhead,
           routesWithServerLoader,
+          importsAhead,
+          imports,
           umiPluginPath,
           serverRendererPath,
           umiServerPath,
@@ -518,6 +541,19 @@ if (process.env.NODE_ENV === 'development') {
             join(api.paths.absOutputPath, 'build-manifest.json'),
           ),
           env: JSON.stringify(api.env),
+          htmlPageOpts: JSON.stringify({
+            headScripts,
+            styles,
+            title,
+            favicons,
+            links,
+            metas,
+            scripts: scripts || [],
+          }),
+          __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: JSON.stringify(
+            __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+          ),
+          mountElementId,
         },
       });
     }
@@ -605,7 +641,9 @@ if (process.env.NODE_ENV === 'development') {
           })
         ).join(', ')} } from '${rendererPath}';`,
       );
-      exports.push(`export type { History } from '${rendererPath}'`);
+      exports.push(
+        `export type { History, ClientLoader } from '${rendererPath}'`,
+      );
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));

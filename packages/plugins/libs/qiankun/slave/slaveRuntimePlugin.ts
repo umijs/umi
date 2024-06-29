@@ -3,6 +3,10 @@ import { createHistory } from '@@/core/history';
 import qiankunRender, { contextOptsStack } from './lifecycles';
 
 export function render(oldRender: any) {
+  // 在 ssr 的场景下，直接返回旧的 render
+  if (typeof window === 'undefined') {
+    return oldRender();
+  }
   return qiankunRender().then(oldRender);
 }
 

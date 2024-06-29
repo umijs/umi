@@ -66,6 +66,7 @@ export function resolveDefine(opts: IOpts) {
 
   return {
     'process.env': env,
+    'process.env.SSR_MANIFEST': 'process.env.SSR_MANIFEST',
     ...define,
   };
 }

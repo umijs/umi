@@ -1,3 +1,29 @@
+export interface IOpts {
+  base: string;
+  routes: Record<
+    string,
+    {
+      path: string;
+      file: string;
+      id: string;
+      parentId?: string;
+    }
+  >;
+  links?: Record<string, string>[];
+  metas?: Record<string, string>[];
+  styles?: (Record<string, string> | string)[];
+  favicons?: string[];
+  title?: string;
+  headScripts?: (Record<string, string> | string)[];
+  scripts?: (Record<string, string> | string)[];
+  mountElementId?: string;
+  esmScript?: boolean;
+  modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
+  historyType?: 'hash' | 'browser';
+}
+
+export type IUserExtraRoute = string | { path: string; prerender: boolean };
+
 export interface IRoute {
   id: string;
   path?: string;
@@ -37,6 +63,16 @@ export interface IMetadata {
   lang?: string;
   metas?: IMetaTag[];
 }
+
+export interface IhtmlPageOpts extends IMetadata {
+  headScripts?: (Record<string, string> | string)[];
+  links?: Record<string, string>[];
+  styles?: string[];
+  favicons?: string[];
+  scripts?: (Record<string, string> | string)[];
+  [key: string]: any;
+}
+
 export type MetadataLoader<T = any> = (
   serverLoaderData: T,
   req?: IServerLoaderArgs,

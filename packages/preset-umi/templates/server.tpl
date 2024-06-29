@@ -1,11 +1,14 @@
+{{{ importsAhead }}}
 import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
-import { getPlugins as getClientPlugins } from './core/plugin';
 import { ServerInsertedHTMLContext } from './core/serverInsertedHTMLContext';
-import { PluginManager } from '{{{ umiPluginPath }}}';
-import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader } from '{{{ umiServerPath }}}';
-
+import { createPluginManager } from './core/plugin';
+import createRequestHandler, { createMarkupGenerator, createUmiHandler, createUmiServerLoader, createAppRootElement } from '{{{ umiServerPath }}}';
+import fs from 'fs';
+import path from 'path';
+{{{ imports }}}
+{{{ entryCodeAhead }}}
 let helmetContext;
 
 try {
@@ -18,17 +21,23 @@ const routesWithServerLoader = {
 {{/routesWithServerLoader}}
 };
 
-export function getPlugins() {
-  return getClientPlugins();
-}
-
-export function getValidKeys() {
-  return [{{#validKeys}}'{{{ . }}}',{{/validKeys}}];
-}
-
 export function getManifest(sourceDir) {
-  return JSON.parse(require('fs').readFileSync(
-  sourceDir ? require('path').join(sourceDir,'build-manifest.json') : '{{{ assetsPath }}}', 'utf-8'));
+  let manifestPath;
+  if (process.env.SSR_MANIFEST) {
+    return JSON.parse(process.env.SSR_MANIFEST)
+  } 
+  if (sourceDir) {
+    manifestPath = path.join(sourceDir,'build-manifest.json')
+  }
+  else {
+    manifestPath = '{{{ assetsPath }}}'
+  }
+  if (fs.existsSync(manifestPath)) {
+    return JSON.parse(fs.readFileSync(manifestPath), 'utf-8');
+  }
+  return {
+    assets: {}
+  }
 }
 
 export function createHistory(opts) {
@@ -42,20 +51,35 @@ global.g_getAssets = (fileName) => {
 };
 const createOpts = {
   routesWithServerLoader,
-  PluginManager,
-  getPlugins,
-  getValidKeys,
+  reactVersion: '{{{reactVersion}}}',
+  pluginManager: createPluginManager(),
   getRoutes,
   manifest: getManifest,
   getClientRootComponent,
   helmetContext,
   createHistory,
   ServerInsertedHTMLContext,
+  htmlPageOpts: {{{htmlPageOpts}}},
+ __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {{{__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED}}},
+  mountElementId: '{{{mountElementId}}}'
+
 };
 const requestHandler = createRequestHandler(createOpts);
+/**
+ * @deprecated  Please use `requestHandler` instead.
+ */
 export const renderRoot = createUmiHandler(createOpts);
+/**
+ * @deprecated  Please use `requestHandler` instead.
+ */
 export const serverLoader = createUmiServerLoader(createOpts);
 
 export const _markupGenerator = createMarkupGenerator(createOpts);
 
+export const getAppRootElement = createAppRootElement.bind(null, createOpts)();
+
 export default requestHandler;
+
+export const g_umi = '{{{version}}}'
+
+{{{ entryCode }}}

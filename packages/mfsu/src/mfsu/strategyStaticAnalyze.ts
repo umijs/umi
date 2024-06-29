@@ -1,11 +1,11 @@
 import { logger, printHelp, winPath } from '@umijs/utils';
+import type { Configuration } from 'webpack';
 import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import mfImport from '../babelPlugins/awaitImport/MFImport';
 import { StaticDepInfo } from '../staticDepInfo/staticDepInfo';
+import { extractBabelPluginImportOptions } from '../utils/webpackUtils';
 import { IBuildDepPluginOpts } from '../webpackPlugins/buildDepPlugin';
 import type { IMFSUStrategy, MFSU } from './mfsu';
-import type { Configuration } from 'webpack';
-import { extractBabelPluginImportOptions } from '../utils/webpackUtils';
 
 export class StaticAnalyzeStrategy implements IMFSUStrategy {
   private readonly mfsu: MFSU;
