@@ -191,6 +191,8 @@ icon: 'HomeFilled';
 icon: 'HomeTwoTone';
 ```
 
+兼容默认配置[icons](https://umijs.org/docs/api/config#icons)，可以在使用图标集或者本地的图标。具体请参考配置的icons页面。
+
 #### access
 
 - Type: `string`
