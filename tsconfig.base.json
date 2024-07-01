@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
