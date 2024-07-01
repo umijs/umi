@@ -39,6 +39,7 @@ export default (function alias(userConfig) {
       alias: [
         // to support less-loader ~ for local deps, refer: https://github.com/vitejs/vite/issues/2185
         { find: /^~/, replacement: '' },
+        { find: /react-helmet-async/, replacement: 'react-helmet-async' },
       ],
     },
   };
