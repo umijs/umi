@@ -429,6 +429,7 @@ export default { ${icons.join(', ')} };
       content: `
 import React from 'react';
 import icons from './icons';
+import { Icon, getIconComponent } from '@umijs/max';
 
 function formatIcon(name: string) {
   return name
@@ -442,6 +443,12 @@ export function patchRoutes({ routes }) {
   Object.keys(routes).forEach(key => {
     const { icon } = routes[key];
     if (icon && typeof icon === 'string') {
+      const Component = getIconComponent(icon)
+      if (Component) {
+        routes[key].icon = <Icon icon={icon} width={14} height={14} />;
+        return;
+      }
+
       const upperIcon = formatIcon(icon);
       if (icons[upperIcon] || icons[upperIcon + 'Outlined']) {
         routes[key].icon = React.createElement(icons[upperIcon] || icons[upperIcon + 'Outlined']);

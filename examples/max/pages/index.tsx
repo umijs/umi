@@ -54,7 +54,12 @@ export default function HomePage() {
         tailwindcss
       </h2>
 
-      <h2> Icons</h2>
+      <h2>Icon library icons</h2>
+      <Icon icon="ic:baseline-14mp" />
+      <Icon icon="ic:baseline-3p" />
+      <Icon icon="solar:4k-bold" />
+
+      <h2>Local Icons</h2>
       <div>
         {includedIcons.map((i) => {
           return <Icon spin icon={i} className={i} key={i} />;

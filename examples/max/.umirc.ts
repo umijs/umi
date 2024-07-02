@@ -5,13 +5,13 @@ export default defineConfig({
     {
       title: 'site.title',
       path: '/',
-      icon: 'PlaySquareFilled',
+      icon: 'ic:baseline-14mp',
       component: 'index',
       name: 'index',
     },
     {
       path: '/users',
-      icon: 'SmileFilled',
+      icon: 'local:rice',
       component: 'users',
       name: 'users',
       wrappers: ['@/wrappers/foo', '@/wrappers/bar'],
@@ -105,6 +105,7 @@ export default defineConfig({
     jsStrategy: 'granularChunks',
   },
   icons: {
+    autoInstall: {},
     include: ['local:rice', 'local:logo/umi', 'ant-design:fire-twotone'],
   },
 });
