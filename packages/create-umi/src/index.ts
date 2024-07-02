@@ -99,12 +99,29 @@ export default async ({
   // plugin params
   let pluginName = `umi-plugin-${name || 'demo'}`;
 
-  const target = name ? join(cwd, name) : cwd;
+  let target = name ? join(cwd, name) : cwd;
 
   const { isCancel, text, select, intro, outro } = clackPrompts;
   const exitPrompt = () => {
     outro(chalk.red('Exit create-umi'));
     process.exit(1);
+  };
+  const setName = async () => {
+    name = (await text({
+      message: "What's the project name?",
+      initialValue: name || 'my-app',
+      validate: (value: string) => {
+        if (!value.length) {
+          return 'Please input project name';
+        }
+        if (fsExtra.existsSync(join(cwd, value))) {
+          return `Folder ${value} already exists`;
+        }
+        if (!/^[a-zA-Z0-9_-]+$/.test(value)) {
+          return 'Name should only contain letters, numbers, underscores and dashes';
+        }
+      },
+    })) as string;
   };
   const selectAppTemplate = async () => {
     appTemplate = (await select({
@@ -158,6 +175,13 @@ export default async ({
   };
   const internalTemplatePrompts = async () => {
     intro(chalk.bgHex('#19BDD2')(' create-umi '));
+
+    await setName();
+    if (isCancel(name)) {
+      exitPrompt();
+    }
+
+    target = join(cwd, name);
 
     await selectAppTemplate();
     if (isCancel(appTemplate)) {
