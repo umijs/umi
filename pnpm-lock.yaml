@@ -658,6 +658,12 @@ importers:
         specifier: workspace:*
         version: link:../../packages/umi
 
+  examples/export-static:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
   examples/legacy:
     dependencies:
       umi:
