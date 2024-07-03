@@ -1,6 +1,7 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { IApi } from 'umi';
 import VueLoaderPlugin from 'vue-loader/dist/pluginWebpack5.js';
+import { DEFAULT_RUNTIME_WEBPACK } from '../../constants';
 import { addAssetRules } from './assetRules';
 
 export function getConfig(config: Config, api: IApi) {
@@ -43,4 +44,7 @@ export function getConfig(config: Config, api: IApi) {
 
   // asset
   addAssetRules({ api, config });
+
+  // optimization
+  config.optimization.runtimeChunk({ name: DEFAULT_RUNTIME_WEBPACK });
 }
