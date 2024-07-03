@@ -1,4 +1,3 @@
-import { chalk } from '@umijs/utils';
 import path from 'path';
 import { IApi } from '../../types';
 import { isWindows } from '../../utils/platform';
