@@ -2314,8 +2314,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(react-dom@18.3.1)(react@18.3.1)
       '@ant-design/moment-webpack-plugin':
-        specifier: ^0.0.3
-        version: 0.0.3
+        specifier: ^1.0.0
+        version: 1.0.0
       '@ant-design/pro-components':
         specifier: ^2.0.1
         version: 2.3.4(antd@4.24.1)(react-dom@18.3.1)(react@18.3.1)
@@ -3444,6 +3444,11 @@ packages:
 
   /@ant-design/moment-webpack-plugin@0.0.3:
     resolution: {integrity: sha512-MLm1FUpg02fP615ShQnCUN9la2E4RylDxKyolkGqAWTIHO4HyGM0A5x71AMALEyP/bC+UEEWBGSQ+D4/8hQ+ww==}
+    dev: true
+
+  /@ant-design/moment-webpack-plugin@1.0.0:
+    resolution: {integrity: sha512-t+0PDB312A8XpNklaYyJcaJ2bO0mWWmPQ0U9myKGqZhRWLH0ZTUEbROoYi1N0fSwYnIWuaLa2wYWtH1j/jwJow==}
+    dev: false
 
   /@ant-design/plots@1.2.1(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-wbcmhHRkVi7IFyqzVNUozcJtIpgWHOFHbny5T+DLQoE2lzh+A1nTOfhlPJXc6aq56uIg6w+4iN/umsJKUmcLPw==}
@@ -20294,6 +20299,9 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependenciesMeta:
+      ajv:
+        optional: true
     dependencies:
       ajv: 8.11.0
 
@@ -48921,6 +48929,9 @@ packages:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
+    peerDependenciesMeta:
+      postcss:
+        optional: true
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
