@@ -108,17 +108,14 @@ export default async ({
   };
   const setName = async () => {
     name = (await text({
-      message: "What's the project name?",
+      message: "What's the target folder name?",
       initialValue: name || 'my-app',
       validate: (value: string) => {
         if (!value.length) {
           return 'Please input project name';
         }
-        if (fsExtra.existsSync(join(cwd, value))) {
+        if (value != '.' && fsExtra.existsSync(join(cwd, value))) {
           return `Folder ${value} already exists`;
-        }
-        if (!/^[a-zA-Z0-9_-]+$/.test(value)) {
-          return 'Name should only contain letters, numbers, underscores and dashes';
         }
       },
     })) as string;
