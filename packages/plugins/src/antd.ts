@@ -225,7 +225,7 @@ export default (api: IApi) => {
   api.chainWebpack((memo) => {
     if (api.config.antd.momentPicker) {
       if (day2MomentAvailable) {
-        memo.plugin('antd-moment-webpack-plugin').use(new AntdMomentWebpackPlugin({ disableDayjsAlias: true }));
+        memo.plugin('antd-moment-webpack-plugin').use(AntdMomentWebpackPlugin, [{ disableDayjsAlias: true }]);
       } else {
         api.logger.warn(
           `MomentPicker is only available in version 5.0.0 and above, but you are using version ${antdVersion}`,
