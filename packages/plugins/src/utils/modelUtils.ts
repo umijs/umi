@@ -11,7 +11,7 @@ import {
 import { readFileSync } from 'fs';
 import { basename, dirname, extname, format, join, relative } from 'path';
 import { IApi } from 'umi';
-import { chalk, glob, winPath } from 'umi/plugin-utils';
+import { chalk, glob, lodash, winPath } from 'umi/plugin-utils';
 import { getIdentifierDeclaration } from './astUtils';
 
 export function transformSync(content: any, opts: any) {
@@ -126,28 +126,30 @@ export class ModelUtils {
   getAllModels(opts: { sort?: object; extraModels: string[] }) {
     // reset count
     this.count = 1;
-    const models = [
-      ...this.getModels({
-        base: join(this.api.paths.absSrcPath, 'models'),
-        pattern: '**/*.{ts,tsx,js,jsx}',
-      }),
-      ...this.getModels({
-        base: join(this.api.paths.absPagesPath),
-        pattern: '**/models/**/*.{ts,tsx,js,jsx}',
-      }),
-      ...this.getModels({
-        base: join(this.api.paths.absPagesPath),
-        pattern: '**/model.{ts,tsx,js,jsx}',
-      }),
-      ...opts.extraModels,
-    ].map((file: string) => {
-      return new Model(
-        file,
-        this.api.paths.absSrcPath,
-        opts.sort,
-        this.count++,
-      );
-    });
+    const models = lodash
+      .uniq([
+        ...this.getModels({
+          base: join(this.api.paths.absSrcPath, 'models'),
+          pattern: '**/*.{ts,tsx,js,jsx}',
+        }),
+        ...this.getModels({
+          base: join(this.api.paths.absPagesPath),
+          pattern: '**/models/**/*.{ts,tsx,js,jsx}',
+        }),
+        ...this.getModels({
+          base: join(this.api.paths.absPagesPath),
+          pattern: '**/model.{ts,tsx,js,jsx}',
+        }),
+        ...opts.extraModels,
+      ])
+      .map((file: string) => {
+        return new Model(
+          file,
+          this.api.paths.absSrcPath,
+          opts.sort,
+          this.count++,
+        );
+      });
     // check duplicate
     const namespaces = models.map((model) => model.namespace);
     if (new Set(namespaces).size !== namespaces.length) {
