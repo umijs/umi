@@ -1,4 +1,6 @@
+import { dirname } from 'path';
 import { IApi } from '../../types';
+import { resolveProjectDep } from '../../utils/resolveProjectDep';
 
 export default (api: IApi) => {
   api.describe({
@@ -35,13 +37,24 @@ export default (api: IApi) => {
     }
   });
 
+  const BABEL_PLUGIN_NAME = `babel-plugin-react-compiler`;
+  let libPath: string;
+  try {
+    libPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: BABEL_PLUGIN_NAME,
+      }) || dirname(require.resolve(`${BABEL_PLUGIN_NAME}/package.json`));
+  } catch (e) {}
+
   api.modifyConfig((memo) => {
     let ReactCompilerConfig = api.userConfig.forget.ReactCompilerConfig || {};
     return {
       ...memo,
       extraBabelPlugins: [
         ...(memo.extraBabelPlugins || []),
-        [require.resolve('babel-plugin-react-compiler'), ReactCompilerConfig],
+        [libPath, ReactCompilerConfig],
       ],
     };
   });
