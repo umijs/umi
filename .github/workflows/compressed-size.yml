@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v4
 
       - name: Use latest LTS Node.js
         uses: actions/setup-node@v3
