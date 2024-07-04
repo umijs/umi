@@ -424,7 +424,7 @@ export default { ${icons.join(', ')} };
     });
 
     // 是否启用了 icons 功能
-    const isIconsFeatureEnable = !!api.config.icons;
+    const isIconsFeatureEnable = api.isPluginEnable('icons');
     // runtime.tsx
     api.writeTmpFile({
       path: 'runtime.tsx',
