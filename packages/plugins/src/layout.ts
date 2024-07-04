@@ -423,13 +423,19 @@ export default { ${icons.join(', ')} };
       `,
     });
 
+    // 是否启用了 icons 功能
+    const isIconsFeatureEnable = !!api.config.icons;
     // runtime.tsx
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
 import React from 'react';
 import icons from './icons';
-import { Icon, getIconComponent } from '@umijs/max';
+${
+  isIconsFeatureEnable
+    ? `import { Icon, getIconComponent } from '@umijs/max';`
+    : ''
+}
 
 function formatIcon(name: string) {
   return name
@@ -443,10 +449,14 @@ export function patchRoutes({ routes }) {
   Object.keys(routes).forEach(key => {
     const { icon } = routes[key];
     if (icon && typeof icon === 'string') {
-      const Component = getIconComponent(icon)
+      ${
+        isIconsFeatureEnable
+          ? `const Component = getIconComponent(icon)
       if (Component) {
         routes[key].icon = <Icon icon={icon} width={14} height={14} />;
         return;
+      }`
+          : ''
       }
 
       const upperIcon = formatIcon(icon);
