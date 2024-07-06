@@ -4,7 +4,10 @@ describe('alias config transformer', () => {
   test('no alias', () => {
     expect(alias({}, {})).toEqual({
       resolve: {
-        alias: [{ find: /^~/, replacement: '' }],
+        alias: [
+          { find: /^~/, replacement: '' },
+          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
+        ],
       },
     });
   });
