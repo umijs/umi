@@ -32,6 +32,7 @@ describe('alias config transformer', () => {
             replacement: '/umi-next/examples/umi',
           },
           { find: /^~/, replacement: '' },
+          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
         ],
       },
     });
@@ -61,6 +62,7 @@ describe('alias config transformer', () => {
             replacement: '/umi-next/examples/umi',
           },
           { find: /^~/, replacement: '' },
+          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
         ],
       },
     });
@@ -87,6 +89,7 @@ describe('alias config transformer', () => {
             replacement: 'umi',
           },
           { find: /^~/, replacement: '' },
+          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
         ],
       },
     });
