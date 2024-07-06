@@ -1,4 +1,3 @@
-import { chalk } from '@umijs/utils';
 import path from 'path';
 import { IApi } from '../../types';
 import { isWindows } from '../../utils/platform';
@@ -50,12 +49,8 @@ export default (api: IApi) => {
       api.logger.info(`Using mako@${pkg.version}`);
       const isBigfish = process.env.BIGFISH_INFO;
       if (!isBigfish) {
-        api.logger.warn(
-          chalk.yellow(
-            chalk.bold(
-              `Mako is an extremely fast, production-grade web bundler based on Rust. And it's still under active development and is not yet ready for production use. If you encounter any issues, please checkout https://makojs.dev/ to join the community and report the issue.`,
-            ),
-          ),
+        api.logger.info(
+          `Mako is an extremely fast, production-grade web bundler based on Rust. If you encounter any issues, please checkout https://makojs.dev/ to join the community and report the issue.`,
         );
       }
     } catch (e) {

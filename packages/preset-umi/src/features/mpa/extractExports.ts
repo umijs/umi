@@ -47,6 +47,7 @@ export async function extractExports(opts: {
     },
     bundle: true,
     write: false,
+    logLevel: 'error',
     entryPoints: [`${opts.entry}?entry`],
     plugins: [
       {
