@@ -100,6 +100,7 @@ export default async ({
   let pluginName = `umi-plugin-${name || 'demo'}`;
 
   const target = name ? join(cwd, name) : cwd;
+  const customRegistry = await detectUserRegistry();
 
   const { isCancel, text, select, intro, outro } = clackPrompts;
   const exitPrompt = () => {
@@ -144,15 +145,20 @@ export default async ({
       message: 'Pick Npm Registry',
       options: [
         {
-          label: 'npm',
+          label: 'Npm',
           value: ERegistry.npm,
         },
         {
-          label: 'taobao',
+          label: 'Taobao',
           value: ERegistry.taobao,
           hint: 'recommended for China',
         },
-      ],
+        customRegistry && {
+          label: 'Your npm config',
+          value: customRegistry,
+          hint: customRegistry,
+        },
+      ].filter(Boolean) as Parameters<typeof select>[0]['options'],
       initialValue: ERegistry.npm,
     })) as ERegistry;
   };
@@ -389,5 +395,34 @@ async function getPnpmVersion() {
     return stdout.trim();
   } catch (e) {
     throw new Error('Please install pnpm first', { cause: e });
+  }
+}
+
+async function detectUserRegistry() {
+  const isChinaRegistry = (registry: string) => {
+    return [
+      'registry.npm.taobao.org',
+      'registry.npmmirror.com',
+      'r.cnpmjs.org',
+      // What's this? https://cnodejs.org/topic/61405b76fe0c5109a7aea0ed
+      'registry.nlark.com',
+    ].some((i) => registry.includes(i));
+  };
+  const isNpmRegistry = (registry: string) => {
+    return [
+      'registry.npmjs.org',
+      'registry.npmjs.com',
+      'registry.yarnpkg.com',
+    ].some((i) => registry.includes(i));
+  };
+
+  try {
+    const { stdout } = await execa.execa('npm', ['config', 'get', 'registry']);
+    const registry = stdout.trim();
+    const hasCustomRegistry =
+      !isChinaRegistry(registry) && !isNpmRegistry(registry);
+    return hasCustomRegistry ? registry : undefined;
+  } catch {
+    return;
   }
 }
