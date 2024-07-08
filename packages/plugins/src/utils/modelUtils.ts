@@ -126,30 +126,31 @@ export class ModelUtils {
   getAllModels(opts: { sort?: object; extraModels: string[] }) {
     // reset count
     this.count = 1;
-    const models = lodash
-      .uniq([
-        ...this.getModels({
-          base: join(this.api.paths.absSrcPath, 'models'),
-          pattern: '**/*.{ts,tsx,js,jsx}',
-        }),
-        ...this.getModels({
-          base: join(this.api.paths.absPagesPath),
-          pattern: '**/models/**/*.{ts,tsx,js,jsx}',
-        }),
-        ...this.getModels({
-          base: join(this.api.paths.absPagesPath),
-          pattern: '**/model.{ts,tsx,js,jsx}',
-        }),
-        ...opts.extraModels,
-      ])
-      .map((file: string) => {
-        return new Model(
-          file,
-          this.api.paths.absSrcPath,
-          opts.sort,
-          this.count++,
-        );
-      });
+    const modelFiles = [
+      ...this.getModels({
+        base: join(this.api.paths.absSrcPath, 'models'),
+        pattern: '**/*.{ts,tsx,js,jsx}',
+      }),
+      ...this.getModels({
+        base: join(this.api.paths.absPagesPath),
+        pattern: '**/models/**/*.{ts,tsx,js,jsx}',
+      }),
+      ...this.getModels({
+        base: join(this.api.paths.absPagesPath),
+        pattern: '**/model.{ts,tsx,js,jsx}',
+      }),
+      ...opts.extraModels,
+    ];
+    // remove duplicate
+    const modelUniqFiles = lodash.uniq(modelFiles);
+    const models = modelUniqFiles.map((file: string) => {
+      return new Model(
+        file,
+        this.api.paths.absSrcPath,
+        opts.sort,
+        this.count++,
+      );
+    });
     // check duplicate
     const namespaces = models.map((model) => model.namespace);
     if (new Set(namespaces).size !== namespaces.length) {
