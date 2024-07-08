@@ -8,7 +8,7 @@ const assetsDir = join(__dirname, '../../../assets');
 
 export default (api: IApi) => {
   api.addBeforeMiddlewares(async () => {
-    if (api.config.mako) return [];
+    // if (api.config.mako) return [];
     // get loading html
     const $ = await api.applyPlugins<typeof cheerio>({
       key: 'modifyDevToolLoadingHTML',
@@ -38,6 +38,7 @@ export default (api: IApi) => {
             const isMFSUEnable = api.config.mfsu !== false;
 
             return res.json({
+              bundler: api.appData.bundler,
               bundleStatus: api.appData.bundleStatus,
               ...(isMFSUEnable && !enableVite
                 ? {
