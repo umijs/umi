@@ -36,7 +36,7 @@ jobs:
 
       - name: Install pnpm
         if: ${{ matrix.node-version != '14.x' }}
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v4
 
       - name: Get pnpm version (node 14)
         if: ${{ matrix.node-version == '14.x' }}
