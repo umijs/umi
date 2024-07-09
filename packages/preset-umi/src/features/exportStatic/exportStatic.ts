@@ -327,6 +327,7 @@ export function modifyContextOpts(memo: any) {
         };
       }
     }
+    return routes;
   });
   api.addRuntimePlugin(() => {
     return [`@@/core/exportStaticRuntimePlugin.ts`];
