@@ -11,7 +11,7 @@ import {
 import { readFileSync } from 'fs';
 import { basename, dirname, extname, format, join, relative } from 'path';
 import { IApi } from 'umi';
-import { chalk, glob, winPath } from 'umi/plugin-utils';
+import { chalk, glob, lodash, winPath } from 'umi/plugin-utils';
 import { getIdentifierDeclaration } from './astUtils';
 
 export function transformSync(content: any, opts: any) {
@@ -126,7 +126,7 @@ export class ModelUtils {
   getAllModels(opts: { sort?: object; extraModels: string[] }) {
     // reset count
     this.count = 1;
-    const models = [
+    const modelFiles = [
       ...this.getModels({
         base: join(this.api.paths.absSrcPath, 'models'),
         pattern: '**/*.{ts,tsx,js,jsx}',
@@ -140,7 +140,10 @@ export class ModelUtils {
         pattern: '**/model.{ts,tsx,js,jsx}',
       }),
       ...opts.extraModels,
-    ].map((file: string) => {
+    ];
+    // remove duplicate
+    const modelUniqFiles = lodash.uniq(modelFiles);
+    const models = modelUniqFiles.map((file: string) => {
       return new Model(
         file,
         this.api.paths.absSrcPath,
