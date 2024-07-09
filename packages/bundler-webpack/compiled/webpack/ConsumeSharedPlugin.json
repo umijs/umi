@@ -36,7 +36,9 @@
           "anyOf": [
             {
               "description": "No fallback module.",
-              "enum": [false]
+              "enum": [
+                false
+              ]
             },
             {
               "$ref": "#/definitions/ConsumesItem"
@@ -53,7 +55,9 @@
           "anyOf": [
             {
               "description": "No version requirement check.",
-              "enum": [false]
+              "enum": [
+                false
+              ]
             },
             {
               "description": "Version as string. Can be prefixed with '^' or '~' for minimum matches. Each part of the version should be separated by a dot '.'.",
@@ -116,5 +120,7 @@
       "minLength": 1
     }
   },
-  "required": ["consumes"]
+  "required": [
+    "consumes"
+  ]
 }
