@@ -7,7 +7,7 @@ toc: content
 Umi 官方提供了一个脚手架 ，可以轻松快速创建一个项目：
 
 ```bash
-# 在当前文件夹下创建项目
+# 在向导中输入文件夹名称
 pnpm create umi
 # 在当前目录的 my-umi-app 文件夹下创建项目
 pnpm create umi my-umi-app

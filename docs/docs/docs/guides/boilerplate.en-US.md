@@ -9,7 +9,7 @@ translated_at: '2024-03-17T10:35:15.206Z'
 Umi officially provides a scaffold, which allows you to easily and quickly create a project:
 
 ```bash
-# Create a project in the current folder
+# Input the path to the project directory when prompted by the wizard
 pnpm create umi
 # Create a project under the my-umi-app folder in the current directory
 pnpm create umi my-umi-app
