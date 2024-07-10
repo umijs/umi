@@ -21,7 +21,7 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     // like vite, use to pre-bundling dependencies in vite mode
     if (isWindows) {
-      memo.alias['react-helmet-async'] = 'react-helmet-async';
+      memo.alias['react-helmet-async'] = require.resolve('react-helmet-async');
     }
     memo.alias['@fs'] = api.cwd;
     return memo;
