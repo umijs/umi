@@ -1,5 +1,4 @@
 import type { IApi } from '../../types';
-import { isWindows } from '../../utils/platform';
 
 export default (api: IApi) => {
   api.describe({
@@ -20,9 +19,7 @@ export default (api: IApi) => {
 
   api.modifyConfig((memo) => {
     // like vite, use to pre-bundling dependencies in vite mode
-    if (isWindows) {
-      memo.alias['react-helmet-async'] = 'react-helmet-async';
-    }
+
     memo.alias['@fs'] = api.cwd;
     return memo;
   });
