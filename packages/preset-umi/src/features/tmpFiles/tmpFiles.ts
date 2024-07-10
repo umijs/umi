@@ -1,6 +1,6 @@
 import { importLazy, lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
-import { basename, dirname, join } from 'path';
+import { basename, dirname, join, relative } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { getMarkupArgs } from '../../commands/dev/getMarkupArgs';
 import { TEMPLATES_DIR } from '../../constants';
@@ -22,6 +22,8 @@ export default (api: IApi) => {
       },
     },
   });
+
+  const TSCONFIG_FILE_NAME = 'tsconfig.json';
 
   api.onGenerateFiles(async (opts) => {
     const rendererPath = winPath(
@@ -46,6 +48,12 @@ export default (api: IApi) => {
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
     const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
     const isTslibInstalled = !!api.appData.typescript.tslibVersion;
+
+    // https://github.com/umijs/umi/issues/12545
+    const tsconfigFilePath = join(api.paths.absTmpPath, TSCONFIG_FILE_NAME);
+    const relativeUmiDirPath = winPath(
+      relative(dirname(tsconfigFilePath), umiDir),
+    );
 
     // x 1、basic config
     // x 2、alias
@@ -81,7 +89,7 @@ export default (api: IApi) => {
         paths: {
           '@/*': [`${srcPrefix}*`],
           '@@/*': [`${umiTempDir}/*`],
-          [`${api.appData.umi.importSource}`]: [umiDir],
+          [`${api.appData.umi.importSource}`]: [relativeUmiDirPath],
           [`${api.appData.umi.importSource}/typings`]: [
             `${umiTempDir}/typings`,
           ],
@@ -110,7 +118,7 @@ export default (api: IApi) => {
 
     api.writeTmpFile({
       noPluginDir: true,
-      path: 'tsconfig.json',
+      path: TSCONFIG_FILE_NAME,
       content: JSON.stringify(umiTsConfig, null, 2),
     });
 
