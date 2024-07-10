@@ -33,7 +33,6 @@ export default (api: IApi) => {
               })
               .partial(),
             flexBugs: zod.boolean(),
-            moduleIdStrategy: zod.string(),
             optimization: zod
               .object({
                 skipModules: zod.boolean(),
