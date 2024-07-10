@@ -4,10 +4,7 @@ describe('alias config transformer', () => {
   test('no alias', () => {
     expect(alias({}, {})).toEqual({
       resolve: {
-        alias: [
-          { find: /^~/, replacement: '' },
-          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
-        ],
+        alias: [{ find: /^~/, replacement: '' }],
       },
     });
   });
@@ -32,7 +29,6 @@ describe('alias config transformer', () => {
             replacement: '/umi-next/examples/umi',
           },
           { find: /^~/, replacement: '' },
-          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
         ],
       },
     });
@@ -62,7 +58,6 @@ describe('alias config transformer', () => {
             replacement: '/umi-next/examples/umi',
           },
           { find: /^~/, replacement: '' },
-          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
         ],
       },
     });
@@ -89,7 +84,6 @@ describe('alias config transformer', () => {
             replacement: 'umi',
           },
           { find: /^~/, replacement: '' },
-          { find: /react-helmet-async/, replacement: 'react-helmet-async' },
         ],
       },
     });
