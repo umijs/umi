@@ -42,12 +42,6 @@ $ pnpm -v
 
 ## Create a Project
 
-First, find a place to create a new empty directory.
-
-```bash
-$ mkdir myapp && cd myapp
-```
-
 Create a project using the official tool,
 
 PNPM

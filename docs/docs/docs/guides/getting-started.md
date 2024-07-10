@@ -40,11 +40,6 @@ $ pnpm -v
 
 ## 创建项目
 
-先找个地方建个空目录。
-
-```bash
-$ mkdir myapp && cd myapp
-```
 
 通过官方工具创建项目，
 
