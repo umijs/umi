@@ -137,9 +137,9 @@ group:
 
 以上是 Umi 4 目前的新功能。
 
-除此之外，还有一些计划在正式版发布之前做的事情。包括 <span style={{color:'red'}}>api route、umi server and adapter、route loader、稳定的 lint、更多命令、组件研发 father 4、文档工具 dumi 2</span> 等，会在之后的 RC 版本中与大家见面。
+除此之外，还有一些计划在正式版发布之前做的事情。包括 <span style="color:red;">api route、umi server and adapter、route loader、稳定的 lint、更多命令、组件研发 father 4、文档工具 dumi 2</span> 等，会在之后的 RC 版本中与大家见面。
 
-欢迎大家尝鲜 Umi 4，官方文档有准备 ant-design-pro 从 Umi 3 到 4 的升级文档。同时 RC 阶段，还准备了一个<span style={{color:'red',fontWeight:'bold'}}>手把手升级的微信交流群</span>，欢迎 Umi 4 的先行者们加入，祝大家升级顺利，也提前祝大家新年快乐 🧨，🐯 年吉祥。
+欢迎大家尝鲜 Umi 4，官方文档有准备 ant-design-pro 从 Umi 3 到 4 的升级文档。同时 RC 阶段，还准备了一个<span style="color:red;fontWeight:bold;">手把手升级的微信交流群</span>，欢迎 Umi 4 的先行者们加入，祝大家升级顺利，也提前祝大家新年快乐 🧨，🐯 年吉祥。
 
 <p>
   <img
