@@ -1,6 +1,49 @@
 import type { IApi } from '../../types';
 import { isWindows } from '../../utils/platform';
 
+import { winPath } from '@umijs/utils';
+import { dirname } from 'path';
+import { resolveProjectDep } from '../../utils/resolveProjectDep';
+
+// 解析react-helmet-async 在renderer-react中的路径
+let corePath: string | undefined;
+const REACT_HELMET_ASYNC = 'react-helmet-async';
+const RENDERER_REACT = '@umijs/renderer-react';
+let pkgPath: string;
+const getReactHelmetAsyncPath = (api: IApi) => {
+  if (corePath) {
+    return corePath;
+  }
+  const defaultPkgPath = winPath(
+    dirname(require.resolve(`${RENDERER_REACT}/package.json`)),
+  );
+  // 解析 renderer-react 包的路径
+  try {
+    const rendererReactPath = resolveProjectDep({
+      pkg: api.pkg,
+      cwd: api.cwd,
+      dep: RENDERER_REACT,
+    });
+    pkgPath = rendererReactPath ? winPath(rendererReactPath) : defaultPkgPath;
+  } catch (e: any) {
+    throw new Error(
+      `[reactQuery] package '${RENDERER_REACT}' resolve failed, ${e.message}`,
+    );
+  }
+  // 基于 renderer-react 的路径找到 react-helmet-async
+  try {
+    corePath = winPath(
+      dirname(
+        require.resolve(`${REACT_HELMET_ASYNC}/package.json`, {
+          paths: [pkgPath],
+        }),
+      ),
+    );
+    console.log(corePath);
+  } catch {}
+  return corePath;
+};
+
 export default (api: IApi) => {
   api.describe({
     key: 'vite',
@@ -14,14 +57,14 @@ export default (api: IApi) => {
 
   api.modifyAppData((memo) => {
     memo.bundler = 'vite';
-
     return memo;
   });
 
   api.modifyConfig((memo) => {
     // like vite, use to pre-bundling dependencies in vite mode
     if (isWindows) {
-      memo.alias['react-helmet-async'] = require.resolve('react-helmet-async');
+      const corePath = getReactHelmetAsyncPath(api);
+      memo.alias[REACT_HELMET_ASYNC] = corePath;
     }
     memo.alias['@fs'] = api.cwd;
     return memo;
