@@ -19,7 +19,6 @@ const getReactHelmetAsyncPath = (api: IApi) => {
   // 解析 renderer-react 包的路径
   try {
     const rendererReactPath = require.resolve(RENDERER_REACT);
-
     pkgPath = rendererReactPath ? winPath(rendererReactPath) : defaultPkgPath;
   } catch (e: any) {
     throw new Error(
