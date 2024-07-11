@@ -2449,8 +2449,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-esbuild
       '@umijs/bundler-mako':
-        specifier: 0.7.5
-        version: 0.7.5
+        specifier: 0.7.6-beta.1
+        version: 0.7.6-beta.1
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
@@ -18634,8 +18634,8 @@ packages:
       - supports-color
     dev: true
 
-  /@umijs/bundler-mako@0.7.5:
-    resolution: {integrity: sha512-XMmGub3g5azoum61BP4/ed3KLsLa5FCeXkG2VtZ0GQo7OMoeQZfciWcH9IsEmvqrd2mmNifrbKjFdcXgroassA==}
+  /@umijs/bundler-mako@0.7.6-beta.1:
+    resolution: {integrity: sha512-hSEteVGglXl+q4LFUi2etOCM8K7Ttq/IERt1fHrrSxNT6WC1K9dbroBv5ovhC8ATp6SPId6UCnhJBPiBROygOg==}
     dependencies:
       '@umijs/bundler-utils': 4.1.2
       '@umijs/mako': 0.7.5
