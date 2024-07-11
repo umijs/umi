@@ -9,7 +9,7 @@ let corePath: string | undefined;
 const REACT_HELMET_ASYNC = 'react-helmet-async';
 const RENDERER_REACT = '@umijs/renderer-react';
 let pkgPath: string;
-const getReactHelmetAsyncPath = (api: IApi) => {
+const getReactHelmetAsyncPath = () => {
   if (corePath) {
     return corePath;
   }
@@ -19,6 +19,7 @@ const getReactHelmetAsyncPath = (api: IApi) => {
   // 解析 renderer-react 包的路径
   try {
     const rendererReactPath = require.resolve(RENDERER_REACT);
+
     pkgPath = rendererReactPath ? winPath(rendererReactPath) : defaultPkgPath;
   } catch (e: any) {
     throw new Error(
@@ -58,7 +59,7 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     // like vite, use to pre-bundling dependencies in vite mode
     if (isWindows) {
-      const corePath = getReactHelmetAsyncPath(api);
+      const corePath = getReactHelmetAsyncPath();
       memo.alias[REACT_HELMET_ASYNC] = corePath;
     }
     memo.alias['@fs'] = api.cwd;
