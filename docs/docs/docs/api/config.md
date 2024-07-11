@@ -963,6 +963,14 @@ legacy: {}
 links: [{ href: '/foo.css', rel: 'preload' }],
 ```
 
+## mako <Badge>4.3.2+</Badge>
+
+- 类型: `{ plugins?: Array<{ load?: ((...args: any[]) => unknown) | undefined; generateEnd?: ((...args: any[]) => unknown) | undefined; }> | undefined; px2rem?: { root?: number | undefined; propBlackList?: Array<string> | undefined; propWhiteList?: Array<string> | undefined; selectorBlackList?: Array<string> | undefined; selectorWhiteList?: Array<string> | undefined; selectorDoubleList?: Array<string> | undefined; } | undefined; experimental?: { webpackSyntaxValidate?: Array<string> | undefined; } | undefined; flexBugs?: boolean | undefined; moduleIdStrategy?: string | undefined; optimization?: { skipModules?: boolean | undefined; } | undefined; }`
+- 默认值: `{}`
+
+使用 [mako](https://makojs.dev/) 用于编译以显著提高构建速度。
+通过配置以启用这个能力，配置将传递给mako。这里只提供了一些常用的配置，更多的配置可以在 `mako.config.json` 文件中设置。有关更多信息，请参阅[mako-config文档](https://makojs.dev/docs/config)。
+
 ## manifest
 
 - 类型：`{ fileName: string; basePath: string }`
