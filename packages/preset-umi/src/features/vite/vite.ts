@@ -1,11 +1,10 @@
+import { winPath } from '@umijs/utils';
+import path from 'path';
 import type { IApi } from '../../types';
 import { isWindows } from '../../utils/platform';
 
-import { winPath } from '@umijs/utils';
-import { dirname } from 'path';
-import { resolveProjectDep } from '../../utils/resolveProjectDep';
-
-// 解析react-helmet-async 在renderer-react中的路径
+// 解析 react-helmet-async 在 renderer-react 中的路径
+const { dirname } = path;
 let corePath: string | undefined;
 const REACT_HELMET_ASYNC = 'react-helmet-async';
 const RENDERER_REACT = '@umijs/renderer-react';
@@ -19,11 +18,8 @@ const getReactHelmetAsyncPath = (api: IApi) => {
   );
   // 解析 renderer-react 包的路径
   try {
-    const rendererReactPath = resolveProjectDep({
-      pkg: api.pkg,
-      cwd: api.cwd,
-      dep: RENDERER_REACT,
-    });
+    const rendererReactPath = require.resolve(RENDERER_REACT);
+
     pkgPath = rendererReactPath ? winPath(rendererReactPath) : defaultPkgPath;
   } catch (e: any) {
     throw new Error(
