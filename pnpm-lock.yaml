@@ -1127,6 +1127,18 @@ importers:
         specifier: workspace:*
         version: link:../../packages/umi
 
+  examples/ssg-basename:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
+  examples/ssr-basename:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
   examples/ssr-demo:
     dependencies:
       '@ant-design/cssinjs':
@@ -1147,12 +1159,6 @@ importers:
       express:
         specifier: 4.18.2
         version: 4.18.2
-      umi:
-        specifier: workspace:*
-        version: link:../../packages/umi
-
-  examples/ssr-export-static-basename:
-    dependencies:
       umi:
         specifier: workspace:*
         version: link:../../packages/umi
@@ -24145,7 +24151,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}

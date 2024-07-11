@@ -1,6 +1,5 @@
 export default {
   ssr: {},
   exportStatic: {},
-  hash: true,
-  base: '/a/',
+  base: '/base/',
 };
