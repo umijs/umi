@@ -17,6 +17,27 @@ export default (api: IApi) => {
                 })
                 .partial(),
             ),
+            px2rem: zod
+              .object({
+                root: zod.number(),
+                propBlackList: zod.array(zod.string()),
+                propWhiteList: zod.array(zod.string()),
+                selectorBlackList: zod.array(zod.string()),
+                selectorWhiteList: zod.array(zod.string()),
+                selectorDoubleList: zod.array(zod.string()),
+              })
+              .partial(),
+            experimental: zod
+              .object({
+                webpackSyntaxValidate: zod.array(zod.string()),
+              })
+              .partial(),
+            flexBugs: zod.boolean(),
+            optimization: zod
+              .object({
+                skipModules: zod.boolean(),
+              })
+              .partial(),
           })
           .partial();
       },
