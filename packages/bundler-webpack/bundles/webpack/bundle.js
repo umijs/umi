@@ -19,38 +19,6 @@ const FetchCompileAsyncWasmPlugin = require('webpack/lib/web/FetchCompileAsyncWa
 const FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmPlugin')
 const StringXor = require('webpack/lib/util/StringXor')
 
-// babel-plugin-react-css-modules
-const TemplatedPathPlugin = require('webpack/lib/TemplatedPathPlugin')
-const createHash = require('webpack/lib/util/createHash')
-
-// module federation v2
-const StartupChunkDependenciesPlugin = require('webpack/lib/runtime/StartupChunkDependenciesPlugin')
-const identifier = require('webpack/lib/util/identifier')
-const compileBooleanMatcher = require('webpack/lib/util/compileBooleanMatcher')
-const SortableSet = require('webpack/lib/util/SortableSet')
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
-const NodeEnvironmentPlugin = require('webpack/lib/node/NodeEnvironmentPlugin')
-const makeSerializable = require('webpack/lib/util/makeSerializable')
-const StaticExportsDependency = require('webpack/lib/dependencies/StaticExportsDependency')
-const EntryDependency = require('webpack/lib/dependencies/EntryDependency')
-const ModuleFactory = require('webpack/lib/ModuleFactory')
-const ModuleDependency = require('webpack/lib/dependencies/ModuleDependency')
-const ResolverFactory = require('webpack/lib/ResolverFactory')
-const FileSystemInfo = require('webpack/lib/FileSystemInfo')
-const ObjectMiddleware = require('webpack/lib/serialization/ObjectMiddleware')
-const extractUrlAndGlobal = require('webpack/lib/util/extractUrlAndGlobal')
-const semver = require('webpack/lib/util/semver')
-const ModuleNotFoundError = require('webpack/lib/ModuleNotFoundError')
-const LazySet = require('webpack/lib/util/LazySet')
-const fs = require('webpack/lib/util/fs')
-const comparators = require('webpack/lib/util/comparators')
-const ConsumeSharedModule = require('webpack/lib/sharing/ConsumeSharedModule')
-// name includes `.` / `-` should be replaced
-const JavascriptHotModuleReplacementRuntime = require('webpack/lib/hmr/JavascriptHotModuleReplacement.runtime.js')
-const createSchemaValidation = require('webpack/lib/util/create-schema-validation')
-const ExternalsTypeCheck = require("webpack/schemas/plugins/container/ExternalsType.check.js")
-const ConsumeSharedPluginCheck = require("webpack/schemas/plugins/sharing/ConsumeSharedPlugin.check.js")
-
 export {
   BasicEffectRulePlugin,
   BasicMatcherRulePlugin,
@@ -65,36 +33,5 @@ export {
   WebWorkerTemplatePlugin,
   FetchCompileAsyncWasmPlugin,
   FetchCompileWasmPlugin,
-  StringXor,
-
-  // babel-plugin-react-css-modules
-  TemplatedPathPlugin,
-  createHash,
-
-  // module federation v2
-  StartupChunkDependenciesPlugin,
-  identifier,
-  compileBooleanMatcher,
-  SortableSet,
-  ModuleFederationPlugin,
-  NodeEnvironmentPlugin,
-  makeSerializable,
-  StaticExportsDependency,
-  EntryDependency,
-  ModuleFactory,
-  ModuleDependency,
-  ResolverFactory,
-  FileSystemInfo,
-  ObjectMiddleware,
-  extractUrlAndGlobal,
-  semver,
-  ModuleNotFoundError,
-  LazySet,
-  fs,
-  comparators,
-  ConsumeSharedModule,
-  JavascriptHotModuleReplacementRuntime,
-  createSchemaValidation,
-  ExternalsTypeCheck,
-  ConsumeSharedPluginCheck,
+  StringXor
 }

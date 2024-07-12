@@ -21,22 +21,8 @@ const hookPropertyMap = new Map([
 
 deepImports.forEach((item: string) => {
   const name = item.split('/').pop();
-  const targetPath = resolve(`compiled/webpack/${name}`);
-  const hookPathList: string[] = [item];
-  const isJson = item.endsWith('.json');
-  if (!isJson) {
-    const isEndWithJs = item.endsWith('.js');
-    if (isEndWithJs) {
-      const nameWithoutJs = item.replace(/\.js$/, '');
-      hookPathList.push(nameWithoutJs);
-    } else {
-      const nameWithJs = `${item}.js`;
-      hookPathList.push(nameWithJs);
-    }
-  }
-  hookPathList.forEach((hookPath) => {
-    hookPropertyMap.set(hookPath, targetPath);
-  });
+  hookPropertyMap.set(item, resolve(`compiled/webpack/${name}`));
+  hookPropertyMap.set(`${item}.js`, resolve(`compiled/webpack/${name}`));
 });
 
 const mod = require('module');
