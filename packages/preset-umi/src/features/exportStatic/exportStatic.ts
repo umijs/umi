@@ -24,7 +24,7 @@ function isHtmlRoute(route: IRoute): boolean {
     // skip layout
     !route.isLayout &&
     // skip duplicate route
-    !route.path.endsWith('.html') &&
+    !route.noHtml &&
     // skip dynamic route for win, because `:` is not allowed in file name
     (!IS_WIN || !route.path.includes('/:')) &&
     // skip `*` route, because `*` is not working for most site serve services
@@ -324,6 +324,7 @@ export function modifyContextOpts(memo: any) {
         routes[key] = {
           ...route,
           path: getHtmlPath(route.path, htmlSuffix),
+          noHtml: true,
         };
       }
     }
