@@ -191,6 +191,8 @@ icon: 'HomeFilled';
 icon: 'HomeTwoTone';
 ```
 
+兼容[icons](../../docs/api/config#icons)功能，打开icons功能后，可以使用图标集或者本地的图标。具体请参考icons功能的相关配置和使用方法。
+
 #### access
 
 - Type: `string`
