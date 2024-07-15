@@ -27,6 +27,20 @@ export default (api: IApi) => {
 
   const sharedMap = new Map();
 
+  api.onStart(() => {
+    if (api.config?.mako) return;
+    // don't print ad in bigfish framework
+    if (process.env.BIGFISH_VERSION) return;
+    if (process.env.MAKO_AD === 'none') return;
+    if (api.pkg.dependencies?.['umi-plugin-mako']) return;
+
+    console.info(
+      chalk.yellow.bold(
+        'Mako https://makojs.dev is a new fast Rust based bundler from us, which is heavily optimized for umi and much faster than webpack. Visit https://makojs.dev/docs/getting-started#bundle-with-umi for more details if you want to give it a try.',
+      ),
+    );
+  });
+
   api.onDevCompileDone({
     fn({ stats, type, isFirstCompile }) {
       // don't need ssr bundler chunks
@@ -35,29 +49,6 @@ export default (api: IApi) => {
       }
       // store client build chunks
       sharedMap.set('chunks', stats.compilation.chunks);
-
-      // mfsu ad
-      if (
-        // allow user to disable mfsu ad
-        process.env.MFSU_AD !== 'none' &&
-        // mfsu is not enable
-        !(api.config.mfsu || process.env.ENABLE_MFSU)
-      ) {
-        const { startTime = 0, endTime = 0 } = stats || {};
-        const diff = endTime - startTime;
-        const devStartTips =
-          '启动时间有点慢，试试新出的 MFSU 方案，1s+ 完成启动，详见 https://github.com/umijs/umi/issues/6766';
-        const hmrTips =
-          '热更新有点慢，试试新出的 MFSU 方案，让热更新回到 500ms 内，详见 https://github.com/umijs/umi/issues/6766';
-        if (isFirstCompile && diff > 30000) {
-          console.log();
-          console.log(chalk.red.bold(devStartTips));
-        }
-        if (!isFirstCompile && diff > 3000) {
-          console.log();
-          console.log(chalk.red.bold(hmrTips));
-        }
-      }
     },
     // 在 commands/dev/dev.ts 的 onDevCompileDone 前执行，避免卡主
     stage: -1,
