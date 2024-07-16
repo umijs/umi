@@ -11,7 +11,7 @@ export const Hero = () => {
         <div className="left">
           <div className="bigLogo" />
           <div className="actions">
-            <Link to="/docs/tutorials/getting-started">
+            <Link to="/docs/guides/getting-started">
               <div className="button">快速上手 →</div>
             </Link>
             <div className="githubStar">
