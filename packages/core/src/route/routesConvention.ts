@@ -39,7 +39,7 @@ export function getConventionRoutes(opts: {
   });
   function defineNestedRoutes(defineRoute: any, parentId?: string) {
     const childRouteIds = parentId
-      ? parentToChildrenMap.get(parentId)
+      ? parentToChildrenMap.get(parentId) || []
       : routeIds;
     for (let routeId of childRouteIds) {
       let routePath = createRoutePath(
