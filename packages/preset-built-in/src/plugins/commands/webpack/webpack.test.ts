@@ -134,5 +134,7 @@ test('inpect + print', async () => {
     },
   });
   reset();
-  expect(reset.messages[0][1]).toContain('define');
+  expect(reset.messages[0][1]).toContain(
+    'Mako https://makojs.dev is a new fast Rust based bundler from us, which is heavily optimized for umi and much faster than webpack. Visit https://makojs.dev/docs/getting-started#bundle-with-umi for more details if you want to give it a try.',
+  );
 });
