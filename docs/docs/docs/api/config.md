@@ -237,6 +237,8 @@ depPerChunk 和 bigVendors 类似，不同的是把依赖按 package name + vers
 
 granularChunks 在 bigVendors 和 depPerChunk 之间取了中间值，同时又能在缓存效率上有更好的利用。无特殊场景，建议用 granularChunks 策略。
 
+不配置时为 `null`，表示**使用构建器的默认分包方案而不是不分包**，在 Webpack 和 Mako 下都是根据 `import()` 进行 chunk 拆分， 比如 `await import('./Foo.tsx')` 将会为 `Foo.tsx` 及其依赖生成独立的 chunk 文件，同时 entry 中已经存在的 module 会进行复用不会出现在拆分的 chunk 中。
+
 ## conventionLayout
 
 - 类型：`boolean`
