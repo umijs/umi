@@ -229,15 +229,13 @@ export async function clientLoader() {
 - 类型：`{ jsStrategy: 'bigVendors' | 'depPerChunk' | 'granularChunks'; jsStrategyOptions: {} }`
 - 默认值：`null`
 
-提供 code splitting 的策略方案。
+用于配置 code splitting 的策略方案，Umi 默认以路由为分界拆分 chunk，实现路由维度的 chunk 按需加载，如果在此之上希望继续提取公共 chunk，可以选择合适的策略进行配置，差异如下。
 
 bigVendors 是大 vendors 方案，会将 async chunk 里的 node_modules 下的文件打包到一起，可以避免重复。同时缺点是，1）单文件的尺寸过大，2）毫无缓存效率可言。
 
 depPerChunk 和 bigVendors 类似，不同的是把依赖按 package name + version 进行拆分，算是解了 bigVendors 的尺寸和缓存效率问题。但同时带来的潜在问题是，可能导致请求较多。我的理解是，对于非大型项目来说其实还好，因为，1）单个页面的请求不会包含非常多的依赖，2）基于 HTTP/2，几十个请求不算问题。但是，对于大型项目或巨型项目来说，需要考虑更合适的方案。
 
 granularChunks 在 bigVendors 和 depPerChunk 之间取了中间值，同时又能在缓存效率上有更好的利用。无特殊场景，建议用 granularChunks 策略。
-
-不配置时为 `null`，表示**使用构建器的默认分包方案而不是不分包**，在 Webpack 和 Mako 下都是根据 `import()` 进行 chunk 拆分， 比如 `await import('./Foo.tsx')` 将会为 `Foo.tsx` 及其依赖生成独立的 chunk 文件，同时 entry 中已经存在的 module 会进行复用不会出现在拆分的 chunk 中。
 
 ## conventionLayout
 
