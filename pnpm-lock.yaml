@@ -2423,8 +2423,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-esbuild
       '@umijs/bundler-mako':
-        specifier: 0.7.6-beta.2
-        version: 0.7.6-beta.2
+        specifier: 0.7.5
+        version: 0.7.5
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
@@ -18476,8 +18476,8 @@ packages:
       - supports-color
     dev: true
 
-  /@umijs/bundler-mako@0.7.6-beta.2:
-    resolution: {integrity: sha512-uMkbVKvoZYRe1Ws3oO3yLof8Ktwj/gS8rcmsh4OSMlOReyb9tZvGHucbtpW+ilvgThqegM0sJUhzgVdJKVQ4UQ==}
+  /@umijs/bundler-mako@0.7.5:
+    resolution: {integrity: sha512-XMmGub3g5azoum61BP4/ed3KLsLa5FCeXkG2VtZ0GQo7OMoeQZfciWcH9IsEmvqrd2mmNifrbKjFdcXgroassA==}
     dependencies:
       '@umijs/bundler-utils': 4.1.2
       '@umijs/mako': 0.7.5
@@ -20312,9 +20312,6 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependenciesMeta:
-      ajv:
-        optional: true
     dependencies:
       ajv: 8.11.0
 
@@ -48942,9 +48939,6 @@ packages:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
