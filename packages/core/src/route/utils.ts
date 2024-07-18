@@ -13,13 +13,6 @@ export function byLongestFirst(a: string, b: string): number {
   return b.length - a.length;
 }
 
-export function findParentRouteId(
-  routeIds: string[],
-  childRouteId: string,
-): string | undefined {
-  return routeIds.find((id) => childRouteId.startsWith(`${id}/`));
-}
-
 const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx', '.vue'];
 export function isRouteModuleFile(opts: { file: string; exclude?: RegExp[] }) {
   // TODO: add cache strategy
