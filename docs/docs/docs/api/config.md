@@ -229,7 +229,7 @@ export async function clientLoader() {
 - 类型：`{ jsStrategy: 'bigVendors' | 'depPerChunk' | 'granularChunks'; jsStrategyOptions: {} }`
 - 默认值：`null`
 
-提供 code splitting 的策略方案。
+用于配置 code splitting 的策略方案，Umi 默认以路由为分界拆分 chunk，实现路由维度的 chunk 按需加载，如果在此之上希望继续提取公共 chunk，可以选择合适的策略进行配置，差异如下。
 
 bigVendors 是大 vendors 方案，会将 async chunk 里的 node_modules 下的文件打包到一起，可以避免重复。同时缺点是，1）单文件的尺寸过大，2）毫无缓存效率可言。
 
