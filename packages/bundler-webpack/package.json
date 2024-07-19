@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "3.5.41",
+  "version": "3.5.42",
   "description": "@umijs/bundler-webpack",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -37,11 +37,11 @@
     "strip-ansi": "6.0.0"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "3.5.41",
+    "@umijs/bundler-utils": "3.5.42",
     "@umijs/case-sensitive-paths-webpack-plugin": "^1.0.1",
-    "@umijs/deps": "3.5.41",
-    "@umijs/types": "3.5.41",
-    "@umijs/utils": "3.5.41",
+    "@umijs/deps": "3.5.42",
+    "@umijs/types": "3.5.42",
+    "@umijs/utils": "3.5.42",
     "jest-worker": "26.6.2",
     "node-libs-browser": "2.2.1",
     "normalize-url": "1.9.1",
