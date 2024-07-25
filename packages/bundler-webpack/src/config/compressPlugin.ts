@@ -33,7 +33,7 @@ export async function addCompressPlugin(opts: IOpts) {
 
   // esbuild transform only allow `string[]` as target
   const esbuildTarget = getEsBuildTarget({
-    targets: userConfig.targets || {},
+    targets: { chrome: '80' },
     jsMinifier,
   });
   // 提升 esbuild 压缩产物的兼容性，比如不出现 ?? 这种语法
