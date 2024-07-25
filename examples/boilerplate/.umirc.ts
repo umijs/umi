@@ -60,7 +60,6 @@ export default defineConfig({
   mfsu: {
     esbuild: true,
   },
-  mako: {},
   // vite: {},
   deadCode: {
     exclude: ['pages/unused/**'],
