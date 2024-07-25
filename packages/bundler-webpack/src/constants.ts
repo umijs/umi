@@ -12,7 +12,7 @@ export enum MESSAGE_TYPE {
 }
 
 export const DEFAULT_BROWSER_TARGETS = {
-  chrome: 80,
+  chrome: 40,
 };
 
 export const DEFAULT_ESBUILD_TARGET_KEYS = [

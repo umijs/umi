@@ -1,13 +1,19 @@
+import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack';
 import { semver } from '@umijs/utils';
 import { IApi } from '../../types';
 
 export async function getBabelOpts(opts: { api: IApi }) {
   // TODO: 支持用户自定义
-  const shouldUseAutomaticRuntime = semver.gte(opts.api.appData.react.version, '17.0.0');
+  const shouldUseAutomaticRuntime = semver.gte(
+    opts.api.appData.react.version,
+    '17.0.0',
+  );
   const babelPresetOpts = await opts.api.applyPlugins({
     key: 'modifyBabelPresetOpts',
     initialValue: {
-      presetEnv: {},
+      presetEnv: {
+        targets: opts.api.userConfig.targets || DEFAULT_BROWSER_TARGETS,
+      },
       presetReact: {
         runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         // importSource cannot be set when runtime is classic

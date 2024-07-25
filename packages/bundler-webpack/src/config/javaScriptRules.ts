@@ -147,7 +147,9 @@ export async function addJavaScriptRules(opts: IOpts) {
             opts.babelPreset || [
               require.resolve('@umijs/babel-preset-umi'),
               {
-                presetEnv: {},
+                presetEnv: {
+                  targets: userConfig.targets,
+                },
                 presetReact: {},
                 presetTypeScript: {},
                 pluginTransformRuntime: {},

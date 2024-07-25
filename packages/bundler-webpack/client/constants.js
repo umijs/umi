@@ -12,7 +12,7 @@ var MESSAGE_TYPE = /* @__PURE__ */ ((MESSAGE_TYPE2) => {
   return MESSAGE_TYPE2;
 })(MESSAGE_TYPE || {});
 var DEFAULT_BROWSER_TARGETS = {
-  chrome: 80
+  chrome: 40
 };
 var DEFAULT_ESBUILD_TARGET_KEYS = [
   "chrome",
