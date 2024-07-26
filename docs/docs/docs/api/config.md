@@ -1467,9 +1467,11 @@ import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
 ## targets
 
 - 类型：`object`
-- 默认值：`{ chrome: 40 }`
+- 默认值：`{}`
 
 配置需要兼容的浏览器最低版本。Umi 会根据这个自定引入 polyfill、配置 autoprefixer 和做语法转换等。
+
+如果你不需要兼容早期浏览器，减少产物构建尺寸, 请将 `targets` 配置为 `{chrome: "80"}`。
 
 示例，
 

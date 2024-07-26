@@ -11,9 +11,7 @@ var MESSAGE_TYPE = /* @__PURE__ */ ((MESSAGE_TYPE2) => {
   MESSAGE_TYPE2["invalid"] = "invalid";
   return MESSAGE_TYPE2;
 })(MESSAGE_TYPE || {});
-var DEFAULT_BROWSER_TARGETS = {
-  chrome: 40
-};
+var DEFAULT_BROWSER_TARGETS = {};
 var DEFAULT_ESBUILD_TARGET_KEYS = [
   "chrome",
   "firefox",

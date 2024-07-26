@@ -11,9 +11,7 @@ export enum MESSAGE_TYPE {
   invalid = 'invalid',
 }
 
-export const DEFAULT_BROWSER_TARGETS = {
-  chrome: 40,
-};
+export const DEFAULT_BROWSER_TARGETS = {};
 
 export const DEFAULT_ESBUILD_TARGET_KEYS = [
   'chrome',

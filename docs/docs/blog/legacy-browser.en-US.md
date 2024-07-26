@@ -9,7 +9,7 @@ group:
 
 ## 默认兼容说明
 
-Umi 4 默认不支持 IE ，编译兼容目标 `targets` 为 `chrome: 40` ，如需调整，请指定明确的 [targets](../docs/api/config#targets) ：
+Umi 4 默认不支持 IE ，编译兼容目标 `targets` 为 `{}` ，如需调整，请指定明确的 [targets](../docs/api/config#targets) ：
 
 ```ts
 // .umirc.ts
