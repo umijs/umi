@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 import { parse as _parse } from '../../vendors/importParser/_importParser.js';
 
 export default function parse(code: string): {
