@@ -1,4 +1,3 @@
-import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack';
 import { semver } from '@umijs/utils';
 import { IApi } from '../../types';
 
@@ -12,7 +11,7 @@ export async function getBabelOpts(opts: { api: IApi }) {
     key: 'modifyBabelPresetOpts',
     initialValue: {
       presetEnv: {
-        targets: opts.api.userConfig.targets || DEFAULT_BROWSER_TARGETS,
+        targets: opts.api.userConfig.targets || {},
       },
       presetReact: {
         runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
