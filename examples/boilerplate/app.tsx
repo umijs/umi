@@ -38,7 +38,8 @@ export function patchClientRoutes({ routes }: any) {
 //     </div>
 //   );
 // }
-
+const a = '123123srrasrr';
+console.log(a);
 export const modifyClientRenderOpts = (opts: any) => {
   console.log('modifyClientRenderOpts: ', opts);
   return opts;
