@@ -77,6 +77,7 @@ export interface IRootComponentOptions extends IHtmlHydrateOptions {
   location: string;
   loaderData: { [routeKey: string]: any };
   manifest: any;
+  basename?: string;
 }
 
 export interface IHtmlProps extends IHtmlHydrateOptions {

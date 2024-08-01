@@ -8,7 +8,7 @@ import { IRootComponentOptions } from './types';
 
 // Get the root React component for ReactDOMServer.renderToString
 export async function getClientRootComponent(opts: IRootComponentOptions) {
-  const basename = '/';
+  const basename = opts.basename || '/';
   const components = { ...opts.routeComponents };
   // todo 参数对齐
   const clientRoutes = createClientRoutes({
