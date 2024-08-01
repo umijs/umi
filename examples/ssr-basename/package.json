@@ -1,7 +1,7 @@
 {
-  "name": "@example/ssr-export-static-basename",
+  "name": "@example/ssr-basename",
   "private": true,
-  "description": "当 umi 配置表中设置了 base 后, ssr 输出的预渲染页面中的 a 标签需要有正确的 base 前缀",
+  "description": "该案例用于测试 SSR 中带 basename 的情况. 在 dev 或 build 下, 服务端需要返回正确的 html 片段, 比如 a 标签需要有正确的 base 前缀",
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",
