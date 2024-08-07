@@ -54,6 +54,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
     pureHtml: boolean;
   };
   mountElementId: string;
+  basename?: string;
 }
 
 interface IExecLoaderOpts {
@@ -93,6 +94,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       getRoutes,
       createHistory,
       sourceDir,
+      basename,
     } = opts;
 
     // make import { history } from 'umi' work
@@ -110,7 +112,8 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       },
     });
 
-    const matches = matchRoutesForSSR(url, routes);
+    const matches = matchRoutesForSSR(url, routes, basename);
+
     if (matches.length === 0) {
       return;
     }
@@ -169,6 +172,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:
         opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
       mountElementId: opts.mountElementId,
+      basename,
     };
     const element = (await opts.getClientRootComponent(
       context,
@@ -603,9 +607,19 @@ export function createAppRootElement(opts: CreateRequestHandlerOptions) {
   };
 }
 
-function matchRoutesForSSR(reqUrl: string, routesById: IRoutesById) {
+function matchRoutesForSSR(
+  reqUrl: string,
+  routesById: IRoutesById,
+  basename?: string,
+) {
+  // react-router-dom 在 v6.4.0 版本上增加了对 basename 结尾为斜杠的支持
+  // 目前 @umijs/server 依赖的 react-router-dom 版本为 v6.3.0
+  // 如果传入的 basename 结尾带斜杠, 比如 '/base/', 则会匹配不到.
+  // 日后如果依赖的版本升级, 此段代码可以删除.
+  const _basename = basename?.endsWith('/') ? basename.slice(0, -1) : basename;
+
   return (
-    matchRoutes(createClientRoutes({ routesById }), reqUrl)?.map(
+    matchRoutes(createClientRoutes({ routesById }), reqUrl, _basename)?.map(
       (route: any) => route.route.id,
     ) || []
   );

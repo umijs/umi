@@ -60,11 +60,13 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
 async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
   const {
     exportStatic: { ignorePreRenderError = false },
+    base,
   } = api.config;
   markupRender ??= require(absServerBuildPath(api))._markupGenerator;
 
   try {
-    const html = await markupRender(path);
+    const location = `${base.endsWith('/') ? base.slice(0, -1) : base}${path}`;
+    const html = await markupRender(location);
     logger.info(`Pre-render for ${path}`);
     return html;
   } catch (err) {

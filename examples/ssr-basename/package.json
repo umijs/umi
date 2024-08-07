@@ -1,0 +1,14 @@
+{
+  "name": "@example/ssr-basename",
+  "private": true,
+  "description": "该案例用于测试 SSR 中带 basename 的情况. 在 dev 或 build 下, 服务端需要返回正确的 html 片段, 比如 a 标签需要有正确的 base 前缀",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  }
+}

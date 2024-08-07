@@ -1,0 +1,14 @@
+{
+  "name": "@example/ssg-basename",
+  "private": true,
+  "description": "该案例用于测试 ssg 预渲染. 当 umi 配置表中设置了 base 后, ssg 输出的预渲染页面中的 a 标签需要有正确的 base 前缀",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  }
+}

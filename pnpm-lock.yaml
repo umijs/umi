@@ -1127,6 +1127,18 @@ importers:
         specifier: workspace:*
         version: link:../../packages/umi
 
+  examples/ssg-basename:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
+  examples/ssr-basename:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
   examples/ssr-demo:
     dependencies:
       '@ant-design/cssinjs':
