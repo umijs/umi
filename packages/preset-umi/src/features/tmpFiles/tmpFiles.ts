@@ -426,6 +426,23 @@ if (process.env.NODE_ENV === 'development') {
       headerImports.push(`import React from 'react';`);
     }
 
+    const getAllPathRoutes = (routers: any) => {
+      const list: string[] = [];
+      const getPPath = (pId: string): string => {
+        const router = routers[pId];
+        if (routers[pId].parentId) {
+          return `${getPPath(router.parentId)}/${router.path}`;
+        }
+        return router.path;
+      };
+      for (const id of Object.keys(routers)) {
+        const data = routers[id];
+        const path = data.parentId ? `${getPPath(data.parentId)}/${data.path}` : data.path;
+        list.push(path);
+      }
+      return list;
+    };
+
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/route.tsx',
@@ -433,6 +450,7 @@ if (process.env.NODE_ENV === 'development') {
       context: {
         headerImports: headerImports.join('\n'),
         routes: routesString,
+        allPathRouters: getAllPathRoutes(routesString),
         routeComponents: await routesApi.getRouteComponents({
           routes,
           prefix,
