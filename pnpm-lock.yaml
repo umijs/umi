@@ -2423,8 +2423,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-esbuild
       '@umijs/bundler-mako':
-        specifier: 0.8.0
-        version: 0.8.0
+        specifier: 0.8.1-canary.20240812.1
+        version: 0.8.1-canary.20240812.1
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
@@ -18476,11 +18476,11 @@ packages:
       - supports-color
     dev: true
 
-  /@umijs/bundler-mako@0.8.0:
-    resolution: {integrity: sha512-8D+RX9LV/ypaBIUyOoAHZHHY6Z1z5D7ibawoq3PiFPB3eOrSKl19BxHCmKNaffi9tQ6CazUwVB7RoUbvnO11gg==}
+  /@umijs/bundler-mako@0.8.1-canary.20240812.1:
+    resolution: {integrity: sha512-29E+xY66ijiwEAqU/htP+EVR/gTuUWpDNiyuUKmSoGw6j6+xchWffv3LV6ZOkfColVF4aRL00eK2zVya2wxktg==}
     dependencies:
       '@umijs/bundler-utils': 4.1.2
-      '@umijs/mako': 0.8.0
+      '@umijs/mako': 0.8.1-canary.20240812.1
       chalk: 4.1.2
       compression: 1.7.4
       connect-history-api-fallback: 2.0.0
@@ -18825,8 +18825,8 @@ packages:
       - typescript
     dev: true
 
-  /@umijs/mako-darwin-arm64@0.8.0:
-    resolution: {integrity: sha512-yBkpqNwFHTD5+7Rlbe8I/VxYMFLSAizmzpcpiPm4bhEIOq0R+ozeU2Qqh77cpGupj61SvEnHwHNF+OJxP9aQyw==}
+  /@umijs/mako-darwin-arm64@0.8.1-canary.20240812.1:
+    resolution: {integrity: sha512-0MG2lV4Maosb45BgCKZgZ3b+NaMC4jc1Kgzqq4xx1OI9L2cHg3cOqDbxP1M2jVsJfIcFNg2cuFUeoF0zWhDbYQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -18834,8 +18834,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-darwin-x64@0.8.0:
-    resolution: {integrity: sha512-C8L644AjDt/jl0BjB4Ei6+U4deIuiCDIsDzC9VlJvdA8zIyTsmMFGFiEZ2Y8BDa2dM3vKurXnqzSwposs+TUnw==}
+  /@umijs/mako-darwin-x64@0.8.1-canary.20240812.1:
+    resolution: {integrity: sha512-J57N2ioU5jpLcywxZmw6QKNZRdRQ5zQpOPavaF1S05j6a+tGhvdaFQk+AkNCoBacQqun+q2m/BKDlleMR8lR5A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -18843,8 +18843,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-linux-x64-gnu@0.8.0:
-    resolution: {integrity: sha512-cr87U7MJ40FmpBwEGf8jUb4oKomdRpGyq+oa/hrfpqYq3+8QP0qljEU/Iz+sZr43uON0Re+qsx78bjGVjIRFuw==}
+  /@umijs/mako-linux-x64-gnu@0.8.1-canary.20240812.1:
+    resolution: {integrity: sha512-JZZ/NBXTaSAGGYs0Ip1/fhKM+881K3gjcIMPL5qoZDDbUEdQwL7ST5YoNIrjmqNMRAbhBWolQiYbFn1zb/LocQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -18852,8 +18852,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-linux-x64-musl@0.8.0:
-    resolution: {integrity: sha512-3bTjIc2jMsrVUakanpdPGxpYaUwbez9Z1bx2fXAGmI29N2zjtpkDXKa835S3nSBc4G1Acmx16ckkDtKrAmhSkg==}
+  /@umijs/mako-linux-x64-musl@0.8.1-canary.20240812.1:
+    resolution: {integrity: sha512-6hUJHMDPtCwAi4c73Rpsv/Nd9VWjYKvcQlXnsF1NFnY0eogpFqjVkaJWPdfnE8a7nmX1qhuCoy9AQx+GIaYjjQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -18861,8 +18861,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako@0.8.0:
-    resolution: {integrity: sha512-VKnI1YDMoE8puv3Aei7Tx6lZST3Fd47ZbZ5UckHZHC6eDNGj1HPBPqTqh7Cj+F4iC405tjxr0k6kcnnv9J+2tQ==}
+  /@umijs/mako@0.8.1-canary.20240812.1:
+    resolution: {integrity: sha512-J2sam7/JuQ49umuRml2VFJsxqmeQG79g06f+eGYEcB3QFPPvZOz/Ljq32MvAXCwtE3keiOc+FejnNccMtOCW2w==}
     engines: {node: '>= 16'}
     hasBin: true
     dependencies:
@@ -18880,10 +18880,10 @@ packages:
       semver: 7.6.2
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@umijs/mako-darwin-arm64': 0.8.0
-      '@umijs/mako-darwin-x64': 0.8.0
-      '@umijs/mako-linux-x64-gnu': 0.8.0
-      '@umijs/mako-linux-x64-musl': 0.8.0
+      '@umijs/mako-darwin-arm64': 0.8.1-canary.20240812.1
+      '@umijs/mako-darwin-x64': 0.8.1-canary.20240812.1
+      '@umijs/mako-linux-x64-gnu': 0.8.1-canary.20240812.1
+      '@umijs/mako-linux-x64-musl': 0.8.1-canary.20240812.1
     dev: false
 
   /@umijs/max-plugin-openapi@2.0.3:
@@ -20312,9 +20312,6 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependenciesMeta:
-      ajv:
-        optional: true
     dependencies:
       ajv: 8.11.0
 
@@ -48942,9 +48939,6 @@ packages:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
