@@ -11,13 +11,11 @@ const routes = {
 
 type Route = { id?: string; path: string; parentId?: string; isLayout?: boolean };
 
-type HasSlant<T extends string = ''> = T extends `/${infer rest}` ? true : false;
-
 type JoinPath<TRoute extends Route, TPath extends string = ''> = TPath extends ''
     ? TRoute['path']
     : TRoute['path'] extends ''
       ? TPath
-      : `${TRoute['path']}${HasSlant<TPath> extends true ? TPath : `/${TPath}`}`;
+      : `${TRoute['path']}/${TPath extends `/${infer rest}` ? rest : TPath}`;
 
 export type AllPath<
     TOrigin extends Route,
