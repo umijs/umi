@@ -584,6 +584,14 @@ if (process.env.NODE_ENV === 'development') {
       });
       api.writeTmpFile({
         noPluginDir: true,
+        path: 'core/location.ts',
+        tplPath: join(TEMPLATES_DIR, 'location.tpl'),
+        context: {
+          historyWithQuery,
+        },
+      });
+      api.writeTmpFile({
+        noPluginDir: true,
         path: 'core/historyIntelli.ts',
         tplPath: join(TEMPLATES_DIR, 'historyIntelli.tpl'),
         context: {
@@ -669,6 +677,13 @@ if (process.env.NODE_ENV === 'development') {
         members: ['history', 'createHistory'],
         exportMembers,
         path: '@@/core/history.ts',
+      });
+      // @@/core/location.ts
+      exports.push(`export { useLocation } from './core/location';`);
+      checkMembers({
+        members: ['useLocation'],
+        exportMembers,
+        path: '@@/core/location.ts',
       });
       // @@/core/terminal.ts
       if (api.service.config.terminal !== false) {
