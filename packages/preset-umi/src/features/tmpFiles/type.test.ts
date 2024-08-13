@@ -11,26 +11,24 @@ const routes = {
 
 type Route = { id?: string; path: string; parentId?: string; isLayout?: boolean };
 
-type JoinPath<TRoute extends Route, TPath extends string = ''> = TPath extends ''
-    ? TRoute['path']
-    : TRoute['path'] extends ''
+type JoinPath<TRoutePath extends string, TPath extends string = ''> = TPath extends ''
+    ? TRoutePath
+    : TRoutePath extends ''
       ? TPath
-      : `${TRoute['path']}/${TPath extends `/${infer rest}` ? rest : TPath}`;
+      : `${TRoutePath}/${TPath extends `/${infer rest}` ? rest : TPath}`;
 
 export type AllPath<
     TOrigin extends Route,
     TRoute extends Route = TOrigin,
     TPath extends string = '',
 > = TRoute extends any
-    ? TRoute['parentId'] extends string
-        ? AllPath<
-              TOrigin,
-              Extract<TOrigin, { id: TRoute['parentId'] }>['isLayout'] extends true
-                  ? { path: '' }
-                  : Extract<TOrigin, { id: TRoute['parentId'] }>,
-              JoinPath<TRoute, TPath>
-          >
-        : JoinPath<TRoute, TPath>
+    ? Extract<TOrigin, { id: TRoute['id'] }>['isLayout'] extends true
+        ? never
+        : TRoute['parentId'] extends string
+          ? Extract<TOrigin, { id: TRoute['parentId'] }>['isLayout'] extends true
+              ? AllPath<TOrigin, { path: '' }, JoinPath<TRoute['path'], TPath>>
+              : AllPath<TOrigin, Extract<TOrigin, { id: TRoute['parentId'] }>, JoinPath<TRoute['path'], TPath>>
+          : JoinPath<TRoute['path'], TPath>
     : never;
 
 type Routes = typeof routes;
