@@ -609,13 +609,19 @@ if (process.env.NODE_ENV === 'development') {
   function getAllRoutesPath(routes: any) {
     const paths: Set<string> = new Set();
 
+    const isLayoutOrWrapper = (route: any) => {
+      return route.isLayout || route.isWrapper;
+    };
+
     const getPath = (id: string) => {
       const route = routes[id];
-      const isLayoutOrWrapper = route.isLayout || route.isWrapper;
-      if (isLayoutOrWrapper) {
+      // ignore
+      const isNotRoute = isLayoutOrWrapper(route);
+      if (isNotRoute) {
         return '';
       }
       let path = (route.path || '') as string;
+      // stop
       const isAbsolutePath = path.startsWith('/');
       if (isAbsolutePath) {
         return path;
@@ -624,6 +630,20 @@ if (process.env.NODE_ENV === 'development') {
       while (parentId) {
         const parentRoute = routes[parentId];
         const parentPath = (parentRoute.path || '') as string;
+        // ignore
+        const isParentNotRoute = isLayoutOrWrapper(parentRoute);
+        if (isParentNotRoute) {
+          parentId = parentRoute.parentId;
+          continue;
+        }
+        // stop
+        // e.g. `/root` - `/root/child` - `nested` => `/root/child/nested`
+        const isParentAbsolutePath = parentPath.startsWith('/');
+        if (isParentAbsolutePath) {
+          path = joinRoutePath(parentPath, path);
+          break;
+        }
+        // e.g. `/root` - `child` - `nested` => `/root/child/nested`
         path = joinRoutePath(parentPath, path);
         parentId = parentRoute.parentId;
       }
