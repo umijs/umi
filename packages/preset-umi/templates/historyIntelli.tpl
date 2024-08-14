@@ -1,7 +1,7 @@
 import { getRoutes } from './route'
 import type { History } from '{{{ historyPath }}}'
 
-type Routes = Awaited<ReturnType<typeof getRoutes>>['allPathRoutes'][number]
+type Routes = {{{ routes }}}
 
 // --- patch history types ---
 

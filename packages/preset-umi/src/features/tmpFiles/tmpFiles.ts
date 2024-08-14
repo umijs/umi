@@ -426,23 +426,6 @@ if (process.env.NODE_ENV === 'development') {
       headerImports.push(`import React from 'react';`);
     }
 
-    const getAllPathRoutes = (routers: any) => {
-      const list: string[] = [];
-      const getPPath = (pId: string): string => {
-        const router = routers[pId];
-        if (routers[pId].parentId) {
-          return `${getPPath(router.parentId)}/${router.path}`;
-        }
-        return router.path;
-      };
-      for (const id of Object.keys(routers)) {
-        const data = routers[id];
-        const path = data.parentId ? `${getPPath(data.parentId)}/${data.path}` : data.path;
-        list.push(path);
-      }
-      return list;
-    };
-
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/route.tsx',
@@ -450,7 +433,6 @@ if (process.env.NODE_ENV === 'development') {
       context: {
         headerImports: headerImports.join('\n'),
         routes: routesString,
-        allPathRouters: getAllPathRoutes(routesString),
         routeComponents: await routesApi.getRouteComponents({
           routes,
           prefix,
@@ -600,17 +582,61 @@ if (process.env.NODE_ENV === 'development') {
           reactRouter5Compat,
         },
       });
+
+      const routesPath = getAllRoutesPath(routes);
+      const routesPathStr = routesPath.map((path) => `'${path}'`).join(' | ');
       api.writeTmpFile({
         noPluginDir: true,
         path: 'core/historyIntelli.ts',
         tplPath: join(TEMPLATES_DIR, 'historyIntelli.tpl'),
         context: {
+          routes: routesPathStr,
           historyPath,
           reactRouter5Compat,
         },
       });
     }
   });
+
+  function joinRoutePath(left: string, right: string) {
+    const joined = `${left}/${right}`;
+    const segments = joined.split('/').filter(Boolean);
+    const newPath = `/${segments.join('/')}`;
+    return newPath;
+  }
+
+  function getAllRoutesPath(routes: any) {
+    const paths: Set<string> = new Set();
+
+    const getPath = (id: string) => {
+      const route = routes[id];
+      const isLayoutOrWrapper = route.isLayout || route.isWrapper;
+      if (isLayoutOrWrapper) {
+        return '';
+      }
+      let path = (route.path || '') as string;
+      const isAbsolutePath = path.startsWith('/');
+      if (isAbsolutePath) {
+        return path;
+      }
+      let parentId = route.parentId;
+      while (parentId) {
+        const parentRoute = routes[parentId];
+        path = joinRoutePath(parentRoute.path, path);
+        parentId = parentRoute.parentId;
+      }
+      return path;
+    };
+
+    Object.keys(routes).forEach((id: any) => {
+      const path = getPath(id);
+      if (path.length && !path.includes('*')) {
+        paths.add(path);
+      }
+    });
+
+    return Array.from(paths);
+  }
 
   function checkMembers(opts: {
     path: string;
