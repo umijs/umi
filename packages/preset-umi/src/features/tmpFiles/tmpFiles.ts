@@ -584,7 +584,8 @@ if (process.env.NODE_ENV === 'development') {
       });
 
       const routesPath = getAllRoutesPath(routes);
-      const routesPathStr = routesPath.map((path) => `'${path}'`).join(' | ');
+      const routesPathStr =
+        routesPath.map((path) => `'${path}'`).join(' | ') || 'never';
       api.writeTmpFile({
         noPluginDir: true,
         path: 'core/historyIntelli.ts',
