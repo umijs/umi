@@ -623,7 +623,8 @@ if (process.env.NODE_ENV === 'development') {
       let parentId = route.parentId;
       while (parentId) {
         const parentRoute = routes[parentId];
-        path = joinRoutePath(parentRoute.path, path);
+        const parentPath = (parentRoute.path || '') as string;
+        path = joinRoutePath(parentPath, path);
         parentId = parentRoute.parentId;
       }
       return path;
