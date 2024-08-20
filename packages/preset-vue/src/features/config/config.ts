@@ -1,6 +1,5 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { IApi } from 'umi';
-import VueLoaderPlugin from 'vue-loader/dist/pluginWebpack5.js';
 import { addAssetRules } from './assetRules';
 
 export function getConfig(config: Config, api: IApi) {
@@ -22,6 +21,8 @@ export function getConfig(config: Config, api: IApi) {
     .options({
       babelParserPlugins: ['jsx', 'classProperties', 'decorators-legacy'],
     });
+
+  const VueLoaderPlugin = require('vue-loader/dist/pluginWebpack5');
 
   config.plugin('vue-loader-plugin').use(VueLoaderPlugin);
 

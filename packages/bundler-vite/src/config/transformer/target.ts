@@ -25,7 +25,7 @@ export default (function target(userConfig) {
     return false;
   }
 
-  const isLegacy = isLegacyBrowser(userConfig.targets);
+  const isLegacy = isLegacyBrowser(userConfig.targets || {});
 
   // convert { ie: 11 } to ['ie11']
   // 低版本浏览器需要使用 legacy 插件 同时设置会有 warning
