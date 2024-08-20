@@ -2423,8 +2423,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-esbuild
       '@umijs/bundler-mako':
-        specifier: 0.8.2
-        version: 0.8.2
+        specifier: 0.8.3-canary.20240820.1
+        version: 0.8.3-canary.20240820.1
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
@@ -18476,11 +18476,11 @@ packages:
       - supports-color
     dev: true
 
-  /@umijs/bundler-mako@0.8.2:
-    resolution: {integrity: sha512-L21WaPO6O7bPs+NFhoqrlenaWGHQkpGuucN/HqRq/DuD3ZUzkkLJQC064h9ms2i4voccKt2/XSx2IllrBYcxiQ==}
+  /@umijs/bundler-mako@0.8.3-canary.20240820.1:
+    resolution: {integrity: sha512-QW4gpwQKr5//SjlxH2RtjZ/1GW5AIiqvilRKtYNkXMn3pFbMfl044R+oK8P6MXhC1dFu4F7iru89b4fdFbtpRQ==}
     dependencies:
       '@umijs/bundler-utils': 4.1.2
-      '@umijs/mako': 0.8.2
+      '@umijs/mako': 0.8.3-canary.20240820.1
       chalk: 4.1.2
       compression: 1.7.4
       connect-history-api-fallback: 2.0.0
@@ -18825,8 +18825,8 @@ packages:
       - typescript
     dev: true
 
-  /@umijs/mako-darwin-arm64@0.8.2:
-    resolution: {integrity: sha512-mC6vEdZsIyn3cK1k+ABA7+63By1IbhsR9U+PcjfZXjtumIhFHBW+3qd6PQIzKeQTEOdY0r0WW0/iIrUUbMuT9w==}
+  /@umijs/mako-darwin-arm64@0.8.3-canary.20240820.1:
+    resolution: {integrity: sha512-7qt3UAxtPfbQfd1inCbi+7lKoyIy0Gdx8FHfnXVwXjlii0GTGbaOkAMIWs9Bo44c7C33gRPRHlj4AURIoMjJuw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -18834,8 +18834,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-darwin-x64@0.8.2:
-    resolution: {integrity: sha512-MMAQZO30wvVf09gzt2OeFoI76+s7dKDcz1BD3XXr2R43vuLwZcPzo8gDm7s5O1iZj2X65TLNlwSULojj6xEdbQ==}
+  /@umijs/mako-darwin-x64@0.8.3-canary.20240820.1:
+    resolution: {integrity: sha512-K+A29xtDEzR8HkreOY4aBIDb6ff3g29BszRIHN7oPTo775oTxWQlBH/smsy7Um6IsJS6qvSS/djMkOT1e9sAdA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -18843,8 +18843,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-linux-x64-gnu@0.8.2:
-    resolution: {integrity: sha512-qa1J/PFV+l4fwF5JpGMbvfGCbyRM3asIcZ/01JfbBmZnFB4lhSus0ukafyGdsB09jwIK/OI5FU2E68XyVVP8vA==}
+  /@umijs/mako-linux-x64-gnu@0.8.3-canary.20240820.1:
+    resolution: {integrity: sha512-wFE5JIKu+AmRIG6pxZTyYBHjxBeWghZ0bxADSVfNcsKwsexUiBqxZpER9+flJhki+OEUDRAu5fDDqeXAbdcXfg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -18852,8 +18852,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako-linux-x64-musl@0.8.2:
-    resolution: {integrity: sha512-D+im7QnKvHXPKj8IlS+TL42N9zjRu8fQUV99S4a+QdT465vef6M8VHcyohDrazlIMOMHM3OSgXu+lhJs0clqhQ==}
+  /@umijs/mako-linux-x64-musl@0.8.3-canary.20240820.1:
+    resolution: {integrity: sha512-9jBplmBy3PhmuNyHcFagawhlcK9IKi7Q+Cd216PSjRhWddn3R7SSo6BB9gOBTR3NtLHodGNHHeTk7UZVh6Yrpw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -18861,8 +18861,8 @@ packages:
     dev: false
     optional: true
 
-  /@umijs/mako@0.8.2:
-    resolution: {integrity: sha512-WWCZ8rKxbobXgnx3cxppvXO0ACLZKBWS77CYB5VlbyrXsk96eU7vLHy4XcpR8lcI+Ztot/ZzA0KYbL8XrcoAfQ==}
+  /@umijs/mako@0.8.3-canary.20240820.1:
+    resolution: {integrity: sha512-UUiEfigvhtUCOGuNFzLy5Iv+5hmPomExzHTIuCmzbMezn9aJ8sbY7AJofkDf/5NBUlGpNm2FDyGpXVEKFTpdnw==}
     engines: {node: '>= 16'}
     hasBin: true
     dependencies:
@@ -18880,10 +18880,10 @@ packages:
       semver: 7.6.2
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@umijs/mako-darwin-arm64': 0.8.2
-      '@umijs/mako-darwin-x64': 0.8.2
-      '@umijs/mako-linux-x64-gnu': 0.8.2
-      '@umijs/mako-linux-x64-musl': 0.8.2
+      '@umijs/mako-darwin-arm64': 0.8.3-canary.20240820.1
+      '@umijs/mako-darwin-x64': 0.8.3-canary.20240820.1
+      '@umijs/mako-linux-x64-gnu': 0.8.3-canary.20240820.1
+      '@umijs/mako-linux-x64-musl': 0.8.3-canary.20240820.1
     dev: false
 
   /@umijs/max-plugin-openapi@2.0.3:
