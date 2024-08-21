@@ -1,6 +1,5 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { IApi } from 'umi';
-import VueLoaderPlugin from 'vue-loader/dist/pluginWebpack5.js';
 import { addAssetRules } from './assetRules';
 
 export function getConfig(config: Config, api: IApi) {
@@ -23,7 +22,9 @@ export function getConfig(config: Config, api: IApi) {
       babelParserPlugins: ['jsx', 'classProperties', 'decorators-legacy'],
     });
 
-  config.plugin('vue-loader-plugin').use(VueLoaderPlugin);
+  const VueLoaderPlugin = require('vue-loader/dist/pluginWebpack5');
+
+  config.plugin('vue-loader-plugin').use(VueLoaderPlugin.default);
 
   // https://github.com/vuejs/vue-loader/issues/1435#issuecomment-869074949
   config.module
