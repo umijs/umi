@@ -69,7 +69,7 @@ export default (api: any) => {
 
     const cacheDir = path.join(api.paths.absNodeModulesPath, '.cache');
     if (!fs.existsSync(cacheDir)) {
-      fs.mkdirSync(cacheDir);
+      fs.mkdirSync(cacheDir, { recursive: true });
     }
     fs.writeFileSync(recordJSONPath, JSON.stringify(records), 'utf-8');
   });
