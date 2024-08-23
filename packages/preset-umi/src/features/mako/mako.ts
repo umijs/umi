@@ -70,7 +70,7 @@ export default (api: IApi) => {
         generateEnd: ({ stats }: any) => {
           const entryPointFiles = new Set<string>();
 
-          for (const chunk of stats.entrypoints['umi'].chunks) {
+          for (const chunk of stats.entrypoints['umi']?.chunks || []) {
             const files = stats.chunks.find((c: any) => c.id === chunk).files;
             for (const file of files) {
               entryPointFiles.add(file);
