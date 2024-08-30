@@ -5,15 +5,15 @@ export default {
   routePrefetch: {},
   manifest: {},
   clientLoader: {},
-  mako: {
-    plugins: [
-      {
-        load: () => {},
-      },
-    ],
-  },
+  // mako: {
+  //   plugins: [
+  //     {
+  //       load: () => {},
+  //     },
+  //   ],
+  // },
   ssr: {
-    builder: 'mako',
+    // builder: 'mako',
   },
   exportStatic: {},
   styles: [`body { color: red; }`],
