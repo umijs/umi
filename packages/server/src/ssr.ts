@@ -117,7 +117,6 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
 
     const loaderData: Record<string, any> = {};
     // let metadata: Record<string, any> = {};
-
     await Promise.all(
       matches
         .filter(
