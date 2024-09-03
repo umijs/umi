@@ -117,9 +117,15 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
 
     const loaderData: Record<string, any> = {};
     // let metadata: Record<string, any> = {};
+
     await Promise.all(
       matches
-        .filter((id: string) => routes[id].hasServerLoader)
+        .filter(
+          (id: string) =>
+            routes[
+              Object.keys(routes).find((key) => routes[key].id == id) as string
+            ]?.hasServerLoader,
+        )
         .map(
           (id: string) =>
             new Promise<void>(async (resolve) => {
