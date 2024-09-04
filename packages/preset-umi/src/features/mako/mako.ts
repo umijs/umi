@@ -1,5 +1,9 @@
 import path from 'path';
 import { IApi } from '../../types';
+import {
+  EntryAssets,
+  extractEntryAssets,
+} from '../../utils/extractEntryAssets';
 import { isWindows } from '../../utils/platform';
 
 export default (api: IApi) => {
@@ -45,17 +49,52 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  // html 处理逻辑
+  const assets: EntryAssets = {
+    // Will contain all js and mjs files
+    js: [],
+    // Will contain all css files
+    css: [],
+  };
+
   api.modifyConfig((memo) => {
     // @TODO remove this when mako support windows
     if (isWindows) {
       memo.mako = false;
       process.env.OKAM = '';
     }
+    const makoPlugins = memo.mako?.plugins || [];
+    if (!api.config.mpa) {
+      makoPlugins.push({
+        name: 'UmiHtmlGenerationMako',
+        generateEnd: ({ stats }: any) => {
+          const entryPointFiles = new Set<string>();
+
+          for (const chunk of stats.entrypoints['umi']?.chunks || []) {
+            const files = stats.chunks.find((c: any) => c.id === chunk).files;
+            for (const file of files) {
+              entryPointFiles.add(file);
+            }
+          }
+
+          let entryAssets = extractEntryAssets(Array.from(entryPointFiles));
+          Object.entries(entryAssets).forEach(([ext, files]) => {
+            if (!Array.isArray(assets[ext])) {
+              assets[ext] = [];
+            }
+            assets[ext].push(...files);
+          });
+        },
+      });
+    }
     return {
       ...memo,
       mfsu: false,
       hmrGuardian: false,
-      makoPlugins: memo.mako?.plugins || [],
+      mako: {
+        ...memo.mako,
+        plugins: makoPlugins,
+      },
     };
   });
 
@@ -77,5 +116,22 @@ export default (api: IApi) => {
     } catch (e) {
       console.error(e);
     }
+  });
+
+  api.addHTMLStyles(() => {
+    const { publicPath } = api.config;
+    const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
+    return assets.css.map((css) => {
+      return `${displayPublicPath}${css}`;
+    });
+  });
+
+  api.addHTMLHeadScripts(() => {
+    const { publicPath } = api.config;
+    const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
+
+    return assets.js.map((js) => {
+      return `${displayPublicPath}${js}`;
+    });
   });
 };

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-umi",
-  "version": "4.3.11",
+  "version": "4.3.18",
   "description": "@umijs/preset-umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -30,7 +30,7 @@
     "@umijs/ast": "workspace:*",
     "@umijs/babel-preset-umi": "workspace:*",
     "@umijs/bundler-esbuild": "workspace:*",
-    "@umijs/bundler-mako": "0.7.9",
+    "@umijs/bundler-mako": "0.8.7",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
