@@ -562,6 +562,7 @@ if (process.env.NODE_ENV === 'development') {
             __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
           ),
           mountElementId,
+          basename: api.config.base,
         },
       });
     }
