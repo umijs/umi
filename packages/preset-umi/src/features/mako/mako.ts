@@ -62,6 +62,7 @@ export default (api: IApi) => {
     if (isWindows) {
       memo.mako = false;
       process.env.OKAM = '';
+      return memo;
     }
     const makoPlugins = memo.mako?.plugins || [];
     if (!api.config.mpa) {
