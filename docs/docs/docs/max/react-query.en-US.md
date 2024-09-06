@@ -46,7 +46,7 @@ The plugin does a few things for you,
 The following configurations can be done in `reactQuery`.
 
 - `devtool`: boolean, whether to enable the official react query devtool, default `true`
-- `queryClient`: boolean, whether to register a global QueryClient and QueryClientProvier, default `true`
+- `queryClient`: boolean, whether to register a global QueryClient and QueryClientProvider, default `true`
 
 For example:
 
