@@ -4,7 +4,6 @@ import {
   EntryAssets,
   extractEntryAssets,
 } from '../../utils/extractEntryAssets';
-import { isWindows } from '../../utils/platform';
 
 export default (api: IApi) => {
   api.describe({
@@ -58,12 +57,6 @@ export default (api: IApi) => {
   };
 
   api.modifyConfig((memo) => {
-    // @TODO remove this when mako support windows
-    if (isWindows) {
-      memo.mako = false;
-      process.env.OKAM = '';
-      return memo;
-    }
     const makoPlugins = memo.mako?.plugins || [];
     if (!api.config.mpa) {
       makoPlugins.push({
