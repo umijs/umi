@@ -52,7 +52,7 @@ export default {
 可以在 `reactQuery` 中做以下配置。
 
 - `devtool`: boolean，是否开启 react query 官方 devtool 工具，默认 `true`
-- `queryClient`: boolean, 是否注册全局的 QueryClient 和 QueryClientProvier，默认 `true`
+- `queryClient`: boolean, 是否注册全局的 QueryClient 和 QueryClientProvider，默认 `true`
 
 比如：
 
