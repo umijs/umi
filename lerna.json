@@ -1,4 +1,4 @@
 {
-  "version": "4.3.20",
+  "version": "4.0.0-canary.20240910.1",
   "workspaces": ["packages/*"]
 }
