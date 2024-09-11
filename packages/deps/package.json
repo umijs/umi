@@ -167,7 +167,7 @@
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "os-locale": "5.0.0",
     "p-limit": "3.1.0",
-    "path-to-regexp": "1.8.0",
+    "path-to-regexp": "1.9.0",
     "pkg-up": "3.1.0",
     "portfinder": "1.0.28",
     "prompts": "2.1.0",
