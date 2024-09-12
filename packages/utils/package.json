@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "3.5.42",
+  "version": "3.5.43",
   "description": "@umijs/utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/babel-preset-umi": "3.5.42",
-    "@umijs/deps": "3.5.42"
+    "@umijs/babel-preset-umi": "3.5.43",
+    "@umijs/deps": "3.5.43"
   }
 }
