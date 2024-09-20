@@ -58,7 +58,7 @@ export default async () => {
 ```txt
 .
 └── utils
-    ├── reverseApiData.test.tss
+    ├── reverseApiData.test.ts
     └── reverseApiData.ts
 ```
 
