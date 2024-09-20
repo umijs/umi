@@ -103,6 +103,10 @@ export default (api: IApi) => {
 
   api.addMiddlewares(() => [
     async (req, res, next) => {
+      if (serverBuildTarget === 'worker') {
+        return next();
+      }
+
       const modulePath = absServerBuildPath(api);
       if (existsSync(modulePath)) {
         delete require.cache[modulePath];
