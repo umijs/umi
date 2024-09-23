@@ -1,6 +1,7 @@
 ﻿import { winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
+import { expandJSPaths } from '../../commands/dev/watch';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { importsToStr } from '../tmpFiles/importsToStr';
@@ -27,6 +28,12 @@ export default (api: IApi) => {
         ),
       }),
     );
+
+    const loadingFile = expandJSPaths(
+      join(api.paths.absSrcPath, 'loading'),
+    ).find(existsSync);
+    const globalLoading = loadingFile ? winPath(loadingFile) : undefined;
+
     // testBrowser.tsx
     api.writeTmpFile({
       noPluginDir: true,
@@ -66,10 +73,7 @@ export default (api: IApi) => {
         historyType: api.config.history.type,
         reactRouter5Compat: !!api.config.reactRouter5Compat,
         hydrate: !!api.config.ssr,
-        loadingComponent:
-          existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||
-          existsSync(join(api.paths.absSrcPath, 'loading.jsx')) ||
-          existsSync(join(api.paths.absSrcPath, 'loading.js')),
+        loadingComponent: globalLoading,
       },
     });
   });
