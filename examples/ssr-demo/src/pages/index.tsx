@@ -20,6 +20,8 @@ import './index.less';
 import styles from './index.less';
 // @ts-ignore
 import umiLogo from './umi.png';
+// @ts-ignore
+import styles1 from './a.module.css';
 
 export default function HomePage() {
   const clientLoaderData = useClientLoaderData();
@@ -40,7 +42,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <h1 className="title">Hello~</h1>
+      <h1 className={styles1.b}>Hello~1</h1>
       <p className="server_inserted_style">id: {id}</p>
       <p className={styles.blue}>This is index.tsx</p>
       <p className={cssStyle.title}>I should be pink</p>
