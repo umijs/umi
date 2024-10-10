@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-vue",
-  "version": "4.3.24",
+  "version": "4.3.25",
   "description": "@umijs/preset-vue",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-vue#readme",
   "bugs": "https://github.com/umijs/umi/issues",

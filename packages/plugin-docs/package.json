@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.3.24",
+  "version": "4.3.25",
   "description": "@umijs/plugin-docs",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/plugin-docs#readme",
   "bugs": "https://github.com/umijs/umi/issues",
