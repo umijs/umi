@@ -31,6 +31,7 @@ import { addProgressPlugin } from './progressPlugin';
 import { addSpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
 import addSSRPlugin from './ssrPlugin';
 import { addSVGRules } from './svgRules';
+import { ForceCssHMRForEdgeCasesPlugin } from '../plugins/ForceCssHMRForEdgeCasesPlugin';
 
 export interface IOpts {
   cwd: string;
@@ -203,6 +204,11 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // hmr
   if (isDev && opts.hmr) {
     config.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
+    if (!userConfig.styleLoader) {
+      config
+        .plugin('ForceCssHMRForEdgeCasesPlugin')
+        .use(ForceCssHMRForEdgeCasesPlugin);
+    }
   }
   // ssr
   await addSSRPlugin(applyOpts);
