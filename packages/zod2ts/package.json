@@ -1,6 +1,6 @@
 {
   "name": "@umijs/zod2ts",
-  "version": "4.3.26",
+  "version": "4.3.27",
   "description": "@umijs/zod2ts",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/zod2ts#readme",
   "bugs": "https://github.com/umijs/umi/issues",
