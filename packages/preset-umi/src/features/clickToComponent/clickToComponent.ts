@@ -20,19 +20,21 @@ export default (api: IApi) => {
     enableBy: api.env === 'development' ? api.EnableBy.config : () => false,
   });
 
-  const pkgPath = dirname(require.resolve('click-to-react-component'));
   api.modifyConfig((memo) => {
+    const pkgPath = dirname(require.resolve('click-to-react-component'));
     memo.alias['click-to-react-component'] = pkgPath;
     return memo;
   });
 
   api.modifyAppData((memo) => {
+    const pkgPath = dirname(require.resolve('click-to-react-component'));
     memo.clickToComponent = {
       pkgPath,
       version: '1.0.8',
     };
     return memo;
   });
+
   api.onGenerateFiles({
     name: 'clickToComponent',
     fn: () => {
@@ -61,6 +63,7 @@ return React.createElement(
       });
     },
   });
+
   api.addRuntimePlugin(() => [
     winPath(join(api.paths.absTmpPath, 'plugin-clickToComponent/runtime.tsx')),
   ]);
