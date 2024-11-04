@@ -36,9 +36,9 @@ export default function () {
       ) {
         opts.onCheckCode({
           args: {
-            ...cache.get(state.opts.filename),
-            file: state.opts.filename,
-            isFromTmp: state.opts.filename.startsWith(opts.absTmpPath),
+            ...cache.get(filename),
+            file: filename,
+            isFromTmp: filename.startsWith(opts.absTmpPath),
           },
         });
       }
