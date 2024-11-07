@@ -83,6 +83,10 @@ export default (api: IApi) => {
   });
 
   function isAbsolutePath(path: string) {
-    return path.startsWith('/') || path.startsWith('@fs/');
+    return (
+      path.startsWith('/') ||
+      path.startsWith('@fs/') ||
+      /^[A-Za-z]:\//.test(path) // fix windows path after transform by winPath method
+    );
   }
 };
