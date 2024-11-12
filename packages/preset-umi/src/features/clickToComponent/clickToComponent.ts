@@ -43,21 +43,28 @@ export default (api: IApi) => {
         content: `
 import { ClickToComponent } from 'click-to-react-component';
 import React from 'react';
+
+const pathModifier = (path) => {
+  return path.startsWith('${api.paths.cwd}') ? path : '${
+          api.paths.cwd
+        }/' + path;
+}
+
 export function rootContainer(container, opts) {
-return React.createElement(
-  (props) => {
-    return (
-      <>
-        <ClickToComponent editor="${
-          api.config.clickToComponent.editor || 'vscode'
-        }"/>
-        {props.children}
-      </>
-    );
-  },
-  opts,
-  container,
-);
+  return React.createElement(
+    (props) => {
+      return (
+        <>
+          <ClickToComponent editor="${
+            api.config.clickToComponent.editor || 'vscode'
+          }" pathModifier={pathModifier} />
+          {props.children}
+        </>
+      );
+    },
+    opts,
+    container,
+  );
 }
     `,
       });
