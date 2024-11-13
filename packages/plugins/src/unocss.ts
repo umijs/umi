@@ -46,7 +46,19 @@ export default (api: IApi) => {
       cwd: api.cwd,
       stdio: isDev ? 'pipe' : 'inherit',
     });
-    if (!isDev) {
+
+    if (isDev) {
+      await new Promise<void>((resolve) => {
+        const { stdout } = execaRes;
+        function dataHandler() {
+          resolve();
+          stdout?.off('data', dataHandler);
+        }
+        stdout?.on('data', dataHandler);
+      });
+
+      api.logger.info('unocss watch mode is running!');
+    } else {
       await execaRes;
     }
   });
