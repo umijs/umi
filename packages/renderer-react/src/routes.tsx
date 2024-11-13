@@ -122,29 +122,22 @@ function RemoteComponentReactRouter5(props: any) {
 
   // staticContext 没有兼容 好像没看到对应的兼容写法
   const Component = props.loader;
+  const ComponentProps = {
+    location: history.location,
+    match,
+    history,
+    params,
+    route,
+    routes: clientRoutes,
+  };
+  const Remote = () => (
+    <Component {...ComponentProps}>{props.hasChildren && <Outlet />}</Component>
+  );
   return props.ssr ? (
-    <Component
-      location={history.location}
-      match={match}
-      history={history}
-      params={params}
-      route={route}
-      routes={clientRoutes}
-    >
-      {props.hasChildren && <Outlet />}
-    </Component>
+    <Remote />
   ) : (
     <React.Suspense fallback={<props.loadingComponent />}>
-      <Component
-        location={history.location}
-        match={match}
-        history={history}
-        params={params}
-        route={route}
-        routes={clientRoutes}
-      >
-        {props.hasChildren && <Outlet />}
-      </Component>
+      <Remote />
     </React.Suspense>
   );
 }
