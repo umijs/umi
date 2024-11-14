@@ -130,15 +130,14 @@ function RemoteComponentReactRouter5(props: any) {
     route,
     routes: clientRoutes,
   };
-  const Remote = () => (
-    <Component {...ComponentProps}>{props.hasChildren && <Outlet />}</Component>
-  );
   return props.useStream ? (
     <React.Suspense fallback={<props.loadingComponent />}>
-      <Remote />
+      <Component {...ComponentProps}>
+        {props.hasChildren && <Outlet />}
+      </Component>
     </React.Suspense>
   ) : (
-    <Remote />
+    <Component {...ComponentProps}>{props.hasChildren && <Outlet />}</Component>
   );
 }
 
