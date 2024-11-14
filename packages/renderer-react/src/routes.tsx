@@ -17,9 +17,9 @@ export function createClientRoutes(opts: {
   parentId?: string;
   loadingComponent?: React.ReactNode;
   reactRouter5Compat?: boolean;
-  ssr?: boolean;
+  useStream?: boolean;
 }) {
-  const { routesById, parentId, routeComponents, ssr = false } = opts;
+  const { routesById, parentId, routeComponents, useStream = true } = opts;
   return Object.keys(routesById)
     .filter((id) => routesById[id].parentId === parentId)
     .map((id) => {
@@ -35,7 +35,7 @@ export function createClientRoutes(opts: {
               (rid) => routesById[rid].parentId === id,
             ).length > 0,
         }),
-        ssr,
+        useStream,
       });
       const children = createClientRoutes({
         routesById,
@@ -43,7 +43,7 @@ export function createClientRoutes(opts: {
         parentId: route.id,
         loadingComponent: opts.loadingComponent,
         reactRouter5Compat: opts.reactRouter5Compat,
-        ssr,
+        useStream,
       });
       if (children.length > 0) {
         route.children = children;
@@ -77,9 +77,9 @@ function createClientRoute(opts: {
   loadingComponent?: React.ReactNode;
   hasChildren?: boolean;
   reactRouter5Compat?: boolean;
-  ssr?: boolean;
+  useStream?: boolean;
 }): IClientRoute {
-  const { route, ssr = false } = opts;
+  const { route, useStream = true } = opts;
   const { redirect, ...props } = route;
   const Remote = opts.reactRouter5Compat
     ? RemoteComponentReactRouter5
@@ -97,7 +97,7 @@ function createClientRoute(opts: {
           loader={React.memo(opts.routeComponent)}
           loadingComponent={opts.loadingComponent || DefaultLoading}
           hasChildren={opts.hasChildren}
-          ssr={ssr}
+          useStream={useStream}
         />
       </RouteContext.Provider>
     ),
@@ -133,22 +133,22 @@ function RemoteComponentReactRouter5(props: any) {
   const Remote = () => (
     <Component {...ComponentProps}>{props.hasChildren && <Outlet />}</Component>
   );
-  return props.ssr ? (
-    <Remote />
-  ) : (
+  return props.useStream ? (
     <React.Suspense fallback={<props.loadingComponent />}>
       <Remote />
     </React.Suspense>
+  ) : (
+    <Remote />
   );
 }
 
 function RemoteComponent(props: any) {
   const Component = props.loader;
-  return props.ssr ? (
-    <Component />
-  ) : (
+  return props.useStream ? (
     <React.Suspense fallback={<props.loadingComponent />}>
       <Component />
     </React.Suspense>
+  ) : (
+    <Component />
   );
 }

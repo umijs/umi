@@ -55,6 +55,7 @@ interface CreateRequestHandlerOptions extends CreateRequestServerlessOptions {
   };
   mountElementId: string;
   basename?: string;
+  useStream?: boolean;
 }
 
 interface IExecLoaderOpts {
@@ -173,6 +174,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
         opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
       mountElementId: opts.mountElementId,
       basename,
+      useStream: opts.useStream,
     };
     const element = (await opts.getClientRootComponent(
       context,
@@ -229,7 +231,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
           next();
         };
         writable.on('finish', async () => {
-          let html = Buffer.concat(chunks).toString('utf8');
+          let html = Buffer.concat(chunks as any).toString('utf8');
           const serverHTML = getGenerateStaticHTML(serverInsertedHTMLCallbacks);
           if (serverHTML) {
             html = html.replace(/<\/head>/, `${serverHTML}</head>`);

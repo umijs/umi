@@ -37,6 +37,7 @@ export default (api: IApi) => {
               pureApp: zod.boolean(),
               pureHtml: zod.boolean(),
             }),
+            useStream: zod.boolean().default(true),
           })
           .deepPartial();
       },

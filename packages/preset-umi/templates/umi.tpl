@@ -50,6 +50,7 @@ async function render() {
 {{#hydrate}}
         hydrate: true,
 {{/hydrate}}
+        useStream: {{{useStream}}},
 {{#reactRouter5Compat}}
         reactRouter5Compat: true,
 {{/reactRouter5Compat}}
