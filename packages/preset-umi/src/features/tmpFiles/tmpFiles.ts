@@ -301,6 +301,7 @@ declare module '*.txt' {
       }),
     ).join('\n');
 
+    const ssrConfig = api.config.ssr;
     const __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = api.config.ssr
       ?.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED ?? {
       pureApp: false,
@@ -331,7 +332,8 @@ declare module '*.txt' {
         __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: JSON.stringify(
           __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
         ),
-        hydrate: !!api.config.ssr,
+        hydrate: !!ssrConfig,
+        useStream: ssrConfig?.useStream ?? true,
         reactRouter5Compat: !!api.config.reactRouter5Compat,
         loadingComponent: api.appData.globalLoading,
       },
@@ -506,7 +508,7 @@ if (process.env.NODE_ENV === 'development') {
     });
 
     // umi.server.ts
-    if (api.config.ssr) {
+    if (ssrConfig) {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
 
@@ -563,6 +565,7 @@ if (process.env.NODE_ENV === 'development') {
           ),
           mountElementId,
           basename: api.config.base,
+          useStream: ssrConfig?.useStream ?? true,
         },
       });
     }

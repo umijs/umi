@@ -146,6 +146,11 @@ export type RenderClientOpts = {
   hydrate?: boolean;
 
   /**
+   * ssr 是否启用流式渲染, 默认 true, 对 SEO 存在一定的负优化
+   */
+  useStream?: boolean;
+
+  /**
    * 直接返回组件，是为了方便测试
    */
   components?: boolean;
@@ -188,6 +193,7 @@ const getBrowser = (
     routeComponents: opts.routeComponents,
     loadingComponent: opts.loadingComponent,
     reactRouter5Compat: opts.reactRouter5Compat,
+    useStream: opts.useStream,
   });
   opts.pluginManager.applyPlugins({
     key: 'patchClientRoutes',

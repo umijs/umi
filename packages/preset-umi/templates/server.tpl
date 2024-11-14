@@ -62,7 +62,8 @@ const createOpts = {
   htmlPageOpts: {{{htmlPageOpts}}},
  __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {{{__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED}}},
   mountElementId: '{{{mountElementId}}}',
-  basename: '{{{basename}}}'
+  basename: '{{{basename}}}',
+  useStream: {{{useStream}}}
 };
 const requestHandler = createRequestHandler(createOpts);
 /**

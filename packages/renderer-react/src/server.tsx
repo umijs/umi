@@ -14,6 +14,7 @@ export async function getClientRootComponent(opts: IRootComponentOptions) {
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: components,
+    useStream: opts.useStream,
   });
 
   opts.pluginManager.applyPlugins({
