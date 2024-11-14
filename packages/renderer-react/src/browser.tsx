@@ -253,11 +253,11 @@ const getBrowser = (
           // @ts-ignore
           const manifest = window.__umi_manifest__;
           if (manifest) {
-            const routeIdReplaced = id.replace(/[\/\-]/g, '_');
+            const routeIdReplaced = '_i_' + id.replace(/[\/\-]/g, '_');
             const preloadId = `preload-${routeIdReplaced}.js`;
             if (!document.getElementById(preloadId)) {
               const keys = Object.keys(manifest).filter((k) =>
-                k.startsWith(routeIdReplaced + '.'),
+                k.includes(routeIdReplaced),
               );
               keys.forEach((key) => {
                 if (!/\.(js|css)$/.test(key)) {
