@@ -333,7 +333,7 @@ declare module '*.txt' {
           __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
         ),
         hydrate: !!ssrConfig,
-        useStream: ssrConfig.useStream ?? true,
+        useStream: ssrConfig?.useStream ?? true,
         reactRouter5Compat: !!api.config.reactRouter5Compat,
         loadingComponent: api.appData.globalLoading,
       },
@@ -565,7 +565,7 @@ if (process.env.NODE_ENV === 'development') {
           ),
           mountElementId,
           basename: api.config.base,
-          useStream: ssrConfig.useStream ?? true,
+          useStream: ssrConfig?.useStream ?? true,
         },
       });
     }
