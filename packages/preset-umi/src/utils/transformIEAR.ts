@@ -70,7 +70,7 @@ export const IEAR_REG_EXP = new RegExp(
     // match quotes ($2)
     `('|")`,
     // match absolute file path ($3)
-    `(\\/.*[^\\\\])\\2`,
+    `((?:[a-zA-Z]:|\\/).*[^\\\\])\\2`,
     ')',
   ].join(''),
   // match full-content

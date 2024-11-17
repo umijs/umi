@@ -20,19 +20,21 @@ export default (api: IApi) => {
     enableBy: api.env === 'development' ? api.EnableBy.config : () => false,
   });
 
-  const pkgPath = dirname(require.resolve('click-to-react-component'));
   api.modifyConfig((memo) => {
+    const pkgPath = dirname(require.resolve('click-to-react-component'));
     memo.alias['click-to-react-component'] = pkgPath;
     return memo;
   });
 
   api.modifyAppData((memo) => {
+    const pkgPath = dirname(require.resolve('click-to-react-component'));
     memo.clickToComponent = {
       pkgPath,
       version: '1.0.8',
     };
     return memo;
   });
+
   api.onGenerateFiles({
     name: 'clickToComponent',
     fn: () => {
@@ -41,26 +43,34 @@ export default (api: IApi) => {
         content: `
 import { ClickToComponent } from 'click-to-react-component';
 import React from 'react';
+
+const pathModifier = (path) => {
+  return path.startsWith('${api.paths.cwd}') ? path : '${
+          api.paths.cwd
+        }/' + path;
+}
+
 export function rootContainer(container, opts) {
-return React.createElement(
-  (props) => {
-    return (
-      <>
-        <ClickToComponent editor="${
-          api.config.clickToComponent.editor || 'vscode'
-        }"/>
-        {props.children}
-      </>
-    );
-  },
-  opts,
-  container,
-);
+  return React.createElement(
+    (props) => {
+      return (
+        <>
+          <ClickToComponent editor="${
+            api.config.clickToComponent.editor || 'vscode'
+          }" pathModifier={pathModifier} />
+          {props.children}
+        </>
+      );
+    },
+    opts,
+    container,
+  );
 }
     `,
       });
     },
   });
+
   api.addRuntimePlugin(() => [
     winPath(join(api.paths.absTmpPath, 'plugin-clickToComponent/runtime.tsx')),
   ]);

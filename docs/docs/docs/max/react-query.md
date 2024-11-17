@@ -29,6 +29,14 @@ export default {
 }
 ```
 
+:::info
+注：在使用时，请务必检查关于 `refetchOnWindowFocus` 的配置项，详见 [运行时配置项](#运行时配置项) 。
+:::
+
+## 版本
+
+默认使用的是 [TanStack Query](https://tanstack.com/query/latest) v4 版本，若需使用最新 v5 版本，手动安装 v5 版本的 `@tanstack/react-query` 与 `@tanstack/react-query-devtools` 依赖即可。
+
 ## 特性
 
 插件帮你做了几件事，
@@ -44,7 +52,7 @@ export default {
 可以在 `reactQuery` 中做以下配置。
 
 - `devtool`: boolean，是否开启 react query 官方 devtool 工具，默认 `true`
-- `queryClient`: boolean, 是否注册全局的 QueryClient 和 QueryClientProvier，默认 `true`
+- `queryClient`: boolean, 是否注册全局的 QueryClient 和 QueryClientProvider，默认 `true`
 
 比如：
 
@@ -66,27 +74,26 @@ export default {
 - `devtool`：object
 - `queryClient`: object
 
-比如：
+例子：
 
 ```ts
-const API_SERVER = '/path/to/api/server';
-export const reactQuery = {
+// src/app.ts
+
+import { RuntimeReactQueryType } from 'umi';
+
+export const reactQuery: RuntimeReactQueryType = {
   devtool: { 
     initialIsOpen: true,
   },
   queryClient: {
-	  defaultOptions: {
-	    queries: {
-	      queryFn: async ({ queryKey }) => {
-	        const res = await fetch(`${API_SERVER}/${queryKey.join('/')}`);
-	        if (res.status !== 200) {
-	          throw new Error(res.statusText);
-	        }
-	        return res.json();
-	      }
-	    }
-	  }
+    defaultOptions: {
+      queries: {
+        // 🟡 此配置具有的表现往往令人出乎意料，若无特殊需求，请默认关闭
+        refetchOnWindowFocus: false,
+      },
+    },
   },
 };
 ```
 
+注：绝大多数项目中，**你都应该默认设定 `refetchOnWindowFocus: false`** ，否则将引发出人意料的反复获取数据效果（这在 SWR 中被称为 [`revalidateOnFocus`](https://swr.vercel.app/zh-CN/docs/api#options) ）。

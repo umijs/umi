@@ -22,8 +22,7 @@ group:
 <p>
   <span style={{ color: 'red', fontWeight: 'bold' }}>MFSU V3 & 默认开启。</span>
   MFSU 更新了他的第三个大版本，如果你有用 Umi 3 内置的 MFSU 并遇到问题，建议重新尝试，这个版本有很多改进，解决基本所有之前可能会遇到的诡异问题，并且编译速度和页面打开速度都更快。昨天我还有写一篇
-  [《比 Vite 更快的 MFSU》](https://mp.weixin.qq.com/s?__biz=MjM5NDgyODI4MQ==&mid=2247484624&idx=1&sn=2addfa8cc2511fbea91faf831195788f)。基于此，我们自信地把这个功能在
-  Umi 4 中默认开启。还有值得一提的是，MFSU 可脱离 Umi 运行。
+  <a href="https://mp.weixin.qq.com/s?__biz=MjM5NDgyODI4MQ==&mid=2247484624&idx=1&sn=2addfa8cc2511fbea91faf831195788f" target="_blank">《比 Vite 更快的 MFSU》</a>。基于此，我们自信地把这个功能在Umi 4 中默认开启。还有值得一提的是，MFSU 可脱离 Umi 运行。
 </p>
 
 ![](https://img.alicdn.com/imgextra/i2/O1CN01Znj8HD1mCwz72voXv_!!6000000004919-2-tps-1600-807.png)
@@ -138,9 +137,9 @@ group:
 
 以上是 Umi 4 目前的新功能。
 
-除此之外，还有一些计划在正式版发布之前做的事情。包括 <span style={{color:'red'}}>api route、umi server and adapter、route loader、稳定的 lint、更多命令、组件研发 father 4、文档工具 dumi 2</span> 等，会在之后的 RC 版本中与大家见面。
+除此之外，还有一些计划在正式版发布之前做的事情。包括 <span style="color:red;">api route、umi server and adapter、route loader、稳定的 lint、更多命令、组件研发 father 4、文档工具 dumi 2</span> 等，会在之后的 RC 版本中与大家见面。
 
-欢迎大家尝鲜 Umi 4，官方文档有准备 ant-design-pro 从 Umi 3 到 4 的升级文档。同时 RC 阶段，还准备了一个<span style={{color:'red',fontWeight:'bold'}}>手把手升级的微信交流群</span>，欢迎 Umi 4 的先行者们加入，祝大家升级顺利，也提前祝大家新年快乐 🧨，🐯 年吉祥。
+欢迎大家尝鲜 Umi 4，官方文档有准备 ant-design-pro 从 Umi 3 到 4 的升级文档。同时 RC 阶段，还准备了一个<span style="color:red;fontWeight:bold;">手把手升级的微信交流群</span>，欢迎 Umi 4 的先行者们加入，祝大家升级顺利，也提前祝大家新年快乐 🧨，🐯 年吉祥。
 
 <p>
   <img

@@ -42,6 +42,8 @@ export async function getMarkupArgs(opts: { api: IApi }) {
       let $ = cheerio.load(memo, {
         // @ts-ignore
         decodeEntities: false,
+        // reduce memory overhead, to avoid oom in antd site with `exportStatic: {}`
+        _useHtmlParser2: true,
       });
       $ = await opts.api.applyPlugins({
         key: 'modifyHTML',

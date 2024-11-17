@@ -60,29 +60,15 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
 async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
   const {
     exportStatic: { ignorePreRenderError = false },
+    base,
   } = api.config;
   markupRender ??= require(absServerBuildPath(api))._markupGenerator;
 
   try {
-    const markup = await markupRender(path);
-    const [mainTpl, extraTpl = ''] = markup.split('</html>');
-    // TODO: improve return type for markup generator
-    const helmetContent = mainTpl.match(
-      /<head>[^]*?(<[^>]+data-rh[^]+)<\/head>/,
-    )?.[1];
-    const bodyContent = mainTpl.match(/<body[^>]*>([^]+?)<\/body>/)?.[1];
-
-    htmlTpl = htmlTpl
-      // append helmet content
-      .replace('</head>', `${helmetContent || ''}</head>`)
-      // replace #root with pre-rendered body content
-      .replace(
-        new RegExp(`<div id="${api.config.mountElementId}"[^>]*>.*?</div>`),
-        bodyContent,
-      )
-      // append hidden templates
-      .replace(/$/, `${extraTpl}`);
+    const location = `${base.endsWith('/') ? base.slice(0, -1) : base}${path}`;
+    const html = await markupRender(location);
     logger.info(`Pre-render for ${path}`);
+    return html;
   } catch (err) {
     logger.error(`Pre-render ${path} error: ${err}`);
     if (!ignorePreRenderError) {
@@ -148,16 +134,10 @@ export default (api: IApi) => {
     const { publicPath } = api.config;
     const htmlData = api.appData.exportHtmlData;
     const htmlFiles: { path: string; content: string }[] = [];
+    const { markupArgs: defaultMarkupArgs } = opts;
 
     for (const { file, route, prerender } of htmlData) {
-      let { markupArgs } = opts;
-      if (api.config.ssr && prerender) {
-        markupArgs.scripts.forEach((script: any) => {
-          if (script.src) {
-            script.async = true;
-          }
-        });
-      }
+      let markupArgs = defaultMarkupArgs;
 
       // handle relative publicPath, such as `./`
       if (publicPath.startsWith('.')) {
@@ -220,7 +200,11 @@ export default (api: IApi) => {
       }
 
       // append html file
-      const htmlContent = await getMarkup(markupArgs);
+      const htmlContent = await getMarkup({
+        ...markupArgs,
+        // https://github.com/umijs/umi/issues/12108
+        path: route.path,
+      });
 
       htmlFiles.push({
         path: file,

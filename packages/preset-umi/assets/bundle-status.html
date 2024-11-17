@@ -150,10 +150,46 @@
         background-position-x: -340px !important;
       }
     </style>
+    <style data-mako>
+      #loading[data-mako]::after {
+        position: absolute;
+        top: 0;
+        left: 64px;
+        content: '';
+        width: 20px;
+        height: 22px;
+        background: center / 20px 22px;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAuCAMAAABteatCAAABKVBMVEUAAAADAgAAAAAAAAAAAAAAAAAAAAAIBwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMCgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASDwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+2SgAAAD81ycWEwPxzSXOsCBBOAoqIwbjwiOWgBd2ZBJdTw741Ca1mhyhihlHPAswKQcbFwT00CbgvyLWtyG5nh2GchV7aRNYSw1VSA3zzybpxyTmxCTLrR+QehaMdxZvXxFmVxBjVQ85MQglIAXqxyTSsyG/ox6zmRyrkhqpkBqmjhqdhhiBbhRQRAxMQQyKBhJVAAAAM3RSTlMA/vrcEO3F/nA4BvfUqYx4aFAjBP7x6uOugCEdCrSllohUSj0yLRQC/se/k2FWJ7qamFjVvxppAAAB4klEQVQ4y42U10IaQRhG2QVBAaVIMxQNCthT9iwdkSoEEkss6e39HyIaQ4Zhdjee63PxH/h2XCqF4EbU9QQ8bsAb9vxXzNI7iYGeivgdvQ12h8ag09VgaXPF3sujjYwHzq96gNvu3OgSY2PGx1bf7txMkJ+mITBHNufmuKsYMm//nit5y8TODJXzKWTnvW2dL4YFpz5y63NeOkHLyvum8ao05/m91EwLr6mxJR24Sf+DhTeGkOQd4ruw8FpoYcnbCfBd1cwb9CPJKya5Vr32lEBe8kovuG0r3qBLfNslsUW5oXiVWxI7shdB+6R473okj2XvOM6l4g3vYK24OJmJGlK93gU9e5QRYor6wLCg/fWXBvGXs54QmjQZ6c5LMfOCDuX3VcOOsz8z3wvfjyYUBOrjhp1qXgHux//vIAFarVOx8honGkvLsz2u51cD4JucLg6t8sZHYM0jvRCH+yyeazbLsPrMtUg6lISm8D7XwWv5CBTitMRPXgN3xGVFOsnEVBpUPEFqbdGgiwYZ/z71itqgkqM/fPyO1QZ5vLHqv4bnLlvCaCO1QSWi0bl/kUSDDSsBfqgNKtEEN2qDStFN90JpUMnsUZ4+NPidvVIKUBtUDkA0OBBCNDjxWjQ4o4sGR34DhGGszb2iUaMAAAAASUVORK5CYII=');
+        animation: fade-in-out alternate infinite 1s;
+      }
+
+      #loading[data-mako] small::after {
+        content: 'Umi with Mako';
+      }
+
+      #loading[data-mako] .loader {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 5px;
+        width: 100vw;
+        --c:no-repeat linear-gradient(#1d90fe 0 0);
+        background: var(--c),var(--c),#cddeee;
+        background-size: 60% 100%;
+        animation: l16 3s infinite;
+      }
+
+      @keyframes l16 {
+        0%   {background-position:-150% 0,-150% 0}
+        66%  {background-position: 250% 0,-150% 0}
+        100% {background-position: 250% 0, 250% 0}
+      }
+  </style>
   </head>
 
   <body>
     <div id="loading">
+      <div class="loader"></div>
       <h3>Bundling...</h3>
       <small></small>
       <p class="summary"></p>
@@ -180,6 +216,14 @@
       }
 
       function renderStatus(data) {
+        if (data.bundler === 'mako') {
+            loading.setAttribute('data-mako', '');
+            window.__MAKO_PERCENT = window.__MAKO_PERCENT || 0.1;
+            const makoPercent = Math.floor(window.__MAKO_PERCENT * 100);
+            loading.setAttribute('data-percent', makoPercent);
+            window.__MAKO_PERCENT = window.__MAKO_PERCENT >= 1 ? 0.2 : window.__MAKO_PERCENT + 0.1;
+          return;
+        }
         const hasMFSU = Boolean(data.mfsuBundleStatus);
         const hasProgressDetails = Boolean(
           data.bundleStatus.progresses[0].details,

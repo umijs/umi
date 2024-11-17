@@ -1,22 +1,9 @@
 import { getSchemas as getViteSchemas } from '@umijs/bundler-vite/dist/schema';
 import { getSchemas as getWebpackSchemas } from '@umijs/bundler-webpack/dist/schema';
-import { resolve } from '@umijs/utils';
 import { dirname, join } from 'path';
 import type { IApi } from '../../types';
+import { resolveProjectDep } from '../../utils/resolveProjectDep';
 import { getSchemas as getExtraSchemas } from './schema';
-
-function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
-  if (
-    opts.pkg.dependencies?.[opts.dep] ||
-    opts.pkg.devDependencies?.[opts.dep]
-  ) {
-    return dirname(
-      resolve.sync(`${opts.dep}/package.json`, {
-        basedir: opts.cwd,
-      }),
-    );
-  }
-}
 
 export default (api: IApi) => {
   const { userConfig } = api;
@@ -26,8 +13,11 @@ export default (api: IApi) => {
       cwd: api.cwd,
       dep: 'react-dom',
     }) || dirname(require.resolve('react-dom/package.json'));
-  const reactDOMVersion = require(join(reactDOMPath, 'package.json')).version;
-  const isLT18 = !reactDOMVersion.startsWith('18.');
+  const isLT18 = (() => {
+    const reactDOMVersion = require(join(reactDOMPath, 'package.json')).version;
+    const majorVersion = parseInt(reactDOMVersion.split('.')[0], 10);
+    return majorVersion < 18;
+  })();
   const configDefaults: Record<string, any> = {
     alias: {
       umi: '@@/exports',

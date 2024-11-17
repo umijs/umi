@@ -36,9 +36,9 @@ export default function () {
       ) {
         opts.onCheckCode({
           args: {
-            ...cache.get(state.opts.filename),
-            file: state.opts.filename,
-            isFromTmp: state.opts.filename.startsWith(opts.absTmpPath),
+            ...cache.get(filename),
+            file: filename,
+            isFromTmp: filename.startsWith(opts.absTmpPath),
           },
         });
       }
@@ -48,7 +48,7 @@ export default function () {
         enter(path: Babel.NodePath<t.Program>, state: any) {
           opts = state.opts;
           // @ts-ignore
-          const file = path?.hub.file.opts.filename;
+          const file = winPath(path?.hub.file.opts.filename);
           // @ts-ignore
           const cache = this.cache;
           // reset cache

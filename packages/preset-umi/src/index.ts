@@ -27,6 +27,7 @@ export default () => {
       require.resolve('./features/icons/icons'),
       require.resolve('./features/mock/mock'),
       require.resolve('./features/mpa/mpa'),
+      require.resolve('./features/okam/okam'),
       require.resolve('./features/overrides/overrides'),
       require.resolve('./features/phantomDependency/phantomDependency'),
       require.resolve('./features/polyfill/polyfill'),
@@ -56,7 +57,10 @@ export default () => {
       require.resolve('./features/webpack/webpack'),
       require.resolve('./features/swc/swc'),
       require.resolve('./features/ui/ui'),
+      require.resolve('./features/mako/mako'),
       require.resolve('./features/hmrGuardian/hmrGuardian'),
+      require.resolve('./features/routePreloadOnLoad/routePreloadOnLoad'),
+      require.resolve('./features/forget/forget'),
 
       // commands
       require.resolve('./commands/build'),

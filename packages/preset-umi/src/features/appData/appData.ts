@@ -56,6 +56,7 @@ export default (api: IApi) => {
     memo.globalJS = globalJS;
     memo.overridesCSS = overridesCSS;
     memo.globalLoading = globalLoading;
+    memo.bundler = 'webpack';
 
     const gitDir = findGitDir(api.paths.cwd);
     if (gitDir) {

@@ -50,12 +50,14 @@ async function render() {
 {{#hydrate}}
         hydrate: true,
 {{/hydrate}}
+        useStream: {{{useStream}}},
 {{#reactRouter5Compat}}
         reactRouter5Compat: true,
 {{/reactRouter5Compat}}
         routes,
         routeComponents,
         pluginManager,
+        mountElementId: '{{{mountElementId}}}',
         rootElement: contextOpts.rootElement || document.getElementById('{{{ mountElementId }}}'),
 {{#loadingComponent}}
         loadingComponent: Loading,
@@ -65,6 +67,7 @@ async function render() {
         history,
         historyType,
         basename,
+        __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {{{__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED}}},
         callback: contextOpts.callback,
       };
       const modifiedContext = pluginManager.applyPlugins({

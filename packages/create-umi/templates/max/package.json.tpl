@@ -5,7 +5,7 @@
     "dev": "max dev",
     "build": "max build",
     "format": "prettier --cache --write .",{{#withHusky}}
-    "prepare": "husky install",{{/withHusky}}
+    "prepare": "husky",{{/withHusky}}
     "postinstall": "max setup",
     "setup": "max setup",
     "start": "npm run dev"
@@ -19,7 +19,7 @@
   "devDependencies": {
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",{{#withHusky}}
-    "husky": "^8.0.3",{{/withHusky}}
+    "husky": "^9",{{/withHusky}}
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.7",
     "prettier-plugin-organize-imports": "^3.2.2",

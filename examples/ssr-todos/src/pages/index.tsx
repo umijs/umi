@@ -1,117 +1,140 @@
-import React from 'react';
-// @ts-ignore
-import { useServerLoaderData, __useFetcher } from 'umi';
-import { listTodos } from '../services/todos';
-// @ts-ignore
+import React, { useState } from 'react';
+import { useServerLoaderData } from 'umi';
+import {
+  createTodos,
+  deleteTodo,
+  getTodoList,
+  ITodo,
+  updateTodo,
+} from '../services/todos';
 import styles from './index.css';
 
-interface Todo {
-  id: string;
-  attributes: {
-    title: string;
-    done: boolean;
-    notes: string;
-  };
+interface ITodoProps {
+  data: ITodo;
+  refresh: () => Promise<void>;
+  onChange: (data: Partial<ITodo>) => void;
 }
 
-function Todo(props: { todo: Todo }) {
-  const fetcher = __useFetcher();
-  function deleteHandler() {
-    console.log('Delete todo', props.todo.id);
-    fetch(`/api/todos`, {
-      method: 'DELETE',
-      body: JSON.stringify({ id: props.todo.id }),
-    })
-      .then(() => {
-        fetcher.load();
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }
-  function changeDoneHandler(e: any) {
-    console.log('Change todo', props.todo.id);
-    fetch(`/api/todos?id=${props.todo.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ done: e.target.checked }),
-    })
-      .then(() => {
-        fetcher.load();
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }
+function Todo({ refresh, data, onChange }: ITodoProps) {
+  const id = data.id!;
+
+  const deleteHandler = async () => {
+    console.log('Delete todo', id);
+    await deleteTodo(id);
+    await refresh();
+  };
+
+  const changeDoneHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Change todo', id, e.target.checked);
+    await updateTodo({
+      id,
+      done: e.target.checked,
+    });
+    await refresh();
+  };
+
+  const changeTitleHandler = async () => {
+    await updateTodo({
+      id,
+      title: data.title,
+    });
+    await refresh();
+  };
+
   return (
     <div className={styles.todo}>
       <span>
         <input
           type="checkbox"
-          checked={!!props.todo.attributes.done}
+          checked={!!data.done}
           onChange={changeDoneHandler}
         />
       </span>
-      <span>{props.todo.attributes.title}</span>
       <span>
+        <input
+          type="text"
+          value={data.title}
+          onChange={(e) => {
+            onChange({
+              title: e.target.value,
+            });
+          }}
+        />
+      </span>
+      <span>
+        <button onClick={changeTitleHandler}>Change</button>
         <button onClick={deleteHandler}>Delete</button>
       </span>
     </div>
   );
 }
 
-function Todos() {
-  const { data }: { data: { data: Todo[] } } = useServerLoaderData();
-  return (
-    <ul className={styles.todos}>
-      {data.data.map((todo) => {
-        return (
-          <li key={todo.id}>
-            <Todo todo={todo} />
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function Creator() {
-  const fetcher = __useFetcher();
-  function submitHandler(e: any) {
-    e.preventDefault();
-    const title = e.target.title.value;
-    e.target.title.value = '';
-    console.log('Create todo', title);
-    fetch('/api/todos', {
-      method: 'POST',
-      body: JSON.stringify({ title }),
-    })
-      .then(() => {
-        fetcher.load();
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }
-  return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <input name="title" type="text" placeholder="to do something..." />
-        <button type="submit">Add</button>
-      </form>
-    </div>
-  );
-}
-
 export default function HomePage() {
+  const serverLoaderData = useServerLoaderData<typeof serverLoader>().data;
+  const [todoList, setTodoList] = useState<ITodo[]>(
+    serverLoaderData?.data || [],
+  );
+
+  const refresh = async () => {
+    const { data } = await getTodoList();
+    setTodoList(data!);
+  };
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as any as { title: { value: string } };
+    await createTodos({
+      title: target.title.value,
+    });
+    target.title.value = '';
+    await refresh();
+  };
+
   return (
     <div>
       <h2 className={styles.title}>Todos</h2>
-      <Todos />
-      <Creator />
+      <div>
+        <form onSubmit={submitHandler}>
+          <input name="title" type="text" placeholder="to do something..." />
+          <button type="submit">Add</button>
+        </form>
+      </div>
+      <ul className={styles.todos}>
+        {todoList.map((todo) => {
+          return (
+            <li key={todo.id}>
+              <Todo
+                data={todo}
+                refresh={refresh}
+                onChange={(data) => {
+                  setTodoList((prev) => {
+                    const targetIdx = prev.findIndex(
+                      (item) => item.id === todo.id,
+                    );
+                    if (~targetIdx) {
+                      const newData = {
+                        ...prev[targetIdx],
+                        ...data,
+                      };
+                      return [
+                        ...prev.slice(0, targetIdx),
+                        newData,
+                        ...prev.slice(targetIdx + 1),
+                      ];
+                    }
+                    return prev;
+                  });
+                }}
+              />
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
 
-export async function serverLoader() {
-  return await listTodos();
-}
+export const serverLoader = async () => {
+  const res = await getTodoList();
+  return res;
+};

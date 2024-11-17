@@ -6,6 +6,10 @@ import { createPluginManager } from './core/plugin';
 import { getRoutes } from './core/route';
 import type { Location } from 'history';
 
+{{#loadingComponent}}
+import Loading from '{{{ loadingComponent }}}';
+{{/loadingComponent}}
+
 {{{ importsAhead }}}
 const publicPath = '/';
 const runtimePublicPath = false;

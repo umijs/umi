@@ -18,10 +18,13 @@
     "@ant-design/icons": "^4.7.0",
     "@umijs/max": "workspace:*",
     "antd": "^4.23.2",
-    "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "dayjs": "^1.11.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@iconify-json/ic": "1.1.17",
+    "@iconify-json/solar": "1.1.9",
     "cross-env": "^7.0.3",
     "cypress": "^12.0.0",
     "start-server-and-test": "^1.15.2",

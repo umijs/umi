@@ -3,6 +3,10 @@ import type {
   Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { IApi } from '../../types';
+import {
+  EntryAssets,
+  extractEntryAssets,
+} from '../../utils/extractEntryAssets';
 
 export default (api: IApi) => {
   api.describe({
@@ -11,7 +15,7 @@ export default (api: IApi) => {
   });
 
   // html 处理逻辑
-  const assets: { js: string[]; css: string[]; [key: string]: string[] } = {
+  const assets: EntryAssets = {
     // Will contain all js and mjs files
     js: [],
     // Will contain all css files
@@ -26,45 +30,12 @@ export default (api: IApi) => {
           const entryPointFiles = compilation.entrypoints
             .get('umi')!
             .getFiles();
-
-          // Extract paths to .js, .mjs and .css files from the current compilation
-          const entryPointPublicPathMap: Record<string, boolean> = {};
-          const extensionRegexp = /\.(css|js|mjs)(\?|$)/;
-
-          const UMI_ASSETS_REG = {
-            js: /^umi(\..+)?\.js$/,
-            css: /^umi(\..+)?\.css$/,
-          };
-
-          entryPointFiles.forEach((entryPointPublicPath) => {
-            const extMatch = extensionRegexp.exec(entryPointPublicPath);
-            // Skip if the public path is not a .css, .mjs or .js file
-            if (!extMatch) {
-              return;
+          let entryAssets = extractEntryAssets(entryPointFiles);
+          Object.entries(entryAssets).forEach(([ext, files]) => {
+            if (!Array.isArray(assets[ext])) {
+              assets[ext] = [];
             }
-
-            if (entryPointPublicPath.includes('.hot-update')) {
-              return;
-            }
-
-            // Skip if this file is already known
-            // (e.g. because of common chunk optimizations)
-            if (entryPointPublicPathMap[entryPointPublicPath]) {
-              return;
-            }
-
-            // umi html 默认会注入 不做处理
-            if (
-              UMI_ASSETS_REG.js.test(entryPointPublicPath) ||
-              UMI_ASSETS_REG.css.test(entryPointPublicPath)
-            ) {
-              return;
-            }
-
-            entryPointPublicPathMap[entryPointPublicPath] = true;
-            // ext will contain .js or .css, because .mjs recognizes as .js
-            const ext = extMatch[1] === 'mjs' ? 'js' : extMatch[1];
-            assets[ext].push(entryPointPublicPath);
+            assets[ext].push(...files);
           });
         },
       );
@@ -92,7 +63,7 @@ export default (api: IApi) => {
     const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
 
     return assets.js.map((js) => {
-      return `${displayPublicPath}${js}`;
+      return { src: `${displayPublicPath}${js}` };
     });
   });
 };

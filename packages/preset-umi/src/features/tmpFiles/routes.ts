@@ -86,53 +86,6 @@ export async function getRoutes(opts: {
     }
   }
 
-  for (const id of Object.keys(routes)) {
-    if (routes[id].file) {
-      // TODO: cache for performance
-      let file = routes[id].file;
-      const basedir =
-        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath;
-
-      if (!isAbsolute(file)) {
-        if (file.startsWith('@/')) {
-          file = file.replace('@/', '../');
-        }
-        file = resolve.sync(localPath(file), {
-          basedir,
-          extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
-        });
-      }
-
-      const isJSFile = /.[jt]sx?$/.test(file);
-      routes[id].__content = readFileSync(file, 'utf-8');
-      routes[id].__absFile = winPath(file);
-      routes[id].__isJSFile = isJSFile;
-
-      const enableSSR = opts.api.config.ssr;
-      const enableClientLoader = opts.api.config.clientLoader;
-      const enableRouteProps = !opts.api.userConfig.routes;
-      const needCollectExports =
-        enableSSR || enableClientLoader || enableRouteProps;
-      if (needCollectExports) {
-        const exports =
-          isJSFile && existsSync(file)
-            ? await getModuleExports({
-                file,
-              })
-            : [];
-        if (enableSSR) {
-          routes[id].hasServerLoader = exports.includes('serverLoader');
-        }
-        if (enableClientLoader && exports.includes('clientLoader')) {
-          routes[id].clientLoader = `clientLoaders['${id}']`;
-        }
-        if (enableRouteProps && exports.includes('routeProps')) {
-          routes[id].routeProps = `routeProps['${id}']`;
-        }
-      }
-    }
-  }
-
   // layout routes
   const absLayoutPath =
     opts.api.config?.conventionLayout === false
@@ -172,6 +125,58 @@ export async function getRoutes(opts: {
     });
   }
 
+  // collect ssr info
+  for (const id of Object.keys(routes)) {
+    if (routes[id].file) {
+      // TODO: cache for performance
+      let file = routes[id].file;
+      const basedir =
+        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath;
+
+      if (!isAbsolute(file)) {
+        if (file.startsWith('@/')) {
+          file = file.replace('@/', '../');
+        }
+        file = resolve.sync(localPath(file), {
+          basedir,
+          extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
+        });
+      }
+
+      const isJSFile = /.[jt]sx?$/.test(file);
+      // layout route 这里不需要这些属性
+      if (!routes[id].isLayout) {
+        routes[id].__content = readFileSync(file, 'utf-8');
+        routes[id].__isJSFile = isJSFile;
+      }
+      routes[id].__absFile = winPath(file);
+
+      const enableSSR = opts.api.config.ssr;
+      const enableClientLoader = opts.api.config.clientLoader;
+      const enableRouteProps = !opts.api.userConfig.routes;
+      const needCollectExports =
+        enableSSR || enableClientLoader || enableRouteProps;
+      if (needCollectExports) {
+        const exports =
+          isJSFile && existsSync(file)
+            ? await getModuleExports({
+                file,
+              })
+            : [];
+        if (enableSSR) {
+          routes[id].hasServerLoader = exports.includes('serverLoader');
+          routes[id].hasMetadataLoader = exports.includes('metadataLoader');
+        }
+        if (enableClientLoader && exports.includes('clientLoader')) {
+          routes[id].clientLoader = `clientLoaders['${id}']`;
+        }
+        if (enableRouteProps && exports.includes('routeProps')) {
+          routes[id].routeProps = `routeProps['${id}']`;
+        }
+      }
+    }
+  }
+
   // patch routes
   for (const id of Object.keys(routes)) {
     await opts.api.applyPlugins({
@@ -190,6 +195,9 @@ export async function getRoutes(opts: {
   return routes;
 }
 
+const IMPORT_EMPTY_ROUTE_CJS = `() => Promise.resolve(require('./EmptyRoute'))`;
+const IMPORT_EMPTY_ROUTE_ESM = `() => import('./EmptyRoute')`;
+
 export async function getRouteComponents(opts: {
   routes: Record<string, any>;
   prefix: string;
@@ -199,14 +207,18 @@ export async function getRouteComponents(opts: {
     .map((key) => {
       const useSuspense = opts.api.appData.framework === 'react' ? true : false; // opts.api.appData.react.version.startsWith('18.');
       const route = opts.routes[key];
+      const useCjsModule = opts.api.config.routeLoader?.moduleType === 'cjs';
       if (!route.file) {
         // 测试环境还不支持 import ，所以用 require
         if (process.env.NODE_ENV === 'test') {
-          return `'${key}': require( './EmptyRoute').default,`;
+          return `'${key}': require('./EmptyRoute').default,`;
         }
+        const importEmptyRoute = useCjsModule
+          ? IMPORT_EMPTY_ROUTE_CJS
+          : IMPORT_EMPTY_ROUTE_ESM;
         return useSuspense
-          ? `'${key}': React.lazy(() => import( './EmptyRoute')),`
-          : `'${key}': () => import( './EmptyRoute'),`;
+          ? `'${key}': React.lazy(${importEmptyRoute}),`
+          : `'${key}': ${importEmptyRoute},`;
       }
       if (route.hasClientLoader) {
         route.file = join(
@@ -241,7 +253,7 @@ export async function getRouteComponents(opts: {
       }
 
       // ref: https://github.com/umijs/umi/issues/11466
-      if (opts.api.config.routeLoader?.moduleType === 'cjs') {
+      if (useCjsModule) {
         return useSuspense
           ? `'${key}': React.lazy(() => Promise.resolve(require('${winPath(
               path,
@@ -311,9 +323,15 @@ export function componentToChunkName(
           ),
           '',
         )
+        // 丢弃 .pnpm 下的多层 node_modules 避免 chunkName 过长
+        // ex. node_modules/.pnpm/dumi@2.1.19_xxxx/node_modules/dumi/dist/client/pages/404
+        .replace(/.+(node_modules(\/|\\))/, '$1')
+        // 丢弃 tnpm 目录下的软链结构避免 chunkName 过长
+        // ex. node_modules/_@umijs_utils@4.0.83@@umijs/utils/dist/index.js
+        .replace(/(\/|\\)_@?([^@]+@){2}/, '$1')
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
-        // 转换 tnpm node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
+        // 转换 node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
         .replace(/@/g, '_')
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')

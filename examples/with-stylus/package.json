@@ -1,0 +1,17 @@
+{
+  "name": "@example/with-stylus",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
+    "stylus": "^0.60.0"
+  }
+}

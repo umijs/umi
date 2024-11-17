@@ -1,12 +1,6 @@
 import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
 import type { Declaration } from '@umijs/es-module-parser';
-import {
-  aliasUtils,
-  importLazy,
-  isJavaScriptFile,
-  lodash,
-  logger,
-} from '@umijs/utils';
+import { aliasUtils, importLazy, isJavaScriptFile, logger } from '@umijs/utils';
 import path from 'path';
 import { addUnWatch } from '../../commands/dev/watch';
 import { IApi, IOnGenerateFiles } from '../../types';
@@ -20,11 +14,12 @@ export default (api: IApi) => {
     buildResult: BuildResult;
     fileImports?: Record<string, Declaration[]>;
   }) {
-    const buildResult: BuildResult = lodash.cloneDeep(prepareData.buildResult);
-    (buildResult.outputFiles || []).forEach((file) => {
-      // @ts-ignore
-      delete file?.contents;
-    });
+    const buildResult: BuildResult = {
+      ...prepareData.buildResult,
+      // we don't need output file in prepare stage
+      outputFiles: undefined,
+    };
+
     const nextFileImports =
       prepareData.fileImports ?? api.appData.prepare?.fileImports;
     api.appData.prepare = {

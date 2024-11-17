@@ -120,6 +120,9 @@ export default (api: IApi) => {
         }
       }
     }
+    if (code.length) {
+      code.unshift("import React from 'react';");
+    }
     api.writeTmpFile({
       path: 'icons.tsx',
       content: code.join('\n') || EMPTY_ICONS_FILE,
@@ -284,6 +287,7 @@ type IconCollections = 'academicons' |
   'subway' |
   'svg-spinners' |
   'system-uicons' |
+  'solar' |
   'tabler' |
   'teenyicons' |
   'topcoat' |
@@ -318,10 +322,14 @@ interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
   flip?: 'vertical' | 'horizontal' | 'horizontal,vertical' | 'vertical,horizontal';
 }
 
+export const getIconComponent = (icon: Pick<IUmiIconProps, 'icon'>) => {
+  const iconName = normalizeIconName(alias[icon] || icon);
+  return iconsMap[iconName];
+}
+
 export const Icon = React.forwardRef<HTMLSpanElement, IUmiIconProps>((props, ref) => {
   const { icon, hover, style, className = '' , rotate, spin, flip, ...extraProps } = props;
-  const iconName = normalizeIconName(alias[icon] || icon);
-  const Component = iconsMap[iconName];
+  const Component = getIconComponent(icon);
   if (!Component) {
     // TODO: give a error icon when dev, to help developer find the error
     return null;

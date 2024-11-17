@@ -77,6 +77,10 @@ function patchMicroAppRouteComponent(routes: any[]) {
 }
 
 export async function render(oldRender: typeof noop) {
+  // 在 ssr 的场景下，直接返回旧的 render
+  if (typeof window === 'undefined') {
+    return oldRender();
+  }
   const runtimeOptions = await getMasterRuntime();
   let masterOptions: MasterOptions = {
     ...getMasterOptions(),
@@ -109,7 +113,7 @@ export async function render(oldRender: typeof noop) {
   microAppRuntimeRoutes = routes;
 
   // 主应用相关的配置注册完毕后即可开启渲染
-  oldRender();
+  const renderData = oldRender();
 
   // 未使用 base 配置的可以认为是路由关联或者使用标签装载的应用
   const loadableApps = apps.filter((app) => !app.base);
@@ -133,9 +137,15 @@ export async function render(oldRender: typeof noop) {
       '[plugins/qiankun] 检测到还在使用旧版配置，该配置已移除，请尽快升级到最新配置方式以获得更好的开发体验，详见 https://umijs.org/plugins/plugin-qiankun#%E5%8D%87%E7%BA%A7%E6%8C%87%E5%8D%97',
     );
   }
+
+  return renderData;
 }
 
 export function patchClientRoutes({ routes }: { routes: any[] }) {
+  // 在 ssr 的场景下，不执行主应用的 patchClientRoutes
+  if (typeof window === 'undefined') {
+    return;
+  }
   const microAppRoutes = [].concat(
     deepFilterLeafRoutes(routes),
     deepFilterLeafRoutes(microAppRuntimeRoutes),

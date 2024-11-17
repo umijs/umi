@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { lodash, Mustache, NpmClientEnum, winPath } from 'umi/plugin-utils';
+import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { isFlattedNodeModulesDir } from './utils/npmClient';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -38,6 +39,9 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+
+  const packageName = api.pkg.name || 'plugin-layout';
+
   const isAntd5 = antdVersion.startsWith('5');
   const layoutFile = isAntd5 ? 'Layout.css' : 'Layout.less';
 
@@ -113,24 +117,28 @@ export default (api: IApi) => {
     return memo;
   });
 
-  // use absolute path to types references in `npm/yarn` will cause case problems.
-  // https://github.com/umijs/umi/discussions/10947
-  const isFlattedDepsDir = [NpmClientEnum.npm, NpmClientEnum.yarn].includes(
-    api.appData.npmClient,
-  );
-
   api.onGenerateFiles(() => {
-    const PKG_TYPE_REFERENCE = `/// <reference types="${
+    // use absolute path to types references in `npm/yarn` will cause case problems.
+    // https://github.com/umijs/umi/discussions/10947
+    // https://github.com/umijs/umi/discussions/11570
+    const isFlattedDepsDir = isFlattedNodeModulesDir(api);
+    const PKG_TYPE_REFERENCE = `
+/// <reference types="${
       isFlattedDepsDir ? ANT_PRO_COMPONENT : resolvedPkgPath
-    }" />`;
+    }" />
+${isFlattedDepsDir ? '/// <reference types="antd" />' : ''}
+`.trimStart();
+
     const hasInitialStatePlugin = api.config.initialState;
     // Layout.tsx
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
 ${PKG_TYPE_REFERENCE}
-import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, matchRoutes } from 'umi';
-import type { IRoute } from 'umi';
+import {
+  Link, useLocation, useNavigate, Outlet, useAppData, matchRoutes,
+  type IRoute
+} from '${api.appData.umi.importSource}';
 import React, { useMemo } from 'react';
 import {
   ProLayout,
@@ -247,7 +255,7 @@ const { formatMessage } = useIntl();
     <ProLayout
       route={route}
       location={location}
-      title={userConfig.title || 'plugin-layout'}
+      title={userConfig.title || '${packageName}'}
       navTheme="dark"
       siderWidth={256}
       onMenuHeaderClick={(e) => {
@@ -415,12 +423,19 @@ export default { ${icons.join(', ')} };
       `,
     });
 
+    // 是否启用了 icons 功能
+    const isIconsFeatureEnable = api.isPluginEnable('icons');
     // runtime.tsx
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
 import React from 'react';
 import icons from './icons';
+${
+  isIconsFeatureEnable
+    ? `import { Icon, getIconComponent } from '@umijs/max';`
+    : ''
+}
 
 function formatIcon(name: string) {
   return name
@@ -434,6 +449,16 @@ export function patchRoutes({ routes }) {
   Object.keys(routes).forEach(key => {
     const { icon } = routes[key];
     if (icon && typeof icon === 'string') {
+      ${
+        isIconsFeatureEnable
+          ? `const Component = getIconComponent(icon)
+      if (Component) {
+        routes[key].icon = <Icon icon={icon} width={14} height={14} />;
+        return;
+      }`
+          : ''
+      }
+
       const upperIcon = formatIcon(icon);
       if (icons[upperIcon] || icons[upperIcon + 'Outlined']) {
         routes[key].icon = React.createElement(icons[upperIcon] || icons[upperIcon + 'Outlined']);
@@ -466,21 +491,28 @@ export function getRightRenderContent (opts: {
     );
   }
 
-
-  const avatar = (
-    <span className="umi-plugin-layout-action">
-        <Avatar
-          size="small"
-          className="umi-plugin-layout-avatar"
-          src={
-            opts.initialState?.avatar ||
-            'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
-          }
-          alt="avatar"
-        />
-        <span className="umi-plugin-layout-name">{opts.initialState?.name}</span>
+  const showAvatar = opts.initialState?.avatar || opts.initialState?.name || opts.runtimeConfig.logout;
+  const disableAvatarImg = opts.initialState?.avatar === false;
+  const nameClassName = disableAvatarImg ? 'umi-plugin-layout-name umi-plugin-layout-hide-avatar-img' : 'umi-plugin-layout-name';
+  const avatar =
+    showAvatar ? (
+      <span className="umi-plugin-layout-action">
+        {!disableAvatarImg ?
+          (
+            <Avatar
+              size="small"
+              className="umi-plugin-layout-avatar"
+              src={
+                opts.initialState?.avatar ||
+                "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+              }
+              alt="avatar"
+            />
+          ) : null}
+        <span className={nameClassName}>{opts.initialState?.name}</span>
       </span>
-  );
+    ) : null;
+
 
   if (opts.loading) {
     return (
@@ -489,6 +521,11 @@ export function getRightRenderContent (opts: {
       </div>
     );
   }
+
+  // 如果没有打开Locale，并且头像为空就取消掉这个返回的内容
+  {{^Locale}}
+    if(!avatar) return null;
+  {{/Locale}}
 
   const langMenu = {
     className: "umi-plugin-layout-menu",
@@ -527,6 +564,7 @@ export function getRightRenderContent (opts: {
   } else { // 需要 antd 4.20.0 以上版本
     dropdownProps = { overlay: <Menu {...langMenu} /> };
   }
+
 
 
   return (
@@ -612,6 +650,9 @@ ${
 }
 .umi-plugin-layout-name {
   margin-left: 8px;
+}
+.umi-plugin-layout-name.umi-plugin-layout-hide-avatar-img {
+  margin-left: 0;
 }
 `,
     });
@@ -718,7 +759,7 @@ export default LogoIcon;
       path: 'Exception.tsx',
       content: `
 import React from 'react';
-import { history, type IRoute } from 'umi';
+import { history, type IRoute } from '${api.appData.umi.importSource}';
 import { Result, Button } from 'antd';
 
 const Exception: React.FC<{

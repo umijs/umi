@@ -9,9 +9,10 @@ import React, {
 import ReactDOM from 'react-dom/client';
 import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
+import { fetchServerLoader } from './dataFetcher';
+import { Html } from './html';
 import { createClientRoutes } from './routes';
 import { ILoaderData, IRouteComponents, IRoutesById } from './types';
-
 let root: ReactDOM.Root | null = null;
 
 // react 18 some scenarios need unmount such as micro app
@@ -53,12 +54,12 @@ function BrowserRoutes(props: {
         },
       });
     }
-    history.listen(onRouteChange);
     onRouteChange({
       location: state.location,
       action: state.action,
       isFirst: true,
     });
+    return history.listen(onRouteChange);
   }, [history, props.routes, props.clientRoutes]);
   return (
     <Router
@@ -91,10 +92,27 @@ export type RenderClientOpts = {
    */
   runtimePublicPath?: boolean;
   /**
+   * react dom 渲染的的目标节点 id
+   * @doc 一般不需要改，微前端的时候会变化
+   */
+  mountElementId?: string;
+  /**
    * react dom 渲染的的目标 dom
    * @doc 一般不需要改，微前端的时候会变化
    */
   rootElement?: HTMLElement;
+
+  __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
+    /**
+     * 内部流程, 渲染特殊 app 节点, 不要使用!!!
+     */
+    pureApp?: boolean;
+    /**
+     * 内部流程, 渲染特殊 html 节点, 不要使用!!!
+     */
+
+    pureHtml?: boolean;
+  };
   /**
    * 当前的路由配置
    */
@@ -126,6 +144,11 @@ export type RenderClientOpts = {
    * ssr 的配置
    */
   hydrate?: boolean;
+
+  /**
+   * ssr 是否启用流式渲染, 默认 true, 对 SEO 存在一定的负优化
+   */
+  useStream?: boolean;
 
   /**
    * 直接返回组件，是为了方便测试
@@ -170,6 +193,7 @@ const getBrowser = (
     routeComponents: opts.routeComponents,
     loadingComponent: opts.loadingComponent,
     reactRouter5Compat: opts.reactRouter5Compat,
+    useStream: opts.useStream,
   });
   opts.pluginManager.applyPlugins({
     key: 'patchClientRoutes',
@@ -212,7 +236,6 @@ const getBrowser = (
   const Browser = () => {
     const [clientLoaderData, setClientLoaderData] = useState<ILoaderData>({});
     const [serverLoaderData, setServerLoaderData] = useState<ILoaderData>(
-      // @ts-ignore
       window.__UMI_LOADER_DATA__ || {},
     );
 
@@ -262,26 +285,62 @@ const getBrowser = (
               });
             }
           }
+          const clientLoader = opts.routes[id]?.clientLoader;
+          const hasClientLoader = !!clientLoader;
+          const hasServerLoader = opts.routes[id]?.hasServerLoader;
           // server loader
           // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
-          if (!isFirst && opts.routes[id]?.hasServerLoader) {
-            fetch('/__serverLoader?route=' + id)
-              .then((d) => d.json())
-              .then((data) => {
+
+          if (
+            !isFirst &&
+            hasServerLoader &&
+            !hasClientLoader &&
+            !window.__UMI_LOADER_DATA__
+          ) {
+            fetchServerLoader({
+              id,
+              basename,
+              cb: (data) => {
                 // setServerLoaderData when startTransition because if ssr is enabled,
                 // the component may being hydrated and setLoaderData will break the hydration
-                // @ts-ignore
                 React.startTransition(() => {
                   setServerLoaderData((d) => ({ ...d, [id]: data }));
                 });
-              })
-              .catch(console.error);
+              },
+            });
           }
           // client loader
           // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
-          const clientLoader = opts.routes[id]?.clientLoader;
-          if (clientLoader && !clientLoaderData[id]) {
-            clientLoader().then((data: any) => {
+          const hasClientLoaderDataInRoute = !!clientLoaderData[id];
+
+          // Check if hydration is needed or there's no server loader for the current route
+          const shouldHydrateOrNoServerLoader =
+            (hasClientLoader && clientLoader.hydrate) || !hasServerLoader;
+
+          // Check if server loader data is missing in the global window object
+          const isServerLoaderDataMissing =
+            hasServerLoader && !window.__UMI_LOADER_DATA__;
+
+          if (
+            hasClientLoader &&
+            !hasClientLoaderDataInRoute &&
+            (shouldHydrateOrNoServerLoader || isServerLoaderDataMissing)
+          ) {
+            // ...
+            clientLoader({
+              serverLoader: () =>
+                fetchServerLoader({
+                  id,
+                  basename,
+                  cb: (data) => {
+                    // setServerLoaderData when startTransition because if ssr is enabled,
+                    // the component may being hydrated and setLoaderData will break the hydration
+                    React.startTransition(() => {
+                      setServerLoaderData((d) => ({ ...d, [id]: data }));
+                    });
+                  },
+                }),
+            }).then((data: any) => {
               setClientLoaderData((d: any) => ({ ...d, [id]: data }));
             });
           }
@@ -330,12 +389,33 @@ const getBrowser = (
  */
 export function renderClient(opts: RenderClientOpts) {
   const rootElement = opts.rootElement || document.getElementById('root')!;
+
   const Browser = getBrowser(opts, <Routes />);
   // 为了测试，直接返回组件
   if (opts.components) return Browser;
-
   if (opts.hydrate) {
-    ReactDOM.hydrateRoot(rootElement, <Browser />);
+    const loaderData = window.__UMI_LOADER_DATA__ || {};
+    const metadata = window.__UMI_METADATA_LOADER_DATA__ || {};
+
+    const hydtateHtmloptions = {
+      metadata,
+      loaderData,
+      mountElementId: opts.mountElementId,
+    };
+    const _isInternal =
+      opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureApp ||
+      opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.pureHtml;
+
+    ReactDOM.hydrateRoot(
+      _isInternal ? rootElement : document,
+      _isInternal ? (
+        <Browser />
+      ) : (
+        <Html {...hydtateHtmloptions}>
+          <Browser />
+        </Html>
+      ),
+    );
     return;
   }
 

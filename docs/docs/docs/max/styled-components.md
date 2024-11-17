@@ -55,6 +55,22 @@ export default {
 }
 ```
 
+当你的导入来源不是 `umi` / `@umijs/max` 时，需将导入来源配置到 `topLevelImportPaths` 才可以使该 babel 插件生效，如：
+
+```ts
+import { styled } from 'alita'
+```
+
+```ts
+export default {
+  styledComponents: {
+    babelPlugin: {
+      topLevelImportPaths: ['alita']
+    },
+  },
+}
+```
+
 ## 运行时配置项
 
 包含以下配置。
@@ -64,7 +80,7 @@ export default {
 比如：
 
 ```ts
-import {createGlobalStyle} from "umi";
+import { createGlobalStyle } from "umi";
 
 export const styledComponents = {
   GlobalStyle: createGlobalStyle`

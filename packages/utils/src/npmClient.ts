@@ -1,4 +1,4 @@
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 export type NpmClient = 'npm' | 'cnpm' | 'tnpm' | 'yarn' | 'pnpm';
@@ -11,12 +11,29 @@ export enum NpmClientEnum {
   npm = 'npm',
 }
 export const getNpmClient = (opts: { cwd: string }): NpmClient => {
+  const tnpmRegistries = ['.alibaba-inc.', '.antgroup-inc.'];
+  const tcnpmLockPath = join(opts.cwd, 'node_modules', '.package-lock.json');
   const chokidarPkg = require('chokidar/package.json');
-  if (chokidarPkg.__npminstall_done) {
-    return chokidarPkg._resolved.includes('registry.npm.alibaba-inc.com')
+
+  // detect tnpm/cnpm client
+  // all situations:
+  //   - npminstall mode + native fs => generate _resolved field in package.json
+  //   - npminstall mode + rapid fs => generate .package-lock.json in node_modules
+  //   - npm mode + native fs => generate .package-lock.json in node_modules
+  //   - npm mode + rapid fs => generate .package-lock.json in node_modules
+  // all conditions:
+  //   - has _resolved field or .package-lock.json means tnpm/cnpm
+  //   - _resolved field or .package-lock.json contains tnpm registry means tnpm
+  if (chokidarPkg._resolved) {
+    return tnpmRegistries.some((r) => chokidarPkg._resolved.includes(r))
       ? 'tnpm'
       : 'cnpm';
+  } else if (existsSync(tcnpmLockPath)) {
+    const tcnpmLock = readFileSync(tcnpmLockPath, 'utf-8');
+
+    return tnpmRegistries.some((r) => tcnpmLock.includes(r)) ? 'tnpm' : 'cnpm';
   }
+
   const chokidarPath = require.resolve('chokidar');
   if (
     chokidarPath.includes('.pnpm') ||

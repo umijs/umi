@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -71,9 +71,9 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build 
-          --filter ./examples/max... 
-          --filter ./examples/test-test/... 
+        run: pnpm umi-scripts turbo build
+          --filter ./examples/max...
+          --filter ./examples/test-test/...
           --filter ./packages/umi/...
 
       - name: e2e:example:max

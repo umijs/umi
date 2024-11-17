@@ -39,7 +39,7 @@ export default defineConfig({
     // TODO: vite mode don't support ie 11
     // ie: 11,
   },
-  // umi routes: https://umijs.org/docs/routing
+  // umi routes: https://umijs.org/docs/guides/routes
   routes: [
     {
       path: '/user',
@@ -338,5 +338,6 @@ export default defineConfig({
   codeSplitting: {
     jsStrategy: 'granularChunks',
   },
-  ui: {},
+  // ui: {},
+  mako: {},
 });

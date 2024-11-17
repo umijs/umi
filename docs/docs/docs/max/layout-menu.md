@@ -115,15 +115,9 @@ export const layout: RunTimeLayoutConfig = (initialState) => {
 
 `initialState` 是运行时配置 `app.ts(x)` 中的 `getInitialState` 返回的对象。
 
-#### onError
+#### ErrorBoundary
 
-- Type: `(error: Error, info: any) => void;`
-
-发生错误后的回调（可做一些错误日志上报，打点等）。
-
-#### ErrorComponent
-
-- Type: `(error: Error) => React.ReactElement<any>;`
+- Type: `ReactNode`
 - Default: Ant Design Pro 的错误页。
 
 发生错误后展示的组件。
@@ -196,6 +190,8 @@ icon: 'HomeFilled';
 // <HomeTwoTone /> 双色风格
 icon: 'HomeTwoTone';
 ```
+
+兼容[icons](../../docs/api/config#icons)功能，打开icons功能后，可以使用图标集或者本地的图标。具体请参考icons功能的相关配置和使用方法。
 
 #### access
 

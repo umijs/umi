@@ -3,12 +3,13 @@ import type {
   Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { EnableBy } from '@umijs/core/dist/types';
-import { fsExtra, importLazy, logger } from '@umijs/utils';
+import { fsExtra, importLazy, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import type { IApi } from '../../types';
-import { absServerBuildPath } from './utils';
+import { isWindows } from '../../utils/platform';
+import { absServerBuildPath, generateBuildManifest } from './utils';
 
 export default (api: IApi) => {
   const esbuildBuilder: typeof import('./builder/builder') = importLazy(
@@ -17,6 +18,10 @@ export default (api: IApi) => {
   const webpackBuilder: typeof import('./webpack/webpack') = importLazy(
     require.resolve('./webpack/webpack'),
   );
+  const makoBuiler: typeof import('./mako/mako') = importLazy(
+    require.resolve('./mako/mako'),
+  );
+  let serverBuildTarget: string;
 
   api.describe({
     key: 'ssr',
@@ -25,8 +30,14 @@ export default (api: IApi) => {
         return zod
           .object({
             serverBuildPath: zod.string(),
+            serverBuildTarget: zod.enum(['express', 'worker']),
             platform: zod.string(),
-            builder: zod.enum(['esbuild', 'webpack']),
+            builder: zod.enum(['esbuild', 'webpack', 'mako']),
+            __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: zod.object({
+              pureApp: zod.boolean(),
+              pureHtml: zod.boolean(),
+            }),
+            useStream: zod.boolean().default(true),
           })
           .deepPartial();
       },
@@ -48,8 +59,55 @@ export default (api: IApi) => {
     logger.warn(`SSR feature is in beta, may be unstable`);
   });
 
+  api.modifyDefaultConfig((memo) => {
+    if (serverBuildTarget === 'worker') {
+      const oReactDom = memo.alias['react-dom'];
+
+      // put react-dom after react-dom/server
+      delete memo.alias['react-dom'];
+
+      // use browser version of react-dom/server for worker mode
+      // ref: https://github.com/facebook/react/blob/f86afca090b668d8be10b642750844759768d1ad/packages/react-server-dom-webpack/package.json#L52
+      memo.alias['react-dom/server$'] = winPath(
+        join(
+          api.service.configDefaults.alias['react-dom'],
+          'server.browser.js',
+        ),
+      );
+      memo.alias['react-dom'] = oReactDom;
+    }
+
+    return memo;
+  });
+
+  api.modifyConfig((memo) => {
+    // define SSR_BUILD_TARGET to strip useless logic
+    memo.define ??= {};
+    serverBuildTarget = memo.define['process.env.SSR_BUILD_TARGET'] =
+      memo.ssr.serverBuildTarget || 'express';
+
+    // csr && ssr must use the same mako bundler
+    // mako builder need config manifest
+    if (memo.ssr.builder === 'mako') {
+      assert(
+        memo.mako,
+        `The \`ssr.builder mako\` config is now allowed when \`mako\` is enable!`,
+      );
+      memo.manifest ??= {};
+      if (isWindows) {
+        memo.ssr.builder = 'webpack';
+      }
+    }
+
+    return memo;
+  });
+
   api.addMiddlewares(() => [
     async (req, res, next) => {
+      if (serverBuildTarget === 'worker') {
+        return next();
+      }
+
       const modulePath = absServerBuildPath(api);
       if (existsSync(modulePath)) {
         delete require.cache[modulePath];
@@ -60,6 +118,11 @@ export default (api: IApi) => {
       }
     },
   ]);
+
+  const serverPackagePath = dirname(
+    require.resolve('@umijs/server/package.json'),
+  );
+  const ssrTypesPath = join(serverPackagePath, './dist/types');
 
   api.onGenerateFiles(() => {
     // react-shim.js is for esbuild to build umi.server.js
@@ -95,10 +158,27 @@ export function useServerInsertedHTML(callback: () => React.ReactNode): void {
 }
 `,
     });
+
+    // types
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      content: `
+export type {
+  // server loader
+  IServerLoaderArgs,
+  UmiRequest,
+  ServerLoader,
+  // metadata loader
+  MetadataLoader,
+  IMetadata,
+  IMetaTag,
+} from '${winPath(ssrTypesPath)}'
+`,
+    });
   });
 
   api.onBeforeCompiler(async ({ opts }) => {
-    const { builder = 'esbuild' } = api.config.ssr;
+    const { builder = 'webpack' } = api.config.ssr;
 
     if (builder === 'esbuild') {
       await esbuildBuilder.build({
@@ -112,6 +192,19 @@ export function useServerInsertedHTML(callback: () => React.ReactNode): void {
       );
 
       await webpackBuilder.build(api, opts);
+    } else if (api.config.mako && builder === 'mako') {
+      await makoBuiler.build(api);
+    }
+  });
+  api.onDevCompileDone(() => {
+    if (api.config.mako) {
+      generateBuildManifest(api);
+    }
+  });
+
+  api.onBuildComplete(() => {
+    if (api.config.mako) {
+      generateBuildManifest(api);
     }
   });
 
@@ -134,8 +227,9 @@ export function useServerInsertedHTML(callback: () => React.ReactNode): void {
       writeFileSync(
         join(api.cwd, 'api/umi.server.js'),
         `
+const manifest = require('../server/build-manifest.json');
 export default function handler(request, response) {
-  require('../server/umi.server.js').default(request, response);
+    require(manifest.assets["umi.js"]).default(request, response);
 }
       `.trimStart(),
         'utf-8',

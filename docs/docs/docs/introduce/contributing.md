@@ -11,7 +11,7 @@ toc: content
 
 ### Node.js 和 pnpm
 
-开发 Umi 需要 Node.js 16+ 和 `pnpm` v8。
+开发 Umi 需要 Node.js 18+ 和 `pnpm` v8。
 
 推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 管理 Node.js，避免权限问题的同时，还能够随时切换当前使用的 Node.js 的版本。在 Windows 系统下的开发者可以使用 [`nvm-windows`](https://github.com/coreybutler/nvm-windows)。
 
@@ -76,7 +76,7 @@ Time:        13.658 s
 Ran all test suites.
 ```
 
-如果需要只跑部分文件的用例，用 `pnpm jest`，因为 `pnpm test` 只开了 turborepo 功能的。
+如果需要只跑部分文件的用例，用 `pnpm jest`，因为 `pnpm test` 是开了 turborepo 功能的。
 
 比如，
 
@@ -178,6 +178,14 @@ $ pnpm build:deps --dep webpack-manifest-plugin
 
 ```bash
 $ pnpm release
+```
+
+## 通过 dist-tag 回滚
+
+比如要回滚到 4.0.81 。
+
+```bash
+$ pnpm -rc --filter "./packages/**" exec pnpm dist-tag add \$PNPM_PACKAGE_NAME@4.0.81 latest
 ```
 
 ## 加入 Contributor 群

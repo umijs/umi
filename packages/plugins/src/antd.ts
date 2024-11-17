@@ -3,7 +3,7 @@ import AntdMomentWebpackPlugin from '@ant-design/moment-webpack-plugin';
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge, Mustache, semver, winPath } from 'umi/plugin-utils';
+import { deepmerge, semver, winPath } from 'umi/plugin-utils';
 import { TEMPLATES_DIR } from './constants';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
@@ -33,28 +33,77 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        return zod
-          .object({
-            configProvider: zod.record(zod.any()),
-            // themes
-            dark: zod.boolean(),
-            compact: zod.boolean(),
-            // babel-plugin-import
-            import: zod.boolean(),
-            // less or css, default less
-            style: zod
-              .enum(['less', 'css'])
-              .describe('less or css, default less'),
-            theme: zod.record(zod.any()),
-            // Only antd@5.1.0 is supported
-            appConfig: zod
-              .record(zod.any())
-              .describe('Only antd@5.1.0 is supported'),
-            // DatePicker & Calendar use moment version
-            momentPicker: zod.boolean().describe('Only antd@5.x is supported'),
-            styleProvider: zod.record(zod.any()),
-          })
-          .deepPartial();
+        const commonSchema: Parameters<typeof zod.object>[0] = {
+          dark: zod.boolean(),
+          compact: zod.boolean(),
+          // babel-plugin-import
+          import: zod.boolean(),
+          // less or css, default less
+          style: zod
+            .enum(['less', 'css'])
+            .describe('less or css, default less'),
+        };
+        const createZodRecordWithSpecifiedPartial = (
+          partial: Parameters<typeof zod.object>[0],
+        ) => {
+          const keys = Object.keys(partial);
+          return zod.union([
+            zod.object(partial),
+            zod.record(zod.any()).refine((obj) => {
+              return !keys.some((key) => key in obj);
+            }),
+          ]);
+        };
+        const createV5Schema = () => {
+          // Reason: https://github.com/umijs/umi/pull/11924
+          // Refer:  https://github.com/ant-design/ant-design/blob/master/components/theme/interface/components.ts
+          const componentNameSchema = zod.string().refine(
+            (value) => {
+              const firstLetter = value.slice(0, 1);
+              return firstLetter === firstLetter.toUpperCase(); // first letter is uppercase
+            },
+            {
+              message:
+                'theme.components.[componentName] needs to be in PascalCase, e.g. theme.components.Button',
+            },
+          );
+          const themeSchema = createZodRecordWithSpecifiedPartial({
+            components: zod.record(componentNameSchema, zod.record(zod.any())),
+          });
+          const configProvider = createZodRecordWithSpecifiedPartial({
+            theme: themeSchema,
+          });
+
+          return zod
+            .object({
+              ...commonSchema,
+              theme: themeSchema.describe('Shortcut of `configProvider.theme`'),
+              appConfig: zod
+                .record(zod.any())
+                .describe('Only >= antd@5.1.0 is supported'),
+              momentPicker: zod
+                .boolean()
+                .describe('DatePicker & Calendar use moment version'),
+              styleProvider: zod.record(zod.any()),
+              configProvider,
+            })
+            .deepPartial();
+        };
+        const createV4Schema = () => {
+          return zod
+            .object({
+              ...commonSchema,
+              configProvider: zod.record(zod.any()),
+            })
+            .deepPartial();
+        };
+        if (isV5) {
+          return createV5Schema();
+        }
+        if (isV4) {
+          return createV4Schema();
+        }
+        return zod.object({});
       },
     },
     enableBy({ userConfig }) {
@@ -140,6 +189,12 @@ export default (api: IApi) => {
         antd.configProvider.theme || {},
         antd.theme,
       );
+
+      // https://github.com/umijs/umi/issues/11156
+      assert(
+        !antd.configProvider.theme.algorithm,
+        `The 'algorithm' option only available for runtime config, please move it to the runtime plugin, see: https://umijs.org/docs/max/antd#运行时配置`,
+      );
     }
 
     if (antd.appConfig) {
@@ -156,6 +211,11 @@ export default (api: IApi) => {
           `versions [5.1.0 ~ 5.3.0) only allows antd.appConfig to be set to \`{}\``,
         );
       }
+    }
+
+    // 如果使用静态主题配置，需要搭配 ConfigProvider ，否则无效，我们自动开启它
+    if (antd.dark || antd.compact) {
+      antd.configProvider ??= {};
     }
 
     return memo;
@@ -196,6 +256,11 @@ export default (api: IApi) => {
     return [];
   });
 
+  const lodashPkg = dirname(require.resolve('lodash/package.json'));
+  const lodashPath = {
+    merge: winPath(join(lodashPkg, 'merge')),
+  };
+
   // antd config provider & app component
   api.onGenerateFiles(() => {
     const withConfigProvider = !!api.config.antd.configProvider;
@@ -203,8 +268,6 @@ export default (api: IApi) => {
     const styleProvider = api.config.antd.styleProvider;
     const userInputCompact = api.config.antd.compact;
     const userInputDark = api.config.antd.dark;
-
-    // Hack StyleProvider
 
     const ieTarget = !!api.config.targets?.ie || !!api.config.legacy;
 
@@ -220,7 +283,7 @@ export default (api: IApi) => {
 
       if (cssinjs) {
         styleProviderConfig = {
-          cssinjs,
+          cssinjs: winPath(cssinjs),
         };
 
         if (ieTarget) {
@@ -236,50 +299,59 @@ export default (api: IApi) => {
     }
 
     // Template
+    const configProvider =
+      withConfigProvider && JSON.stringify(api.config.antd.configProvider);
+    const appConfig =
+      appComponentAvailable && JSON.stringify(api.config.antd.appConfig);
+    const enableV5ThemeAlgorithm =
+      isV5 && (userInputCompact || userInputDark)
+        ? { compact: userInputCompact, dark: userInputDark }
+        : false;
+    const hasConfigProvider = configProvider || enableV5ThemeAlgorithm;
+    // 拥有 `ConfigProvider` 时，我们默认提供修改 antd 全局配置的便捷方法（仅限 antd 5）
+    const antdConfigSetter = isV5 && hasConfigProvider;
+
+    // We ensure the `theme` config always exists to preserve the theme context.
+    //   1. if we do not config the antd `theme`, no theme react context is added.
+    //   2. when using the antd setter to change the theme, the theme react context will be added,
+    //      then antd components re-render.
+    //   3. affected by the theme react context change, the model data context renders,
+    //      gets the initial data again (a hack), and calls `setState`
+    // there is a conflict between 2 and 3, react does not allow `setState` calls during rendering.
+    // See https://github.com/umijs/umi/issues/12394
+    //     https://github.com/ant-design/ant-design/blob/253b45eceb2c7760e8173ee0cd1003aecc00ef9c/components/config-provider/index.tsx#L615
+    const isModelPluginEnabled = api.isPluginEnable('model');
+    const modelPluginCompat = isModelPluginEnabled && antdConfigSetter;
+
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
-        configProvider:
-          withConfigProvider && JSON.stringify(api.config.antd.configProvider),
-        appConfig:
-          appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
+        configProvider,
+        appConfig,
         styleProvider: styleProviderConfig,
         // 是否启用了 v5 的 theme algorithm
-        enableV5ThemeAlgorithm:
-          isV5 && (userInputCompact || userInputDark)
-            ? { compact: userInputCompact, dark: userInputDark }
-            : false,
+        enableV5ThemeAlgorithm,
+        antdConfigSetter,
+        modelPluginCompat,
+        lodashPath,
+        /**
+         * 是否重构了全局静态配置。 重构后需要在运行时将全局静态配置传入到 ConfigProvider 中。
+         * 实际上 4.13.0 重构后有一个 bug，真正的 warn 出现在 4.13.1，并且 4.13.1 修复了这个 bug。
+         * Resolve issue: https://github.com/umijs/umi/issues/10231
+         * `InternalStatic` 指 `Modal.config` 等静态方法，详见：https://github.com/ant-design/ant-design/pull/29285
+         */
+        disableInternalStatic: semver.gt(antdVersion, '4.13.0'),
       },
       tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'runtime.ts.tpl')),
     });
 
     api.writeTmpFile({
       path: 'types.d.ts',
-      content: Mustache.render(
-        `
-{{#withConfigProvider}}
-import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{/withConfigProvider}}
-{{#withAppConfig}}
-import type { AppConfig } from 'antd/es/app/context';
-{{/withAppConfig}}
-
-type Prettify<T> = {
-  [K in keyof T]: T[K];
-} & {};
-
-type AntdConfig = Prettify<{}
-{{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
-{{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
->;
-
-export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
-`.trim(),
-        {
-          withConfigProvider,
-          withAppConfig,
-        },
-      ),
+      context: {
+        withConfigProvider,
+        withAppConfig,
+      },
+      tplPath: winPath(join(ANTD_TEMPLATES_DIR, 'types.d.ts.tpl')),
     });
 
     api.writeTmpFile({
@@ -291,10 +363,40 @@ export type IRuntimeConfig = {
 };
       `,
     });
+
+    if (antdConfigSetter) {
+      api.writeTmpFile({
+        path: 'index.tsx',
+        content: `import React from 'react';
+import { AntdConfigContext, AntdConfigContextSetter } from './context';
+
+export function useAntdConfig() {
+  return React.useContext(AntdConfigContext);
+}
+
+export function useAntdConfigSetter() {
+  return React.useContext(AntdConfigContextSetter);
+}`,
+      });
+      api.writeTmpFile({
+        path: 'context.tsx',
+        content: `import React from 'react';
+import type { ConfigProviderProps } from 'antd/es/config-provider';
+
+export const AntdConfigContext = React.createContext<ConfigProviderProps>(null!);
+export const AntdConfigContextSetter = React.createContext<React.Dispatch<React.SetStateAction<ConfigProviderProps>>>(
+  () => {
+    console.error(\`The 'useAntdConfigSetter()' method depends on the antd 'ConfigProvider', requires one of 'antd.configProvider' / 'antd.dark' / 'antd.compact' to be enabled.\`);
+  }
+);
+`,
+      });
+    }
   });
 
   api.addRuntimePlugin(() => {
     if (
+      api.config.antd.styleProvider ||
       api.config.antd.configProvider ||
       (appComponentAvailable && api.config.antd.appConfig)
     ) {

@@ -1,6 +1,6 @@
 import type {
-  Compiler,
   Compilation,
+  Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { sources } from '@umijs/bundler-webpack/compiled/webpack';
 import { fsExtra } from '@umijs/utils';

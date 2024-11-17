@@ -1,58 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'umi';
-import { NewsLetterForm } from './NewsLetterForm';
-
-const FooterWrapper = styled.div`
-  padding: 40px 0;
-  .foot-wrapper {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    .left {
-      flex: 1;
-      .line {
-        line-height: 40px;
-        display: flex;
-      }
-
-      .line h3 {
-        font-size: 18px;
-        width: 92px;
-        margin-right: 66px;
-        margin-top: 0;
-        margin-bottom: 0;
-        font-weight: 400;
-        color: #4a5e71;
-      }
-
-      .line div {
-        flex: 1;
-        color: #4a5e71;
-      }
-
-      .line div a {
-        text-decoration: none;
-        color: #4a5e71;
-      }
-    }
-
-    .right {
-      min-width: 400px;
-      font-size: 16px;
-      .copyright {
-        font-size: 14px;
-        color: #8996a1;
-        line-height: 22px;
-        margin-top: 24px;
-      }
-    }
-  }
-`;
+import styles from './index.less';
 
 export const Footer = () => {
   return (
-    <FooterWrapper>
+    <div className={styles.footer}>
       <div className="foot-wrapper">
         <div className="left">
           <div className="line">
@@ -88,10 +39,7 @@ export const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="right">
-          <NewsLetterForm />
-        </div>
       </div>
-    </FooterWrapper>
+    </div>
   );
 };

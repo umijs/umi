@@ -97,7 +97,7 @@ export async function addCompressPlugin(opts: IOpts) {
   } else if (cssMinifier === CSSMinifier.cssnano) {
     cssMinify = CSSMinimizerWebpackPlugin.cssnanoMinify;
   } else if (cssMinifier === CSSMinifier.parcelCSS) {
-    cssMinify = CSSMinimizerWebpackPlugin.parcelCssMinify;
+    cssMinify = CSSMinimizerWebpackPlugin.lightningCssMinify;
   } else if (cssMinifier !== CSSMinifier.none) {
     throw new Error(`Unsupported cssMinifier ${userConfig.cssMinifier}.`);
   }

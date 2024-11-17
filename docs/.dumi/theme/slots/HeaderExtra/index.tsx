@@ -1,5 +1,5 @@
 import { ReactComponent as IconDown } from '@ant-design/icons-svg/inline-svg/outlined/down.svg';
-import React, { type FC } from 'react';
+import { type FC } from 'react';
 
 const HeaderExtra: FC = () => {
   return (

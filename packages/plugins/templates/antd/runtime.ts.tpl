@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-  Modal,
   ConfigProvider,
 {{#appConfig}}
   App,
 {{/appConfig}}
+{{^disableInternalStatic}}
+  Modal,
   message,
   notification,
+{{/disableInternalStatic}}
 {{#enableV5ThemeAlgorithm}}
   theme,
 {{/enableV5ThemeAlgorithm}}
@@ -21,6 +23,10 @@ import {
 } from '{{{styleProvider.cssinjs}}}';
 {{/styleProvider}}
 import { getPluginManager } from '../core/plugin';
+{{#antdConfigSetter}}
+import { AntdConfigContext, AntdConfigContextSetter } from './context';
+import merge from '{{{lodashPath.merge}}}'
+{{/antdConfigSetter}}
 
 let cacheAntdConfig = null;
 
@@ -38,72 +44,94 @@ const getAntdConfig = () => {
   {{/appConfig}}
       },
     });
+    {{#modelPluginCompat}}
+    if (!cacheAntdConfig.theme) {
+      cacheAntdConfig.theme = {};
+    }
+    {{/modelPluginCompat}}
   }
   return cacheAntdConfig;
 }
 
-export function rootContainer(rawContainer) {
-  const {
-    appConfig,
-    ...finalConfigProvider
-  } = getAntdConfig();
-  let container = rawContainer;
+function AntdProvider({ children }) {
+  let container = children;
 
-{{#configProvider}}
-  if (finalConfigProvider.prefixCls) {
-    Modal.config({
-      rootPrefixCls: finalConfigProvider.prefixCls
-    });
-    message.config({
-      prefixCls: `${finalConfigProvider.prefixCls}-message`
-    });
-    notification.config({
-      prefixCls: `${finalConfigProvider.prefixCls}-notification`
-    });
+  const [antdConfig, _setAntdConfig] = React.useState(() => {
+    const {
+      appConfig: _,
+      ...finalConfigProvider
+    } = getAntdConfig();
+    {{#enableV5ThemeAlgorithm}}
+      finalConfigProvider.theme ??= {};
+      finalConfigProvider.theme.algorithm ??= [];
+      if (!Array.isArray(finalConfigProvider.theme.algorithm)) {
+        finalConfigProvider.theme.algorithm = [finalConfigProvider.theme.algorithm];
+      }
+      const algorithm = finalConfigProvider.theme.algorithm;
+      {{#enableV5ThemeAlgorithm.compact}}
+      if (!algorithm.includes(theme.compactAlgorithm)) {
+        algorithm.push(theme.compactAlgorithm);
+      }
+      {{/enableV5ThemeAlgorithm.compact}}
+      {{#enableV5ThemeAlgorithm.dark}}
+      if (!algorithm.includes(theme.darkAlgorithm)) {
+        algorithm.push(theme.darkAlgorithm);
+      }
+      {{/enableV5ThemeAlgorithm.dark}}
+    {{/enableV5ThemeAlgorithm}}
+    return finalConfigProvider
+  });
+  const setAntdConfig: typeof _setAntdConfig = (newConfig) => {
+    _setAntdConfig(prev => {
+      return merge({}, prev, typeof newConfig === 'function' ? newConfig(prev) : newConfig)
+    })
   }
 
-  if (finalConfigProvider.iconPrefixCls) {
+{{#configProvider}}
+  {{^disableInternalStatic}}
+  if (antdConfig.prefixCls) {
+    Modal.config({
+      rootPrefixCls: antdConfig.prefixCls
+    });
+    message.config({
+      prefixCls: `${antdConfig.prefixCls}-message`
+    });
+    notification.config({
+      prefixCls: `${antdConfig.prefixCls}-notification`
+    });
+  }
+  {{/disableInternalStatic}}
+
+  {{#disableInternalStatic}}
+  if (antdConfig.prefixCls) {
+    ConfigProvider.config({
+      prefixCls: antdConfig.prefixCls,
+    });
+  };
+  {{/disableInternalStatic}}
+
+  if (antdConfig.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
     ConfigProvider.config({
-      iconPrefixCls: finalConfigProvider.iconPrefixCls,
+      iconPrefixCls: antdConfig.iconPrefixCls,
     });
   };
 
-  if (finalConfigProvider.theme) {
+  if (antdConfig.theme) {
     // Pass config theme to static method
     ConfigProvider.config({
-      theme: finalConfigProvider.theme,
+      theme: antdConfig.theme,
     });
   }
 
-  container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
+  container = <ConfigProvider {...antdConfig}>{container}</ConfigProvider>;
 {{/configProvider}}
-
-{{#enableV5ThemeAlgorithm}}
-  // Add token algorithm for antd5 only
-  container = (
-    <ConfigProvider
-      theme={({
-        algorithm: [
-          {{#enableV5ThemeAlgorithm.compact}}
-          theme.compactAlgorithm,
-          {{/enableV5ThemeAlgorithm.compact}}
-          {{#enableV5ThemeAlgorithm.dark}}
-          theme.darkAlgorithm,
-          {{/enableV5ThemeAlgorithm.dark}}
-        ],
-      })}
-    >
-      {container}
-    </ConfigProvider>
-  );
-{{/enableV5ThemeAlgorithm}}
 
 {{#styleProvider}}
   container = (
     <StyleProvider
       {{#styleProvider.hashPriority}}
-      hashPriority="{{{styleProviderConfig.hashPriority}}}"
+      hashPriority="{{{styleProvider.hashPriority}}}"
       {{/styleProvider.hashPriority}}
       {{#styleProvider.legacyTransformer}}
       transformers={[legacyLogicalPropertiesTransformer]}
@@ -114,7 +142,25 @@ export function rootContainer(rawContainer) {
   );
 {{/styleProvider}}
 
+{{#antdConfigSetter}}
+  container = (
+    <AntdConfigContextSetter.Provider value={setAntdConfig}>
+      <AntdConfigContext.Provider value={antdConfig}>
+        {container}
+      </AntdConfigContext.Provider>
+    </AntdConfigContextSetter.Provider>
+  )
+{{/antdConfigSetter}}
+
   return container;
+}
+
+export function rootContainer(children) {
+  return (
+    <AntdProvider>
+      {children}
+    </AntdProvider>
+  );
 }
 
 {{#appConfig}}

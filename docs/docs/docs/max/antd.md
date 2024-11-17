@@ -131,11 +131,25 @@ export default {
 
 配置 `antd` 的 `StyleProvider` 组件，该组件用于兼容低版本浏览器，如 IE11。当你的项目配置了 `legacy` 或者 `targets` 包含 `ie` 时，会自动进行降级处理，不需要手动配置。
 
-**注意：该配置项仅 antd v5 及以上可用**
+**注意：**
+
+1. 该配置项仅 antd v5 及以上可用。
+
+2. 降级 CSS 需要依赖 [`@ant-design/cssinjs`](https://ant.design/docs/react/compatible-style-cn) ，若你显示安装了 `antd` ，请安装并确保你的 `@ant-design/cssinjs` 版本与 `antd` 正确对应。
 
 ### 运行时配置
 
-在 app.ts(x) 文件中可以对 antd 进行更丰富的配置，比如配置 antd5 的预设算法和 message 最大显示数：
+在 `app.ts(x)` 运行时配置中可以修改 antd `ConfigProvider` 的值，使用此功能前，**确保你已经打开了 `antd.configProvider` 选项**，否则对 `ConfigProvider` 的修改不会生效：
+
+```ts
+// .umirc.ts
+
+  antd: {
+    configProvider: {}
+  }
+```
+
+如配置 antd 5 的主题预设算法和 `message` 弹出框最大数：
 
 ```ts
 // app.ts
@@ -156,6 +170,58 @@ export const antd: RuntimeAntdConfig = (memo) => {
   return memo;
 };
 ```
+
+### 动态切换全局配置
+
+**注意：该功能仅 antd v5 可用**
+
+通过 `useAntdConfig` / `useAntdConfigSetter` 方法来动态获取、修改 antd 的 `ConfigProvider` 配置，通常可用于动态修改主题。
+
+注：此功能需依赖 `ConfigProvider` ，请一并开启 `configProvider: {}` 。
+
+```tsx
+import { Layout, Space, Button, version, theme, MappingAlgorithm } from 'antd';
+import { useAntdConfig, useAntdConfigSetter } from 'umi';
+const { darkAlgorithm, defaultAlgorithm } = theme;
+
+export default function Page() {
+  const setAntdConfig = useAntdConfigSetter();
+  const antdConfig = useAntdConfig();
+  return (
+    <Layout>
+      <h1>with antd@{version}</h1>
+      <Space>
+        isDarkTheme
+        <Switch
+          checked={antdConfig?.theme?.algorithm.includes(darkAlgorithm)}
+          onChange={(data) => {
+            // 此配置会与原配置深合并
+            setAntdConfig({
+              theme: {
+                algorithm: [
+                  data ? darkAlgorithm : defaultAlgorithm,
+                ],
+              },
+            });
+            // or 
+            setAntdConfig((config) => {
+              const algorithm = config.theme!.algorithm as MappingAlgorithm[];
+              if (algorithm.includes(darkAlgorithm)) {
+                config.theme!.algorithm = [defaultAlgorithm]
+              } else {
+                config.theme!.algorithm = [darkAlgorithm];
+              }
+              return config;
+            });
+          }}
+        ></Switch>
+      </Space>
+    </Layout>
+  );
+}
+```
+
+使用 `setAntdConfig` 可以动态修改 [antd@5 ConfigProvider](https://ant.design/components/config-provider-cn) 组件支持的所有属性。
 
 ## FAQ
 

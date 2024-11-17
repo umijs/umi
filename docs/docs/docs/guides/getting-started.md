@@ -6,7 +6,7 @@ toc: content
 
 ## 环境准备
 
-首先得有 node，并确保 node 版本是 14 或以上。（推荐用 [nvm](https://github.com/nvm-sh/nvm) 来管理 node 版本，windows 下推荐用 [nvm-windows](https://github.com/coreybutler/nvm-windows)）
+首先得有 node，并确保 node 版本是 18 或以上。（推荐用 [nvm](https://github.com/nvm-sh/nvm) 来管理 node 版本，windows 下推荐用 [nvm-windows](https://github.com/coreybutler/nvm-windows)）
 
 mac 或 linux 下安装 nvm。
 
@@ -19,10 +19,10 @@ $ nvm -v
 安装 node。
 
 ```
-$ nvm install 16
-$ nvm use 16
+$ nvm install 18
+$ nvm use 18
 $ node -v
-v16.10.0
+v18.10.0
 ```
 
 然后需要包管理工具。node 默认包含 npm，但也可以选择其他方案，
@@ -40,11 +40,6 @@ $ pnpm -v
 
 ## 创建项目
 
-先找个地方建个空目录。
-
-```bash
-$ mkdir myapp && cd myapp
-```
 
 通过官方工具创建项目，
 

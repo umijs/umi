@@ -49,16 +49,16 @@ export default (api: IApi) => {
       );
     }
 
-    const isReact18 = api.appData.react.version.startsWith('18.');
+    const isGTEReact18 = api.appData.react.version.split('.')[0] >= 18;
     (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
       const layout = entry.layout || api.config.mpa.layout;
       const layoutImport = layout ? `import Layout from '${layout}';` : '';
       const layoutJSX = layout ? `<Layout><App /></Layout>` : `<App />`;
       const rootElement = `document.getElementById('${entry.mountElementId}')`;
-      const renderer = isReact18
+      const renderer = isGTEReact18
         ? `ReactDOM.createRoot(${rootElement}).render(${layoutJSX});`
         : `ReactDOM.render(${layoutJSX}, ${rootElement});`;
-      const reactDOMSource = isReact18 ? 'react-dom/client' : 'react-dom';
+      const reactDOMSource = isGTEReact18 ? 'react-dom/client' : 'react-dom';
       api.writeTmpFile({
         path: entry.tmpFilePath,
         noPluginDir: true,

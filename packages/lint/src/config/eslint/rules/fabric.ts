@@ -1,5 +1,5 @@
 /**
- * legay enabled/disabled rules from @umijs/fabric tsEslintConfig
+ * legacy enabled/disabled rules from @umijs/fabric tsEslintConfig
  * @see https://github.com/umijs/fabric/blob/master/src/tsEslintConfig.ts
  */
 export const typescript = {
@@ -69,7 +69,7 @@ export const typescript = {
 };
 
 /**
- * legay enabled/disabled rules from @umijs/fabric
+ * legacy enabled/disabled rules from @umijs/fabric
  * @see https://github.com/umijs/fabric/blob/master/src/eslint.ts#L54
  */
 export default {
@@ -85,7 +85,7 @@ export default {
   'react/react-in-jsx-scope': 0,
   'react/self-closing-comp': 1,
 
-  // eslint-pluginr-react-hooks rules
+  // eslint-plugin-react-hooks rules
   'react-hooks/exhaustive-deps': 1,
   'react-hooks/rules-of-hooks': 2,
 };

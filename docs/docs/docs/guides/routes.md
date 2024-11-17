@@ -27,7 +27,7 @@ export default {
 }
 ```
 
-Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载过程是异步的，所以往往你需要编写 [`loading.tsx`](./directory-structure#loadingtsxjsx) 来给项目添加加载样式，提升体验。
+Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载过程是异步的，所以往往你需要编写 [`loading.tsx`](./directory-structure#loadingtsxjsx) 来给项目添加加载样式，提升用户体验。
 
 :::info{title=💡}
 你可以在 Chrome Devtools > 网络 Tab 中将网络设置成低速，然后切换路由查看加载组件是否生效。
@@ -62,7 +62,7 @@ Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载�
 
 * Type: `string`
 
-配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始寻找。
+配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径。如果是相对路径，会从 `src/pages` 开始寻找。
 
 如果指向 `src` 目录的文件，可以用 `@`，比如 `component: '@/layouts/basic'`，推荐使用 `@` 组织路由文件位置。
 
@@ -121,7 +121,17 @@ export default {
 }
 ```
 
-访问 `/` 会跳转到 `/list`，并由 `src/pages/list` 文件进行渲染。
+访问 `/` 会跳转到 `/list` 。
+
+重定向时，默认不会携带原 url 的查询参数，如需保持原参数，添加 `keepQuery` 选项即可：
+
+```ts
+  routes: [
+    { path: '/', redirect: '/list', keepQuery: true },
+
+    // 注：若你需在跳转时处理参数，可以自行实现一个跳转组件
+  ]
+```
 
 ### wrappers
 
@@ -190,6 +200,29 @@ const TheOldPage = ()=>{
 
 export default withAuth(TheOldPage)
 ```
+
+### layout
+
+* Type: `boolean`
+
+通过配置 `layout: false` 可以单独关闭某一个路由的全局布局：
+
+```js
+// .umirc.ts
+
+export default {
+  routes: [
+    // 取消 login 页面的全局布局，从而自行实现整个页面
+    { path: '/login', component: '@/pages/Login', layout: false },
+  ],
+}
+```
+
+注：
+
+1. 全局布局可能来自于 `layouts/index.tsx` 约定，或插件添加的 layout（如 `@umijs/max` 自带的 layout 插件将自动添加菜单布局），当配置 `layout: false` 时，将取消所有 layout ，此时组件内容占据整个页面，多用于登录页等场景。
+
+2. `layout: false` 仅对一级路由生效，更多例子详见 [全局 layout](#全局-layout) 。
 
 ## 约定式路由
 
@@ -361,7 +394,7 @@ export default function() {
 ]
 ```
 
-这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
+这样，如果访问 `/foo`，则 `/` 和 `/users` 都不能匹配，于是会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
 
 > 404 只有约定式路由会自动生效，如果使用配置式路由，需要自行配置 404 的通配路由。
 
@@ -395,11 +428,11 @@ export default function Page() {
 
 ## 路由组件参数
 
-Umi 4 使用 [react-router@6](https://reactrouter.com/docs/en/v6/api) 作为路由组件，路由参数的获取使其 hooks。
+Umi 4 使用 [react-router@6](https://reactrouter.com/en/main) 作为路由组件，路由参数的获取使其 hooks。
 
 ### match 信息
 
-[useMatch](https://reactrouter.com/docs/en/v6/api#usematch)
+[useMatch](https://reactrouter.com/en/main/hooks/use-match)
 
 ```jsx
 const match = useMatch('/comp/:id')
@@ -420,7 +453,7 @@ const match = useMatch('/comp/:id')
 
 ### location 信息
 
-[useLocation](https://reactrouter.com/docs/en/v6/api#uselocation)
+[useLocation](https://reactrouter.com/en/main/hooks/use-location)
 
 ```jsx
 const location  = useLocation();
@@ -449,7 +482,7 @@ const location  = useLocation();
 
 ### 路由动态参数
 
-[useParams](https://reactrouter.com/docs/en/v6/api#useparams)
+[useParams](https://reactrouter.com/en/main/hooks/use-params)
 
 ```jsx
 // 路由配置 /comp/:id
@@ -464,7 +497,7 @@ const params  = useParams();
 
 ### query 信息
 
-[useSearchParams](https://reactrouter.com/docs/en/v6/api#usesearchparams)
+[useSearchParams](https://reactrouter.com/en/main/hooks/use-search-params)
 
 ```jsx
 // 当前 location /comp?a=b;

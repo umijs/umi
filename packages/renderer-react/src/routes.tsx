@@ -1,9 +1,15 @@
 // @ts-ignore
-import React, { useMemo } from 'react';
-import { generatePath, Navigate, useParams, Outlet } from 'react-router-dom';
+import React from 'react';
+import {
+  generatePath,
+  Navigate,
+  Outlet,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
+import { useAppData, useRouteProps } from './appContext';
 import { RouteContext, useRouteData } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
-import { useAppData } from './appContext';
 
 export function createClientRoutes(opts: {
   routesById: IRoutesById;
@@ -11,8 +17,9 @@ export function createClientRoutes(opts: {
   parentId?: string;
   loadingComponent?: React.ReactNode;
   reactRouter5Compat?: boolean;
+  useStream?: boolean;
 }) {
-  const { routesById, parentId, routeComponents } = opts;
+  const { routesById, parentId, routeComponents, useStream = true } = opts;
   return Object.keys(routesById)
     .filter((id) => routesById[id].parentId === parentId)
     .map((id) => {
@@ -28,6 +35,7 @@ export function createClientRoutes(opts: {
               (rid) => routesById[rid].parentId === id,
             ).length > 0,
         }),
+        useStream,
       });
       const children = createClientRoutes({
         routesById,
@@ -35,6 +43,7 @@ export function createClientRoutes(opts: {
         parentId: route.id,
         loadingComponent: opts.loadingComponent,
         reactRouter5Compat: opts.reactRouter5Compat,
+        useStream,
       });
       if (children.length > 0) {
         route.children = children;
@@ -48,9 +57,16 @@ export function createClientRoutes(opts: {
 
 function NavigateWithParams(props: { to: string }) {
   const params = useParams();
+  let to = generatePath(props.to, params);
+  const routeProps = useRouteProps();
+  const location = useLocation();
+  if (routeProps?.keepQuery) {
+    const queryAndHash = location.search + location.hash;
+    to += queryAndHash;
+  }
   const propsWithParams = {
     ...props,
-    to: generatePath(props.to, params),
+    to,
   };
   return <Navigate replace={true} {...propsWithParams} />;
 }
@@ -61,8 +77,9 @@ function createClientRoute(opts: {
   loadingComponent?: React.ReactNode;
   hasChildren?: boolean;
   reactRouter5Compat?: boolean;
+  useStream?: boolean;
 }): IClientRoute {
-  const { route } = opts;
+  const { route, useStream = true } = opts;
   const { redirect, ...props } = route;
   const Remote = opts.reactRouter5Compat
     ? RemoteComponentReactRouter5
@@ -80,6 +97,7 @@ function createClientRoute(opts: {
           loader={React.memo(opts.routeComponent)}
           loadingComponent={opts.loadingComponent || DefaultLoading}
           hasChildren={opts.hasChildren}
+          useStream={useStream}
         />
       </RouteContext.Provider>
     ),
@@ -104,28 +122,32 @@ function RemoteComponentReactRouter5(props: any) {
 
   // staticContext 没有兼容 好像没看到对应的兼容写法
   const Component = props.loader;
-
-  return (
+  const ComponentProps = {
+    location: history.location,
+    match,
+    history,
+    params,
+    route,
+    routes: clientRoutes,
+  };
+  return props.useStream ? (
     <React.Suspense fallback={<props.loadingComponent />}>
-      <Component
-        location={history.location}
-        match={match}
-        history={history}
-        params={params}
-        route={route}
-        routes={clientRoutes}
-      >
+      <Component {...ComponentProps}>
         {props.hasChildren && <Outlet />}
       </Component>
     </React.Suspense>
+  ) : (
+    <Component {...ComponentProps}>{props.hasChildren && <Outlet />}</Component>
   );
 }
 
 function RemoteComponent(props: any) {
   const Component = props.loader;
-  return (
+  return props.useStream ? (
     <React.Suspense fallback={<props.loadingComponent />}>
       <Component />
     </React.Suspense>
+  ) : (
+    <Component />
   );
 }

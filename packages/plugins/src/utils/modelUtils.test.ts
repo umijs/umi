@@ -1,5 +1,5 @@
-import { ModelUtils, Model, getNamespace } from './modelUtils';
 import { chalk } from '@umijs/utils';
+import { getNamespace, Model, ModelUtils, transformSync } from './modelUtils';
 
 test('getNamespace', () => {
   expect(getNamespace('/a/b/src/models/foo.ts', '/a/b/src')).toEqual('foo');
@@ -195,5 +195,30 @@ test('TopologicalSort: detect circle', () => {
     `Circle dependency detected in models: ${['a', 'b', 'c']
       .map((i) => chalk.red(i))
       .join(', ')}`,
+  );
+});
+
+test('transformSync', () => {
+  transformSync(
+    `
+function prop() {}
+
+export class UseDecorator {
+  @prop()
+  a = 1;
+
+  fn(
+    @prop()
+    jsParam,
+  ) {
+    console.log(a);
+  }
+}
+    `,
+    {
+      loader: 'ts',
+      sourcemap: false,
+      minify: false,
+    },
   );
 });

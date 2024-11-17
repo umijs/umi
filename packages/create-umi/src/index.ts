@@ -8,6 +8,7 @@ import {
   installWithNpmClient,
   logger,
   pkgUp,
+  semver,
   tryPaths,
   yParser,
 } from '@umijs/utils';
@@ -98,12 +99,26 @@ export default async ({
   // plugin params
   let pluginName = `umi-plugin-${name || 'demo'}`;
 
-  const target = name ? join(cwd, name) : cwd;
+  let target = name ? join(cwd, name) : cwd;
 
   const { isCancel, text, select, intro, outro } = clackPrompts;
   const exitPrompt = () => {
     outro(chalk.red('Exit create-umi'));
     process.exit(1);
+  };
+  const setName = async () => {
+    name = (await text({
+      message: "What's the target folder name?",
+      initialValue: name || 'my-app',
+      validate: (value: string) => {
+        if (!value.length) {
+          return 'Please input project name';
+        }
+        if (value != '.' && fsExtra.existsSync(join(cwd, value))) {
+          return `Folder ${value} already exists`;
+        }
+      },
+    })) as string;
   };
   const selectAppTemplate = async () => {
     appTemplate = (await select({
@@ -157,6 +172,13 @@ export default async ({
   };
   const internalTemplatePrompts = async () => {
     intro(chalk.bgHex('#19BDD2')(' create-umi '));
+
+    await setName();
+    if (isCancel(name)) {
+      exitPrompt();
+    }
+
+    target = join(cwd, name);
 
     await selectAppTemplate();
     if (isCancel(appTemplate)) {
@@ -238,8 +260,11 @@ export default async ({
   let pnpmExtraNpmrc: string = '';
   const isPnpm = npmClient === ENpmClient.pnpm;
   let pnpmMajorVersion: number | undefined;
+  let pnpmVersion: string | undefined;
   if (isPnpm) {
-    pnpmMajorVersion = await getPnpmMajorVersion();
+    pnpmVersion = await getPnpmVersion();
+    pnpmMajorVersion = parseInt(pnpmVersion.split('.')[0], 10);
+    logger.debug(`pnpm version: ${pnpmVersion}`);
     if (pnpmMajorVersion === 7) {
       // suppress pnpm v7 warning ( 7.0.0 < pnpm < 7.13.5 )
       // https://pnpm.io/npmrc#strict-peer-dependencies
@@ -295,9 +320,14 @@ export default async ({
 
   // install deps
   const isPnpm8 = pnpmMajorVersion === 8;
+  // https://github.com/pnpm/pnpm/releases/tag/v8.7.0
+  // https://pnpm.io/npmrc#resolution-mode
+  const pnpmHighestResolutionMinVersion = '8.7.0';
+  const isPnpmHighestResolution =
+    isPnpm8 && semver.gte(pnpmVersion!, pnpmHighestResolutionMinVersion);
   if (!useDefaultData && args.install !== false) {
-    if (isPnpm8) {
-      await installWithPnpm8(target);
+    if (isPnpm8 && !isPnpmHighestResolution) {
+      await installAndUpdateWithPnpm(target);
     } else {
       installWithNpmClient({ npmClient, cwd: target });
     }
@@ -370,15 +400,14 @@ async function removeHusky(opts: IContext) {
 
 // pnpm v8 will install minimal version of the dependencies
 // so we upgrade all deps to the latest version
-// https://pnpm.io/npmrc#resolution-mode
-async function installWithPnpm8(cwd: string) {
+async function installAndUpdateWithPnpm(cwd: string) {
   await execa.execa('pnpm', ['up', '-L'], { cwd, stdio: 'inherit' });
 }
 
-async function getPnpmMajorVersion() {
+async function getPnpmVersion() {
   try {
     const { stdout } = await execa.execa('pnpm', ['--version']);
-    return parseInt(stdout.trim().split('.')[0], 10);
+    return stdout.trim();
   } catch (e) {
     throw new Error('Please install pnpm first', { cause: e });
   }

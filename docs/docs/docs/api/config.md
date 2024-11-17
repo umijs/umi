@@ -229,7 +229,7 @@ export async function clientLoader() {
 - 类型：`{ jsStrategy: 'bigVendors' | 'depPerChunk' | 'granularChunks'; jsStrategyOptions: {} }`
 - 默认值：`null`
 
-提供 code splitting 的策略方案。
+用于配置 code splitting 的策略方案，Umi 默认以路由为分界拆分 chunk，实现路由维度的 chunk 按需加载，如果在此之上希望继续提取公共 chunk，可以选择合适的策略进行配置，差异如下。
 
 bigVendors 是大 vendors 方案，会将 async chunk 里的 node_modules 下的文件打包到一起，可以避免重复。同时缺点是，1）单文件的尺寸过大，2）毫无缓存效率可言。
 
@@ -358,7 +358,7 @@ crossorigin: {}
 
 ## cssMinifierOptions
 
-- 类型：`Object`
+- 类型：`object`
 - 默认值：`{}`
 
 `cssMinifier` CSS 压缩工具配置选项。
@@ -380,6 +380,12 @@ crossorigin: {}
 - [esbuild 参考](https://esbuild.github.io/api/#minify)
 - [cssnano 参考](https://cssnano.co/docs/config-file/)
 - [parcelCSS 参考](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
+
+## cssPublicPath
+- 类型：`string`
+- 默认值：`./`
+
+为 CSS 中的图片、文件等外部资源指定自定义公共路径。作用类似于 `publicPath` 默认值是 `./`。
 
 ## cssLoader
 
@@ -684,6 +690,24 @@ favicons: [
 ]
 ```
 
+## forget
+
+- 类型：`{ ReactCompilerConfig: object }`
+- 默认值：`null`
+
+是否开启 React Compiler（React Forget）功能。参考 https://react.dev/learn/react-compiler 。
+
+```ts
+forget: {
+  ReactCompilerConfig: {},
+},
+```
+
+注意：
+
+1、forget 和 mfsu、mako 暂时不兼容，如果开启了 forget，同时 mfsu、mako 有打开时会抛错。
+2、forget 需要 react 19，使用时，请手动安装 react@rc 和 react-dom@rc 到项目依赖。
+
 ## forkTSChecker
 
 - 类型：`object`
@@ -898,7 +922,7 @@ import { Icon } from 'umi';
 
 ## lessLoader
 
-- 类型：`Object`
+- 类型：`object`
 - 默认值：`{ modifyVars: userConfig.theme, javascriptEnabled: true }`
 
 设置 less-loader 的 Options。具体参考参考 [less-loader 的 Options](https://github.com/webpack-contrib/less-loader#lessoptions)。
@@ -938,6 +962,14 @@ legacy: {}
 ```js
 links: [{ href: '/foo.css', rel: 'preload' }],
 ```
+
+## mako <Badge>4.3.2+</Badge>
+
+- 类型: `{ plugins?: Array<{ load?: ((...args: any[]) => unknown) | undefined; generateEnd?: ((...args: any[]) => unknown) | undefined; }> | undefined; px2rem?: { root?: number | undefined; propBlackList?: Array<string> | undefined; propWhiteList?: Array<string> | undefined; selectorBlackList?: Array<string> | undefined; selectorWhiteList?: Array<string> | undefined; selectorDoubleList?: Array<string> | undefined; } | undefined; experimental?: { webpackSyntaxValidate?: Array<string> | undefined; } | undefined; flexBugs?: boolean | undefined; moduleIdStrategy?: string | undefined; optimization?: { skipModules?: boolean | undefined; } | undefined; }`
+- 默认值: `{}`
+
+使用 [mako](https://makojs.dev/) 用于编译以显著提高构建速度。
+通过配置以启用这个能力，配置将传递给mako。这里只提供了一些常用的配置，更多的配置可以在 `mako.config.json` 文件中设置。有关更多信息，请参阅[mako-config文档](https://makojs.dev/docs/config)。
 
 ## manifest
 
@@ -1058,7 +1090,7 @@ mountElementId: 'container'
 
 ## monorepoRedirect
 
-- 类型：`{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean }`
+- 类型：`{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean, useRootProject?: boolean }`
 - 默认值：`false`
 
 在 monorepo 中使用 Umi 时，你可能需要引入其他子包的组件、工具方法等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
@@ -1097,6 +1129,8 @@ monorepoRedirect: { peerDeps: true }
 ```
 
 经过重定向，依赖全局唯一，便可以在开发时保持和在 npm 上安装包后的体验一致。
+
+useRootProject: 当你的项目不在 monorepo 子文件夹里，而在 monorepo 根的话，你可以开启这个选项，以使 monorepoRedirect 生效。
 
 ## mpa
 
@@ -1340,6 +1374,12 @@ scripts: [
 
 启用 style loader 功能，让 CSS 内联在 JS 中，不输出额外的 CSS 文件。
 
+## stylusLoader
+- 类型：`object`
+- 默认值：`{}`
+
+配置 stylus-loader ，详见 [stylus-loader > options](https://github.com/webpack-contrib/stylus-loader#options)
+
 ## styles
 
 - 类型：`string[]`
@@ -1370,7 +1410,7 @@ styles: [`body { color: red; }`, `https://a.com/b.css`],
 
 ## srcTranspiler
 
-- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`, `none`
+- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`
 - 默认值：`babel`
 
 配置构建时转译 js/ts 的工具。
@@ -1436,7 +1476,7 @@ import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
 ```js
 // 兼容 ie11
 targets: {
-  ie: 11;
+  ie: 11,
 }
 ```
 

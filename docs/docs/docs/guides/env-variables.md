@@ -10,7 +10,7 @@ Umi 可以通过环境变量来完成一些特殊的配置和功能。
 
 ### 执行命令时设置
 
-例如需要改变 `umi dev` 开发服务器的端口，进可以通过如下命令实现。
+例如需要改变 `umi dev` 开发服务器的端口，可以通过如下命令实现。
 
 ```bash
 # OS X, Linux
@@ -20,7 +20,7 @@ $ PORT=3000 umi dev
 $ set PORT=3000&&umi dev
 ```
 
-如果需要同时在不同的操作系统中使用环境变量，推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)
+如果需要同时在不同的操作系统中使用环境变量，推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)。
 
 ```bash
 $ pnpm install cross-env -D
@@ -64,9 +64,30 @@ BAR=bar
 CONCAT=$FOO$BAR # CONCAT=foobar
 ```
 
+Umi 不支持 `.env.development` / `.env.production` 的环境变量配置文件，如需在不同的环境下有不同的变量值，请使用 `cross-env` 在不同的启动命令上区分，或定义在各个 `UMI_ENV` 对应的 Umi 配置文件内。
+
 注意：
 
 * 不建议将 `.env.local` 加入版本管理中。
+
+### 在浏览器中使用环境变量
+
+所有通过 `.env` 环境变量文件 或 命令行注入 的环境变量均默认只在 Umi 配置文件 (Node.js 环境) 内生效，在浏览器中无法直接通过 `process.env.VAR_NAME` 方式使用，通过进一步配置 [`define`](../api/config.md#define) 来注入到浏览器环境中：
+
+```bash
+# .env
+MY_TOKEN="xxxxx"
+```
+
+<br />
+
+```ts
+// .umirc.ts
+
+  define: { 'process.env.MY_TOKEN': process.env.MY_TOKEN }
+```
+
+注：我们约定所有以 `UMI_APP_` 开头的环境变量会默认注入到浏览器中，无需配置 `define` 手动注入。
 
 ## 环境变量列表
 
@@ -78,7 +99,7 @@ CONCAT=$FOO$BAR # CONCAT=foobar
 
 注意：
 
-* APP_ROOT 不能配在 .env 中，只能在命令行里添加
+* `APP_ROOT` 不能配在 `.env` 中，只能在命令行里添加
 
 
 ### ANALYZE
@@ -101,7 +122,7 @@ $ ANALYZE=1 umi build
 
 ### COMPRESS
 
-默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
+默认压缩 CSS 和 JS，值为 `none` 时不压缩，`build` 时有效。
 
 ### DID_YOU_KNOW
 
@@ -113,11 +134,11 @@ $ ANALYZE=1 umi build
 
 ### FS_LOGGER
 
-默认会开启保存物理日志，值为 none 时不保存，同时针对 webcontainer 场景（比如 stackbliz）暂不保存。
+默认会开启保存物理日志，值为 `none` 时不保存，同时针对 webcontainer 场景（比如 stackbliz）暂不保存。
 
 ### HMR
 
-默认开启 HMR 功能，值为 none 时关闭。
+默认开启 HMR 功能，值为 `none` 时关闭。
 
 ### HOST
 
@@ -175,6 +196,14 @@ $ UMI_PLUGINS=./path/to/plugin1,./path/to/plugin2  umi dev
 
 ```bash
 $ UMI_PRESETS=./path/to/preset1,./path/to/preset2  umi dev
+```
+
+### UMI_DEV_SERVER_COMPRESS
+
+默认 Umi 开发服务器自带 [compress](https://github.com/expressjs/compression) 压缩中间件，这会使开发时 SSE 数据的传输 [无法流式获取](https://github.com/umijs/umi/issues/12144) ，通过指定 `UMI_DEV_SERVER_COMPRESS=none` 来关闭 compress 压缩功能：
+
+```bash
+  UMI_DEV_SERVER_COMPRESS=none umi dev
 ```
 
 ### WEBPACK_FS_CACHE_DEBUG

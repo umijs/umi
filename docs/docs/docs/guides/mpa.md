@@ -34,7 +34,7 @@ MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 
 
 ## 约定的入口文件
 
-默认的入口文件是 `src/pages` 目录下 `*/index.[jt]sx?` 文件。
+默认的入口文件是 `src/pages` 目录下的 `*/index.[jt]sx?` 文件。
 
 比如：
 
@@ -115,7 +115,7 @@ export const config = {
 
 ### 按需启动
 
-支持通过设置 `env.MPA_FILTER` 来指定需要启动的页面，以提高构建速度
+支持通过设置 `env.MPA_FILTER` 来指定需要启动的页面，以提高构建速度：
 
 ```text
 # file .env
@@ -133,7 +133,7 @@ export default function Page() {
 }
 ```
 
-默认启用 React 18，如果需要 React 17 的渲染方式，请在项目中安装 react 17 的依赖，框架会自动适配 react 版本。
+默认启用 React 18，如果需要 React 17 的渲染方式，请在项目中安装 React 17 的依赖，框架会自动适配 React 版本。
 
 ```bash
 $ pnpm i react@17 react-dom@17

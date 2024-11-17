@@ -2,25 +2,34 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom/server';
 import { AppContext } from './appContext';
 import { Routes } from './browser';
+import { Html } from './html';
 import { createClientRoutes } from './routes';
-import { IRouteComponents, IRoutesById } from './types';
+import { IRootComponentOptions } from './types';
 
 // Get the root React component for ReactDOMServer.renderToString
-export async function getClientRootComponent(opts: {
-  routes: IRoutesById;
-  routeComponents: IRouteComponents;
-  pluginManager: any;
-  location: string;
-  loaderData: { [routeKey: string]: any };
-  manifest: any;
-}) {
-  const basename = '/';
+export async function getClientRootComponent(opts: IRootComponentOptions) {
+  const basename = opts.basename || '/';
   const components = { ...opts.routeComponents };
+  // todo 参数对齐
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: components,
+    useStream: opts.useStream,
   });
+
+  opts.pluginManager.applyPlugins({
+    key: 'patchClientRoutes',
+    type: 'event',
+    args: {
+      routes: clientRoutes,
+    },
+  });
+
   let rootContainer = (
+    // 这里的 location 需要包含 basename, 否则会影响 StaticRouter 的匹配.
+    // 由于 getClientRootComponent 方法会同时用于 ssr 和 ssg, 所以在调用该方法时需要注意传入的 location 是否包含 basename.
+    // 1. 在用于 ssr 时传入的 location 来源于 request.url, 它是包含 basename 的, 所以没有问题.
+    // 2. 但是在用于 ssg 时(static export), 需要注意传入的 locaiton 要拼接上 basename.
     <StaticRouter basename={basename} location={opts.location}>
       <Routes />
     </StaticRouter>
@@ -41,54 +50,20 @@ export async function getClientRootComponent(opts: {
       args: {},
     });
   }
-  return (
-    <Html loaderData={opts.loaderData} manifest={opts.manifest}>
-      <AppContext.Provider
-        value={{
-          routes: opts.routes,
-          routeComponents: opts.routeComponents,
-          clientRoutes,
-          pluginManager: opts.pluginManager,
-          basename,
-          clientLoaderData: {},
-          serverLoaderData: opts.loaderData,
-        }}
-      >
-        {rootContainer}
-      </AppContext.Provider>
-    </Html>
+  const app = (
+    <AppContext.Provider
+      value={{
+        routes: opts.routes,
+        routeComponents: opts.routeComponents,
+        clientRoutes,
+        pluginManager: opts.pluginManager,
+        basename,
+        clientLoaderData: {},
+        serverLoaderData: opts.loaderData,
+      }}
+    >
+      {rootContainer}
+    </AppContext.Provider>
   );
-}
-
-function Html({ children, loaderData, manifest }: any) {
-  // TODO: 处理 head 标签，比如 favicon.ico 的一致性
-  // TODO: root 支持配置
-
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {manifest.assets['umi.css'] && (
-          <link rel="stylesheet" href={manifest.assets['umi.css']} />
-        )}
-      </head>
-      <body>
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html: `<b>Enable JavaScript to run this app.</b>`,
-          }}
-        />
-
-        <div id="root">{children}</div>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
-              loaderData,
-            )}`,
-          }}
-        />
-      </body>
-    </html>
-  );
+  return <Html {...opts}>{app}</Html>;
 }

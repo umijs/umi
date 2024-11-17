@@ -4,7 +4,7 @@ toc: content
 ---
 # 微生成器
 
-Umi 中内置了众多微生成器，协助你在开发中快速的完成一些繁琐的工作。
+Umi 中内置了众多微生成器，协助你在开发中快速地完成一些繁琐的工作。
 
 ## 如何使用
 
@@ -22,7 +22,7 @@ $ umi g
 
 ### 页面生成器
 
-快速生成一个新页面，有以下使用方式。
+快速生成一个新页面，有以下多种使用方式。
 
 #### 基本使用
 
@@ -124,7 +124,7 @@ const count = 10
 
 ##### 预设变量
 
-在上一小节生成的内容中，我们并没有指定 `name`，但它被还是设置值了。这是因为它属于模板中预设的变量，下面是目前页面模板所有的预设变量：
+在上一小节生成的内容中，我们并没有指定 `name`，但它还是被设置为了一个值。这是因为它属于模板中预设的变量，下面是目前页面模板所有的预设变量：
 
 |参数|默认值|说明|
 |:-:|:-:|:-|
@@ -173,37 +173,37 @@ $umi g page foo --fallback
 $umi g component
 ✔ Please input you component Name … foo
 Write: src/components/Foo/index.ts
-Write: src/components/Foo/Foo.tsx
+Write: src/components/Foo/component.tsx
 ```
 
 直接生成：
 ```bash
 $umi g component bar
 Write: src/components/Bar/index.ts
-Write: src/components/Bar/Bar.tsx
+Write: src/components/Bar/component.tsx
 ```
 
 嵌套生成：
 ```bash
 $umi g component group/subgroup/baz
 Write: src/components/group/subgroup/Baz/index.ts
-Write: src/components/group/subgroup/Baz/Baz.tsx
+Write: src/components/group/subgroup/Baz/component.tsx
 ```
 
 批量生成：
 ```bash
 $umi g component apple banana orange
 Write: src/components/Apple/index.ts
-Write: src/components/Apple/Apple.tsx
+Write: src/components/Apple/component.tsx
 Write: src/components/Banana/index.ts
-Write: src/components/Banana/Banana.tsx
+Write: src/components/Banana/component.tsx
 Write: src/components/Orange/index.ts
-Write: src/components/Orange/Orange.tsx
+Write: src/components/Orange/component.tsx
 ```
 
 #### 对组件模板内容进行自定义
 
-与[页面生成器](#对页面模板内容进行自定义)相同，组件生成器也支持对模板内容自定义。首先，先将原始模板写入到项目的 `/templates/component` 目录：
+与[页面生成器](#对页面模板内容进行自定义)相同，组件生成器也支持对模板内容自定义。首先，将原始模板写入到项目的 `/templates/component` 目录：
 
 ```bash
 $umi g component --eject
@@ -309,7 +309,7 @@ info  - Write jest.config.ts
 
 ### Tailwind CSS 配置生成器
 
-为项目开启 [Tailwind CSS](https://tailwindcss.com/) 配置，命令执行后，`umi` 会生成 Tailwind CSS 和安装相应的的依赖。
+为项目开启 [Tailwind CSS](https://tailwindcss.com/) 配置，命令执行后，`umi` 会生成 Tailwind CSS 和安装相应的依赖。
 
 ```bash
 $umi g tailwindcss
@@ -323,7 +323,7 @@ info  - Write tailwind.css
 
 ### DvaJS 配置生成器
 
-为项目开启 [Dva](https://dvajs.com/) 配置，命令执行后，`umi` 会生成 Dva 
+为项目开启 [Dva](https://dvajs.com/) 配置，命令执行后，`umi` 会生成 Dva 。
 
 ```bash
 $umi g dva

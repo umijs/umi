@@ -129,6 +129,7 @@ export type IApi = PluginAPI &
           memo: WebpackChain,
           args: {
             env: Env;
+            ssr?: boolean;
             webpack: typeof webpack;
           },
         ): void;
