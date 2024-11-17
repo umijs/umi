@@ -100,7 +100,7 @@ The return value of `getInitialState()` will become the global initial state. Fo
 // src/app.ts
 import { fetchInitialData } from "@/services/initial";
 
-export async function () {
+export async function getInitialState() {
   const initialData = await fetchInitialData();
   return initialData;
 }
