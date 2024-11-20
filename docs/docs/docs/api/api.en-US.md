@@ -207,7 +207,7 @@ function IndexPage({ user }) {
 
 `<Link to>` supports relative path navigation; `<Link reloadDocument>` does not do routing navigation and is equivalent to the jump behavior of `<a href>`.
 
-If `prefetch` is enabled, then when the user hovers over the component, Umi will automatically start preloading the component js files and data for the routing jump.
+If `prefetch` is enabled, then when the user hovers over the component, Umi will automatically start preloading the component js files and data for the routing jump. (Note: Use this feature when `routePrefetch` and `manifest` are enabled)
 
 ### matchPath
 
