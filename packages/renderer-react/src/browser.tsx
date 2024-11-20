@@ -253,6 +253,7 @@ const getBrowser = (
           // window.__umi_manifest__ is available when routePrefetch and manifest config is enabled
           // __umi_manifest__ is not needed for preload, keep this is for compatibility and minimal change
           if ((window as any).__umi_manifest__) {
+            // ref: https://github.com/facebook/react/blob/0940414/packages/react/src/ReactLazy.js#L135
             const lazyCtor = opts.routeComponents[id]?._payload?._result;
             if (typeof lazyCtor == 'function') {
               lazyCtor();
