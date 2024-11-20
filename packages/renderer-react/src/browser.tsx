@@ -249,42 +249,16 @@ const getBrowser = (
           ) || []
         ).filter(Boolean);
         matchedRouteIds.forEach((id) => {
-          // preload
-          // @ts-ignore
-          const manifest = window.__umi_manifest__;
-          if (manifest) {
-            const routeIdReplaced = id.replace(/[\/\-]/g, '_');
-            const preloadId = `preload-${routeIdReplaced}.js`;
-            if (!document.getElementById(preloadId)) {
-              const keys = Object.keys(manifest).filter((k) =>
-                k.startsWith(routeIdReplaced + '.'),
-              );
-              keys.forEach((key) => {
-                if (!/\.(js|css)$/.test(key)) {
-                  throw Error(`preload not support ${key} file`);
-                }
-                let file = manifest[key];
-                const link = document.createElement('link');
-                link.rel = 'preload';
-                link.as = 'style';
-                if (key.endsWith('.js')) {
-                  link.as = 'script';
-                  link.id = preloadId;
-                }
-                // publicPath already in the manifest,
-                // but if runtimePublicPath is true, we need to replace it
-                if (opts.runtimePublicPath) {
-                  file = file.replace(
-                    new RegExp(`^${opts.publicPath}`),
-                    // @ts-ignore
-                    window.publicPath,
-                  );
-                }
-                link.href = file;
-                document.head.appendChild(link);
-              });
+          // preload lazy component
+          // window.__umi_manifest__ is available when routePrefetch and manifest config is enabled
+          // __umi_manifest__ is not needed for preload, keep this is for compatibility and minimal change
+          if ((window as any).__umi_manifest__) {
+            const lazyCtor = opts.routeComponents[id]?._payload?._result;
+            if (typeof lazyCtor == 'function') {
+              lazyCtor();
             }
           }
+
           const clientLoader = opts.routes[id]?.clientLoader;
           const hasClientLoader = !!clientLoader;
           const hasServerLoader = opts.routes[id]?.hasServerLoader;
