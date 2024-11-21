@@ -100,7 +100,6 @@ const HydrateMetadata = (
               __html: content,
             }}
             key={key}
-            crossOrigin="anonymous"
             {...(rest as any)}
           />
         );
@@ -172,7 +171,6 @@ export function Html({
                 __html: content,
               }}
               key={key}
-              crossOrigin="anonymous"
               {...(rest as any)}
             />
           );
