@@ -11,6 +11,7 @@ import {
 import { RuntimePublicPathPlugin } from '../plugins/RuntimePublicPathPlugin';
 import { Env, IConfig } from '../types';
 import { getBrowsersList } from '../utils/browsersList';
+import { addAdditionEntryPlugin } from './additionalEntryPlugin';
 import { addAssetRules } from './assetRules';
 import { addBundleAnalyzerPlugin } from './bundleAnalyzerPlugin';
 import { addCompressPlugin } from './compressPlugin';
@@ -180,6 +181,10 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addSVGRules(applyOpts);
 
   // plugins
+  // additional entry plugin
+  if (isDev && opts.hmr) {
+    await addAdditionEntryPlugin(applyOpts);
+  }
   // mini-css-extract-plugin
   await addMiniCSSExtractPlugin(applyOpts);
   // ignoreMomentLocale
