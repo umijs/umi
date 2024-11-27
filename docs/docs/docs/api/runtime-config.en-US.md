@@ -302,7 +302,19 @@ Modify the root component handed over to react-dom for rendering.
 
 For example, to wrap a Provider around the outside,
 
-```js
+e.g.
+```jsx
+export function rootContainer(container, args) {
+  return (
+    <ThemeProvider>
+      {container}
+    </ThemeProvider>
+  );
+}
+```
+
+e.g.
+```jsx
 export function rootContainer(container, args) {
   return React.createElement(ThemeProvider, null, container);
 }

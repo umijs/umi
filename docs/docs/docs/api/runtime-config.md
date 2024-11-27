@@ -310,7 +310,18 @@ export function render(oldRender) {
 
 比如用于在外面包一个 Provider，
 
-```js
+e.g.
+```jsx
+export function rootContainer(container, args) {
+  return (
+    <ThemeProvider>
+      {container}
+    </ThemeProvider>
+  );
+}
+```
+e.g.
+```jsx
 export function rootContainer(container, args) {
   return React.createElement(ThemeProvider, null, container);
 }
