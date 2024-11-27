@@ -196,6 +196,37 @@ export const request:RequestConfig = {};
 ```
 Note that you should add type when importing
 
+## Cancel request
+Cancel the request using the fetch API method -- `AbortController`.
+
+```tsx
+import { request } from '@umijs/max';
+import { Button } from 'antd';
+
+const controller = new AbortController();
+
+const HomePage: React.FC = () => {
+  const fetchData = async () => {
+    const res = await request('/api/getData', {
+      method: 'GET',
+      signal: controller.signal
+    })
+  }
+
+  const cancelData = () => {
+    controller.abort();
+  }
+  return (
+    <>
+      <Button onClick={fetchData}>send request</Button>
+      <Button onClick={cancelData}>cancel request</Button>
+    </>
+  );
+};
+
+export default HomePage;
+```
+
 ## umi@3 to umi@4
 In the upgrade from `umi@3` to `umi@4`, we discontinued umi-request and chose axios as the default request solution. Some functionality changes occurred in this switch.
 
