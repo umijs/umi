@@ -195,6 +195,37 @@ export const request:RequestConfig = {};
 ```
 注意，在导入时要加 type
 
+## 取消请求
+使用 fetch API 方式 -- `AbortController` 取消请求。
+
+```tsx
+import { request } from '@umijs/max';
+import { Button } from 'antd';
+
+const controller = new AbortController();
+
+const HomePage: React.FC = () => {
+  const fetchData = async () => {
+    const res = await request('/api/getData', {
+      method: 'GET',
+      signal: controller.signal
+    })
+  }
+
+  const cancelData = () => {
+    controller.abort();
+  }
+  return (
+    <>
+      <Button onClick={fetchData}>send request</Button>
+      <Button onClick={cancelData}>cancel request</Button>
+    </>
+  );
+};
+
+export default HomePage;
+```
+
 ## umi@3 到 umi@4
 在 `umi@3` 到 `umi@4` 的升级中，我们弃用了 umi-request ，选用了 axios 作为默认的请求方案。在这个更换中，我们的功能也发生了一些变化。
 
