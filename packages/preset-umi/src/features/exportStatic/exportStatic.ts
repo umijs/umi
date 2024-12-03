@@ -62,7 +62,10 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
     exportStatic: { ignorePreRenderError = false },
     base,
   } = api.config;
-  markupRender ??= require(absServerBuildPath(api))._markupGenerator;
+
+  await import(absServerBuildPath(api)).then(
+    (res) => (markupRender ??= res.default._markupGenerator),
+  );
 
   try {
     const location = `${base.endsWith('/') ? base.slice(0, -1) : base}${path}`;
