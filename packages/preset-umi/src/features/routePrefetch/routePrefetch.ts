@@ -11,6 +11,6 @@ export default (api: IApi) => {
   });
 
   api.addEntryCodeAhead(() => {
-    return `window.__umi_route_prefetch__ = true;`;
+    return `if(typeof window !== 'undefined') window.__umi_route_prefetch__ = true;`;
   });
 };
