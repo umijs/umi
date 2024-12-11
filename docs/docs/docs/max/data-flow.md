@@ -7,6 +7,33 @@ toc: content
 
 `@umi/max` 内置了**数据流管理**[插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/model.ts)，它是一种基于 `hooks` 范式的轻量级数据管理方案，可以在 Umi 项目中管理全局的共享数据。
 
+## 配置
+
+e.g.
+
+```ts
+export default {
+  model: {
+    extraModels: ['src/models/userModel.ts'],
+    sort: (a, b) => a.namespace.localeCompare(b.namespace),
+  },
+};
+```
+
+### extraModels
+
+- Type: `string[]`
+- Default: `[]`
+
+配置 `extraModels` 后，插件会自动将这些 Model 文件添加到数据流管理中。
+
+### sort
+
+- Type: `(a: Model, b: Model) => number`
+- Default: `(a, b) => a.namespace.localeCompare(b.namespace)`
+
+配置 `sort` 后，插件会根据 `sort` 函数返回的值对 Model 进行排序。
+
 ## 开始使用
 
 ### 创建 Model
