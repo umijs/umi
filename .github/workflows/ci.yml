@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: [12.x, 14.x]
+        node_version: [12, 14]
         os: [ubuntu-latest, macos-latest, windows-latest]
       fail-fast: false
     steps:
@@ -24,10 +24,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Use Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
-          registry-url: 'https://registry.yarnpkg.com'
       - name: restore lerna
         id: cache
         uses: actions/cache@v2
