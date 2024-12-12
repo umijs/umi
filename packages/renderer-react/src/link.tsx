@@ -28,11 +28,12 @@ export const LinkWithPrefetch = React.forwardRef(
     forwardedRef,
   ) => {
     const { prefetch: prefetchProp, ...linkProps } = props;
-    const { defaultPrefetch, defaultPrefetchTimeout } =
-      typeof window !== 'undefined'
-        ? // @ts-ignore
-          window.__umi_route_prefetch__
-        : { defaultPrefetch: 'none', defaultPrefetchTimeout: 50 };
+    const { defaultPrefetch, defaultPrefetchTimeout } = (typeof window !==
+      'undefined' && // @ts-ignore
+      window.__umi_route_prefetch__) || {
+      defaultPrefetch: 'none',
+      defaultPrefetchTimeout: 50,
+    };
 
     const prefetch =
       (prefetchProp === true
