@@ -247,7 +247,7 @@ For specific usage, please refer to the [micro-frontend's parent-child communica
 // src/components/AdminInfo/index.tsx
 import { useModel } from 'umi';
 
-export default function Page() {
+export default () => {
   const { user, fetchUser } = useModel('adminModel', (model) => ({
     user: model.admin,
     fetchUser: model.fetchAdmin,
