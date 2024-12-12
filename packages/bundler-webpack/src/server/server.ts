@@ -4,7 +4,7 @@ import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
-import { getDevBanner, lodash, logger } from '@umijs/utils';
+import { getDevBanner, lodash, logger, portfinder } from '@umijs/utils';
 import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
 import http from 'http';
@@ -235,7 +235,22 @@ export async function createServer(opts: IOpts): Promise<any> {
     return null;
   }
 
-  ws = createWebSocketServer(server);
+  const protocol = userConfig.https ? 'https:' : 'http:';
+  const basePort = opts.port || 8000;
+
+  const parseSocketServerAddress = async () => {
+    if (!process.env.SOCKET_SERVER) return basePort;
+    const {port} = new URL(process.env.SOCKET_SERVER);
+    const startPort = Number(port) || basePort;
+    if (port) {
+      const hmrPort = await portfinder.getPortPromise({ port: startPort, stopPort: startPort + 1 })
+      // 实际可用的hmr端口和设置的hmr端口不同
+      if (startPort !== hmrPort) console.log(`[SOCKET_SERVER] hmr port changed from ${port} to ${basePort}`)
+    }
+    return Number(startPort) ===  basePort ? undefined : (Number(startPort) || undefined);
+  };
+
+  ws = createWebSocketServer(server, await parseSocketServerAddress());
 
   ws.wss.on('connection', (socket) => {
     if (stats) {
@@ -243,11 +258,8 @@ export async function createServer(opts: IOpts): Promise<any> {
     }
   });
 
-  const protocol = userConfig.https ? 'https:' : 'http:';
-  const port = opts.port || 8000;
-
-  server.listen(port, () => {
-    const banner = getDevBanner(protocol, opts.host, port);
+  server.listen(basePort, () => {
+    const banner = getDevBanner(protocol, opts.host, basePort);
 
     console.log(banner.before);
     logger.ready(banner.main);
