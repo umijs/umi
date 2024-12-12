@@ -1311,7 +1311,7 @@ proxy: {
 
 ## routePrefetch
 
-- 类型：`boolean`
+- 类型：`{ defaultPrefetch: 'none' | 'intent' | 'render' | 'viewport', defaultPrefetchTimeout: number } | false`
 - 默认值：`false`
 
 启用路由预加载功能。

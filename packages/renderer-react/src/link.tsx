@@ -21,18 +21,25 @@ export const LinkWithPrefetch = React.forwardRef(
     props: PropsWithChildren<
       {
         prefetch?: boolean | 'intent' | 'render' | 'viewport' | 'none';
+        prefetchTimeout?: number;
       } & LinkProps &
         React.RefAttributes<HTMLAnchorElement>
     >,
     forwardedRef,
   ) => {
     const { prefetch: prefetchProp, ...linkProps } = props;
+    const { defaultPrefetch, defaultPrefetchTimeout } =
+      typeof window !== 'undefined'
+        ? // @ts-ignore
+          window.__umi_route_prefetch__
+        : { defaultPrefetch: 'none', defaultPrefetchTimeout: 50 };
+
     const prefetch =
       (prefetchProp === true
         ? 'intent'
         : prefetchProp === false
         ? 'none'
-        : prefetchProp) || 'none';
+        : prefetchProp) || defaultPrefetch;
     if (!['intent', 'render', 'viewport', 'none'].includes(prefetch)) {
       throw new Error(
         `Invalid prefetch value ${prefetch} found in Link component`,
@@ -52,7 +59,7 @@ export const LinkWithPrefetch = React.forwardRef(
       eventTarget.preloadTimeout = setTimeout(() => {
         eventTarget.preloadTimeout = null;
         appData.preloadRoute?.(to!);
-      }, 50);
+      }, props.prefetchTimeout || defaultPrefetchTimeout);
     };
     const handleMouseLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (prefetch !== 'intent') return;

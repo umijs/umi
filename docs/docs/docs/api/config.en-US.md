@@ -1304,7 +1304,7 @@ Configure how routes are loaded. Setting moduleType to 'cjs' will load route com
 
 ## routePrefetch
 
-- Type: `boolean`
+- Type: `{ defaultPrefetch: 'none' | 'intent' | 'render' | 'viewport', defaultPrefetchTimeout: number } | false`
 - Default: `false`
 
 Enable route preloading functionality.
