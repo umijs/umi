@@ -242,10 +242,10 @@ export async function createServer(opts: IOpts): Promise<any> {
     if (!process.env.SOCKET_SERVER) return basePort;
     const {port} = new URL(process.env.SOCKET_SERVER);
     const startPort = Number(port) || basePort;
-    if (port) {
-      const hmrPort = await portfinder.getPortPromise({ port: startPort, stopPort: startPort + 1 })
-      // 实际可用的hmr端口和设置的hmr端口不同
-      if (startPort !== hmrPort) console.log(`[SOCKET_SERVER] hmr port changed from ${port} to ${basePort}`)
+    const hmrPort = await portfinder.getPortPromise({ port: startPort })
+    if (port && startPort !== hmrPort) {
+      console.log(`[SOCKET_SERVER] hmr port changed from ${port} to ${basePort}`)
+      return undefined;
     }
     return Number(startPort) ===  basePort ? undefined : (Number(startPort) || undefined);
   };
