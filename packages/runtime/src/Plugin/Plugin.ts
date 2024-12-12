@@ -41,6 +41,9 @@ export default class Plugin {
     assert(!!plugin.apply, `register failed, plugin.apply must supplied`);
     assert(!!plugin.path, `register failed, plugin.path must supplied`);
     Object.keys(plugin.apply).forEach((key) => {
+      if (key === 'default') {
+        return;
+      }
       assert(
         this.validKeys.indexOf(key) > -1,
         `register failed, invalid key ${key} from plugin ${plugin.path}.`,
