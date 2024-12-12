@@ -28,11 +28,16 @@ export const LinkWithPrefetch = React.forwardRef(
   ) => {
     const { prefetch: prefetchProp, ...linkProps } = props;
     const prefetch =
-      prefetchProp === true
+      (prefetchProp === true
         ? 'intent'
         : prefetchProp === false
         ? 'none'
-        : prefetchProp;
+        : prefetchProp) || 'none';
+    if (!['intent', 'render', 'viewport', 'none'].includes(prefetch)) {
+      throw new Error(
+        `Invalid prefetch value ${prefetch} found in Link component`,
+      );
+    }
     const appData = useAppData();
     const to = typeof props.to === 'string' ? props.to : props.to?.pathname;
     const hasRenderFetched = React.useRef(false);
