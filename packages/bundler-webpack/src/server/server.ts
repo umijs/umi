@@ -247,7 +247,7 @@ export async function createServer(opts: IOpts): Promise<any> {
       console.log(`[SOCKET_SERVER] hmr port changed from ${port} to ${basePort}`)
       return undefined;
     }
-    return Number(startPort) ===  basePort ? undefined : (Number(startPort) || undefined);
+    return startPort ===  basePort ? undefined : startPort;
   };
 
   ws = createWebSocketServer(server, await parseSocketServerAddress());
