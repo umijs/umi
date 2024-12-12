@@ -14,9 +14,11 @@ translated_at: '2024-03-17T09:56:34.842Z'
 
 Developing Umi requires Node.js 18+ and `pnpm` v8.
 
-It is recommended to use [`nvm`](https://github.com/nvm-sh/nvm) to manage Node.js versions to avoid permission issues and easily switch between Node.js versions. Windows developers can use [`nvm-windows`](https://github.com/coreybutler/nvm-windows).
+It's recommended to use [Volta](https://volta.sh/) to manage the node and pnpm version. And you need to set the `VOLTA_FEATURE_PNPM` environment variable to enable pnpm support.
 
-Install `pnpm` via one of the methods on its [official website](https://pnpm.io/installation).
+```bash
+export VOLTA_FEATURE_PNPM=1
+```
 
 ### Clone the Project
 
