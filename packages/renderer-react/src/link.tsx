@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useLayoutEffect } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import { useAppData } from './appContext';
 
@@ -11,9 +11,15 @@ export function LinkWithPrefetch(
   >,
 ) {
   const { prefetch: prefetchProp, ...linkProps } = props;
-  const prefetch = prefetchProp === true ? 'intent' : prefetchProp;
+  const prefetch =
+    prefetchProp === true
+      ? 'intent'
+      : prefetchProp === false
+      ? 'none'
+      : prefetchProp;
   const appData = useAppData();
   const to = typeof props.to === 'string' ? props.to : props.to?.pathname;
+  const hasRenderFetched = React.useRef(false);
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (prefetch !== 'intent') return;
@@ -37,6 +43,13 @@ export function LinkWithPrefetch(
       eventTarget.preloadTimeout = null;
     }
   };
+
+  useLayoutEffect(() => {
+    if (prefetch === 'render' && !hasRenderFetched.current) {
+      appData.preloadRoute?.(to!);
+      hasRenderFetched.current = true;
+    }
+  }, [prefetch, to]);
 
   // compatible with old code
   // which to might be undefined
