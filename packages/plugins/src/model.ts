@@ -23,7 +23,7 @@ export default (api: IApi) => {
 
   api.onGenerateFiles(async () => {
     const models = await getAllModels(api);
-    if (api.userConfig.model.sort) {
+    if (api.userConfig.model?.sort) {
       models.sort(api.userConfig.model.sort);
     }
 
