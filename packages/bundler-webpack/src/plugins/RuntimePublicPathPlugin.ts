@@ -1,6 +1,6 @@
 import type {
-  Compiler,
   Compilation,
+  Compiler,
   RuntimeModule,
 } from '@umijs/bundler-webpack/compiled/webpack';
 
@@ -24,7 +24,9 @@ export class RuntimePublicPathPlugin {
             )
               return;
             // @ts-ignore
-            module._cachedGeneratedCode = `__webpack_require__.p = (typeof globalThis !== 'undefined' ? globalThis : window).publicPath || '/';`;
+            module._cachedGeneratedCode = `__webpack_require__.p = (typeof globalThis !== 'undefined' ? globalThis : window).publicPath || ${
+              compilation.outputOptions.publicPath ?? '/'
+            };`;
           }
         },
       );
