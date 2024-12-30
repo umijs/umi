@@ -4,6 +4,7 @@ import {
   VIRTUAL_ENTRY_DIR,
 } from '@umijs/mfsu';
 import { chalk, lodash, resolve } from '@umijs/utils';
+import browsersList from 'browserslist';
 import { dirname, isAbsolute } from 'path';
 import { ProvidePlugin } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
@@ -124,47 +125,52 @@ export async function addJavaScriptRules(opts: IOpts) {
 
   // const prefix = existsSync(join(cwd, 'src')) ? join(cwd, 'src') : cwd;
   const srcTranspiler = userConfig.srcTranspiler || Transpiler.babel;
+  const browsersListConfig = browsersList.loadConfig({ path: cwd });
+  const options: any = {
+    // Tell babel to guess the type, instead assuming all files are modules
+    // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
+    sourceType: 'unambiguous',
+    babelrc: false,
+    configFile: false,
+    cacheDirectory: false,
+    browserslistConfigFile: !!browsersListConfig,
+    // process.env.BABEL_CACHE !== 'none'
+    //   ? join(cwd, `.umi/.cache/babel-loader`)
+    //   : false,
+    // targets: userConfig.targets,
+    // 解决 vue MFSU 解析 需要
+    customize: userConfig.babelLoaderCustomize,
+    presets: [
+      opts.babelPreset || [
+        require.resolve('@umijs/babel-preset-umi'),
+        {
+          presetEnv: {},
+          presetReact: {},
+          presetTypeScript: {},
+          pluginTransformRuntime: {},
+          pluginLockCoreJS: {},
+          pluginDynamicImportNode: false,
+          pluginAutoCSSModules: userConfig.autoCSSModules,
+        },
+      ],
+      ...opts.extraBabelPresets,
+      ...(userConfig.extraBabelPresets || []).filter(Boolean),
+    ],
+    plugins: [
+      useFastRefresh && require.resolve('react-refresh/babel'),
+      ...opts.extraBabelPlugins,
+      ...(userConfig.extraBabelPlugins || []),
+    ].filter(Boolean),
+  };
+  if (!browsersListConfig) {
+    options.targets = userConfig.targets;
+  }
   srcRules.forEach((rule) => {
     if (srcTranspiler === Transpiler.babel) {
       rule
         .use('babel-loader')
         .loader(require.resolve('../../compiled/babel-loader'))
-        .options({
-          // Tell babel to guess the type, instead assuming all files are modules
-          // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
-          sourceType: 'unambiguous',
-          babelrc: false,
-          configFile: false,
-          cacheDirectory: false,
-          browserslistConfigFile: false,
-          // process.env.BABEL_CACHE !== 'none'
-          //   ? join(cwd, `.umi/.cache/babel-loader`)
-          //   : false,
-          targets: userConfig.targets,
-          // 解决 vue MFSU 解析 需要
-          customize: userConfig.babelLoaderCustomize,
-          presets: [
-            opts.babelPreset || [
-              require.resolve('@umijs/babel-preset-umi'),
-              {
-                presetEnv: {},
-                presetReact: {},
-                presetTypeScript: {},
-                pluginTransformRuntime: {},
-                pluginLockCoreJS: {},
-                pluginDynamicImportNode: false,
-                pluginAutoCSSModules: userConfig.autoCSSModules,
-              },
-            ],
-            ...opts.extraBabelPresets,
-            ...(userConfig.extraBabelPresets || []).filter(Boolean),
-          ],
-          plugins: [
-            useFastRefresh && require.resolve('react-refresh/babel'),
-            ...opts.extraBabelPlugins,
-            ...(userConfig.extraBabelPlugins || []),
-          ].filter(Boolean),
-        });
+        .options(options);
     } else if (srcTranspiler === Transpiler.swc) {
       rule
         .use('swc-loader')
