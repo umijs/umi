@@ -340,4 +340,4 @@ Since the underlying layer of dva is based on redux, you can install redux's [de
 
 ## References
 
-- [dva official website](https://dvajs.com/)
+- [dva official website](https://dva.mxlab.top/)
