@@ -1,5 +1,6 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { winPath } from '@umijs/utils';
+import browserslist from 'browserslist';
 import type { LoaderContext } from 'mini-css-extract-plugin/types/utils';
 import { Env, IConfig } from '../types';
 
@@ -127,6 +128,17 @@ export async function addCSSRules(opts: IOpts) {
           modules: cssLoaderModulesConfig,
           ...userConfig.cssLoader,
         });
+      const browsersListConfig = browserslist.loadConfig({ path: opts.cwd });
+      const envOpts: any = {
+        autoprefixer: {
+          flexbox: 'no-2009',
+          ...userConfig.autoprefixer,
+        },
+        stage: 3,
+      };
+      if (!browsersListConfig) {
+        envOpts.browsers = opts.browsers;
+      }
 
       rule
         .use('postcss-loader')
@@ -138,14 +150,7 @@ export async function addCSSRules(opts: IOpts) {
             ident: 'postcss',
             plugins: [
               require('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
-              require('postcss-preset-env')({
-                browsers: opts.browsers,
-                autoprefixer: {
-                  flexbox: 'no-2009',
-                  ...userConfig.autoprefixer,
-                },
-                stage: 3,
-              }),
+              require('postcss-preset-env')(envOpts),
             ].concat(userConfig.extraPostCSSPlugins || []),
             ...userConfig.postcssLoader,
           },

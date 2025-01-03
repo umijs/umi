@@ -4,6 +4,7 @@ import {
   VIRTUAL_ENTRY_DIR,
 } from '@umijs/mfsu';
 import { chalk, lodash, resolve } from '@umijs/utils';
+import { warn } from '@umijs/utils/dist/logger';
 import browsersList from 'browserslist';
 import { dirname, isAbsolute } from 'path';
 import { ProvidePlugin } from '../../compiled/webpack';
@@ -11,7 +12,6 @@ import Config from '../../compiled/webpack-5-chain';
 import { MFSU_NAME } from '../constants';
 import { Env, IConfig, Transpiler } from '../types';
 import { es5ImcompatibleVersionsToPkg, isMatch } from '../utils/depMatch';
-
 interface IOpts {
   config: Config;
   userConfig: IConfig;
@@ -164,6 +164,8 @@ export async function addJavaScriptRules(opts: IOpts) {
   };
   if (!browsersListConfig) {
     options.targets = userConfig.targets;
+  } else if (userConfig.targets) {
+    warn('检测到项目中存在browsersList配置, targets 配置已失效');
   }
   srcRules.forEach((rule) => {
     if (srcTranspiler === Transpiler.babel) {
