@@ -21,7 +21,9 @@ export default function ViteHtmlPlugin(api: IApi): Plugin {
             try {
               // 处理通用html
               const viteScripts: IOpts['scripts'] = [
-                api.appData.hasSrcDir ? '/src/.umi/umi.ts' : '/.umi/umi.ts',
+                `${api.appData.hasSrcDir ? '/src' : ''}/.${
+                  api.service.frameworkName
+                }/umi.ts`,
               ];
 
               const markupArgs = (await getMarkupArgs({ api })) as any;

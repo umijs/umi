@@ -123,6 +123,10 @@
     "node": ">=14",
     "pnpm": "^8.11.0"
   },
+  "volta": {
+    "node": "20.18.1",
+    "pnpm": "8.15.9"
+  },
   "//": {
     "why-overrides-parcel-watcher": "https://github.com/parcel-bundler/watcher/issues/156",
     "why-overrides-browserslist": "See scripts/bundleDeps.ts"

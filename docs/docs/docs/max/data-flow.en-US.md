@@ -8,6 +8,33 @@ translated_at: '2024-03-18T00:49:20.502Z'
 
 `@umi/max` has a built-in **data flow management** [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/model.ts), which is a lightweight data management solution based on the `hooks` paradigm. It can be used to manage global shared data in Umi projects.
 
+## Configuration
+
+e.g.
+
+```ts
+export default {
+  model: {
+    extraModels: ['src/models/userModel.ts'],
+    sort: (a, b) => a.namespace.localeCompare(b.namespace),
+  },
+};
+```
+
+### extraModels
+
+- Type: `string[]`
+- Default: `[]`
+
+Configure `extraModels` to automatically add these Model files to the data stream management.
+
+### sort
+
+- Type: `(a: Model, b: Model) => number`
+- Default: `(a, b) => a.namespace.localeCompare(b.namespace)`
+
+Configure `sort` to sort the Model based on the return value of the `sort` function.
+
 ## Getting Started
 
 ### Creating a Model
@@ -220,7 +247,7 @@ For specific usage, please refer to the [micro-frontend's parent-child communica
 // src/components/AdminInfo/index.tsx
 import { useModel } from 'umi';
 
-export default function Page() {
+export default () => {
   const { user, fetchUser } = useModel('adminModel', (model) => ({
     user: model.admin,
     fetchUser: model.fetchAdmin,

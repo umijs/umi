@@ -186,7 +186,8 @@ unlisten();
 
 ```ts
 declare function Link(props: {
-  prefetch?: boolean;
+  prefetch?: boolean | 'intent' | 'render' | 'viewport' | 'none';
+  prefetchTimeout?: number;
   to: string | Partial<{ pathname: string; search: string; hash: string }>;
   replace?: boolean;
   state?: any;
@@ -206,7 +207,7 @@ function IndexPage({ user }) {
 
 `<Link to>` 支持相对路径跳转；`<Link reloadDocument>` 不做路由跳转，等同于 `<a href>` 的跳转行为。
 
-若开启了 `prefetch` 则当用户将鼠标放到该组件上方时，Umi 就会自动开始进行跳转路由的组件 js 文件和数据预加载。（注：使用此功能请同时开启 `routePrefetch` 和 `manifest` 配置）
+若开启了 `prefetch` 则当用户将鼠标放到该组件上方时，Umi 就会自动开始进行跳转路由的组件 js 文件和数据预加载。（注：使用此功能请开启 `routePrefetch` 配置）
 
 ### matchPath
 

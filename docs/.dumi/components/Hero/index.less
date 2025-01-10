@@ -1,5 +1,5 @@
 .hero {
-  height: 640px;
+  min-height: 640px;
   position: relative;
 
   :global {
@@ -117,6 +117,74 @@
           height: 193px;
           background-size: 380px 193px;
           margin: 8px auto 0;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px){
+  .hero{
+    :global{
+      .bg{
+        height: 100%;
+        background-repeat: repeat;
+      }
+      .wrapper{
+        flex-wrap: wrap;
+        justify-content: center;
+        padding-bottom: 40px;
+        .left{
+          padding-top: 40px;
+          padding-left: 0;
+          .bigLogo{
+            margin: 0 auto;
+            width: 300px;
+            height: 139px;
+            background-size: 100% auto;
+          }
+          .actions{
+            margin-top: 40px;
+            flex-wrap:wrap;
+            justify-content: center;
+            .button{
+              margin-left: 0;
+              width: 120px;
+              height: 40px;
+              line-height: 40px;
+              font-size: 16px;
+            }
+            .githubStar{
+              font-size: 12px;
+              line-height: 40px;
+              &::before{
+                height: 40px;
+              }
+            }
+          }
+        }
+        .right{
+          padding-top: 40px;
+          margin-right: 0;
+          .bigSlogan1{
+            width: 200px;
+            height: 65px;
+            background-size: 100% auto;
+          }
+          .bigSlogan2{
+            width: 300px;
+            height: 49px;
+            background-size: 100% auto;
+          }
+          .slogan{
+            font-size: 20px;
+            width: auto;
+          }
+          .bow{
+            width: 330px;
+            height: 168px;
+            background-size: 100% auto;
+          }
         }
       }
     }

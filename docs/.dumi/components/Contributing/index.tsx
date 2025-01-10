@@ -16,7 +16,6 @@ export const Contributing = () => {
             <img
               src="https://opencollective.com/umi/contributors.svg?width=1200&button=false"
               width="1200"
-              height="184"
             />
           </a>
         </div>

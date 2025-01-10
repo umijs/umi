@@ -27,7 +27,7 @@ pnpm install @ant-design/plots
 
 在下面的使用示例中，我们将最小化引入。
 
-您也可以直接阅读 Ant Design Charts 完整的[上手文档](https://charts.ant.design/zh/docs/manual/getting-started)和[图表示例](https://charts.ant.design/zh/examples/gallery)。
+您也可以直接阅读 Ant Design Charts 完整的[上手文档](https://ant-design-charts.antgroup.com/manual/getting-started)和[图表示例](https://ant-design-charts.antgroup.com/examples)。
 
 ### 曲线图
 

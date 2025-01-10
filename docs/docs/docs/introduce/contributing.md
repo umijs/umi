@@ -13,9 +13,11 @@ toc: content
 
 开发 Umi 需要 Node.js 18+ 和 `pnpm` v8。
 
-推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 管理 Node.js，避免权限问题的同时，还能够随时切换当前使用的 Node.js 的版本。在 Windows 系统下的开发者可以使用 [`nvm-windows`](https://github.com/coreybutler/nvm-windows)。
+推荐使用 [Volta](https://volta.sh/) 来管理 Node.js 和 pnpm 版本。并且需要设置 `VOLTA_FEATURE_PNPM` 环境变量来启用 pnpm 支持。
 
-在 `pnpm` 的[官网](https://pnpm.io/installation)选择一种方式安装即可。
+```bash
+export VOLTA_FEATURE_PNPM=1
+```
 
 ### Clone 项目
 

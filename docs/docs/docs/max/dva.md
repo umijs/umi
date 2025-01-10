@@ -338,4 +338,4 @@ dva 的底层是基于 redux，所以你可以安装 redux 的[开发者工具](
 
 ## 参考文章
 
-- [dva 官网](https://dvajs.com/)
+- [dva 官网](https://dva.mxlab.top/)
