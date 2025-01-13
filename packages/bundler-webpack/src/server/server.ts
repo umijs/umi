@@ -240,30 +240,41 @@ export async function createServer(opts: IOpts): Promise<any> {
 
   const parseSocketServerAddress = async () => {
     if (!process.env.SOCKET_SERVER) return basePort;
-    const {port} = new URL(process.env.SOCKET_SERVER);
+    const { port } = new URL(process.env.SOCKET_SERVER);
     const startPort = Number(port) || basePort;
-    const hmrPort = await portfinder.getPortPromise({ port: startPort })
-    if (port && startPort !== hmrPort) {
-      console.log(`[SOCKET_SERVER] hmr port changed from ${port} to ${basePort}`)
+    try {
+      const hmrPort = await portfinder.getPortPromise({
+        port: startPort,
+        stopPort: startPort + 1,
+      });
+      if (port && startPort !== hmrPort) {
+        console.log(
+          `[SOCKET_SERVER] hmr port changed from ${port} to ${basePort}`,
+        );
+        return undefined;
+      }
+      return startPort === basePort ? undefined : startPort;
+    } catch (e) {
+      console.log(`[SOCKET_SERVER] hmr port not found, use ${basePort}`);
       return undefined;
     }
-    return startPort ===  basePort ? undefined : startPort;
   };
 
-  ws = createWebSocketServer(server, await parseSocketServerAddress());
+  const hmrPort = await parseSocketServerAddress();
+
+  server.listen(basePort, () => {
+    const banner = getDevBanner(protocol, opts.host, basePort);
+    console.log(banner.before);
+    logger.ready(banner.main);
+    console.log(banner.after);
+  });
+
+  ws = createWebSocketServer(server, hmrPort);
 
   ws.wss.on('connection', (socket) => {
     if (stats) {
       sendStats(getStats(stats), false, socket);
     }
-  });
-
-  server.listen(basePort, () => {
-    const banner = getDevBanner(protocol, opts.host, basePort);
-
-    console.log(banner.before);
-    logger.ready(banner.main);
-    console.log(banner.after);
   });
 
   return server;
