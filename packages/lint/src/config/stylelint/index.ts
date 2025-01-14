@@ -20,6 +20,8 @@ module.exports = {
     'font-family-no-missing-generic-family-keyword': null, // iconfont
     'plugin/declaration-block-no-ignored-properties': true,
     'unit-no-unknown': [true, { ignoreUnits: ['rpx'] }],
+    // https://stylelint.io/user-guide/rules/value-no-vendor-prefix/
+    'value-no-vendor-prefix': [true, { ignoreValues: ['box'] }],
     // webcomponent
     'selector-type-no-unknown': null,
     'value-keyword-case': ['lower', { ignoreProperties: ['composes'] }],
