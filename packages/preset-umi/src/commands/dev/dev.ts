@@ -78,6 +78,24 @@ PORT=8888 umi dev
       // clear tmp
       rimraf.sync(api.paths.absTmpPath);
 
+      // check strict port
+      if (process.env.STRICT_PORT) {
+        logger.info(
+          `Checking port ${process.env.STRICT_PORT} since STRICT_PORT is set...`,
+        );
+        const port = parseInt(String(process.env.STRICT_PORT), 10);
+        const isPortAvailableResult = await isPortAvailable(port);
+        if (!isPortAvailableResult) {
+          logger.error(
+            `Port ${port} is not available, please use another port.`,
+          );
+          logger.info(
+            `If you don't want to exit when the port is not available, use PORT instead.`,
+          );
+          process.exit(1);
+        }
+      }
+
       // check package.json
       await api.applyPlugins({
         key: 'onCheckPkgJSON',
@@ -488,3 +506,11 @@ PORT=8888 umi dev
     return viteConfig;
   });
 };
+
+async function isPortAvailable(port: number) {
+  const foundPort = await portfinder.getPortPromise({
+    port,
+  });
+  return foundPort === port;
+}
+
