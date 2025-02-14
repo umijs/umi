@@ -157,6 +157,14 @@ Specifies the socket server for HMR. For example:
 $ SOCKET_SERVER=http://localhost:8000/ umi dev
 ```
 
+### STRICT_PORT
+
+If set, when the port is occupied, it will prompt the user to use another port and exit the process.
+
+```bash
+$ STRICT_PORT=8000 umi dev
+```
+
 ### SPEED_MEASURE
 
 Analyzes the Webpack compile time, supports `CONSOLE` and `JSON` formats, the default is `CONSOLE`.

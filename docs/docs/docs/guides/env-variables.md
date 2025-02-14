@@ -156,6 +156,14 @@ $ ANALYZE=1 umi build
 $ SOCKET_SERVER=http://localhost:8000/ umi dev
 ```
 
+### STRICT_PORT
+
+如果设置，当端口被占用时，会提示用户使用其他端口，并退出进程。
+
+```bash
+$ STRICT_PORT=8000 umi dev
+```
+
 ### SPEED_MEASURE
 
 分析 Webpack 编译时间，支持 `CONSOLE` 和 `JSON` 两种格式，默认是 `CONSOLE`。
