@@ -4,7 +4,7 @@ import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
-import { getDevBanner, lodash, logger } from '@umijs/utils';
+import { getDevBanner, lodash, logger, portfinder } from '@umijs/utils';
 import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
 import http from 'http';
@@ -235,23 +235,46 @@ export async function createServer(opts: IOpts): Promise<any> {
     return null;
   }
 
-  ws = createWebSocketServer(server);
+  const protocol = userConfig.https ? 'https:' : 'http:';
+  const basePort = opts.port || 8000;
+
+  const parseSocketServerAddress = async () => {
+    if (!process.env.SOCKET_SERVER) return basePort;
+    const { port } = new URL(process.env.SOCKET_SERVER);
+    const startPort = Number(port) || basePort;
+    try {
+      const hmrPort = await portfinder.getPortPromise({
+        port: startPort,
+        stopPort: startPort + 1,
+      });
+      if (port && startPort !== hmrPort) {
+        console.log(
+          `[SOCKET_SERVER] hmr port changed from ${port} to ${basePort}`,
+        );
+        return undefined;
+      }
+      return startPort === basePort ? undefined : startPort;
+    } catch (e) {
+      console.log(`[SOCKET_SERVER] hmr port not found, use ${basePort}`);
+      return undefined;
+    }
+  };
+
+  const hmrPort = await parseSocketServerAddress();
+
+  server.listen(basePort, () => {
+    const banner = getDevBanner(protocol, opts.host, basePort);
+    console.log(banner.before);
+    logger.ready(banner.main);
+    console.log(banner.after);
+  });
+
+  ws = createWebSocketServer(server, hmrPort);
 
   ws.wss.on('connection', (socket) => {
     if (stats) {
       sendStats(getStats(stats), false, socket);
     }
-  });
-
-  const protocol = userConfig.https ? 'https:' : 'http:';
-  const port = opts.port || 8000;
-
-  server.listen(port, () => {
-    const banner = getDevBanner(protocol, opts.host, port);
-
-    console.log(banner.before);
-    logger.ready(banner.main);
-    console.log(banner.after);
   });
 
   return server;
