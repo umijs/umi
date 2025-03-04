@@ -23,7 +23,9 @@ export type IBabelPlugin =
   | Function
   | string
   | [string, { [key: string]: any }]
-  | [string, { [key: string]: any }, string];
+  | [string, [{ [key: string]: any }]]
+  | [string, { [key: string]: any }, string]
+  | [string, [{ [key: string]: any }], string];
 
 export interface IConfig {
   alias?: Record<string, string>;
