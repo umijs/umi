@@ -544,7 +544,7 @@ Example,
 ```
 // external react
 externals: { react: 'React' },
-headScripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
+headScripts: ['https://cdn.jsdelivr.net/npm/react@17.0.1/umd/react.production.min.js'],
 ```
 
 Note: Do not easily set antd’s externals, as due to its many dependencies and complicated usage, many problems could occur, and it’s hard to fully explain in one or two sentences.
