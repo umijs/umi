@@ -79,7 +79,7 @@ import { history } from 'umi';
 
 这时需要确保两件事，
 
-1. tsconfig.json 中有配置 `@@` 的路径，比如 `"@@/*": ["src/.umi/*"]`，参考 [tsconfig.json 模板](https://github.com/umijs/umi/blob/master/tsconfig.json)
+1. tsconfig.json 中有配置 `@@` 的路径，比如 `"@@/*": ["src/.umi/*"]`，参考 [tsconfig.json 模板](https://github.com/umijs/umi/blob/3.x/packages/create-umi-app/templates/AppGenerator/tsconfig.json)
 2. 确保 `src/.umi/core/umiExports.ts` 有相关内容，如果没有，可通过 `umi build`、`umi dev` 或 `umi g tmp` 任一命令生成
 
 ### 如何动态修改 title ？
