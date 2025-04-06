@@ -1,0 +1,69 @@
+# Umi JS - 插件化的企业级前端应用框架
+
+- Umi是可扩展的企业级前端应用框架。Umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。然后配以生命周期完善的插件体系，覆盖从源码到构建产物的每个生命周期，支持各种功能扩展和业务需求。
+
+## 介绍
+
+- [Umi 介绍](https://umijs.org/docs/introduce/introduce): Umi 是一个可扩展的企业级前端框架。
+- [设计思路](https://umijs.org/docs/introduce/philosophy): 探索 UmiJS 在企业级框架中的设计理念。
+- [参与贡献](https://umijs.org/docs/introduce/contributing): 参与 UmiJS 开发和文档贡献的指南。
+- [升级到 Umi 4](https://umijs.org/docs/introduce/upgrade-to-umi-4): 升级到 Umi 4 的逐步指南。
+- [FAQ](https://umijs.org/docs/introduce/faq): 查找常见的 UmiJS 问题和解答。
+
+## 指南
+
+- [快速上手](https://umijs.org/docs/guides/getting-started): 全面的 UmiJS 入门指南。
+- [开发环境](https://umijs.org/docs/guides/prepare): 为 Umi.js 项目搭建本地开发环境。
+- [目录结构](https://umijs.org/docs/guides/directory-structure): 了解 UmiJS 项目的目录结构与组织方式。
+- [路由](https://umijs.org/docs/guides/routes): 学习如何在 UmiJS 应用中配置路由。
+- [插件](https://umijs.org/docs/guides/use-plugins): 学习如何使用和开发 UmiJS 插件。
+- [Mock](https://umijs.org/docs/guides/mock): 学习如何在 UmiJS 中设置 mock 数据。
+- [代理](https://umijs.org/docs/guides/proxy): 学习如何配置 UmiJS 的代理设置。
+- [样式](https://umijs.org/docs/guides/styling): 探索 UmiJS 项目中的多种样式方案。
+- [路由数据加载](https://umijs.org/docs/guides/client-loader): UmiJS 客户端加载器，用于高效的数据获取。
+- [TypeScript](https://umijs.org/docs/guides/typescript): 学习如何高效地在 UmiJS 中使用 TypeScript。
+- [环境变量](https://umijs.org/docs/guides/env-variables): 学习如何在 UmiJS 中配置环境变量。
+- [脚手架](https://umijs.org/docs/guides/boilerplate): 使用官方模板快速创建 UmiJS 项目。
+- [微生成器](https://umijs.org/docs/guides/generator): 探索 UmiJS 内置的高效开发生成器。
+- [编码规范](https://umijs.org/docs/guides/lint): 学习如何在 UmiJS 项目中实现代码规范检查。
+- [调试](https://umijs.org/docs/guides/debug): 探索 UmiJS 开发项目的调试技巧。
+- [测试](https://umijs.org/docs/guides/test): 使用 Jest 有效测试 UmiJS 应用。
+- [开发插件](https://umijs.org/docs/guides/plugins): 探索 UmiJS 插件的开发与配置方式。
+- [使用 Vue](https://umijs.org/docs/guides/use-vue): 学习如何在 Umi 框架中使用 Vue。
+- [MPA 模式](https://umijs.org/docs/guides/mpa): 探索 Umi 的多页应用（MPA）模式。
+
+## API
+
+- [API](https://umijs.org/docs/api/api): UmiJS 框架功能的完整 API 文档。
+- [配置](https://umijs.org/docs/api/config): UmiJS 配置选项及其使用方式的详细指南。
+- [运行时配置](https://umijs.org/docs/api/runtime-config): 了解 UmiJS 的运行时配置选项及示例。
+- [命令行](https://umijs.org/docs/api/commands): 探索用于项目管理的 UmiJS 命令行工具。
+- [插件 API](https://umijs.org/docs/api/plugin-api): 探索用于扩展项目功能的 UmiJS 插件 API。
+
+## Umi Max
+
+- [Umi Max 简介](https://umijs.org/docs/max/introduce): Umi Max 框架，适用于可扩展的企业级前端应用。
+- [布局与菜单](https://umijs.org/docs/max/layout-menu): 学习如何在 UmiJS 中配置布局与菜单。
+- [antd](https://umijs.org/docs/max/antd): 集成并配置 Ant Design 组件库的指南。
+- [图表](https://umijs.org/docs/max/charts): 结合 Ant Design 在 UmiJS 中实现数据可视化图表。
+- [数据流](https://umijs.org/docs/max/data-flow): 使用 hooks 实现轻量级的数据管理。
+- [请求](https://umijs.org/docs/max/request): 结合 axios 实现统一的网络请求管理。
+- [权限](https://umijs.org/docs/max/access): 学习如何在 UmiJS 应用中进行权限控制。
+- [国际化](https://umijs.org/docs/max/i18n): 学习如何在 UmiJS 应用中实现多语言国际化。
+- [微前端](https://umijs.org/docs/max/micro-frontend): 探索 UmiJS 的微前端架构与集成方式。
+- [styled-components](https://umijs.org/docs/max/styled-components): 学习如何在 UmiJS 中使用 styled-components。
+- [react-query](https://umijs.org/docs/max/react-query): 学习如何启用并配置 react-query。
+- [valtio](https://umijs.org/docs/max/valtio): 学习如何使用 Valtio 进行状态管理。
+- [dva](https://umijs.org/docs/max/dva): 了解在 UmiJS 应用中使用 Dva 状态管理。
+- [站点统计](https://umijs.org/docs/max/analytics): 结合 Google 和 百度开启站点分析。
+- [Tailwind CSS 插件](https://umijs.org/docs/max/tailwindcss): 将 Tailwind CSS 轻松集成到 Umi Max 项目中。
+
+## 博客
+
+- [使用 Umi 开发一个 Blog](https://umijs.org/blog/develop-blog-using-umi): 学习如何使用 Umi.js 开发并部署一个博客。
+- [Umi 4 RC 发布](https://umijs.org/blog/umi-4-rc): Umi 4 RC 版本为开发者带来了重大更新与功能。
+- [比 Vite 还快的 MFSU](https://umijs.org/blog/mfsu-faster-than-vite): MFSU 为 UmiJS 提供比 Vite 更快的构建速度。
+- [独立使用 MFSU](https://umijs.org/blog/mfsu-independent-usage): 学习如何在 webpack 项目中独立使用 MFSU。
+- [代码拆分指南](https://umijs.org/blog/code-splitting): 学习在 Umi 4 应用中进行代码拆分的策略。
+- [非现代浏览器兼容](https://umijs.org/blog/legacy-browser): UmiJS 对旧版浏览器兼容性的配置与指南。
+- [物理构建缓存](https://umijs.org/blog/webpack-5-prod-cache): 了解 UmiJS 中 Webpack 5 的生产缓存机制。
