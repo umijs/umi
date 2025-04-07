@@ -1,4 +1,5 @@
 ---
+title: TypeScript
 order: 9
 toc: content
 ---

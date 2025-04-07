@@ -1,4 +1,5 @@
 ---
+title: 图表
 order: 4
 toc: content
 ---

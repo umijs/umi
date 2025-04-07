@@ -1,4 +1,5 @@
 ---
+title: 独立使用 MFSU
 toc: content
 order: 4
 group:

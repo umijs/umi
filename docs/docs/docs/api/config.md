@@ -1,4 +1,5 @@
 ---
+title: 配置
 order: 2
 toc: content
 ---

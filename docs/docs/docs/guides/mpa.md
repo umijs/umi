@@ -1,4 +1,5 @@
 ---
+title: MPA 模式
 order: 18
 toc: content
 ---
