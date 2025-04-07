@@ -3,20 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "dumi build && esno scripts/generateLLms.ts",
+    "build": "dumi build && tsx scripts/generateLLms.ts",
     "dev": "dumi dev",
     "prepare": "dumi setup",
     "start": "npm run dev"
   },
   "dependencies": {
     "@ant-design/icons-svg": "^4.2.1",
-    "esno": "^4.7.0",
-    "front-matter": "^4.0.2",
-    "markdown-it": "^14.0.0",
-    "markdown-it-anchor": "^8.6.7",
-    "markdown-it-shikiji": "^0.9.12",
-    "react-countup": "^6.4.2",
-    "zx": "^7.2.3"
+    "react-countup": "^6.4.2"
   },
   "devDependencies": {
     "dumi": "^2.2.16"

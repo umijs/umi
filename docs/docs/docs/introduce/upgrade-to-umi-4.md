@@ -1,5 +1,4 @@
 ---
-title: 升级到 Umi 4
 order: 4
 toc: content
 ---

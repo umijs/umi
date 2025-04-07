@@ -1,5 +1,4 @@
 ---
-title: Umi Max 简介
 order: 1
 toc: content
 ---

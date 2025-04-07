@@ -1,5 +1,4 @@
 ---
-title: 微生成器
 order: 12
 toc: content
 ---

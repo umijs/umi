@@ -1,5 +1,4 @@
 ---
-title: 插件 API
 order: 5
 toc: content
 ---

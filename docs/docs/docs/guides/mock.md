@@ -1,5 +1,4 @@
 ---
-title: Mock
 order: 5
 toc: content
 ---

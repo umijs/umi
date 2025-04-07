@@ -1,5 +1,4 @@
 import 'zx/globals';
-import { Markdown } from './Markdown';
 
 async function generateLLms() {
   const cwd = process.cwd();
@@ -11,21 +10,18 @@ async function generateLLms() {
   let docsIndex: Array<{ title: string; url: string }> = [];
 
   for (let markdown of docs) {
-    let mdPath = path.join(docsDir, markdown);
-    let mdContent = fs.readFileSync(mdPath, 'utf-8');
-    let md = new Markdown({ content: mdContent });
-    let { attributes, body } = md.parseFrontMatter() as {
-      attributes: {
-        title: string | null;
-      };
-      body: string;
-    };
+    const mdPath = path.join(docsDir, markdown);
+    const isEnUS = mdPath.includes('en-US');
 
-    let isEnUS = mdPath.includes('en-US');
     if (!isEnUS) {
+      const mdContent = fs.readFileSync(mdPath, 'utf-8');
+      const mdName = markdown.replace(/\.md$/, '');
+      const matchedtitles = mdContent.match(/^# (.+)$/m);
+      const title = matchedtitles ? matchedtitles[1] : mdName;
+
       docsIndex.push({
-        title: `UmiJS - ${attributes.title || ''}`,
-        url: `https://umijs.org/${markdown.replace(/\.md$/, '')}`,
+        title: `UmiJS - ${title}`,
+        url: `https://umijs.org/${mdName}`,
       });
     }
   }

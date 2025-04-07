@@ -1,5 +1,4 @@
 ---
-title: Umi 4 RC 发布
 toc: content
 order: 2
 group:

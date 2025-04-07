@@ -1,5 +1,4 @@
 ---
-title: 使用 Vue
 order: 17
 toc: content
 ---

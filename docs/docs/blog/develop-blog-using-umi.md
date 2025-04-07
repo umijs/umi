@@ -1,5 +1,4 @@
 ---
-title: 使用 Umi 开发一个 Blog
 order: 1
 toc: content
 group:

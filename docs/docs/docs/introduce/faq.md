@@ -1,5 +1,4 @@
 ---
-title: FAQ
 order: 5
 toc: content
 ---
