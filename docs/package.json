@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "dumi build",
+    "build": "dumi build && tsx scripts/generateLLms.ts",
     "dev": "dumi dev",
     "prepare": "dumi setup",
     "start": "npm run dev"
