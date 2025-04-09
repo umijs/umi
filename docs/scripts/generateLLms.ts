@@ -1,3 +1,4 @@
+import frontMatter from 'front-matter';
 import 'zx/globals';
 
 async function generateLLms() {
@@ -8,6 +9,7 @@ async function generateLLms() {
   let docs = await glob('**/*.md', { cwd: docsDir });
 
   let docsIndex: Array<{ title: string; url: string }> = [];
+  let docsBody: string[] = [];
 
   for (let markdown of docs) {
     const mdPath = path.join(docsDir, markdown);
@@ -15,14 +17,16 @@ async function generateLLms() {
 
     if (!isEnUS) {
       const mdContent = fs.readFileSync(mdPath, 'utf-8');
+      const { body } = frontMatter(mdContent);
       const mdName = markdown.replace(/\.md$/, '');
       const matchedtitles = mdContent.match(/^# (.+)$/m);
       const title = matchedtitles ? matchedtitles[1] : mdName;
 
       docsIndex.push({
-        title: `UmiJS - ${title}`,
+        title,
         url: `https://umijs.org/${mdName}`,
       });
+      docsBody.push(body);
     }
   }
   const docsIndexContent = [
@@ -36,7 +40,11 @@ async function generateLLms() {
     '',
   ].join('\n');
 
+  const docsBodyContent = docsBody.join('\n');
+
   fs.writeFileSync(path.join(llmsDir, 'dist/llms.txt'), docsIndexContent);
+  fs.writeFileSync(path.join(llmsDir, 'dist/llms-full.txt'), docsBodyContent);
+
   console.log('Generated llms.txt');
 }
 (async () => {

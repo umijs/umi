@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons-svg": "^4.2.1",
+    "front-matter": "^4.0.2",
     "react-countup": "^6.4.2"
   },
   "devDependencies": {
