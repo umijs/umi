@@ -8,6 +8,7 @@ async function generateLLms() {
   let docs = await glob('**/*.md', { cwd: docsDir });
 
   let docsIndex: Array<{ title: string; url: string }> = [];
+  let docsBody: string[] = [];
 
   for (let markdown of docs) {
     const mdPath = path.join(docsDir, markdown);
@@ -16,13 +17,22 @@ async function generateLLms() {
     if (!isEnUS) {
       const mdContent = fs.readFileSync(mdPath, 'utf-8');
       const mdName = markdown.replace(/\.md$/, '');
-      const matchedtitles = mdContent.match(/^# (.+)$/m);
-      const title = matchedtitles ? matchedtitles[1] : mdName;
+      const regex = /^# (.+)$/m;
+      const match = regex.exec(mdContent);
+      let title = mdName;
+      let contentFromHeading = '';
+      if (match) {
+        const heading = match[1].trim();
+        const startIndex = match.index;
+        contentFromHeading = mdContent.slice(startIndex);
+        title = heading;
 
-      docsIndex.push({
-        title: `UmiJS - ${title}`,
-        url: `https://umijs.org/${mdName}`,
-      });
+        docsIndex.push({
+          title,
+          url: `https://umijs.org/${mdName}`,
+        });
+        docsBody.push(contentFromHeading);
+      }
     }
   }
   const docsIndexContent = [
@@ -36,8 +46,11 @@ async function generateLLms() {
     '',
   ].join('\n');
 
+  const docsBodyContent = docsBody.join('\n');
+
   fs.writeFileSync(path.join(llmsDir, 'dist/llms.txt'), docsIndexContent);
-  console.log('Generated llms.txt');
+  fs.writeFileSync(path.join(llmsDir, 'dist/llms-full.txt'), docsBodyContent);
+  console.log('Generated llms.txt and llms-full.txt');
 }
 (async () => {
   if (require.main === module) {
