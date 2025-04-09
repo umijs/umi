@@ -17,21 +17,33 @@ async function generateLLms() {
     if (!isEnUS) {
       const mdContent = fs.readFileSync(mdPath, 'utf-8');
       const mdName = markdown.replace(/\.md$/, '');
-      const regex = /^# (.+)$/m;
-      const match = regex.exec(mdContent);
+      const url = `https://umijs.org/${mdName}`; // 文档访问路径
+      const regex = /^# (.+)$/m; // 匹配文档一级标题
       let title = mdName;
-      let contentFromHeading = '';
+      let contentFromHeading = ''; // frontmatter 之后的文档内容
+
+      const match = regex.exec(mdContent);
       if (match) {
-        const heading = match[1].trim();
+        const heading = match[1].trim(); // 文档一级标题
         const startIndex = match.index;
         contentFromHeading = mdContent.slice(startIndex);
         title = heading;
 
         docsIndex.push({
           title,
-          url: `https://umijs.org/${mdName}`,
+          url,
         });
-        docsBody.push(contentFromHeading);
+
+        docsBody.push(
+          [
+            '---',
+            `Title: ${title}`,
+            `URL: ${url}`,
+            '---',
+            '',
+            `${contentFromHeading}`,
+          ].join('\n'),
+        );
       }
     }
   }
