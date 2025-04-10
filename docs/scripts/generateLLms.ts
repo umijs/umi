@@ -3,7 +3,7 @@ import 'zx/globals';
 async function generateLLms() {
   const cwd = process.cwd();
   const llmsDir = path.resolve(cwd, '..');
-  const docsDir = path.join(cwd, 'docs');
+  const docsDir = path.join(cwd, 'docs/docs');
 
   let docs = await glob('**/*.md', { cwd: docsDir });
 
