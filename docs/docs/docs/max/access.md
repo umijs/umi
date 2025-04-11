@@ -82,7 +82,7 @@ export const layout: RunTimeLayoutConfig = () => {
 
 ```js
 import React from 'react';
-import { useAccess } from 'umi';
+import { useAccess } from '@umijs/max';
 
 const PageA = (props) => {
   const { foo } = props;
@@ -126,7 +126,7 @@ export default PageA;
 
 ```js
 import React from 'react';
-import { useAccess, Access } from 'umi';
+import { useAccess, Access } from '@umijs/max';
 
 const PageA = (props) => {
   const { foo } = props;
