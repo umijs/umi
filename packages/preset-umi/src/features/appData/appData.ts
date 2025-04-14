@@ -135,6 +135,14 @@ export default (api: IApi) => {
     },
   });
 
+  api.onGenerateFiles(() => {
+    api.writeTmpFile({
+      path: 'appData.json',
+      content: JSON.stringify(api.appData, null, 2),
+      noPluginDir: true,
+    });
+  });
+
   async function getAppJsInfo() {
     for (const path of expandJSPaths(join(api.paths.absSrcPath, 'app'))) {
       if (existsSync(path)) {
