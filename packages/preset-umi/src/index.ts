@@ -12,6 +12,7 @@ export default () => {
       require.resolve('./features/404/404'),
       require.resolve('./features/appData/appData'),
       require.resolve('./features/appData/umiInfo'),
+      require.resolve('./features/appData/appDataInfo'),
       require.resolve('./features/check/check'),
       require.resolve('./features/check/babel722'),
       require.resolve('./features/codeSplitting/codeSplitting'),
