@@ -104,6 +104,11 @@ export default (api: IApi) => {
         api.appData.overridesCSS = overridesCSS;
         api.appData.globalLoading = globalLoading;
       }
+      api.writeTmpFile({
+        path: 'appData.json',
+        content: JSON.stringify(api.appData, null, 2),
+        noPluginDir: true,
+      });
     },
     stage: Number.NEGATIVE_INFINITY,
   });
