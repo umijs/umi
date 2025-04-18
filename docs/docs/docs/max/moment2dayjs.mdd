@@ -1,4 +1,4 @@
-import { Message, Tabbed } from 'umi';
+import { Message, Tabbed } from ''@umijs/max'';
 
 # moment2dayjs 插件
 
