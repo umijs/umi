@@ -1,5 +1,5 @@
 {
-  "name": "@example/with-tailwindcss",
+  "name": "@example/with-tailwindcss-legacy",
   "private": true,
   "scripts": {
     "build": "umi build",
