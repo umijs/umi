@@ -136,10 +136,7 @@ function getTailwindBinPath(api: IApi) {
 
   if (semver.major(version) === 4) {
     const cliPath = detectTailwindCLIPath(api);
-    assert(
-      existsSync(cliPath),
-      `tailwindcss cli version not found, please install tailwindcss first`,
-    );
-    return join(dirname(cliPath), twPkg.bin['tailwindcss']);
+    const cliPkg = require(join(cliPath, 'package.json'));
+    return join(cliPath, cliPkg.bin.tailwindcss);
   }
 }
