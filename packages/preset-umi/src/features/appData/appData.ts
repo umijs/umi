@@ -5,6 +5,7 @@ import { parse } from '../../../compiled/ini';
 import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
 import type { IApi, IOnGenerateFiles } from '../../types';
+import { serializeAppData } from '../../utils/serializeAppData';
 import { getOverridesCSS } from '../overrides/overrides';
 
 export default (api: IApi) => {
@@ -106,7 +107,7 @@ export default (api: IApi) => {
       }
       api.writeTmpFile({
         path: 'appData.json',
-        content: JSON.stringify(api.appData, null, 2),
+        content: serializeAppData(api.appData),
         noPluginDir: true,
       });
     },
