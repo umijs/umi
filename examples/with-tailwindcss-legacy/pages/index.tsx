@@ -44,7 +44,8 @@ export default function HomePage() {
           with
           <a
             className="mx-2 text-cyan-500"
-            href="https://tailwindcss.com/"
+            // href="https://tailwindcss.com/"
+            href="https://v3.tailwindcss.com/"
             target="_blank"
             rel="noreferrer"
           >
