@@ -56,6 +56,10 @@ export default (api: IApi) => {
     'modifyRoutes',
     'modifyBabelPresetOpts',
     'modifyTSConfig',
+
+    // support custom bundler
+    'modifyUniBundler',
+    'modifyUniBundlerOpts',
   ].forEach((name) => {
     api.registerMethod({ name });
   });

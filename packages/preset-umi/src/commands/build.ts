@@ -16,8 +16,7 @@ import { printMemoryUsage } from './dev/printMemoryUsage';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
-const bundlerVite: typeof import('@umijs/bundler-vite') =
-  lazyImportFromCurrentPkg('@umijs/bundler-vite');
+
 export default (api: IApi) => {
   api.registerCommand({
     name: 'build',
@@ -103,7 +102,7 @@ umi build --clean
         // it will break the config of externals, when externals
         // does not handle the react/runtime
         semver.gte(api.appData.react.version, '17.0.0');
-      const opts = {
+      let opts = {
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
@@ -133,28 +132,34 @@ umi build --clean
 
       await api.applyPlugins({
         key: 'onBeforeCompiler',
-        args: { compiler: api.config.vite ? 'vite' : 'webpack', opts },
+        args: { compiler: api.appData.bundler, opts },
       });
 
-      let stats: any;
-      if (api.config.vite) {
-        stats = await bundlerVite.build(opts);
-      } else if (api.config.mako) {
-        require('@umijs/bundler-webpack/dist/requireHook');
-        // @ts-ignore
-        const { build } = require(process.env.OKAM);
-        stats = await build(opts);
-      } else {
+      opts = await api.applyPlugins({
+        key: 'modifyUniBundlerOpts',
+        initialValue: opts,
+        args: {
+          bundler: api.appData.bundler,
+        },
+      });
+
+      const bundler = await api.applyPlugins({
+        key: 'modifyUniBundler',
+        args: {
+          bundler: api.appData.bundler,
+          opts,
+        },
+      });
+
+      const stats = await bundler.build(opts);
+
+      if (!api.config.vite && !api.config.mako) {
         // Measure files sizes before build
         const absOutputPath = resolve(
           opts.cwd,
           opts.config.outputPath || bundlerWebpack.DEFAULT_OUTPUT_PATH,
         );
         const previousFileSizes = measureFileSizesBeforeBuild(absOutputPath);
-
-        // Build
-        stats = await bundlerWebpack.build(opts);
-
         // Print files sizes
         console.log();
         logger.info('File sizes after gzip:\n');

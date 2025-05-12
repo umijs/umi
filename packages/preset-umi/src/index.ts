@@ -61,6 +61,7 @@ export default () => {
       require.resolve('./features/hmrGuardian/hmrGuardian'),
       require.resolve('./features/routePreloadOnLoad/routePreloadOnLoad'),
       require.resolve('./features/forget/forget'),
+      require.resolve('./features/bundler/bundler'),
 
       // commands
       require.resolve('./commands/build'),

@@ -97,6 +97,24 @@ export type OnConfigChangeFn = (opts: {
   generate: GenerateFilesFn;
 }) => void | Promise<void>;
 
+export interface IUniBundlerInstance {
+  dev: (opts: any) => Promise<void>;
+  build: (opts: any) => Promise<any>;
+  [key: string]: any;
+}
+
+export interface IBundlerOpts {
+  config: IConfig;
+  cwd: string;
+  entry: Record<string, string>;
+  pkg: Record<string, any>;
+  rootDir: string;
+  ip: string;
+  port: number;
+  host: string;
+  [key: string]: any;
+}
+
 export type IApi = PluginAPI &
   IServicePluginAPI & {
     addApiMiddlewares: IAdd<null, IApiMiddleware>;
@@ -150,6 +168,19 @@ export type IApi = PluginAPI &
     modifyRoutes: IModify<Record<string, IRoute>, {}>;
     modifyServerRendererPath: IModify<string, {}>;
     modifyTSConfig: IModify<Record<string, any>, {}>;
+    modifyUniBundler: IModify<
+      IUniBundlerInstance,
+      {
+        bundler: string;
+        opts: IBundlerOpts;
+      }
+    >;
+    modifyUniBundlerOpts: IModify<
+      IBundlerOpts,
+      {
+        bundler: string;
+      }
+    >;
     modifyViteConfig: IModify<
       ViteInlineConfig,
       {
