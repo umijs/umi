@@ -383,7 +383,7 @@ PORT=8888 umi dev
       const shouldUseAutomaticRuntime =
         api.appData.react?.version &&
         semver.gte(api.appData.react.version, '17.0.0');
-      const opts: any = {
+      let opts: any = {
         react: {
           runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         },
@@ -459,21 +459,28 @@ PORT=8888 umi dev
         },
       };
 
-      await api.applyPlugins({
-        key: 'onBeforeCompiler',
-        args: { compiler: enableVite ? 'vite' : 'webpack', opts },
+      opts = await api.applyPlugins({
+        key: 'modifyUniBundlerOpts',
+        initialValue: opts,
+        args: {
+          bundler: api.appData.bundler,
+        },
       });
 
-      if (enableVite) {
-        await bundlerVite.dev(opts);
-      } else if (api.config.mako) {
-        require('@umijs/bundler-webpack/dist/requireHook');
-        // @ts-ignore
-        const { dev } = require(process.env.OKAM);
-        await dev(opts);
-      } else {
-        await bundlerWebpack.dev(opts);
-      }
+      await api.applyPlugins({
+        key: 'onBeforeCompiler',
+        args: { compiler: api.appData.bundler, opts },
+      });
+
+      const bundler = await api.applyPlugins({
+        key: 'modifyUniBundler',
+        args: {
+          bundler: api.appData.bundler,
+          opts,
+        },
+      });
+
+      await bundler.dev(opts);
     },
   });
 
@@ -513,4 +520,3 @@ async function isPortAvailable(port: number) {
   });
   return foundPort === port;
 }
-
