@@ -15,7 +15,6 @@ import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 import type { GenerateFilesFn, IApi } from '../../types';
-import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { getProjectFileList } from '../../utils/projectFileList';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
@@ -30,11 +29,6 @@ import {
   unwatch,
   watch,
 } from './watch';
-
-const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
-  lazyImportFromCurrentPkg('@umijs/bundler-webpack');
-const bundlerVite: typeof import('@umijs/bundler-vite') =
-  lazyImportFromCurrentPkg('@umijs/bundler-vite');
 
 const MFSU_EAGER_DEFAULT_INCLUDE = [
   'react',
