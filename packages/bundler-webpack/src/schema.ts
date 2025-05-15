@@ -178,6 +178,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
     svgr: ({ zod }) => zod.record(zod.string(), zod.any()),
     targets: ({ zod }) => zod.record(zod.string(), zod.any()),
     theme: ({ zod }) => zod.record(zod.string(), zod.any()),
+    transformRuntime: ({ zod }) => zod.record(zod.string(), zod.any()),
     writeToDisk: ({ zod }) => zod.boolean(),
   };
 }

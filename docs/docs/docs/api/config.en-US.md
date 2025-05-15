@@ -1470,6 +1470,27 @@ theme: { '@primary-color': '#1DA57A' }
 
 Configure global page title, currently only supports static Title.
 
+## transformRuntime
+
+- Type: `{ absoluteRuntime: string, version: string }`
+- Default: `{}`
+
+Configure transform-runtime plugin.
+
+For example, if you want to use the latest @babel/runtime version. You can first configure it as follows:
+
+```js
+transformRuntime: {
+  absoluteRuntime: process.cwd(),
+}
+```
+
+Then install @babel/runtime to the project:
+
+```bash
+$ npm install @babel/runtime --save-dev
+```
+
 ## verifyCommit
 
 - Type: `{ scope: string[]; allowEmoji: boolean }`
