@@ -2,10 +2,6 @@ import { semver } from '@umijs/utils';
 import { IApi } from '../../types';
 
 export async function getBabelOpts(opts: { api: IApi }) {
-  console.log(
-    'opts.api.config.transformRuntime',
-    opts.api.config.transformRuntime,
-  );
   // TODO: 支持用户自定义
   const shouldUseAutomaticRuntime = semver.gte(
     opts.api.appData.react.version,
