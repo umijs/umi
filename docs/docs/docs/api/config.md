@@ -1507,6 +1507,27 @@ theme: { '@primary-color': '#1DA57A' }
 
 配置全局页面 title，暂时只支持静态的 Title。
 
+## transformRuntime
+
+- 类型：`{ absoluteRuntime: string, version: string }`
+- 默认值：`{}`
+
+配置 transform-runtime 插件的部分功能。
+
+比如，如果你想用最新的 @babel/runtime 版本。可先配置如下：
+
+```js
+transformRuntime: {
+  absoluteRuntime: process.cwd(),
+}
+```
+
+再安装 @babel/runtime 到项目中：
+
+```bash
+$ npm install @babel/runtime --save-dev
+```
+
 ## verifyCommit
 
 - 类型：`{ scope: string[]; allowEmoji: boolean }`

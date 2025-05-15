@@ -3,7 +3,10 @@ import { IApi } from '../../types';
 
 export async function getBabelOpts(opts: { api: IApi }) {
   // TODO: 支持用户自定义
-  const shouldUseAutomaticRuntime = semver.gte(opts.api.appData.react.version, '17.0.0');
+  const shouldUseAutomaticRuntime = semver.gte(
+    opts.api.appData.react.version,
+    '17.0.0',
+  );
   const babelPresetOpts = await opts.api.applyPlugins({
     key: 'modifyBabelPresetOpts',
     initialValue: {
@@ -14,7 +17,7 @@ export async function getBabelOpts(opts: { api: IApi }) {
         ...(shouldUseAutomaticRuntime ? {} : { importSource: undefined }),
       },
       presetTypeScript: {},
-      pluginTransformRuntime: {},
+      pluginTransformRuntime: opts.api.config.transformRuntime || {},
       pluginLockCoreJS: {},
       pluginDynamicImportNode: false,
       pluginAutoCSSModules: opts.api.config.autoCSSModules,
