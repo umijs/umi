@@ -5,7 +5,7 @@ import https from 'https';
 import { join } from 'path';
 import { HttpsServerOptions } from './types';
 
-import type { createServer } from 'spdy';
+import type { createServer as CreateServer } from 'spdy';
 
 const defaultHttpsHosts: HttpsServerOptions['hosts'] = [
   'localhost',
@@ -103,7 +103,7 @@ export async function createHttpsServer(
   const { key, cert } = await resolveHttpsConfig(httpsConfig);
 
   // Create server
-  let createServer: typeof createServer;
+  let createServer: typeof CreateServer;
   if (httpsConfig.http2 === false) {
     createServer = https.createServer;
   } else {
