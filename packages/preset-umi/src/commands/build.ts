@@ -111,6 +111,10 @@ umi build --clean
           ...api.config,
         } as IServicePluginAPI['config'],
         cwd: api.cwd,
+        rootDir:
+          api.config.utoopack && api.config.rootDir
+            ? join(api.cwd, api.config.rootDir)
+            : undefined,
         entry,
         ...(api.config.vite
           ? { modifyViteConfig }

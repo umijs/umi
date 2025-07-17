@@ -13,6 +13,7 @@
 /examples/libs/monorepo/foo/.mfsu
 /examples/libs/monorepo/foo/.umi
 /examples/*/dist
+/examples/*/.turbopack
 /examples/*/.env.local
 /examples/*/node_modules
 /packages/*/node_modules

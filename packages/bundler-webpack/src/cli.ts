@@ -17,7 +17,7 @@ const entry = tryPaths([
   join(cwd, 'index.ts'),
 ]);
 
-let config = {};
+let config = {} as Record<string, any>;
 const configFile = resolve(cwd, args.config || 'config.ts');
 register.register({
   implementor: esbuild,
@@ -37,6 +37,7 @@ if (command === 'build') {
       await build({
         config,
         cwd,
+        rootDir: join(cwd, config.rootDir),
         entry: {
           [getEntryKey(entry)]: entry,
         },
@@ -53,6 +54,7 @@ if (command === 'build') {
       await dev({
         config,
         cwd,
+        rootDir: join(cwd, config.rootDir),
         port: process.env.PORT as number | undefined,
         entry: {
           [getEntryKey(entry)]: entry,

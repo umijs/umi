@@ -339,5 +339,9 @@ export default defineConfig({
     jsStrategy: 'granularChunks',
   },
   // ui: {},
-  mako: {},
+  // mako: {},
+  rootDir: '../../',
+  utoopack: {},
+  // FIXME
+  polyfill: false,
 });
