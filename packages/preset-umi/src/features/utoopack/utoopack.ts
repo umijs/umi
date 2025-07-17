@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { IApi } from '../../types';
+import { IApi, webpack } from '../../types';
 import {
   EntryAssets,
   extractEntryAssets,
@@ -35,11 +35,12 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.onBuildComplete(({ stats }) => {
+  api.onBuildComplete(({ stats }: { stats: webpack.StatsCompilation }) => {
     const entryPointFiles = new Set<string>();
 
-    for (const chunk of stats.entrypoints['umi']?.chunks || []) {
-      const files = stats.chunks.find((c: any) => c.id === chunk).files;
+    for (const chunk of stats.entrypoints?.['umi']?.chunks || []) {
+      const files =
+        (stats?.chunks || []).find((c) => c?.id === chunk)?.files || [];
       for (const file of files) {
         entryPointFiles.add(file);
       }

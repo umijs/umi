@@ -1,6 +1,7 @@
+import { Env } from '@umijs/core';
 import { importLazy, lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
-import { basename, dirname, join, relative } from 'path';
+import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { getMarkupArgs } from '../../commands/dev/getMarkupArgs';
 import { TEMPLATES_DIR } from '../../constants';
@@ -44,16 +45,12 @@ export default (api: IApi) => {
     // tsconfig.json
     const frameworkName = api.service.frameworkName;
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
-    const umiTempDir = `${srcPrefix}.${frameworkName}`;
+    const umiTempDir = `.${frameworkName}${
+      api.env === Env.development ? `` : `-${api.env}`
+    }`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
     const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
     const isTslibInstalled = !!api.appData.typescript.tslibVersion;
-
-    // https://github.com/umijs/umi/issues/12545
-    const tsconfigFilePath = join(api.paths.absTmpPath, TSCONFIG_FILE_NAME);
-    const relativeUmiDirPath = winPath(
-      relative(dirname(tsconfigFilePath), umiDir),
-    );
 
     // x 1、basic config
     // x 2、alias
@@ -88,10 +85,12 @@ export default (api: IApi) => {
 
         paths: {
           '@/*': [`${srcPrefix}*`],
-          '@@/*': [`${umiTempDir}/*`],
-          [`${api.appData.umi.importSource}`]: [relativeUmiDirPath],
+          '@@/*': [`${srcPrefix}${umiTempDir}/*`],
+          [`${api.appData.umi.importSource}`]: [
+            `${srcPrefix}${umiTempDir}/exports.ts`,
+          ],
           [`${api.appData.umi.importSource}/typings`]: [
-            `${umiTempDir}/typings`,
+            `${srcPrefix}${umiTempDir}/typings`,
           ],
           ...(api.config.vite
             ? {
@@ -119,6 +118,12 @@ export default (api: IApi) => {
     api.writeTmpFile({
       noPluginDir: true,
       path: TSCONFIG_FILE_NAME,
+      content: JSON.stringify(umiTsConfig, null, 2),
+    });
+
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: `../.umi/${TSCONFIG_FILE_NAME}`,
       content: JSON.stringify(umiTsConfig, null, 2),
     });
 
@@ -765,7 +770,7 @@ if (process.env.NODE_ENV === 'development') {
         );
         if (existsSync(runtimeConfigFile)) {
           const noSuffixRuntimeConfigFile = runtimeConfigFile.replace(
-            /\.ts$/,
+            /\.d\.ts$/,
             '',
           );
           beforeImport.push(
