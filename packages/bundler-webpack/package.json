@@ -38,7 +38,7 @@
     "@umijs/mfsu": "workspace:*",
     "@umijs/react-refresh-webpack-plugin": "0.5.11",
     "@umijs/utils": "workspace:*",
-    "@utoo/pack": "0.0.1-alpha.28",
+    "@utoo/pack": "0.0.1-alpha.30",
     "cors": "^2.8.5",
     "css-loader": "6.7.1",
     "es5-imcompatible-versions": "^0.1.78",
