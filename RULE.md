@@ -13,4 +13,11 @@ export default (api: IApi) => {
 };
 ```
 
-2. Add to `packages/preset-umi/src/index.ts` to the `features` part.
+2. Add missing dependencies to `packages/preset-umi/package.json`
+
+3. Add to `packages/preset-umi/src/index.ts` to the `features` part.
+
+## How to add dependencies?
+
+1. Add depdencies packages, e.g. `packages/preset-umi/package.json`
+2. Run `pnpm install` to install the dependencies.
