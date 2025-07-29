@@ -1378,6 +1378,30 @@ Will generate the following HTML:
 <link rel="stylesheet" href="https://a.com/b.css" />
 ```
 
+## stagewise
+
+- Type: `Record<string, any>`
+- Default: `undefined`
+
+Configure the Stagewise plugin. Stagewise is a development debugging tool that only takes effect in development mode.
+
+Example:
+
+```ts
+// .umirc.ts
+export default {
+  stagewise: {
+    // Stagewise toolbar configuration
+    theme: 'dark',
+    position: 'bottom-right',
+  },
+};
+```
+
+For more configuration options, see [Stagewise Configuration](https://kmi.corp.kuaishou.com/plugins/stagewise).
+
+Note: This feature needs to be enabled through configuration.
+
 ## srcTranspiler
 
 - Type: `string` optional values: `babel`, `swc`, `esbuild`

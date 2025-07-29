@@ -1415,6 +1415,30 @@ styles: [`body { color: red; }`, `https://a.com/b.css`],
 <link rel="stylesheet" href="https://a.com/b.css" />
 ```
 
+## stagewise
+
+- 类型：`Record<string, any>`
+- 默认值：`undefined`
+
+配置 Stagewise 插件。Stagewise 是一个开发调试工具，仅在开发模式下生效。
+
+示例：
+
+```ts
+// .umirc.ts
+export default {
+  stagewise: {
+    // Stagewise 工具栏配置
+    theme: 'dark',
+    position: 'bottom-right',
+  },
+};
+```
+
+更多配置选项详见 [Stagewise 配置文档](https://kmi.corp.kuaishou.com/plugins/stagewise)。
+
+注意：此功能需要通过配置启用。
+
 ## srcTranspiler
 
 - 类型：`string` 可选的值：`babel`, `swc`, `esbuild`

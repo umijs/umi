@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@iconify/utils": "2.1.1",
+    "@stagewise/toolbar": "0.6.2",
     "@svgr/core": "6.5.1",
     "@umijs/ast": "workspace:*",
     "@umijs/babel-preset-umi": "workspace:*",
