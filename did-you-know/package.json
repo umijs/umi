@@ -195,6 +195,22 @@
       "framework": [
         "@alipay/bigfish"
       ]
+    },
+    {
+      "text": "🚀 NeoCoder CLI 发布啦！让 AI 给你的编码提提速。",
+      "url": "https://yuque.antfin.com/fe-engineering3/neocoder-cli/cheatsheet",
+      "majorVersion": 4,
+      "framework": [
+        "@alipay/bigfish"
+      ]
+    },
+    {
+      "text": "🚀 NeoCoder CLI 正式发布！我们把 AI 直接塞进了你的命令行。代码生成、Bug 修复、代码解释... 一切，只需 neo 一下。",
+      "url": "https://yuque.antfin.com/fe-engineering3/neocoder-cli/cheatsheet",
+      "majorVersion": 4,
+      "framework": [
+        "@alipay/bigfish"
+      ]
     }
   ]
 }
