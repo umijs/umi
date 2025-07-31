@@ -121,7 +121,9 @@ export function Html({
   if (__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED?.pureHtml) {
     return (
       <html>
-        <head></head>
+        <head>
+          <HydrateMetadata htmlPageOpts={htmlPageOpts} />
+        </head>
         <body>
           <EnableJsScript />
           <div id={mountElementId}>{children}</div>
