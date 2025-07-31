@@ -1,4 +1,4 @@
-import { chalk } from '@umijs/utils';
+import { chalk, winPath } from '@umijs/utils';
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
@@ -37,9 +37,8 @@ export default (api: IApi) => {
       if (hasErrors) {
         const errorStats = args.stats.toString();
         const errorFilePath = path.join(api.paths.absTmpPath, 'devError.txt');
-        const relativeErrorFilePath = path.relative(
-          api.paths.cwd,
-          errorFilePath,
+        const relativeErrorFilePath = winPath(
+          path.relative(api.paths.cwd, errorFilePath),
         );
         const prefix = aiCommandExists
           ? ''
