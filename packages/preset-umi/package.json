@@ -36,7 +36,7 @@
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",
-    "@umijs/did-you-know": "workspace:*",
+    "@umijs/did-you-know": "^1.0.4",
     "@umijs/es-module-parser": "0.0.7",
     "@umijs/history": "5.3.1",
     "@umijs/mfsu": "workspace:*",
