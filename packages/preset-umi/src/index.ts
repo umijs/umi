@@ -10,6 +10,7 @@ export default () => {
       process.env.DID_YOU_KNOW !== 'none' &&
         require.resolve('@umijs/did-you-know/dist/plugin'),
       require.resolve('./features/404/404'),
+      require.resolve('./features/aiDev/aiDev'),
       require.resolve('./features/appData/appData'),
       require.resolve('./features/appData/umiInfo'),
       require.resolve('./features/check/check'),
