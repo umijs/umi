@@ -6,7 +6,9 @@ import { IApi } from '../../types';
 
 function checkBinExists(binName: string): boolean {
   try {
-    execSync(`which ${binName}`, { stdio: 'ignore' });
+    const command =
+      process.platform === 'win32' ? `where ${binName}` : `which ${binName}`;
+    execSync(command, { stdio: 'ignore' });
     return true;
   } catch {
     return false;
