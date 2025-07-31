@@ -17,7 +17,7 @@
     "build": "father build",
     "dev": "father dev",
     "doctor": "father doctor",
-    "release": "father doctor && esno ../scripts/release.ts --pkg did-you-know",
+    "release": "father doctor && tsx ../scripts/release.ts --pkg did-you-know",
     "test": "jest"
   },
   "devDependencies": {
