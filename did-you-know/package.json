@@ -1,6 +1,6 @@
 {
   "name": "@umijs/did-you-know",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/umijs/umi/tree/master/did-you-know#readme",
@@ -17,7 +17,7 @@
     "build": "father build",
     "dev": "father dev",
     "doctor": "father doctor",
-    "release": "father doctor && tsx ../scripts/release.ts --pkg did-you-know",
+    "release": "father doctor && npm publish && git add . && git commit -m 'chore(did-you-know): release' && git push",
     "test": "jest"
   },
   "devDependencies": {
