@@ -177,15 +177,15 @@ $ SPEED_MEASURE=JSON umi dev
 
 When `UMI_ENV` is specified, it will additionally load the configuration file with the specified value, with priority as:
 
- - `config.ts`
+ - `.umirc.ts`
 
- - `config.${UMI_ENV}.ts`
+ - `.umirc.${UMI_ENV}.ts`
 
- - `config.${dev | prod | test}.ts`
+ - `.umirc.${dev | prod | test}.ts`
 
- - `config.${dev | prod | test}.${UMI_ENV}.ts`
+ - `.umirc.${dev | prod | test}.${UMI_ENV}.ts`
 
- - `config.local.ts`
+ - `.umirc.local.ts`
 
 If `UMI_ENV` is not specified, only the configuration file corresponding to the current environment will be loaded, the more specific down the list, the higher the priority, higher priority configurations can be moved down.
 
