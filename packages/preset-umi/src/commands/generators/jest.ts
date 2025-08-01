@@ -60,10 +60,7 @@ export default (api: IApi) => {
           }
         : basicDeps;
       h.addDevDeps(packageToInstall);
-      h.addScript(
-        'test',
-        'cross-env TS_NODE_TRANSPILE_ONLY=yes jest --passWithNoTests',
-      );
+      h.addScript('test', 'cross-env jest --passWithNoTests');
 
       const setupImports = res.willUseTLR
         ? [
