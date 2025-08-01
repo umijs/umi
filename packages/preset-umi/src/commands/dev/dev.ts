@@ -387,7 +387,10 @@ PORT=8888 umi dev
         },
         pkg: api.pkg,
         cwd: api.cwd,
-        rootDir: process.cwd(),
+        rootDir:
+          api.config.utoopack && api.config.rootDir
+            ? join(api.cwd, api.config.rootDir || '.')
+            : process.cwd(),
         entry,
         port: api.appData.port,
         host: api.appData.host,

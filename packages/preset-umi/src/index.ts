@@ -60,6 +60,7 @@ export default () => {
       require.resolve('./features/swc/swc'),
       require.resolve('./features/ui/ui'),
       require.resolve('./features/mako/mako'),
+      require.resolve('./features/utoopack/utoopack'),
       require.resolve('./features/hmrGuardian/hmrGuardian'),
       require.resolve('./features/routePreloadOnLoad/routePreloadOnLoad'),
       require.resolve('./features/forget/forget'),

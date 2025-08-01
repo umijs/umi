@@ -11,7 +11,7 @@ import {
 export default (api: IApi) => {
   api.describe({
     key: 'preset-umi:webpack',
-    enableBy: () => api.env === 'production',
+    enableBy: () => api.env === 'production' && !api.config.utoopack,
   });
 
   // html 处理逻辑

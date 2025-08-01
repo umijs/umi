@@ -160,6 +160,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
       zod.union([zod.record(zod.string(), zod.any()), zod.array(zod.any())]),
     publicPath: ({ zod }) => zod.string(),
     purgeCSS: ({ zod }) => zod.record(zod.string(), zod.any()),
+    rootDir: ({ zod }) => zod.string(),
     runtimePublicPath: ({ zod }) => zod.object({}),
     sassLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
     srcTranspiler: ({ zod }) =>

@@ -27,4 +27,6 @@ export default {
       },
     },
   },
+  utoopack: {},
+  rootDir: '../../',
 };

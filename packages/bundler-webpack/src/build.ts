@@ -1,8 +1,9 @@
-import { chalk, importLazy, rimraf } from '@umijs/utils';
+import { chalk, importLazy, lodash, rimraf } from '@umijs/utils';
 import { join, resolve } from 'path';
 import webpack from '../compiled/webpack';
 import type { IOpts as IConfigOpts } from './config/config';
 import { Env, IConfig } from './types';
+import { fakedWebpackFromUtoo } from './utoopack';
 
 const configModule: typeof import('./config/config') = importLazy(
   require.resolve('./config/config'),
@@ -65,7 +66,17 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
       rimraf.sync(webpackConfig.output!.path!);
     }
 
-    const compiler = webpack(webpackConfig);
+    const compiler = opts.config.utoopack
+      ? (fakedWebpackFromUtoo(
+          {
+            // FIXME:omit the module.rules of webpack temprely
+            ...(lodash.omit(webpackConfig, ['module', 'target']) as any),
+            compatMode: true,
+          },
+          opts.cwd,
+          opts.rootDir,
+        ) as any as webpack.Compiler)
+      : webpack(webpackConfig);
     let closeWatching: webpack.Watching['close'];
     const handler: Parameters<typeof compiler.run>[0] = async (err, stats) => {
       // generate valid error from normal error and stats error
