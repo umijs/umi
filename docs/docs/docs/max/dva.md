@@ -16,7 +16,7 @@ React 的组件只是通过 jsx 以及样式按照 state 构建最终的 UI，�
 
 ## Umi 如何管理状态
 
-如下图所示，Umi 内置了 [Dva](https://dvajs.com) 提供了一套状态管理方案：
+如下图所示，Umi 内置了 Dva 提供了一套状态管理方案：
 
 ![undefined](https://gw.alipayobjects.com/zos/skylark/48f9ff5f-ab11-4896-9fb6-65cdd83340de/2018/png/dcb7073b-fc0c-4e2c-aa39-93ac249d715c.png)
 
@@ -335,7 +335,3 @@ const todos = yield select(state => state.todos);
 dva 的底层是基于 redux，所以你可以安装 redux 的[开发者工具](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=zh-CN)用来查看 model 中的数据和变化的记录。
 
 ![reduxdevtool](https://lh3.googleusercontent.com/wfhSnnYEQc3TCXbRTpTloa-XZesgDt0xAogzGoLF1BUCU04aYhdwAjueJYTtDxfRiqjUfC539g=w640-h400-e365)
-
-## 参考文章
-
-- [dva 官网](https://dvajs.com/)
