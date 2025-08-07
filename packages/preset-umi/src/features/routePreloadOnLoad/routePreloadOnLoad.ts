@@ -299,7 +299,8 @@ export default (api: IApi) => {
             .value() as any,
         };
       }
-      if (api.name === 'build' && routeChunkFilesMap && !api.config.tern) {
+      const noTernPlugin = !api.isPluginEnable('tern') || !api.config.tern;
+      if (api.name === 'build' && routeChunkFilesMap && noTernPlugin) {
         const content = readFileSync(
           join(TEMPLATES_DIR, 'routePreloadOnLoad/preloadRouteFilesScp.js'),
           'utf-8',
