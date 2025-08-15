@@ -11,6 +11,9 @@ import { createResolver } from '../../libs/scan';
 import type { IApi, IRoute } from '../../types';
 import { PRELOAD_ROUTE_HELPER, PRELOAD_ROUTE_MAP_SCP_TYPE } from './utils';
 
+// Import terser for code minification
+const { minify } = require('@umijs/bundler-webpack/compiled/terser');
+
 export interface IRouteChunkFilesMap {
   /**
    * script attr prefix (package.json name)
@@ -300,7 +303,7 @@ export default (api: IApi) => {
         };
       }
       if (api.name === 'build' && routeChunkFilesMap && !api.config.tern) {
-        const content = readFileSync(
+        let content = readFileSync(
           join(TEMPLATES_DIR, 'routePreloadOnLoad/preloadRouteFilesScp.js'),
           'utf-8',
         )
@@ -316,6 +319,29 @@ export default (api: IApi) => {
               api.config.runtimePublicPath ? 'window.publicPath||' : ''
             }"${api.config.publicPath}"`,
           );
+
+        // Minify the content in production mode
+        if (api.env === 'production') {
+          try {
+            const minified = await minify(content, {
+              compress: {
+                drop_console: false, // Keep console logs if any
+                drop_debugger: true,
+              },
+              mangle: true,
+              format: {
+                comments: false, // Remove comments
+              },
+            });
+            content = minified.code || content;
+          } catch (err) {
+            logger.warn(
+              `Failed to minify ${PRELOAD_ROUTE_HELPER}.js, using unminified version.`,
+            );
+            logger.warn(err);
+          }
+        }
+
         if (api.config.hash) {
           preloadJSFileExt = `.${createHash('md5')
             .update(content)
