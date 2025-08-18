@@ -12,7 +12,7 @@ import type { IApi, IRoute } from '../../types';
 import { PRELOAD_ROUTE_HELPER, PRELOAD_ROUTE_MAP_SCP_TYPE } from './utils';
 
 // Import terser for code minification
-const { minify } = require('@umijs/bundler-webpack/compiled/terser');
+import { minify } from '@umijs/bundler-webpack/compiled/terser';
 
 export interface IRouteChunkFilesMap {
   /**
