@@ -1,12 +1,17 @@
+import assert from 'assert';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi } from 'umi';
-import { crossSpawn, winPath } from 'umi/plugin-utils';
+import { crossSpawn, semver, winPath } from 'umi/plugin-utils';
+import { resolveProjectDep } from './utils/resolveProjectDep';
 
 const CHECK_INTERVAL = 300;
 const CHECK_TIMEOUT = process.env.CHECK_TIMEOUT
   ? parseInt(process.env.CHECK_TIMEOUT, 10)
   : 5;
+
+const TW_NAME = 'tailwindcss';
+const TW_CLI_NAME = '@tailwindcss/cli';
 
 export default (api: IApi) => {
   api.describe({
@@ -25,7 +30,7 @@ export default (api: IApi) => {
   api.onBeforeCompiler(() => {
     const inputPath = join(api.cwd, 'tailwind.css');
     const generatedPath = join(api.paths.absTmpPath, outputPath);
-    const binPath = getTailwindBinPath({ cwd: api.cwd });
+    const binPath = getTailwindBinPath(api);
     const configPath = join(api.cwd, 'tailwind.config.js');
 
     if (process.env.IS_UMI_BUILD_WORKER) {
@@ -88,10 +93,50 @@ export default (api: IApi) => {
   });
 };
 
-function getTailwindBinPath(opts: { cwd: string }) {
-  const pkgPath = require.resolve('tailwindcss/package.json', {
-    paths: [opts.cwd],
+// v3: https://v3.tailwindcss.com/docs/installation
+function detectLegacyTailwindPath(api: IApi) {
+  const localPath = resolveProjectDep({
+    pkg: api.pkg,
+    cwd: api.cwd,
+    dep: TW_NAME,
   });
-  const tailwindPath = require(pkgPath).bin['tailwind'];
-  return join(dirname(pkgPath), tailwindPath);
+
+  return localPath
+    ? winPath(localPath)
+    : dirname(require.resolve(`${TW_NAME}/package.json`));
+}
+
+// v4: https://tailwindcss.com/docs/upgrade-guide#using-tailwind-cli
+function detectTailwindCLIPath(api: IApi) {
+  const localPath = resolveProjectDep({
+    pkg: api.pkg,
+    cwd: api.cwd,
+    dep: TW_CLI_NAME,
+  });
+
+  return localPath
+    ? winPath(localPath)
+    : dirname(require.resolve(`${TW_CLI_NAME}/package.json`));
+}
+
+function getTailwindBinPath(api: IApi) {
+  const twPath = detectLegacyTailwindPath(api);
+  const twPkgPath = join(twPath, 'package.json');
+  const twPkg = require(twPkgPath);
+  const version = twPkg.version;
+
+  assert(
+    version && semver.valid(version),
+    `tailwindcss version not found, please install tailwindcss first`,
+  );
+
+  if (semver.major(version) === 3) {
+    return join(twPath, twPkg.bin.tailwind);
+  }
+
+  if (semver.major(version) === 4) {
+    const cliPath = detectTailwindCLIPath(api);
+    const cliPkg = require(join(cliPath, 'package.json'));
+    return join(cliPath, cliPkg.bin.tailwindcss);
+  }
 }

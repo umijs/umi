@@ -44,7 +44,8 @@ export default function HomePage() {
           with
           <a
             className="mx-2 text-cyan-500"
-            href="https://tailwindcss.com/"
+            // href="https://tailwindcss.com/"
+            href="https://v3.tailwindcss.com/"
             target="_blank"
             rel="noreferrer"
           >
@@ -56,12 +57,6 @@ export default function HomePage() {
           <p className="text-slate-900 font-extrabold text-4xl mb-4">
             Examples
           </p>
-
-          <div className="flex flex-row my-16">
-            <p className="text-slate-900 font-bold text-2xl w-1/3">V4</p>
-            <div className="size-24 rounded-full bg-conic/[in_hsl_longer_hue] from-red-600 to-red-600"></div>
-            <div className="size-24 rounded-full bg-radial-[at_25%_25%] from-white to-zinc-900 to-75%"></div>
-          </div>
 
           <div className="flex flex-row my-16">
             <p className="text-slate-900 font-bold text-2xl w-1/3">Text Size</p>
