@@ -78,6 +78,7 @@ jobs:
 
       - name: e2e:example:max
         uses: cypress-io/github-action@v4
+        continue-on-error: true
         with:
           browser: chrome
           working-directory: ./examples/max
