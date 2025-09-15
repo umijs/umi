@@ -15,6 +15,7 @@
 /examples/*/dist
 /examples/*/.env.local
 /examples/*/node_modules
+/examples/*/.turbopack
 /packages/*/node_modules
 /packages/*/dist
 /packages/*/tsconfig.tsbuildinfo

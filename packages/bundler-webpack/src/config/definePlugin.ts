@@ -53,10 +53,6 @@ export function resolveDefine(opts: IOpts) {
   // For example, <img src={process.env.PUBLIC_PATH + '/img/logo.png'} />.
   env.PUBLIC_PATH = userConfig.publicPath || '/';
 
-  for (const key in env) {
-    env[key] = JSON.stringify(env[key]);
-  }
-
   const define: Record<string, any> = {};
   if (userConfig.define) {
     for (const key in userConfig.define) {
@@ -64,8 +60,15 @@ export function resolveDefine(opts: IOpts) {
     }
   }
 
+  const isUtoopack = Boolean(userConfig.utoopack);
+  if (!isUtoopack) {
+    for (const key in env) {
+      env[key] = JSON.stringify(env[key]);
+    }
+  }
+
   return {
-    'process.env': env,
+    'process.env': isUtoopack ? JSON.stringify(env) : env,
     'process.env.SSR_MANIFEST': 'process.env.SSR_MANIFEST',
     ...define,
   };

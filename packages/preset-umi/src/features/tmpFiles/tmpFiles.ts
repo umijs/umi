@@ -749,8 +749,8 @@ if (process.env.NODE_ENV === 'development') {
         const file = winPath(join(api.paths.absTmpPath, plugin, 'types.d.ts'));
         if (existsSync(file)) {
           // 带 .ts 后缀的声明文件 会导致声明失效
-          const noSuffixFile = file.replace(/\.ts$/, '');
-          beforeExports.push(`export * from '${noSuffixFile}';`);
+          const noSuffixFile = file.replace(/\.d\.ts$/, '');
+          beforeExports.push(`export type * from '${noSuffixFile}';`);
         }
       }
       // plugins runtimeConfig.d.ts
@@ -765,7 +765,7 @@ if (process.env.NODE_ENV === 'development') {
         );
         if (existsSync(runtimeConfigFile)) {
           const noSuffixRuntimeConfigFile = runtimeConfigFile.replace(
-            /\.ts$/,
+            /\.d\.ts$/,
             '',
           );
           beforeImport.push(

@@ -26,6 +26,11 @@ export default (api: IApi) => {
         `forget is not compatible with mako, please disable mako first.`,
       );
     }
+    if (api.config.utoopack) {
+      throw new Error(
+        `forget is not compatible with utoopack, please disable utoopack first.`,
+      );
+    }
   });
 
   api.onCheck(() => {

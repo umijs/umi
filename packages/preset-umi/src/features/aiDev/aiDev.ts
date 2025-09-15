@@ -21,8 +21,8 @@ export default (api: IApi) => {
   });
 
   api.onDevCompileDone((args) => {
-    // mako don't support fetch error stats
-    if (api.config.mako) {
+    // mako and utoopack don't support fetch error stats
+    if (api.config.mako || api.config.utoopack) {
       return;
     }
     if (!process.env.UMI_AI_COMMAND || !process.env.UMI_AI_PACKAGE) return;

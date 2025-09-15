@@ -21,7 +21,7 @@ export default (api: IApi) => {
   // dev:  displayName
   // prod: minify
   api.modifyConfig((memo) => {
-    if (api.userConfig.mako || process.env.OKAM) {
+    if (api.userConfig.mako || process.env.OKAM || api.userConfig.utoopack) {
       return memo;
     }
 

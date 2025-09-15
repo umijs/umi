@@ -33,6 +33,7 @@
     "@umijs/bundler-esbuild": "workspace:*",
     "@umijs/bundler-mako": "0.11.10",
     "@umijs/bundler-utils": "workspace:*",
+    "@umijs/bundler-utoopack": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",
