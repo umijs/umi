@@ -5,6 +5,40 @@ import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
 import type { IOpts } from './types';
 
+/**
+ * Convert webpack DefinePlugin's process.env format to utoopack format
+ * Webpack format: { 'process.env': { NODE_ENV: '"development"', API_URL: '"https://api.example.com"' } }
+ * Utoopack format: { 'process.env': '{"NODE_ENV":"development","API_URL":"https://api.example.com"}' }
+ */
+function convertProcessEnvForUtoopack(webpackConfig: any): Record<string, any> {
+  let processEnvForUtoopack: Record<string, any> = {};
+
+  if (webpackConfig.plugins) {
+    const definePlugin = webpackConfig.plugins.find(
+      (plugin: any) => plugin.constructor.name === 'DefinePlugin',
+    ) as any;
+
+    if (definePlugin?.definitions?.['process.env']) {
+      // Convert webpack's individual stringified env values back to objects
+      for (const [key, value] of Object.entries(
+        definePlugin.definitions['process.env'],
+      )) {
+        if (
+          typeof value === 'string' &&
+          value.startsWith('"') &&
+          value.endsWith('"')
+        ) {
+          processEnvForUtoopack[key] = JSON.parse(value);
+        } else {
+          processEnvForUtoopack[key] = value;
+        }
+      }
+    }
+  }
+
+  return processEnvForUtoopack;
+}
+
 function getModularizeImports(extraBabelPlugins: any[]) {
   return extraBabelPlugins
     .filter((p) => /^import$|babel-plugin-import/.test(p[0]))
@@ -49,11 +83,13 @@ function getModularizeImports(extraBabelPlugins: any[]) {
 
 function getNormalizedAlias(
   alias: Record<string, string>,
+  rootDir: string,
 ): Record<string, string> {
   const newAlias = { ...alias };
   if (newAlias.react) {
     newAlias['react/*'] = `${newAlias.react}/*`;
   }
+  newAlias[`${rootDir}/*`] = `${rootDir}/*`;
   return newAlias;
 }
 
@@ -95,6 +131,9 @@ export async function getProdUtooPackConfig(
 
   const modularizeImports = getModularizeImports(extraBabelPlugins);
 
+  // Convert webpack's process.env format to utoopack format
+  const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
+
   utooBundlerOpts = {
     ...utooBundlerOpts,
     config: {
@@ -114,6 +153,7 @@ export async function getProdUtooPackConfig(
         ...utooBundlerOpts.config.resolve,
         alias: getNormalizedAlias(
           utooBundlerOpts.config.resolve?.alias as Record<string, string>,
+          opts.rootDir,
         ),
       },
       styles: {
@@ -123,6 +163,11 @@ export async function getProdUtooPackConfig(
           ...opts.config.lessLoader,
         },
         sass: opts.config.sassLoader ?? undefined,
+      },
+      // Override process.env for utoopack format
+      define: {
+        ...utooBundlerOpts.config.define,
+        'process.env': JSON.stringify(processEnvForUtoopack),
       },
     },
   } as BundleOptions;
@@ -147,7 +192,7 @@ export type IDevOpts = {
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
   cwd: string;
-  rootDir?: string;
+  rootDir: string;
   config: Record<string, any>;
   entry: Record<string, string>;
   mfsuStrategy?: 'eager' | 'normal';
@@ -198,18 +243,23 @@ export async function getDevUtooPackConfig(
 
   const modularizeImports = getModularizeImports(extraBabelPlugins);
 
+  // Convert webpack's process.env format to utoopack format
+  const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
+
   utooBundlerOpts = {
     ...utooBundlerOpts,
     config: {
       ...utooBundlerOpts.config,
       output: {
         ...utooBundlerOpts.config.output,
-        clean: opts.clean,
+        // utoopack 的 dev 需要默认清空产物目录
+        clean: opts.clean === undefined ? true : opts.clean,
       },
       resolve: {
         ...utooBundlerOpts.config.resolve,
         alias: getNormalizedAlias(
           utooBundlerOpts.config.resolve?.alias as Record<string, string>,
+          opts.rootDir,
         ),
       },
       optimization: {
@@ -223,6 +273,11 @@ export async function getDevUtooPackConfig(
           ...opts.config.lessLoader,
         },
         sass: opts.config.sassLoader ?? undefined,
+      },
+      // Override process.env for utoopack format
+      define: {
+        ...utooBundlerOpts.config.define,
+        'process.env': JSON.stringify(processEnvForUtoopack),
       },
     },
     watch: {

@@ -42,25 +42,10 @@ export default (api: IApi) => {
       return memo;
     }
 
-    let rootDir: string;
-    try {
-      const { findRootDir } = require('@umijs/bundler-utoopack');
-      rootDir = memo.rootDir
-        ? join(args.paths.cwd, memo.rootDir).replace(/\/$/, '')
-        : findRootDir(args.paths.cwd).replace(/\/$/, '');
-    } catch (e) {
-      // Fallback to cwd if utoopack is not available
-      rootDir = memo.rootDir
-        ? join(args.paths.cwd, memo.rootDir).replace(/\/$/, '')
-        : args.paths.cwd.replace(/\/$/, '');
-    }
-
     memo.alias = {
       ...memo.alias,
-      // utoopack 的 alias 需要添加 `/*` 才能匹配到子路径，否则只能完全匹配
       '@/*': `${args.paths.absSrcPath}/*`,
       '@@/*': `${args.paths.absTmpPath}/*`,
-      [`${rootDir}/*`]: `${rootDir}/*`,
     };
 
     return {

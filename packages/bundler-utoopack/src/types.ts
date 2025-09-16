@@ -2,7 +2,7 @@ import type { IOpts as IConfigOpts } from '@umijs/bundler-webpack';
 
 export type IOpts = {
   cwd: string;
-  rootDir?: string;
+  rootDir: string;
   entry: Record<string, string>;
   config: Record<string, any>;
   onBuildComplete?: Function;

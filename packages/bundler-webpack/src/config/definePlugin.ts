@@ -60,15 +60,13 @@ export function resolveDefine(opts: IOpts) {
     }
   }
 
-  const isUtoopack = Boolean(userConfig.utoopack);
-  if (!isUtoopack) {
-    for (const key in env) {
-      env[key] = JSON.stringify(env[key]);
-    }
+  // JSON.stringify all env values for webpack DefinePlugin
+  for (const key in env) {
+    env[key] = JSON.stringify(env[key]);
   }
 
   return {
-    'process.env': isUtoopack ? JSON.stringify(env) : env,
+    'process.env': env,
     'process.env.SSR_MANIFEST': 'process.env.SSR_MANIFEST',
     ...define,
   };

@@ -15,15 +15,16 @@ import type { IOpts } from './types';
 export async function build(opts: IOpts) {
   // @ts-ignore
   const { cwd, onBuildComplete } = opts;
+  const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
+  const rootDir = findRootDir(cwd);
 
   // 添加一个 checkConfig 对于 utoopack 不支持的配置警告一下
-  const utooPackConfig = await getProdUtooPackConfig(opts);
+  const utooPackConfig = await getProdUtooPackConfig({
+    ...opts,
+    rootDir,
+  });
 
   // console.log('utooPackConfig: ', JSON.stringify(utooPackConfig, null, 2));
-
-  const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
-
-  const rootDir = findRootDir(cwd);
 
   try {
     await utooPackBuild(utooPackConfig, cwd, rootDir);
@@ -66,7 +67,14 @@ export async function dev(opts: IDevOpts) {
     throw new Error('opts should be supplied');
   }
 
-  const utooPackConfig = await getDevUtooPackConfig(opts);
+  const { findRootDir, serve: utooPackServe } = require('@utoo/pack');
+
+  const rootDir = findRootDir(cwd);
+
+  const utooPackConfig = await getDevUtooPackConfig({
+    ...opts,
+    rootDir,
+  });
 
   const app = express();
   const cors = require('cors');
@@ -194,10 +202,6 @@ export async function dev(opts: IDevOpts) {
     };
     return stats;
   };
-
-  const { serve: utooPackServe, findRootDir } = require('@utoo/pack');
-
-  const rootDir = findRootDir(cwd);
 
   try {
     await utooPackServe(utooPackConfig, cwd, rootDir, {
