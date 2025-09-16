@@ -1,8 +1,7 @@
 export default {
   plugins: ['@umijs/plugins/dist/antd'],
   antd: {
-    dark: true,
+    // dark: true,
     import: true,
   },
-  utoopack: {},
 };
