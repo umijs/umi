@@ -124,7 +124,6 @@ export default (api: IApi) => {
         .join('\n');
 
       // transform imports for all javascript-like files only vite mode enable
-      // const isUtoopack = api.appData.bundler === 'utoopack';
       if (api.appData.vite && isJsFile) {
         const transformIEAR = transformModule.default;
         content = transformIEAR({ content, path: absPath }, api);

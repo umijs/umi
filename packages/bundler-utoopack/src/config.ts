@@ -101,8 +101,7 @@ export async function getProdUtooPackConfig(
       ...utooBundlerOpts.config,
       output: {
         ...utooBundlerOpts.config.output,
-        // webpack config 没处理 clean 参数
-        clean: true,
+        clean: opts.clean,
       },
       optimization: {
         ...utooBundlerOpts.config.optimization,
@@ -157,6 +156,7 @@ export type IDevOpts = {
   startBuildWorker?: (deps: any[]) => Worker;
   onBeforeMiddleware?: Function;
   disableCopy?: boolean;
+  clean?: boolean;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export async function getDevUtooPackConfig(
@@ -204,7 +204,7 @@ export async function getDevUtooPackConfig(
       ...utooBundlerOpts.config,
       output: {
         ...utooBundlerOpts.config.output,
-        clean: true,
+        clean: opts.clean,
       },
       resolve: {
         ...utooBundlerOpts.config.resolve,

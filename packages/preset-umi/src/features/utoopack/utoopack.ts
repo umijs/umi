@@ -57,6 +57,7 @@ export default (api: IApi) => {
 
     memo.alias = {
       ...memo.alias,
+      // utoopack 的 alias 需要添加 `/*` 才能匹配到子路径，否则只能完全匹配
       '@/*': `${args.paths.absSrcPath}/*`,
       '@@/*': `${args.paths.absTmpPath}/*`,
       [`${rootDir}/*`]: `${rootDir}/*`,

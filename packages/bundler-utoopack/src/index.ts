@@ -35,12 +35,12 @@ export async function build(opts: IOpts) {
     throw err;
   }
 
-  const stats = JSON.parse(
-    fs.readFileSync(
-      path.join(utooPackConfig.config.output?.path!, 'stats.json'),
-      'utf-8',
-    ),
+  const statsPath = path.join(
+    utooPackConfig.config.output?.path || 'dist',
+    'stats.json',
   );
+
+  const stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
   stats.hasErrors = () => false;
   stats.toJson = () => stats;
   stats.toString = () => {};
@@ -73,7 +73,6 @@ export async function dev(opts: IDevOpts) {
   const proxy = require('express-http-proxy');
   const port = opts.port || 8000;
   const utooServePort = port + 1;
-  process.env.UTOO_PACK_VERBOSE = '1';
 
   // CORS support
   app.use(
@@ -173,12 +172,11 @@ export async function dev(opts: IDevOpts) {
   const createStatsObject = () => {
     let stats: any;
     try {
-      stats = JSON.parse(
-        fs.readFileSync(
-          path.join(utooPackConfig.config.output?.path!, 'stats.json'),
-          'utf-8',
-        ),
+      const statsPath = path.join(
+        utooPackConfig.config.output?.path || 'dist',
+        'stats.json',
       );
+      stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
     } catch (e) {
       throw new Error('Stats.json not found by utoopack dev');
     }
