@@ -5,5 +5,4 @@ export default {
     import: true,
   },
   utoopack: {},
-  // mako: {},
 };

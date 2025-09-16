@@ -1912,7 +1912,7 @@ importers:
   packages/bundler-utoopack:
     dependencies:
       '@umijs/bundler-utils':
-        specifier: 4.4.12
+        specifier: workspace:*
         version: link:../bundler-utils
       '@umijs/bundler-webpack':
         specifier: workspace:*

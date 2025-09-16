@@ -771,7 +771,7 @@ if (process.env.NODE_ENV === 'development') {
         );
         if (existsSync(runtimeConfigFile)) {
           const noSuffixRuntimeConfigFile = runtimeConfigFile.replace(
-            /\.d\.ts$/,
+            /\.ts$/,
             '',
           );
           beforeImport.push(

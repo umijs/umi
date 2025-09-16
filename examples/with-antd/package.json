@@ -2,7 +2,7 @@
   "name": "@example/with-antd",
   "private": true,
   "scripts": {
-    "build": "ANALYZE=1 umi build",
+    "build": "umi build",
     "dev": "umi dev",
     "setup": "umi setup",
     "start": "npm run dev"

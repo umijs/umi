@@ -36,17 +36,11 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.modifyConfig((memo, args) => {
+  api.modifyConfig((memo) => {
     // Only modify config if utoopack is explicitly enabled in userConfig
     if (!api.userConfig.utoopack) {
       return memo;
     }
-
-    memo.alias = {
-      ...memo.alias,
-      '@/*': `${args.paths.absSrcPath}/*`,
-      '@@/*': `${args.paths.absTmpPath}/*`,
-    };
 
     return {
       ...memo,
