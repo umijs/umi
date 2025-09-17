@@ -45,7 +45,7 @@ export default (api: IApi) => {
   });
 
   api.onStart(() => {
-    if (api.config?.mako) return;
+    if (api.config?.mako || api.config?.utoopack) return;
     // don't print ad in bigfish framework
     if (process.env.BIGFISH_INFO) return;
     // if (process.env.MAKO_AD === 'none') return;

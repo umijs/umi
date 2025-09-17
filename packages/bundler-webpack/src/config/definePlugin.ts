@@ -53,15 +53,16 @@ export function resolveDefine(opts: IOpts) {
   // For example, <img src={process.env.PUBLIC_PATH + '/img/logo.png'} />.
   env.PUBLIC_PATH = userConfig.publicPath || '/';
 
-  for (const key in env) {
-    env[key] = JSON.stringify(env[key]);
-  }
-
   const define: Record<string, any> = {};
   if (userConfig.define) {
     for (const key in userConfig.define) {
       define[key] = JSON.stringify(userConfig.define[key]);
     }
+  }
+
+  // JSON.stringify all env values for webpack DefinePlugin
+  for (const key in env) {
+    env[key] = JSON.stringify(env[key]);
   }
 
   return {

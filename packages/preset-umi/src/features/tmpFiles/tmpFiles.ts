@@ -748,9 +748,15 @@ if (process.env.NODE_ENV === 'development') {
       for (const plugin of allPlugins) {
         const file = winPath(join(api.paths.absTmpPath, plugin, 'types.d.ts'));
         if (existsSync(file)) {
-          // 带 .ts 后缀的声明文件 会导致声明失效
-          const noSuffixFile = file.replace(/\.ts$/, '');
-          beforeExports.push(`export * from '${noSuffixFile}';`);
+          // utoopack 类型导出需要添加 type 否则会 parse error
+          if (api.appData.bundler === 'utoopack') {
+            const noSuffixFile = file.replace(/\.d\.ts$/, '');
+            beforeExports.push(`export type * from '${noSuffixFile}';`);
+          } else {
+            // 带 .ts 后缀的声明文件 会导致声明失效
+            const noSuffixFile = file.replace(/\.ts$/, '');
+            beforeExports.push(`export * from '${noSuffixFile}';`);
+          }
         }
       }
       // plugins runtimeConfig.d.ts

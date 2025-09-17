@@ -90,7 +90,7 @@ export default (api: IApi) => {
   });
 
   api.onBuildComplete(async ({ err }) => {
-    if (api.config.vite || api.config.mako) return;
+    if (api.config.vite || api.config.mako || api.config.utoopack) return;
     if (err) return;
     const jsMinifier = api.config.jsMinifier || 'esbuild';
     if (jsMinifier !== 'esbuild') return;

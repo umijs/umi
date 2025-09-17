@@ -19,6 +19,12 @@ export default (api: IApi) => {
       return require(process.env.OKAM);
     }
 
+    if (bundler === 'utoopack') {
+      require('@umijs/bundler-webpack/dist/requireHook');
+      // @ts-ignore
+      return require(process.env.UTOOPACK);
+    }
+
     if (bundler === 'vite') {
       return bundlerVite;
     }

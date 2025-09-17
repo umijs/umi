@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-2022]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Setup Global Cypress-cache-folder in Windows
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         run: echo "CYPRESS_CACHE_FOLDER=${HOME}\.cache\Cypress"  >> $env:GITHUB_ENV
 
       # We use week in the turbo cache key to keep the cache from infinitely growing

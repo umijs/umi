@@ -73,6 +73,7 @@
     "@types/tunnel": "^0.0.3",
     "@umijs/bundler-esbuild": "workspace:*",
     "@umijs/bundler-utils": "workspace:*",
+    "@umijs/bundler-utoopack": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/lint": "workspace:*",

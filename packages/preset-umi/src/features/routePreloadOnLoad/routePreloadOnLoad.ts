@@ -99,7 +99,7 @@ async function getRouteChunkFilesMap(
 
     // pick js and css files
     const pickedFiles = pickPreloadFiles(chunk.files!);
-    const routeOrigins = chunk.origins!.filter((origin) =>
+    const routeOrigins = (chunk.origins || []).filter((origin) =>
       origin.moduleName?.endsWith(routeModuleName),
     );
 
