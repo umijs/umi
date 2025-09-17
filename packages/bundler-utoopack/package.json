@@ -14,7 +14,6 @@
   "dependencies": {
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
-    "@utoo/pack": "0.0.1-alpha.47",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^2.0.0",
     "cors": "^2.8.5",
@@ -22,7 +21,11 @@
     "express-http-proxy": "^2.1.1"
   },
   "devDependencies": {
+    "@utoo/pack": "0.0.1-alpha.47",
     "father": "4.1.5"
+  },
+  "peerDependencies": {
+    "@utoo/pack": "^0.0.1-alpha.47"
   },
   "publishConfig": {
     "access": "public"
