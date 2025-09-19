@@ -222,6 +222,12 @@ const defaultLangUConfigMap = {
     icon: '🇯🇵',
     title: '言語'
   },
+  'kk-KZ': {
+    lang: 'kk-KZ',
+    label: 'Қазақ',
+    icon: '🇰🇿',
+    title: 'тіл'
+  },
   'ku-IQ': {
     lang: 'ku-IQ',
     label: 'کوردی',
