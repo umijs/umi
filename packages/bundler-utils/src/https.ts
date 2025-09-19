@@ -3,8 +3,9 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { RequestListener } from 'http';
 import https from 'https';
 import { join } from 'path';
-import spdy from 'spdy';
 import { HttpsServerOptions } from './types';
+
+import type { createServer as CreateServer } from 'spdy';
 
 const defaultHttpsHosts: HttpsServerOptions['hosts'] = [
   'localhost',
@@ -102,9 +103,20 @@ export async function createHttpsServer(
   const { key, cert } = await resolveHttpsConfig(httpsConfig);
 
   // Create server
-  const createServer = (
-    httpsConfig.http2 === false ? https.createServer : spdy.createServer
-  ) as typeof spdy.createServer;
+  let createServer: typeof CreateServer;
+  if (httpsConfig.http2 === false) {
+    createServer = https.createServer;
+  } else {
+    try {
+      createServer = (await import('spdy')).createServer;
+    } catch (e) {
+      logger.error(
+        '[HTTPS] Error accrued when loading module spdy, maybe you should check your Node.js version, it requires Node.js < v24. See: https://github.com/spdy-http2/node-spdy/issues/397',
+      );
+      throw e;
+    }
+  }
+
   return createServer(
     {
       key: readFileSync(key, 'utf-8'),
