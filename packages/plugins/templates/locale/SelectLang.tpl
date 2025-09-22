@@ -224,7 +224,7 @@ const defaultLangUConfigMap = {
   },
   'kk-KZ': {
     lang: 'kk-KZ',
-    label: 'Қазақ',
+    label: 'Қазақша',
     icon: '🇰🇿',
     title: 'тіл'
   },
