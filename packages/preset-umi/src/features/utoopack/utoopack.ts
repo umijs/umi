@@ -57,10 +57,10 @@ export default (api: IApi) => {
       process.env.UTOOPACK || require.resolve('@umijs/bundler-utoopack');
     try {
       const pkg = require(join(
-        require.resolve(process.env.UTOOPACK),
+        require.resolve('@utoo/pack'),
         '../../package.json',
       ));
-      api.logger.info(`Using @utoo/pack@${pkg.dependencies['@utoo/pack']}`);
+      api.logger.info(`Using @utoo/pack@${pkg.version}`);
     } catch (e) {
       console.error(e);
     }
