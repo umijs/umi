@@ -1934,7 +1934,7 @@ importers:
         version: 2.1.1
     devDependencies:
       '@utoo/pack':
-        specifier: 0.0.1-alpha.48
+        specifier: ^0.0.1-alpha.48
         version: 0.0.1-alpha.48
       father:
         specifier: 4.1.5
