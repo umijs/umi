@@ -13,7 +13,6 @@ import {
 import type { IOpts } from './types';
 
 export async function build(opts: IOpts) {
-  // @ts-ignore
   const { cwd, onBuildComplete } = opts;
   const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
   const rootDir = findRootDir(cwd);
