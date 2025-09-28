@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.5.1",
+  "version": "4.5.1-canary.20250928.1",
   "description": "@umijs/plugin-docs",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/plugin-docs#readme",
   "bugs": "https://github.com/umijs/umi/issues",
