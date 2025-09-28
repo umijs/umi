@@ -136,40 +136,39 @@ export async function getProdUtooPackConfig(
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
-    config: {
-      ...utooBundlerOpts.config,
-      output: {
-        ...utooBundlerOpts.config.output,
-        clean: opts.clean,
-      },
-      optimization: {
-        ...utooBundlerOpts.config.optimization,
-        modularizeImports,
-        concatenateModules: true,
-        // minify: false,
-        // moduleIds: 'named',
-      },
-      resolve: {
-        ...utooBundlerOpts.config.resolve,
-        alias: getNormalizedAlias(
-          utooBundlerOpts.config.resolve?.alias as Record<string, string>,
-          opts.rootDir,
-        ),
-      },
-      styles: {
-        less: {
-          modifyVars: opts.config.theme,
-          javascriptEnabled: true,
-          ...opts.config.lessLoader,
+    config: lodash.merge(
+      utooBundlerOpts.config,
+      {
+        output: {
+          clean: opts.clean,
         },
-        sass: opts.config.sassLoader ?? undefined,
+        optimization: {
+          modularizeImports,
+          concatenateModules: true,
+          // minify: false,
+          // moduleIds: 'named',
+        },
+        resolve: {
+          alias: getNormalizedAlias(
+            utooBundlerOpts.config.resolve?.alias as Record<string, string>,
+            opts.rootDir,
+          ),
+        },
+        styles: {
+          less: {
+            modifyVars: opts.config.theme,
+            javascriptEnabled: true,
+            ...opts.config.lessLoader,
+          },
+          sass: opts.config.sassLoader ?? undefined,
+        },
+        // Override process.env for utoopack format
+        define: {
+          'process.env': JSON.stringify(processEnvForUtoopack),
+        },
       },
-      // Override process.env for utoopack format
-      define: {
-        ...utooBundlerOpts.config.define,
-        'process.env': JSON.stringify(processEnvForUtoopack),
-      },
-    },
+      opts.config.utoopack || {},
+    ),
   } as BundleOptions;
 
   return utooBundlerOpts;
@@ -248,38 +247,37 @@ export async function getDevUtooPackConfig(
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
-    config: {
-      ...utooBundlerOpts.config,
-      output: {
-        ...utooBundlerOpts.config.output,
-        // utoopack 的 dev 需要默认清空产物目录
-        clean: opts.clean === undefined ? true : opts.clean,
-      },
-      resolve: {
-        ...utooBundlerOpts.config.resolve,
-        alias: getNormalizedAlias(
-          utooBundlerOpts.config.resolve?.alias as Record<string, string>,
-          opts.rootDir,
-        ),
-      },
-      optimization: {
-        ...utooBundlerOpts.config.optimization,
-        modularizeImports,
-      },
-      styles: {
-        less: {
-          modifyVars: opts.config.theme,
-          javascriptEnabled: true,
-          ...opts.config.lessLoader,
+    config: lodash.merge(
+      utooBundlerOpts.config,
+      {
+        output: {
+          // utoopack 的 dev 需要默认清空产物目录
+          clean: opts.clean === undefined ? true : opts.clean,
         },
-        sass: opts.config.sassLoader ?? undefined,
+        resolve: {
+          alias: getNormalizedAlias(
+            utooBundlerOpts.config.resolve?.alias as Record<string, string>,
+            opts.rootDir,
+          ),
+        },
+        optimization: {
+          modularizeImports,
+        },
+        styles: {
+          less: {
+            modifyVars: opts.config.theme,
+            javascriptEnabled: true,
+            ...opts.config.lessLoader,
+          },
+          sass: opts.config.sassLoader ?? undefined,
+        },
+        // Override process.env for utoopack format
+        define: {
+          'process.env': JSON.stringify(processEnvForUtoopack),
+        },
       },
-      // Override process.env for utoopack format
-      define: {
-        ...utooBundlerOpts.config.define,
-        'process.env': JSON.stringify(processEnvForUtoopack),
-      },
-    },
+      opts.config.utoopack || {},
+    ),
     watch: {
       enable: true,
     },
