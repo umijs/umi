@@ -3,10 +3,14 @@ import React from 'react';
 
 function Notifier() {
   const [isEnglish, setIsEnglish] = React.useState(() =>
-    window.location.href.includes('en-US'),
+    typeof window !== 'undefined'
+      ? window.location.href.includes('en-US')
+      : false,
   );
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handleLocationChange = () => {
       setIsEnglish(window.location.href.includes('en-US'));
     };
