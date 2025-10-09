@@ -92,11 +92,9 @@ $ pnpm jest packages/plugin-docs/src/compiler.test.ts
 Umi's documentation is implemented by Umi@4 and the `@umijs/plugin-docs` plugin, essentially an Umi project. Execute the following commands in the root directory to start development:
 
 ```bash
-# Install Umi document dependencies
-$ pnpm doc:deps
 # Start Umi document development
 # Compilation takes longer on first launch, please be patient
-$ pnpm doc:dev
+$ pnpm docs:dev
 ```
 
 Open the specified port number to see real-time updates of documentation and results of the `@umijs/plugin-docs` plugin development.
@@ -145,7 +143,7 @@ $ pnpm format:plugin-docs
 Execute the following command in the root directory to build Umi documentation:
 
 ```bash
-$ pnpm doc:build
+$ pnpm docs:build
 ```
 
 ## Adding a New Package
