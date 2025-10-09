@@ -23,6 +23,7 @@
     "didyouknow:build": "pnpm --filter @umijs/did-you-know build",
     "didyouknow:dev": "pnpm --filter @umijs/did-you-know dev",
     "didyouknow:release": "pnpm --filter @umijs/did-you-know release",
+    "doc:build": "pnpm --filter @umijs/docs build",
     "docs:build": "pnpm --filter @umijs/docs build",
     "docs:dev": "pnpm --filter @umijs/docs dev",
     "format": "prettier --cache --write .",
