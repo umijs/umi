@@ -141,6 +141,8 @@ export async function getProdUtooPackConfig(
       {
         output: {
           clean: opts.clean,
+          // TODO: support runtime publicPath
+          publicPath: opts.config.publicPath,
         },
         optimization: {
           modularizeImports,
@@ -253,6 +255,8 @@ export async function getDevUtooPackConfig(
         output: {
           // utoopack 的 dev 需要默认清空产物目录
           clean: opts.clean === undefined ? true : opts.clean,
+          // TODO: support runtime publicPath
+          publicPath: opts.config.publicPath,
         },
         resolve: {
           alias: getNormalizedAlias(
