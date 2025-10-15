@@ -108,7 +108,7 @@ export async function createHttpsServer(
     createServer = https.createServer;
   } else {
     try {
-      createServer = (await import('spdy')).createServer;
+      createServer = (await import('spdy')).default.createServer;
     } catch (e) {
       logger.error(
         '[HTTPS] Error accrued when loading module spdy, maybe you should check your Node.js version, it requires Node.js < v24. See: https://github.com/spdy-http2/node-spdy/issues/397',
