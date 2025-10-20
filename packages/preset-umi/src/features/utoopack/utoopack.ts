@@ -14,7 +14,8 @@ export default (api: IApi) => {
         return zod.object({}).partial();
       },
     },
-    enableBy: () => Boolean(api.userConfig.utoopack),
+    enableBy: () =>
+      Boolean(api.userConfig.utoopack) || Boolean(process.env.FORCE_UTOOPACK),
   });
 
   api.onCheck(() => {
