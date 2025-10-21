@@ -44,18 +44,6 @@ export default (api: IApi) => {
     },
   });
 
-  api.onStart(() => {
-    if (api.config?.mako || api.config?.utoopack) return;
-    // don't print ad in bigfish framework
-    if (process.env.BIGFISH_INFO) return;
-    // if (process.env.MAKO_AD === 'none') return;
-    // console.info(
-    //   chalk.yellow.bold(
-    //     'Mako https://makojs.dev is a new fast Rust based bundler from us, which is heavily optimized for umi and much faster than webpack. Visit https://makojs.dev/docs/getting-started#bundle-with-umi for more details if you want to give it a try.',
-    //   ),
-    // );
-  });
-
   api.registerCommand({
     name: 'dev',
     description: 'dev server for development',
