@@ -22,11 +22,11 @@
     "express-http-proxy": "^2.1.1"
   },
   "devDependencies": {
-    "@utoo/pack": "^0.0.1-alpha.56",
+    "@utoo/pack": "^0.0.1-alpha.57",
     "father": "4.1.5"
   },
   "peerDependencies": {
-    "@utoo/pack": "^0.0.1-alpha.56"
+    "@utoo/pack": "^0.0.1-alpha.57"
   },
   "publishConfig": {
     "access": "public"
