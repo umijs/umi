@@ -147,8 +147,6 @@ export async function getProdUtooPackConfig(
         optimization: {
           modularizeImports,
           concatenateModules: true,
-          // minify: false,
-          // moduleIds: 'named',
         },
         resolve: {
           alias: getNormalizedAlias(
@@ -168,6 +166,7 @@ export async function getProdUtooPackConfig(
         define: {
           'process.env': JSON.stringify(processEnvForUtoopack),
         },
+        nodePolyfill: true,
       },
       opts.config.utoopack || {},
     ),
@@ -279,6 +278,7 @@ export async function getDevUtooPackConfig(
         define: {
           'process.env': JSON.stringify(processEnvForUtoopack),
         },
+        nodePolyfill: true,
       },
       opts.config.utoopack || {},
     ),
