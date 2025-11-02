@@ -86,8 +86,8 @@ function getNormalizedAlias(
   rootDir: string,
 ): Record<string, string> {
   const newAlias = { ...alias };
-  if (newAlias.react) {
-    newAlias['react/*'] = `${newAlias.react}/*`;
+  for (const key in alias) {
+    newAlias[`${key}/*`] = `${alias[key]}/*`;
   }
   newAlias[`${rootDir}/*`] = `${rootDir}/*`;
   return newAlias;
