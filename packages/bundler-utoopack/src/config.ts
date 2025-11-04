@@ -86,8 +86,12 @@ function getNormalizedAlias(
   rootDir: string,
 ): Record<string, string> {
   const newAlias = { ...alias };
-  if (newAlias.react) {
-    newAlias['react/*'] = `${newAlias.react}/*`;
+  // Add wildcard aliases for specific keys
+  const keysToExpand = ['react', 'react-dom', '@', '@@'];
+  for (const key of keysToExpand) {
+    if (newAlias[key]) {
+      newAlias[`${key}/*`] = `${newAlias[key]}/*`;
+    }
   }
   newAlias[`${rootDir}/*`] = `${rootDir}/*`;
   return newAlias;
