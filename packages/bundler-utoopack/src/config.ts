@@ -44,7 +44,13 @@ function getModularizeImports(extraBabelPlugins: any[]) {
     .filter((p) => /^import$|babel-plugin-import/.test(p[0]))
     .reduce(
       (acc, [_, v]) => {
-        const { libraryName, libraryDirectory, style, ...rest } = v;
+        const {
+          libraryName,
+          libraryDirectory,
+          style,
+          camel2DashComponentName,
+          ...rest
+        } = v;
 
         if (Object.keys(rest).length > 0) {
           throw new Error(
@@ -60,8 +66,13 @@ function getModularizeImports(extraBabelPlugins: any[]) {
           );
         }
 
+        let transformRule = '{{ kebabCase member }}';
+        if (camel2DashComponentName === false) {
+          transformRule = '{{ member }}';
+        }
+
         acc[libraryName as string] = {
-          transform: `${libraryName}/${libraryDirectory}/{{ kebabCase member }}`,
+          transform: `${libraryName}/${libraryDirectory}/${transformRule}`,
           preventFullImport: false,
           skipDefaultConversion: false,
           style: typeof style === 'boolean' ? 'style' : style,
