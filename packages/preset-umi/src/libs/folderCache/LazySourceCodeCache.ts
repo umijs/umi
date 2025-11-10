@@ -188,7 +188,8 @@ export class LazySourceCodeCache {
     for (const f of files) {
       let newFile = join(this.cachePath, relative(this.srcPath, f));
 
-      newFile = newFile.replace(new RegExp(`${extname(newFile)}$`), '.js');
+      const extRegexStr = extname(newFile).replace(/[.?]/g, '\\$&');
+      newFile = newFile.replace(new RegExp(`${extRegexStr}$`), '.js');
 
       loaded[f] = readFileSync(newFile, 'utf-8');
     }
