@@ -233,11 +233,15 @@ export interface IRuntimeConfig {
 const qiankun_noop = () => new Error('qiankun lifecycle is not available for server runtime!');
 const isServer = typeof window === 'undefined';
 export const bootstrap = isServer ? qiankun_noop: qiankun_genBootstrap(render);
-export const mount = isServer ? qiankun_noop : qiankun_genMount('${api.config.mountElementId}');
-export const unmount = isServer ? qiankun_noop : qiankun_genUnmount('${api.config.mountElementId}');
+export const mount = isServer ? qiankun_noop : qiankun_genMount('${
+        api.config.mountElementId
+      }');
+export const unmount = isServer ? qiankun_noop : qiankun_genUnmount('${
+        api.config.mountElementId
+      }');
 export const update = isServer ? qiankun_noop : qiankun_genUpdate();
 
-if (!isServer && ${api.userConfig.utoopack}) {
+if (!isServer && ${Boolean(api.userConfig.utoopack)}) {
   window['${appName}'] = {
     bootstrap,
     mount,
