@@ -182,7 +182,8 @@ export interface IRuntimeConfig {
 
   api.chainWebpack((config, { ssr }) => {
     // ssr 场景下，通过 cjs 的方式来使用模块，跳过 umd方式的构建
-    if (ssr) {
+    // utoopack 场景下，通过 window 的方式来挂载 qiankun 运行时方法
+    if (ssr || api.userConfig.utoopack) {
       return;
     }
     assert(api.pkg.name, 'You should have name in package.json.');
@@ -225,20 +226,33 @@ export interface IRuntimeConfig {
     ];
   });
 
-  api.addEntryCode(() => [
-    `
+  api.addEntryCode(() => {
+    const appName = api.config.qiankun?.slave?.appName || api.pkg.name;
+    return [
+      `
 const qiankun_noop = () => new Error('qiankun lifecycle is not available for server runtime!');
 const isServer = typeof window === 'undefined';
 export const bootstrap = isServer ? qiankun_noop: qiankun_genBootstrap(render);
 export const mount = isServer ? qiankun_noop : qiankun_genMount('${api.config.mountElementId}');
 export const unmount = isServer ? qiankun_noop : qiankun_genUnmount('${api.config.mountElementId}');
 export const update = isServer ? qiankun_noop : qiankun_genUpdate();
+
+if (!isServer && ${api.userConfig.utoopack}) {
+  window['${appName}'] = {
+    bootstrap,
+    mount,
+    unmount,
+    update,
+  };
+}
+
 // 增加 ssr 的判断
 if (!isServer && !window.__POWERED_BY_QIANKUN__) {
   bootstrap().then(mount);
 }
-    `,
-  ]);
+      `,
+    ];
+  });
 
   function getFileContent(file: string) {
     return readFileSync(
