@@ -110,25 +110,28 @@ function getNormalizedAlias(
 
 // refer from: https://github.com/utooland/utoo/blob/master/packages/bundler-mako/index.js#L543-L564
 function getNormalizedExternals(externals: Record<string, any>) {
-  return Object.entries(externals || {}).reduce((ret, [k, v]) => {
-    // handle [string] with script type
-    if (Array.isArray(v)) {
-      const [url, ...members] = v;
-      ret[k] = {
-        // ['antd', 'Button'] => `antd.Button`
-        root: members.join('.'),
-        // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
-        script: url.replace('script ', ''),
-      };
-    } else if (typeof v === 'string') {
-      // 'window.antd' or 'window antd' => 'antd'
-      ret[k] = v.replace(/^window(\s+|\.)/, '');
-    } else {
-      // other types except boolean has been checked before
-      // so here only ignore invalid boolean type
-    }
-    return ret;
-  }, {});
+  return Object.entries(externals || {}).reduce(
+    (ret: Record<string, any>, [k, v]) => {
+      // handle [string] with script type
+      if (Array.isArray(v)) {
+        const [url, ...members] = v;
+        ret[k] = {
+          // ['antd', 'Button'] => `antd.Button`
+          root: members.join('.'),
+          // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
+          script: url.replace('script ', ''),
+        };
+      } else if (typeof v === 'string') {
+        // 'window.antd' or 'window antd' => 'antd'
+        ret[k] = v.replace(/^window(\s+|\.)/, '');
+      } else {
+        // other types except boolean has been checked before
+        // so here only ignore invalid boolean type
+      }
+      return ret;
+    },
+    {},
+  );
 }
 
 export async function getProdUtooPackConfig(
