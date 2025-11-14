@@ -108,6 +108,29 @@ function getNormalizedAlias(
   return newAlias;
 }
 
+// refer from: https://github.com/utooland/utoo/blob/master/packages/bundler-mako/index.js#L543-L564
+function getNormalizedExternals(externals: Record<string, any>) {
+  return Object.entries(externals || {}).reduce((ret, [k, v]) => {
+    // handle [string] with script type
+    if (Array.isArray(v)) {
+      const [url, ...members] = v;
+      ret[k] = {
+        // ['antd', 'Button'] => `antd.Button`
+        root: members.join('.'),
+        // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
+        script: url.replace('script ', ''),
+      };
+    } else if (typeof v === 'string') {
+      // 'window.antd' or 'window antd' => 'antd'
+      ret[k] = v.replace(/^window(\s+|\.)/, '');
+    } else {
+      // other types except boolean has been checked before
+      // so here only ignore invalid boolean type
+    }
+    return ret;
+  }, {});
+}
+
 export async function getProdUtooPackConfig(
   opts: IOpts,
 ): Promise<BundleOptions> {
@@ -135,7 +158,7 @@ export async function getProdUtooPackConfig(
   });
 
   let utooBundlerOpts = compatOptionsFromWebpack({
-    ...lodash.omit(webpackConfig, ['target', 'module']),
+    ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
     compatMode: true,
   } as WebpackConfig);
 
@@ -148,7 +171,11 @@ export async function getProdUtooPackConfig(
 
   // Convert webpack's process.env format to utoopack format
   const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
-  const { publicPath, runtimePublicPath } = opts.config;
+  const {
+    publicPath,
+    runtimePublicPath,
+    externals: userExternals,
+  } = opts.config;
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -182,6 +209,7 @@ export async function getProdUtooPackConfig(
           'process.env': JSON.stringify(processEnvForUtoopack),
         },
         nodePolyfill: true,
+        externals: getNormalizedExternals(userExternals),
       },
       opts.config.utoopack || {},
     ),
@@ -244,10 +272,9 @@ export async function getDevUtooPackConfig(
     hmr: false,
     analyze: process.env.ANALYZE,
   });
-  // console.log('webpackConfig: ', JSON.stringify(webpackConfig.entry, null, 2))
 
   let utooBundlerOpts = compatOptionsFromWebpack({
-    ...lodash.omit(webpackConfig, ['target', 'module']),
+    ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
     compatMode: true,
   } as WebpackConfig);
 
@@ -260,7 +287,11 @@ export async function getDevUtooPackConfig(
 
   // Convert webpack's process.env format to utoopack format
   const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
-  const { publicPath, runtimePublicPath } = opts.config;
+  const {
+    publicPath,
+    runtimePublicPath,
+    externals: userExternals,
+  } = opts.config;
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -294,6 +325,7 @@ export async function getDevUtooPackConfig(
           'process.env': JSON.stringify(processEnvForUtoopack),
         },
         nodePolyfill: true,
+        externals: getNormalizedExternals(userExternals),
       },
       opts.config.utoopack || {},
     ),
