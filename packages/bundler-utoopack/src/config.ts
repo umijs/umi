@@ -72,15 +72,15 @@ function getModularizeImports(extraBabelPlugins: any[]) {
           transformRule = '{{ member }}';
         }
 
-        const preventFullImport =
+        const skipDefaultConversion =
           typeof transformToDefaultImport === 'undefined'
             ? false
             : !Boolean(transformToDefaultImport);
 
         acc[libraryName as string] = {
           transform: `${libraryName}/${libraryDirectory}/${transformRule}`,
-          preventFullImport,
-          skipDefaultConversion: !Boolean(transformToDefaultImport),
+          preventFullImport: false,
+          skipDefaultConversion: !Boolean(skipDefaultConversion),
           style: typeof style === 'boolean' ? 'style' : style,
         };
 
