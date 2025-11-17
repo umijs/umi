@@ -49,6 +49,7 @@ function getModularizeImports(extraBabelPlugins: any[]) {
           libraryDirectory,
           style,
           camel2DashComponentName,
+          transformToDefaultImport,
           ...rest
         } = v;
 
@@ -71,10 +72,15 @@ function getModularizeImports(extraBabelPlugins: any[]) {
           transformRule = '{{ member }}';
         }
 
+        const skipDefaultConversion =
+          typeof transformToDefaultImport === 'undefined'
+            ? false
+            : !Boolean(transformToDefaultImport);
+
         acc[libraryName as string] = {
           transform: `${libraryName}/${libraryDirectory}/${transformRule}`,
           preventFullImport: false,
-          skipDefaultConversion: false,
+          skipDefaultConversion,
           style: typeof style === 'boolean' ? 'style' : style,
         };
 
