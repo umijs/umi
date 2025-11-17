@@ -80,7 +80,7 @@ function getModularizeImports(extraBabelPlugins: any[]) {
         acc[libraryName as string] = {
           transform: `${libraryName}/${libraryDirectory}/${transformRule}`,
           preventFullImport: false,
-          skipDefaultConversion: !Boolean(skipDefaultConversion),
+          skipDefaultConversion,
           style: typeof style === 'boolean' ? 'style' : style,
         };
 
