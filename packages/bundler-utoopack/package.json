@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utoopack",
-  "version": "4.5.3",
+  "version": "4.0.0-canary.20251120.1",
   "description": "@umijs/bundler-utoopack",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
