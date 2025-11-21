@@ -1918,7 +1918,7 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: ^0.0.1-alpha.73
+        specifier: 0.0.1-alpha.73
         version: 0.0.1-alpha.73
       compression:
         specifier: ^1.7.4
