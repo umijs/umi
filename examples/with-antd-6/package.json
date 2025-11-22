@@ -1,5 +1,5 @@
 {
-  "name": "@example/with-antd-5",
+  "name": "@example/with-antd-6",
   "private": true,
   "scripts": {
     "build": "umi build",
