@@ -9,9 +9,9 @@ import {
   message,
   notification,
 {{/disableInternalStatic}}
-{{#enableV5ThemeAlgorithm}}
+{{#enableModernThemeAlgorithm}}
   theme,
-{{/enableV5ThemeAlgorithm}}
+{{/enableModernThemeAlgorithm}}
 } from 'antd';
 import { ApplyPluginsType } from 'umi';
 {{#styleProvider}}
@@ -61,24 +61,24 @@ function AntdProvider({ children }) {
       appConfig: _,
       ...finalConfigProvider
     } = getAntdConfig();
-    {{#enableV5ThemeAlgorithm}}
+    {{#enableModernThemeAlgorithm}}
       finalConfigProvider.theme ??= {};
       finalConfigProvider.theme.algorithm ??= [];
       if (!Array.isArray(finalConfigProvider.theme.algorithm)) {
         finalConfigProvider.theme.algorithm = [finalConfigProvider.theme.algorithm];
       }
       const algorithm = finalConfigProvider.theme.algorithm;
-      {{#enableV5ThemeAlgorithm.compact}}
+      {{#enableModernThemeAlgorithm.compact}}
       if (!algorithm.includes(theme.compactAlgorithm)) {
         algorithm.push(theme.compactAlgorithm);
       }
-      {{/enableV5ThemeAlgorithm.compact}}
-      {{#enableV5ThemeAlgorithm.dark}}
+      {{/enableModernThemeAlgorithm.compact}}
+      {{#enableModernThemeAlgorithm.dark}}
       if (!algorithm.includes(theme.darkAlgorithm)) {
         algorithm.push(theme.darkAlgorithm);
       }
-      {{/enableV5ThemeAlgorithm.dark}}
-    {{/enableV5ThemeAlgorithm}}
+      {{/enableModernThemeAlgorithm.dark}}
+    {{/enableModernThemeAlgorithm}}
     return finalConfigProvider
   });
   const setAntdConfig: typeof _setAntdConfig = (newConfig) => {

@@ -26,6 +26,8 @@ export default (api: IApi) => {
   const isV6 = antdVersion.startsWith('6');
   const isV5 = antdVersion.startsWith('5');
   const isV4 = antdVersion.startsWith('4');
+  /** antd V5 or v6 */
+  const isModern = isV5 || isV6; // v6 相较于 v5 变化不大
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
@@ -55,7 +57,9 @@ export default (api: IApi) => {
             }),
           ]);
         };
-        const createV5Schema = () => {
+
+        // antd 较新版本的配置项校验 （当前指 v5 和 v6)，v7 的事情谁知道呢
+        const createModernSchema = () => {
           // Reason: https://github.com/umijs/umi/pull/11924
           // Refer:  https://github.com/ant-design/ant-design/blob/master/components/theme/interface/components.ts
           const componentNameSchema = zod.string().refine(
@@ -98,8 +102,8 @@ export default (api: IApi) => {
             })
             .deepPartial();
         };
-        if (isV5) {
-          return createV5Schema();
+        if (isModern) {
+          return createModernSchema();
         }
         if (isV4) {
           return createV4Schema();
@@ -122,6 +126,18 @@ export default (api: IApi) => {
       throw new Error(`Can't find antd package. Please install antd first.`);
     }
   }
+
+  api.onCheck(() => {
+    // Ant Design v6 requires React 18+
+    if (isV6) {
+      const reactVersion = api.appData.react.version;
+      if (semver.lt(reactVersion, '18.0.0')) {
+        throw new Error(
+          `antd@6 requires React version >= 18.0.0, but got ${reactVersion}.`,
+        );
+      }
+    }
+  });
 
   api.modifyAppData((memo) => {
     checkPkgPath();
@@ -147,15 +163,19 @@ export default (api: IApi) => {
     // antd import
     memo.alias.antd = pkgPath;
 
-    // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
-    if (isV5) {
+    // antd 5 以后 theme 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
+    if (isModern) {
       const theme = require('@ant-design/antd-theme-variable');
       memo.theme = {
         ...theme,
         ...memo.theme,
       };
+    }
+
+    // v5 及以后不需要 babel-plugin-import 了
+    if (semver.gte(antdVersion, '5.0.0')) {
       if (memo.antd?.import) {
-        const errorMessage = `Can't set antd.import while using antd5 (${antdVersion})`;
+        const errorMessage = `The antd.import option is not supported in antd version 5 and above (${antdVersion}).`;
 
         api.logger.fatal(
           'please change config antd.import to false, then start server again',
@@ -183,7 +203,11 @@ export default (api: IApi) => {
 
     // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
     if (antd.theme) {
-      assert(isV5, `antd.theme is only valid when antd is 5`);
+      assert(
+        isModern,
+        `The 'antd.theme' option is only available for antd version 5 and above.`,
+      );
+
       antd.configProvider ??= {};
       // priority: antd.theme > antd.configProvider.theme
       antd.configProvider.theme = deepmerge(
@@ -247,7 +271,7 @@ export default (api: IApi) => {
           {
             libraryName: 'antd',
             libraryDirectory: 'es',
-            ...(isV5 ? {} : { style: style === 'less' || 'css' }),
+            style: style === 'less' || 'css',
           },
           'antd',
         ],
@@ -274,7 +298,7 @@ export default (api: IApi) => {
 
     let styleProviderConfig: any = false;
 
-    if (isV5 && (ieTarget || styleProvider)) {
+    if (isModern && (ieTarget || styleProvider)) {
       const cssinjs =
         resolveProjectDep({
           pkg: api.pkg,
@@ -288,8 +312,15 @@ export default (api: IApi) => {
         };
 
         if (ieTarget) {
-          styleProviderConfig.hashPriority = 'high';
-          styleProviderConfig.legacyTransformer = true;
+          // v6 及以后不再兼容 IE 了
+          if (semver.gte(antdVersion, '6.0.0')) {
+            api.logger.warn(
+              `You are using antd version ${antdVersion} which no longer supports IE, but your targets or legacy config indicates IE support. Please adjust your targets or legacy config accordingly.`,
+            );
+          } else {
+            styleProviderConfig.hashPriority = 'high';
+            styleProviderConfig.legacyTransformer = true;
+          }
         }
 
         styleProviderConfig = {
@@ -304,13 +335,13 @@ export default (api: IApi) => {
       withConfigProvider && JSON.stringify(api.config.antd.configProvider);
     const appConfig =
       appComponentAvailable && JSON.stringify(api.config.antd.appConfig);
-    const enableV5ThemeAlgorithm =
-      isV5 && (userInputCompact || userInputDark)
+    const enableModernThemeAlgorithm =
+      isModern && (userInputCompact || userInputDark)
         ? { compact: userInputCompact, dark: userInputDark }
         : false;
-    const hasConfigProvider = configProvider || enableV5ThemeAlgorithm;
+    const hasConfigProvider = configProvider || enableModernThemeAlgorithm;
     // 拥有 `ConfigProvider` 时，我们默认提供修改 antd 全局配置的便捷方法（仅限 antd 5）
-    const antdConfigSetter = isV5 && hasConfigProvider;
+    const antdConfigSetter = isModern && hasConfigProvider;
 
     // We ensure the `theme` config always exists to preserve the theme context.
     //   1. if we do not config the antd `theme`, no theme react context is added.
@@ -330,8 +361,8 @@ export default (api: IApi) => {
         configProvider,
         appConfig,
         styleProvider: styleProviderConfig,
-        // 是否启用了 v5 的 theme algorithm
-        enableV5ThemeAlgorithm,
+        // 是否启用了 theme algorithm
+        enableModernThemeAlgorithm,
         antdConfigSetter,
         modelPluginCompat,
         lodashPath,
@@ -412,8 +443,8 @@ export const AntdConfigContextSetter = React.createContext<React.Dispatch<React.
       ReturnType<Parameters<IApi['addEntryImportsAhead']>[0]['fn']>
     > = [];
 
-    if (isV5) {
-      // import antd@5 reset style
+    if (isModern) {
+      // import reset style
       imports.push({ source: 'antd/dist/reset.css' });
     } else if (!api.config.antd.import || api.appData.vite) {
       // import antd@4 style if antd.import is not configured
