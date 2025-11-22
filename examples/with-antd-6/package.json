@@ -1,0 +1,16 @@
+{
+  "name": "@example/with-antd-5",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "^2",
+    "@umijs/plugins": "workspace:*",
+    "antd": "^6",
+    "umi": "workspace:*"
+  }
+}

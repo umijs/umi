@@ -23,6 +23,7 @@ export default (api: IApi) => {
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
 
+  const isV6 = antdVersion.startsWith('6');
   const isV5 = antdVersion.startsWith('5');
   const isV4 = antdVersion.startsWith('4');
   // App components exist only from 5.1.0 onwards
