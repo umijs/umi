@@ -333,7 +333,7 @@ const defaultLangUConfigMap = {
   'sl-SI': {
     lang: 'sl-SI',
     label: 'Slovenščina',
-    icon: '🇸🇱',
+    icon: '🇸🇮',
     title: 'Jezik'
   },
   'sv-SE': {
@@ -460,7 +460,7 @@ export const SelectLang: React.FC<SelectLangProps> = (props) => {
   } else { // 需要 antd 4.20.0 以上版本
     dropdownProps = { overlay: <Menu {...langMenu} /> };
   }
-  
+
   const inlineStyle = {
     cursor: "pointer",
     padding: "12px",
