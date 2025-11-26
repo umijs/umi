@@ -3,6 +3,7 @@ import { getConfig } from '@umijs/bundler-webpack';
 import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
+import { extname } from 'path';
 import type { IOpts } from './types';
 
 /**
@@ -103,13 +104,28 @@ function getNormalizedAlias(
   rootDir: string,
 ): Record<string, string> {
   const newAlias = { ...alias };
-  // Add wildcard aliases for specific keys
-  const keysToExpand = ['react', 'react-dom', '@', '@@'];
-  for (const key of keysToExpand) {
-    if (newAlias[key]) {
-      newAlias[`${key}/*`] = `${newAlias[key]}/*`;
+
+  // Add wildcard aliases for all aliases that point to directories (not files)
+  // refer to: https://github.com/utooland/utoo/issues/2288
+  // webpack alias: https://webpack.js.org/configuration/resolve/#resolvealias
+  for (const [key, value] of Object.entries(newAlias)) {
+    // Skip if already has wildcard
+    if (
+      key.endsWith('/*') ||
+      value.endsWith('/*') ||
+      key.endsWith('/') ||
+      value.endsWith('/') ||
+      key.endsWith('$')
+    ) {
+      continue;
     }
+    if (extname(value)) {
+      continue;
+    }
+    // Add wildcard version for directory aliases
+    newAlias[`${key}/*`] = `${value}/*`;
   }
+
   newAlias[`${rootDir}/*`] = `${rootDir}/*`;
   return newAlias;
 }
