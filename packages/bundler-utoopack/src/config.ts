@@ -200,6 +200,7 @@ export async function getProdUtooPackConfig(
     publicPath,
     runtimePublicPath,
     externals: userExternals,
+    copy = [],
   } = opts.config;
 
   utooBundlerOpts = {
@@ -210,6 +211,9 @@ export async function getProdUtooPackConfig(
         output: {
           clean: opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
+          ...(opts.disableCopy
+            ? { copy: [] }
+            : { copy: ['public'].concat(copy) }),
         },
         optimization: {
           modularizeImports,
