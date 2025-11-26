@@ -106,6 +106,8 @@ function getNormalizedAlias(
   const newAlias = { ...alias };
 
   // Add wildcard aliases for all aliases that point to directories (not files)
+  // refer to: https://github.com/utooland/utoo/issues/2288
+  // webpack alias: https://webpack.js.org/configuration/resolve/#resolvealias
   for (const [key, value] of Object.entries(newAlias)) {
     // Skip if already has wildcard
     if (
