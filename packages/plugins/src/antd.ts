@@ -135,7 +135,7 @@ export default (api: IApi) => {
 
   api.onCheck(() => {
     // Ant Design v6 requires React 18+
-    if (isV6) {
+    if (semver.gte(antdVersion, '6.0.0')) {
       const reactVersion = api.appData.react.version;
       if (semver.lt(reactVersion, '18.0.0')) {
         throw new Error(
