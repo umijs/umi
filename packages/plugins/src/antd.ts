@@ -23,11 +23,17 @@ export default (api: IApi) => {
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
 
-  const isV6 = antdVersion.startsWith('6');
-  const isV5 = antdVersion.startsWith('5');
-  const isV4 = antdVersion.startsWith('4');
-  /** antd V5 or v6 */
-  const isModern = isV5 || isV6; // v6 相较于 v5 变化不大
+  /** antd V5 or v6, 两者相差不多 */
+  const isModern = semver.satisfies(
+    antdVersion,
+    '^5.0.0 || ^6.0.0',
+    // 两者都还在维护周期中，允许使用预发布版本. eg. 6.1.0-alpha.0
+    { includePrerelease: true },
+  );
+
+  /** v4 */
+  const isLegacy = semver.satisfies(antdVersion, '^4.0.0');
+
   // App components exist only from 5.1.0 onwards
   const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
   const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
@@ -94,7 +100,7 @@ export default (api: IApi) => {
             })
             .deepPartial();
         };
-        const createV4Schema = () => {
+        const createLegacySchema = () => {
           return zod
             .object({
               ...commonSchema,
@@ -105,8 +111,8 @@ export default (api: IApi) => {
         if (isModern) {
           return createModernSchema();
         }
-        if (isV4) {
-          return createV4Schema();
+        if (isLegacy) {
+          return createLegacySchema();
         }
         return zod.object({});
       },
@@ -186,7 +192,7 @@ export default (api: IApi) => {
     }
 
     // 只有 antd@4 才需要将 compact 和 dark 传入 less 变量
-    if (isV4) {
+    if (isLegacy) {
       if (antd.dark || antd.compact) {
         const { getThemeVariables } = require('antd/dist/theme');
         memo.theme = {
