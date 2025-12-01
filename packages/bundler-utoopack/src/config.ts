@@ -200,6 +200,7 @@ export async function getProdUtooPackConfig(
     publicPath,
     runtimePublicPath,
     externals: userExternals,
+    copy = [],
   } = opts.config;
 
   utooBundlerOpts = {
@@ -210,6 +211,9 @@ export async function getProdUtooPackConfig(
         output: {
           clean: opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
+          ...(opts.disableCopy
+            ? { copy: [] }
+            : { copy: ['public'].concat(copy) }),
         },
         optimization: {
           modularizeImports,
@@ -316,6 +320,7 @@ export async function getDevUtooPackConfig(
     publicPath,
     runtimePublicPath,
     externals: userExternals,
+    copy = [],
   } = opts.config;
 
   utooBundlerOpts = {
@@ -327,6 +332,9 @@ export async function getDevUtooPackConfig(
           // utoopack 的 dev 需要默认清空产物目录
           clean: opts.clean === undefined ? true : opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
+          ...(opts.disableCopy
+            ? { copy: [] }
+            : { copy: ['public'].concat(copy) }),
         },
         resolve: {
           alias: getNormalizedAlias(
