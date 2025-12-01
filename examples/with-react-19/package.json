@@ -1,0 +1,16 @@
+{
+  "name": "@example/with-react-19",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "umi": "workspace:*"
+  }
+}
