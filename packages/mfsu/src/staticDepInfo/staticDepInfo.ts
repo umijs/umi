@@ -7,6 +7,7 @@ import { dirname, join } from 'path';
 import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu/mfsu';
+import { getPatchesHash, isPatchesEqual } from '../utils/patchesHashUtil';
 import createPluginImport from './simulations/babel-plugin-import';
 
 type FileChangeEvent = {
@@ -143,13 +144,24 @@ export class StaticDepInfo {
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
       try {
-        const { dep = {}, cacheDependency = {} } = JSON.parse(
-          readFileSync(this.cacheFilePath, 'utf-8'),
-        );
+        const {
+          dep = {},
+          cacheDependency = {},
+          patchesHash: prevHashMap,
+        } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
 
-        this.builtWithDep = dep;
-        this.cacheDependency = cacheDependency;
-        logger.info('[MFSU][eager] restored cache');
+        if (
+          isPatchesEqual({
+            basedir: this.opts.mfsu.opts.cwd!,
+            prevHashMap,
+          })
+        ) {
+          this.builtWithDep = dep;
+          this.cacheDependency = cacheDependency;
+          logger.info('[MFSU][eager] restored cache');
+        } else {
+          logger.info('[MFSU][eager] cache out of date');
+        }
       } catch (e) {
         logger.warn(
           '[MFSU][eager] restore cache failed, fallback to Empty dependency',
@@ -165,6 +177,7 @@ export class StaticDepInfo {
       {
         dep: this.builtWithDep,
         cacheDependency: this.cacheDependency,
+        patchesHash: getPatchesHash(this.opts.mfsu.opts.cwd!),
       },
       null,
       2,
