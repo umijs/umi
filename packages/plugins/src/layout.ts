@@ -605,7 +605,7 @@ export function getRightRenderContent (opts: {
       path: layoutFile,
       content: `
 ${
-  // antd@5里面没有这个样式了
+  // antd@5、@6 里面没有这个样式了
   isModern ? '' : "@import '~antd/es/style/themes/default.less';"
 }
 @media screen and (max-width: 480px) {
