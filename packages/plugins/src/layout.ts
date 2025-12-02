@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { lodash, Mustache, semver, winPath } from 'umi/plugin-utils';
 import { isFlattedNodeModulesDir } from './utils/npmClient';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
@@ -42,8 +42,14 @@ export default (api: IApi) => {
 
   const packageName = api.pkg.name || 'plugin-layout';
 
-  const isAntd5 = antdVersion.startsWith('5');
-  const layoutFile = isAntd5 ? 'Layout.css' : 'Layout.less';
+  /** antd V5 or V6，逻辑保持一致 */
+  const isModern = semver.satisfies(
+    antdVersion,
+    '^5.0.0 || ^6.0.0',
+    // 两者都还在维护周期中，允许使用预发布版本. eg. 6.1.0-alpha.0
+    { includePrerelease: true },
+  );
+  const layoutFile = isModern ? 'Layout.css' : 'Layout.less';
 
   api.describe({
     key: 'layout',
@@ -599,8 +605,8 @@ export function getRightRenderContent (opts: {
       path: layoutFile,
       content: `
 ${
-  // antd@5里面没有这个样式了
-  isAntd5 ? '' : "@import '~antd/es/style/themes/default.less';"
+  // antd@5、@6 里面没有这个样式了
+  isModern ? '' : "@import '~antd/es/style/themes/default.less';"
 }
 @media screen and (max-width: 480px) {
   /* 在小屏幕的时候可以有更好的体验 */
