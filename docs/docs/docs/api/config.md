@@ -1552,6 +1552,17 @@ transformRuntime: {
 $ npm install @babel/runtime --save-dev
 ```
 
+## utoopack <Badge>4.6.0+</Badge>
+
+- 类型: `Object`
+- 默认值: `{}`
+
+> 目前 utoopack 处于内测状态, 如果遇到问题，欢迎通过 issue 反馈~
+
+使用 Rust Bundler [utoopack](http://github.com/utooland/utoo) 用于提升构建性能。
+
+通过配置来启用这个能力，目前 utoopack 对框架中大部分功能已经支持。
+
 ## verifyCommit
 
 - 类型：`{ scope: string[]; allowEmoji: boolean }`
