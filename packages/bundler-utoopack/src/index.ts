@@ -185,7 +185,7 @@ export async function dev(opts: IDevOpts) {
       );
       stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
     } catch (e) {
-      throw new Error('Stats.json not found by utoopack dev');
+      throw new Error('File stats.json not found by utoopack dev');
     }
 
     stats.hasErrors = () => false;
@@ -205,7 +205,6 @@ export async function dev(opts: IDevOpts) {
   try {
     await utooPackServe(utooPackConfig, cwd, rootDir, {
       port: utooServePort,
-      hostname: opts.host,
     });
 
     const stats = createStatsObject();
