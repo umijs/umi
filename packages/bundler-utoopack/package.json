@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utoopack",
-  "version": "4.6.5",
+  "version": "4.6.6",
   "description": "@umijs/bundler-utoopack",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
