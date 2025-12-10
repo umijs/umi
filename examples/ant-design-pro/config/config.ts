@@ -339,5 +339,6 @@ export default defineConfig({
     jsStrategy: 'granularChunks',
   },
   // ui: {},
-  mako: {},
+  // mako: {},
+  utoopack: {},
 });

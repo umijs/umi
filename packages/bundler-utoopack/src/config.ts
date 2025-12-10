@@ -150,7 +150,7 @@ export async function getProdUtooPackConfig(
 
   let utooBundlerOpts = compatOptionsFromWebpack({
     ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
-    compatMode: true,
+    webpackMode: true,
   } as WebpackConfig);
 
   const extraBabelPlugins = [
@@ -264,7 +264,7 @@ export async function getDevUtooPackConfig(
 
   let utooBundlerOpts = compatOptionsFromWebpack({
     ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
-    compatMode: true,
+    webpackMode: true,
   } as WebpackConfig);
 
   const extraBabelPlugins = [
