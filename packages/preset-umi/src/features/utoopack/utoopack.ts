@@ -85,20 +85,6 @@ export default (api: IApi) => {
       }
       assets[ext].push(...files);
     });
-
-    // add globalThis.TURBOPACK_CHUNK_LISTS to enable hmr
-    const allAssets = (stats.assets || []).map((asset) => asset.name);
-    for (const asset of allAssets) {
-      if (
-        asset.endsWith('.js') &&
-        !assets.js.includes(asset) &&
-        !asset.includes('umi.js')
-      ) {
-        assets.js.push(asset);
-      } else if (asset.endsWith('.css') && !assets.css.includes(asset)) {
-        assets.css.push(asset);
-      }
-    }
   });
 
   api.onBuildComplete(({ stats }: { stats: webpack.StatsCompilation }) => {
