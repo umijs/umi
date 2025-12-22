@@ -7,6 +7,7 @@ settings:
 overrides:
   '@parcel/watcher': 2.1.0
   browserslist: 4.22.2
+  '@utoo/pack-shared': 0.0.8
 
 importers:
 
@@ -1945,8 +1946,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: 1.1.2
-        version: 1.1.2
+        specifier: 1.1.5
+        version: 1.1.5
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -20646,8 +20647,8 @@ packages:
       react: 18.3.1
     dev: false
 
-  /@utoo/pack-darwin-arm64@1.1.2:
-    resolution: {integrity: sha512-UuQkqmRbhkPMbsHeUl5scX9P00my7Zi2C2wFrqr/m8nlSTkrEwhUEeieTyC5nbcQydbZwfP/TJSepuCOgqwSHA==}
+  /@utoo/pack-darwin-arm64@1.1.5:
+    resolution: {integrity: sha512-dntT9fja+ppidERvk7cwkFKRB51a/BGzJ2TcdxEbblE4ujV+1j16DvPw1i8FxvJC43KK9/7ImZYJ1fJoImMACQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [darwin]
@@ -20655,8 +20656,8 @@ packages:
     dev: false
     optional: true
 
-  /@utoo/pack-darwin-x64@1.1.2:
-    resolution: {integrity: sha512-TbyDaywnJDs6pFNp624RIYI7DGcofZTtxUvKtfzs+7cfbDEzP00wf6ehpH1KsW/ILovvRVfd0pfBE5HoPusDyw==}
+  /@utoo/pack-darwin-x64@1.1.5:
+    resolution: {integrity: sha512-DgdDNMNgzPYbSn1MgQQUOM5emgYVSOg+EPvyzJ2Qa+Fvy0S8luYdfis1FOj451cu7PwKdBnMNen/yBG75qMpqw==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [darwin]
@@ -20664,8 +20665,8 @@ packages:
     dev: false
     optional: true
 
-  /@utoo/pack-linux-arm64-gnu@1.1.2:
-    resolution: {integrity: sha512-WeSiefNLimYREQyHwmdKaPmMlYvK8ElGfT9byebaD9ATt/mtmaLBvDetLbgxgSidMtpsKzEaypqpggu2Q2vhtw==}
+  /@utoo/pack-linux-arm64-gnu@1.1.5:
+    resolution: {integrity: sha512-snDcbRpZv0wj9f8tVKUVmJiGpTU9euTApSA3Pyzmtqyn2evtWwket682Tjvh9QJIf1wJcEWywgnwmdm5oxx9dA==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -20673,8 +20674,8 @@ packages:
     dev: false
     optional: true
 
-  /@utoo/pack-linux-arm64-musl@1.1.2:
-    resolution: {integrity: sha512-t3GmFVDs0RU97DExOY2jmUxzoZvJTsuWuqFjX9YHkq3oCjKBaO0ULOYe1U4Rav5+361bM7HPmaQKCsPf249MKw==}
+  /@utoo/pack-linux-arm64-musl@1.1.5:
+    resolution: {integrity: sha512-GcpluzyWbOkL3MVrWVIJ7pNhQgTNjyKwENutrpgguR3U5mgCJ/M9ft0C5Vn5Z1al1P8/a4l4KtgmTTUmsh1DGw==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -20682,8 +20683,8 @@ packages:
     dev: false
     optional: true
 
-  /@utoo/pack-linux-x64-gnu@1.1.2:
-    resolution: {integrity: sha512-LZM6AxHOKXLy6h9ZtZz+w9gmtA4vrp3q3VAqAvyXFAbdY2tRDCHvCSgiUny3oiCcKm2WwaJ5dP0w1SWtrIm4FA==}
+  /@utoo/pack-linux-x64-gnu@1.1.5:
+    resolution: {integrity: sha512-wQ+sVjGgNjO624DOeseUnAbDWNguEfzx3mT+ZIAVHJT1SICrYUilVwnPUBUdVm7eaR6NmWihWPm/E9uT8COfCg==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -20691,8 +20692,8 @@ packages:
     dev: false
     optional: true
 
-  /@utoo/pack-linux-x64-musl@1.1.2:
-    resolution: {integrity: sha512-MUwRkZ5+MSAutu2Ty91DN0GbMrVlhonDP6ZBZ4pvyr0zUYwvItlmEcH7YM1cLFFob4uucDUyyMzzZCFjkfjvNA==}
+  /@utoo/pack-linux-x64-musl@1.1.5:
+    resolution: {integrity: sha512-/6uEwLLRHa77sKnGbV5czx592Z8usjgBkk8PjH5bBK4csmypTMUVVBf1JWYnoCK1cWD1k1PdLqC8yko+RBjm5w==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -20700,24 +20701,34 @@ packages:
     dev: false
     optional: true
 
-  /@utoo/pack-shared@0.0.7:
-    resolution: {integrity: sha512-CATHVePPWDirHvej0dR2x6nYPHjXgggpiMPOC846z1a9En20r3G1xrMkDBcNDbKlWJ2uF+kyR3qzcrLCCH+YCw==}
+  /@utoo/pack-shared@0.0.8:
+    resolution: {integrity: sha512-KUIwAxHA0d/MfWacwtmiEy2T8QBUuVx6FHijggSf5kg95mln+XDCa+9HX9GfD3ZFX9CK19lPHl41qY6YuDk2Wg==}
     engines: {node: '>= 20'}
     dependencies:
       '@babel/code-frame': 7.22.5
       picocolors: 1.1.1
     dev: false
 
-  /@utoo/pack@1.1.2:
-    resolution: {integrity: sha512-WQzma+whhcGKvj/sFvjYvtqyAk+B2IQ1mwRW7lUh3hwLuaNjocEruQtL1ifdHXLKRTDCw+/sJ+OidOTsFR/ZuA==}
+  /@utoo/pack-win32-x64-msvc@1.1.5:
+    resolution: {integrity: sha512-FKKuuuzqQNKJWlidjk4ht2N9/X5T79JeWHO4tDfULBycgkMmvu9POpzDYqQxQb2UhEULhXYdtAIluwVybeRpJA==}
+    engines: {node: '>= 20'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@utoo/pack@1.1.5:
+    resolution: {integrity: sha512-Yn15kwv172B1Clg/XKiJVNEisCflgu2aqY1sgzAVQ60KW9bD30Y9BO6KGhKKkykIKM9xRg+zlUwiT2sblsA8sA==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@types/webpack': ^5.28.5
     dependencies:
       '@babel/code-frame': 7.22.5
       '@swc/helpers': 0.5.15
-      '@utoo/pack-shared': 0.0.7
+      '@utoo/pack-shared': 0.0.8
       '@utoo/style-loader': 1.0.1
+      domparser-rs: 0.0.5
       find-up: 4.1.0
       less: 4.1.3
       less-loader: 12.3.0(less@4.1.3)
@@ -20731,12 +20742,13 @@ packages:
       send: 0.17.1
       ws: 8.18.3
     optionalDependencies:
-      '@utoo/pack-darwin-arm64': 1.1.2
-      '@utoo/pack-darwin-x64': 1.1.2
-      '@utoo/pack-linux-arm64-gnu': 1.1.2
-      '@utoo/pack-linux-arm64-musl': 1.1.2
-      '@utoo/pack-linux-x64-gnu': 1.1.2
-      '@utoo/pack-linux-x64-musl': 1.1.2
+      '@utoo/pack-darwin-arm64': 1.1.5
+      '@utoo/pack-darwin-x64': 1.1.5
+      '@utoo/pack-linux-arm64-gnu': 1.1.5
+      '@utoo/pack-linux-arm64-musl': 1.1.5
+      '@utoo/pack-linux-x64-gnu': 1.1.5
+      '@utoo/pack-linux-x64-musl': 1.1.5
+      '@utoo/pack-win32-x64-msvc': 1.1.5
     transitivePeerDependencies:
       - '@rspack/core'
       - bufferutil
@@ -26885,6 +26897,92 @@ packages:
     dependencies:
       domelementtype: 2.3.0
     dev: true
+
+  /domparser-darwin-arm64@0.0.5:
+    resolution: {integrity: sha512-7dNROB7Cv0MJOFkKBKYoO8RhljZmwwwybOUSQGmUoSm0DhFn3ahqPp/W4RNX/4P849EpYdWFxYmRF+s3omeOMA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /domparser-darwin-x64@0.0.5:
+    resolution: {integrity: sha512-qjzgFLcp6nnYaZq5YHLrlZYnNxU6CdCOQ+vCM0ySK96XB0xlz87VYi347ylyO2boThHlenDVLiDoC6/eq7IvxQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /domparser-linux-arm64-gnu@0.0.5:
+    resolution: {integrity: sha512-ogEcw0I98MktYhHunyDw+uwsdRxM22HO4RYZPuEDUR6mrw+WFXMdgsl6FqsF4HXxS9d09FITAZvH1B1eRw21pQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /domparser-linux-arm64-musl@0.0.5:
+    resolution: {integrity: sha512-9LkweiOrR86FLNibNEaX34YTfee7ypweTHCkNfQKOhwGbqHawz9bNtz0bhcj6zW0QQBGXgNJmxabvsLoPCGb6w==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /domparser-linux-x64-gnu@0.0.5:
+    resolution: {integrity: sha512-md2XaziFXXd/1UkmkWWEGQ915UiEoFHAjIS6gLTVkv85UKuH664I8uqJp0cnahhzmOAnZEVy192HuoHyf3KGmw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /domparser-linux-x64-musl@0.0.5:
+    resolution: {integrity: sha512-grluiaobq8ERZu6IKEEtSgrwAAH+RcnXPFN0UU2144D2bH4bBI7rJHijDxK+ghnR+kYLecWNesXH8u4PPEjVAg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /domparser-rs@0.0.5:
+    resolution: {integrity: sha512-6RNWPBIsu7vcDa4SYs3/SFh9Ha0WuFzAfuZJeIg/alCDCrfSfDduR1CBkgbkD9wwDpowwbVKZS0YHHWqdTOgfg==}
+    engines: {node: '>= 10'}
+    optionalDependencies:
+      domparser-darwin-arm64: 0.0.5
+      domparser-darwin-x64: 0.0.5
+      domparser-linux-arm64-gnu: 0.0.5
+      domparser-linux-arm64-musl: 0.0.5
+      domparser-linux-x64-gnu: 0.0.5
+      domparser-linux-x64-musl: 0.0.5
+      domparser-win32-arm64-msvc: 0.0.5
+      domparser-win32-x64-msvc: 0.0.5
+    dev: false
+
+  /domparser-win32-arm64-msvc@0.0.5:
+    resolution: {integrity: sha512-r5PUqGd6txpXMAKzT2UKlk3FXPDPYBAdz0WH//Ci58WAJWP7PQ9Eys5HT5jUZTl30eVjltjRm7JwoEy9112ooA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /domparser-win32-x64-msvc@0.0.5:
+    resolution: {integrity: sha512-gMHFDh7D0e86iNErgHW/kO98nlzQS6WAG8SuDb/sGNPULDDaTSXX81MS70B2iUosdgbi90jnRtQJ7sDTz6G08g==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
 
   /domutils@1.7.0:
     resolution: {integrity: sha512-Lgd2XcJ/NjEw+7tFvfKxOzCYKZsdct5lczQ2ZaQY8Djz7pfAD3Gbp8ySJWtreII/vDlMVmxwa6pHmdxIYgttDg==}

@@ -206,6 +206,7 @@ export async function dev(opts: IDevOpts) {
     await utooPackServe(utooPackConfig, cwd, rootDir, {
       port: utooServePort,
       hostname: '127.0.0.1',
+      logServerInfo: false,
     });
 
     const stats = createStatsObject();
