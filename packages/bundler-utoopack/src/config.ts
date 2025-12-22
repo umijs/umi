@@ -6,6 +6,40 @@ import { compatOptionsFromWebpack } from '@utoo/pack';
 import { extname } from 'path';
 import type { IOpts } from './types';
 
+/**
+ * Convert webpack DefinePlugin's process.env format to utoopack format
+ * Webpack format: { 'process.env': { NODE_ENV: '"development"', API_URL: '"https://api.example.com"' } }
+ * Utoopack format: { 'process.env': '{"NODE_ENV":"development","API_URL":"https://api.example.com"}' }
+ */
+function convertProcessEnvForUtoopack(webpackConfig: any): Record<string, any> {
+  let processEnvForUtoopack: Record<string, any> = {};
+
+  if (webpackConfig.plugins) {
+    const definePlugin = webpackConfig.plugins.find(
+      (plugin: any) => plugin.constructor.name === 'DefinePlugin',
+    ) as any;
+
+    if (definePlugin?.definitions?.['process.env']) {
+      // Convert webpack's individual stringified env values back to objects
+      for (const [key, value] of Object.entries(
+        definePlugin.definitions['process.env'],
+      )) {
+        if (
+          typeof value === 'string' &&
+          value.startsWith('"') &&
+          value.endsWith('"')
+        ) {
+          processEnvForUtoopack[key] = JSON.parse(value);
+        } else {
+          processEnvForUtoopack[key] = value;
+        }
+      }
+    }
+  }
+
+  return processEnvForUtoopack;
+}
+
 function getModularizeImports(extraBabelPlugins: any[]) {
   return extraBabelPlugins
     .filter((p) => /^import$|babel-plugin-import/.test(p[0]))
@@ -160,6 +194,9 @@ export async function getProdUtooPackConfig(
 
   const modularizeImports = getModularizeImports(extraBabelPlugins);
 
+  // Convert webpack's process.env format to utoopack format
+  const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
+
   const {
     publicPath,
     runtimePublicPath,
@@ -196,6 +233,10 @@ export async function getProdUtooPackConfig(
             ...opts.config.lessLoader,
           },
           sass: opts.config.sassLoader ?? undefined,
+        },
+        // Override process.env for utoopack format
+        define: {
+          'process.env': JSON.stringify(processEnvForUtoopack),
         },
         nodePolyfill: true,
         externals: getNormalizedExternals(userExternals),
@@ -274,6 +315,9 @@ export async function getDevUtooPackConfig(
 
   const modularizeImports = getModularizeImports(extraBabelPlugins);
 
+  // Convert webpack's process.env format to utoopack format
+  const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
+
   const {
     publicPath,
     runtimePublicPath,
@@ -310,6 +354,10 @@ export async function getDevUtooPackConfig(
             ...opts.config.lessLoader,
           },
           sass: opts.config.sassLoader ?? undefined,
+        },
+        // Override process.env for utoopack format
+        define: {
+          'process.env': JSON.stringify(processEnvForUtoopack),
         },
         nodePolyfill: true,
         externals: getNormalizedExternals(userExternals),
