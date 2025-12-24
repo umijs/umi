@@ -91,7 +91,7 @@ export default function Page() {
 
 ```ts
 // src/models/userModel.ts
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getUser } from '@/services/user';
 
 export default function Page() {
