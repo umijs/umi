@@ -13,6 +13,7 @@ toc: content
 ├── dist
 ├── mock
 │   └── app.ts｜tsx
+├── public
 ├── src
 │   ├── .umi
 │   ├── .umi-production

@@ -15,6 +15,7 @@ This documents the directory structure conventionally (or recommended) in Umi pr
 ├── dist
 ├── mock
 │   └── app.ts｜tsx
+├── public
 ├── src
 │   ├── .umi
 │   ├── .umi-production
