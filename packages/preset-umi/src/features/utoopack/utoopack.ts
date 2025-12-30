@@ -111,7 +111,7 @@ export default (api: IApi) => {
     const { publicPath } = api.config;
     const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
     return assets.css.map((css) => {
-      return `${displayPublicPath}${css}`;
+      return { src: `${displayPublicPath}${css}` };
     });
   });
 
@@ -120,7 +120,7 @@ export default (api: IApi) => {
     const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
 
     return assets.js.map((js) => {
-      return `${displayPublicPath}${js}`;
+      return { src: `${displayPublicPath}${js}` };
     });
   });
 };

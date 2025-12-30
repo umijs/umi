@@ -42,6 +42,7 @@ export type IScript =
 export type IStyle =
   | Partial<{
       content: string;
+      src: string;
       type: string;
     }>
   | string;

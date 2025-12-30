@@ -4,6 +4,8 @@ export default {
     title: true,
     default: 'zh-CN',
   },
+  publicPath: '{{__RENDER_STATIC_URL_PREFIX__}}/',
+  utoopack: {},
   antd: {
     // valid for antd5.0 only
     theme: {
