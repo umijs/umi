@@ -137,12 +137,22 @@ function getNormalizedExternals(externals: Record<string, any>) {
       // handle [string] with script type
       if (Array.isArray(v)) {
         const [url, ...members] = v;
-        ret[k] = {
-          // ['antd', 'Button'] => `antd.Button`
-          root: members.join('.'),
-          // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
-          script: url.replace('script ', ''),
-        };
+        const containsScript = url.startsWith('script');
+        const script = url.replace('script ', '');
+        if (containsScript) {
+          ret[k] = {
+            // ['antd', 'Button'] => `antd.Button`
+            root: members.join('.'),
+            type: 'script',
+            // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
+            script,
+          };
+        } else {
+          ret[k] = {
+            root: members.join('.'),
+            script,
+          };
+        }
       } else if (typeof v === 'string') {
         // 'window.antd' or 'window antd' => 'antd'
         ret[k] = v.replace(/^window(\s+|\.)/, '');
@@ -402,6 +412,10 @@ export async function getDevUtooPackConfig(
     inlineLimit,
   } = opts.config;
 
+  const normalizedExternals = getNormalizedExternals(userExternals);
+
+  debugger;
+
   utooBundlerOpts = {
     ...utooBundlerOpts,
     config: lodash.merge(
@@ -437,7 +451,7 @@ export async function getDevUtooPackConfig(
           'process.env': JSON.stringify(processEnvForUtoopack),
         },
         nodePolyfill: true,
-        externals: getNormalizedExternals(userExternals),
+        externals: normalizedExternals,
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
       opts.config.utoopack || {},

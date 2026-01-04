@@ -1,6 +1,7 @@
 {
   "name": "@example/legacy",
   "private": true,
+  "repository": "git@github.com:umijs/umi.git",
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",
