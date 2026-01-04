@@ -199,6 +199,13 @@ function getSvgModuleRules(opts: {
                 ...svgr,
                 svgo: !!svgo,
               },
+              condition: {
+                all: [
+                  // Exclude node_modules (similar to excluding non-source files)
+                  { not: 'foreign' },
+                  { path: /\.[jt]sx?$/ },
+                ],
+              },
             },
             {
               loader: require.resolve(
