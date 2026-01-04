@@ -156,6 +156,69 @@ function getNormalizedExternals(externals: Record<string, any>) {
   );
 }
 
+/**
+ * Get SVG module rules configuration for utoopack
+ * This generates rules that use svgr-loader and url-loader to support both
+ * ReactComponent export and default URL export for SVG files
+ */
+function getSvgModuleRules(opts: {
+  svgr?: Record<string, any>;
+  svgo?: Record<string, any> | false;
+  inlineLimit?: number;
+}) {
+  const { svgr, svgo = {}, inlineLimit } = opts;
+
+  if (!svgr) {
+    return {};
+  }
+
+  return {
+    module: {
+      rules: {
+        '*.svg': {
+          loaders: [
+            {
+              loader: require.resolve(
+                '@umijs/bundler-webpack/dist/loader/svgr',
+              ),
+              options: {
+                svgoConfig: {
+                  plugins: [
+                    {
+                      name: 'preset-default',
+                      params: {
+                        overrides: {
+                          removeTitle: false,
+                        },
+                      },
+                    },
+                    'prefixIds',
+                  ],
+                  ...(typeof svgo === 'object' ? svgo : {}),
+                },
+                ...svgr,
+                svgo: !!svgo,
+              },
+            },
+            {
+              loader: require.resolve(
+                '@umijs/bundler-webpack/compiled/url-loader',
+              ),
+              options: {
+                limit: inlineLimit,
+                fallback: require.resolve(
+                  '@umijs/bundler-webpack/compiled/file-loader',
+                ),
+              },
+            },
+          ],
+          as: '*.js',
+        },
+      },
+    },
+  };
+}
+
 export async function getProdUtooPackConfig(
   opts: IOpts,
 ): Promise<BundleOptions> {
@@ -202,6 +265,9 @@ export async function getProdUtooPackConfig(
     runtimePublicPath,
     externals: userExternals,
     copy = [],
+    svgr,
+    svgo = {},
+    inlineLimit,
   } = opts.config;
 
   utooBundlerOpts = {
@@ -240,6 +306,7 @@ export async function getProdUtooPackConfig(
         },
         nodePolyfill: true,
         externals: getNormalizedExternals(userExternals),
+        ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
       opts.config.utoopack || {},
     ),
@@ -323,6 +390,9 @@ export async function getDevUtooPackConfig(
     runtimePublicPath,
     externals: userExternals,
     copy = [],
+    svgr,
+    svgo = {},
+    inlineLimit,
   } = opts.config;
 
   utooBundlerOpts = {
@@ -361,6 +431,7 @@ export async function getDevUtooPackConfig(
         },
         nodePolyfill: true,
         externals: getNormalizedExternals(userExternals),
+        ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
       opts.config.utoopack || {},
     ),
