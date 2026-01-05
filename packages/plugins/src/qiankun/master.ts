@@ -192,7 +192,7 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
               '__USE_MODEL__',
               api.isPluginEnable('model')
                 ? `import { useModel } from '@@/plugin-model'`
-                : `const useModel = null;`,
+                : `console.warn(\`[plugins/qiankun]: Seems like you're not using @umijs/plugin-model, you need to install it or some features may not work!\`);\nconst useModel = null;`,
             )
             .replace(
               /from 'lodash\//g,
