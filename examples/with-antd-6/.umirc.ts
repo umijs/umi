@@ -1,3 +1,5 @@
+export const PATH_PREFIX = '/static-assets/maxs/';
+
 export default {
   plugins: ['@umijs/plugins/dist/antd', '@umijs/plugins/dist/locale'],
   locale: {
@@ -27,4 +29,7 @@ export default {
       },
     },
   },
+  publicPath: PATH_PREFIX,
+  utoopack: {},
+  // mako: {}
 };

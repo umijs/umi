@@ -13,9 +13,10 @@
     "dev": "father dev"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
-    "@utoo/pack": "1.1.15",
+    "@utoo/pack": "1.1.17",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^2.0.0",
     "cors": "^2.8.5",

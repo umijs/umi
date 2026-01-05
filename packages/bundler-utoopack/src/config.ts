@@ -176,7 +176,7 @@ function getSvgModuleRules(opts: {
   svgo?: Record<string, any> | false;
   inlineLimit?: number;
 }) {
-  const { svgr, svgo = {}, inlineLimit } = opts;
+  const { svgr, svgo = {} } = opts;
 
   if (!svgr) {
     return {};
@@ -188,44 +188,20 @@ function getSvgModuleRules(opts: {
         '*.svg': {
           loaders: [
             {
-              loader: require.resolve(
-                '@umijs/bundler-webpack/dist/loader/svgr',
-              ),
-              options: {
-                svgoConfig: {
-                  plugins: [
-                    {
-                      name: 'preset-default',
-                      params: {
-                        overrides: {
-                          removeTitle: false,
-                        },
-                      },
-                    },
-                    'prefixIds',
-                  ],
-                  ...(typeof svgo === 'object' ? svgo : {}),
-                },
-                ...svgr,
-                svgo: !!svgo,
-              },
+              loader: require.resolve('@svgr/webpack'),
               condition: {
                 all: [
                   // Exclude node_modules (similar to excluding non-source files)
                   { not: 'foreign' },
+                  // Match JavaScript/TypeScript files
                   { path: /\.[jt]sx?$/ },
                 ],
               },
-            },
-            {
-              loader: require.resolve(
-                '@umijs/bundler-webpack/compiled/url-loader',
-              ),
               options: {
-                limit: inlineLimit,
-                fallback: require.resolve(
-                  '@umijs/bundler-webpack/compiled/file-loader',
-                ),
+                exportType: 'named',
+                namedExport: 'ReactComponent',
+                ref: true,
+                svgo: !!svgo,
               },
             },
           ],
