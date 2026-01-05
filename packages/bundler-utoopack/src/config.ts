@@ -176,7 +176,7 @@ function getSvgModuleRules(opts: {
   svgo?: Record<string, any> | false;
   inlineLimit?: number;
 }) {
-  const { svgr, svgo = {}, inlineLimit } = opts;
+  const { svgr, svgo = {} } = opts;
 
   if (!svgr) {
     return {};
