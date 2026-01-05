@@ -16,6 +16,8 @@ import {
   useAntdConfigSetter,
   useIntl,
 } from 'umi';
+import { ReactComponent as EmptyState } from '../images/emptyState.svg';
+
 const { useToken, darkAlgorithm, defaultAlgorithm, compactAlgorithm } = theme;
 
 const checkHasAlgorithm = (
@@ -111,6 +113,7 @@ export default function Page() {
           }}
         ></Switch>
       </Space>
+      <EmptyState />
     </div>
   );
 }
