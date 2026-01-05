@@ -291,7 +291,7 @@ if (!isServer && !window.__POWERED_BY_QIANKUN__) {
               '__USE_MODEL__',
               api.isPluginEnable('model')
                 ? `import { useModel } from '@@/plugin-model'`
-                : `console.warn(\`[plugins/qiankun]: Seems like you're not using @umijs/plugin-model, you need to install it or some features may not work!\`);\nconst useModel = null;`,
+                : `console.warn(\`[plugins/qiankun]: Seems like you're not using @umijs/plugin-model, you need to install it or some features may not work!\`);\nconst useModel = null`,
             )
             .replace(
               /from 'qiankun'/g,
