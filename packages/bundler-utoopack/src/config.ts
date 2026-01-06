@@ -188,21 +188,32 @@ function getSvgModuleRules(opts: {
         '*.svg': {
           loaders: [
             {
-              loader: require.resolve('@svgr/webpack'),
-              condition: {
-                all: [
-                  // Exclude node_modules (similar to excluding non-source files)
-                  { not: 'foreign' },
-                  // Match JavaScript/TypeScript files
-                  { path: /\.[jt]sx?$/ },
-                ],
-              },
+              loader: require.resolve(
+                '@umijs/bundler-webpack/dist/loader/svgr',
+              ),
               options: {
-                exportType: 'named',
-                namedExport: 'ReactComponent',
-                ref: true,
+                svgoConfig: {
+                  plugins: [
+                    {
+                      name: 'preset-default',
+                      params: {
+                        overrides: {
+                          removeTitle: false,
+                        },
+                      },
+                    },
+                    'prefixIds',
+                  ],
+                  ...(typeof svgo === 'object' ? svgo : {}),
+                },
+                ...svgr,
                 svgo: !!svgo,
               },
+            },
+            {
+              loader: require.resolve(
+                '@umijs/bundler-webpack/compiled/url-loader',
+              ),
             },
           ],
           as: '*.js',

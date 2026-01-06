@@ -13,7 +13,6 @@
     "dev": "father dev"
   },
   "dependencies": {
-    "@svgr/webpack": "^8.1.0",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
     "@utoo/pack": "1.1.17",
