@@ -38,6 +38,7 @@
 *.tsbuildinfo
 .jest-cache
 .swc
+.turbopack
 /test/**/fixtures/*/dist
 /test/**/fixtures/*/.umi
 /test/**/fixtures/*/.umi-production

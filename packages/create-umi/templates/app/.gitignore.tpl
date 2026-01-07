@@ -7,3 +7,4 @@
 /src/.umi-test
 /dist
 .swc
+.turbopack
