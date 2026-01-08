@@ -401,8 +401,6 @@ export async function getDevUtooPackConfig(
 
   const normalizedExternals = getNormalizedExternals(userExternals);
 
-  debugger;
-
   utooBundlerOpts = {
     ...utooBundlerOpts,
     config: lodash.merge(
