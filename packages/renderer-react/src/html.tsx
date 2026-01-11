@@ -78,7 +78,12 @@ const HydrateMetadata = (
         <meta name="keywords" content={htmlPageOpts.keywords.join(',')} />
       )}
       {htmlPageOpts?.metas?.map((em: any) => (
-        <meta key={em.name} name={em.name} content={em.content} />
+        <meta
+          key={em.name}
+          name={em.name}
+          property={em.property}
+          content={em.content}
+        />
       ))}
 
       {htmlPageOpts?.links?.map((link: Record<string, string>, key: number) => {
