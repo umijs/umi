@@ -2399,8 +2399,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(react-dom@18.3.1)(react@18.3.1)
       '@ant-design/moment-webpack-plugin':
-        specifier: ^0.0.3
-        version: 0.0.3
+        specifier: ^1.0.0
+        version: 1.0.0
       '@ant-design/pro-components':
         specifier: ^2.0.1
         version: 2.3.4(antd@4.24.1)(react-dom@18.3.1)(react@18.3.1)
@@ -3610,6 +3610,11 @@ packages:
 
   /@ant-design/moment-webpack-plugin@0.0.3:
     resolution: {integrity: sha512-MLm1FUpg02fP615ShQnCUN9la2E4RylDxKyolkGqAWTIHO4HyGM0A5x71AMALEyP/bC+UEEWBGSQ+D4/8hQ+ww==}
+    dev: true
+
+  /@ant-design/moment-webpack-plugin@1.0.0:
+    resolution: {integrity: sha512-t+0PDB312A8XpNklaYyJcaJ2bO0mWWmPQ0U9myKGqZhRWLH0ZTUEbROoYi1N0fSwYnIWuaLa2wYWtH1j/jwJow==}
+    dev: false
 
   /@ant-design/plots@1.2.1(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-wbcmhHRkVi7IFyqzVNUozcJtIpgWHOFHbny5T+DLQoE2lzh+A1nTOfhlPJXc6aq56uIg6w+4iN/umsJKUmcLPw==}
