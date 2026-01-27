@@ -75,6 +75,9 @@ function handleOriginalHtml(
 
 // BREAK CHANGE: 需要手动配置 slave: {}，不能留空
 function isSlaveEnable(opts: { userConfig: any }) {
+  if (opts.userConfig?.utoopack) {
+    return false;
+  }
   const slaveCfg = opts.userConfig?.qiankun?.slave;
   if (slaveCfg) {
     return slaveCfg.enable !== false;
