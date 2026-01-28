@@ -100,7 +100,7 @@ export default {
 }
 ```
 
-关于 `req` 和 `res` 的 API 可参考 [Express@4 官方文档](https://expressjs.com/en/api.html) 来进一步了解。
+关于 `req` 和 `res` 的 API 可参考 [Express@4 官方文档](https://expressjs.com/en/4x/api.html) 来进一步了解。
 
 ### defineMock
 
