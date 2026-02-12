@@ -33,6 +33,47 @@ test('mf plugin add remotes with entry and name', async () => {
   );
 });
 
+test('mf plugin add remotes with entry and name and variable', async () => {
+  const { ModuleFederationPlugin } = await executePlugin({
+    remotes: [
+      {
+        name: 'foo',
+        aliasName: 'bar',
+        entry: 'window.devEntryUrl',
+      },
+    ],
+  });
+
+  expect(ModuleFederationPlugin).toBeCalledWith(
+    expect.objectContaining({
+      remotes: {
+        bar: `promise new Promise(resolve => {
+  const script = document.createElement('script')
+  script.src = (new Function('return ' + window.devEntryUrl))()
+  script.onload = () => {
+    // the injected script has loaded and is available on window
+    // we can now resolve this Promise
+    const proxy = {
+      get: (request) => window.foo.get(request),
+      init: (arg) => {
+        try {
+          return window.foo.init(arg)
+        } catch(e) {
+          console.log('remote container already initialized')
+        }
+      }
+    }
+    resolve(proxy)
+  }
+  // inject this script with the src set to the versioned remoteEntry.js
+  document.head.appendChild(script);
+})
+`,
+      },
+    }),
+  );
+});
+
 test('mf plugin add remotes with entries for different env', async () => {
   const { ModuleFederationPlugin } = await executePlugin({
     remotes: [
@@ -55,7 +96,7 @@ test('mf plugin add remotes with entries for different env', async () => {
   const entries = {"key1":"http://a.b/c.js","key2":"http://a.b/c.js"};
   const key = "key1";
 
-  const remoteUrlWithVersion = entries[key];
+  const remoteUrlWithVersion = /^(https?:)?\\/\\//.test(entries[key])? entries[key] : (new Function('return ' + entries[key]))();
   const script = document.createElement('script')
   script.src = remoteUrlWithVersion
   script.onload = () => {
@@ -112,14 +153,14 @@ async function executePlugin(mfConfig: any) {
       error: jest.fn(),
       debug: jest.fn(),
     },
-    onGenerateFiles() {},
-    describe() {},
+    onGenerateFiles() { },
+    describe() { },
     modifyWebpackConfig(fn: Function) {
       modifier = fn;
     },
-    register() {},
-    addRuntimePluginKey() {},
-    modifyDefaultConfig() {},
+    register() { },
+    addRuntimePluginKey() { },
+    modifyDefaultConfig() { },
   };
 
   plugin(api as any);

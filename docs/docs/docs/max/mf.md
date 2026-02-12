@@ -109,6 +109,7 @@ defineConfig({
           PROD: 'http://produ.mf.com/remote.js',
           TEST: 'http://test.dev.mf.com/remote.js',
           DEV: 'http://127.0.0.1:8000/remote.js',
+          VAR: 'window.mfRemoteUrl',
         },
       },
     ],
