@@ -586,17 +586,83 @@ if (process.env.NODE_ENV === 'development') {
           reactRouter5Compat,
         },
       });
+
+      const routesPath = getAllRoutesPath(routes);
+      const routesPathStr =
+        routesPath.map((path) => `'${path}'`).join(' | ') || 'never';
       api.writeTmpFile({
         noPluginDir: true,
         path: 'core/historyIntelli.ts',
         tplPath: join(TEMPLATES_DIR, 'historyIntelli.tpl'),
         context: {
+          routes: routesPathStr,
           historyPath,
           reactRouter5Compat,
         },
       });
     }
   });
+
+  function joinRoutePath(left: string, right: string) {
+    const joined = `${left}/${right}`;
+    const segments = joined.split('/').filter(Boolean);
+    const newPath = `/${segments.join('/')}`;
+    return newPath;
+  }
+
+  function getAllRoutesPath(routes: any) {
+    const paths: Set<string> = new Set();
+
+    const isLayoutOrWrapper = (route: any) => {
+      return route.isLayout || route.isWrapper;
+    };
+
+    const getPath = (id: string) => {
+      const route = routes[id];
+      // ignore
+      const isNotRoute = isLayoutOrWrapper(route);
+      if (isNotRoute) {
+        return '';
+      }
+      let path = (route.path || '') as string;
+      // stop
+      const isAbsolutePath = path.startsWith('/');
+      if (isAbsolutePath) {
+        return path;
+      }
+      let parentId = route.parentId;
+      while (parentId) {
+        const parentRoute = routes[parentId];
+        const parentPath = (parentRoute.path || '') as string;
+        // ignore
+        const isParentNotRoute = isLayoutOrWrapper(parentRoute);
+        if (isParentNotRoute) {
+          parentId = parentRoute.parentId;
+          continue;
+        }
+        // stop
+        // e.g. `/root` - `/root/child` - `nested` => `/root/child/nested`
+        const isParentAbsolutePath = parentPath.startsWith('/');
+        if (isParentAbsolutePath) {
+          path = joinRoutePath(parentPath, path);
+          break;
+        }
+        // e.g. `/root` - `child` - `nested` => `/root/child/nested`
+        path = joinRoutePath(parentPath, path);
+        parentId = parentRoute.parentId;
+      }
+      return path;
+    };
+
+    Object.keys(routes).forEach((id: any) => {
+      const path = getPath(id);
+      if (path.length && !path.includes('*')) {
+        paths.add(path);
+      }
+    });
+
+    return Array.from(paths);
+  }
 
   function checkMembers(opts: {
     path: string;
