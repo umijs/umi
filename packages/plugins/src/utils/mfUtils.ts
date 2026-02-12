@@ -32,15 +32,18 @@ export function toRemotesCodeString(remotes: Remote[]): string {
       res.push(`${aliasName}: {
   aliasName: "${aliasName}",
   remoteName: "${remoteName}",        
-  entry: "${r.entry}"
+  entry: ${/^(https?:)?\/\//.test(r.entry) ? `"${r.entry}"` : `(new Function('return "' + ${r.entry} + '"'))()`}
 }`);
     }
 
     if (isRemoteEntries(r)) {
       res.push(`${aliasName}: {
   aliasName: "${aliasName}",
-  remoteName: "${remoteName}",        
-  entry: (${JSON.stringify(r.entries)})[${r.keyResolver}]
+  remoteName: "${remoteName}",
+  entry: (() => {
+    const entry = (${JSON.stringify(r.entries)})[${r.keyResolver}];
+    return /^(https?:)?\\/\\//.test(entry)? entry : (new Function('return ' + entry))()
+  })() 
 }`);
     }
   }

@@ -204,7 +204,32 @@ export default function mf(api: IApi) {
 
   function formatRemote(remote: any): string {
     if (remote.entry) {
-      return `${remote.name}@${remote.entry}`;
+      if (/^(https?:)?\/\//.test(remote.entry)) {
+        return `${remote.name}@${remote.entry}`;
+      }
+
+      return `promise new Promise(resolve => {
+  const script = document.createElement('script')
+  script.src = (new Function('return ' + ${remote.entry}))()
+  script.onload = () => {
+    // the injected script has loaded and is available on window
+    // we can now resolve this Promise
+    const proxy = {
+      get: (request) => window.${remote.name}.get(request),
+      init: (arg) => {
+        try {
+          return window.${remote.name}.init(arg)
+        } catch(e) {
+          console.log('remote container already initialized')
+        }
+      }
+    }
+    resolve(proxy)
+  }
+  // inject this script with the src set to the versioned remoteEntry.js
+  document.head.appendChild(script);
+})
+`;
     }
 
     if (remote.entries && remote.keyResolver) {
@@ -212,7 +237,7 @@ export default function mf(api: IApi) {
   const entries = ${JSON.stringify(remote.entries)};
   const key = ${remote.keyResolver};
 
-  const remoteUrlWithVersion = entries[key];
+  const remoteUrlWithVersion = /^(https?:)?\\/\\//.test(entries[key])? entries[key] : (new Function('return ' + entries[key]))();
   const script = document.createElement('script')
   script.src = remoteUrlWithVersion
   script.onload = () => {
