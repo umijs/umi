@@ -54,7 +54,7 @@ export default defineConfig({
 
 ```ts
 // .umirc.ts
-import { defineConfig } from 'umi';
+import { defineConfig } from ''@umijs/max'';
 
 const shared = {
   react: {

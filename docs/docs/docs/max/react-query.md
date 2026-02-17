@@ -79,7 +79,7 @@ export default {
 ```ts
 // src/app.ts
 
-import { RuntimeReactQueryType } from 'umi';
+import { RuntimeReactQueryType } from ''@umijs/max'';
 
 export const reactQuery: RuntimeReactQueryType = {
   devtool: { 
