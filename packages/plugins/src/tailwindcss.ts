@@ -25,7 +25,7 @@ export default (api: IApi) => {
   api.onBeforeCompiler(() => {
     const inputPath = join(api.cwd, 'tailwind.css');
     const generatedPath = join(api.paths.absTmpPath, outputPath);
-    const binPath = getTailwindBinPath({ cwd: api.cwd });
+    const binPath = getTailwindBinPath({ cwd: api.cwd }, api);
     const configPath = join(api.cwd, 'tailwind.config.js');
 
     if (process.env.IS_UMI_BUILD_WORKER) {
@@ -88,10 +88,25 @@ export default (api: IApi) => {
   });
 };
 
-function getTailwindBinPath(opts: { cwd: string }) {
+function getTailwindBinPath(opts: { cwd: string }, api: IApi) {
   const pkgPath = require.resolve('tailwindcss/package.json', {
     paths: [opts.cwd],
   });
+  const tailwind = require(pkgPath);
+  if (tailwind.version.startsWith('4')) {
+    try {
+      const tailwindCliPath = require.resolve('@tailwindcss/cli/package.json', {
+        paths: [opts.cwd],
+      });
+      const tailwindPath = require(tailwindCliPath).bin['tailwindcss'];
+      return join(dirname(tailwindCliPath), tailwindPath);
+    } catch {
+      api.logger.error(
+        'tailwindcss v4 requires @tailwindcss/cli to be installed',
+      );
+      process.exit(1);
+    }
+  }
   const tailwindPath = require(pkgPath).bin['tailwind'];
   return join(dirname(pkgPath), tailwindPath);
 }
