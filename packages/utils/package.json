@@ -25,9 +25,9 @@
     "pino": "7.11.0"
   },
   "devDependencies": {
-    "@ampproject/remapping": "2.2.0",
     "@clack/prompts": "0.2.2",
     "@hapi/joi": "17.1.1",
+    "@jridgewell/remapping": "2.3.5",
     "@types/color": "3.0.3",
     "@types/cross-spawn": "6.0.2",
     "@types/debug": "4.1.7",
@@ -107,7 +107,7 @@
       "@hapi/joi",
       "@clack/prompts",
       "magic-string",
-      "@ampproject/remapping",
+      "@jridgewell/remapping",
       "tsconfig-paths",
       "zod",
       "tar"

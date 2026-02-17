@@ -11,7 +11,7 @@ import * as execa from '../compiled/execa';
 import fsExtra from '../compiled/fs-extra';
 import glob from '../compiled/glob';
 // import globby from '../compiled/globby';
-import remapping from '../compiled/@ampproject/remapping';
+import remapping from '../compiled/@jridgewell/remapping';
 import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
 import * as filesize from '../compiled/filesize';
 import * as gzipSize from '../compiled/gzip-size';
