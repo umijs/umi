@@ -15,7 +15,7 @@
   "dependencies": {
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
-    "@utoo/pack": "1.2.7",
+    "@utoo/pack": "1.2.8",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^2.0.0",
     "cors": "^2.8.5",
