@@ -58,13 +58,13 @@ test('mf plugin add remotes with entry and name and runtimeEntryPath', async () 
       get: (request) => window.foo.get(request),
       init: (arg) => {
         try {
-          return window.foo.init(arg)
+          return window.foo.init(arg);
         } catch(e) {
-          console.log('remote container already initialized')
+          console.log('remote container already initialized');
         }
       }
     }
-    resolve(proxy)
+    resolve(proxy);
   }
   // inject this script with the src set to the versioned remoteEntry.js
   document.head.appendChild(script);
@@ -107,13 +107,13 @@ test('mf plugin add remotes with entries for different env', async () => {
       get: (request) => window.foo.get(request),
       init: (arg) => {
         try {
-          return window.foo.init(arg)
+          return window.foo.init(arg);
         } catch(e) {
-          console.log('remote container already initialized')
+          console.log('remote container already initialized');
         }
       }
     }
-    resolve(proxy)
+    resolve(proxy);
   }
   // inject this script with the src set to the versioned remoteEntry.js
   document.head.appendChild(script);
@@ -157,13 +157,13 @@ test('mf plugin add remotes with entries for different env and runtimeEntryPath'
       get: (request) => window.foo.get(request),
       init: (arg) => {
         try {
-          return window.foo.init(arg)
+          return window.foo.init(arg);
         } catch(e) {
-          console.log('remote container already initialized')
+          console.log('remote container already initialized');
         }
       }
     }
-    resolve(proxy)
+    resolve(proxy);
   }
   // inject this script with the src set to the versioned remoteEntry.js
   document.head.appendChild(script);

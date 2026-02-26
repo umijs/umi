@@ -220,13 +220,13 @@ export default function mf(api: IApi) {
       get: (request) => window.${remote.name}.get(request),
       init: (arg) => {
         try {
-          return window.${remote.name}.init(arg)
+          return window.${remote.name}.init(arg);
         } catch(e) {
-          console.log('remote container already initialized')
+          console.log('remote container already initialized');
         }
       }
     }
-    resolve(proxy)
+    resolve(proxy);
   }
   // inject this script with the src set to the versioned remoteEntry.js
   document.head.appendChild(script);
@@ -253,13 +253,13 @@ export default function mf(api: IApi) {
       get: (request) => window.${remote.name}.get(request),
       init: (arg) => {
         try {
-          return window.${remote.name}.init(arg)
+          return window.${remote.name}.init(arg);
         } catch(e) {
-          console.log('remote container already initialized')
+          console.log('remote container already initialized');
         }
       }
     }
-    resolve(proxy)
+    resolve(proxy);
   }
   // inject this script with the src set to the versioned remoteEntry.js
   document.head.appendChild(script);
