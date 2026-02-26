@@ -196,7 +196,7 @@ export const getLocale = () => {
   // because changing will break the app
   const lang =
       navigator.cookieEnabled && typeof localStorage !== 'undefined' && useLocalStorage
-        ? window.localStorage.getItem('umi_locale')
+        ? window.localStorage.getItem({{{ localStorageKey }}})
         : '';
   // support baseNavigator, default true
   let browserLang;
@@ -241,7 +241,7 @@ export const setLocale = (lang: string, realReload: boolean = true) => {
   const updater = () => {
     if (getLocale() !== lang) {
        if (navigator.cookieEnabled && typeof window.localStorage !== 'undefined' && useLocalStorage) {
-          window.localStorage.setItem('umi_locale', lang || '');
+          window.localStorage.setItem({{{ localStorageKey }}}, lang || '');
        }
       setIntl(lang);
       if (realReload) {
