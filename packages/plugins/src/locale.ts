@@ -112,7 +112,10 @@ export default (api: IApi) => {
       'utf-8',
     );
     // moment2dayjs
-    const resolveKey = api.config.moment2dayjs ? 'dayjs' : 'moment';
+    const resolveKey =
+      api.config.moment2dayjs ?? api.appData.antd.version?.startsWith('5')
+        ? 'dayjs'
+        : 'moment';
     const momentPkgPath = winPath(
       dirname(require.resolve(`${resolveKey}/package.json`)),
     );
