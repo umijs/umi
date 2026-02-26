@@ -12,7 +12,7 @@ test('toRemote with aliasName', () => {
   ).toMatchInlineSnapshot(`
     "myRemote: {
       aliasName: "myRemote",
-      remoteName: "_long_remote_name",        
+      remoteName: "_long_remote_name",
       entry: "http://test.com/entry.js"
     }"
   `);
@@ -29,7 +29,7 @@ test('toRemote without aliasName', () => {
   ).toMatchInlineSnapshot(`
     "_long_remote_name: {
       aliasName: "_long_remote_name",
-      remoteName: "_long_remote_name",        
+      remoteName: "_long_remote_name",
       entry: "http://test.com/entry.js"
     }"
   `);
@@ -52,35 +52,7 @@ test('toRemote with entries', () => {
     "mf: {
       aliasName: "mf",
       remoteName: "mf",
-      entry: (() => {
-        const entry = ({"DEV":"http://dev.com/entry.js","PROD":"http://prod.com/entry.js"})[(()=>'DEV')()];
-        return /^(https?:)?\\/\\//.test(entry)? entry : (new Function('return ' + entry))()
-      })() 
-    }"
-  `);
-});
-
-test('toRemote with entries and variables', () => {
-  expect(
-    toRemotesCodeString([
-      {
-        entries: {
-          DEV: 'window.devEntryUrl',
-          PROD: 'http://prod.com/entry.js',
-        },
-
-        keyResolver: `(()=>'DEV')()`,
-        name: 'mf',
-      },
-    ]),
-  ).toMatchInlineSnapshot(`
-    "mf: {
-      aliasName: "mf",
-      remoteName: "mf",
-      entry: (() => {
-        const entry = ({"DEV":"window.devEntryUrl","PROD":"http://prod.com/entry.js"})[(()=>'DEV')()];
-        return /^(https?:)?\\/\\//.test(entry)? entry : (new Function('return ' + entry))()
-      })() 
+      entry: ({"DEV":"http://dev.com/entry.js","PROD":"http://prod.com/entry.js"})[(()=>'DEV')()]
     }"
   `);
 });
@@ -103,41 +75,12 @@ test('toRemote with multi remotes', () => {
   ).toMatchInlineSnapshot(`
     "r1: {
       aliasName: "r1",
-      remoteName: "mf1",        
+      remoteName: "mf1",
       entry: "http://entry1.js"
     },
     r2: {
       aliasName: "r2",
-      remoteName: "mf2",        
-      entry: "http://entry2.js"
-    }"
-  `);
-});
-
-test('toRemote with multi remotes and variables', () => {
-  expect(
-    toRemotesCodeString([
-      {
-        entry: 'window.devEntryUrl',
-        aliasName: 'r1',
-        name: 'mf1',
-      },
-
-      {
-        entry: 'http://entry2.js',
-        aliasName: 'r2',
-        name: 'mf2',
-      },
-    ]),
-  ).toMatchInlineSnapshot(`
-    "r1: {
-      aliasName: "r1",
-      remoteName: "mf1",        
-      entry: (new Function('return "' + window.devEntryUrl + '"'))()
-    },
-    r2: {
-      aliasName: "r2",
-      remoteName: "mf2",        
+      remoteName: "mf2",
       entry: "http://entry2.js"
     }"
   `);

@@ -28,6 +28,7 @@ export default function mf(api: IApi) {
                 entry: zod.string().optional(),
                 entries: zod.object({}).optional(),
                 keyResolver: zod.string().optional(),
+                runtimeEntryPath: zod.object({}).optional(),
               }),
             ),
             shared: zod.record(zod.any()),
@@ -204,13 +205,13 @@ export default function mf(api: IApi) {
 
   function formatRemote(remote: any): string {
     if (remote.entry) {
-      if (/^(https?:)?\/\//.test(remote.entry)) {
+      if (!remote.runtimeEntryPath) {
         return `${remote.name}@${remote.entry}`;
       }
 
       return `promise new Promise(resolve => {
   const script = document.createElement('script')
-  script.src = (new Function('return ' + ${remote.entry}))()
+  script.src = window["mf_${remote.name}EntryPath"];
   script.onload = () => {
     // the injected script has loaded and is available on window
     // we can now resolve this Promise
@@ -237,7 +238,11 @@ export default function mf(api: IApi) {
   const entries = ${JSON.stringify(remote.entries)};
   const key = ${remote.keyResolver};
 
-  const remoteUrlWithVersion = /^(https?:)?\\/\\//.test(entries[key])? entries[key] : (new Function('return ' + entries[key]))();
+  const remoteUrlWithVersion = ${
+    remote.runtimeEntryPath
+      ? `window["mf_${remote.name}EntryPath"]`
+      : 'entries[key]'
+  }
   const script = document.createElement('script')
   script.src = remoteUrlWithVersion
   script.onload = () => {

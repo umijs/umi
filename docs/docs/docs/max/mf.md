@@ -41,6 +41,8 @@ export default defineConfig({
         aliasName: 'mfNameAlias',
         name: 'theMfName',
         entry: 'https://to.the.remote.com/remote.js',
+        // 可选，会让修改 mf entry 文件的 publicPath 为 window[`mf_${name}EntryPath`]
+        runtimeEntryPath: {},
       },
     ],
 
@@ -109,7 +111,6 @@ defineConfig({
           PROD: 'http://produ.mf.com/remote.js',
           TEST: 'http://test.dev.mf.com/remote.js',
           DEV: 'http://127.0.0.1:8000/remote.js',
-          VAR: 'window.mfRemoteUrl',
         },
       },
     ],
