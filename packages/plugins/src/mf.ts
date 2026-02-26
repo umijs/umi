@@ -210,6 +210,7 @@ export default function mf(api: IApi) {
       }
 
       return `promise new Promise(resolve => {
+
   const script = document.createElement('script')
   script.src = window["mf_${remote.name}EntryPath"];
   script.onload = () => {
