@@ -211,7 +211,7 @@ export default function mf(api: IApi) {
 
       return `promise new Promise(resolve => {
 
-  const script = document.createElement('script')
+  const script = document.createElement('script');
   script.src = window["mf_${remote.name}EntryPath"];
   script.onload = () => {
     // the injected script has loaded and is available on window
@@ -243,9 +243,9 @@ export default function mf(api: IApi) {
     remote.runtimeEntryPath
       ? `window["mf_${remote.name}EntryPath"]`
       : 'entries[key]'
-  }
-  const script = document.createElement('script')
-  script.src = remoteUrlWithVersion
+  };
+  const script = document.createElement('script');
+  script.src = remoteUrlWithVersion;
   script.onload = () => {
     // the injected script has loaded and is available on window
     // we can now resolve this Promise

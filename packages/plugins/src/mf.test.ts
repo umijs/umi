@@ -49,7 +49,7 @@ test('mf plugin add remotes with entry and name and runtimeEntryPath', async () 
       remotes: {
         bar: `promise new Promise(resolve => {
 
-  const script = document.createElement('script')
+  const script = document.createElement('script');
   script.src = window["mf_fooEntryPath"];
   script.onload = () => {
     // the injected script has loaded and is available on window
@@ -97,9 +97,9 @@ test('mf plugin add remotes with entries for different env', async () => {
   const entries = {"key1":"http://a.b/c.js","key2":"http://a.b/c.js"};
   const key = "key1";
 
-  const remoteUrlWithVersion = entries[key]
-  const script = document.createElement('script')
-  script.src = remoteUrlWithVersion
+  const remoteUrlWithVersion = entries[key];
+  const script = document.createElement('script');
+  script.src = remoteUrlWithVersion;
   script.onload = () => {
     // the injected script has loaded and is available on window
     // we can now resolve this Promise
@@ -147,9 +147,9 @@ test('mf plugin add remotes with entries for different env and runtimeEntryPath'
   const entries = {"key1":"http://a.b/c.js","key2":"http://a.b/c.js"};
   const key = "key1";
 
-  const remoteUrlWithVersion = window["mf_fooEntryPath"]
-  const script = document.createElement('script')
-  script.src = remoteUrlWithVersion
+  const remoteUrlWithVersion = window["mf_fooEntryPath"];
+  const script = document.createElement('script');
+  script.src = remoteUrlWithVersion;
   script.onload = () => {
     // the injected script has loaded and is available on window
     // we can now resolve this Promise
