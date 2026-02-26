@@ -2,6 +2,7 @@ type SimpleRemote = {
   entry: string;
   name: string;
   aliasName?: string;
+  runtimeEntryPath?: object;
 };
 
 type RemoteEntries = {
@@ -9,6 +10,7 @@ type RemoteEntries = {
   entries: object;
   keyResolver: string;
   aliasName?: string;
+  runtimeEntryPath?: object;
 };
 
 type Remote = SimpleRemote | RemoteEntries;
@@ -31,16 +33,22 @@ export function toRemotesCodeString(remotes: Remote[]): string {
     if (isSimpleRemote(r)) {
       res.push(`${aliasName}: {
   aliasName: "${aliasName}",
-  remoteName: "${remoteName}",        
-  entry: "${r.entry}"
+  remoteName: "${remoteName}",
+  entry: ${
+    r.runtimeEntryPath ? `window["mf_${r.name}EntryPath"]` : `"${r.entry}"`
+  }
 }`);
     }
 
     if (isRemoteEntries(r)) {
       res.push(`${aliasName}: {
   aliasName: "${aliasName}",
-  remoteName: "${remoteName}",        
-  entry: (${JSON.stringify(r.entries)})[${r.keyResolver}]
+  remoteName: "${remoteName}",
+  entry: ${
+    r.runtimeEntryPath
+      ? `window["mf_${r.name}EntryPath"]`
+      : `(${JSON.stringify(r.entries)})[${r.keyResolver}]`
+  }
 }`);
     }
   }

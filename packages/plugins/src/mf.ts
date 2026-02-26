@@ -28,6 +28,7 @@ export default function mf(api: IApi) {
                 entry: zod.string().optional(),
                 entries: zod.object({}).optional(),
                 keyResolver: zod.string().optional(),
+                runtimeEntryPath: zod.object({}).optional(),
               }),
             ),
             shared: zod.record(zod.any()),
@@ -204,17 +205,14 @@ export default function mf(api: IApi) {
 
   function formatRemote(remote: any): string {
     if (remote.entry) {
-      return `${remote.name}@${remote.entry}`;
-    }
+      if (!remote.runtimeEntryPath) {
+        return `${remote.name}@${remote.entry}`;
+      }
 
-    if (remote.entries && remote.keyResolver) {
-      const dynamicUrl = `promise new Promise(resolve => {
-  const entries = ${JSON.stringify(remote.entries)};
-  const key = ${remote.keyResolver};
+      return `promise new Promise(resolve => {
 
-  const remoteUrlWithVersion = entries[key];
-  const script = document.createElement('script')
-  script.src = remoteUrlWithVersion
+  const script = document.createElement('script');
+  script.src = window["mf_${remote.name}EntryPath"];
   script.onload = () => {
     // the injected script has loaded and is available on window
     // we can now resolve this Promise
@@ -222,13 +220,46 @@ export default function mf(api: IApi) {
       get: (request) => window.${remote.name}.get(request),
       init: (arg) => {
         try {
-          return window.${remote.name}.init(arg)
+          return window.${remote.name}.init(arg);
         } catch(e) {
-          console.log('remote container already initialized')
+          console.log('remote container already initialized');
         }
       }
     }
-    resolve(proxy)
+    resolve(proxy);
+  }
+  // inject this script with the src set to the versioned remoteEntry.js
+  document.head.appendChild(script);
+})
+`;
+    }
+
+    if (remote.entries && remote.keyResolver) {
+      const dynamicUrl = `promise new Promise(resolve => {
+  const entries = ${JSON.stringify(remote.entries)};
+  const key = ${remote.keyResolver};
+
+  const remoteUrlWithVersion = ${
+    remote.runtimeEntryPath
+      ? `window["mf_${remote.name}EntryPath"]`
+      : 'entries[key]'
+  };
+  const script = document.createElement('script');
+  script.src = remoteUrlWithVersion;
+  script.onload = () => {
+    // the injected script has loaded and is available on window
+    // we can now resolve this Promise
+    const proxy = {
+      get: (request) => window.${remote.name}.get(request),
+      init: (arg) => {
+        try {
+          return window.${remote.name}.init(arg);
+        } catch(e) {
+          console.log('remote container already initialized');
+        }
+      }
+    }
+    resolve(proxy);
   }
   // inject this script with the src set to the versioned remoteEntry.js
   document.head.appendChild(script);

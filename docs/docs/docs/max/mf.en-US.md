@@ -42,6 +42,8 @@ export default defineConfig({
         aliasName: 'mfNameAlias',
         name: 'theMfName',
         entry: 'https://to.the.remote.com/remote.js',
+        // Optional，will modify the publicPath of mf entry files to window[`mf_${name}EntryPath`]
+        runtimeEntryPath: {},
       },
     ],
 
