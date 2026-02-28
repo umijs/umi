@@ -1,0 +1,16 @@
+{
+  "name": "@example/with-utoopack-qiankun-slave",
+  "private": true,
+  "scripts": {
+    "build": "max build",
+    "dev": "max dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/max": "workspace:*",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
+}
