@@ -111,8 +111,21 @@ export async function dev(opts: IDevOpts) {
     createProxy(opts.config.proxy, app);
   }
 
+  const publicPathPrefix = (() => {
+    const p = opts.config.publicPath;
+    if (!p || p === '/' || p === 'auto') return null;
+    return p.startsWith('/') ? p : '/' + p;
+  })();
+
   app.use(
     proxy(`http://127.0.0.1:${utooServePort}`, {
+      proxyReqPathResolver: function (req: any) {
+        if (publicPathPrefix && req.url.startsWith(publicPathPrefix)) {
+          const stripped = req.url.slice(publicPathPrefix.length - 1);
+          return stripped || '/';
+        }
+        return req.url;
+      },
       proxyReqOptDecorator: function (proxyReqOpts: any) {
         // keep alive is on by default https://nodejs.org/docs/latest/api/http.html#httpglobalagent
         // 禁用 keep-alive
