@@ -845,6 +845,36 @@ import { Icon } from 'umi';
 <Icon icon="local:umi" />
 ```
 
+## 在路由中使用
+
+如需在路由中使用图标集，需要在 `include` 中配置要使用的 icon，可以这样使用。
+
+```ts
+function getIcons(routes) {
+  const icons = new Set<string>()
+  routes.forEach(v => {
+    if (v.icon && v.icon.includes(':')) icons.add(v.icon)
+    if (v.routes) getIcons(v.routes).forEach(v => icons.add(v))
+  })
+  return [...icons]
+}
+
+export default {
+  ...
+  icons: {
+    autoInstall: {},
+    include: [...getIcons(routes)],
+  },
+  ...
+}
+```
+
+```ts
+// routes
+[{ path: '/xxx', component: 'xxx', icon: 'fa:home' }]
+
+```
+
 ### 配置项介绍
 
 - `autoInstall` 表示是否自动安装 icon 集；tnpm/cnpm 客户端暂不支持，但可以通过手动按需安装对应 icon 集合包 `@iconify-json/collection-name` 。 参考：[Icon 集合列表](https://github.com/iconify/icon-sets/blob/master/collections.md), collection-name 为列表中的 ***Icon set prefix*** 项。
