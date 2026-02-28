@@ -104,7 +104,8 @@ export async function createHttpsServer(
 
   // Create server
   let createServer: typeof CreateServer;
-  if (httpsConfig.http2 === false) {
+  const nodeMajor = parseInt(process.versions.node.split('.')[0], 10);
+  if (httpsConfig.http2 === false || nodeMajor >= 24) {
     createServer = https.createServer;
   } else {
     try {
