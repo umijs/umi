@@ -446,7 +446,7 @@ ${
 function formatIcon(name: string) {
   return name
     .replace(name[0], name[0].toUpperCase())
-    .replace(/-(\w)/g, function(all, letter) {
+    .replace(/-(\\w)/g, function(all, letter) {
       return letter.toUpperCase();
     });
 }
