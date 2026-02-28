@@ -391,7 +391,6 @@ export async function getDevUtooPackConfig(
 
   const {
     publicPath,
-    runtimePublicPath,
     externals: userExternals,
     copy = [],
     svgr,
@@ -409,7 +408,12 @@ export async function getDevUtooPackConfig(
         output: {
           // utoopack 的 dev 需要默认清空产物目录
           clean: opts.clean === undefined ? true : opts.clean,
-          publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
+          // In dev mode, always use the actual publicPath so that the
+          // @utoo/pack dev server can correctly strip the prefix from
+          // incoming requests in order to locate files on disk.
+          // By the way, the runtimePublicPath is only relevant in build mode,
+          // So we do not need to deal with it here.
+          publicPath: publicPath || '/',
           ...(opts.disableCopy
             ? { copy: [] }
             : { copy: ['public'].concat(copy) }),
