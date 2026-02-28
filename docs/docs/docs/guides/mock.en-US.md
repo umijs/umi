@@ -101,7 +101,7 @@ export default {
 }
 ```
 
-For the APIs of `req` and `res`, refer to the [Express@4 official documentation](https://expressjs.com/en/api.html) for further understanding.
+For the APIs of `req` and `res`, refer to the [Express@4 official documentation](https://expressjs.com/en/4x/api.html) for further understanding.
 
 ### defineMock
 
