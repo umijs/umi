@@ -20,7 +20,12 @@
     "connect-history-api-fallback": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "express-http-proxy": "^2.1.1"
+    "express-http-proxy": "^2.1.1",
+    "less": "4.1.3",
+    "less-loader": "11.1.0",
+    "postcss": "^8.4.21",
+    "sass": "1.54.0",
+    "sass-loader": "13.2.0"
   },
   "devDependencies": {
     "father": "4.1.5"
