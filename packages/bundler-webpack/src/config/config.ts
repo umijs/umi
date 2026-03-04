@@ -170,6 +170,13 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     outputModule: !!userConfig.esm,
   });
 
+  // exportsPresence
+  if (userConfig.exportsPresence) {
+    config.module.parser.set('javascript', {
+      exportsPresence: userConfig.exportsPresence,
+    });
+  }
+
   // node polyfill
   await addNodePolyfill(applyOpts);
 

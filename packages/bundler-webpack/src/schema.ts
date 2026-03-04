@@ -81,6 +81,8 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
       ]),
     devtool: ({ zod }) => zod.union([zod.enum(devTool as any), zod.boolean()]),
     esm: ({ zod }) => zod.object({}),
+    exportsPresence: ({ zod }) =>
+      zod.enum(['error', 'warn', 'auto']).optional(),
     externals: ({ zod }) =>
       zod.union([
         zod.record(zod.string(), zod.any()),

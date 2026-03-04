@@ -78,6 +78,7 @@ export interface IConfig {
   https?: HttpsServerOptions;
   externals?: WebpackConfig['externals'];
   esm?: { [key: string]: any };
+  exportsPresence?: 'error' | 'warn' | 'auto';
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
   extraBabelIncludes?: Array<string | RegExp>;
