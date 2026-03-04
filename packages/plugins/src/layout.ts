@@ -576,7 +576,7 @@ export function getRightRenderContent (opts: {
   return (
     <div className="umi-plugin-layout-right anticon">
       {opts.runtimeConfig.logout ? (
-        <Dropdown {...dropdownProps} overlayClassName="umi-plugin-layout-container">
+        <Dropdown {...dropdownProps} rootClassName="umi-plugin-layout-container">
           {avatar}
         </Dropdown>
       ) : (
