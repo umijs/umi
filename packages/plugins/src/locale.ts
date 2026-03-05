@@ -43,6 +43,7 @@ export default (api: IApi) => {
     useLocalStorage: true,
     baseSeparator: '-',
     antd: hasAntd,
+    localStorageKey: 'umi_locale',
   };
 
   api.describe({
@@ -57,6 +58,7 @@ export default (api: IApi) => {
             title: zod.boolean(),
             antd: zod.boolean(),
             baseSeparator: zod.string(),
+            localStorageKey: zod.string(),
           })
           .partial();
       },
@@ -120,7 +122,14 @@ export default (api: IApi) => {
       dirname(require.resolve('event-emitter/package')),
     );
 
-    const { baseSeparator, baseNavigator, antd, title, useLocalStorage } = {
+    const {
+      baseSeparator,
+      baseNavigator,
+      antd,
+      title,
+      useLocalStorage,
+      localStorageKey,
+    } = {
       ...defaultConfig,
       ...(api.config.locale as ILocaleConfig),
     };
@@ -207,6 +216,7 @@ export default (api: IApi) => {
         DefaultLocale: JSON.stringify(defaultLocale),
         warningPkgPath: winPath(dirname(require.resolve('warning/package'))),
         reactIntlPkgPath,
+        localStorageKey: JSON.stringify(localStorageKey),
       }),
     });
     // runtime.tsx
