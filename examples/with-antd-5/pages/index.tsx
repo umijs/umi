@@ -11,6 +11,7 @@ import type { ConfigProviderProps } from 'antd/es/config-provider';
 import { useState } from 'react';
 import {
   getLocale,
+  SelectLang,
   setLocale,
   useAntdConfig,
   useAntdConfigSetter,
@@ -112,6 +113,7 @@ export default function Page() {
           }}
         ></Switch>
       </Space>
+      <SelectLang />
     </div>
   );
 }
