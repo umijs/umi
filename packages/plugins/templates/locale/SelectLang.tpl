@@ -21,12 +21,18 @@ export interface HeaderDropdownProps extends DropDownProps {
 const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
   overlayClassName: cls,
   ...restProps
-}) => (
-  <Dropdown
-    overlayClassName={cls}
-    {...restProps}
-  />
-);
+}) => {
+  const isModern = parseInt(version.split('.')[0], 10) >= 5;
+  const overlayClassNameProps = isModern
+    ? { classNames: { root: cls } }
+    : { overlayClassName: cls };
+  return (
+    <Dropdown
+      {...overlayClassNameProps}
+      {...restProps}
+    />
+  );
+};
 {{/Antd}}
 
 interface LocalData {
