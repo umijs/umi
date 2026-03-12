@@ -1,6 +1,6 @@
 import { getNpmClient, importLazy, winPath } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
-import { join, resolve } from 'path';
+import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
+import { basename, dirname, join, resolve } from 'path';
 import { parse } from '../../../compiled/ini';
 import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
@@ -159,9 +159,38 @@ export default (api: IApi) => {
 
   function getGlobalFiles() {
     const absSrcPath = api.paths.absSrcPath;
+
+    const getActualFilePath = (filePath: string): string | null => {
+      const dir = dirname(filePath);
+      const base = basename(filePath);
+
+      if (!existsSync(dir)) {
+        return null;
+      }
+
+      try {
+        const files = readdirSync(dir);
+        const lowerBase = base.toLowerCase();
+
+        const matchedFile = files.find((file) => {
+          return file.toLowerCase() === lowerBase;
+        });
+
+        if (matchedFile) {
+          const fullPath = join(dir, matchedFile);
+          if (statSync(fullPath).isFile()) {
+            return fullPath;
+          }
+        }
+      } catch {}
+
+      return null;
+    };
+
     const existsAndPushFile = (memo: string[], file: string) => {
       if (existsSync(file)) {
-        memo.push(file);
+        const actualPath = getActualFilePath(file);
+        memo.push(actualPath || file);
       }
       return memo;
     };
@@ -178,7 +207,12 @@ export default (api: IApi) => {
     const loadingFile = expandJSPaths(join(absSrcPath, 'loading')).find(
       existsSync,
     );
-    const globalLoading = loadingFile ? winPath(loadingFile) : undefined;
+    const loadingFileFixed = loadingFile
+      ? getActualFilePath(loadingFile) || loadingFile
+      : undefined;
+    const globalLoading = loadingFileFixed
+      ? winPath(loadingFileFixed)
+      : undefined;
 
     const overridesCSS = [getOverridesCSS(api.paths.absSrcPath)].filter(
       Boolean,
