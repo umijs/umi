@@ -8,7 +8,6 @@ import { getLocale, getAllLocales, setLocale } from './localeExports';
 
 {{#Antd}}
 export interface HeaderDropdownProps extends DropDownProps {
-  overlayClassName?: string;
   placement?:
     | 'bottomLeft'
     | 'bottomRight'
@@ -19,11 +18,9 @@ export interface HeaderDropdownProps extends DropDownProps {
 }
 
 const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
-  overlayClassName: cls,
   ...restProps
 }) => (
   <Dropdown
-    overlayClassName={cls}
     {...restProps}
   />
 );
