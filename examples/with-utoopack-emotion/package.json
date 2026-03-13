@@ -1,0 +1,18 @@
+{
+  "name": "@example/with-utoopack-emotion",
+  "private": true,
+  "scripts": {
+    "build": "max build",
+    "dev": "max dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@umijs/max": "workspace:*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
