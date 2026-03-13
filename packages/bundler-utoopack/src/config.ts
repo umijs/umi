@@ -260,6 +260,9 @@ export async function getProdUtooPackConfig(
   ];
 
   const modularizeImports = getModularizeImports(extraBabelPlugins);
+  const emotion = extraBabelPlugins.some((p) => {
+    return p === '@emotion' || p === '@emotion/babel-plugin';
+  });
 
   // Convert webpack's process.env format to utoopack format
   const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
@@ -303,6 +306,7 @@ export async function getProdUtooPackConfig(
             ...opts.config.lessLoader,
           },
           sass: opts.config.sassLoader ?? undefined,
+          emotion,
         },
         // Override process.env for utoopack format
         define: {
@@ -385,6 +389,9 @@ export async function getDevUtooPackConfig(
   ];
 
   const modularizeImports = getModularizeImports(extraBabelPlugins);
+  const emotion = extraBabelPlugins.some((p) => {
+    return p === '@emotion' || p === '@emotion/babel-plugin';
+  });
 
   // Convert webpack's process.env format to utoopack format
   const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
@@ -430,6 +437,7 @@ export async function getDevUtooPackConfig(
             ...opts.config.lessLoader,
           },
           sass: opts.config.sassLoader ?? undefined,
+          emotion,
         },
         // Override process.env for utoopack format
         define: {
