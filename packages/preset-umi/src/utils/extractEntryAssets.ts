@@ -58,3 +58,35 @@ export function extractEntryAssets(entryPointFiles: string[]): EntryAssets {
 
   return assets;
 }
+
+// utoopack only need to deal css chunk file instead of js chunk.
+export function extractUtooEntryAssets(entryPointFiles: string[]): EntryAssets {
+  const assets: EntryAssets = {
+    js: [],
+    css: [],
+  };
+
+  const UMI_CSS_REG = /^umi(\..+)?\.css$/;
+  const cssPublicPathMap: Record<string, boolean> = {};
+  const cssExtensionRegexp = /\.(css)(\?|$)/;
+
+  entryPointFiles.forEach((entryPointPublicPath) => {
+    if (!cssExtensionRegexp.test(entryPointPublicPath)) {
+      return;
+    }
+
+    // umi css 在 html 默认注入，不在这里重复处理
+    if (UMI_CSS_REG.test(entryPointPublicPath)) {
+      return;
+    }
+
+    if (cssPublicPathMap[entryPointPublicPath]) {
+      return;
+    }
+
+    cssPublicPathMap[entryPointPublicPath] = true;
+    assets.css.push(entryPointPublicPath);
+  });
+
+  return assets;
+}
