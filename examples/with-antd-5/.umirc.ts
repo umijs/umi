@@ -5,6 +5,7 @@ export default {
     default: 'zh-CN',
   },
   utoopack: {},
+  // mako: {},
   antd: {
     // valid for antd5.0 only
     theme: {

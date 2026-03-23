@@ -2,7 +2,7 @@
   "name": "@example/with-antd-5",
   "private": true,
   "scripts": {
-    "build": "umi build",
+    "build": "COMPRESS=none umi build",
     "dev": "umi dev",
     "preview": "umi preview",
     "setup": "umi setup",

@@ -3,7 +3,7 @@ import { join } from 'path';
 import { IApi, webpack } from '../../types';
 import {
   EntryAssets,
-  extractEntryAssets,
+  extractUtooEntryAssets,
 } from '../../utils/extractEntryAssets';
 
 export default (api: IApi) => {
@@ -78,7 +78,7 @@ export default (api: IApi) => {
       }
     }
 
-    const entryAssets = extractEntryAssets(Array.from(entryPointFiles));
+    const entryAssets = extractUtooEntryAssets(Array.from(entryPointFiles));
     Object.entries(entryAssets).forEach(([ext, files]) => {
       if (!Array.isArray(assets[ext])) {
         assets[ext] = [];
@@ -98,7 +98,7 @@ export default (api: IApi) => {
       }
     }
 
-    const entryAssets = extractEntryAssets(Array.from(entryPointFiles));
+    const entryAssets = extractUtooEntryAssets(Array.from(entryPointFiles));
     Object.entries(entryAssets).forEach(([ext, files]) => {
       if (!Array.isArray(assets[ext])) {
         assets[ext] = [];
