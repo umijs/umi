@@ -443,6 +443,8 @@ export async function getDevUtooPackConfig(
         define: {
           'process.env': JSON.stringify(processEnvForUtoopack),
         },
+        // dev enable persistent cache by default
+        persistentCaching: true,
         nodePolyfill: true,
         externals: normalizedExternals,
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
