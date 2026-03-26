@@ -5,6 +5,7 @@ export default {
     default: 'zh-CN',
   },
   utoopack: {},
+  crossorigin: {},
   // mako: {},
   antd: {
     // valid for antd5.0 only
