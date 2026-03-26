@@ -277,6 +277,12 @@ export async function getProdUtooPackConfig(
     inlineLimit,
   } = opts.config;
 
+  // TODO: move to utoopack compatwebpackOptions
+  let crossOriginLoading: string | boolean = false;
+  if (webpackConfig.output?.crossOriginLoading) {
+    crossOriginLoading = webpackConfig.output.crossOriginLoading;
+  }
+
   utooBundlerOpts = {
     ...utooBundlerOpts,
     config: lodash.merge(
@@ -288,6 +294,7 @@ export async function getProdUtooPackConfig(
           ...(opts.disableCopy
             ? { copy: [] }
             : { copy: ['public'].concat(copy) }),
+          crossOriginLoading,
         },
         optimization: {
           modularizeImports,
