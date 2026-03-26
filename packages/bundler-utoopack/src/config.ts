@@ -406,7 +406,11 @@ export async function getDevUtooPackConfig(
     inlineLimit,
   } = opts.config;
 
-  const normalizedExternals = getNormalizedExternals(userExternals);
+  // TODO: move to utoopack compatwebpackOptions
+  let crossOriginLoading: string | boolean = false;
+  if (webpackConfig.output?.crossOriginLoading) {
+    crossOriginLoading = webpackConfig.output.crossOriginLoading;
+  }
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -420,6 +424,7 @@ export async function getDevUtooPackConfig(
           ...(opts.disableCopy
             ? { copy: [] }
             : { copy: ['public'].concat(copy) }),
+          crossOriginLoading,
         },
         resolve: {
           alias: getNormalizedAlias(
@@ -446,7 +451,7 @@ export async function getDevUtooPackConfig(
         // dev enable persistent cache by default
         persistentCaching: true,
         nodePolyfill: true,
-        externals: normalizedExternals,
+        externals: getNormalizedExternals(userExternals),
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
       opts.config.utoopack || {},
