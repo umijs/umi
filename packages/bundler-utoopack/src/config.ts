@@ -3,7 +3,8 @@ import { getConfig } from '@umijs/bundler-webpack';
 import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
-import { extname } from 'path';
+import fs from 'fs';
+import { extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
 /**
@@ -119,8 +120,33 @@ function getNormalizedAlias(
     ) {
       continue;
     }
-    if (extname(value)) {
-      continue;
+
+    // `path.extname()` can treat the last segment of a directory path as an
+    // extension when the directory name contains a dot.
+    // Example: `/path/to/foo.v1` (a directory) returns `.v1`, which would
+    // incorrectly trigger `continue`.
+    // Prefer filesystem checks first; if unresolved, keep the original behavior.
+    const ext = extname(value);
+    if (ext) {
+      let isDirectory = false;
+      const candidates = [...new Set([value, pathResolve(rootDir, value)])];
+
+      for (const candidate of candidates) {
+        try {
+          const stat = fs.statSync(candidate);
+          if (stat.isDirectory()) {
+            // Directories should not be skipped because we need wildcard aliases.
+            isDirectory = true;
+            break;
+          }
+          // For files, keep isDirectory=false and skip below.
+        } catch (e) {
+          // ignore; if all candidates fail, fall back to old behavior below
+        }
+      }
+
+      // If unresolved or confirmed as a file, preserve the original skip behavior.
+      if (!isDirectory) continue;
     }
     // Add wildcard version for directory aliases
     newAlias[`${key}/*`] = `${value}/*`;
