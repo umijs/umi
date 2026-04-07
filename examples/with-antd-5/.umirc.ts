@@ -1,8 +1,14 @@
+// @ts-ignore make lsp happy
+process.env.CI = true;
+
 export default {
   plugins: ['@umijs/plugins/dist/antd', '@umijs/plugins/dist/locale'],
   locale: {
     title: true,
     default: 'zh-CN',
+  },
+  define: {
+    'process.env.CI': process.env.CI,
   },
   utoopack: {},
   crossorigin: {},
