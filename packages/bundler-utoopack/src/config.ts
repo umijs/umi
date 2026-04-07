@@ -7,38 +7,15 @@ import fs from 'fs';
 import { extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
-/**
- * Convert webpack DefinePlugin's process.env format to utoopack format
- * Webpack format: { 'process.env': { NODE_ENV: '"development"', API_URL: '"https://api.example.com"' } }
- * Utoopack format: { 'process.env': '{"NODE_ENV":"development","API_URL":"https://api.example.com"}' }
- */
-function convertProcessEnvForUtoopack(webpackConfig: any): Record<string, any> {
-  let processEnvForUtoopack: Record<string, any> = {};
-
-  if (webpackConfig.plugins) {
-    const definePlugin = webpackConfig.plugins.find(
-      (plugin: any) => plugin.constructor.name === 'DefinePlugin',
-    ) as any;
-
-    if (definePlugin?.definitions?.['process.env']) {
-      // Convert webpack's individual stringified env values back to objects
-      for (const [key, value] of Object.entries(
-        definePlugin.definitions['process.env'],
-      )) {
-        if (
-          typeof value === 'string' &&
-          value.startsWith('"') &&
-          value.endsWith('"')
-        ) {
-          processEnvForUtoopack[key] = JSON.parse(value);
-        } else {
-          processEnvForUtoopack[key] = value;
-        }
-      }
-    }
+function normalizeDefineValue(val: any) {
+  if (!lodash.isPlainObject(val)) {
+    return JSON.stringify(val);
+  } else {
+    return Object.keys(val).reduce((obj: Record<string, any>, key: string) => {
+      obj[key] = normalizeDefineValue(val[key]);
+      return obj;
+    }, {});
   }
-
-  return processEnvForUtoopack;
 }
 
 function getModularizeImports(extraBabelPlugins: any[]) {
@@ -290,8 +267,18 @@ export async function getProdUtooPackConfig(
     return p === '@emotion' || p === '@emotion/babel-plugin';
   });
 
-  // Convert webpack's process.env format to utoopack format
-  const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
+  const define: Record<string, any> = {};
+  if (opts.config.define) {
+    for (const key of Object.keys(opts.config.define)) {
+      define[key] = normalizeDefineValue(opts.config.define[key]);
+    }
+  }
+
+  if (process.env.SOCKET_SERVER) {
+    define['process.env.SOCKET_SERVER'] = normalizeDefineValue(
+      process.env.SOCKET_SERVER,
+    );
+  }
 
   const {
     publicPath,
@@ -306,7 +293,7 @@ export async function getProdUtooPackConfig(
   utooBundlerOpts = {
     ...utooBundlerOpts,
     config: lodash.merge(
-      utooBundlerOpts.config,
+      lodash.omit(utooBundlerOpts.config, ['define']),
       {
         output: {
           clean: opts.clean,
@@ -334,10 +321,7 @@ export async function getProdUtooPackConfig(
           sass: opts.config.sassLoader ?? undefined,
           emotion,
         },
-        // Override process.env for utoopack format
-        define: {
-          'process.env': JSON.stringify(processEnvForUtoopack),
-        },
+        define,
         nodePolyfill: true,
         externals: getNormalizedExternals(userExternals),
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
@@ -419,8 +403,18 @@ export async function getDevUtooPackConfig(
     return p === '@emotion' || p === '@emotion/babel-plugin';
   });
 
-  // Convert webpack's process.env format to utoopack format
-  const processEnvForUtoopack = convertProcessEnvForUtoopack(webpackConfig);
+  const define: Record<string, any> = {};
+  if (opts.config.define) {
+    for (const key of Object.keys(opts.config.define)) {
+      define[key] = normalizeDefineValue(opts.config.define[key]);
+    }
+  }
+
+  if (process.env.SOCKET_SERVER) {
+    define['process.env.SOCKET_SERVER'] = normalizeDefineValue(
+      process.env.SOCKET_SERVER,
+    );
+  }
 
   const {
     publicPath,
@@ -435,10 +429,9 @@ export async function getDevUtooPackConfig(
   utooBundlerOpts = {
     ...utooBundlerOpts,
     config: lodash.merge(
-      utooBundlerOpts.config,
+      lodash.omit(utooBundlerOpts.config, ['define']),
       {
         output: {
-          // utoopack 的 dev 需要默认清空产物目录
           clean: opts.clean === undefined ? true : opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
           ...(opts.disableCopy
@@ -463,10 +456,7 @@ export async function getDevUtooPackConfig(
           sass: opts.config.sassLoader ?? undefined,
           emotion,
         },
-        // Override process.env for utoopack format
-        define: {
-          'process.env': JSON.stringify(processEnvForUtoopack),
-        },
+        define,
         // dev enable persistent cache by default
         persistentCaching: true,
         nodePolyfill: true,
