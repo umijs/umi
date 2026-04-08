@@ -31,5 +31,6 @@ export default defineConfig({
     },
   ],
   npmClient: '{{{ npmClient }}}',
+  utoopack: {},
 });
 

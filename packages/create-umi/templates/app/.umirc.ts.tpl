@@ -6,4 +6,5 @@ export default defineConfig({
     { path: "/docs", component: "docs" },
   ],
   npmClient: '{{{ npmClient }}}',
+  utoopack: {},
 });
