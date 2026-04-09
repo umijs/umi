@@ -1,4 +1,4 @@
-import { importLazy, lodash, winPath } from '@umijs/utils';
+import { importLazy, lodash, semver, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join, relative } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -46,7 +46,9 @@ export default (api: IApi) => {
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
     const umiTempDir = `${srcPrefix}.${frameworkName}`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
-    const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
+    const isGreaterThan5 =
+      api.appData.typescript.tsVersion &&
+      semver.major(api.appData.typescript.tsVersion) >= 5;
     const isTslibInstalled = !!api.appData.typescript.tslibVersion;
 
     // https://github.com/umijs/umi/issues/12545
@@ -66,13 +68,12 @@ export default (api: IApi) => {
         lib: ['dom', 'dom.iterable', 'esnext'],
         allowJs: true,
         skipLibCheck: true,
-        moduleResolution: isTs5 ? 'bundler' : 'node',
+        moduleResolution: isGreaterThan5 ? 'bundler' : 'node',
         importHelpers: isTslibInstalled,
         noEmit: true,
         jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
         esModuleInterop: true,
         sourceMap: true,
-        baseUrl,
         strict: true,
         resolveJsonModule: true,
         allowSyntheticDefaultImports: true,
@@ -87,11 +88,11 @@ export default (api: IApi) => {
           : {}),
 
         paths: {
-          '@/*': [`${srcPrefix}*`],
-          '@@/*': [`${umiTempDir}/*`],
+          '@/*': [`${baseUrl}${srcPrefix}*`],
+          '@@/*': [`${baseUrl}${umiTempDir}/*`],
           [`${api.appData.umi.importSource}`]: [relativeUmiDirPath],
           [`${api.appData.umi.importSource}/typings`]: [
-            `${umiTempDir}/typings`,
+            `${baseUrl}${umiTempDir}/typings`,
           ],
           ...(api.config.vite
             ? {
