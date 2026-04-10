@@ -2534,9 +2534,6 @@ importers:
       '@iconify/utils':
         specifier: 2.1.1
         version: 2.1.1
-      '@stagewise/toolbar':
-        specifier: 0.6.2
-        version: 0.6.2
       '@svgr/core':
         specifier: 6.5.1
         version: 6.5.1
@@ -17893,10 +17890,6 @@ packages:
   /@stackblitz/sdk@1.9.0:
     resolution: {integrity: sha512-3m6C7f8pnR5KXys/Hqx2x6ylnpqOak6HtnZI6T5keEO0yT+E4Spkw37VEbdwuC+2oxmjdgq6YZEgiKX7hM1GmQ==}
     dev: true
-
-  /@stagewise/toolbar@0.6.2:
-    resolution: {integrity: sha512-WN7PWaOT6YQKjJYL4/85V5UU0eZEws+/UBT/J4wJOEbFxoluLuchqh7xVTmUZTtw0q0xpzlgX8Vb0kAZf/pjmw==}
-    dev: false
 
   /@stitches/core@1.2.8:
     resolution: {integrity: sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==}

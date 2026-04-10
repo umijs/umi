@@ -35,7 +35,6 @@ export default () => {
       require.resolve('./features/polyfill/publicPathPolyfill'),
       require.resolve('./features/prepare/prepare'),
       require.resolve('./features/routePrefetch/routePrefetch'),
-      require.resolve('./features/stagewise/stagewise'),
       require.resolve('./features/terminal/terminal'),
 
       // 1. generate tmp files
