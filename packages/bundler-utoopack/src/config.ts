@@ -266,7 +266,6 @@ export async function getProdUtooPackConfig(
   const emotion = extraBabelPlugins.some((p) => {
     return p === '@emotion' || p === '@emotion/babel-plugin';
   });
-
   const define: Record<string, any> = {};
   if (opts.config.define) {
     for (const key of Object.keys(opts.config.define)) {
@@ -319,7 +318,7 @@ export async function getProdUtooPackConfig(
             ...opts.config.lessLoader,
           },
           sass: opts.config.sassLoader ?? undefined,
-          emotion,
+          emotion: emotion || undefined,
         },
         define,
         nodePolyfill: true,
@@ -454,7 +453,7 @@ export async function getDevUtooPackConfig(
             ...opts.config.lessLoader,
           },
           sass: opts.config.sassLoader ?? undefined,
-          emotion,
+          emotion: emotion || undefined,
         },
         define,
         // dev enable persistent cache by default
