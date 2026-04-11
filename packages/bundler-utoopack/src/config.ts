@@ -226,6 +226,75 @@ function getSvgModuleRules(opts: {
   };
 }
 
+function appendPostcssPlugin(postcssConfig: any, plugin: [string, any]) {
+  const [pluginName, pluginOptions = {}] = plugin;
+
+  if (postcssConfig == null) {
+    return {
+      plugins: {
+        [pluginName]: pluginOptions,
+      },
+    };
+  }
+
+  if (!lodash.isPlainObject(postcssConfig)) {
+    throw new Error(
+      `Utoopack styles.postcss must be an object when extraPostCSSPlugins is used.`,
+    );
+  }
+
+  const existingPlugins = postcssConfig.plugins;
+  if (existingPlugins != null && !lodash.isPlainObject(existingPlugins)) {
+    throw new Error(
+      `Utoopack styles.postcss.plugins must be an object when extraPostCSSPlugins is used.`,
+    );
+  }
+
+  return {
+    ...postcssConfig,
+    plugins: {
+      ...(existingPlugins || {}),
+      [pluginName]: pluginOptions,
+    },
+  };
+}
+
+function normalizeExtraPostcssPlugin(plugin: any): [string, any][] {
+  if (typeof plugin === 'string') {
+    return [[plugin, {}]];
+  }
+
+  if (
+    Array.isArray(plugin) &&
+    typeof plugin[0] === 'string' &&
+    plugin.length <= 2
+  ) {
+    return [[plugin[0], plugin[1] ?? {}]];
+  }
+
+  if (lodash.isPlainObject(plugin)) {
+    return Object.entries(plugin);
+  }
+
+  throw new Error(
+    `Utoopack only supports JSON-serializable extraPostCSSPlugins entries. Please use plugin names or [pluginName, options] tuples instead.`,
+  );
+}
+
+function mergeExtraPostcssPlugins(
+  postcssConfig: any,
+  extraPlugins: any[] = [],
+) {
+  return extraPlugins.reduce((memo, plugin) => {
+    return normalizeExtraPostcssPlugin(plugin).reduce(
+      (ret, normalizedPlugin) => {
+        return appendPostcssPlugin(ret, normalizedPlugin);
+      },
+      memo,
+    );
+  }, postcssConfig);
+}
+
 export async function getProdUtooPackConfig(
   opts: IOpts,
 ): Promise<BundleOptions> {
@@ -278,6 +347,9 @@ export async function getProdUtooPackConfig(
       process.env.SOCKET_SERVER,
     );
   }
+  const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
+    ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
+    : undefined;
 
   const {
     publicPath,
@@ -317,6 +389,7 @@ export async function getProdUtooPackConfig(
             javascriptEnabled: true,
             ...opts.config.lessLoader,
           },
+          postcss: normalizedPostcssConfig,
           sass: opts.config.sassLoader ?? undefined,
           emotion: emotion || undefined,
         },
@@ -414,6 +487,9 @@ export async function getDevUtooPackConfig(
       process.env.SOCKET_SERVER,
     );
   }
+  const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
+    ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
+    : undefined;
 
   const {
     publicPath,
@@ -452,6 +528,7 @@ export async function getDevUtooPackConfig(
             javascriptEnabled: true,
             ...opts.config.lessLoader,
           },
+          postcss: normalizedPostcssConfig,
           sass: opts.config.sassLoader ?? undefined,
           emotion: emotion || undefined,
         },
