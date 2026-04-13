@@ -299,6 +299,66 @@ function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
   return lodash.omit(utoopackConfig, ['root']);
 }
 
+type ISharedUtooPackOpts = Pick<
+  IDevOpts,
+  | 'cwd'
+  | 'rootDir'
+  | 'entry'
+  | 'config'
+  | 'babelPreset'
+  | 'beforeBabelPlugins'
+  | 'extraBabelPlugins'
+  | 'beforeBabelPresets'
+  | 'extraBabelPresets'
+  | 'chainWebpack'
+  | 'modifyWebpackConfig'
+  | 'pkg'
+  | 'disableCopy'
+>;
+
+function getWebpackExtraBabelPlugins(opts: ISharedUtooPackOpts) {
+  return [
+    ...(opts.beforeBabelPlugins || []),
+    ...(opts.extraBabelPlugins || []),
+  ];
+}
+
+function getWebpackExtraBabelPresets(opts: ISharedUtooPackOpts) {
+  return [
+    ...(opts.beforeBabelPresets || []),
+    ...(opts.extraBabelPresets || []),
+  ];
+}
+
+function getUtooExtraBabelPlugins(opts: ISharedUtooPackOpts) {
+  return [
+    ...(opts.extraBabelPlugins || []),
+    ...(opts.config.extraBabelPlugins || []),
+  ];
+}
+
+async function getWebpackConfigForUtooPack(
+  opts: ISharedUtooPackOpts,
+  env: 'production' | 'development',
+  extraConfig: Partial<Parameters<typeof getConfig>[0]> = {},
+) {
+  return getConfig({
+    cwd: opts.cwd,
+    rootDir: opts.rootDir,
+    env: env as any,
+    entry: opts.entry,
+    userConfig: opts.config,
+    analyze: process.env.ANALYZE,
+    babelPreset: opts.babelPreset,
+    extraBabelPlugins: getWebpackExtraBabelPlugins(opts),
+    extraBabelPresets: getWebpackExtraBabelPresets(opts),
+    extraBabelIncludes: opts.config.extraBabelIncludes,
+    chainWebpack: opts.chainWebpack,
+    modifyWebpackConfig: opts.modifyWebpackConfig,
+    ...extraConfig,
+  });
+}
+
 function getBaseUtooPackConfig(webpackConfig: WebpackConfig): BundleOptions {
   return compatOptionsFromWebpack({
     ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
@@ -415,33 +475,12 @@ function getMergedUtooPackConfig(opts: {
 export async function getProdUtooPackConfig(
   opts: IOpts,
 ): Promise<BundleOptions> {
-  const webpackConfig = await getConfig({
-    cwd: opts.cwd,
-    rootDir: opts.rootDir,
-    env: 'production' as any,
-    entry: opts.entry,
-    userConfig: opts.config,
-    analyze: process.env.ANALYZE,
-    babelPreset: opts.babelPreset,
-    extraBabelPlugins: [
-      ...(opts.beforeBabelPlugins || []),
-      ...(opts.extraBabelPlugins || []),
-    ],
-    extraBabelPresets: [
-      ...(opts.beforeBabelPresets || []),
-      ...(opts.extraBabelPresets || []),
-    ],
-    extraBabelIncludes: opts.config.extraBabelIncludes,
-    chainWebpack: opts.chainWebpack,
-    modifyWebpackConfig: opts.modifyWebpackConfig,
+  const webpackConfig = await getWebpackConfigForUtooPack(opts, 'production', {
     pkg: opts.pkg,
     disableCopy: opts.disableCopy,
   });
 
-  const extraBabelPlugins = [
-    ...(opts.extraBabelPlugins || []),
-    ...(opts.config.extraBabelPlugins || []),
-  ];
+  const extraBabelPlugins = getUtooExtraBabelPlugins(opts);
 
   return getMergedUtooPackConfig({
     utooBundlerOpts: getBaseUtooPackConfig(webpackConfig),
@@ -488,33 +527,12 @@ export type IDevOpts = {
 export async function getDevUtooPackConfig(
   opts: IDevOpts,
 ): Promise<BundleOptions> {
-  const webpackConfig = await getConfig({
-    cwd: opts.cwd,
-    rootDir: opts.rootDir,
-    env: 'development' as any,
-    entry: opts.entry,
-    userConfig: opts.config,
-    babelPreset: opts.babelPreset,
-    extraBabelPlugins: [
-      ...(opts.beforeBabelPlugins || []),
-      ...(opts.extraBabelPlugins || []),
-    ],
-    extraBabelPresets: [
-      ...(opts.beforeBabelPresets || []),
-      ...(opts.extraBabelPresets || []),
-    ],
-    extraBabelIncludes: opts.config.extraBabelIncludes,
-    chainWebpack: opts.chainWebpack,
-    modifyWebpackConfig: opts.modifyWebpackConfig,
+  const webpackConfig = await getWebpackConfigForUtooPack(opts, 'development', {
     // TO avoild bundler webpack add extra entry.
     hmr: false,
-    analyze: process.env.ANALYZE,
   });
 
-  const extraBabelPlugins = [
-    ...(opts.extraBabelPlugins || []),
-    ...(opts.config.extraBabelPlugins || []),
-  ];
+  const extraBabelPlugins = getUtooExtraBabelPlugins(opts);
 
   return {
     ...getMergedUtooPackConfig({
