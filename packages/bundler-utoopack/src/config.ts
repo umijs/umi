@@ -396,7 +396,7 @@ export async function getProdUtooPackConfig(
           },
           // postcss: normalizedPostcssConfig,
           sass: opts.config.sassLoader ?? undefined,
-          emotion: emotion || undefined,
+          emotion,
         },
         define,
         nodePolyfill: true,
@@ -536,7 +536,7 @@ export async function getDevUtooPackConfig(
           },
           // postcss: normalizedPostcssPlugin,
           sass: opts.config.sassLoader ?? undefined,
-          emotion: emotion || undefined,
+          emotion,
         },
         define,
         // dev enable persistent cache by default
