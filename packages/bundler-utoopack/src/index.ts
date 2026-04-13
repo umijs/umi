@@ -23,8 +23,6 @@ export async function build(opts: IOpts) {
     rootDir,
   });
 
-  // console.log('utooPackConfig: ', JSON.stringify(utooPackConfig, null, 2));
-
   try {
     await utooPackBuild(utooPackConfig, cwd, rootDir);
   } catch (e: any) {

@@ -2,26 +2,26 @@ import React from 'react';
 
 const badges = [
   'Tailwind CSS v4',
-  '@tailwindcss/postcss',
-  'extraPostCSSPlugins',
-  'User-land setup',
+  '@umijs/plugins',
+  '@tailwindcss/cli',
+  'tailwindcss: {}',
 ];
 
 const cards = [
   {
-    title: 'CSS-first entry',
+    title: 'Official Umi plugin',
     description:
-      'The example imports tailwind.css directly and lets PostCSS expand the framework styles during bundling.',
+      'The example enables @umijs/plugins/dist/tailwindcss and keeps the setup aligned with the standard Umi Tailwind workflow.',
   },
   {
-    title: 'Works with Umi config',
+    title: 'Tailwind CSS v4 ready',
     description:
-      'This example passes @tailwindcss/postcss through extraPostCSSPlugins and lets bundler-utoopack bridge it into its PostCSS pipeline.',
+      'Tailwind CSS v4 runs through the plugin with @tailwindcss/cli, so the example no longer needs manual PostCSS wiring.',
   },
   {
-    title: 'No generated temp CSS',
+    title: 'CSS-first authoring',
     description:
-      'Tailwind v4 runs directly in the normal PostCSS pipeline, so there is no separate CLI process generating a temp stylesheet.',
+      'The stylesheet still uses Tailwind v4 syntax with @import "tailwindcss" and @source for template scanning.',
   },
 ];
 
@@ -31,17 +31,17 @@ export default function HomePage() {
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16">
         <div className="inline-flex w-fit items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-200">
           <span className="h-2 w-2 rounded-full bg-cyan-300" />
-          Tailwind CSS v4 via extraPostCSSPlugins
+          Tailwind CSS v4 via Umi plugin
         </div>
 
         <h1 className="mt-8 max-w-4xl text-5xl font-black tracking-tight text-white sm:text-6xl">
-          Umi + Tailwind CSS v4 without the extra CLI step.
+          Umi + Tailwind CSS v4 with the built-in Tailwind plugin.
         </h1>
 
         <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-          This example shows a pure user-land Tailwind CSS v4 setup for Umi by
-          wiring @tailwindcss/postcss through extraPostCSSPlugins and importing
-          the stylesheet from app.tsx.
+          This example shows the recommended Umi setup for Tailwind CSS v4:
+          enable the Tailwind plugin in config, keep a small tailwind.css entry,
+          and let the plugin drive the v4 CLI integration for you.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -81,20 +81,30 @@ export default function HomePage() {
                 Current setup
               </p>
               <p className="mt-3 text-2xl font-semibold text-white">
-                extraPostCSSPlugins
+                tailwindcss plugin
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-sm text-slate-200">
               <div className="rounded-2xl bg-slate-900/60 px-4 py-3 ring-1 ring-white/10">
+                <p className="text-slate-400">Umi config</p>
+                <p className="mt-1 font-semibold text-white">
+                  {'tailwindcss: {}'}
+                </p>
+              </div>
+              <div className="rounded-2xl bg-slate-900/60 px-4 py-3 ring-1 ring-white/10">
+                <p className="text-slate-400">CLI package</p>
+                <p className="mt-1 font-semibold text-white">
+                  @tailwindcss/cli
+                </p>
+              </div>
+              <div className="rounded-2xl bg-slate-900/60 px-4 py-3 ring-1 ring-white/10">
                 <p className="text-slate-400">Tailwind package</p>
                 <p className="mt-1 font-semibold text-white">tailwindcss@4</p>
               </div>
               <div className="rounded-2xl bg-slate-900/60 px-4 py-3 ring-1 ring-white/10">
-                <p className="text-slate-400">PostCSS package</p>
-                <p className="mt-1 font-semibold text-white">
-                  @tailwindcss/postcss
-                </p>
+                <p className="text-slate-400">Plugin package</p>
+                <p className="mt-1 font-semibold text-white">@umijs/plugins</p>
               </div>
             </div>
           </div>
