@@ -359,6 +359,15 @@ async function getWebpackConfigForUtooPack(
   });
 }
 
+type ICreateUtooPackConfigOpts = {
+  env: 'production' | 'development';
+  clean?: boolean;
+  webpackConfig?: Partial<Parameters<typeof getConfig>[0]>;
+  extraConfig?: Record<string, any>;
+  optimization?: Record<string, any>;
+  resultConfig?: Partial<BundleOptions>;
+};
+
 function getBaseUtooPackConfig(webpackConfig: WebpackConfig): BundleOptions {
   return compatOptionsFromWebpack({
     ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
@@ -472,23 +481,43 @@ function getMergedUtooPackConfig(opts: {
   } as BundleOptions;
 }
 
-export async function getProdUtooPackConfig(
-  opts: IOpts,
-): Promise<BundleOptions> {
-  const webpackConfig = await getWebpackConfigForUtooPack(opts, 'production', {
-    pkg: opts.pkg,
-    disableCopy: opts.disableCopy,
-  });
+async function createUtooPackConfig(
+  opts: ISharedUtooPackOpts,
+  buildOpts: ICreateUtooPackConfigOpts,
+) {
+  const webpackConfig = await getWebpackConfigForUtooPack(
+    opts,
+    buildOpts.env,
+    buildOpts.webpackConfig,
+  );
 
-  const extraBabelPlugins = getUtooExtraBabelPlugins(opts);
-
-  return getMergedUtooPackConfig({
+  const utooPackConfig = getMergedUtooPackConfig({
     utooBundlerOpts: getBaseUtooPackConfig(webpackConfig),
     rootDir: opts.rootDir,
     config: opts.config,
     disableCopy: opts.disableCopy,
+    clean: buildOpts.clean,
+    extraBabelPlugins: getUtooExtraBabelPlugins(opts),
+    extraConfig: buildOpts.extraConfig,
+    optimization: buildOpts.optimization,
+  });
+
+  return {
+    ...utooPackConfig,
+    ...buildOpts.resultConfig,
+  } as BundleOptions;
+}
+
+export async function getProdUtooPackConfig(
+  opts: IOpts,
+): Promise<BundleOptions> {
+  return createUtooPackConfig(opts, {
+    env: 'production',
     clean: opts.clean,
-    extraBabelPlugins,
+    webpackConfig: {
+      pkg: opts.pkg,
+      disableCopy: opts.disableCopy,
+    },
     optimization: {
       concatenateModules: true,
     },
@@ -527,29 +556,22 @@ export type IDevOpts = {
 export async function getDevUtooPackConfig(
   opts: IDevOpts,
 ): Promise<BundleOptions> {
-  const webpackConfig = await getWebpackConfigForUtooPack(opts, 'development', {
-    // TO avoild bundler webpack add extra entry.
-    hmr: false,
-  });
-
-  const extraBabelPlugins = getUtooExtraBabelPlugins(opts);
-
-  return {
-    ...getMergedUtooPackConfig({
-      utooBundlerOpts: getBaseUtooPackConfig(webpackConfig),
-      rootDir: opts.rootDir,
-      config: opts.config,
-      disableCopy: opts.disableCopy,
-      clean: opts.clean === undefined ? true : opts.clean,
-      extraBabelPlugins,
-      extraConfig: {
-        // dev enable persistent cache by default
-        persistentCaching: true,
-      },
-    }),
-    watch: {
-      enable: true,
+  return createUtooPackConfig(opts, {
+    env: 'development',
+    clean: opts.clean === undefined ? true : opts.clean,
+    webpackConfig: {
+      // TO avoild bundler webpack add extra entry.
+      hmr: false,
     },
-    dev: true,
-  };
+    extraConfig: {
+      // dev enable persistent cache by default
+      persistentCaching: true,
+    },
+    resultConfig: {
+      watch: {
+        enable: true,
+      },
+      dev: true,
+    },
+  });
 }
