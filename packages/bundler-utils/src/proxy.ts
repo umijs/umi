@@ -3,10 +3,22 @@ import type { Express } from '../compiled/express';
 import { createProxyMiddleware } from '../compiled/http-proxy-middleware';
 import type { ProxyOptions } from './types';
 
+export interface ProxyUpgradeHandler {
+  context: string | string[];
+  handler: (req: any, socket: any, head: any) => void;
+}
+
+export interface ProxyResult {
+  // WebSocket upgrade handlers for proxies with ws: true
+  upgradeHandlers: ProxyUpgradeHandler[];
+  // Backward compatibility: allow existing code to use Promise-like API
+  then?: (value: any) => any;
+}
+
 export function createProxy(
   proxy: { [key: string]: ProxyOptions } | ProxyOptions[],
   app: Express,
-) {
+): ProxyResult {
   // Supported proxy types:
   // proxy: { target, context }
   // proxy: { '/api': { target, context } }
@@ -21,6 +33,8 @@ export function createProxy(
           context: key,
         };
       });
+
+  const upgradeHandlers: ProxyUpgradeHandler[] = [];
 
   proxyArr.forEach((proxy) => {
     let middleware: any;
@@ -44,6 +58,14 @@ export function createProxy(
           proxy.onProxyRes?.(proxyRes, req, res);
         },
       });
+
+      // Collect WebSocket upgrade handlers if ws: true is enabled
+      if (proxy.ws && middleware?.upgrade) {
+        upgradeHandlers.push({
+          context: proxy.context!,
+          handler: middleware.upgrade,
+        });
+      }
     }
     app.use((req, res, next) => {
       // Support bypass
@@ -67,4 +89,10 @@ export function createProxy(
       }
     });
   });
+
+  return {
+    upgradeHandlers,
+    // Backward compatibility
+    then: (resolve) => resolve(undefined),
+  };
 }

@@ -105,8 +105,10 @@ export async function dev(opts: IDevOpts) {
   });
   app.use('/turbopack-hmr', wsProxy);
 
+  // Collect user proxy result to get WebSocket upgrade handlers
+  let userProxyResult;
   if (opts.config.proxy) {
-    createProxy(opts.config.proxy, app);
+    userProxyResult = createProxy(opts.config.proxy, app);
   }
 
   const publicPathPrefix = (() => {
@@ -181,10 +183,51 @@ export async function dev(opts: IDevOpts) {
     );
     console.log(banner);
   });
-  // prevent first websocket auto disconnected
-  // ref https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
+
+  // Unified WebSocket upgrade handler with path-based routing
+  // This prevents WebSocket conflicts between framework and user proxies
+  const wsHandlers: Array<{
+    path: string;
+    handler: (req: any, socket: any, head: any) => void;
+  }> = [];
+
+  // Add framework's HMR WebSocket handler
   if (wsProxy.upgrade) {
-    server.on('upgrade', wsProxy.upgrade);
+    wsHandlers.push({
+      path: '/turbopack-hmr',
+      handler: wsProxy.upgrade,
+    });
+  }
+
+  // Add user-configured WebSocket proxy handlers
+  if (userProxyResult?.upgradeHandlers) {
+    userProxyResult.upgradeHandlers.forEach(({ context, handler }) => {
+      // context can be a string or array of strings
+      const paths = Array.isArray(context) ? context : [context];
+      paths.forEach((path) => {
+        wsHandlers.push({
+          path: normalizePath(path),
+          handler,
+        });
+      });
+    });
+  }
+
+  // Register unified upgrade event listener
+  if (wsHandlers.length > 0) {
+    server.on('upgrade', (req, socket, head) => {
+      const url = req.url || '';
+
+      // Find the first matching handler
+      const matchedHandler = wsHandlers.find(({ path }) =>
+        matchPath(path, url),
+      );
+
+      if (matchedHandler) {
+        matchedHandler.handler(req, socket, head);
+      }
+      // If no match, don't handle - let it fall through to user app or other handlers
+    });
   }
 
   const createStatsObject = () => {
@@ -245,6 +288,33 @@ function getDevBanner(
   );
   messages.push(`  - Network: ${chalk.cyan(`${protocol}//${ip}:${port}`)}`);
   return messages.join('\n');
+}
+
+/**
+ * Normalize path to ensure it starts with /
+ */
+function normalizePath(path: string): string {
+  if (!path.startsWith('/')) {
+    return '/' + path;
+  }
+  return path;
+}
+
+/**
+ * Check if a request path matches a WebSocket handler pattern
+ * Supports exact match, prefix match, and wildcard match
+ */
+function matchPath(pattern: string, path: string): boolean {
+  const normalizedPattern = normalizePath(pattern);
+
+  // Support wildcard matching (e.g., /api/*)
+  if (normalizedPattern.endsWith('*')) {
+    const prefix = normalizedPattern.slice(0, -1);
+    return path.startsWith(prefix);
+  }
+
+  // Exact match or prefix match (e.g., /api matches /api or /api/foo)
+  return path === normalizedPattern || path.startsWith(normalizedPattern + '/');
 }
 
 export { findRootDir } from '@utoo/pack';
