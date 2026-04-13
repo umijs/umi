@@ -295,6 +295,10 @@ export function mergeExtraPostcssPlugins(
   }, postcssConfig);
 }
 
+function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
+  return lodash.omit(utoopackConfig, ['root']);
+}
+
 export async function getProdUtooPackConfig(
   opts: IOpts,
 ): Promise<BundleOptions> {
@@ -360,6 +364,7 @@ export async function getProdUtooPackConfig(
     svgo = {},
     inlineLimit,
   } = opts.config;
+  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -398,7 +403,7 @@ export async function getProdUtooPackConfig(
         externals: getNormalizedExternals(userExternals),
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
-      opts.config.utoopack || {},
+      userUtoopackConfig,
     ),
   } as BundleOptions;
 
@@ -500,6 +505,7 @@ export async function getDevUtooPackConfig(
     svgo = {},
     inlineLimit,
   } = opts.config;
+  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -539,7 +545,7 @@ export async function getDevUtooPackConfig(
         externals: getNormalizedExternals(userExternals),
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
-      opts.config.utoopack || {},
+      userUtoopackConfig,
     ),
     watch: {
       enable: true,

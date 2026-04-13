@@ -1520,8 +1520,6 @@ $ npm install @babel/runtime --save-dev
 - Type: `Object`
 - Default: `{}`
 
-> utoopack is currently in beta testing. If you encounter any issues, please feel free to report them via issue.
-
 Use rust bundler [utoopack](http://github.com/utooland/utoo) to improve the performance of build.
 
 This capability can be enabled through configuration; utoopack currently supports most of the framework's features.
