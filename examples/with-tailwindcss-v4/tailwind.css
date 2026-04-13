@@ -1,3 +1,3 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @source "./pages/**/*.{js,jsx,ts,tsx}";

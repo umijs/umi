@@ -281,7 +281,7 @@ function normalizeExtraPostcssPlugin(plugin: any): [string, any][] {
   );
 }
 
-function mergeExtraPostcssPlugins(
+export function mergeExtraPostcssPlugins(
   postcssConfig: any,
   extraPlugins: any[] = [],
 ) {
@@ -347,9 +347,9 @@ export async function getProdUtooPackConfig(
       process.env.SOCKET_SERVER,
     );
   }
-  const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
-    ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
-    : undefined;
+  // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
+  //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
+  //   : undefined;
 
   const {
     publicPath,
@@ -389,7 +389,7 @@ export async function getProdUtooPackConfig(
             javascriptEnabled: true,
             ...opts.config.lessLoader,
           },
-          postcss: normalizedPostcssConfig,
+          // postcss: normalizedPostcssConfig,
           sass: opts.config.sassLoader ?? undefined,
           emotion: emotion || undefined,
         },
@@ -487,9 +487,9 @@ export async function getDevUtooPackConfig(
       process.env.SOCKET_SERVER,
     );
   }
-  const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
-    ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
-    : undefined;
+  // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
+  //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
+  //   : undefined;
 
   const {
     publicPath,
@@ -528,7 +528,7 @@ export async function getDevUtooPackConfig(
             javascriptEnabled: true,
             ...opts.config.lessLoader,
           },
-          postcss: normalizedPostcssConfig,
+          // postcss: normalizedPostcssPlugin,
           sass: opts.config.sassLoader ?? undefined,
           emotion: emotion || undefined,
         },

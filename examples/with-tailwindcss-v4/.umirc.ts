@@ -1,4 +1,5 @@
 export default {
-  extraPostCSSPlugins: [['@tailwindcss/postcss', {}]],
+  plugins: [require.resolve('@umijs/plugins/dist/tailwindcss')],
+  tailwindcss: {},
   utoopack: {},
 };

@@ -7,8 +7,11 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.2.2",
+    "@umijs/plugins": "workspace:*",
     "tailwindcss": "^4.2.2",
     "umi": "workspace:*"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2"
   }
 }
