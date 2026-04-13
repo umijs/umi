@@ -1,7 +1,7 @@
 import { createHttpsServer, createProxy } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-utils/compiled/http-proxy-middleware';
-import { chalk, lodash } from '@umijs/utils';
+import { lodash } from '@umijs/utils';
 import fs from 'fs';
 import http from 'http';
 import path from 'path';
@@ -11,11 +11,24 @@ import {
   IDevOpts,
 } from './config';
 import type { IOpts } from './types';
+import { getDevBanner } from './util';
+
+function getUtoopackRootDir(
+  cwd: string,
+  utoopackConfig: Record<string, any> | undefined,
+  findRootDir: (cwd: string) => string,
+) {
+  if (typeof utoopackConfig?.root === 'string') {
+    return path.resolve(cwd, utoopackConfig.root);
+  }
+
+  return findRootDir(cwd);
+}
 
 export async function build(opts: IOpts) {
   const { cwd, onBuildComplete } = opts;
   const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
-  const rootDir = findRootDir(cwd);
+  const rootDir = getUtoopackRootDir(cwd, opts.config.utoopack, findRootDir);
 
   // 添加一个 checkConfig 对于 utoopack 不支持的配置警告一下
   const utooPackConfig = await getProdUtooPackConfig({
@@ -66,7 +79,7 @@ export async function dev(opts: IDevOpts) {
 
   const { findRootDir, serve: utooPackServe } = require('@utoo/pack');
 
-  const rootDir = findRootDir(cwd);
+  const rootDir = getUtoopackRootDir(cwd, opts.config.utoopack, findRootDir);
 
   const utooPackConfig = await getDevUtooPackConfig({
     ...opts,
@@ -229,22 +242,6 @@ export async function dev(opts: IDevOpts) {
   } catch (e: any) {
     console.error(e.message);
   }
-}
-
-function getDevBanner(
-  protocol: string,
-  host?: string,
-  port?: number,
-  ip?: string,
-) {
-  const hostStr = host === '0.0.0.0' ? 'localhost' : host;
-  const messages = [];
-  messages.push('  App listening at:');
-  messages.push(
-    `  - Local:   ${chalk.cyan(`${protocol}//${hostStr}:${port}`)}`,
-  );
-  messages.push(`  - Network: ${chalk.cyan(`${protocol}//${ip}:${port}`)}`);
-  return messages.join('\n');
 }
 
 export { findRootDir } from '@utoo/pack';
