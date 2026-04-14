@@ -299,50 +299,97 @@ function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
   return lodash.omit(utoopackConfig, ['root']);
 }
 
-export async function getProdUtooPackConfig(
-  opts: IOpts,
-): Promise<BundleOptions> {
-  const webpackConfig = await getConfig({
+type ISharedUtooPackOpts = Pick<
+  IDevOpts,
+  | 'cwd'
+  | 'rootDir'
+  | 'entry'
+  | 'config'
+  | 'babelPreset'
+  | 'beforeBabelPlugins'
+  | 'extraBabelPlugins'
+  | 'beforeBabelPresets'
+  | 'extraBabelPresets'
+  | 'chainWebpack'
+  | 'modifyWebpackConfig'
+  | 'pkg'
+  | 'disableCopy'
+>;
+
+function getWebpackExtraBabelPlugins(opts: ISharedUtooPackOpts) {
+  return [
+    ...(opts.beforeBabelPlugins || []),
+    ...(opts.extraBabelPlugins || []),
+  ];
+}
+
+function getWebpackExtraBabelPresets(opts: ISharedUtooPackOpts) {
+  return [
+    ...(opts.beforeBabelPresets || []),
+    ...(opts.extraBabelPresets || []),
+  ];
+}
+
+function getUtooExtraBabelPlugins(opts: ISharedUtooPackOpts) {
+  return [
+    ...(opts.extraBabelPlugins || []),
+    ...(opts.config.extraBabelPlugins || []),
+  ];
+}
+
+async function getWebpackConfigForUtooPack(
+  opts: ISharedUtooPackOpts,
+  env: 'production' | 'development',
+  extraConfig: Partial<Parameters<typeof getConfig>[0]> = {},
+) {
+  return getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
-    env: 'production' as any,
+    env: env as any,
     entry: opts.entry,
     userConfig: opts.config,
     analyze: process.env.ANALYZE,
     babelPreset: opts.babelPreset,
-    extraBabelPlugins: [
-      ...(opts.beforeBabelPlugins || []),
-      ...(opts.extraBabelPlugins || []),
-    ],
-    extraBabelPresets: [
-      ...(opts.beforeBabelPresets || []),
-      ...(opts.extraBabelPresets || []),
-    ],
+    extraBabelPlugins: getWebpackExtraBabelPlugins(opts),
+    extraBabelPresets: getWebpackExtraBabelPresets(opts),
     extraBabelIncludes: opts.config.extraBabelIncludes,
     chainWebpack: opts.chainWebpack,
     modifyWebpackConfig: opts.modifyWebpackConfig,
-    pkg: opts.pkg,
-    disableCopy: opts.disableCopy,
+    ...extraConfig,
   });
+}
 
-  let utooBundlerOpts = compatOptionsFromWebpack({
+type ICreateUtooPackConfigOpts = {
+  env: 'production' | 'development';
+  clean?: boolean;
+  webpackConfig?: Partial<Parameters<typeof getConfig>[0]>;
+  extraConfig?: Record<string, any>;
+  optimization?: Record<string, any>;
+  resultConfig?: Partial<BundleOptions>;
+};
+
+function getBaseUtooPackConfig(webpackConfig: WebpackConfig): BundleOptions {
+  return compatOptionsFromWebpack({
     ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
     webpackMode: true,
-  } as WebpackConfig);
+  } as WebpackConfig) as BundleOptions;
+}
 
-  const extraBabelPlugins = [
-    ...(opts.extraBabelPlugins || []),
-    ...(opts.config.extraBabelPlugins || []),
-  ];
+function getExtraBabelPluginFeatures(extraBabelPlugins: any[] = []) {
+  return {
+    modularizeImports: getModularizeImports(extraBabelPlugins),
+    emotion: extraBabelPlugins.some((plugin) => {
+      return plugin === '@emotion' || plugin === '@emotion/babel-plugin';
+    }),
+  };
+}
 
-  const modularizeImports = getModularizeImports(extraBabelPlugins);
-  const emotion = extraBabelPlugins.some((p) => {
-    return p === '@emotion' || p === '@emotion/babel-plugin';
-  });
+function getDefineConfig(userDefine?: Record<string, any>) {
   const define: Record<string, any> = {};
-  if (opts.config.define) {
-    for (const key of Object.keys(opts.config.define)) {
-      define[key] = normalizeDefineValue(opts.config.define[key]);
+
+  if (userDefine) {
+    for (const key of Object.keys(userDefine)) {
+      define[key] = normalizeDefineValue(userDefine[key]);
     }
   }
 
@@ -351,8 +398,35 @@ export async function getProdUtooPackConfig(
       process.env.SOCKET_SERVER,
     );
   }
-  // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
-  //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
+
+  return define;
+}
+
+function getMergedUtooPackConfig(opts: {
+  utooBundlerOpts: BundleOptions;
+  rootDir: string;
+  config: Record<string, any>;
+  disableCopy?: boolean;
+  clean?: boolean;
+  extraBabelPlugins?: any[];
+  extraConfig?: Record<string, any>;
+  optimization?: Record<string, any>;
+}) {
+  const {
+    utooBundlerOpts,
+    rootDir,
+    config,
+    disableCopy,
+    clean,
+    extraBabelPlugins = [],
+    extraConfig = {},
+    optimization = {},
+  } = opts;
+  const { modularizeImports, emotion } =
+    getExtraBabelPluginFeatures(extraBabelPlugins);
+  const define = getDefineConfig(config.define);
+  // const normalizedPostcssConfig = config.extraPostCSSPlugins?.length
+  //   ? mergeExtraPostcssPlugins(undefined, config.extraPostCSSPlugins)
   //   : undefined;
 
   const {
@@ -363,51 +437,91 @@ export async function getProdUtooPackConfig(
     svgr,
     svgo = {},
     inlineLimit,
-  } = opts.config;
-  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
+  } = config;
+  const userUtoopackConfig = getUserUtoopackConfig(config.utoopack);
 
-  utooBundlerOpts = {
+  return {
     ...utooBundlerOpts,
     config: lodash.merge(
       lodash.omit(utooBundlerOpts.config, ['define']),
       {
         output: {
-          clean: opts.clean,
+          clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
-          ...(opts.disableCopy
-            ? { copy: [] }
-            : { copy: ['public'].concat(copy) }),
+          ...(disableCopy ? { copy: [] } : { copy: ['public'].concat(copy) }),
         },
         optimization: {
           modularizeImports,
-          concatenateModules: true,
+          ...optimization,
         },
         resolve: {
           alias: getNormalizedAlias(
             utooBundlerOpts.config.resolve?.alias as Record<string, string>,
-            opts.rootDir,
+            rootDir,
           ),
         },
         styles: {
           less: {
-            modifyVars: opts.config.theme,
+            modifyVars: config.theme,
             javascriptEnabled: true,
-            ...opts.config.lessLoader,
+            ...config.lessLoader,
           },
           // postcss: normalizedPostcssConfig,
-          sass: opts.config.sassLoader ?? undefined,
+          sass: config.sassLoader ?? undefined,
           emotion,
         },
         define,
         nodePolyfill: true,
         externals: getNormalizedExternals(userExternals),
+        ...extraConfig,
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
       userUtoopackConfig,
     ),
   } as BundleOptions;
+}
 
-  return utooBundlerOpts;
+async function createUtooPackConfig(
+  opts: ISharedUtooPackOpts,
+  buildOpts: ICreateUtooPackConfigOpts,
+) {
+  const webpackConfig = await getWebpackConfigForUtooPack(
+    opts,
+    buildOpts.env,
+    buildOpts.webpackConfig,
+  );
+
+  const utooPackConfig = getMergedUtooPackConfig({
+    utooBundlerOpts: getBaseUtooPackConfig(webpackConfig),
+    rootDir: opts.rootDir,
+    config: opts.config,
+    disableCopy: opts.disableCopy,
+    clean: buildOpts.clean,
+    extraBabelPlugins: getUtooExtraBabelPlugins(opts),
+    extraConfig: buildOpts.extraConfig,
+    optimization: buildOpts.optimization,
+  });
+
+  return {
+    ...utooPackConfig,
+    ...buildOpts.resultConfig,
+  } as BundleOptions;
+}
+
+export async function getProdUtooPackConfig(
+  opts: IOpts,
+): Promise<BundleOptions> {
+  return createUtooPackConfig(opts, {
+    env: 'production',
+    clean: opts.clean,
+    webpackConfig: {
+      pkg: opts.pkg,
+      disableCopy: opts.disableCopy,
+    },
+    optimization: {
+      concatenateModules: true,
+    },
+  });
 }
 
 export type IDevOpts = {
@@ -442,116 +556,22 @@ export type IDevOpts = {
 export async function getDevUtooPackConfig(
   opts: IDevOpts,
 ): Promise<BundleOptions> {
-  let webpackConfig = await getConfig({
-    cwd: opts.cwd,
-    rootDir: opts.rootDir,
-    env: 'development' as any,
-    entry: opts.entry,
-    userConfig: opts.config,
-    babelPreset: opts.babelPreset,
-    extraBabelPlugins: [
-      ...(opts.beforeBabelPlugins || []),
-      ...(opts.extraBabelPlugins || []),
-    ],
-    extraBabelPresets: [
-      ...(opts.beforeBabelPresets || []),
-      ...(opts.extraBabelPresets || []),
-    ],
-    extraBabelIncludes: opts.config.extraBabelIncludes,
-    chainWebpack: opts.chainWebpack,
-    modifyWebpackConfig: opts.modifyWebpackConfig,
-    // TO avoild bundler webpack add extra entry.
-    hmr: false,
-    analyze: process.env.ANALYZE,
-  });
-
-  let utooBundlerOpts = compatOptionsFromWebpack({
-    ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
-    webpackMode: true,
-  } as WebpackConfig);
-
-  const extraBabelPlugins = [
-    ...(opts.extraBabelPlugins || []),
-    ...(opts.config.extraBabelPlugins || []),
-  ];
-
-  const modularizeImports = getModularizeImports(extraBabelPlugins);
-  const emotion = extraBabelPlugins.some((p) => {
-    return p === '@emotion' || p === '@emotion/babel-plugin';
-  });
-
-  const define: Record<string, any> = {};
-  if (opts.config.define) {
-    for (const key of Object.keys(opts.config.define)) {
-      define[key] = normalizeDefineValue(opts.config.define[key]);
-    }
-  }
-
-  if (process.env.SOCKET_SERVER) {
-    define['process.env.SOCKET_SERVER'] = normalizeDefineValue(
-      process.env.SOCKET_SERVER,
-    );
-  }
-  // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
-  //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
-  //   : undefined;
-
-  const {
-    publicPath,
-    runtimePublicPath,
-    externals: userExternals,
-    copy = [],
-    svgr,
-    svgo = {},
-    inlineLimit,
-  } = opts.config;
-  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
-
-  utooBundlerOpts = {
-    ...utooBundlerOpts,
-    config: lodash.merge(
-      lodash.omit(utooBundlerOpts.config, ['define']),
-      {
-        output: {
-          clean: opts.clean === undefined ? true : opts.clean,
-          publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
-          ...(opts.disableCopy
-            ? { copy: [] }
-            : { copy: ['public'].concat(copy) }),
-        },
-        resolve: {
-          alias: getNormalizedAlias(
-            utooBundlerOpts.config.resolve?.alias as Record<string, string>,
-            opts.rootDir,
-          ),
-        },
-        optimization: {
-          modularizeImports,
-        },
-        styles: {
-          less: {
-            modifyVars: opts.config.theme,
-            javascriptEnabled: true,
-            ...opts.config.lessLoader,
-          },
-          // postcss: normalizedPostcssPlugin,
-          sass: opts.config.sassLoader ?? undefined,
-          emotion,
-        },
-        define,
-        // dev enable persistent cache by default
-        persistentCaching: true,
-        nodePolyfill: true,
-        externals: getNormalizedExternals(userExternals),
-        ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
-      },
-      userUtoopackConfig,
-    ),
-    watch: {
-      enable: true,
+  return createUtooPackConfig(opts, {
+    env: 'development',
+    clean: opts.clean === undefined ? true : opts.clean,
+    webpackConfig: {
+      // TO avoild bundler webpack add extra entry.
+      hmr: false,
     },
-    dev: true,
-  };
-
-  return utooBundlerOpts;
+    extraConfig: {
+      // dev enable persistent cache by default
+      persistentCaching: true,
+    },
+    resultConfig: {
+      watch: {
+        enable: true,
+      },
+      dev: true,
+    },
+  });
 }
