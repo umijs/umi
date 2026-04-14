@@ -1998,7 +1998,7 @@ importers:
         version: link:../bundler-webpack
       '@utoo/pack':
         specifier: 1.3.10
-        version: 1.3.10(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(sass-loader@13.2.0)(sass@1.54.0)
+        version: 1.3.10(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -2023,6 +2023,9 @@ importers:
       postcss:
         specifier: ^8.4.21
         version: 8.4.35
+      resolve-url-loader:
+        specifier: 5.0.0
+        version: 5.0.0
       sass:
         specifier: 1.54.0
         version: 1.54.0
@@ -21098,7 +21101,7 @@ packages:
     dev: false
     optional: true
 
-  /@utoo/pack@1.3.10(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(sass-loader@13.2.0)(sass@1.54.0):
+  /@utoo/pack@1.3.10(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
     resolution: {integrity: sha512-vLCLW5cEUIybC4RMdTlcdXf6H7GOkInu7GYtSSDlx30ICliA4bW58jmJ2+xwOY8SNsTyNt18MXNTCWt3wPjTOA==}
     engines: {node: '>= 20'}
     peerDependencies:
@@ -21127,6 +21130,7 @@ packages:
       nanoid: 3.3.11
       picocolors: 1.1.1
       postcss: 8.4.35
+      resolve-url-loader: 5.0.0
       sass: 1.54.0
       sass-loader: 13.2.0(sass@1.54.0)
       semver: 7.7.4
@@ -21876,6 +21880,14 @@ packages:
   /address@1.1.2:
     resolution: {integrity: sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==}
     engines: {node: '>= 0.12.0'}
+
+  /adjust-sourcemap-loader@4.0.0:
+    resolution: {integrity: sha512-OXwN5b9pCUXNQHJpwwD2qP40byEmSgzj8B4ydSN0uMNYWiFmJ6x6KwUllMmfk8Rwu/HJDFR7U8ubsWBoN0Xp0A==}
+    engines: {node: '>=8.9'}
+    dependencies:
+      loader-utils: 2.0.4
+      regex-parser: 2.3.1
+    dev: false
 
   /agent-base@4.3.0:
     resolution: {integrity: sha512-salcGninV0nPrwpGNn4VTXBb1SOuXQBiqbrNXoeizJsHrsL6ERFM2Ne3JUSBWRE6aeNJI2ROP/WEEIDUiDe3cg==}
@@ -48275,6 +48287,10 @@ packages:
       '@babel/runtime': 7.23.6
     dev: true
 
+  /regex-parser@2.3.1:
+    resolution: {integrity: sha512-yXLRqatcCuKtVHsWrNg0JL3l1zGfdXeEvDa0bdu4tCDQw0RpMDZsqbkyRTUnKMR0tXF627V2oEWjBEaEdqTwtQ==}
+    dev: false
+
   /regexp-to-ast@0.5.0:
     resolution: {integrity: sha512-tlbJqcMHnPKI9zSrystikWKwHkBqu2a/Sgw01h3zFjvYrMxEDYHzzoMZnUrbIfpTFEsoRnnviOXNCzFiSc54Qw==}
     dev: false
@@ -48640,6 +48656,17 @@ packages:
     resolution: {integrity: sha512-kI5ffTiZWmJaS/huM8wZfEMer1eRd7oJQhDuxeCLe3t7N7mX3z94CN0xPxBQxFYQTSNz9T0i+v6inKqSdK8xrQ==}
     dependencies:
       protocol-buffers-schema: 3.6.0
+    dev: false
+
+  /resolve-url-loader@5.0.0:
+    resolution: {integrity: sha512-uZtduh8/8srhBoMx//5bwqjQ+rfYOUq8zC9NrMUGtjBiGTtFJM42s58/36+hTqeqINcnYe08Nj3LkK9lW4N8Xg==}
+    engines: {node: '>=12'}
+    dependencies:
+      adjust-sourcemap-loader: 4.0.0
+      convert-source-map: 1.9.0
+      loader-utils: 2.0.4
+      postcss: 8.4.35
+      source-map: 0.6.1
     dev: false
 
   /resolve.exports@2.0.0:
