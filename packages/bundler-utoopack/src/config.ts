@@ -527,6 +527,10 @@ export async function getDevUtooPackConfig(
         },
         optimization: {
           modularizeImports,
+          // Disable the options under dev for utoopack
+          // otherwise it will affect react-refresh
+          removeUnusedExports: false,
+          removeUnusedImports: false,
         },
         styles: {
           less: {
