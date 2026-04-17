@@ -65,9 +65,9 @@ export default (api: IApi) => {
         require.resolve('@utoo/pack'),
         '../../package.json',
       ));
-      api.logger.info(`Using @utoo/pack@${pkg.version}`);
-    } catch (e) {
-      console.error(e);
+      process.env.UTOOPACK_VERSION = pkg.version;
+    } catch {
+      delete process.env.UTOOPACK_VERSION;
     }
   });
 

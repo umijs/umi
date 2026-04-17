@@ -63,7 +63,9 @@ export default (api: IApi) => {
         return;
       }
       if (!isFirstTime) return;
-      logger.info('Preparing...');
+      if (api.appData.bundler !== 'utoopack') {
+        logger.info('Preparing...');
+      }
       const umiEntry = path.join(api.paths.absTmpPath, 'umi.ts');
       const entryPoints = [umiEntry];
       const { build } = await import('./build.js');

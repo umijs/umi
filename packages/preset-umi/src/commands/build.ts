@@ -31,7 +31,10 @@ COMPRESS=none umi build
 umi build --clean
 `,
     fn: async function () {
-      logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
+      const isUtoopack = api.appData.bundler === 'utoopack';
+      if (!isUtoopack) {
+        logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
+      }
 
       // clear tmp
       rimraf.sync(api.paths.absTmpPath);
