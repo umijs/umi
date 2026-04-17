@@ -16,8 +16,12 @@ function createRouteMiddleware(opts: { api: IApi }) {
 
     async function getStats(api: IApi) {
       if (!compiler && (api.config.mako || api.config.utoopack)) {
+        const assets: Record<string, string> = { 'umi.js': 'umi.js' };
+        if (api.config.mako) {
+          assets['umi.css'] = 'umi.css';
+        }
         return {
-          compilation: { assets: { 'umi.js': 'umi.js', 'umi.css': 'umi.css' } },
+          compilation: { assets },
           hasErrors: () => false,
         };
       }
