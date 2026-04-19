@@ -185,7 +185,7 @@ export async function dev(opts: IDevOpts) {
     }),
   );
 
-  let server;
+  let server: http.Server | Awaited<ReturnType<typeof createHttpsServer>>;
   const httpsOpts = opts.config.https;
   if (httpsOpts) {
     httpsOpts.hosts ||= lodash.uniq(
