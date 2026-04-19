@@ -178,7 +178,7 @@ export default {
 
 When this feature is enabled, you can jump to the source code location in the editor by `Option+Click/Alt+Click` on the component. `Option+Right-click/Alt+Right-click` opens the context to view the parent component.
 
-About parameters. The `editor` parameter defaults to 'vscode', supporting `vscode` & `vscode-insiders`.
+About parameters. The `editor` parameter defaults to 'vscode', supporting `vscode`, `vscode-insiders` and `cursor`.
 
 Configure the behavior of clickToComponent, for more details see [click-to-component](https://github.com/ericclemmons/click-to-component).
 
