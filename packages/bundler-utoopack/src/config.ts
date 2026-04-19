@@ -368,6 +368,7 @@ export async function getProdUtooPackConfig(
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
+    tracing: false,
     config: lodash.merge(
       lodash.omit(utooBundlerOpts.config, ['define']),
       {
@@ -509,6 +510,14 @@ export async function getDevUtooPackConfig(
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
+    ...(process.env.SOCKET_SERVER
+      ? {
+          processEnv: {
+            ...(utooBundlerOpts.processEnv || {}),
+            'process.env.SOCKET_SERVER': define['process.env.SOCKET_SERVER'],
+          },
+        }
+      : {}),
     config: lodash.merge(
       lodash.omit(utooBundlerOpts.config, ['define']),
       {
@@ -547,6 +556,14 @@ export async function getDevUtooPackConfig(
         persistentCaching: true,
         nodePolyfill: true,
         externals: getNormalizedExternals(userExternals),
+        ...(opts.config.clickToComponent
+          ? {
+              // clickToComponent relies on source filename metadata in dev.
+              react: {
+                absoluteSourceFilename: true,
+              },
+            }
+          : {}),
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
       userUtoopackConfig,
@@ -555,6 +572,7 @@ export async function getDevUtooPackConfig(
       enable: true,
     },
     dev: true,
+    tracing: false,
   };
 
   return utooBundlerOpts;

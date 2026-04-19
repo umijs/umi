@@ -11,8 +11,9 @@ export default {
     'process.env.CI': process.env.CI,
   },
   utoopack: {},
-  crossorigin: {},
   // mako: {},
+  crossorigin: {},
+  clickToComponent: {},
   antd: {
     // valid for antd5.0 only
     theme: {
