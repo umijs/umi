@@ -54,7 +54,10 @@ umi dev
 PORT=8888 umi dev
 `,
     async fn() {
-      logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
+      const isUtoopack = api.appData.bundler === 'utoopack';
+      if (!isUtoopack) {
+        logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
+      }
       const enableVite = !!api.config.vite;
 
       // clear tmp

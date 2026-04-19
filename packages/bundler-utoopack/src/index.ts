@@ -11,7 +11,7 @@ import {
   IDevOpts,
 } from './config';
 import type { IOpts } from './types';
-import { getDevBanner } from './util';
+import { getBuildBanner, getDevBanner } from './util';
 
 function getUtoopackRootDir(
   cwd: string,
@@ -27,6 +27,7 @@ function getUtoopackRootDir(
 
 export async function build(opts: IOpts) {
   const { cwd, onBuildComplete } = opts;
+  const buildStartTime = Date.now();
   const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
   const rootDir = getUtoopackRootDir(cwd, opts.config.utoopack, findRootDir);
 
@@ -64,9 +65,24 @@ export async function build(opts: IOpts) {
     ),
   };
 
+  const time = Date.now() - buildStartTime;
   await onBuildComplete?.({
     stats,
+    time,
+    isFirstCompile: true,
   });
+  const absOutputPath = path.resolve(
+    cwd,
+    utooPackConfig.config.output?.path || 'dist',
+  );
+  console.log(
+    getBuildBanner({
+      packVersion: process.env.UTOOPACK_VERSION,
+      duration: time,
+      outputPath: path.relative(cwd, absOutputPath) || '.',
+      assetCount: stats.assets?.length,
+    }),
+  );
   return stats;
 }
 
@@ -76,6 +92,9 @@ export async function dev(opts: IDevOpts) {
   if (!opts) {
     throw new Error('opts should be supplied');
   }
+
+  const devStartTime = Date.now();
+  const protocol = opts.config.https ? 'https:' : 'http:';
 
   const { findRootDir, serve: utooPackServe } = require('@utoo/pack');
 
@@ -166,7 +185,7 @@ export async function dev(opts: IDevOpts) {
     }),
   );
 
-  let server;
+  let server: http.Server | Awaited<ReturnType<typeof createHttpsServer>>;
   const httpsOpts = opts.config.https;
   if (httpsOpts) {
     httpsOpts.hosts ||= lodash.uniq(
@@ -184,16 +203,14 @@ export async function dev(opts: IDevOpts) {
     server = http.createServer(app);
   }
 
-  server.listen(port, () => {
-    const protocol = opts.config.https ? 'https:' : 'http:';
-    const banner = getDevBanner(
-      protocol,
-      opts.host,
-      port,
-      opts.ip ?? '0.0.0.0',
-    );
-    console.log(banner);
+  const serverReady = new Promise<void>((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(port, () => {
+      server.off('error', reject);
+      resolve();
+    });
   });
+
   // prevent first websocket auto disconnected
   // ref https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
   if (wsProxy.upgrade) {
@@ -227,16 +244,32 @@ export async function dev(opts: IDevOpts) {
   };
 
   try {
-    await utooPackServe(utooPackConfig, cwd, rootDir, {
-      port: utooServePort,
-      hostname: '127.0.0.1',
-      logServerInfo: false,
-    });
+    await Promise.all([
+      serverReady,
+      utooPackServe(utooPackConfig, cwd, rootDir, {
+        port: utooServePort,
+        hostname: '127.0.0.1',
+        logServerInfo: false,
+      }),
+    ]);
 
+    const time = Date.now() - devStartTime;
     const stats = createStatsObject();
     await onDevCompileDone?.({
       stats,
+      time,
+      isFirstCompile: true,
     });
+    console.log(
+      getDevBanner({
+        protocol,
+        host: opts.host,
+        port,
+        ip: opts.ip,
+        packVersion: process.env.UTOOPACK_VERSION,
+        duration: time,
+      }),
+    );
 
     return stats;
   } catch (e: any) {
