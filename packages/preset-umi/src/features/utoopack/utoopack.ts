@@ -1,10 +1,27 @@
 import { checkVersion } from '@umijs/utils';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { IApi, webpack } from '../../types';
 import {
   EntryAssets,
   extractEntryAssets,
 } from '../../utils/extractEntryAssets';
+
+export function getPackVersionFromBundler(bundlerEntry: string) {
+  const packageJsonCandidates = [
+    join(dirname(bundlerEntry), '../package.json'),
+    join(bundlerEntry, '../package.json'),
+    join(bundlerEntry, 'package.json'),
+  ];
+
+  for (const packageJsonPath of packageJsonCandidates) {
+    try {
+      const pkg = require(packageJsonPath);
+      return pkg.dependencies?.['@utoo/pack']?.replace(/^[^\d]*/, '');
+    } catch {}
+  }
+
+  return undefined;
+}
 
 export default (api: IApi) => {
   api.describe({
@@ -58,15 +75,15 @@ export default (api: IApi) => {
   });
 
   api.onStart(() => {
-    process.env.UTOOPACK =
+    const bundlerEntry =
       process.env.UTOOPACK || require.resolve('@umijs/bundler-utoopack');
-    try {
-      const pkg = require(join(
-        require.resolve('@utoo/pack'),
-        '../../package.json',
-      ));
-      process.env.UTOOPACK_VERSION = pkg.version;
-    } catch {
+
+    process.env.UTOOPACK = bundlerEntry;
+
+    const packVersion = getPackVersionFromBundler(bundlerEntry);
+    if (packVersion) {
+      process.env.UTOOPACK_VERSION = packVersion;
+    } else {
       delete process.env.UTOOPACK_VERSION;
     }
   });
