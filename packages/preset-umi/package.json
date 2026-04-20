@@ -77,7 +77,7 @@
     "multer": "1.4.4",
     "os-locale": "^6.0.2",
     "sirv": "2.0.2",
-    "vite": "4.5.2"
+    "vite": "4.5.14"
   },
   "publishConfig": {
     "access": "public"
