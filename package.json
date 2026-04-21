@@ -150,11 +150,7 @@
     },
     "overrides": {
       "@parcel/watcher": "2.1.0",
-      "browserslist": "$browserslist",
-      "dumi>umi": "4.6.46",
-      "dumi>@umijs/core": "4.6.46",
-      "dumi>@umijs/bundler-utils": "4.6.46",
-      "dumi>@umijs/utils": "4.6.46"
+      "browserslist": "$browserslist"
     }
   },
   "_local": "This flag is used to check if the development in local, Please do not delete."
