@@ -1522,7 +1522,7 @@ $ npm install @babel/runtime --save-dev
 
 Use rust bundler [utoopack](http://github.com/utooland/utoo) to improve the performance of build.
 
-This capability can be enabled through configuration; utoopack currently supports most of the framework's features.
+This capability can be enabled through configuration, utoopack currently supports most of the framework's features.
 
 ## verifyCommit
 
