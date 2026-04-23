@@ -1,5 +1,6 @@
 import { IServicePluginAPI, PluginAPI } from '@umijs/core';
 
+export type { IUtoopackUserConfig } from '@umijs/preset-umi';
 export { run } from './cli/cli';
 export { RUNTIME_TYPE_FILE_NAME } from './constants';
 export { defineConfig } from './defineConfig';

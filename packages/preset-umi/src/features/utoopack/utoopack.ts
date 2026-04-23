@@ -28,11 +28,14 @@ export default (api: IApi) => {
     key: 'utoopack',
     config: {
       schema({ zod }) {
-        return zod
-          .object({
-            root: zod.string(),
-          })
-          .partial();
+        return zod.union([
+          zod.boolean(),
+          zod
+            .object({
+              root: zod.string(),
+            })
+            .partial(),
+        ]);
       },
     },
     enableBy: () =>

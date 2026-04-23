@@ -66,12 +66,18 @@ import { ${interfaceName} } from "./pluginConfigJoi.d";
 
 interface ${typeName} ${typeString};
 
+type UtoopackConfigOverride = {
+  utoopack?: boolean | Partial<import('umi').IUtoopackUserConfig>;
+};
+
 type PrettifyWithCloseable<T> = {
   [K in keyof T]: T[K] | false;
 } & {};
 
 export type IConfigFromPlugins = PrettifyWithCloseable<
-  ${interfaceName} & Partial<${typeName}>
+  ${interfaceName} &
+    Omit<Partial<${typeName}>, keyof UtoopackConfigOverride> &
+    UtoopackConfigOverride
 >;
     `;
     api.writeTmpFile({

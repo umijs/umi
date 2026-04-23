@@ -12,6 +12,9 @@ import {
 } from './config';
 import type { IOpts } from './types';
 import { getBuildBanner, getDevBanner } from './util';
+export { findRootDir } from '@utoo/pack';
+export * from './config';
+export type { IUtoopackUserConfig } from './types';
 
 function getUtoopackRootDir(
   cwd: string,
@@ -276,6 +279,3 @@ export async function dev(opts: IDevOpts) {
     console.error(e.message);
   }
 }
-
-export { findRootDir } from '@utoo/pack';
-export * from './config';

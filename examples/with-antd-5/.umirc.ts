@@ -11,7 +11,6 @@ export default {
     'process.env.CI': process.env.CI,
   },
   utoopack: {},
-  // mako: {},
   crossorigin: {},
   clickToComponent: {},
   antd: {
