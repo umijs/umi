@@ -2,6 +2,7 @@
 export * from '@@/exports';
 export type {
   IApi,
+  IUtoopackUserConfig,
   webpack,
   IRoute,
   UmiApiRequest,

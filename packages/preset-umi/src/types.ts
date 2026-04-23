@@ -24,7 +24,7 @@ import type { InlineConfig as ViteInlineConfig } from 'vite';
 import type { getMarkupArgs } from './commands/dev/getMarkupArgs';
 import type { IOnDemandInstallDep } from './features/depsOnDemand/depsOnDemand';
 import type CodeFrameError from './features/transform/CodeFrameError';
-
+export type { IUtoopackUserConfig } from '@umijs/bundler-utoopack';
 export { UmiApiRequest, UmiApiResponse } from './features/apiRoute';
 export { webpack, IConfig };
 

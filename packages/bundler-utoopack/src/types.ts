@@ -1,4 +1,9 @@
 import type { IOpts as IConfigOpts } from '@umijs/bundler-webpack';
+import type { ConfigComplete } from '@utoo/pack';
+
+export type IUtoopackUserConfig = ConfigComplete & {
+  root?: string;
+};
 
 export type IOpts = {
   cwd: string;
