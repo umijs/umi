@@ -1,7 +1,7 @@
 // @ts-ignore
 import type { models as rawModels } from '@@/plugin-model/model';
 import isEqual from 'fast-deep-equal';
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 type Models = typeof rawModels;
 
@@ -35,7 +35,7 @@ class Dispatcher {
 
 interface ExecutorProps {
   hook: () => any;
-  onUpdate: (val: any) => void;
+  onUpdate: (val: any, opts?: { notify: boolean }) => void;
   namespace: string;
 }
 
@@ -55,10 +55,11 @@ function Executor(props: ExecutorProps) {
     );
   }
 
-  // 首次执行时立刻返回初始值
-  useMemo(() => {
-    updateRef.current(data);
-  }, []);
+  // 首次执行时立刻写入初始值，让子组件在首次 render 中能同步取到数据。
+  // 订阅通知放在 effect 中，避免 React 19 的 render 阶段跨组件更新警告。
+  if (!initialLoad.current) {
+    updateRef.current(data, { notify: false });
+  }
 
   // React 16.13 后 update 函数用 useEffect 包裹
   useEffect(() => {
@@ -86,9 +87,11 @@ export function Provider(props: {
             key={namespace}
             hook={props.models[namespace]}
             namespace={namespace}
-            onUpdate={(val) => {
+            onUpdate={(val, opts = { notify: true }) => {
               dispatcher.data[namespace] = val;
-              dispatcher.update(namespace);
+              if (opts.notify) {
+                dispatcher.update(namespace);
+              }
             }}
           />
         );
