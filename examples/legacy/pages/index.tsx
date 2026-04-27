@@ -1,5 +1,11 @@
+import JSZip from 'jszip';
 import { useEffect } from 'react';
 import { ReactComponent as Simle } from '../smile.svg';
+
+console.log('jszip', JSZip);
+const zip = new JSZip();
+
+zip;
 
 export default function Page() {
   useEffect(() => {
