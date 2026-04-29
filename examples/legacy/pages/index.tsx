@@ -13,6 +13,9 @@ export default function Page() {
       // @ts-ignore
       const _ = await import('lodash');
       console.log(Object.keys(_.default.omit({ a: 1 }, 'a')).length === 0);
+      // @ts-ignore
+      const promiseExternal = await import('promise-external');
+      console.log('promise external', promiseExternal.default);
     };
     func();
   }, []);
