@@ -8,7 +8,7 @@ import { withTmpPath } from './utils/withTmpPath';
 
 // 获取所有 icons
 const antIconsPath = winPath(
-  dirname(require.resolve('@ant-design/icons/package')),
+  dirname(require.resolve('@ant-design/icons/package.json')),
 );
 
 const getAllIcons = () => {
