@@ -12,5 +12,7 @@ export default {
       'script https://gw.alipayobjects.com/os/lib/jszip/3.10.1/dist/jszip.min.js',
       'JSZip',
     ],
+    'promise-external':
+      'promise Promise.resolve({ default: "from-promise-external" })',
   },
 };

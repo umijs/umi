@@ -137,12 +137,11 @@ function getNormalizedAlias(
 function getNormalizedExternals(externals: Record<string, any>) {
   return Object.entries(externals || {}).reduce(
     (ret: Record<string, any>, [k, v]) => {
-      // handle [string] with script type
       if (Array.isArray(v)) {
         const [url, ...members] = v;
-        const containsScript = url.startsWith('script');
-        const script = url.replace('script ', '');
-        if (containsScript) {
+        const scriptPrefix = /^script\s+/.exec(url);
+        const script = scriptPrefix ? url.slice(scriptPrefix[0].length) : url;
+        if (scriptPrefix) {
           ret[k] = {
             // ['antd', 'Button'] => `antd.Button`
             root: members.join('.'),
@@ -150,6 +149,8 @@ function getNormalizedExternals(externals: Record<string, any>) {
             // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
             script,
           };
+        } else if (url === 'promise' && typeof members[0] === 'string') {
+          ret[k] = `promise ${members[0]}`;
         } else {
           ret[k] = {
             root: members.join('.'),
@@ -363,6 +364,7 @@ export async function getProdUtooPackConfig(
     svgr,
     svgo = {},
     inlineLimit,
+    mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
 
@@ -401,6 +403,7 @@ export async function getProdUtooPackConfig(
         },
         define,
         nodePolyfill: true,
+        mdx: !!mdx,
         externals: getNormalizedExternals(userExternals),
         ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
@@ -505,6 +508,7 @@ export async function getDevUtooPackConfig(
     svgr,
     svgo = {},
     inlineLimit,
+    mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
 
@@ -555,6 +559,7 @@ export async function getDevUtooPackConfig(
         // dev enable persistent cache by default
         persistentCaching: true,
         nodePolyfill: true,
+        mdx: !!mdx,
         externals: getNormalizedExternals(userExternals),
         ...(opts.config.clickToComponent
           ? {
