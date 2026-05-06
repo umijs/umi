@@ -16,14 +16,28 @@ type IBuildBannerOpts = {
   packVersion?: string;
 };
 
+function cleanVersionRange(version?: string) {
+  return version?.replace(/^[^\d]*/, '');
+}
+
 export function getPackVersion(packVersion?: string) {
   if (packVersion) {
     return packVersion;
   }
 
   try {
+    const pkgPath = require.resolve('@utoo/pack/package.json', {
+      paths: [__dirname],
+    });
+    const pkg = require(pkgPath);
+    if (pkg.version) {
+      return pkg.version;
+    }
+  } catch {}
+
+  try {
     const pkg = require('../package.json');
-    return pkg.dependencies?.['@utoo/pack']?.replace(/^[^\d]*/, '');
+    return cleanVersionRange(pkg.dependencies?.['@utoo/pack']);
   } catch {
     return undefined;
   }
