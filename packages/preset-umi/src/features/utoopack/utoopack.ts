@@ -6,7 +6,25 @@ import {
   extractEntryAssets,
 } from '../../utils/extractEntryAssets';
 
+function cleanVersionRange(version?: string) {
+  return version?.replace(/^[^\d]*/, '');
+}
+
 export function getPackVersionFromBundler(bundlerEntry: string) {
+  const resolvePaths = [dirname(bundlerEntry), bundlerEntry];
+
+  for (const resolvePath of resolvePaths) {
+    try {
+      const pkgPath = require.resolve('@utoo/pack/package.json', {
+        paths: [resolvePath],
+      });
+      const pkg = require(pkgPath);
+      if (pkg.version) {
+        return pkg.version;
+      }
+    } catch {}
+  }
+
   const packageJsonCandidates = [
     join(dirname(bundlerEntry), '../package.json'),
     join(bundlerEntry, '../package.json'),
@@ -16,7 +34,7 @@ export function getPackVersionFromBundler(bundlerEntry: string) {
   for (const packageJsonPath of packageJsonCandidates) {
     try {
       const pkg = require(packageJsonPath);
-      return pkg.dependencies?.['@utoo/pack']?.replace(/^[^\d]*/, '');
+      return cleanVersionRange(pkg.dependencies?.['@utoo/pack']);
     } catch {}
   }
 
