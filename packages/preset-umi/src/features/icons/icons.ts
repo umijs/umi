@@ -50,6 +50,7 @@ export default (api: IApi) => {
 
   const icons: Set<string> = new Set();
   let noIconsLogged = false;
+  let lastGenerateIconsLog: string | null = null;
   api.addPrepareBuildPlugins(() => {
     return [
       iconPlugin.esbuildIconPlugin({
@@ -71,7 +72,12 @@ export default (api: IApi) => {
       return;
     }
 
-    logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
+    const iconNames = Array.from(allIcons);
+    const generateIconsLog = iconNames.join(', ');
+    if (generateIconsLog !== lastGenerateIconsLog) {
+      logger.info(`[icons] generate icons ${generateIconsLog}`);
+      lastGenerateIconsLog = generateIconsLog;
+    }
     const code: string[] = [];
     const { generateIconName, generateSvgr } = svgr;
     for (const iconStr of allIcons) {
