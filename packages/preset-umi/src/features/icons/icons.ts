@@ -49,6 +49,7 @@ export default (api: IApi) => {
   const EMPTY_ICONS_FILE = `export const __no_icons = true;`;
 
   const icons: Set<string> = new Set();
+  let noIconsLogged = false;
   api.addPrepareBuildPlugins(() => {
     return [
       iconPlugin.esbuildIconPlugin({
@@ -63,7 +64,10 @@ export default (api: IApi) => {
     const allIcons = new Set([...icons, ...extraIcons]);
 
     if (!allIcons.size) {
-      logger.info(`[icons] no icons was found`);
+      if (!noIconsLogged) {
+        logger.info(`[icons] no icons was found`);
+        noIconsLogged = true;
+      }
       return;
     }
 
