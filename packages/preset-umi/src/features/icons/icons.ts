@@ -49,6 +49,8 @@ export default (api: IApi) => {
   const EMPTY_ICONS_FILE = `export const __no_icons = true;`;
 
   const icons: Set<string> = new Set();
+  let noIconsLogged = false;
+  let lastGenerateIconsLog: string | null = null;
   api.addPrepareBuildPlugins(() => {
     return [
       iconPlugin.esbuildIconPlugin({
@@ -63,11 +65,19 @@ export default (api: IApi) => {
     const allIcons = new Set([...icons, ...extraIcons]);
 
     if (!allIcons.size) {
-      logger.info(`[icons] no icons was found`);
+      if (!noIconsLogged) {
+        logger.info(`[icons] no icons was found`);
+        noIconsLogged = true;
+      }
       return;
     }
 
-    logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
+    const iconNames = Array.from(allIcons);
+    const generateIconsLog = iconNames.join(', ');
+    if (generateIconsLog !== lastGenerateIconsLog) {
+      logger.info(`[icons] generate icons ${generateIconsLog}`);
+      lastGenerateIconsLog = generateIconsLog;
+    }
     const code: string[] = [];
     const { generateIconName, generateSvgr } = svgr;
     for (const iconStr of allIcons) {
