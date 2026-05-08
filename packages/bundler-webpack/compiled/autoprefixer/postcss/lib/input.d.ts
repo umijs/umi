@@ -1,4 +1,4 @@
-import { ProcessOptions } from './postcss'
+import { CssSyntaxError, ProcessOptions } from './postcss'
 import PreviousMap from './previous-map'
 
 export interface FilePosition {
@@ -147,4 +147,39 @@ export default class Input {
    * @param offset Source offset.
    */
   fromOffset(offset: number): { line: number; col: number } | null
+
+  /**
+   * Returns `CssSyntaxError` with information about the error and its position.
+   */
+  error(
+    message: string,
+    line: number,
+    column: number,
+    opts?: { plugin?: CssSyntaxError['plugin'] }
+  ): CssSyntaxError
+  error(
+    message: string,
+    offset: number,
+    opts?: { plugin?: CssSyntaxError['plugin'] }
+  ): CssSyntaxError
+  error(
+    message: string,
+    start:
+      | {
+          offset: number
+        }
+      | {
+          line: number
+          column: number
+        },
+    end:
+      | {
+          offset: number
+        }
+      | {
+          line: number
+          column: number
+        },
+    opts?: { plugin?: CssSyntaxError['plugin'] }
+  ): CssSyntaxError
 }

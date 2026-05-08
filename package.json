@@ -84,7 +84,7 @@
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@vercel/ncc": "0.33.3",
-    "browserslist": "4.22.2",
+    "browserslist": "4.28.2",
     "dts-packer": "^0.0.3",
     "expect-playwright": "^0.8.0",
     "father": "4.1.5",
