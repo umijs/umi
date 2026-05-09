@@ -111,6 +111,7 @@ export default (api: IApi) => {
         memo.utoopack,
         `The \`ssr.builder utoopack\` config is now allowed when \`utoopack\` is enable!`,
       );
+      memo.manifest ??= {};
     }
 
     return memo;

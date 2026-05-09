@@ -23,7 +23,12 @@ const { useToken, darkAlgorithm, defaultAlgorithm, compactAlgorithm } = theme;
 const isCI = process.env.CI;
 
 console.log('node env', process.env.NODE_ENV);
-console.log('equal node env', process.env.NODE_ENV === 'development');
+console.log(
+  'equal node env',
+  process.env.NODE_ENV === 'development',
+  testDefine === 'testDefine',
+);
+console.log('object enum', RoutePathEnum.INDEX === '/');
 
 isCI;
 

@@ -8,18 +8,29 @@ import { basename, dirname, extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
 function getUtoopackDefine(opts: { config: Record<string, any> }) {
-  const define: Record<string, any> = {
-    ...(opts.config.define || {}),
-  };
+  const define = Object.fromEntries(
+    Object.entries(opts.config.define || {}).map(([key, value]) => {
+      return [key, normalizeUtoopackDefineValue(value)];
+    }),
+  );
 
-  // Utoopack consumes define entries as concrete JSON values. Unlike Mako,
-  // string values are not parsed again as JavaScript expressions, so
-  // pre-stringifying leaves would turn "/foo" into the runtime value "\"/foo\"".
+  // Utoopack parses define strings as JavaScript expressions, so top-level
+  // string values must be quoted to become string literals at runtime.
   if (process.env.SOCKET_SERVER) {
-    define['process.env.SOCKET_SERVER'] = process.env.SOCKET_SERVER;
+    define['process.env.SOCKET_SERVER'] = JSON.stringify(
+      process.env.SOCKET_SERVER,
+    );
   }
 
   return define;
+}
+
+function normalizeUtoopackDefineValue(value: any) {
+  if (typeof value === 'string') {
+    return JSON.stringify(value);
+  }
+
+  return value;
 }
 
 function getModularizeImports(extraBabelPlugins: any[]) {
@@ -600,7 +611,7 @@ export async function getDevUtooPackConfig(
       ? {
           processEnv: {
             ...(utooBundlerOpts.processEnv || {}),
-            'process.env.SOCKET_SERVER': define['process.env.SOCKET_SERVER'],
+            'process.env.SOCKET_SERVER': process.env.SOCKET_SERVER,
           },
         }
       : {}),
