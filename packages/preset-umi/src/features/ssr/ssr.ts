@@ -9,7 +9,11 @@ import { existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import type { IApi } from '../../types';
 import { isWindows } from '../../utils/platform';
-import { absServerBuildPath, generateBuildManifest } from './utils';
+import {
+  absServerBuildPath,
+  generateBuildManifest,
+  generateBuildManifestFromStats,
+} from './utils';
 
 export default (api: IApi) => {
   const esbuildBuilder: typeof import('./builder/builder') = importLazy(
@@ -20,6 +24,9 @@ export default (api: IApi) => {
   );
   const makoBuiler: typeof import('./mako/mako') = importLazy(
     require.resolve('./mako/mako'),
+  );
+  const utoopackBuilder: typeof import('./utoopack/utoopack') = importLazy(
+    require.resolve('./utoopack/utoopack'),
   );
   let serverBuildTarget: string;
 
@@ -32,7 +39,7 @@ export default (api: IApi) => {
             serverBuildPath: zod.string(),
             serverBuildTarget: zod.enum(['express', 'worker']),
             platform: zod.string(),
-            builder: zod.enum(['esbuild', 'webpack', 'mako']),
+            builder: zod.enum(['esbuild', 'webpack', 'mako', 'utoopack']),
             __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: zod.object({
               pureApp: zod.boolean(),
               pureHtml: zod.boolean(),
@@ -97,6 +104,13 @@ export default (api: IApi) => {
       if (isWindows) {
         memo.ssr.builder = 'webpack';
       }
+    }
+
+    if (memo.ssr.builder === 'utoopack') {
+      assert(
+        memo.utoopack,
+        `The \`ssr.builder utoopack\` config is now allowed when \`utoopack\` is enable!`,
+      );
     }
 
     return memo;
@@ -194,17 +208,23 @@ export type {
       await webpackBuilder.build(api, opts);
     } else if (api.config.mako && builder === 'mako') {
       await makoBuiler.build(api);
+    } else if (api.config.utoopack && builder === 'utoopack') {
+      await utoopackBuilder.build(api, opts);
     }
   });
-  api.onDevCompileDone(() => {
+  api.onDevCompileDone(({ stats }) => {
     if (api.config.mako) {
       generateBuildManifest(api);
+    } else if (api.config.utoopack) {
+      generateBuildManifestFromStats(api, stats);
     }
   });
 
-  api.onBuildComplete(() => {
+  api.onBuildComplete(({ stats }) => {
     if (api.config.mako) {
       generateBuildManifest(api);
+    } else if (api.config.utoopack) {
+      generateBuildManifestFromStats(api, stats);
     }
   });
 

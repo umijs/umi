@@ -8,6 +8,7 @@ import path from 'path';
 import {
   getDevUtooPackConfig,
   getProdUtooPackConfig,
+  getSSRUtooPackConfig,
   IDevOpts,
 } from './config';
 import type { IOpts } from './types';
@@ -86,6 +87,54 @@ export async function build(opts: IOpts) {
       assetCount: stats.assets?.length,
     }),
   );
+  return stats;
+}
+
+export async function buildSSR(
+  opts: IOpts & {
+    serverBuildPath: string;
+    useHash?: boolean;
+  },
+) {
+  const { cwd } = opts;
+  const buildStartTime = Date.now();
+  const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
+  const rootDir = getUtoopackRootDir(cwd, opts.config.utoopack, findRootDir);
+  const utooPackConfig = await getSSRUtooPackConfig({
+    ...opts,
+    rootDir,
+  });
+
+  try {
+    await utooPackBuild(utooPackConfig, cwd, rootDir);
+  } catch (e: any) {
+    console.error(e.message);
+    const err = new Error('Build SSR with utoopack failed.');
+    // @ts-ignore
+    err.stack = null;
+    throw err;
+  }
+
+  const statsPath = path.join(
+    utooPackConfig.config.output?.path || 'server',
+    'stats.json',
+  );
+  const stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
+  stats.hasErrors = () => false;
+  stats.toJson = () => stats;
+  stats.toString = () => {};
+  stats.compilation = {
+    ...stats,
+    assets: stats.assets.reduce(
+      (acc: Record<string, any>, cur: any) =>
+        Object.assign(acc, { [cur.name]: cur }),
+      {} as Record<string, any>,
+    ),
+  };
+
+  const time = Date.now() - buildStartTime;
+  stats.time = time;
+
   return stats;
 }
 
