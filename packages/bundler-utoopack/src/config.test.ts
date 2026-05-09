@@ -58,6 +58,59 @@ describe('utoopack mdx config', () => {
   });
 });
 
+describe('utoopack define config', () => {
+  test('passes user define values to production utoopack config without stringifying leaves', async () => {
+    const routePathEnum = {
+      INDEX: '/',
+      DETAIL: '/detail',
+    };
+
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        define: {
+          RoutePathEnum: routePathEnum,
+          FEATURE_FLAG: true,
+          COUNT: 1,
+        },
+      },
+    } as any);
+
+    expect(config.config.define).toMatchObject({
+      RoutePathEnum: routePathEnum,
+      FEATURE_FLAG: true,
+      COUNT: 1,
+    });
+    expect(config.config.define?.RoutePathEnum.INDEX).toBe('/');
+    expect(config.config.define?.RoutePathEnum.DETAIL).toBe('/detail');
+  });
+
+  test('passes SOCKET_SERVER as a raw string value', async () => {
+    const prevSocketServer = process.env.SOCKET_SERVER;
+    process.env.SOCKET_SERVER = 'http://127.0.0.1:8001';
+
+    try {
+      const config = await getDevUtooPackConfig({
+        ...baseOpts,
+        config: {},
+      } as any);
+
+      expect(config.config.define?.['process.env.SOCKET_SERVER']).toBe(
+        'http://127.0.0.1:8001',
+      );
+      expect(config.processEnv?.['process.env.SOCKET_SERVER']).toBe(
+        'http://127.0.0.1:8001',
+      );
+    } finally {
+      if (prevSocketServer === undefined) {
+        delete process.env.SOCKET_SERVER;
+      } else {
+        process.env.SOCKET_SERVER = prevSocketServer;
+      }
+    }
+  });
+});
+
 describe('utoopack externals config', () => {
   test('keeps script-prefixed CDN externals as script externals', async () => {
     const config = await getProdUtooPackConfig({
