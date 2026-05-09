@@ -5,10 +5,12 @@ export default {
   routePrefetch: {},
   manifest: {},
   clientLoader: {},
-  ssr: {},
+  ssr: {
+    builder: 'utoopack',
+  },
+  utoopack: {},
   exportStatic: {},
   styles: [`body { color: red; }`],
-  // mako: {},
   metas: [
     {
       name: 'test',

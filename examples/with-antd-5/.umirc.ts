@@ -1,6 +1,11 @@
 // @ts-ignore make lsp happy
 process.env.CI = true;
 
+export enum RoutePathEnum {
+  INDEX = '/',
+  DETAIL = '/detail',
+}
+
 export default {
   plugins: ['@umijs/plugins/dist/antd', '@umijs/plugins/dist/locale'],
   locale: {
@@ -9,6 +14,8 @@ export default {
   },
   define: {
     'process.env.CI': process.env.CI,
+    testDefine: 'testDefine',
+    RoutePathEnum: RoutePathEnum,
   },
   utoopack: {},
   crossorigin: {},

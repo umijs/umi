@@ -85,7 +85,24 @@ describe('utoopack define config', () => {
     expect(config.config.define?.RoutePathEnum.DETAIL).toBe('/detail');
   });
 
-  test('passes SOCKET_SERVER as a raw string value', async () => {
+  test('quotes top-level string defines for utoopack expressions', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        define: {
+          testDefine: 'testDefine',
+          'process.env.SSR_BUILD_TARGET': 'express',
+        },
+      },
+    } as any);
+
+    expect(config.config.define?.testDefine).toBe('"testDefine"');
+    expect(config.config.define?.['process.env.SSR_BUILD_TARGET']).toBe(
+      '"express"',
+    );
+  });
+
+  test('quotes SOCKET_SERVER define but keeps processEnv raw', async () => {
     const prevSocketServer = process.env.SOCKET_SERVER;
     process.env.SOCKET_SERVER = 'http://127.0.0.1:8001';
 
@@ -96,7 +113,7 @@ describe('utoopack define config', () => {
       } as any);
 
       expect(config.config.define?.['process.env.SOCKET_SERVER']).toBe(
-        'http://127.0.0.1:8001',
+        '"http://127.0.0.1:8001"',
       );
       expect(config.processEnv?.['process.env.SOCKET_SERVER']).toBe(
         'http://127.0.0.1:8001',

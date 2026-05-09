@@ -4,22 +4,33 @@ import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
 import fs from 'fs';
-import { extname, resolve as pathResolve } from 'path';
+import { basename, dirname, extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
 function getUtoopackDefine(opts: { config: Record<string, any> }) {
-  const define: Record<string, any> = {
-    ...(opts.config.define || {}),
-  };
+  const define = Object.fromEntries(
+    Object.entries(opts.config.define || {}).map(([key, value]) => {
+      return [key, normalizeUtoopackDefineValue(value)];
+    }),
+  );
 
-  // Utoopack consumes define entries as concrete JSON values. Unlike Mako,
-  // string values are not parsed again as JavaScript expressions, so
-  // pre-stringifying leaves would turn "/foo" into the runtime value "\"/foo\"".
+  // Utoopack parses define strings as JavaScript expressions, so top-level
+  // string values must be quoted to become string literals at runtime.
   if (process.env.SOCKET_SERVER) {
-    define['process.env.SOCKET_SERVER'] = process.env.SOCKET_SERVER;
+    define['process.env.SOCKET_SERVER'] = JSON.stringify(
+      process.env.SOCKET_SERVER,
+    );
   }
 
   return define;
+}
+
+function normalizeUtoopackDefineValue(value: any) {
+  if (typeof value === 'string') {
+    return JSON.stringify(value);
+  }
+
+  return value;
 }
 
 function getModularizeImports(extraBabelPlugins: any[]) {
@@ -407,6 +418,106 @@ export async function getProdUtooPackConfig(
   return utooBundlerOpts;
 }
 
+export async function getSSRUtooPackConfig(
+  opts: IOpts & {
+    serverBuildPath: string;
+    useHash?: boolean;
+  },
+): Promise<BundleOptions> {
+  const utooBundlerOpts = await getProdUtooPackConfig({
+    ...opts,
+    clean: false,
+    disableCopy: true,
+  });
+  const entry = Object.entries(opts.entry)[0];
+  const entryName = entry?.[0] || 'umi.server';
+  const entryPath = entry?.[1];
+  const filename = opts.useHash
+    ? '[name].[contenthash:8].js'
+    : basename(opts.serverBuildPath);
+  const ssrAssetsLoader = {
+    loader: require.resolve('./ssrAssetsLoader'),
+    options: {
+      cwd: opts.cwd,
+    },
+  };
+  const ssrStylesLoader = {
+    loader: require.resolve('./ssrStylesLoader'),
+    options: {
+      cwd: opts.cwd,
+    },
+  };
+  const ssrAssetRules = [
+    '*.png',
+    '*.jpg',
+    '*.jpeg',
+    '*.gif',
+    '*.webp',
+    '*.avif',
+    '*.ico',
+    '*.woff',
+    '*.woff2',
+    '*.ttf',
+    '*.eot',
+    '*.mp3',
+    '*.mp4',
+  ].reduce((memo, key) => {
+    memo[key] = {
+      loaders: [ssrAssetsLoader],
+      as: '*.js',
+    };
+    return memo;
+  }, {} as Record<string, any>);
+  const ssrStyleRules = ['*.css', '*.less', '*.sass', '*.scss'].reduce(
+    (memo, key) => {
+      memo[key] = {
+        loaders: [ssrStylesLoader],
+        as: '*.js',
+      };
+      return memo;
+    },
+    {} as Record<string, any>,
+  );
+
+  utooBundlerOpts.config = {
+    ...utooBundlerOpts.config,
+    entry: [
+      {
+        name: entryName,
+        import: entryPath,
+        library: {},
+      },
+    ],
+    output: {
+      ...utooBundlerOpts.config.output,
+      path: dirname(opts.serverBuildPath),
+      filename,
+      chunkFilename: filename,
+      clean: false,
+      copy: [],
+      publicPath: '/',
+    },
+    target: 'node',
+    sourceMaps: false,
+    stats: true,
+    nodePolyfill: false,
+    module: {
+      ...utooBundlerOpts.config.module,
+      rules: {
+        ...utooBundlerOpts.config.module?.rules,
+        ...ssrAssetRules,
+        ...ssrStyleRules,
+      },
+    },
+    optimization: {
+      ...utooBundlerOpts.config.optimization,
+      minify: false,
+    },
+  };
+
+  return utooBundlerOpts;
+}
+
 export type IDevOpts = {
   afterMiddlewares?: any[];
   beforeMiddlewares?: any[];
@@ -500,7 +611,7 @@ export async function getDevUtooPackConfig(
       ? {
           processEnv: {
             ...(utooBundlerOpts.processEnv || {}),
-            'process.env.SOCKET_SERVER': define['process.env.SOCKET_SERVER'],
+            'process.env.SOCKET_SERVER': process.env.SOCKET_SERVER,
           },
         }
       : {}),
