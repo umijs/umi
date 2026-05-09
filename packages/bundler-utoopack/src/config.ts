@@ -7,15 +7,19 @@ import fs from 'fs';
 import { extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
-function normalizeDefineValue(val: any) {
-  if (!lodash.isPlainObject(val)) {
-    return JSON.stringify(val);
-  } else {
-    return Object.keys(val).reduce((obj: Record<string, any>, key: string) => {
-      obj[key] = normalizeDefineValue(val[key]);
-      return obj;
-    }, {});
+function getUtoopackDefine(opts: { config: Record<string, any> }) {
+  const define: Record<string, any> = {
+    ...(opts.config.define || {}),
+  };
+
+  // Utoopack consumes define entries as concrete JSON values. Unlike Mako,
+  // string values are not parsed again as JavaScript expressions, so
+  // pre-stringifying leaves would turn "/foo" into the runtime value "\"/foo\"".
+  if (process.env.SOCKET_SERVER) {
+    define['process.env.SOCKET_SERVER'] = process.env.SOCKET_SERVER;
   }
+
+  return define;
 }
 
 function getModularizeImports(extraBabelPlugins: any[]) {
@@ -340,18 +344,7 @@ export async function getProdUtooPackConfig(
   const emotion = extraBabelPlugins.some((p) => {
     return p === '@emotion' || p === '@emotion/babel-plugin';
   });
-  const define: Record<string, any> = {};
-  if (opts.config.define) {
-    for (const key of Object.keys(opts.config.define)) {
-      define[key] = normalizeDefineValue(opts.config.define[key]);
-    }
-  }
-
-  if (process.env.SOCKET_SERVER) {
-    define['process.env.SOCKET_SERVER'] = normalizeDefineValue(
-      process.env.SOCKET_SERVER,
-    );
-  }
+  const define = getUtoopackDefine(opts);
   // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
   //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
   //   : undefined;
@@ -484,18 +477,7 @@ export async function getDevUtooPackConfig(
     return p === '@emotion' || p === '@emotion/babel-plugin';
   });
 
-  const define: Record<string, any> = {};
-  if (opts.config.define) {
-    for (const key of Object.keys(opts.config.define)) {
-      define[key] = normalizeDefineValue(opts.config.define[key]);
-    }
-  }
-
-  if (process.env.SOCKET_SERVER) {
-    define['process.env.SOCKET_SERVER'] = normalizeDefineValue(
-      process.env.SOCKET_SERVER,
-    );
-  }
+  const define = getUtoopackDefine(opts);
   // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
   //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
   //   : undefined;
