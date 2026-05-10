@@ -315,6 +315,10 @@ function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
   return lodash.omit(utoopackConfig, ['root']);
 }
 
+function getDefaultPersistentCaching() {
+  return process.platform !== 'win32';
+}
+
 export async function getProdUtooPackConfig(
   opts: IOpts,
 ): Promise<BundleOptions> {
@@ -649,8 +653,8 @@ export async function getDevUtooPackConfig(
           emotion,
         },
         define,
-        // dev enable persistent cache by default
-        persistentCaching: true,
+        // Windows persistent cache restore is currently unstable in utoopack dev.
+        persistentCaching: getDefaultPersistentCaching(),
         nodePolyfill: true,
         mdx: !!mdx,
         externals: getNormalizedExternals(userExternals),
