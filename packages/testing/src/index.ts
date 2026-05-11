@@ -1,5 +1,4 @@
 import type { Config } from '@jest/types';
-import { Path, TransformerConfig } from '@jest/types/build/Config';
 import { setNoDeprecation } from '@umijs/utils';
 import { join } from 'path';
 
@@ -16,7 +15,7 @@ export type { Config };
 function getJSTransformer(
   jsTransformer: JSTransformer,
   opts?: any,
-): TransformerConfig | Path {
+): Config.TransformerConfig | string {
   switch (jsTransformer) {
     case 'esbuild':
       return [

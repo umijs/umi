@@ -35,7 +35,7 @@ export function assetsLoader(opts: { cwd: string }): esbuild.Plugin {
             statSync(args.path).size < 10000
           ) {
             return {
-              contents: readFileSync(args.path),
+              contents: new Uint8Array(readFileSync(args.path)),
               loader: 'dataurl',
             };
           } else {

@@ -6,7 +6,7 @@ import { extname, relative } from 'path';
 import { resolveOptions } from './options';
 import { UserOptions } from './type';
 
-const THIS_FILE = fs.readFileSync(__filename);
+const THIS_FILE = new Uint8Array(fs.readFileSync(__filename));
 const TS_TSX_REGEX = /\.tsx?$/;
 const JS_JSX_REGEX = /\.jsx?$/;
 

@@ -40,7 +40,7 @@ export const lessLoader = (opts: {
           });
 
           const classNames = getClassNames(
-            Buffer.from(result.css),
+            new Uint8Array(Buffer.from(result.css)),
             filename,
           ).sort();
           const cssModuleObject = classNames.reduce<Record<string, string>>(
