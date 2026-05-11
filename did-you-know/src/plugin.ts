@@ -54,7 +54,11 @@ export default (api: any) => {
       framework = EFramework.bigfish;
     }
 
-    const item = getDidYouKnow(data.didYouKnow, framework, majorVersion);
+    const item = getDidYouKnow(
+      data.didYouKnow as ITip[],
+      framework,
+      majorVersion,
+    );
 
     if (!item) return;
     const { text, url } = item;

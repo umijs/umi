@@ -1,3 +1,4 @@
+import type { RequestHandler } from '@umijs/bundler-webpack';
 import { cheerio } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
@@ -19,7 +20,7 @@ export default (api: IApi) => {
     const loadingHtml = $.html();
 
     return [
-      (req, res, next) => {
+      ((req, res, next) => {
         const { path } = req;
 
         const enableVite = api.appData.vite;
@@ -98,7 +99,7 @@ export default (api: IApi) => {
         }
 
         return next();
-      },
+      }) as RequestHandler,
     ];
   });
 };

@@ -14,7 +14,7 @@ export function hashString(str: string) {
   return hash;
 }
 
-export function getClassNames(code: Buffer, filename: string) {
+export function getClassNames(code: Uint8Array, filename: string) {
   // why use Parcel CSS?
   // ref: https://github.com/indooorsman/esbuild-css-modules-plugin
   const { exports } = parcelCSS.transform({
@@ -35,7 +35,7 @@ export function cssLoader(opts: { cwd: string }): esbuild.Plugin {
     name: 'css-loader',
     setup(build) {
       build.onLoad({ filter: /\.css$/ }, (args) => {
-        const code = readFileSync(args.path);
+        const code = new Uint8Array(readFileSync(args.path));
         const filename = winPath(args.path).replace(
           ensureLastSlash(winPath(opts.cwd)),
           '',
