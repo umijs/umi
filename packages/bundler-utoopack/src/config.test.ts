@@ -128,6 +128,134 @@ describe('utoopack define config', () => {
   });
 });
 
+describe('utoopack extra babel config', () => {
+  test('adds babel-loader rules for extraBabelPlugins in production', async () => {
+    const babelPreset = ['/path/to/babel-preset-umi', { presetReact: {} }];
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      babelPreset,
+      beforeBabelPlugins: [() => null, 'before-plugin'],
+      beforeBabelPresets: ['before-preset'],
+      extraBabelPlugins: ['api-plugin'],
+      extraBabelPresets: ['api-preset'],
+      config: {
+        targets: {
+          chrome: 80,
+        },
+        babelLoaderCustomize: '/path/to/customize',
+        extraBabelPlugins: [['babel-plugin-istanbul', { cwd: '/tmp' }]],
+        extraBabelPresets: ['user-preset'],
+        utoopack: {
+          babelLoader: true,
+        },
+      },
+    } as any);
+
+    const rules = config.config.module?.rules || {};
+    const rule = rules['**/src/**/*.tsx'] as any;
+    const loader = rule.loaders[0];
+
+    expect(Object.keys(rules)).toEqual(
+      expect.arrayContaining([
+        '**/src/**/*.js',
+        '**/src/**/*.mjs',
+        '**/src/**/*.cjs',
+        '**/src/**/*.jsx',
+        '**/src/**/*.ts',
+        '**/src/**/*.tsx',
+      ]),
+    );
+    expect(rule.as).toBe('*.js');
+    expect(rule.condition).toMatchObject({
+      all: [{ not: 'foreign' }, { not: { path: expect.any(RegExp) } }],
+    });
+    expect(loader.loader).toContain('babel-loader');
+    expect(loader.options).toMatchObject({
+      sourceType: 'unambiguous',
+      babelrc: false,
+      configFile: false,
+      cacheDirectory: false,
+      browserslistConfigFile: false,
+      targets: {
+        chrome: 80,
+      },
+      customize: '/path/to/customize',
+    });
+    expect(loader.options.presets).toEqual([
+      babelPreset,
+      'before-preset',
+      'api-preset',
+      'user-preset',
+    ]);
+    expect(loader.options.plugins).toEqual([
+      'before-plugin',
+      'api-plugin',
+      ['babel-plugin-istanbul', { cwd: '/tmp' }],
+    ]);
+  });
+
+  test('does not add babel-loader rules unless utoopack babelLoader is enabled', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        extraBabelPlugins: [
+          [
+            'babel-plugin-import',
+            { libraryName: 'antd', libraryDirectory: 'es' },
+          ],
+          '@emotion/babel-plugin',
+          'babel-plugin-istanbul',
+        ],
+        utoopack: {},
+      },
+    } as any);
+
+    expect(config.config.module).toBeUndefined();
+    expect(config.config.optimization?.modularizeImports).toEqual({
+      antd: {
+        transform: 'antd/es/{{ kebabCase member }}',
+        preventFullImport: false,
+        skipDefaultConversion: false,
+        style: undefined,
+      },
+    });
+    expect(config.config.styles?.emotion).toBe(true);
+  });
+
+  test('keeps native babel plugin adapters when babelLoader is enabled', async () => {
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {
+        extraBabelPlugins: [
+          [
+            'babel-plugin-import',
+            { libraryName: 'antd', libraryDirectory: 'es' },
+          ],
+          '@emotion/babel-plugin',
+          'babel-plugin-istanbul',
+        ],
+        utoopack: {
+          babelLoader: true,
+        },
+      },
+    } as any);
+
+    const rule = config.config.module?.rules?.['**/src/**/*.tsx'] as any;
+    const loader = rule.loaders[0];
+
+    expect(loader.options.plugins).toEqual(['babel-plugin-istanbul']);
+    expect(config.config.optimization?.modularizeImports).toEqual({
+      antd: {
+        transform: 'antd/es/{{ kebabCase member }}',
+        preventFullImport: false,
+        skipDefaultConversion: false,
+        style: undefined,
+      },
+    });
+    expect(config.config.styles?.emotion).toBe(true);
+  });
+});
+
 describe('utoopack externals config', () => {
   test('keeps script-prefixed CDN externals as script externals', async () => {
     const config = await getProdUtooPackConfig({

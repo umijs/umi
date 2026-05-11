@@ -1700,6 +1700,16 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
 
+  examples/with-utoopack-istanbul:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+    devDependencies:
+      babel-plugin-istanbul:
+        specifier: ^6.1.1
+        version: 6.1.1
+
   examples/with-utoopack-qiankun-slave:
     dependencies:
       '@umijs/max':

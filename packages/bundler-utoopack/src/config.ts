@@ -92,6 +92,141 @@ function getModularizeImports(extraBabelPlugins: any[]) {
     );
 }
 
+function getBabelPluginName(plugin: any) {
+  const name = Array.isArray(plugin) ? plugin[0] : plugin;
+
+  return typeof name === 'string' ? name : '';
+}
+
+function isModularizeImportPlugin(plugin: any) {
+  return /^import$|babel-plugin-import/.test(getBabelPluginName(plugin));
+}
+
+function isEmotionBabelPlugin(plugin: any) {
+  const name = getBabelPluginName(plugin);
+
+  return name === '@emotion' || name.endsWith('@emotion/babel-plugin');
+}
+
+function getExtraBabelPlugins(opts: {
+  beforeBabelPlugins?: any[];
+  extraBabelPlugins?: any[];
+  config: Record<string, any>;
+}) {
+  return [
+    ...(opts.beforeBabelPlugins || []),
+    ...(opts.extraBabelPlugins || []),
+    ...(opts.config.extraBabelPlugins || []),
+  ]
+    .filter(Boolean)
+    .filter(isSerializableBabelItem);
+}
+
+function getExtraBabelPresets(opts: {
+  beforeBabelPresets?: any[];
+  extraBabelPresets?: any[];
+  config: Record<string, any>;
+}) {
+  return [
+    ...(opts.beforeBabelPresets || []),
+    ...(opts.extraBabelPresets || []),
+    ...(opts.config.extraBabelPresets || []),
+  ]
+    .filter(Boolean)
+    .filter(isSerializableBabelItem);
+}
+
+function dropUndefinedValues<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map(dropUndefinedValues) as T;
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([, item]) => item !== undefined)
+        .map(([key, item]) => [key, dropUndefinedValues(item)]),
+    ) as T;
+  }
+
+  return value;
+}
+
+function isSerializableBabelItem(item: any) {
+  const normalized = dropUndefinedValues(item);
+
+  try {
+    return lodash.isEqual(normalized, JSON.parse(JSON.stringify(normalized)));
+  } catch (e) {
+    return false;
+  }
+}
+
+function getExtraBabelModuleRules(opts: {
+  babelPreset?: any;
+  beforeBabelPlugins?: any[];
+  beforeBabelPresets?: any[];
+  extraBabelPlugins?: any[];
+  extraBabelPresets?: any[];
+  config: Record<string, any>;
+}) {
+  if (opts.config.utoopack?.babelLoader !== true) {
+    return {};
+  }
+
+  const plugins = getExtraBabelPlugins(opts).filter((plugin) => {
+    return !isModularizeImportPlugin(plugin) && !isEmotionBabelPlugin(plugin);
+  });
+  const extraPresets = getExtraBabelPresets(opts);
+
+  if (!plugins.length && !extraPresets.length) {
+    return {};
+  }
+
+  const presets = [opts.babelPreset, ...extraPresets].filter(Boolean);
+
+  const rule = {
+    condition: {
+      all: [
+        { not: 'foreign' },
+        {
+          not: {
+            path: /[\\/]src[\\/]\.umi(?:-[^\\/]*)?[\\/]/,
+          },
+        },
+      ],
+    },
+    loaders: [
+      {
+        loader: require.resolve('@umijs/bundler-webpack/compiled/babel-loader'),
+        options: dropUndefinedValues({
+          sourceType: 'unambiguous',
+          babelrc: false,
+          configFile: false,
+          cacheDirectory: false,
+          browserslistConfigFile: false,
+          targets: opts.config.targets,
+          customize: opts.config.babelLoaderCustomize,
+          presets,
+          plugins,
+        }),
+      },
+    ],
+    as: '*.js',
+  };
+
+  return {
+    module: {
+      rules: Object.fromEntries(
+        ['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx'].map((ext) => [
+          `**/src/**/*.${ext}`,
+          rule,
+        ]),
+      ),
+    },
+  };
+}
+
 function getNormalizedAlias(
   alias: Record<string, string>,
   rootDir: string,
@@ -312,7 +447,7 @@ export function mergeExtraPostcssPlugins(
 }
 
 function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
-  return lodash.omit(utoopackConfig, ['root']);
+  return lodash.omit(utoopackConfig, ['babelLoader', 'root']);
 }
 
 function getDefaultPersistentCaching() {
@@ -413,8 +548,9 @@ export async function getProdUtooPackConfig(
         nodePolyfill: true,
         mdx: !!mdx,
         externals: getNormalizedExternals(userExternals),
-        ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
+      getExtraBabelModuleRules(opts),
+      getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),
   } as BundleOptions;
@@ -666,8 +802,9 @@ export async function getDevUtooPackConfig(
               },
             }
           : {}),
-        ...getSvgModuleRules({ svgr, svgo, inlineLimit }),
       },
+      getExtraBabelModuleRules(opts),
+      getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),
     watch: {
