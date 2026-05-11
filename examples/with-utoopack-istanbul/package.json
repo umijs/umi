@@ -1,0 +1,17 @@
+{
+  "name": "@example/with-utoopack-istanbul",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  },
+  "devDependencies": {
+    "babel-plugin-istanbul": "^6.1.1"
+  }
+}
