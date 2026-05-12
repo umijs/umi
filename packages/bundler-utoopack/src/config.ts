@@ -581,12 +581,6 @@ export async function getSSRUtooPackConfig(
       cwd: opts.cwd,
     },
   };
-  const ssrStylesLoader = {
-    loader: require.resolve('./ssrStylesLoader'),
-    options: {
-      cwd: opts.cwd,
-    },
-  };
   const ssrAssetRules = [
     '*.png',
     '*.jpg',
@@ -608,16 +602,6 @@ export async function getSSRUtooPackConfig(
     };
     return memo;
   }, {} as Record<string, any>);
-  const ssrStyleRules = ['*.css', '*.less', '*.sass', '*.scss'].reduce(
-    (memo, key) => {
-      memo[key] = {
-        loaders: [ssrStylesLoader],
-        as: '*.js',
-      };
-      return memo;
-    },
-    {} as Record<string, any>,
-  );
 
   utooBundlerOpts.config = {
     ...utooBundlerOpts.config,
@@ -646,7 +630,6 @@ export async function getSSRUtooPackConfig(
       rules: {
         ...utooBundlerOpts.config.module?.rules,
         ...ssrAssetRules,
-        ...ssrStyleRules,
       },
     },
     optimization: {

@@ -18,7 +18,11 @@ jest.mock('@utoo/pack', () => ({
   })),
 }));
 
-import { getDevUtooPackConfig, getProdUtooPackConfig } from './config';
+import {
+  getDevUtooPackConfig,
+  getProdUtooPackConfig,
+  getSSRUtooPackConfig,
+} from './config';
 
 const baseOpts = {
   cwd: process.cwd(),
@@ -55,6 +59,24 @@ describe('utoopack mdx config', () => {
     } as any);
 
     expect(config.config.mdx).toBe(true);
+  });
+});
+
+describe('utoopack ssr config', () => {
+  test('uses native style handling instead of SSR style loader rules', async () => {
+    const config = await getSSRUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      serverBuildPath: '/tmp/umi.server.js',
+    } as any);
+
+    const rules = config.config.module?.rules || {};
+
+    expect(rules['*.css']).toBeUndefined();
+    expect(rules['*.less']).toBeUndefined();
+    expect(rules['*.sass']).toBeUndefined();
+    expect(rules['*.scss']).toBeUndefined();
+    expect(rules['*.png']?.loaders?.[0]?.loader).toContain('ssrAssetsLoader');
   });
 });
 
