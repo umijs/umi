@@ -18,7 +18,11 @@ jest.mock('@utoo/pack', () => ({
   })),
 }));
 
-import { getDevUtooPackConfig, getProdUtooPackConfig } from './config';
+import {
+  getDevUtooPackConfig,
+  getProdUtooPackConfig,
+  getSSRUtooPackConfig,
+} from './config';
 
 const baseOpts = {
   cwd: process.cwd(),
@@ -55,6 +59,40 @@ describe('utoopack mdx config', () => {
     } as any);
 
     expect(config.config.mdx).toBe(true);
+  });
+});
+
+describe('utoopack ssr config', () => {
+  test('uses native handling instead of SSR style or asset loader rules', async () => {
+    const config = await getSSRUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      serverBuildPath: '/tmp/umi.server.js',
+    } as any);
+
+    const rules = config.config.module?.rules || {};
+
+    expect(rules['*.css']).toBeUndefined();
+    expect(rules['*.less']).toBeUndefined();
+    expect(rules['*.sass']).toBeUndefined();
+    expect(rules['*.scss']).toBeUndefined();
+    expect(rules['*.png']).toBeUndefined();
+    expect(rules['*.jpg']).toBeUndefined();
+    expect(rules['*.woff']).toBeUndefined();
+    expect(config.config.output?.clean).toBe(true);
+  });
+
+  test('matches client asset urls in development', async () => {
+    const config = await getSSRUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      serverBuildPath: '/tmp/umi.server.js',
+      isDev: true,
+    } as any);
+
+    expect(config.config.output?.assetModuleFilename).toBe(
+      '[name].[contenthash:8]',
+    );
   });
 });
 

@@ -94,6 +94,7 @@ export async function buildSSR(
   opts: IOpts & {
     serverBuildPath: string;
     useHash?: boolean;
+    isDev?: boolean;
   },
 ) {
   const { cwd } = opts;
