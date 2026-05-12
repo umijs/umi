@@ -562,6 +562,7 @@ export async function getSSRUtooPackConfig(
   opts: IOpts & {
     serverBuildPath: string;
     useHash?: boolean;
+    isDev?: boolean;
   },
 ): Promise<BundleOptions> {
   const utooBundlerOpts = await getProdUtooPackConfig({
@@ -575,33 +576,6 @@ export async function getSSRUtooPackConfig(
   const filename = opts.useHash
     ? '[name].[contenthash:8].js'
     : basename(opts.serverBuildPath);
-  const ssrAssetsLoader = {
-    loader: require.resolve('./ssrAssetsLoader'),
-    options: {
-      cwd: opts.cwd,
-    },
-  };
-  const ssrAssetRules = [
-    '*.png',
-    '*.jpg',
-    '*.jpeg',
-    '*.gif',
-    '*.webp',
-    '*.avif',
-    '*.ico',
-    '*.woff',
-    '*.woff2',
-    '*.ttf',
-    '*.eot',
-    '*.mp3',
-    '*.mp4',
-  ].reduce((memo, key) => {
-    memo[key] = {
-      loaders: [ssrAssetsLoader],
-      as: '*.js',
-    };
-    return memo;
-  }, {} as Record<string, any>);
 
   utooBundlerOpts.config = {
     ...utooBundlerOpts.config,
@@ -617,7 +591,8 @@ export async function getSSRUtooPackConfig(
       path: dirname(opts.serverBuildPath),
       filename,
       chunkFilename: filename,
-      clean: false,
+      ...(opts.isDev ? { assetModuleFilename: '[name].[contenthash:8]' } : {}),
+      clean: true,
       copy: [],
       publicPath: '/',
     },
@@ -625,13 +600,6 @@ export async function getSSRUtooPackConfig(
     sourceMaps: false,
     stats: true,
     nodePolyfill: false,
-    module: {
-      ...utooBundlerOpts.config.module,
-      rules: {
-        ...utooBundlerOpts.config.module?.rules,
-        ...ssrAssetRules,
-      },
-    },
     optimization: {
       ...utooBundlerOpts.config.optimization,
       minify: false,

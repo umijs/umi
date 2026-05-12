@@ -62,6 +62,7 @@ export const build = async (api: IApi, opts: any) => {
     config: api.config,
     serverBuildPath: absOutputFile,
     useHash,
+    isDev: api.env === Env.development,
   });
 
   const serverFile = getServerBuildFile(stats) || basename(absOutputFile);

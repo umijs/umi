@@ -63,7 +63,7 @@ describe('utoopack mdx config', () => {
 });
 
 describe('utoopack ssr config', () => {
-  test('uses native style handling instead of SSR style loader rules', async () => {
+  test('uses native handling instead of SSR style or asset loader rules', async () => {
     const config = await getSSRUtooPackConfig({
       ...baseOpts,
       config: {},
@@ -76,7 +76,23 @@ describe('utoopack ssr config', () => {
     expect(rules['*.less']).toBeUndefined();
     expect(rules['*.sass']).toBeUndefined();
     expect(rules['*.scss']).toBeUndefined();
-    expect(rules['*.png']?.loaders?.[0]?.loader).toContain('ssrAssetsLoader');
+    expect(rules['*.png']).toBeUndefined();
+    expect(rules['*.jpg']).toBeUndefined();
+    expect(rules['*.woff']).toBeUndefined();
+    expect(config.config.output?.clean).toBe(true);
+  });
+
+  test('matches client asset urls in development', async () => {
+    const config = await getSSRUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      serverBuildPath: '/tmp/umi.server.js',
+      isDev: true,
+    } as any);
+
+    expect(config.config.output?.assetModuleFilename).toBe(
+      '[name].[contenthash:8]',
+    );
   });
 });
 
