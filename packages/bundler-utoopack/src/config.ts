@@ -740,6 +740,7 @@ export async function getDevUtooPackConfig(
           emotion,
         },
         define,
+        stats: true,
         // Windows persistent cache restore is currently unstable in utoopack dev.
         persistentCaching: getDefaultPersistentCaching(),
         nodePolyfill: true,

@@ -272,14 +272,16 @@ export async function dev(opts: IDevOpts) {
 
   const createStatsObject = () => {
     let stats: any;
+    const statsPath = path.join(
+      utooPackConfig.config.output?.path || 'dist',
+      'stats.json',
+    );
     try {
-      const statsPath = path.join(
-        utooPackConfig.config.output?.path || 'dist',
-        'stats.json',
-      );
       stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
-    } catch (e) {
-      throw new Error('File stats.json not found by utoopack dev');
+    } catch (e: any) {
+      throw new Error(
+        `File stats.json not found by utoopack dev at ${statsPath}: ${e.message}`,
+      );
     }
 
     stats.hasErrors = () => false;
