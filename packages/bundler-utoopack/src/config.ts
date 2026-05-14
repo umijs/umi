@@ -450,6 +450,12 @@ function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
   return lodash.omit(utoopackConfig, ['babelLoader', 'root']);
 }
 
+function getEntryCssFilename(entry: Record<string, string>) {
+  const entryNames = Object.keys(entry || {});
+
+  return entryNames.length === 1 ? `${entryNames[0]}.css` : undefined;
+}
+
 function getDefaultPersistentCaching() {
   return process.platform !== 'win32';
 }
@@ -510,6 +516,7 @@ export async function getProdUtooPackConfig(
     mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
+  const entryCssFilename = getEntryCssFilename(opts.entry);
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -519,6 +526,7 @@ export async function getProdUtooPackConfig(
       {
         output: {
           clean: opts.clean,
+          ...(entryCssFilename ? { cssFilename: entryCssFilename } : {}),
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
           ...(opts.disableCopy
             ? { copy: [] }
@@ -576,9 +584,14 @@ export async function getSSRUtooPackConfig(
   const filename = opts.useHash
     ? '[name].[contenthash:8].js'
     : basename(opts.serverBuildPath);
+  const nodeEnv = opts.isDev ? 'development' : 'production';
 
   utooBundlerOpts.config = {
     ...utooBundlerOpts.config,
+    define: {
+      ...utooBundlerOpts.config.define,
+      'process.env.NODE_ENV': JSON.stringify(nodeEnv),
+    },
     entry: [
       {
         name: entryName,
@@ -591,7 +604,6 @@ export async function getSSRUtooPackConfig(
       path: dirname(opts.serverBuildPath),
       filename,
       chunkFilename: filename,
-      ...(opts.isDev ? { assetModuleFilename: '[name].[contenthash:8]' } : {}),
       clean: true,
       copy: [],
       publicPath: '/',
@@ -695,6 +707,7 @@ export async function getDevUtooPackConfig(
     mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
+  const entryCssFilename = getEntryCssFilename(opts.entry);
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -711,6 +724,7 @@ export async function getDevUtooPackConfig(
       {
         output: {
           clean: opts.clean === undefined ? true : opts.clean,
+          ...(entryCssFilename ? { cssFilename: entryCssFilename } : {}),
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
           ...(opts.disableCopy
             ? { copy: [] }

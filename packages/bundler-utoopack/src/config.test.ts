@@ -33,6 +33,59 @@ const baseOpts = {
 };
 
 describe('utoopack mdx config', () => {
+  test('uses entry name as default css output filename', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(prodConfig.config.output?.cssFilename).toBe('index.css');
+    expect(devConfig.config.output?.cssFilename).toBe('index.css');
+  });
+
+  test('does not use name placeholder for multi-entry css output filename', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      entry: {
+        foo: './src/foo.tsx',
+        bar: './src/bar.tsx',
+      },
+      config: {},
+    } as any);
+
+    expect(config.config.output?.cssFilename).toBeUndefined();
+  });
+
+  test('allows user css output filename override', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          output: {
+            cssFilename: 'custom.css',
+          },
+        },
+      },
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          output: {
+            cssFilename: 'custom.css',
+          },
+        },
+      },
+    } as any);
+
+    expect(prodConfig.config.output?.cssFilename).toBe('custom.css');
+    expect(devConfig.config.output?.cssFilename).toBe('custom.css');
+  });
+
   test('passes mdx flag to production utoopack config', async () => {
     const config = await getProdUtooPackConfig({
       ...baseOpts,
@@ -82,7 +135,17 @@ describe('utoopack ssr config', () => {
     expect(config.config.output?.clean).toBe(true);
   });
 
-  test('matches client asset urls in development', async () => {
+  test('passes NODE_ENV define to production server bundle', async () => {
+    const config = await getSSRUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      serverBuildPath: '/tmp/umi.server.js',
+    } as any);
+
+    expect(config.config.define?.['process.env.NODE_ENV']).toBe('"production"');
+  });
+
+  test('passes NODE_ENV define to development server bundle', async () => {
     const config = await getSSRUtooPackConfig({
       ...baseOpts,
       config: {},
@@ -90,8 +153,8 @@ describe('utoopack ssr config', () => {
       isDev: true,
     } as any);
 
-    expect(config.config.output?.assetModuleFilename).toBe(
-      '[name].[contenthash:8]',
+    expect(config.config.define?.['process.env.NODE_ENV']).toBe(
+      '"development"',
     );
   });
 });
