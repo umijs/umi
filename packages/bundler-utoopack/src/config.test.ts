@@ -135,7 +135,17 @@ describe('utoopack ssr config', () => {
     expect(config.config.output?.clean).toBe(true);
   });
 
-  test('matches client asset urls in development', async () => {
+  test('passes NODE_ENV define to production server bundle', async () => {
+    const config = await getSSRUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      serverBuildPath: '/tmp/umi.server.js',
+    } as any);
+
+    expect(config.config.define?.['process.env.NODE_ENV']).toBe('"production"');
+  });
+
+  test('passes NODE_ENV define to development server bundle', async () => {
     const config = await getSSRUtooPackConfig({
       ...baseOpts,
       config: {},
@@ -143,8 +153,8 @@ describe('utoopack ssr config', () => {
       isDev: true,
     } as any);
 
-    expect(config.config.output?.assetModuleFilename).toBe(
-      '[name].[contenthash:8]',
+    expect(config.config.define?.['process.env.NODE_ENV']).toBe(
+      '"development"',
     );
   });
 });

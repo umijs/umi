@@ -584,9 +584,14 @@ export async function getSSRUtooPackConfig(
   const filename = opts.useHash
     ? '[name].[contenthash:8].js'
     : basename(opts.serverBuildPath);
+  const nodeEnv = opts.isDev ? 'development' : 'production';
 
   utooBundlerOpts.config = {
     ...utooBundlerOpts.config,
+    define: {
+      ...utooBundlerOpts.config.define,
+      'process.env.NODE_ENV': JSON.stringify(nodeEnv),
+    },
     entry: [
       {
         name: entryName,
@@ -599,7 +604,6 @@ export async function getSSRUtooPackConfig(
       path: dirname(opts.serverBuildPath),
       filename,
       chunkFilename: filename,
-      ...(opts.isDev ? { assetModuleFilename: '[name].[contenthash:8]' } : {}),
       clean: true,
       copy: [],
       publicPath: '/',
