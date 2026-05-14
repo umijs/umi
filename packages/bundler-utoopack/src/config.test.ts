@@ -33,6 +33,59 @@ const baseOpts = {
 };
 
 describe('utoopack mdx config', () => {
+  test('uses entry name as default css output filename', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(prodConfig.config.output?.cssFilename).toBe('index.css');
+    expect(devConfig.config.output?.cssFilename).toBe('index.css');
+  });
+
+  test('does not use name placeholder for multi-entry css output filename', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      entry: {
+        foo: './src/foo.tsx',
+        bar: './src/bar.tsx',
+      },
+      config: {},
+    } as any);
+
+    expect(config.config.output?.cssFilename).toBeUndefined();
+  });
+
+  test('allows user css output filename override', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          output: {
+            cssFilename: 'custom.css',
+          },
+        },
+      },
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          output: {
+            cssFilename: 'custom.css',
+          },
+        },
+      },
+    } as any);
+
+    expect(prodConfig.config.output?.cssFilename).toBe('custom.css');
+    expect(devConfig.config.output?.cssFilename).toBe('custom.css');
+  });
+
   test('passes mdx flag to production utoopack config', async () => {
     const config = await getProdUtooPackConfig({
       ...baseOpts,

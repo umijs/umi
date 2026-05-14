@@ -450,6 +450,12 @@ function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
   return lodash.omit(utoopackConfig, ['babelLoader', 'root']);
 }
 
+function getEntryCssFilename(entry: Record<string, string>) {
+  const entryNames = Object.keys(entry || {});
+
+  return entryNames.length === 1 ? `${entryNames[0]}.css` : undefined;
+}
+
 function getDefaultPersistentCaching() {
   return process.platform !== 'win32';
 }
@@ -510,6 +516,7 @@ export async function getProdUtooPackConfig(
     mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
+  const entryCssFilename = getEntryCssFilename(opts.entry);
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -519,6 +526,7 @@ export async function getProdUtooPackConfig(
       {
         output: {
           clean: opts.clean,
+          ...(entryCssFilename ? { cssFilename: entryCssFilename } : {}),
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
           ...(opts.disableCopy
             ? { copy: [] }
@@ -695,6 +703,7 @@ export async function getDevUtooPackConfig(
     mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
+  const entryCssFilename = getEntryCssFilename(opts.entry);
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -711,6 +720,7 @@ export async function getDevUtooPackConfig(
       {
         output: {
           clean: opts.clean === undefined ? true : opts.clean,
+          ...(entryCssFilename ? { cssFilename: entryCssFilename } : {}),
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
           ...(opts.disableCopy
             ? { copy: [] }
