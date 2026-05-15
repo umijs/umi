@@ -108,4 +108,5 @@ export default defineConfig({
     autoInstall: {},
     include: ['local:rice', 'local:logo/umi', 'ant-design:fire-twotone'],
   },
+  utoopack: {},
 });

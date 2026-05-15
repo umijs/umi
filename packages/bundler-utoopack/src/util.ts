@@ -1,4 +1,5 @@
 import { chalk } from '@umijs/utils';
+import type { WebpackConfig } from '@utoo/pack';
 
 type IDevBannerOpts = {
   duration?: number;
@@ -49,6 +50,103 @@ function formatDuration(duration?: number) {
   }
 
   return `${Math.max(0, Math.round(duration))}ms`;
+}
+
+function normalizeUtoopackFilenameTemplate(filename: string) {
+  return filename.replace(
+    /\[(?:hash|chunkhash)(?::(\d+))?\]/g,
+    (_, length) => `[contenthash${length ? `:${length}` : ''}]`,
+  );
+}
+
+function getMiniCssExtractPluginOptions(
+  webpackConfig: WebpackConfig,
+): { filename?: string; chunkFilename?: string } | undefined {
+  const plugin = webpackConfig.plugins?.find((p: any) => {
+    return (
+      p &&
+      typeof p === 'object' &&
+      p.constructor?.name === 'MiniCssExtractPlugin'
+    );
+  });
+
+  return (plugin as any)?.options;
+}
+
+function getEntryCssFilename(
+  entry: Record<string, string>,
+  filenameTemplate: string,
+  replaceName: boolean,
+) {
+  const normalizedFilenameTemplate =
+    normalizeUtoopackFilenameTemplate(filenameTemplate);
+
+  if (!replaceName) {
+    return normalizedFilenameTemplate;
+  }
+
+  const entryNames = Object.keys(entry || {});
+
+  if (entryNames.length !== 1) {
+    return undefined;
+  }
+
+  return normalizedFilenameTemplate.replace(/\[name\]/g, entryNames[0]);
+}
+
+export function getCssOutputFilenames(opts: {
+  entry: Record<string, string>;
+  config: Record<string, any>;
+  webpackConfig: WebpackConfig;
+  useHash: boolean;
+}) {
+  const miniCssExtractOptions = getMiniCssExtractPluginOptions(
+    opts.webpackConfig,
+  );
+  const hash = opts.useHash ? '.[contenthash:8]' : '';
+  const cssFilenameTemplate =
+    typeof miniCssExtractOptions?.filename === 'string'
+      ? miniCssExtractOptions.filename
+      : `[name]${hash}.css`;
+  let cssChunkFilenameTemplate =
+    typeof miniCssExtractOptions?.chunkFilename === 'string'
+      ? miniCssExtractOptions.chunkFilename
+      : undefined;
+
+  if (!cssChunkFilenameTemplate) {
+    cssChunkFilenameTemplate = opts.config.ssr
+      ? `umi${hash}.css`
+      : `[name]${hash}.chunk.css`;
+  }
+
+  const cssFilename = getEntryCssFilename(
+    opts.entry,
+    cssFilenameTemplate,
+    !!opts.config.ssr,
+  );
+
+  return {
+    ...(cssFilename ? { cssFilename } : {}),
+    cssChunkFilename: normalizeUtoopackFilenameTemplate(
+      cssChunkFilenameTemplate,
+    ),
+  };
+}
+
+export function getSSRCssSplitChunks(config: Record<string, any>) {
+  if (!config.ssr) {
+    return {};
+  }
+
+  return {
+    splitChunks: {
+      css: {
+        minChunkSize: 100_000_000,
+        maxChunkCountPerGroup: 1,
+        maxMergeChunkSize: 100_000_000,
+      },
+    },
+  };
 }
 
 export function getDevBanner({

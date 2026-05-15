@@ -6,6 +6,7 @@ import { compatOptionsFromWebpack } from '@utoo/pack';
 import fs from 'fs';
 import { basename, dirname, extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
+import { getCssOutputFilenames, getSSRCssSplitChunks } from './util';
 
 function getUtoopackDefine(opts: { config: Record<string, any> }) {
   const define = Object.fromEntries(
@@ -450,12 +451,6 @@ function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
   return lodash.omit(utoopackConfig, ['babelLoader', 'root']);
 }
 
-function getEntryCssFilename(entry: Record<string, string>) {
-  const entryNames = Object.keys(entry || {});
-
-  return entryNames.length === 1 ? `${entryNames[0]}.css` : undefined;
-}
-
 function getDefaultPersistentCaching() {
   return process.platform !== 'win32';
 }
@@ -516,7 +511,12 @@ export async function getProdUtooPackConfig(
     mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
-  const entryCssFilename = getEntryCssFilename(opts.entry);
+  const cssOutputFilenames = getCssOutputFilenames({
+    entry: opts.entry,
+    config: opts.config,
+    webpackConfig: webpackConfig as WebpackConfig,
+    useHash: !!opts.config.hash,
+  });
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -526,7 +526,7 @@ export async function getProdUtooPackConfig(
       {
         output: {
           clean: opts.clean,
-          ...(entryCssFilename ? { cssFilename: entryCssFilename } : {}),
+          ...cssOutputFilenames,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
           ...(opts.disableCopy
             ? { copy: [] }
@@ -535,6 +535,7 @@ export async function getProdUtooPackConfig(
         optimization: {
           modularizeImports,
           concatenateModules: true,
+          ...getSSRCssSplitChunks(opts.config),
         },
         resolve: {
           alias: getNormalizedAlias(
@@ -707,7 +708,12 @@ export async function getDevUtooPackConfig(
     mdx,
   } = opts.config;
   const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
-  const entryCssFilename = getEntryCssFilename(opts.entry);
+  const cssOutputFilenames = getCssOutputFilenames({
+    entry: opts.entry,
+    config: opts.config,
+    webpackConfig: webpackConfig as WebpackConfig,
+    useHash: false,
+  });
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -724,7 +730,7 @@ export async function getDevUtooPackConfig(
       {
         output: {
           clean: opts.clean === undefined ? true : opts.clean,
-          ...(entryCssFilename ? { cssFilename: entryCssFilename } : {}),
+          ...cssOutputFilenames,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
           ...(opts.disableCopy
             ? { copy: [] }
