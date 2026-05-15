@@ -2010,8 +2010,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: 1.4.7-alpha.0
-        version: 1.4.7-alpha.0(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
+        specifier: 1.4.7-alpha.2
+        version: 1.4.7-alpha.2(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -21156,8 +21156,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-arm64@1.4.7-alpha.0:
-    resolution: {integrity: sha512-RSiXEgMBtsQ6HThM7pHBdjHlMhFN8GzSuJHMsY4dlgVuY7oPfRzB1unX911MuZxvndQWpLchgjaGPLaBj1Bldw==}
+  /@utoo/pack-darwin-arm64@1.4.7-alpha.2:
+    resolution: {integrity: sha512-/D0vbDwVuu6J54c0KVcC+ZNWerolCqn6klH3anyxOi6W0fWmT3ZLUo1E0U5PXTjMykJ8ZsUZCPUj+ZEJ6X9+Cw==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [darwin]
@@ -21174,8 +21174,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-x64@1.4.7-alpha.0:
-    resolution: {integrity: sha512-AG45EwSIenbgWvpz99Gf2UYQygpab6ENZMZUC/8MF4ZvBTrhOSV536Jz2dJKwgshllAvb4BECo/ObevY6hCOug==}
+  /@utoo/pack-darwin-x64@1.4.7-alpha.2:
+    resolution: {integrity: sha512-8nbk6xjjO9ChtMjcdAxUQSLfQmQ5EwS2aim5YSo06W6XtX6UedBzF4ZQk5Ax+bCyO5NhUSogfRE0YwWfIsX/uA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [darwin]
@@ -21192,8 +21192,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-gnu@1.4.7-alpha.0:
-    resolution: {integrity: sha512-u4TxW1AUfx1qsgmW3CDK3bqHp/osASdlc+yd+fE3RsHBdPafz2B4L3agekR+iieXOn/HsvO5QbaShPjsy7hG5A==}
+  /@utoo/pack-linux-arm64-gnu@1.4.7-alpha.2:
+    resolution: {integrity: sha512-Krq/wBSHqFI3kw5/rmIFznxXpWXk6oDxFt8vFmN1qvkTsgpYtRaaKfMJEsGv3M9145gFRnxKTzBzj8k3Hvi3fw==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21210,8 +21210,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-musl@1.4.7-alpha.0:
-    resolution: {integrity: sha512-3/b8IHF6bZsrxIeZ5ZMpAdhhSg8Pje6otwHQp36yRgwfMAWlDM/4RYj55opjATKb8jkjGdMIdbklVEz6u/DPsQ==}
+  /@utoo/pack-linux-arm64-musl@1.4.7-alpha.2:
+    resolution: {integrity: sha512-fzBZduuezJ361znnpCUrFQZcFRGAHm+s0apctnJxoGIULZj2fHYxWOw+MBNSxMFC3VOeR1DeZ0OtTFiv7JHJvQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21228,8 +21228,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-gnu@1.4.7-alpha.0:
-    resolution: {integrity: sha512-FxW1qpK7JRFGaPRIxQfFdpsjWQmAeNLMMcjva1k6ovrK+TaZhrkXWEZwMCYit+Afz8/RjA/xAu8pMs8rue5mxg==}
+  /@utoo/pack-linux-x64-gnu@1.4.7-alpha.2:
+    resolution: {integrity: sha512-3TYXXX/8OGbY2BFv4XFEmISZZanyvMX1FaV+oVtfNlszV4cGDYbnkKmTYxCpKH6KbP27al1XPZH9z243bjvF5w==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21246,8 +21246,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-musl@1.4.7-alpha.0:
-    resolution: {integrity: sha512-kH08jVM68PrGzGv3axWteTq062D4XZqAvWHML/BXZW+OojuRGGepoXFgCJNvS5YZo8fSsYbJKQ18RoJ4JGmzkw==}
+  /@utoo/pack-linux-x64-musl@1.4.7-alpha.2:
+    resolution: {integrity: sha512-Cy5yeGlXaD14oe1/0dQcYUxsKPG8kfX8wFm1o/zjDkuhg56ClU2myabim8qHmxeX0yq8p7YpnBtK944xPboBfA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21263,8 +21263,8 @@ packages:
       picocolors: 1.1.1
     dev: true
 
-  /@utoo/pack-shared@1.4.7-alpha.0:
-    resolution: {integrity: sha512-7Gz8GIfWsfEqKFveappgNPgokkPVXaxVyDD3Y91GlUtoU+99bntkQXggtIB0O4gvLRoPuBvaebZfV3yMCOAzOQ==}
+  /@utoo/pack-shared@1.4.7-alpha.2:
+    resolution: {integrity: sha512-pVUgkVsyZsJSopLQs9x1+Yql8MiUaY9bS4zSH5+Fmb7YmDDc7IB1B7lfD1627oJD96jdsj9bYPOuHdEUdvLHNQ==}
     engines: {node: '>= 20'}
     dependencies:
       '@babel/code-frame': 7.22.5
@@ -21280,8 +21280,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-win32-x64-msvc@1.4.7-alpha.0:
-    resolution: {integrity: sha512-VdhbmXcF4ORO3Rj5iKbhrE9L1upaAD88HmEn6kWG7DLa6yKcyTsOnaa6QGu/hr6xUmZXgIhOg5w+cU6lWBzEAw==}
+  /@utoo/pack-win32-x64-msvc@1.4.7-alpha.2:
+    resolution: {integrity: sha512-RgSZWiklUG+gQnjk99mWKxPrhpNtQXud5QVqSJIlO+CcjSsGQl1MtFTXLSo0L6M68v+5lXigR/Ghd+ohDH4zfg==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [win32]
@@ -21338,8 +21338,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@utoo/pack@1.4.7-alpha.0(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
-    resolution: {integrity: sha512-qzY5h43WAdmNDz3PbYIBjl9ZibzsU1kuOmhJZYLTG66EbomD3nNIAH1z7qlRdqxHrHnwdg3UPWVu7T02S/dlWA==}
+  /@utoo/pack@1.4.7-alpha.2(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
+    resolution: {integrity: sha512-mKy90IKnknehf0eW4MIPrznNj75gGBfcKBwO5N8+ZbV6RujSPQy9J6pIBE0TMgRpTKCIOIoJneEZ4yf0jb78Ig==}
     engines: {node: '>= 20'}
     peerDependencies:
       less: ^4.0.0
@@ -21357,7 +21357,7 @@ packages:
       '@hono/node-server': 1.19.11(hono@4.12.7)
       '@hono/node-ws': 1.3.0(@hono/node-server@1.19.11)(hono@4.12.7)
       '@swc/helpers': 0.5.15
-      '@utoo/pack-shared': 1.4.7-alpha.0
+      '@utoo/pack-shared': 1.4.7-alpha.2
       domparser-rs: 0.0.7
       find-up: 4.1.0
       get-port: 5.1.1
@@ -21374,13 +21374,13 @@ packages:
       send: 0.17.1
       ws: 8.18.3
     optionalDependencies:
-      '@utoo/pack-darwin-arm64': 1.4.7-alpha.0
-      '@utoo/pack-darwin-x64': 1.4.7-alpha.0
-      '@utoo/pack-linux-arm64-gnu': 1.4.7-alpha.0
-      '@utoo/pack-linux-arm64-musl': 1.4.7-alpha.0
-      '@utoo/pack-linux-x64-gnu': 1.4.7-alpha.0
-      '@utoo/pack-linux-x64-musl': 1.4.7-alpha.0
-      '@utoo/pack-win32-x64-msvc': 1.4.7-alpha.0
+      '@utoo/pack-darwin-arm64': 1.4.7-alpha.2
+      '@utoo/pack-darwin-x64': 1.4.7-alpha.2
+      '@utoo/pack-linux-arm64-gnu': 1.4.7-alpha.2
+      '@utoo/pack-linux-arm64-musl': 1.4.7-alpha.2
+      '@utoo/pack-linux-x64-gnu': 1.4.7-alpha.2
+      '@utoo/pack-linux-x64-musl': 1.4.7-alpha.2
+      '@utoo/pack-win32-x64-msvc': 1.4.7-alpha.2
     transitivePeerDependencies:
       - bufferutil
       - supports-color

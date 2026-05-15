@@ -585,14 +585,9 @@ export async function getSSRUtooPackConfig(
   const filename = opts.useHash
     ? '[name].[contenthash:8].js'
     : basename(opts.serverBuildPath);
-  const nodeEnv = opts.isDev ? 'development' : 'production';
 
   utooBundlerOpts.config = {
     ...utooBundlerOpts.config,
-    define: {
-      ...utooBundlerOpts.config.define,
-      'process.env.NODE_ENV': JSON.stringify(nodeEnv),
-    },
     entry: [
       {
         name: entryName,
