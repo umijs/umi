@@ -19,11 +19,46 @@ const EnableJsScript = () => (
   />
 );
 
+function normalizeClientCssPaths(css: any): string[] {
+  if (Array.isArray(css)) {
+    return css.filter(Boolean);
+  }
+
+  return css ? [css] : [];
+}
+
+function isCssAsset(asset: string) {
+  return (
+    /\.css(?:[?#].*)?$/.test(asset) && !/\.css\.map(?:[?#].*)?$/.test(asset)
+  );
+}
+
+function isUtoopackSingleCss(asset: string) {
+  return /\.single\.css(?:[?#].*)?$/.test(asset);
+}
+
+export function getClientCssPaths(manifest: any): string[] {
+  const assets = manifest?.assets || {};
+  const umiCss = normalizeClientCssPaths(assets['umi.css']);
+
+  if (umiCss.length) {
+    return umiCss;
+  }
+
+  return Object.values(assets).filter((asset): asset is string => {
+    return (
+      typeof asset === 'string' &&
+      isCssAsset(asset) &&
+      !isUtoopackSingleCss(asset)
+    );
+  });
+}
+
 const GlobalDataScript = (
   props: Omit<IHtmlProps, '__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED'>,
 ) => {
   const { loaderData, htmlPageOpts, manifest } = props;
-  const clientCssPath = manifest?.assets?.['umi.css'] || '';
+  const clientCssPaths = getClientCssPaths(manifest);
   return (
     <script
       suppressHydrationWarning
@@ -32,7 +67,9 @@ const GlobalDataScript = (
           loaderData || {},
         )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
           htmlPageOpts || {},
-        )}; window.__UMI_BUILD_ClIENT_CSS__ = '${clientCssPath}'`,
+        )}; window.__UMI_BUILD_ClIENT_CSS__ = ${JSON.stringify(
+          clientCssPaths.length <= 1 ? clientCssPaths[0] || '' : clientCssPaths,
+        )}`,
       }}
     />
   );
@@ -146,19 +183,24 @@ export function Html({
     return <>{children}</>;
   }
 
-  const clientCss =
+  const clientCssPaths =
     typeof window === 'undefined'
-      ? manifest?.assets['umi.css']
-      : window.__UMI_BUILD_ClIENT_CSS__;
+      ? getClientCssPaths(manifest)
+      : normalizeClientCssPaths(window.__UMI_BUILD_ClIENT_CSS__);
   return (
     // FIXME: Resolve the hydrate warning for suppressHydrationWarning(3)
     <html suppressHydrationWarning lang={htmlPageOpts?.lang || 'en'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {clientCss && (
-          <link suppressHydrationWarning rel="stylesheet" href={clientCss} />
-        )}
+        {clientCssPaths.map((clientCss) => (
+          <link
+            key={clientCss}
+            suppressHydrationWarning
+            rel="stylesheet"
+            href={clientCss}
+          />
+        ))}
         <HydrateMetadata htmlPageOpts={htmlPageOpts} />
       </head>
       <body>
