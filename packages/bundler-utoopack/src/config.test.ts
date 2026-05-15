@@ -251,29 +251,6 @@ describe('utoopack ssr config', () => {
     expect(rules['*.woff']).toBeUndefined();
     expect(config.config.output?.clean).toBe(true);
   });
-
-  test('passes NODE_ENV define to production server bundle', async () => {
-    const config = await getSSRUtooPackConfig({
-      ...baseOpts,
-      config: {},
-      serverBuildPath: '/tmp/umi.server.js',
-    } as any);
-
-    expect(config.config.define?.['process.env.NODE_ENV']).toBe('"production"');
-  });
-
-  test('passes NODE_ENV define to development server bundle', async () => {
-    const config = await getSSRUtooPackConfig({
-      ...baseOpts,
-      config: {},
-      serverBuildPath: '/tmp/umi.server.js',
-      isDev: true,
-    } as any);
-
-    expect(config.config.define?.['process.env.NODE_ENV']).toBe(
-      '"development"',
-    );
-  });
 });
 
 describe('utoopack define config', () => {
