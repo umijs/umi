@@ -18,11 +18,37 @@ jest.mock('@utoo/pack', () => ({
   })),
 }));
 
+import { getConfig } from '@umijs/bundler-webpack';
 import {
   getDevUtooPackConfig,
   getProdUtooPackConfig,
   getSSRUtooPackConfig,
 } from './config';
+
+class MiniCssExtractPlugin {
+  options: { filename?: string; chunkFilename?: string };
+
+  constructor(options: { filename?: string; chunkFilename?: string }) {
+    this.options = options;
+  }
+}
+
+const mockedGetConfig = getConfig as jest.Mock;
+
+function createWebpackConfig(miniCssExtractOptions?: {
+  filename?: string;
+  chunkFilename?: string;
+}) {
+  return {
+    output: {},
+    resolve: {
+      alias: {},
+    },
+    plugins: miniCssExtractOptions
+      ? [new MiniCssExtractPlugin(miniCssExtractOptions)]
+      : [],
+  };
+}
 
 const baseOpts = {
   cwd: process.cwd(),
@@ -32,8 +58,13 @@ const baseOpts = {
   },
 };
 
+beforeEach(() => {
+  mockedGetConfig.mockClear();
+  mockedGetConfig.mockResolvedValue(createWebpackConfig());
+});
+
 describe('utoopack mdx config', () => {
-  test('uses entry name as default css output filename', async () => {
+  test('uses name placeholder as default css output filename', async () => {
     const prodConfig = await getProdUtooPackConfig({
       ...baseOpts,
       config: {},
@@ -43,8 +74,89 @@ describe('utoopack mdx config', () => {
       config: {},
     } as any);
 
-    expect(prodConfig.config.output?.cssFilename).toBe('index.css');
-    expect(devConfig.config.output?.cssFilename).toBe('index.css');
+    expect(prodConfig.config.output?.cssFilename).toBe('[name].css');
+    expect(prodConfig.config.output?.cssChunkFilename).toBe('[name].chunk.css');
+    expect(devConfig.config.output?.cssFilename).toBe('[name].css');
+    expect(devConfig.config.output?.cssChunkFilename).toBe('[name].chunk.css');
+  });
+
+  test('uses entry name as ssr css output filename', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        ssr: {},
+      },
+    } as any);
+
+    expect(config.config.output?.cssFilename).toBe('index.css');
+    expect(config.config.output?.cssChunkFilename).toBe('umi.css');
+    expect(config.config.optimization?.splitChunks?.css).toEqual({
+      minChunkSize: 100_000_000,
+      maxChunkCountPerGroup: 1,
+      maxMergeChunkSize: 100_000_000,
+    });
+  });
+
+  test('allows user ssr css splitChunks override', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        ssr: {},
+        utoopack: {
+          optimization: {
+            splitChunks: {
+              css: {
+                maxChunkCountPerGroup: 2,
+                maxMergeChunkSize: 200_000_000,
+              },
+            },
+          },
+        },
+      },
+    } as any);
+
+    expect(config.config.optimization?.splitChunks?.css).toEqual({
+      minChunkSize: 100_000_000,
+      maxChunkCountPerGroup: 2,
+      maxMergeChunkSize: 200_000_000,
+    });
+  });
+
+  test('uses hashed css output filenames in production', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        hash: true,
+      },
+    } as any);
+
+    expect(config.config.output?.cssFilename).toBe(
+      '[name].[contenthash:8].css',
+    );
+    expect(config.config.output?.cssChunkFilename).toBe(
+      '[name].[contenthash:8].chunk.css',
+    );
+  });
+
+  test('uses mini-css-extract css output templates from webpack config', async () => {
+    mockedGetConfig.mockResolvedValueOnce(
+      createWebpackConfig({
+        filename: 'css/[name].[hash:8].css',
+        chunkFilename: 'css/[name].[chunkhash:8].async.css',
+      }),
+    );
+
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(config.config.output?.cssFilename).toBe(
+      'css/[name].[contenthash:8].css',
+    );
+    expect(config.config.output?.cssChunkFilename).toBe(
+      'css/[name].[contenthash:8].async.css',
+    );
   });
 
   test('does not use name placeholder for multi-entry css output filename', async () => {
@@ -57,7 +169,8 @@ describe('utoopack mdx config', () => {
       config: {},
     } as any);
 
-    expect(config.config.output?.cssFilename).toBeUndefined();
+    expect(config.config.output?.cssFilename).toBe('[name].css');
+    expect(config.config.output?.cssChunkFilename).toBe('[name].chunk.css');
   });
 
   test('allows user css output filename override', async () => {
@@ -67,6 +180,7 @@ describe('utoopack mdx config', () => {
         utoopack: {
           output: {
             cssFilename: 'custom.css',
+            cssChunkFilename: 'custom.chunk.css',
           },
         },
       },
@@ -77,13 +191,16 @@ describe('utoopack mdx config', () => {
         utoopack: {
           output: {
             cssFilename: 'custom.css',
+            cssChunkFilename: 'custom.chunk.css',
           },
         },
       },
     } as any);
 
     expect(prodConfig.config.output?.cssFilename).toBe('custom.css');
+    expect(prodConfig.config.output?.cssChunkFilename).toBe('custom.chunk.css');
     expect(devConfig.config.output?.cssFilename).toBe('custom.css');
+    expect(devConfig.config.output?.cssChunkFilename).toBe('custom.chunk.css');
   });
 
   test('passes mdx flag to production utoopack config', async () => {
