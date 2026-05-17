@@ -3,5 +3,6 @@ export function winPath(path: string) {
   if (isExtendedLengthPath) {
     return path;
   }
-  return path.replace(/\\/g, '/');
+  const escPath = path.replace(/'/g, "\\'");
+  return escPath.replace(/\\/g, '/');
 }
