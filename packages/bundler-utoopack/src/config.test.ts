@@ -70,6 +70,7 @@ describe('utoopack mdx config', () => {
       config: {
         utoopack: {
           output: {
+            assetModuleFilename: 'custom/[name].[contenthash:8]',
             cssFilename: 'custom.css',
             cssChunkFilename: 'custom.chunk.css',
           },
@@ -81,6 +82,7 @@ describe('utoopack mdx config', () => {
       config: {
         utoopack: {
           output: {
+            assetModuleFilename: 'custom/[name].[contenthash:8]',
             cssFilename: 'custom.css',
             cssChunkFilename: 'custom.chunk.css',
           },
@@ -88,10 +90,54 @@ describe('utoopack mdx config', () => {
       },
     } as any);
 
+    expect(prodConfig.config.output?.assetModuleFilename).toBe(
+      'custom/[name].[contenthash:8]',
+    );
     expect(prodConfig.config.output?.cssFilename).toBe('custom.css');
     expect(prodConfig.config.output?.cssChunkFilename).toBe('custom.chunk.css');
+    expect(devConfig.config.output?.assetModuleFilename).toBe(
+      'custom/[name].[contenthash:8]',
+    );
     expect(devConfig.config.output?.cssFilename).toBe('custom.css');
     expect(devConfig.config.output?.cssChunkFilename).toBe('custom.chunk.css');
+  });
+
+  test('uses webpack-compatible static asset output filename by default', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(prodConfig.config.output?.assetModuleFilename).toBe(
+      'static/[name].[contenthash:8]',
+    );
+    expect(devConfig.config.output?.assetModuleFilename).toBe(
+      'static/[name].[contenthash:8]',
+    );
+  });
+
+  test('uses staticPathPrefix for default asset output filename', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      staticPathPrefix: 'mf-dep/',
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+      staticPathPrefix: 'mf-dep/',
+    } as any);
+
+    expect(prodConfig.config.output?.assetModuleFilename).toBe(
+      'mf-dep/[name].[contenthash:8]',
+    );
+    expect(devConfig.config.output?.assetModuleFilename).toBe(
+      'mf-dep/[name].[contenthash:8]',
+    );
   });
 
   test('passes mdx flag to production utoopack config', async () => {
