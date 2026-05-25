@@ -7,6 +7,17 @@ import fs from 'fs';
 import { basename, dirname, extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
+const DEFAULT_STATIC_PATH_PREFIX = 'static/';
+
+function getAssetModuleFilename(staticPathPrefix?: string) {
+  const prefix =
+    staticPathPrefix !== undefined
+      ? staticPathPrefix
+      : DEFAULT_STATIC_PATH_PREFIX;
+
+  return `${prefix}[name].[contenthash:8]`;
+}
+
 function getUtoopackDefine(opts: { config: Record<string, any> }) {
   const define = Object.fromEntries(
     Object.entries(opts.config.define || {}).map(([key, value]) => {
@@ -476,6 +487,7 @@ export async function getProdUtooPackConfig(
     extraBabelIncludes: opts.config.extraBabelIncludes,
     chainWebpack: opts.chainWebpack,
     modifyWebpackConfig: opts.modifyWebpackConfig,
+    staticPathPrefix: opts.staticPathPrefix,
     pkg: opts.pkg,
     disableCopy: opts.disableCopy,
   });
@@ -520,6 +532,7 @@ export async function getProdUtooPackConfig(
         output: {
           clean: opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
+          assetModuleFilename: getAssetModuleFilename(opts.staticPathPrefix),
           ...(opts.disableCopy
             ? { copy: [] }
             : { copy: ['public'].concat(copy) }),
@@ -635,7 +648,7 @@ export type IDevOpts = {
   onBeforeMiddleware?: Function;
   disableCopy?: boolean;
   clean?: boolean;
-} & Pick<IConfigOpts, 'cache' | 'pkg'>;
+} & Pick<IConfigOpts, 'cache' | 'pkg' | 'staticPathPrefix'>;
 
 export async function getDevUtooPackConfig(
   opts: IDevOpts,
@@ -658,6 +671,7 @@ export async function getDevUtooPackConfig(
     extraBabelIncludes: opts.config.extraBabelIncludes,
     chainWebpack: opts.chainWebpack,
     modifyWebpackConfig: opts.modifyWebpackConfig,
+    staticPathPrefix: opts.staticPathPrefix,
     // TO avoild bundler webpack add extra entry.
     hmr: false,
     analyze: process.env.ANALYZE,
@@ -711,6 +725,7 @@ export async function getDevUtooPackConfig(
         output: {
           clean: opts.clean === undefined ? true : opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
+          assetModuleFilename: getAssetModuleFilename(opts.staticPathPrefix),
           ...(opts.disableCopy
             ? { copy: [] }
             : { copy: ['public'].concat(copy) }),

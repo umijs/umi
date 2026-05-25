@@ -22,4 +22,4 @@ export type IOpts = {
   clean?: boolean;
   watch?: boolean;
   disableCopy?: boolean;
-} & Pick<IConfigOpts, 'cache' | 'pkg'>;
+} & Pick<IConfigOpts, 'cache' | 'pkg' | 'staticPathPrefix'>;
