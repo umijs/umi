@@ -8,3 +8,34 @@ packages:
   - 'scripts'
   - 'ui'
   - 'docs'
+autoInstallPeers: false
+excludeLinksFromLockfile: false
+peerDependencyRules:
+  ignoreMissing:
+    - 'react'
+    - 'react-dom'
+    - 'antd'
+    - 'dva'
+    - 'postcss'
+    - 'webpack'
+    - 'eslint'
+    - 'stylelint'
+    - 'redux'
+overrides:
+  '@parcel/watcher': 2.1.0
+  browserslist: $browserslist
+allowBuilds:
+  '@antv/l7-react': true
+  '@parcel/watcher': true
+  '@swc/core': true
+  core-js: true
+  core-js-pure: true
+  cypress: true
+  es5-ext: true
+  esbuild: true
+  nx: true
+  playwright-chromium: true
+  puppeteer-core: true
+  swiper: true
+  turbo: true
+  vue-demi: true

@@ -28,7 +28,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.13.0]
         os: [ubuntu-latest, windows-2022]
       fail-fast: false
     steps:
@@ -38,6 +38,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          standalone: true
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3

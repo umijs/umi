@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.13.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -39,11 +39,13 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          standalone: true
 
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org/'
           cache: 'pnpm'
 

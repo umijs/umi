@@ -29,7 +29,7 @@ jobs:
       matrix:
         mfsu-strategy: [normal, eager]
         os: [ubuntu-latest, windows-2022]
-        node-version: [16.x]
+        node-version: [22.13.0]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -38,6 +38,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          standalone: true
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
