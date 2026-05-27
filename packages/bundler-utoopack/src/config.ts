@@ -238,11 +238,21 @@ function getExtraBabelModuleRules(opts: {
   };
 }
 
+function normalizeUtoopackPath(path: string) {
+  return path.replace(/\\/g, '/');
+}
+
 function getNormalizedAlias(
-  alias: Record<string, string>,
+  alias: Record<string, string> | undefined,
   rootDir: string,
 ): Record<string, string> {
-  const newAlias = { ...alias };
+  const newAlias = Object.fromEntries(
+    Object.entries(alias || {}).map(([key, value]) => [
+      normalizeUtoopackPath(key),
+      normalizeUtoopackPath(value),
+    ]),
+  );
+  const normalizedRootDir = normalizeUtoopackPath(rootDir);
 
   // Add wildcard aliases for all aliases that point to directories (not files)
   // refer to: https://github.com/utooland/utoo/issues/2288
@@ -267,7 +277,9 @@ function getNormalizedAlias(
     const ext = extname(value);
     if (ext) {
       let isDirectory = false;
-      const candidates = [...new Set([value, pathResolve(rootDir, value)])];
+      const candidates = [
+        ...new Set([value, pathResolve(normalizedRootDir, value)]),
+      ];
 
       for (const candidate of candidates) {
         try {
@@ -290,7 +302,7 @@ function getNormalizedAlias(
     newAlias[`${key}/*`] = `${value}/*`;
   }
 
-  newAlias[`${rootDir}/*`] = `${rootDir}/*`;
+  newAlias[`${normalizedRootDir}/*`] = `${normalizedRootDir}/*`;
   return newAlias;
 }
 
