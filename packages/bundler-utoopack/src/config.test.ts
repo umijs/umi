@@ -8,11 +8,11 @@ jest.mock('@umijs/bundler-webpack', () => ({
 }));
 
 jest.mock('@utoo/pack', () => ({
-  compatOptionsFromWebpack: jest.fn(() => ({
+  compatOptionsFromWebpack: jest.fn((webpackConfig) => ({
     config: {
       output: {},
       resolve: {
-        alias: {},
+        alias: webpackConfig.resolve?.alias || {},
       },
     },
   })),
@@ -35,14 +35,17 @@ class MiniCssExtractPlugin {
 
 const mockedGetConfig = getConfig as jest.Mock;
 
-function createWebpackConfig(miniCssExtractOptions?: {
-  filename?: string;
-  chunkFilename?: string;
-}) {
+function createWebpackConfig(
+  miniCssExtractOptions?: {
+    filename?: string;
+    chunkFilename?: string;
+  },
+  alias: Record<string, string> = {},
+) {
   return {
     output: {},
     resolve: {
-      alias: {},
+      alias,
     },
     plugins: miniCssExtractOptions
       ? [new MiniCssExtractPlugin(miniCssExtractOptions)]
@@ -187,6 +190,32 @@ describe('utoopack ssr config', () => {
     expect(rules['*.jpg']).toBeUndefined();
     expect(rules['*.woff']).toBeUndefined();
     expect(config.config.output?.clean).toBe(true);
+  });
+});
+
+describe('utoopack alias config', () => {
+  test('normalizes Windows alias paths before passing them to utoopack', async () => {
+    mockedGetConfig.mockResolvedValue(
+      createWebpackConfig(undefined, {
+        '@@': String.raw`C:\Users\demo\app\src\.umi`,
+        '@': String.raw`C:\Users\demo\app\src`,
+      }),
+    );
+
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      rootDir: String.raw`C:\Users\demo\app`,
+      config: {},
+    } as any);
+
+    expect(config.config.resolve?.alias).toMatchObject({
+      '@@': 'C:/Users/demo/app/src/.umi',
+      '@@/*': 'C:/Users/demo/app/src/.umi/*',
+      '@': 'C:/Users/demo/app/src',
+      '@/*': 'C:/Users/demo/app/src/*',
+      'C:/Users/demo/app/*': 'C:/Users/demo/app/*',
+    });
+    expect(JSON.stringify(config.config.resolve?.alias)).not.toContain('\\');
   });
 });
 
