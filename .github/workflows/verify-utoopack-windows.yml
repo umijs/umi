@@ -1,0 +1,35 @@
+name: Verify Utoopack Windows
+
+on:
+  push:
+    branches:
+      - codex/verify-utoopack-windows
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bundler-utoopack:
+    name: bundler-utoopack on Windows
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Test bundler-utoopack
+        run: pnpm --filter @umijs/bundler-utoopack test -- --runInBand
