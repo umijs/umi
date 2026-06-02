@@ -38,7 +38,10 @@ export default (api: IApi) => {
       path: 'Provider.tsx',
       content: `
 import React from 'react';
-import { useModel } from '${getPluginModelImport(api)}';
+import { useModel } from '${getPluginModelImport({
+        api,
+        from: 'Provider.tsx',
+      })}';
 ${
   loading
     ? `import Loading from '${loading}'`

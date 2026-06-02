@@ -191,7 +191,10 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
             .replace(
               '__USE_MODEL__',
               api.isPluginEnable('model')
-                ? `import { useModel } from '${getPluginModelImport(api)}'`
+                ? `import { useModel } from '${getPluginModelImport({
+                    api,
+                    from: 'masterRuntimePlugin.tsx',
+                  })}'`
                 : `console.warn(\`[plugins/qiankun]: Seems like you're not using @umijs/plugin-model, you need to install it or some features may not work!\`);\nconst useModel = null`,
             )
             .replace(

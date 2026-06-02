@@ -27,7 +27,10 @@ import React from 'react';${
         hasAccessFile
           ? `
 import accessFactory from '@/access';
-import { useModel } from '${getPluginModelImport(api)}';
+import { useModel } from '${getPluginModelImport({
+              api,
+              from: 'runtime.tsx',
+            })}';
 `
           : ''
       }

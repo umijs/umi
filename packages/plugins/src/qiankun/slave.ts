@@ -290,7 +290,10 @@ if (!isServer && !window.__POWERED_BY_QIANKUN__) {
             .replace(
               '__USE_MODEL__',
               api.isPluginEnable('model')
-                ? `import { useModel } from '${getPluginModelImport(api)}'`
+                ? `import { useModel } from '${getPluginModelImport({
+                    api,
+                    from: 'slaveRuntimePlugin.ts',
+                  })}'`
                 : `console.warn(\`[plugins/qiankun]: Seems like you're not using @umijs/plugin-model, you need to install it or some features may not work!\`);\nconst useModel = null`,
             )
             .replace(

@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { dirname, join, relative } from 'path';
 import { IApi } from 'umi';
 import { winPath } from 'umi/plugin-utils';
 
@@ -22,6 +22,14 @@ export function isUtooWin(api: IApi) {
   return process.platform === 'win32' && api.appData.bundler === 'utoopack';
 }
 
-export function getPluginModelImport(api: IApi) {
-  return isUtooWin(api) ? '../plugin-model' : '@@/plugin-model';
+export function getPluginModelImport(opts: { api: IApi; from: string }) {
+  if (!isUtooWin(opts.api)) {
+    return '@@/plugin-model';
+  }
+
+  const from = withTmpPath({ api: opts.api, path: opts.from });
+  const to = join(opts.api.paths.absTmpPath, 'plugin-model');
+  const relPath = winPath(relative(dirname(from), to));
+
+  return relPath.startsWith('.') ? relPath : `./${relPath}`;
 }

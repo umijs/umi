@@ -155,7 +155,10 @@ import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
 ${
   hasInitialStatePlugin
-    ? `import { useModel } from '${getPluginModelImport(api)}';`
+    ? `import { useModel } from '${getPluginModelImport({
+        api,
+        from: 'Layout.tsx',
+      })}';`
     : 'const useModel = null;'
 }
 ${
