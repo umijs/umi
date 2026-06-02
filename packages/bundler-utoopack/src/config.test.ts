@@ -472,4 +472,47 @@ describe('utoopack externals config', () => {
       'promise Promise.resolve({ default: "from-promise-external" })',
     );
   });
+
+  test('normalizes webpack-style glob externals into subPath externals', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        externals: {
+          'lodash/*': 'lodash',
+          'lodash/fp/*': 'lodash',
+          '@scope/pkg/es/*': 'window.ScopePkg',
+        },
+      },
+    } as any);
+
+    expect(config.config.externals?.['lodash/*']).toBeUndefined();
+    expect(config.config.externals?.['lodash/fp/*']).toBeUndefined();
+    expect(config.config.externals?.['@scope/pkg/es/*']).toBeUndefined();
+    expect(config.config.externals?.lodash).toEqual({
+      root: 'lodash',
+      subPath: {
+        rules: [
+          {
+            regex: '/^\\/.+$/',
+            target: '',
+          },
+          {
+            regex: '/^\\/fp\\/.+$/',
+            target: '',
+          },
+        ],
+      },
+    });
+    expect(config.config.externals?.['@scope/pkg']).toEqual({
+      root: 'ScopePkg',
+      subPath: {
+        rules: [
+          {
+            regex: '/^\\/es\\/.+$/',
+            target: '',
+          },
+        ],
+      },
+    });
+  });
 });

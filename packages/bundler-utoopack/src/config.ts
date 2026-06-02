@@ -307,40 +307,135 @@ function getNormalizedAlias(
 }
 
 // refer from: https://github.com/utooland/utoo/blob/master/packages/bundler-mako/index.js#L543-L564
+function normalizeExternalValue(v: any) {
+  if (Array.isArray(v)) {
+    const [url, ...members] = v;
+    const scriptPrefix = /^script\s+/.exec(url);
+    const script = scriptPrefix ? url.slice(scriptPrefix[0].length) : url;
+    if (scriptPrefix) {
+      return {
+        // ['antd', 'Button'] => `antd.Button`
+        root: members.join('.'),
+        type: 'script',
+        // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
+        script,
+      };
+    } else if (url === 'promise' && typeof members[0] === 'string') {
+      return `promise ${members[0]}`;
+    } else {
+      return {
+        root: members.join('.'),
+        script,
+      };
+    }
+  } else if (typeof v === 'string') {
+    // 'window.antd' or 'window antd' => 'antd'
+    return v.replace(/^window(\s+|\.)/, '');
+  }
+}
+
+function toWildcardExternalConfig(value: any) {
+  const normalized = normalizeExternalValue(value);
+
+  if (typeof normalized === 'string') {
+    const externalType = /^(commonjs|esm|promise)\s+/.exec(normalized);
+    if (externalType) {
+      return {
+        root: normalized.slice(externalType[0].length),
+        type: externalType[1],
+      };
+    }
+
+    return {
+      root: normalized,
+    };
+  }
+}
+
+function getExternalSubPathGlob(externalKey: string) {
+  if (!externalKey.includes('*')) return;
+
+  const parts = externalKey.split('/');
+  const packageName = externalKey.startsWith('@')
+    ? parts.slice(0, 2).join('/')
+    : parts[0];
+  const subPathGlob = externalKey.slice(packageName.length);
+
+  if (!packageName || !subPathGlob.startsWith('/')) return;
+
+  return {
+    packageName,
+    subPathGlob,
+  };
+}
+
+function escapeRegexChar(char: string) {
+  return /[|\\{}()[\]^$+?.]/.test(char) ? `\\${char}` : char;
+}
+
+function globToSubPathRegex(glob: string) {
+  let regex = '^';
+
+  for (const char of glob) {
+    if (char === '*') {
+      regex += '.+';
+    } else if (char === '/') {
+      regex += '\\/';
+    } else {
+      regex += escapeRegexChar(char);
+    }
+  }
+
+  return `/${regex}$/`;
+}
+
+function addWildcardSubPath(config: Record<string, any>, subPathGlob: string) {
+  return {
+    ...config,
+    subPath: {
+      ...(config.subPath || {}),
+      rules: [
+        ...(config.subPath?.rules || []),
+        {
+          regex: globToSubPathRegex(subPathGlob),
+          target: '',
+        },
+      ],
+    },
+  };
+}
+
 function getNormalizedExternals(externals: Record<string, any>) {
-  return Object.entries(externals || {}).reduce(
-    (ret: Record<string, any>, [k, v]) => {
-      if (Array.isArray(v)) {
-        const [url, ...members] = v;
-        const scriptPrefix = /^script\s+/.exec(url);
-        const script = scriptPrefix ? url.slice(scriptPrefix[0].length) : url;
-        if (scriptPrefix) {
-          ret[k] = {
-            // ['antd', 'Button'] => `antd.Button`
-            root: members.join('.'),
-            type: 'script',
-            // `script https://example.com/lib/script.js` => `https://example.com/lib/script.js`
-            script,
-          };
-        } else if (url === 'promise' && typeof members[0] === 'string') {
-          ret[k] = `promise ${members[0]}`;
-        } else {
-          ret[k] = {
-            root: members.join('.'),
-            script,
-          };
+  const ret = Object.entries(externals || {}).reduce(
+    (memo: Record<string, any>, [k, v]) => {
+      if (!getExternalSubPathGlob(k)) {
+        const normalized = normalizeExternalValue(v);
+        if (normalized !== undefined) {
+          memo[k] = normalized;
         }
-      } else if (typeof v === 'string') {
-        // 'window.antd' or 'window antd' => 'antd'
-        ret[k] = v.replace(/^window(\s+|\.)/, '');
-      } else {
-        // other types except boolean has been checked before
-        // so here only ignore invalid boolean type
       }
-      return ret;
+      return memo;
     },
     {},
   );
+
+  Object.entries(externals || {}).forEach(([k, v]) => {
+    const externalSubPathGlob = getExternalSubPathGlob(k);
+    if (!externalSubPathGlob) return;
+
+    const normalized = toWildcardExternalConfig(v);
+    if (!normalized) return;
+
+    ret[externalSubPathGlob.packageName] = addWildcardSubPath(
+      ret[externalSubPathGlob.packageName] &&
+        typeof ret[externalSubPathGlob.packageName] === 'object'
+        ? ret[externalSubPathGlob.packageName]
+        : normalized,
+      externalSubPathGlob.subPathGlob,
+    );
+  });
+
+  return ret;
 }
 
 /**
