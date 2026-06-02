@@ -174,8 +174,9 @@ jobs:
             process.exit(1);
           }, 240000);
 
+          const browserErrors = [];
+
           (async () => {
-            const browserErrors = [];
             try {
               await waitFor('http://127.0.0.1:9527/__umi/api/status');
               const browser = await chromium.launch({ headless: true });
@@ -193,18 +194,28 @@ jobs:
                 timeout: 60000,
               });
               await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+              await page.waitForTimeout(3000);
+              const relevantErrors = browserErrors.filter((msg) =>
+                /dispatcher|useContext|InitialStateProvider|plugin-model|Cannot destructure|is null/i.test(msg),
+              );
+              if (relevantErrors.length) {
+                throw new Error(`Found Utoopack model context errors:\n${relevantErrors.join('\n')}`);
+              }
+              await page.waitForFunction(
+                () => ['todos', 'foo', 'count', '123'].every((expected) =>
+                  document.body.innerText.includes(expected),
+                ),
+                undefined,
+                { timeout: 30000 },
+              );
               const bodyText = await page.locator('body').innerText({ timeout: 30000 });
               for (const expected of ['todos', 'foo', 'count', '123']) {
                 if (!bodyText.includes(expected)) {
                   throw new Error(`Expected rendered page to contain ${expected}, got:\n${bodyText}`);
                 }
               }
-              await page.waitForTimeout(3000);
               await browser.close();
 
-              const relevantErrors = browserErrors.filter((msg) =>
-                /dispatcher|useContext|InitialStateProvider|plugin-model|Cannot destructure|is null/i.test(msg),
-              );
               writeLog([
                 'browser errors:',
                 ...browserErrors,
@@ -222,6 +233,9 @@ jobs:
           })().catch((err) => {
             const details = [
               `verification error: ${err.stack || err.message}`,
+              '',
+              'browser errors:',
+              ...browserErrors,
               '',
               'server logs:',
               ...logs,
