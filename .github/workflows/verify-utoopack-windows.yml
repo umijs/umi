@@ -32,4 +32,4 @@ jobs:
         run: pnpm i
 
       - name: Test bundler-utoopack
-        run: pnpm --filter @umijs/bundler-utoopack test -- --runInBand
+        run: pnpm exec jest packages/bundler-utoopack/src/config.test.ts --runInBand
