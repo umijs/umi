@@ -238,8 +238,40 @@ function getExtraBabelModuleRules(opts: {
   };
 }
 
-function normalizeUtoopackPath(path: string) {
+export function normalizeUtoopackPath(path: string) {
   return path.replace(/\\/g, '/');
+}
+
+function normalizeUtoopackEntry<T>(entry: T): T {
+  if (typeof entry === 'string') {
+    return normalizeUtoopackPath(entry) as T;
+  }
+
+  if (Array.isArray(entry)) {
+    return entry.map(normalizeUtoopackEntry) as T;
+  }
+
+  if (entry && typeof entry === 'object') {
+    return Object.fromEntries(
+      Object.entries(entry).map(([key, value]) => [
+        key,
+        normalizeUtoopackEntry(value),
+      ]),
+    ) as T;
+  }
+
+  return entry;
+}
+
+function normalizeUtoopackOpts<
+  T extends { cwd: string; rootDir: string; entry: any },
+>(opts: T): T {
+  return {
+    ...opts,
+    cwd: normalizeUtoopackPath(opts.cwd),
+    rootDir: normalizeUtoopackPath(opts.rootDir),
+    entry: normalizeUtoopackEntry(opts.entry),
+  };
 }
 
 function getNormalizedAlias(
@@ -573,8 +605,10 @@ function getDefaultPersistentCaching() {
 }
 
 export async function getProdUtooPackConfig(
-  opts: IOpts,
+  rawOpts: IOpts,
 ): Promise<BundleOptions> {
+  const opts = normalizeUtoopackOpts(rawOpts);
+
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
@@ -679,12 +713,14 @@ export async function getProdUtooPackConfig(
 }
 
 export async function getSSRUtooPackConfig(
-  opts: IOpts & {
+  rawOpts: IOpts & {
     serverBuildPath: string;
     useHash?: boolean;
     isDev?: boolean;
   },
 ): Promise<BundleOptions> {
+  const opts = normalizeUtoopackOpts(rawOpts);
+
   const utooBundlerOpts = await getProdUtooPackConfig({
     ...opts,
     clean: false,
@@ -758,8 +794,10 @@ export type IDevOpts = {
 } & Pick<IConfigOpts, 'cache' | 'pkg' | 'staticPathPrefix'>;
 
 export async function getDevUtooPackConfig(
-  opts: IDevOpts,
+  rawOpts: IDevOpts,
 ): Promise<BundleOptions> {
+  const opts = normalizeUtoopackOpts(rawOpts);
+
   let webpackConfig = await getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,

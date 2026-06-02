@@ -1,0 +1,15 @@
+{
+  "name": "@example/with-utoopack-externals",
+  "private": true,
+  "scripts": {
+    "build": "COMPRESS=none umi build",
+    "dev": "umi dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "umi": "workspace:*"
+  }
+}

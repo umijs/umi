@@ -10,6 +10,7 @@ import {
   getProdUtooPackConfig,
   getSSRUtooPackConfig,
   IDevOpts,
+  normalizeUtoopackPath,
 } from './config';
 import type { IOpts } from './types';
 import { getBuildBanner, getDevBanner } from './util';
@@ -22,27 +23,37 @@ function getUtoopackRootDir(
   utoopackConfig: Record<string, any> | undefined,
   findRootDir: (cwd: string) => string,
 ) {
+  const normalizedCwd = normalizeUtoopackPath(cwd);
+
   if (typeof utoopackConfig?.root === 'string') {
-    return path.resolve(cwd, utoopackConfig.root);
+    return normalizeUtoopackPath(
+      path.resolve(normalizedCwd, utoopackConfig.root),
+    );
   }
 
-  return findRootDir(cwd);
+  return normalizeUtoopackPath(findRootDir(normalizedCwd));
 }
 
 export async function build(opts: IOpts) {
   const { cwd, onBuildComplete } = opts;
+  const normalizedCwd = normalizeUtoopackPath(cwd);
   const buildStartTime = Date.now();
   const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
-  const rootDir = getUtoopackRootDir(cwd, opts.config.utoopack, findRootDir);
+  const rootDir = getUtoopackRootDir(
+    normalizedCwd,
+    opts.config.utoopack,
+    findRootDir,
+  );
 
   // 添加一个 checkConfig 对于 utoopack 不支持的配置警告一下
   const utooPackConfig = await getProdUtooPackConfig({
     ...opts,
+    cwd: normalizedCwd,
     rootDir,
   });
 
   try {
-    await utooPackBuild(utooPackConfig, cwd, rootDir);
+    await utooPackBuild(utooPackConfig, normalizedCwd, rootDir);
   } catch (e: any) {
     console.error(e.message);
     const err = new Error('Build with utoopack failed.');
@@ -76,14 +87,14 @@ export async function build(opts: IOpts) {
     isFirstCompile: true,
   });
   const absOutputPath = path.resolve(
-    cwd,
+    normalizedCwd,
     utooPackConfig.config.output?.path || 'dist',
   );
   console.log(
     getBuildBanner({
       packVersion: process.env.UTOOPACK_VERSION,
       duration: time,
-      outputPath: path.relative(cwd, absOutputPath) || '.',
+      outputPath: path.relative(normalizedCwd, absOutputPath) || '.',
       assetCount: stats.assets?.length,
     }),
   );
@@ -98,16 +109,22 @@ export async function buildSSR(
   },
 ) {
   const { cwd } = opts;
+  const normalizedCwd = normalizeUtoopackPath(cwd);
   const buildStartTime = Date.now();
   const { build: utooPackBuild, findRootDir } = require('@utoo/pack');
-  const rootDir = getUtoopackRootDir(cwd, opts.config.utoopack, findRootDir);
+  const rootDir = getUtoopackRootDir(
+    normalizedCwd,
+    opts.config.utoopack,
+    findRootDir,
+  );
   const utooPackConfig = await getSSRUtooPackConfig({
     ...opts,
+    cwd: normalizedCwd,
     rootDir,
   });
 
   try {
-    await utooPackBuild(utooPackConfig, cwd, rootDir);
+    await utooPackBuild(utooPackConfig, normalizedCwd, rootDir);
   } catch (e: any) {
     console.error(e.message);
     const err = new Error('Build SSR with utoopack failed.');
@@ -141,6 +158,7 @@ export async function buildSSR(
 
 export async function dev(opts: IDevOpts) {
   const { cwd, onDevCompileDone } = opts;
+  const normalizedCwd = normalizeUtoopackPath(cwd);
 
   if (!opts) {
     throw new Error('opts should be supplied');
@@ -151,10 +169,15 @@ export async function dev(opts: IDevOpts) {
 
   const { findRootDir, serve: utooPackServe } = require('@utoo/pack');
 
-  const rootDir = getUtoopackRootDir(cwd, opts.config.utoopack, findRootDir);
+  const rootDir = getUtoopackRootDir(
+    normalizedCwd,
+    opts.config.utoopack,
+    findRootDir,
+  );
 
   const utooPackConfig = await getDevUtooPackConfig({
     ...opts,
+    cwd: normalizedCwd,
     rootDir,
   });
 
@@ -301,7 +324,7 @@ export async function dev(opts: IDevOpts) {
   try {
     await Promise.all([
       serverReady,
-      utooPackServe(utooPackConfig, cwd, rootDir, {
+      utooPackServe(utooPackConfig, normalizedCwd, rootDir, {
         port: utooServePort,
         hostname: '127.0.0.1',
         logServerInfo: false,
