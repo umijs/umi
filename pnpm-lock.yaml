@@ -1703,6 +1703,15 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
 
+  examples/with-utoopack-externals:
+    dependencies:
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
   examples/with-utoopack-istanbul:
     dependencies:
       umi:
