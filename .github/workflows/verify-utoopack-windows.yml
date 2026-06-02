@@ -14,7 +14,7 @@ jobs:
   bundler-utoopack:
     name: bundler-utoopack on Windows
     runs-on: windows-2022
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -72,3 +72,122 @@ jobs:
         with:
           name: utoopack-windows-test-output
           path: utoopack-windows-test.log
+
+      - name: Build max example targets
+        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./packages/max/... --filter ./packages/umi/...
+
+      - name: Enable utoopack in examples/max
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const file = 'examples/max/.umirc.ts';
+          const content = fs.readFileSync(file, 'utf8');
+          if (!content.includes('utoopack:')) {
+            fs.writeFileSync(file, content.replace(/\n\}\);\s*$/, '\n  utoopack: {},\n});\n'));
+          }
+          NODE
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install chromium
+
+      - name: Verify examples/max dev in browser
+        shell: bash
+        run: |
+          cat > verify-example-max.cjs <<'EOF'
+          const { chromium } = require('playwright-chromium');
+          const { spawn } = require('child_process');
+          const fs = require('fs');
+
+          const logs = [];
+          const server = spawn(
+            process.platform === 'win32' ? 'cmd' : 'pnpm',
+            process.platform === 'win32'
+              ? ['/c', 'pnpm', '--dir', 'examples/max', 'max', 'dev', '--port', '9527']
+              : ['--dir', 'examples/max', 'max', 'dev', '--port', '9527'],
+            {
+              stdio: ['ignore', 'pipe', 'pipe'],
+              env: {
+                ...process.env,
+                FORCE_UTOOPACK: '1',
+                BROWSER: 'none',
+              },
+            },
+          );
+
+          server.stdout.on('data', (chunk) => logs.push(chunk.toString()));
+          server.stderr.on('data', (chunk) => logs.push(chunk.toString()));
+
+          async function waitFor(url, timeout = 120000) {
+            const start = Date.now();
+            while (Date.now() - start < timeout) {
+              try {
+                const res = await fetch(url);
+                if (res.ok) return;
+              } catch {}
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+            throw new Error(`Timed out waiting for ${url}`);
+          }
+
+          (async () => {
+            const browserErrors = [];
+            try {
+              await waitFor('http://127.0.0.1:9527/__umi/api/status');
+              const browser = await chromium.launch({ headless: true });
+              const page = await browser.newPage();
+              page.on('console', (msg) => {
+                if (msg.type() === 'error') {
+                  browserErrors.push(`console error: ${msg.text()}`);
+                }
+              });
+              page.on('pageerror', (err) => {
+                browserErrors.push(`pageerror: ${err.stack || err.message}`);
+              });
+              await page.goto('http://127.0.0.1:9527/data-flow/use-model', {
+                waitUntil: 'networkidle',
+                timeout: 60000,
+              });
+              await page.waitForTimeout(3000);
+              await browser.close();
+
+              const relevantErrors = browserErrors.filter((msg) =>
+                /dispatcher|useContext|InitialStateProvider|plugin-model|Cannot destructure|is null/i.test(msg),
+              );
+              fs.writeFileSync(
+                'utoopack-windows-example.log',
+                [
+                  'browser errors:',
+                  ...browserErrors,
+                  '',
+                  'server logs:',
+                  ...logs,
+                ].join('\n'),
+              );
+              if (relevantErrors.length) {
+                throw new Error(`Found Utoopack model context errors:\n${relevantErrors.join('\n')}`);
+              }
+            } finally {
+              server.kill();
+            }
+          })().catch((err) => {
+            fs.writeFileSync(
+              'utoopack-windows-example.log',
+              [
+                `verification error: ${err.stack || err.message}`,
+                '',
+                'server logs:',
+                ...logs,
+              ].join('\n'),
+            );
+            process.exit(1);
+          });
+          EOF
+          node verify-example-max.cjs
+
+      - name: Upload example output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: utoopack-windows-example-output
+          path: utoopack-windows-example.log
