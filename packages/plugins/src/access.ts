@@ -27,7 +27,7 @@ import React from 'react';${
         hasAccessFile
           ? `
 import accessFactory from '@/access';
-import { useModel } from '@@/plugin-model';
+import { useModel } from '../plugin-model';
 `
           : ''
       }

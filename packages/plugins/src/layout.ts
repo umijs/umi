@@ -155,7 +155,7 @@ import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
 ${
   hasInitialStatePlugin
-    ? `import { useModel } from '@@/plugin-model';`
+    ? `import { useModel } from '../plugin-model';`
     : 'const useModel = null;'
 }
 ${
