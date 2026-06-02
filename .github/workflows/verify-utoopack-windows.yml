@@ -104,8 +104,8 @@ jobs:
           const server = spawn(
             process.platform === 'win32' ? 'cmd' : 'pnpm',
             process.platform === 'win32'
-              ? ['/c', 'pnpm', '--dir', 'examples/max', 'max', 'dev', '--port', '9527']
-              : ['--dir', 'examples/max', 'max', 'dev', '--port', '9527'],
+              ? ['/c', 'pnpm', '--dir', 'examples/max', 'exec', 'max', 'dev', '--port', '9527']
+              : ['--dir', 'examples/max', 'exec', 'max', 'dev', '--port', '9527'],
             {
               stdio: ['ignore', 'pipe', 'pipe'],
               env: {
