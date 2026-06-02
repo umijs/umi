@@ -31,8 +31,10 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build test utilities
-        run: pnpm --filter @umijs/test build
+      - name: Build test dependencies
+        run: |
+          pnpm --filter @umijs/bundler-utoopack... build
+          pnpm --filter @umijs/test build
 
       - name: Write focused Jest config
         shell: bash
