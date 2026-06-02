@@ -31,5 +31,28 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
+      - name: Write focused Jest config
+        shell: bash
+        run: |
+          cat > jest.utoopack-windows.config.cjs <<'EOF'
+          module.exports = {
+            rootDir: process.cwd(),
+            testEnvironment: 'node',
+            testMatch: ['<rootDir>/packages/bundler-utoopack/src/config.test.ts'],
+            transform: {
+              '^.+\\.(t|j)sx?$': [
+                '<rootDir>/packages/testing/dist/transformers/esbuild',
+                { target: 'es2020', sourcemap: true },
+              ],
+            },
+            transformIgnorePatterns: ['/node_modules/', '/compiled/'],
+            modulePathIgnorePatterns: [
+              '<rootDir>/packages/.+/compiled',
+              '<rootDir>/packages/.+/fixtures',
+            ],
+            testTimeout: 30000,
+          };
+          EOF
+
       - name: Test bundler-utoopack
-        run: pnpm exec jest packages/bundler-utoopack/src/config.test.ts --runInBand
+        run: pnpm exec jest --config jest.utoopack-windows.config.cjs --runInBand
