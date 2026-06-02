@@ -93,10 +93,11 @@ jobs:
 
       - name: Verify examples/max dev in browser
         shell: bash
+        timeout-minutes: 10
         run: |
           cat > verify-example-max.cjs <<'EOF'
           const { chromium } = require('playwright-chromium');
-          const { spawn } = require('child_process');
+          const { execSync, spawn } = require('child_process');
           const fs = require('fs');
 
           const logs = [];
@@ -118,6 +119,21 @@ jobs:
           server.stdout.on('data', (chunk) => logs.push(chunk.toString()));
           server.stderr.on('data', (chunk) => logs.push(chunk.toString()));
 
+          function writeLog(lines) {
+            fs.writeFileSync('utoopack-windows-example.log', lines.join('\n'));
+          }
+
+          function stopServer() {
+            if (!server.pid) return;
+            try {
+              if (process.platform === 'win32') {
+                execSync(`taskkill /pid ${server.pid} /T /F`, { stdio: 'ignore' });
+              } else {
+                server.kill('SIGTERM');
+              }
+            } catch {}
+          }
+
           async function waitFor(url, timeout = 120000) {
             const start = Date.now();
             while (Date.now() - start < timeout) {
@@ -129,6 +145,17 @@ jobs:
             }
             throw new Error(`Timed out waiting for ${url}`);
           }
+
+          const timeout = setTimeout(() => {
+            stopServer();
+            writeLog([
+              'verification error: Timed out verifying examples/max with utoopack',
+              '',
+              'server logs:',
+              ...logs,
+            ]);
+            process.exit(1);
+          }, 240000);
 
           (async () => {
             const browserErrors = [];
@@ -145,43 +172,39 @@ jobs:
                 browserErrors.push(`pageerror: ${err.stack || err.message}`);
               });
               await page.goto('http://127.0.0.1:9527/data-flow/use-model', {
-                waitUntil: 'networkidle',
+                waitUntil: 'domcontentloaded',
                 timeout: 60000,
               });
+              await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
               await page.waitForTimeout(3000);
               await browser.close();
 
               const relevantErrors = browserErrors.filter((msg) =>
                 /dispatcher|useContext|InitialStateProvider|plugin-model|Cannot destructure|is null/i.test(msg),
               );
-              fs.writeFileSync(
-                'utoopack-windows-example.log',
-                [
-                  'browser errors:',
-                  ...browserErrors,
-                  '',
-                  'server logs:',
-                  ...logs,
-                ].join('\n'),
-              );
+              writeLog([
+                'browser errors:',
+                ...browserErrors,
+                '',
+                'server logs:',
+                ...logs,
+              ]);
               if (relevantErrors.length) {
                 throw new Error(`Found Utoopack model context errors:\n${relevantErrors.join('\n')}`);
               }
             } finally {
-              server.kill();
+              clearTimeout(timeout);
+              stopServer();
             }
           })().catch((err) => {
-            fs.writeFileSync(
-              'utoopack-windows-example.log',
-              [
-                `verification error: ${err.stack || err.message}`,
-                '',
-                'server logs:',
-                ...logs,
-              ].join('\n'),
-            );
+            writeLog([
+              `verification error: ${err.stack || err.message}`,
+              '',
+              'server logs:',
+              ...logs,
+            ]);
             process.exit(1);
-          });
+          }).then(() => process.exit(0));
           EOF
           node verify-example-max.cjs
 
