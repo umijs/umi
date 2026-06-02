@@ -58,4 +58,15 @@ jobs:
           EOF
 
       - name: Test bundler-utoopack
-        run: pnpm exec jest --config jest.utoopack-windows.config.cjs --runInBand
+        shell: bash
+        run: |
+          set +e
+          pnpm exec jest --config jest.utoopack-windows.config.cjs --runInBand 2>&1 | tee utoopack-windows-test.log
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: utoopack-windows-test-output
+          path: utoopack-windows-test.log
