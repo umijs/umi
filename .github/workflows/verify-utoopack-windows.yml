@@ -73,20 +73,20 @@ jobs:
           name: utoopack-windows-test-output
           path: utoopack-windows-test.log
 
-      - name: Build max example targets
-        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./packages/max/... --filter ./packages/umi/...
+      - name: Build use-model example targets
+        run: pnpm umi-scripts turbo build --filter ./examples/with-use-model... --filter ./packages/umi/... --filter ./packages/plugins/...
 
-      - name: Configure examples/max for utoopack verification
+      - name: Configure examples/with-use-model for utoopack verification
         shell: bash
         run: |
           node - <<'NODE'
           const fs = require('fs');
-          const file = 'examples/max/.umirc.ts';
+          const file = 'examples/with-use-model/.umirc.ts';
           let content = fs.readFileSync(file, 'utf8');
           if (!content.includes('utoopack:')) {
             content = content.replace(/\n\}\);\s*$/, '\n  utoopack: {},\n});\n');
+            content = content.replace(/\n\};\s*$/, '\n  utoopack: {},\n};\n');
           }
-          content = content.replace(/\n\s*tailwindcss:\s*\{\},/, '');
           fs.writeFileSync(file, content);
           NODE
 
@@ -106,8 +106,8 @@ jobs:
           const server = spawn(
             process.platform === 'win32' ? 'cmd' : 'pnpm',
             process.platform === 'win32'
-              ? ['/c', 'pnpm', '--dir', 'examples/max', 'exec', 'max', 'dev', '--port', '9527']
-              : ['--dir', 'examples/max', 'exec', 'max', 'dev', '--port', '9527'],
+              ? ['/c', 'pnpm', '--dir', 'examples/with-use-model', 'exec', 'umi', 'dev', '--port', '9527']
+              : ['--dir', 'examples/with-use-model', 'exec', 'umi', 'dev', '--port', '9527'],
             {
               stdio: ['ignore', 'pipe', 'pipe'],
               env: {
@@ -163,7 +163,7 @@ jobs:
           const timeout = setTimeout(() => {
             stopServer();
             const details = [
-              'verification error: Timed out verifying examples/max with utoopack',
+              'verification error: Timed out verifying examples/with-use-model with utoopack',
               '',
               'server logs:',
               ...logs,
@@ -187,11 +187,17 @@ jobs:
               page.on('pageerror', (err) => {
                 browserErrors.push(`pageerror: ${err.stack || err.message}`);
               });
-              await page.goto('http://127.0.0.1:9527/data-flow/use-model', {
+              await page.goto('http://127.0.0.1:9527/', {
                 waitUntil: 'domcontentloaded',
                 timeout: 60000,
               });
               await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+              const bodyText = await page.locator('body').innerText({ timeout: 30000 });
+              for (const expected of ['todos', 'foo', 'count', '123']) {
+                if (!bodyText.includes(expected)) {
+                  throw new Error(`Expected rendered page to contain ${expected}, got:\n${bodyText}`);
+                }
+              }
               await page.waitForTimeout(3000);
               await browser.close();
 
