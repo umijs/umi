@@ -4,7 +4,7 @@ import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
 import fs from 'fs';
-import { basename, dirname, extname, resolve as pathResolve } from 'path';
+import { basename, dirname, extname, join, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
 const DEFAULT_STATIC_PATH_PREFIX = 'static/';
@@ -334,8 +334,69 @@ function getNormalizedAlias(
     newAlias[`${key}/*`] = `${value}/*`;
   }
 
+  addTmpDirectoryIndexAliases(newAlias, normalizedRootDir);
+
   newAlias[`${normalizedRootDir}/*`] = `${normalizedRootDir}/*`;
   return newAlias;
+}
+
+function addTmpDirectoryIndexAliases(
+  alias: Record<string, string>,
+  rootDir: string,
+) {
+  for (const [key, value] of Object.entries(alias)) {
+    if (key !== '@@' && !key.startsWith('@@/')) continue;
+    if (key.endsWith('/*') || key.endsWith('$')) continue;
+
+    const absDir = getExistingDirectory(value, rootDir);
+    if (!absDir) continue;
+
+    const indexFile = getDirectoryIndexFile(absDir);
+    if (indexFile) {
+      alias[`${key}$`] = indexFile;
+    }
+
+    let entries: fs.Dirent[];
+    try {
+      entries = fs.readdirSync(absDir, { withFileTypes: true });
+    } catch (e) {
+      continue;
+    }
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+
+      const childKey = `${key}/${entry.name}`;
+      if (alias[`${childKey}$`]) continue;
+
+      const childIndexFile = getDirectoryIndexFile(join(absDir, entry.name));
+      if (childIndexFile) {
+        alias[`${childKey}$`] = childIndexFile;
+      }
+    }
+  }
+}
+
+function getExistingDirectory(value: string, rootDir: string) {
+  const candidates = [...new Set([value, pathResolve(rootDir, value)])];
+
+  for (const candidate of candidates) {
+    try {
+      const stat = fs.statSync(candidate);
+      if (stat.isDirectory()) {
+        return normalizeUtoopackPath(candidate);
+      }
+    } catch (e) {}
+  }
+}
+
+function getDirectoryIndexFile(dir: string) {
+  for (const ext of ['.tsx', '.ts', '.jsx', '.js']) {
+    const file = normalizeUtoopackPath(join(dir, `index${ext}`));
+    if (fs.existsSync(file)) {
+      return file;
+    }
+  }
 }
 
 // refer from: https://github.com/utooland/utoo/blob/master/packages/bundler-mako/index.js#L543-L564
