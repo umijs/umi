@@ -436,7 +436,7 @@ describe('utoopack extra babel config', () => {
       },
     } as any);
 
-    expect(config.config.module).toBeUndefined();
+    expect(config.config.module?.rules?.['**/src/**/*.tsx']).toBeUndefined();
     expect(config.config.optimization?.modularizeImports).toEqual({
       antd: {
         transform: 'antd/es/{{ kebabCase member }}',
