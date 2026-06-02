@@ -93,11 +93,11 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install chromium
 
-      - name: Verify examples/max dev in browser
+      - name: Verify examples/with-use-model dev in browser
         shell: bash
         timeout-minutes: 10
         run: |
-          cat > verify-example-max.cjs <<'EOF'
+          cat > verify-example-use-model.cjs <<'EOF'
           const { chromium } = require('playwright-chromium');
           const { execSync, spawn } = require('child_process');
           const fs = require('fs');
@@ -106,14 +106,15 @@ jobs:
           const server = spawn(
             process.platform === 'win32' ? 'cmd' : 'pnpm',
             process.platform === 'win32'
-              ? ['/c', 'pnpm', '--dir', 'examples/with-use-model', 'exec', 'umi', 'dev', '--port', '9527']
-              : ['--dir', 'examples/with-use-model', 'exec', 'umi', 'dev', '--port', '9527'],
+              ? ['/c', 'pnpm', '--dir', 'examples/with-use-model', 'exec', 'umi', 'dev']
+              : ['--dir', 'examples/with-use-model', 'exec', 'umi', 'dev'],
             {
               stdio: ['ignore', 'pipe', 'pipe'],
               env: {
                 ...process.env,
                 FORCE_UTOOPACK: '1',
                 BROWSER: 'none',
+                PORT: '9527',
               },
             },
           );
@@ -230,7 +231,7 @@ jobs:
             process.exit(1);
           }).then(() => process.exit(0));
           EOF
-          node verify-example-max.cjs
+          node verify-example-use-model.cjs
 
       - name: Upload example output
         if: always()
