@@ -238,6 +238,26 @@ function getExtraBabelModuleRules(opts: {
   };
 }
 
+function getUmiTmpPluginModelRuntimeRule() {
+  if (process.platform !== 'win32') {
+    return {};
+  }
+
+  return {
+    module: {
+      rules: {
+        '**/.umi*/plugin-model/runtime.tsx': {
+          condition: {
+            path: /[\\/]\.umi(?:-[^\\/]*)?[\\/]plugin-model[\\/]runtime\.tsx$/,
+          },
+          loaders: [require.resolve('./loaders/normalizePluginModelRuntime')],
+          as: '*.tsx',
+        },
+      },
+    },
+  };
+}
+
 export function normalizeUtoopackPath(path: string) {
   return path.replace(/\\/g, '/');
 }
@@ -758,6 +778,7 @@ export async function getProdUtooPackConfig(
         externals: getNormalizedExternals(userExternals),
       },
       getExtraBabelModuleRules(opts),
+      getUmiTmpPluginModelRuntimeRule(),
       getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),
@@ -969,6 +990,7 @@ export async function getDevUtooPackConfig(
           : {}),
       },
       getExtraBabelModuleRules(opts),
+      getUmiTmpPluginModelRuntimeRule(),
       getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),
