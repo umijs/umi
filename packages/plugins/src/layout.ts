@@ -4,7 +4,7 @@ import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, semver, winPath } from 'umi/plugin-utils';
 import { isFlattedNodeModulesDir } from './utils/npmClient';
 import { resolveProjectDep } from './utils/resolveProjectDep';
-import { withTmpPath } from './utils/withTmpPath';
+import { getPluginModelImport, withTmpPath } from './utils/withTmpPath';
 
 // 获取所有 icons
 const antIconsPath = winPath(
@@ -155,7 +155,7 @@ import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
 ${
   hasInitialStatePlugin
-    ? `import { useModel } from '@@/plugin-model';`
+    ? `import { useModel } from '${getPluginModelImport(api)}';`
     : 'const useModel = null;'
 }
 ${

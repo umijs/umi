@@ -4,7 +4,7 @@ import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
 import fs from 'fs';
-import { basename, dirname, extname, join, resolve as pathResolve } from 'path';
+import { basename, dirname, extname, resolve as pathResolve } from 'path';
 import type { IOpts } from './types';
 
 const DEFAULT_STATIC_PATH_PREFIX = 'static/';
@@ -238,51 +238,6 @@ function getExtraBabelModuleRules(opts: {
   };
 }
 
-function isUtooWin() {
-  return process.platform === 'win32';
-}
-
-function getUmiTmpPluginModelImportRules(opts: {
-  alias: Record<string, string> | undefined;
-  rootDir: string;
-}) {
-  if (!isUtooWin()) {
-    return {};
-  }
-
-  const tmpDir = getExistingDirectory(opts.alias?.['@@'], opts.rootDir);
-  if (!tmpDir) return {};
-
-  const pluginModelPath = normalizeUtoopackPath(join(tmpDir, 'plugin-model'));
-  const loader = {
-    loader: require.resolve('./loaders/normalizePluginModelImport'),
-    options: {
-      pluginModelPath,
-    },
-  };
-
-  return {
-    module: {
-      rules: {
-        '**/.umi*/plugin-*/*.tsx': {
-          condition: {
-            path: /[\\/]\.umi(?:-[^\\/]*)?[\\/]plugin-(?!model(?:[\\/]|$))[^\\/]+[\\/].*\.tsx$/,
-          },
-          loaders: [loader],
-          as: '*.tsx',
-        },
-        '**/.umi*/plugin-*/*.ts': {
-          condition: {
-            path: /[\\/]\.umi(?:-[^\\/]*)?[\\/]plugin-(?!model(?:[\\/]|$))[^\\/]+[\\/].*\.ts$/,
-          },
-          loaders: [loader],
-          as: '*.ts',
-        },
-      },
-    },
-  };
-}
-
 export function normalizeUtoopackPath(path: string) {
   return path.replace(/\\/g, '/');
 }
@@ -379,62 +334,8 @@ function getNormalizedAlias(
     newAlias[`${key}/*`] = `${value}/*`;
   }
 
-  addTmpPluginDirectoryAliases(newAlias, normalizedRootDir);
-
   newAlias[`${normalizedRootDir}/*`] = `${normalizedRootDir}/*`;
   return newAlias;
-}
-
-function addTmpPluginDirectoryAliases(
-  alias: Record<string, string>,
-  rootDir: string,
-) {
-  const tmpDir = getExistingDirectory(alias['@@'], rootDir);
-  if (!tmpDir) return;
-
-  let entries: fs.Dirent[];
-  try {
-    entries = fs.readdirSync(tmpDir, { withFileTypes: true });
-  } catch (e) {
-    return;
-  }
-
-  for (const entry of entries) {
-    if (!entry.isDirectory() || !entry.name.startsWith('plugin-')) continue;
-
-    const key = `@@/${entry.name}`;
-    const dir = normalizeUtoopackPath(join(tmpDir, entry.name));
-    const indexFile = getDirectoryIndexFile(dir);
-
-    if (indexFile && !alias[key]) {
-      alias[key] = indexFile;
-    }
-    alias[`${key}/*`] ||= `${dir}/*`;
-  }
-}
-
-function getExistingDirectory(value: string | undefined, rootDir: string) {
-  if (!value) return;
-
-  const candidates = [...new Set([value, pathResolve(rootDir, value)])];
-
-  for (const candidate of candidates) {
-    try {
-      const stat = fs.statSync(candidate);
-      if (stat.isDirectory()) {
-        return normalizeUtoopackPath(candidate);
-      }
-    } catch (e) {}
-  }
-}
-
-function getDirectoryIndexFile(dir: string) {
-  for (const ext of ['.tsx', '.ts', '.jsx', '.js']) {
-    const file = normalizeUtoopackPath(join(dir, `index${ext}`));
-    if (fs.existsSync(file)) {
-      return file;
-    }
-  }
 }
 
 // refer from: https://github.com/utooland/utoo/blob/master/packages/bundler-mako/index.js#L543-L564
@@ -803,10 +704,6 @@ export async function getProdUtooPackConfig(
         externals: getNormalizedExternals(userExternals),
       },
       getExtraBabelModuleRules(opts),
-      getUmiTmpPluginModelImportRules({
-        alias: utooBundlerOpts.config.resolve?.alias as Record<string, string>,
-        rootDir: opts.rootDir,
-      }),
       getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),
@@ -1018,10 +915,6 @@ export async function getDevUtooPackConfig(
           : {}),
       },
       getExtraBabelModuleRules(opts),
-      getUmiTmpPluginModelImportRules({
-        alias: utooBundlerOpts.config.resolve?.alias as Record<string, string>,
-        rootDir: opts.rootDir,
-      }),
       getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),

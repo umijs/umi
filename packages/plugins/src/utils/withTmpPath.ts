@@ -17,3 +17,11 @@ export function withTmpPath(opts: {
     ),
   );
 }
+
+export function isUtooWin(api: IApi) {
+  return process.platform === 'win32' && api.appData.bundler === 'utoopack';
+}
+
+export function getPluginModelImport(api: IApi) {
+  return isUtooWin(api) ? '../plugin-model' : '@@/plugin-model';
+}

@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { winPath } from 'umi/plugin-utils';
-import { withTmpPath } from '../utils/withTmpPath';
+import { getPluginModelImport, withTmpPath } from '../utils/withTmpPath';
 import {
   defaultHistoryType,
   defaultMasterRootId,
@@ -191,7 +191,7 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
             .replace(
               '__USE_MODEL__',
               api.isPluginEnable('model')
-                ? `import { useModel } from '@@/plugin-model'`
+                ? `import { useModel } from '${getPluginModelImport(api)}'`
                 : `console.warn(\`[plugins/qiankun]: Seems like you're not using @umijs/plugin-model, you need to install it or some features may not work!\`);\nconst useModel = null`,
             )
             .replace(

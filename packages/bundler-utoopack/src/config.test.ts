@@ -20,9 +20,6 @@ jest.mock('@utoo/pack', () => ({
 }));
 
 import { getConfig } from '@umijs/bundler-webpack';
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
 import {
   getDevUtooPackConfig,
   getProdUtooPackConfig,
@@ -253,35 +250,6 @@ describe('utoopack alias config', () => {
     });
     expect(JSON.stringify(config.config.entry)).not.toContain('\\');
   });
-
-  test('adds entry and wildcard aliases for generated tmp plugin directories', async () => {
-    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'umi-utoopack-'));
-    const umiTmpDir = path.join(tmpRoot, '.umi');
-    const pluginModelDir = path.join(umiTmpDir, 'plugin-model');
-    fs.mkdirSync(pluginModelDir, { recursive: true });
-    fs.writeFileSync(path.join(pluginModelDir, 'index.tsx'), '');
-    fs.writeFileSync(path.join(pluginModelDir, 'model.ts'), '');
-
-    mockedGetConfig.mockResolvedValue(
-      createWebpackConfig(undefined, {
-        '@@': umiTmpDir,
-      }),
-    );
-
-    const config = await getDevUtooPackConfig({
-      ...baseOpts,
-      rootDir: tmpRoot,
-      config: {},
-    } as any);
-
-    const normalizedPluginModelDir = pluginModelDir.replace(/\\/g, '/');
-    expect(config.config.resolve?.alias).toMatchObject({
-      '@@': umiTmpDir.replace(/\\/g, '/'),
-      '@@/*': `${umiTmpDir.replace(/\\/g, '/')}/*`,
-      '@@/plugin-model': `${normalizedPluginModelDir}/index.tsx`,
-      '@@/plugin-model/*': `${normalizedPluginModelDir}/*`,
-    });
-  });
 });
 
 describe('utoopack define config', () => {
@@ -436,7 +404,7 @@ describe('utoopack extra babel config', () => {
       },
     } as any);
 
-    expect(config.config.module?.rules?.['**/src/**/*.tsx']).toBeUndefined();
+    expect(config.config.module).toBeUndefined();
     expect(config.config.optimization?.modularizeImports).toEqual({
       antd: {
         transform: 'antd/es/{{ kebabCase member }}',
