@@ -238,11 +238,15 @@ function getExtraBabelModuleRules(opts: {
   };
 }
 
+function isUtooWin() {
+  return process.platform === 'win32';
+}
+
 function getUmiTmpPluginModelImportRules(opts: {
   alias: Record<string, string> | undefined;
   rootDir: string;
 }) {
-  if (process.platform !== 'win32') {
+  if (!isUtooWin()) {
     return {};
   }
 
