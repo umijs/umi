@@ -238,20 +238,41 @@ function getExtraBabelModuleRules(opts: {
   };
 }
 
-function getUmiTmpPluginModelRuntimeRule() {
+function getUmiTmpPluginModelImportRules(opts: {
+  alias: Record<string, string> | undefined;
+  rootDir: string;
+}) {
   if (process.platform !== 'win32') {
     return {};
   }
 
+  const tmpDir = getExistingDirectory(opts.alias?.['@@'], opts.rootDir);
+  if (!tmpDir) return {};
+
+  const pluginModelPath = normalizeUtoopackPath(join(tmpDir, 'plugin-model'));
+  const loader = {
+    loader: require.resolve('./loaders/normalizePluginModelImport'),
+    options: {
+      pluginModelPath,
+    },
+  };
+
   return {
     module: {
       rules: {
-        '**/.umi*/plugin-model/runtime.tsx': {
+        '**/.umi*/plugin-*/*.tsx': {
           condition: {
-            path: /[\\/]\.umi(?:-[^\\/]*)?[\\/]plugin-model[\\/]runtime\.tsx$/,
+            path: /[\\/]\.umi(?:-[^\\/]*)?[\\/]plugin-(?!model(?:[\\/]|$))[^\\/]+[\\/].*\.tsx$/,
           },
-          loaders: [require.resolve('./loaders/normalizePluginModelRuntime')],
+          loaders: [loader],
           as: '*.tsx',
+        },
+        '**/.umi*/plugin-*/*.ts': {
+          condition: {
+            path: /[\\/]\.umi(?:-[^\\/]*)?[\\/]plugin-(?!model(?:[\\/]|$))[^\\/]+[\\/].*\.ts$/,
+          },
+          loaders: [loader],
+          as: '*.ts',
         },
       },
     },
@@ -778,7 +799,10 @@ export async function getProdUtooPackConfig(
         externals: getNormalizedExternals(userExternals),
       },
       getExtraBabelModuleRules(opts),
-      getUmiTmpPluginModelRuntimeRule(),
+      getUmiTmpPluginModelImportRules({
+        alias: utooBundlerOpts.config.resolve?.alias as Record<string, string>,
+        rootDir: opts.rootDir,
+      }),
       getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),
@@ -990,7 +1014,10 @@ export async function getDevUtooPackConfig(
           : {}),
       },
       getExtraBabelModuleRules(opts),
-      getUmiTmpPluginModelRuntimeRule(),
+      getUmiTmpPluginModelImportRules({
+        alias: utooBundlerOpts.config.resolve?.alias as Record<string, string>,
+        rootDir: opts.rootDir,
+      }),
       getSvgModuleRules({ svgr, svgo, inlineLimit }),
       userUtoopackConfig,
     ),
