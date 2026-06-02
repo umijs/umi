@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
-import { withTmpPath } from './utils/withTmpPath';
+import { getPluginModelImport, withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
   api.describe({
@@ -27,7 +27,10 @@ import React from 'react';${
         hasAccessFile
           ? `
 import accessFactory from '@/access';
-import { useModel } from '@@/plugin-model';
+import { useModel } from '${getPluginModelImport({
+              api,
+              from: 'runtime.tsx',
+            })}';
 `
           : ''
       }
