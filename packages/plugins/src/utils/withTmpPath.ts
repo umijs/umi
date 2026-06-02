@@ -18,6 +18,10 @@ export function withTmpPath(opts: {
   );
 }
 
+function withTmpPluginPath(opts: { api: IApi; pluginKey: string }) {
+  return winPath(join(opts.api.paths.absTmpPath, `plugin-${opts.pluginKey}`));
+}
+
 export function isUtooWin(api: IApi) {
   return process.platform === 'win32' && api.appData.bundler === 'utoopack';
 }
@@ -28,7 +32,7 @@ export function getPluginModelImport(opts: { api: IApi; from: string }) {
   }
 
   const from = withTmpPath({ api: opts.api, path: opts.from });
-  const to = join(opts.api.paths.absTmpPath, 'plugin-model');
+  const to = withTmpPluginPath({ api: opts.api, pluginKey: 'model' });
   const relPath = winPath(relative(dirname(from), to));
 
   return relPath.startsWith('.') ? relPath : `./${relPath}`;
