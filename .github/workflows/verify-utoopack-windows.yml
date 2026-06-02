@@ -123,6 +123,18 @@ jobs:
             fs.writeFileSync('utoopack-windows-example.log', lines.join('\n'));
           }
 
+          function toAnnotationText(value) {
+            return String(value)
+              .slice(-3000)
+              .replace(/%/g, '%25')
+              .replace(/\r/g, '%0D')
+              .replace(/\n/g, '%0A');
+          }
+
+          function emitError(message) {
+            console.error(`::error title=Utoopack Windows example verification::${toAnnotationText(message)}`);
+          }
+
           function stopServer() {
             if (!server.pid) return;
             try {
@@ -148,12 +160,14 @@ jobs:
 
           const timeout = setTimeout(() => {
             stopServer();
-            writeLog([
+            const details = [
               'verification error: Timed out verifying examples/max with utoopack',
               '',
               'server logs:',
               ...logs,
-            ]);
+            ];
+            writeLog(details);
+            emitError(details.join('\n'));
             process.exit(1);
           }, 240000);
 
@@ -197,12 +211,14 @@ jobs:
               stopServer();
             }
           })().catch((err) => {
-            writeLog([
+            const details = [
               `verification error: ${err.stack || err.message}`,
               '',
               'server logs:',
               ...logs,
-            ]);
+            ];
+            writeLog(details);
+            emitError(details.join('\n'));
             process.exit(1);
           }).then(() => process.exit(0));
           EOF
