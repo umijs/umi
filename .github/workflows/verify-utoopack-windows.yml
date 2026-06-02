@@ -76,16 +76,18 @@ jobs:
       - name: Build max example targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./packages/max/... --filter ./packages/umi/...
 
-      - name: Enable utoopack in examples/max
+      - name: Configure examples/max for utoopack verification
         shell: bash
         run: |
           node - <<'NODE'
           const fs = require('fs');
           const file = 'examples/max/.umirc.ts';
-          const content = fs.readFileSync(file, 'utf8');
+          let content = fs.readFileSync(file, 'utf8');
           if (!content.includes('utoopack:')) {
-            fs.writeFileSync(file, content.replace(/\n\}\);\s*$/, '\n  utoopack: {},\n});\n'));
+            content = content.replace(/\n\}\);\s*$/, '\n  utoopack: {},\n});\n');
           }
+          content = content.replace(/\n\s*tailwindcss:\s*\{\},/, '');
+          fs.writeFileSync(file, content);
           NODE
 
       - name: Install Playwright Chromium
