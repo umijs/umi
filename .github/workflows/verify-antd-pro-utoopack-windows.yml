@@ -1,0 +1,223 @@
+name: Verify Ant Design Pro Utoopack Windows
+
+on:
+  push:
+    branches:
+      - codex/verify-antd-pro-utoopack-windows
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ant-design-pro-utoopack:
+    name: ant-design-pro utoopack on Windows
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
+
+      - name: Configure ant-design-pro tailwind repro
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+
+          const pkgFile = 'examples/ant-design-pro/package.json';
+          const pkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'));
+          pkg.dependencies ||= {};
+          pkg.dependencies.tailwindcss ||= '^3.2.4';
+          fs.writeFileSync(pkgFile, `${JSON.stringify(pkg, null, 2)}\n`);
+
+          const configFile = 'examples/ant-design-pro/config/config.ts';
+          let config = fs.readFileSync(configFile, 'utf8');
+          if (!config.includes('tailwindcss:')) {
+            config = config.replace(/\n\s*utoopack:\s*\{\},\s*\n\}\);\s*$/, '\n  tailwindcss: {},\n  utoopack: {},\n});\n');
+          }
+          fs.writeFileSync(configFile, config);
+
+          fs.writeFileSync(
+            'examples/ant-design-pro/tailwind.css',
+            '@tailwind base;\n@tailwind components;\n@tailwind utilities;\n',
+          );
+          fs.writeFileSync(
+            'examples/ant-design-pro/tailwind.config.js',
+            "module.exports = { content: ['./src/**/*.{js,jsx,ts,tsx}', './config/**/*.{js,ts}'], theme: { extend: {} }, plugins: [] };\n",
+          );
+          NODE
+
+      - name: Install dependencies
+        run: pnpm i --no-frozen-lockfile
+
+      - name: Build ant-design-pro example targets
+        run: pnpm umi-scripts turbo build --filter ./examples/ant-design-pro... --filter ./packages/max/... --filter ./packages/umi/... --filter ./packages/plugins/...
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install chromium
+
+      - name: Verify ant-design-pro dev in browser
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          cat > verify-ant-design-pro.cjs <<'EOF'
+          const { chromium } = require('playwright-chromium');
+          const { execSync, spawn } = require('child_process');
+          const fs = require('fs');
+
+          const logs = [];
+          const server = spawn(
+            process.platform === 'win32' ? 'cmd' : 'pnpm',
+            process.platform === 'win32'
+              ? ['/c', 'pnpm', '--dir', 'examples/ant-design-pro', 'exec', 'max', 'dev']
+              : ['--dir', 'examples/ant-design-pro', 'exec', 'max', 'dev'],
+            {
+              stdio: ['ignore', 'pipe', 'pipe'],
+              env: {
+                ...process.env,
+                FORCE_UTOOPACK: '1',
+                BROWSER: 'none',
+                CHECK_TIMEOUT: '60',
+                PORT: '9527',
+              },
+            },
+          );
+
+          server.stdout.on('data', (chunk) => logs.push(chunk.toString()));
+          server.stderr.on('data', (chunk) => logs.push(chunk.toString()));
+
+          function writeLog(lines) {
+            fs.writeFileSync('antd-pro-utoopack-windows.log', lines.join('\n'));
+          }
+
+          function toAnnotationText(value) {
+            return String(value)
+              .slice(-3000)
+              .replace(/%/g, '%25')
+              .replace(/\r/g, '%0D')
+              .replace(/\n/g, '%0A');
+          }
+
+          function emitError(message) {
+            console.error(`::error title=Ant Design Pro Utoopack Windows verification::${toAnnotationText(message)}`);
+          }
+
+          function stopServer() {
+            if (!server.pid) return;
+            try {
+              if (process.platform === 'win32') {
+                execSync(`taskkill /pid ${server.pid} /T /F`, { stdio: 'ignore' });
+              } else {
+                server.kill('SIGTERM');
+              }
+            } catch {}
+          }
+
+          async function waitFor(url, timeout = 180000) {
+            const start = Date.now();
+            while (Date.now() - start < timeout) {
+              try {
+                const res = await fetch(url);
+                if (res.ok) return;
+              } catch {}
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+            throw new Error(`Timed out waiting for ${url}`);
+          }
+
+          const browserErrors = [];
+          const timeout = setTimeout(() => {
+            stopServer();
+            const details = [
+              'verification error: Timed out verifying ant-design-pro with utoopack',
+              '',
+              'server logs:',
+              ...logs,
+            ];
+            writeLog(details);
+            emitError(details.join('\n'));
+            process.exit(1);
+          }, 600000);
+
+          (async () => {
+            try {
+              await waitFor('http://127.0.0.1:9527/__umi/api/status');
+
+              const browser = await chromium.launch({ headless: true });
+              const page = await browser.newPage();
+              page.on('console', (msg) => {
+                if (msg.type() === 'error') {
+                  browserErrors.push(`console error: ${msg.text()}`);
+                }
+              });
+              page.on('pageerror', (err) => {
+                browserErrors.push(`pageerror: ${err.stack || err.message}`);
+              });
+              await page.goto('http://127.0.0.1:9527/dashboard/analysis', {
+                waitUntil: 'domcontentloaded',
+                timeout: 90000,
+              });
+              await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+              await page.waitForTimeout(5000);
+              await browser.close();
+
+              const allLogs = logs.join('\n');
+              const relevantErrors = [
+                ...browserErrors,
+                ...logs,
+              ].filter((msg) =>
+                /Can't resolve 'tailwindcss'|tailwindcss generate failed|Desktop\\.*Desktop\\|ant-design-pro.*ant-design-pro|Cannot find module.*tailwindcss/i.test(msg),
+              );
+
+              writeLog([
+                'browser errors:',
+                ...browserErrors,
+                '',
+                'server logs:',
+                ...logs,
+              ]);
+
+              if (!/utoo pack v|utoopack/i.test(allLogs)) {
+                throw new Error('Expected utoopack dev server logs, but utoopack was not detected.');
+              }
+
+              if (relevantErrors.length) {
+                throw new Error(`Found Ant Design Pro utoopack Windows errors:\n${relevantErrors.join('\n')}`);
+              }
+            } finally {
+              clearTimeout(timeout);
+              stopServer();
+            }
+          })().catch((err) => {
+            const details = [
+              `verification error: ${err.stack || err.message}`,
+              '',
+              'browser errors:',
+              ...browserErrors,
+              '',
+              'server logs:',
+              ...logs,
+            ];
+            writeLog(details);
+            emitError(details.join('\n'));
+            process.exit(1);
+          }).then(() => process.exit(0));
+          EOF
+          node verify-ant-design-pro.cjs
+
+      - name: Upload verification output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ant-design-pro-utoopack-windows-output
+          path: antd-pro-utoopack-windows.log
