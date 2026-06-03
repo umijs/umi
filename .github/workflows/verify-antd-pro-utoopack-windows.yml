@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - codex/verify-antd-pro-utoopack-windows
+      - zoomdong/verify-utoo-pack-1.4.12-alpha-windows
   workflow_dispatch:
 
 concurrency:
