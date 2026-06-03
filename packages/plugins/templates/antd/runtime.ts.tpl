@@ -30,9 +30,10 @@ import merge from '{{{lodashPath.merge}}}'
 
 let cacheAntdConfig = null;
 
-const getAntdConfig = () => {
+const getAntdConfig = (runtimePluginManager?: any) => {
   if(!cacheAntdConfig){
-    cacheAntdConfig = getPluginManager().applyPlugins({
+    const pluginManager = runtimePluginManager || getPluginManager();
+    cacheAntdConfig = pluginManager.applyPlugins({
       key: 'antd',
       type: ApplyPluginsType.modify,
       initialValue: {
@@ -53,14 +54,14 @@ const getAntdConfig = () => {
   return cacheAntdConfig;
 }
 
-function AntdProvider({ children }) {
+function AntdProvider({ children, pluginManager }) {
   let container = children;
 
   const [antdConfig, _setAntdConfig] = React.useState(() => {
     const {
       appConfig: _,
       ...finalConfigProvider
-    } = getAntdConfig();
+    } = getAntdConfig(pluginManager);
     {{#enableModernThemeAlgorithm}}
       finalConfigProvider.theme ??= {};
       finalConfigProvider.theme.algorithm ??= [];
@@ -155,9 +156,9 @@ function AntdProvider({ children }) {
   return container;
 }
 
-export function rootContainer(children) {
+export function rootContainer(children, opts) {
   return (
-    <AntdProvider>
+    <AntdProvider pluginManager={opts?.plugin}>
       {children}
     </AntdProvider>
   );
@@ -166,10 +167,10 @@ export function rootContainer(children) {
 {{#appConfig}}
 // The App component should be under ConfigProvider
 // plugin-locale has other ConfigProvider
-export function innerProvider(container: any) {
+export function innerProvider(container: any, opts: any) {
   const {
     appConfig: finalAppConfig = {},
-  } = getAntdConfig();
+  } = getAntdConfig(opts?.plugin);
   return <App {...finalAppConfig}>{container}</App>;
 }
 {{/appConfig}}
