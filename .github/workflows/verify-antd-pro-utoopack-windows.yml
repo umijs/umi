@@ -51,21 +51,22 @@ jobs:
           const appFile = 'examples/ant-design-pro/src/app.tsx';
           let app = fs.readFileSync(appFile, 'utf8');
           if (!app.includes('export const reactQuery')) {
-            app += `
-
-export const reactQuery = {
-  queryClient: {
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
-    },
-  },
-  devtool: {
-    buttonPosition: 'bottom-left',
-  },
-};
-`;
+            app += [
+              '',
+              'export const reactQuery = {',
+              '  queryClient: {',
+              '    defaultOptions: {',
+              '      queries: {',
+              '        refetchOnWindowFocus: false,',
+              '      },',
+              '    },',
+              '  },',
+              '  devtool: {',
+              "    buttonPosition: 'bottom-left',",
+              '  },',
+              '};',
+              '',
+            ].join('\n');
           }
           fs.writeFileSync(appFile, app);
           NODE
