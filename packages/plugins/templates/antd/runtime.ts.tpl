@@ -30,9 +30,9 @@ import merge from '{{{lodashPath.merge}}}'
 
 let cacheAntdConfig = null;
 
-const getAntdConfig = () => {
+const getAntdConfig = ({{#isUtooWin}}runtimePluginManager?: any{{/isUtooWin}}) => {
   if(!cacheAntdConfig){
-    cacheAntdConfig = getPluginManager().applyPlugins({
+    cacheAntdConfig = {{#isUtooWin}}(runtimePluginManager || getPluginManager()){{/isUtooWin}}{{^isUtooWin}}getPluginManager(){{/isUtooWin}}.applyPlugins({
       key: 'antd',
       type: ApplyPluginsType.modify,
       initialValue: {
@@ -53,14 +53,14 @@ const getAntdConfig = () => {
   return cacheAntdConfig;
 }
 
-function AntdProvider({ children }) {
+function AntdProvider({ children{{#isUtooWin}}, pluginManager{{/isUtooWin}} }) {
   let container = children;
 
   const [antdConfig, _setAntdConfig] = React.useState(() => {
     const {
       appConfig: _,
       ...finalConfigProvider
-    } = getAntdConfig();
+    } = getAntdConfig({{#isUtooWin}}pluginManager{{/isUtooWin}});
     {{#enableModernThemeAlgorithm}}
       finalConfigProvider.theme ??= {};
       finalConfigProvider.theme.algorithm ??= [];
@@ -155,9 +155,9 @@ function AntdProvider({ children }) {
   return container;
 }
 
-export function rootContainer(children) {
+export function rootContainer(children{{#isUtooWin}}, opts{{/isUtooWin}}) {
   return (
-    <AntdProvider>
+    <AntdProvider{{#isUtooWin}} pluginManager={opts?.plugin}{{/isUtooWin}}>
       {children}
     </AntdProvider>
   );
@@ -166,10 +166,10 @@ export function rootContainer(children) {
 {{#appConfig}}
 // The App component should be under ConfigProvider
 // plugin-locale has other ConfigProvider
-export function innerProvider(container: any) {
+export function innerProvider(container: any{{#isUtooWin}}, opts: any{{/isUtooWin}}) {
   const {
     appConfig: finalAppConfig = {},
-  } = getAntdConfig();
+  } = getAntdConfig({{#isUtooWin}}opts?.plugin{{/isUtooWin}});
   return <App {...finalAppConfig}>{container}</App>;
 }
 {{/appConfig}}
