@@ -60,8 +60,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i --no-frozen-lockfile
 
-      - name: Build ant-design-pro example targets
-        run: pnpm umi-scripts turbo build --filter ./examples/ant-design-pro... --filter ./packages/max/... --filter ./packages/umi/... --filter ./packages/plugins/...
+      - name: Build Umi targets
+        run: pnpm umi-scripts turbo build --filter ./packages/max/... --filter ./packages/umi/... --filter ./packages/plugins/...
 
       - name: Install Playwright Chromium
         run: pnpm exec playwright install chromium
