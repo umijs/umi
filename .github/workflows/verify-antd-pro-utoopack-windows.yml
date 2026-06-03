@@ -1,4 +1,4 @@
-name: Verify Ant Design Pro Utoopack Windows
+name: Verify Plugin Runtime Utoopack Windows
 
 on:
   push:
@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ant-design-pro-utoopack:
-    name: ant-design-pro utoopack on Windows
+  plugin-runtime-utoopack:
+    name: plugin runtime utoopack on Windows
     runs-on: windows-2022
     timeout-minutes: 60
     steps:
@@ -28,27 +28,36 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: pnpm
 
-      - name: Configure ant-design-pro plugin repro
+      - name: Configure plugin runtime repro
         shell: bash
         run: |
           node - <<'NODE'
           const fs = require('fs');
 
-          const pkgFile = 'examples/ant-design-pro/package.json';
+          const pkgFile = 'examples/with-react-query-v5/package.json';
           const pkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'));
           pkg.dependencies ||= {};
+          pkg.dependencies['@umijs/plugins'] ||= 'workspace:*';
+          pkg.dependencies.antd ||= '^5.27.6';
           pkg.dependencies['@tanstack/react-query'] ||= '^5.100.9';
           pkg.dependencies['@tanstack/react-query-devtools'] ||= '^5.100.9';
           fs.writeFileSync(pkgFile, `${JSON.stringify(pkg, null, 2)}\n`);
 
-          const configFile = 'examples/ant-design-pro/config/config.ts';
+          const configFile = 'examples/with-react-query-v5/.umirc.ts';
           let config = fs.readFileSync(configFile, 'utf8');
-          if (!config.includes('reactQuery:')) {
-            config = config.replace(/\n\s*utoopack:\s*\{\},\s*\n\}\);\s*$/, '\n  reactQuery: {},\n  utoopack: {},\n});\n');
-          }
+          config = `export default {
+            plugins: ['@umijs/plugins/dist/react-query', '@umijs/plugins/dist/antd'],
+            antd: {
+              appConfig: {},
+              configProvider: {},
+            },
+            reactQuery: {},
+            utoopack: {},
+          };
+          `;
           fs.writeFileSync(configFile, config);
 
-          const appFile = 'examples/ant-design-pro/src/app.tsx';
+          const appFile = 'examples/with-react-query-v5/app.ts';
           let app = fs.readFileSync(appFile, 'utf8');
           if (!app.includes('export const reactQuery')) {
             app += [
@@ -69,6 +78,32 @@ jobs:
             ].join('\n');
           }
           fs.writeFileSync(appFile, app);
+
+          fs.writeFileSync(
+            'examples/with-react-query-v5/pages/index.tsx',
+            [
+              "import { Button } from 'antd';",
+              "import { useQuery } from 'umi';",
+              "import '../style.less';",
+              '',
+              'export default function HomePage() {',
+              '  const { isFetching, data } = useQuery({',
+              "    queryKey: ['plugin-runtime'],",
+              '    queryFn: async () => ({ message: "ready" }),',
+              '  });',
+              '',
+              '  return (',
+              '    <div className="container">',
+              '      <div>',
+              '        <p className="title">UmiJS plugin runtime</p>',
+              '        <Button type="primary">{isFetching ? "Loading" : data?.message}</Button>',
+              '      </div>',
+              '    </div>',
+              '  );',
+              '}',
+              '',
+            ].join('\n'),
+          );
           NODE
 
       - name: Install dependencies
@@ -93,8 +128,8 @@ jobs:
           const server = spawn(
             process.platform === 'win32' ? 'cmd' : 'pnpm',
             process.platform === 'win32'
-              ? ['/c', 'pnpm', '--dir', 'examples/ant-design-pro', 'exec', 'max', 'dev']
-              : ['--dir', 'examples/ant-design-pro', 'exec', 'max', 'dev'],
+              ? ['/c', 'pnpm', '--dir', 'examples/with-react-query-v5', 'exec', 'umi', 'dev']
+              : ['--dir', 'examples/with-react-query-v5', 'exec', 'umi', 'dev'],
             {
               stdio: ['ignore', 'pipe', 'pipe'],
               env: {
@@ -153,7 +188,7 @@ jobs:
           const timeout = setTimeout(() => {
             stopServer();
             const details = [
-              'verification error: Timed out verifying ant-design-pro with utoopack',
+              'verification error: Timed out verifying plugin runtime with utoopack',
               '',
               'server logs:',
               ...logs,
@@ -177,7 +212,7 @@ jobs:
               page.on('pageerror', (err) => {
                 browserErrors.push(`pageerror: ${err.stack || err.message}`);
               });
-              await page.goto('http://127.0.0.1:9527/dashboard/analysis', {
+              await page.goto('http://127.0.0.1:9527/', {
                 waitUntil: 'domcontentloaded',
                 timeout: 90000,
               });
@@ -190,7 +225,7 @@ jobs:
                 ...browserErrors,
                 ...logs,
               ].filter((msg) =>
-                /Cannot read properties of null .*applyPlugins|Cannot read propert(y|ies).*applyPlugins|getAntdConfig|innerProvider|ant-design-pro.*ant-design-pro/i.test(msg),
+                /Cannot read properties of null .*applyPlugins|Cannot read propert(y|ies).*applyPlugins|getAntdConfig|innerProvider/i.test(msg),
               );
 
               writeLog([
@@ -206,7 +241,7 @@ jobs:
               }
 
               if (relevantErrors.length) {
-                throw new Error(`Found Ant Design Pro utoopack Windows errors:\n${relevantErrors.join('\n')}`);
+                throw new Error(`Found plugin runtime utoopack Windows errors:\n${relevantErrors.join('\n')}`);
               }
             } finally {
               clearTimeout(timeout);
