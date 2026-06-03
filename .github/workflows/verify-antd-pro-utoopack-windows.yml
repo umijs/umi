@@ -28,7 +28,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: pnpm
 
-      - name: Configure ant-design-pro tailwind repro
+      - name: Configure ant-design-pro plugin repro
         shell: bash
         run: |
           node - <<'NODE'
@@ -37,24 +37,37 @@ jobs:
           const pkgFile = 'examples/ant-design-pro/package.json';
           const pkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'));
           pkg.dependencies ||= {};
-          pkg.dependencies.tailwindcss ||= '^3.2.4';
+          pkg.dependencies['@tanstack/react-query'] ||= '^5.100.9';
+          pkg.dependencies['@tanstack/react-query-devtools'] ||= '^5.100.9';
           fs.writeFileSync(pkgFile, `${JSON.stringify(pkg, null, 2)}\n`);
 
           const configFile = 'examples/ant-design-pro/config/config.ts';
           let config = fs.readFileSync(configFile, 'utf8');
-          if (!config.includes('tailwindcss:')) {
-            config = config.replace(/\n\s*utoopack:\s*\{\},\s*\n\}\);\s*$/, '\n  tailwindcss: {},\n  utoopack: {},\n});\n');
+          if (!config.includes('reactQuery:')) {
+            config = config.replace(/\n\s*utoopack:\s*\{\},\s*\n\}\);\s*$/, '\n  reactQuery: {},\n  utoopack: {},\n});\n');
           }
           fs.writeFileSync(configFile, config);
 
-          fs.writeFileSync(
-            'examples/ant-design-pro/tailwind.css',
-            '@tailwind base;\n@tailwind components;\n@tailwind utilities;\n',
-          );
-          fs.writeFileSync(
-            'examples/ant-design-pro/tailwind.config.js',
-            "module.exports = { content: ['./src/**/*.{js,jsx,ts,tsx}', './config/**/*.{js,ts}'], theme: { extend: {} }, plugins: [] };\n",
-          );
+          const appFile = 'examples/ant-design-pro/src/app.tsx';
+          let app = fs.readFileSync(appFile, 'utf8');
+          if (!app.includes('export const reactQuery')) {
+            app += `
+
+export const reactQuery = {
+  queryClient: {
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  },
+  devtool: {
+    buttonPosition: 'bottom-left',
+  },
+};
+`;
+          }
+          fs.writeFileSync(appFile, app);
           NODE
 
       - name: Install dependencies
@@ -176,7 +189,7 @@ jobs:
                 ...browserErrors,
                 ...logs,
               ].filter((msg) =>
-                /Can't resolve 'tailwindcss'|tailwindcss generate failed|Desktop\\.*Desktop\\|ant-design-pro.*ant-design-pro|Cannot find module.*tailwindcss/i.test(msg),
+                /Cannot read properties of null .*applyPlugins|Cannot read propert(y|ies).*applyPlugins|getAntdConfig|innerProvider|ant-design-pro.*ant-design-pro/i.test(msg),
               );
 
               writeLog([
