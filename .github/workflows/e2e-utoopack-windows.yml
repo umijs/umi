@@ -87,6 +87,22 @@ jobs:
           throw new Error(`Timed out waiting for ${url}`);
           NODE
 
+          for i in {1..120}; do
+            if grep -Eq "utoo pack v.* ready" ../../with-use-model.log; then
+              break
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              cat ../../with-use-model.log
+              exit 1
+            fi
+            if [ "$i" -eq 120 ]; then
+              cat ../../with-use-model.log
+              echo "Timed out waiting for utoopack dev server ready log"
+              exit 1
+            fi
+            sleep 1
+          done
+
           node --input-type=module <<'NODE'
           import { chromium } from 'playwright-chromium';
           const browser = await chromium.launch();
@@ -109,6 +125,9 @@ jobs:
             if (expectedTexts.every((expected) => text.includes(expected))) {
               await browser.close();
               process.exit(0);
+            }
+            if (text.includes('Bundling...')) {
+              await page.reload({ waitUntil: 'domcontentloaded' }).catch(() => {});
             }
             await page.waitForTimeout(1000);
           }
