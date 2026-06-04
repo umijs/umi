@@ -1,0 +1,73 @@
+name: e2e-utoopack-windows
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+
+on:
+  push:
+    branches:
+      - zoomdong/e2e-utoopack-windows
+  workflow_dispatch:
+    inputs:
+      utoo-pack-version:
+        description: '@utoo/pack version to verify, leave empty to use the pinned version'
+        required: false
+        default: ''
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-utoopack-windows:
+    timeout-minutes: 60
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Setup Global Cypress-cache-folder in Windows
+        run: echo "CYPRESS_CACHE_FOLDER=${HOME}\.cache\Cypress"  >> $env:GITHUB_ENV
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Override @utoo/pack
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.utoo-pack-version != '' }}
+        shell: bash
+        env:
+          UTOO_PACK_VERSION: ${{ inputs.utoo-pack-version }}
+        run: pnpm --filter @umijs/bundler-utoopack add "@utoo/pack@${UTOO_PACK_VERSION}"
+
+      - name: Print @utoo/pack version
+        shell: bash
+        run: pnpm --filter @umijs/bundler-utoopack exec node -p "require('@utoo/pack/package.json').version"
+
+      - name: Build targets
+        run: pnpm umi-scripts turbo build
+          --filter ./examples/antd-pro-create/...
+          --filter ./packages/umi/...
+          --filter ./packages/max/...
+          --filter ./packages/bundler-utoopack/...
+
+      - name: e2e:example:antd-pro-create:dev:utoopack
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/antd-pro-create
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:dev:ci
+        env:
+          FORCE_UTOOPACK: 1
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
