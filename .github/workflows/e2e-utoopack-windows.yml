@@ -97,20 +97,25 @@ jobs:
             if (message.type() === 'error') errors.push(message.text());
           });
           await page.goto('http://127.0.0.1:9527/', { waitUntil: 'domcontentloaded' });
-          await page.waitForFunction(
-            () => document.body.innerText.includes('todos'),
-            { timeout: 60000 },
-          );
-          const text = await page.locator('body').innerText();
-          await browser.close();
-          if (errors.length) {
-            throw new Error(`Browser runtime errors:\n${errors.join('\n')}`);
-          }
-          for (const expected of ['todos', 'foo', 'bar', 'count', '123']) {
-            if (!text.includes(expected)) {
-              throw new Error(`Expected page text to include ${expected}, got:\n${text}`);
+          const expectedTexts = ['todos', 'foo', 'bar', 'count', '123'];
+          const started = Date.now();
+          let text = '';
+          while (Date.now() - started < 60000) {
+            text = await page.locator('body').innerText().catch(() => '');
+            if (errors.length) {
+              await browser.close();
+              throw new Error(`Browser runtime errors:\n${errors.join('\n')}\n\nBody:\n${text}`);
             }
+            if (expectedTexts.every((expected) => text.includes(expected))) {
+              await browser.close();
+              process.exit(0);
+            }
+            await page.waitForTimeout(1000);
           }
+          await browser.close();
+          throw new Error(
+            `Timed out waiting for page text.\nExpected: ${expectedTexts.join(', ')}\nLast body:\n${text}\nRuntime errors:\n${errors.join('\n') || '(none)'}`,
+          );
           NODE
         env:
           FORCE_UTOOPACK: 1
