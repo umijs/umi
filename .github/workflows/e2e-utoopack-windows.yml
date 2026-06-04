@@ -55,19 +55,62 @@ jobs:
 
       - name: Build targets
         run: pnpm umi-scripts turbo build
-          --filter ./examples/plugin-antd-e2e/...
+          --filter ./examples/with-use-model/...
           --filter ./packages/umi/...
           --filter ./packages/plugins/...
           --filter ./packages/bundler-utoopack/...
 
-      - name: e2e:example:plugin-antd-e2e:dev:utoopack
-        uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-          working-directory: ./examples/plugin-antd-e2e
-          install: false
-          install-command: pnpm i cypress
-          command: npm run e2e:ci
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install chromium
+
+      - name: e2e:example:with-use-model:dev:utoopack
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd examples/with-use-model
+          FORCE_UTOOPACK=1 PORT=9527 pnpm dev > ../../with-use-model.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true; cat ../../with-use-model.log' EXIT
+
+          node --input-type=module <<'NODE'
+          const url = 'http://127.0.0.1:9527/';
+          const started = Date.now();
+          const timeout = 120000;
+          const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+          while (Date.now() - started < timeout) {
+            try {
+              const res = await fetch(url);
+              if (res.ok) process.exit(0);
+            } catch {}
+            await sleep(1000);
+          }
+          throw new Error(`Timed out waiting for ${url}`);
+          NODE
+
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright-chromium';
+          const browser = await chromium.launch();
+          const page = await browser.newPage();
+          const errors = [];
+          page.on('pageerror', (error) => errors.push(error.stack || error.message));
+          page.on('console', (message) => {
+            if (message.type() === 'error') errors.push(message.text());
+          });
+          await page.goto('http://127.0.0.1:9527/', { waitUntil: 'domcontentloaded' });
+          await page.waitForFunction(
+            () => document.body.innerText.includes('todos'),
+            { timeout: 60000 },
+          );
+          const text = await page.locator('body').innerText();
+          await browser.close();
+          if (errors.length) {
+            throw new Error(`Browser runtime errors:\n${errors.join('\n')}`);
+          }
+          for (const expected of ['todos', 'foo', 'bar', 'count', '123']) {
+            if (!text.includes(expected)) {
+              throw new Error(`Expected page text to include ${expected}, got:\n${text}`);
+            }
+          }
+          NODE
         env:
           FORCE_UTOOPACK: 1
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}

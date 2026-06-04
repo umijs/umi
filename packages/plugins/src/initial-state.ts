@@ -1,5 +1,5 @@
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { getPluginModelImport, withTmpPath } from './utils/withTmpPath';
+import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
   api.describe({
@@ -38,10 +38,7 @@ export default (api: IApi) => {
       path: 'Provider.tsx',
       content: `
 import React from 'react';
-import { useModel } from '${getPluginModelImport({
-        api,
-        from: 'Provider.tsx',
-      })}';
+import { useModel } from '@@/plugin-model';
 ${
   loading
     ? `import Loading from '${loading}'`
