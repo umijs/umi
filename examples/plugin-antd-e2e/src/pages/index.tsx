@@ -1,5 +1,6 @@
 import { Button, DatePicker, Modal, Tag, version } from 'antd';
 import moment from 'moment';
+import { getIntl, getLocale } from 'umi';
 import './index.less';
 
 const fileName = 'favicon';
@@ -9,9 +10,18 @@ imprtedByVariable.then(console.log, console.log);
 const now = moment('2022-01-01') as any;
 
 export default function HomePage() {
+  const locale = getLocale();
+  const intl = getIntl(locale);
+  const localeMessage = intl.formatMessage({
+    id: 'runtime.locale.probe',
+  });
+
   return (
     <div>
       <h1>{version}</h1>
+      <div data-testid="locale-probe">
+        locale:{locale}; message:{localeMessage}
+      </div>
       <DatePicker
         allowClear
         defaultValue={now}

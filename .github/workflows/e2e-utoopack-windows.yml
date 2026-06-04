@@ -55,19 +55,19 @@ jobs:
 
       - name: Build targets
         run: pnpm umi-scripts turbo build
-          --filter ./examples/antd-pro-create/...
+          --filter ./examples/plugin-antd-e2e/...
           --filter ./packages/umi/...
-          --filter ./packages/max/...
+          --filter ./packages/plugins/...
           --filter ./packages/bundler-utoopack/...
 
-      - name: e2e:example:antd-pro-create:dev:utoopack
+      - name: e2e:example:plugin-antd-e2e:dev:utoopack
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
-          working-directory: ./examples/antd-pro-create
+          working-directory: ./examples/plugin-antd-e2e
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:dev:ci
+          command: npm run e2e:ci
         env:
           FORCE_UTOOPACK: 1
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}

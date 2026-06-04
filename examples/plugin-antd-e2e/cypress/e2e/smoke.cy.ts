@@ -17,6 +17,15 @@ describe('Basic Test', () => {
     );
   });
 
+  it('locale runtime plugin is wired', () => {
+    cy.visit('/');
+
+    cy.get('[data-testid="locale-probe"]').should(
+      'have.text',
+      'locale:en-US; message:locale runtime ok',
+    );
+  });
+
   it('static theme passed is working', () => {
     cy.visit('/');
 
