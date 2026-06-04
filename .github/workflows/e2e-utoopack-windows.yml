@@ -54,7 +54,8 @@ jobs:
         run: pnpm --filter @umijs/bundler-utoopack exec node -p "require('@utoo/pack/package.json').version"
 
       - name: Enable utoopack in with-use-model example
-        run: node -e "require('fs').writeFileSync('examples/with-use-model/.umirc.ts', 'export default {\\n  utoopack: {},\\n};\\n')"
+        run: |
+          node -e "require('fs').writeFileSync('examples/with-use-model/.umirc.ts', 'export default {\\n  utoopack: {},\\n};\\n')"
 
       - name: Build targets
         run: pnpm umi-scripts turbo build
