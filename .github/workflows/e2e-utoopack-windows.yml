@@ -58,15 +58,9 @@ jobs:
         run: |
           node <<'NODE'
           const fs = require('fs');
-          fs.writeFileSync(
-            'examples/with-use-model/.umirc.ts',
-            `export default {
-            model: {},
-            initialState: {},
-            utoopack: {},
-          };
-          `,
-          );
+          const configPath = 'examples/with-use-model/.umirc.ts';
+          const config = fs.readFileSync(configPath, 'utf8');
+          fs.writeFileSync(configPath, config.replace(/\n};\s*$/, '\n  utoopack: {},\n};\n'));
           NODE
 
       - name: Build targets
