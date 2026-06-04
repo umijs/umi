@@ -61,6 +61,8 @@ jobs:
           fs.writeFileSync(
             'examples/with-use-model/.umirc.ts',
             `export default {
+            model: {},
+            initialState: {},
             utoopack: {},
           };
           `,
