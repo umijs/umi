@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1184px" height="120px" viewBox="0 0 1184 120" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>banner</title>
+    <defs>
+        <linearGradient x1="0%" y1="49.4863952%" x2="64.328799%" y2="51.2511997%" id="linearGradient-1">
+            <stop stop-color="#4AB6FF" offset="0%"></stop>
+            <stop stop-color="#4692FF" offset="100%"></stop>
+        </linearGradient>
+        <path
+            d="M2,0 L1182,0 C1183.10457,-2.02906125e-16 1184,0.8954305 1184,2 L1184,120 L1184,120 L0,120 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 Z"
+            id="path-2"></path>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="83.2669495%" id="linearGradient-4">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#68FFFF" stop-opacity="0.16" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="91.2632575%" id="linearGradient-5">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#68FFFF" stop-opacity="0.16" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="59.9205505%" y1="0%" x2="59.9205505%" y2="58.498623%" id="linearGradient-6">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#68FFFF" stop-opacity="0.16" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="83.2669495%" id="linearGradient-7">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#68FFFF" stop-opacity="0.16" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="57.8754399%" x2="69.987794%" y2="-30.4426258%" id="linearGradient-8">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#68FFFF" stop-opacity="0.16" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="57.8754399%" x2="54.2985513%" y2="-25.4561623%" id="linearGradient-9">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#68FFFF" stop-opacity="0.16" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="FIOS一期V0.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.0-实验模版" transform="translate(-233.000000, -116.000000)">
+            <g id="背景" transform="translate(233.000000, 116.000000)">
+                <mask id="mask-3" fill="white">
+                    <use xlink:href="#path-2"></use>
+                </mask>
+                <use id="Mask" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                <path
+                    d="M993.5,-13 L1077,28.4198232 L996.837,68.338 L997,68.4198232 L913.5,110 L830,68.4198232 L910.319,28.578 L910,28.4198232 L993.5,-13 Z"
+                    id="Combined-Shape-Copy" fill="url(#linearGradient-4)" mask="url(#mask-3)"></path>
+                <polygon id="Combined-Shape-Copy" fill="url(#linearGradient-5)" mask="url(#mask-3)"
+                    points="913.489073 120.54881 913 68.4173797 830 81.0349513 830 162.13143"></polygon>
+                <polygon id="Combined-Shape-Copy" fill="url(#linearGradient-6)" mask="url(#mask-3)"
+                    points="913.474969 116.44593 913 28.4459304 1076.5 109.865754 1077 198"></polygon>
+                <path
+                    d="M498.5,-92 L582,-50.5801768 L501.837,-10.662 L502,-10.5801768 L418.5,31 L335,-10.5801768 L415.319,-50.422 L415,-50.5801768 L498.5,-92 Z"
+                    id="Combined-Shape-Copy-5" fill="url(#linearGradient-4)" mask="url(#mask-3)"></path>
+                <path
+                    d="M1262.5,7 L1346,48.4198232 L1265.837,88.338 L1266,88.4198232 L1182.5,130 L1099,88.4198232 L1179.319,48.578 L1179,48.4198232 L1262.5,7 Z"
+                    id="Combined-Shape-Copy-3" fill="url(#linearGradient-4)" opacity="0.400000006" mask="url(#mask-3)">
+                </path>
+                <path
+                    d="M78.5,7 L162,48.4198232 L81.837,88.338 L82,88.4198232 L-1.5,130 L-85,88.4198232 L-4.681,48.578 L-5,48.4198232 L78.5,7 Z"
+                    id="Combined-Shape-Copy-4" fill="url(#linearGradient-4)" mask="url(#mask-3)"></path>
+                <polygon id="Polygon" fill="url(#linearGradient-7)" opacity="0.699999988" mask="url(#mask-3)"
+                    points="763.5 45 810 68.5454013 763.5 92 717 68.5454013"></polygon>
+                <polygon id="Polygon" fill="url(#linearGradient-8)" opacity="0.699999988" mask="url(#mask-3)"
+                    points="717 119 763.5 142.545401 763.5 92.4545987 717 69"></polygon>
+                <polygon id="Polygon" fill="url(#linearGradient-9)" opacity="0.699999988" mask="url(#mask-3)"
+                    points="809.466539 119 763 142.526198 763 92.4353954 809.466539 69"></polygon>
+                <polygon id="Polygon-Copy-5" stroke="#60ACFF" opacity="0.400000006" mask="url(#mask-3)"
+                    transform="translate(763.500000, 54.500000) scale(1, -1) translate(-763.500000, -54.500000) "
+                    points="763.5 31 810 54.5454013 763.5 78 717 54.5454013"></polygon>
+                <path
+                    d="M993.5,-40 L1077,1.4198232 L996.837,41.338 L997,41.4198232 L913.5,83 L830,41.4198232 L910.319,1.578 L910,1.4198232 L993.5,-40 Z"
+                    id="Combined-Shape" stroke="#60ACFF" opacity="0.800000012" mask="url(#mask-3)"></path>
+                <path
+                    d="M609.5,58 L693,99.4198232 L612.837,139.338 L613,139.419823 L529.5,181 L446,139.419823 L526.319,99.578 L526,99.4198232 L609.5,58 Z"
+                    id="Combined-Shape-Copy-2" stroke="#60ACFF" mask="url(#mask-3)"></path>
+                <path
+                    d="M263.5,89 L347,130.419823 L266.837,170.338 L267,170.419823 L183.5,212 L100,170.419823 L180.319,130.578 L180,130.419823 L263.5,89 Z"
+                    id="Combined-Shape-Copy-6" stroke="#60ACFF" mask="url(#mask-3)"></path>
+            </g>
+        </g>
+    </g>
+</svg>
