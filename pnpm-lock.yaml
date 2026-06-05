@@ -2019,8 +2019,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: 1.4.11
-        version: 1.4.11(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
+        specifier: 1.4.12-alpha.10
+        version: 1.4.12-alpha.10(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -21156,8 +21156,8 @@ packages:
       react: 18.3.1
     dev: false
 
-  /@utoo/pack-darwin-arm64@1.4.11:
-    resolution: {integrity: sha512-xBEL22D+PbyxtiyLWisHkt3mv+nD+vSkNXR9l2ZbtE8jIPYSd8oXYjr9JYUhL7WkvT7cHZ+r60u+Y5HEqx0l2g==}
+  /@utoo/pack-darwin-arm64@1.4.12-alpha.10:
+    resolution: {integrity: sha512-90xx7H6NZEFLsC6HiHr+VU+o6ALGhOXIomf3HWTuODm4Po43rjJc4s+HDXYM6RXdd66kMGOU24EQ2qUlgoYF1A==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [darwin]
@@ -21174,8 +21174,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-x64@1.4.11:
-    resolution: {integrity: sha512-1cfoXE+GvVym9AOexD41NCX6V4ugCvAwVb5ENTWZqY+MCDCJgzdCjFRfLtfti7vpyRczbuX5FphfoDhZg3hadg==}
+  /@utoo/pack-darwin-x64@1.4.12-alpha.10:
+    resolution: {integrity: sha512-JjO4WIRYC3Dl7nJrkuqM3VE/ssYq5VbAYhGllPDJFPhT36qh+4mq0zpMWBAa3NLFAJvfCWBuk2DbmzqWDzMjLw==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [darwin]
@@ -21192,8 +21192,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-gnu@1.4.11:
-    resolution: {integrity: sha512-Er/uu9UJOPKfrGtFZwa1SQsa+o+GIkD9lytwySIrcoxBm1gtlTveDSyj7D4Dg/cY3nVmMGoQhhluN+iPW71qMw==}
+  /@utoo/pack-linux-arm64-gnu@1.4.12-alpha.10:
+    resolution: {integrity: sha512-5EpPk/p/t27PK+nGYIS7rUFzw7qi7yzgY/XSNClxxVHdboZ2tFJ5HekmTpXG/Gsf1WJ5l2DCeLX6597D1Sy3sA==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21210,8 +21210,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-musl@1.4.11:
-    resolution: {integrity: sha512-L1FBkudER1XMiYIbFXt+icNTQnERsLQx2fliPeu0NbwQ6KT0CwzAPjFjp8prWpxXmK5Z0jV3tQX+11bedRJOIA==}
+  /@utoo/pack-linux-arm64-musl@1.4.12-alpha.10:
+    resolution: {integrity: sha512-ni8jSmLfV/9iBIW1EzX/O2GOg1pKd2ZDhFfkIbHi7BaxbbHaUdcxaNgAufjUW9AvxXoGC4pja79hptVrtEQEjQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21228,8 +21228,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-gnu@1.4.11:
-    resolution: {integrity: sha512-foUYC6qmYeRZQOLw/nWlC6R9IkNvQ2tIVbKzD8stxl817JJUpS6KtFggEanUEPzYuQRuMDu96wQF5DWlCfrfLA==}
+  /@utoo/pack-linux-x64-gnu@1.4.12-alpha.10:
+    resolution: {integrity: sha512-4krY3k530mKMmk0kkmBrZpc6QSzR5IKzLCQAIa2M4DP+3v9T7tJCYoyO/ODWs/bMcClzxoOlC/HuIapLAmYMuA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21246,8 +21246,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-musl@1.4.11:
-    resolution: {integrity: sha512-XN2Ml+oPpd8uOqmXs+N8hQAS+0MHY8WEm6cWjbhmyDSKE+TEgNwz7kHSs6HjeS1I8bzwLLxFz0x1oW0qkbPF4w==}
+  /@utoo/pack-linux-x64-musl@1.4.12-alpha.10:
+    resolution: {integrity: sha512-M2gIuXbabU4YxkPWfYdlhPpaIiCaWKudLaW85SUrg2T0gjB5VMGXM6iTqfg0GDJpW2Bq6J+DTI+M+yf6V5oDzA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21264,8 +21264,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-shared@1.4.11:
-    resolution: {integrity: sha512-9e7qMoNGDiVbPxq4Mf3KAZvQbA5H0s0Tme7bMUBDm+ynAdfZMKfzGg4FEIZNHzF81LWJXxHNgUVnWxBNjnN2cg==}
+  /@utoo/pack-shared@1.4.12-alpha.10:
+    resolution: {integrity: sha512-qlGOO+Lk9TRiIDwU84L3yi9dnDBZD7I8DYaXQ0aQhZau9hrRe/nls9wI2dmUXHuTpwVgmt5LQkUMQmwOulyYtw==}
     engines: {node: '>= 20'}
     dependencies:
       '@babel/code-frame': 7.22.5
@@ -21280,8 +21280,8 @@ packages:
       picocolors: 1.1.1
     dev: true
 
-  /@utoo/pack-win32-x64-msvc@1.4.11:
-    resolution: {integrity: sha512-37evJkMY+NmRdu5Uw/cXfreUQar2mJMYdj/n10+vojecqZB4eoeZyHKFbOXi6hypJgztDc0cv2NWAwAyVin53A==}
+  /@utoo/pack-win32-x64-msvc@1.4.12-alpha.10:
+    resolution: {integrity: sha512-69knUy8i3yRrURyvKNxnrGdY/iGZGnInnqXKWP6LRwFfewhLtyKwuWIqeQ7AHJlMyv1iA3loWtMLnjjp4ZC2VA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [win32]
@@ -21298,8 +21298,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack@1.4.11(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
-    resolution: {integrity: sha512-mGon1CR6yem/aV0mjmW7/h+o9JaU3QIq86kMwH5txLex+SJ/8FdtzXLkRX8dpAteLMox0U3RVDHOkMR5J6s8Hg==}
+  /@utoo/pack@1.4.12-alpha.10(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
+    resolution: {integrity: sha512-+Dxx/G4KqsWM+ibKlP7vtniUxodPTe0qBjd8AYpY6PS6Mp/jzJ1kwe4XK7vKfCDeY8pZOpzxG8x1AZ72Kjh8SQ==}
     engines: {node: '>= 20'}
     peerDependencies:
       less: ^4.0.0
@@ -21317,7 +21317,7 @@ packages:
       '@hono/node-server': 1.19.11(hono@4.12.7)
       '@hono/node-ws': 1.3.0(@hono/node-server@1.19.11)(hono@4.12.7)
       '@swc/helpers': 0.5.15
-      '@utoo/pack-shared': 1.4.11
+      '@utoo/pack-shared': 1.4.12-alpha.10
       domparser-rs: 0.0.7
       find-up: 4.1.0
       get-port: 5.1.1
@@ -21334,13 +21334,13 @@ packages:
       send: 0.17.1
       ws: 8.18.3
     optionalDependencies:
-      '@utoo/pack-darwin-arm64': 1.4.11
-      '@utoo/pack-darwin-x64': 1.4.11
-      '@utoo/pack-linux-arm64-gnu': 1.4.11
-      '@utoo/pack-linux-arm64-musl': 1.4.11
-      '@utoo/pack-linux-x64-gnu': 1.4.11
-      '@utoo/pack-linux-x64-musl': 1.4.11
-      '@utoo/pack-win32-x64-msvc': 1.4.11
+      '@utoo/pack-darwin-arm64': 1.4.12-alpha.10
+      '@utoo/pack-darwin-x64': 1.4.12-alpha.10
+      '@utoo/pack-linux-arm64-gnu': 1.4.12-alpha.10
+      '@utoo/pack-linux-arm64-musl': 1.4.12-alpha.10
+      '@utoo/pack-linux-x64-gnu': 1.4.12-alpha.10
+      '@utoo/pack-linux-x64-musl': 1.4.12-alpha.10
+      '@utoo/pack-win32-x64-msvc': 1.4.12-alpha.10
     transitivePeerDependencies:
       - bufferutil
       - supports-color
