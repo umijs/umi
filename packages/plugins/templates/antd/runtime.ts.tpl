@@ -30,9 +30,9 @@ import merge from '{{{lodashPath.merge}}}'
 
 let cacheAntdConfig = null;
 
-const getAntdConfig = ({{#isUtooWin}}runtimePluginManager?: any{{/isUtooWin}}) => {
+const getAntdConfig = () => {
   if(!cacheAntdConfig){
-    cacheAntdConfig = {{#isUtooWin}}(runtimePluginManager || getPluginManager()){{/isUtooWin}}{{^isUtooWin}}getPluginManager(){{/isUtooWin}}.applyPlugins({
+    cacheAntdConfig = getPluginManager().applyPlugins({
       key: 'antd',
       type: ApplyPluginsType.modify,
       initialValue: {
@@ -53,14 +53,14 @@ const getAntdConfig = ({{#isUtooWin}}runtimePluginManager?: any{{/isUtooWin}}) =
   return cacheAntdConfig;
 }
 
-function AntdProvider({ children{{#isUtooWin}}, pluginManager{{/isUtooWin}} }) {
+function AntdProvider({ children }) {
   let container = children;
 
   const [antdConfig, _setAntdConfig] = React.useState(() => {
     const {
       appConfig: _,
       ...finalConfigProvider
-    } = getAntdConfig({{#isUtooWin}}pluginManager{{/isUtooWin}});
+    } = getAntdConfig();
     {{#enableModernThemeAlgorithm}}
       finalConfigProvider.theme ??= {};
       finalConfigProvider.theme.algorithm ??= [];
@@ -155,9 +155,9 @@ function AntdProvider({ children{{#isUtooWin}}, pluginManager{{/isUtooWin}} }) {
   return container;
 }
 
-export function rootContainer(children{{#isUtooWin}}, opts{{/isUtooWin}}) {
+export function rootContainer(children) {
   return (
-    <AntdProvider{{#isUtooWin}} pluginManager={opts?.plugin}{{/isUtooWin}}>
+    <AntdProvider>
       {children}
     </AntdProvider>
   );
@@ -166,10 +166,10 @@ export function rootContainer(children{{#isUtooWin}}, opts{{/isUtooWin}}) {
 {{#appConfig}}
 // The App component should be under ConfigProvider
 // plugin-locale has other ConfigProvider
-export function innerProvider(container: any{{#isUtooWin}}, opts: any{{/isUtooWin}}) {
+export function innerProvider(container: any) {
   const {
     appConfig: finalAppConfig = {},
-  } = getAntdConfig({{#isUtooWin}}opts?.plugin{{/isUtooWin}});
+  } = getAntdConfig();
   return <App {...finalAppConfig}>{container}</App>;
 }
 {{/appConfig}}
