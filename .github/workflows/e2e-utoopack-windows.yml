@@ -1,0 +1,202 @@
+name: e2e-utoopack-windows
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+
+on:
+  pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+  workflow_dispatch:
+    inputs:
+      utoo-pack-version:
+        description: '@utoo/pack version to verify, leave empty to use the pinned version'
+        required: false
+        default: ''
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-utoopack-windows:
+    timeout-minutes: 60
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Setup Global Cypress-cache-folder in Windows
+        run: echo "CYPRESS_CACHE_FOLDER=${HOME}\.cache\Cypress"  >> $env:GITHUB_ENV
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Override @utoo/pack
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.utoo-pack-version != '' }}
+        shell: bash
+        env:
+          UTOO_PACK_VERSION: ${{ inputs.utoo-pack-version }}
+        run: pnpm --filter @umijs/bundler-utoopack add "@utoo/pack@${UTOO_PACK_VERSION}"
+
+      - name: Print @utoo/pack version
+        shell: bash
+        run: pnpm --filter @umijs/bundler-utoopack exec node -p "require('@utoo/pack/package.json').version"
+
+      - name: Enable utoopack in with-use-model example
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const configPath = 'examples/with-use-model/.umirc.ts';
+          const config = fs.readFileSync(configPath, 'utf8');
+          if (!config.includes('utoopack')) {
+            fs.writeFileSync(configPath, config.replace(/\n};\s*$/, '\n  utoopack: {},\n};\n'));
+          }
+          NODE
+
+      - name: Build targets
+        run: pnpm umi-scripts turbo build
+          --filter ./packages/umi/...
+          --filter ./packages/plugins/...
+          --filter ./packages/bundler-utoopack/...
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install chromium
+
+      - name: e2e:example:with-use-model:dev:utoopack
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd examples/with-use-model
+          FORCE_UTOOPACK=1 PORT=9527 pnpm dev > ../../with-use-model.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true; cat ../../with-use-model.log' EXIT
+
+          node --input-type=module <<'NODE'
+          const url = 'http://127.0.0.1:9527/';
+          const started = Date.now();
+          const timeout = 120000;
+          const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+          while (Date.now() - started < timeout) {
+            try {
+              const res = await fetch(url);
+              if (res.ok) process.exit(0);
+            } catch {}
+            await sleep(1000);
+          }
+          throw new Error(`Timed out waiting for ${url}`);
+          NODE
+
+          for i in {1..120}; do
+            if grep -Eq "utoo pack v.* ready" ../../with-use-model.log; then
+              break
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              cat ../../with-use-model.log
+              exit 1
+            fi
+            if [ "$i" -eq 120 ]; then
+              cat ../../with-use-model.log
+              echo "Timed out waiting for utoopack dev server ready log"
+              exit 1
+            fi
+            sleep 1
+          done
+
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright-chromium';
+          async function dumpBundleDiagnostics(page, errors) {
+            const stack = errors.join('\n');
+            const locations = [
+              ...stack.matchAll(/(https?:\/\/[^\s)]+\.js):(\d+):(\d+)/g),
+            ].map((match) => ({ url: match[1], line: Number(match[2]) }));
+            const scripts = await page
+              .locator('script[src]')
+              .evaluateAll((nodes) => nodes.map((node) => node.src))
+              .catch(() => []);
+            const urls = [...new Set([...locations.map((loc) => loc.url), ...scripts])];
+
+            console.log('Loaded script urls:');
+            for (const url of urls) {
+              console.log(`- ${url}`);
+            }
+
+            for (const url of urls) {
+              let source = '';
+              try {
+                source = await fetch(url).then((res) => res.text());
+              } catch (e) {
+                console.log(`Failed to fetch ${url}: ${e.message}`);
+                continue;
+              }
+
+              const lines = source.split(/\r?\n/);
+              console.log(`\n--- Diagnostics for ${url} (${lines.length} lines) ---`);
+
+              for (const loc of locations.filter((loc) => loc.url === url).slice(0, 4)) {
+                const start = Math.max(1, loc.line - 8);
+                const end = Math.min(lines.length, loc.line + 8);
+                console.log(`Stack source around line ${loc.line}:`);
+                for (let i = start; i <= end; i += 1) {
+                  console.log(`${i}: ${lines[i - 1]}`);
+                }
+              }
+
+              let matches = 0;
+              const needles = ['plugin-model', 'useModel', 'InitialStateProvider', 'createContext'];
+              lines.forEach((line, index) => {
+                if (matches >= 80) return;
+                if (needles.some((needle) => line.includes(needle))) {
+                  console.log(`match ${index + 1}: ${line.slice(0, 500)}`);
+                  matches += 1;
+                }
+              });
+            }
+          }
+
+          const browser = await chromium.launch();
+          const page = await browser.newPage();
+          const errors = [];
+          page.on('pageerror', (error) => errors.push(error.stack || error.message));
+          page.on('console', (message) => {
+            if (message.type() === 'error') errors.push(message.text());
+          });
+          await page.goto('http://127.0.0.1:9527/', { waitUntil: 'domcontentloaded' });
+          const expectedTexts = ['todos', 'foo', 'bar', 'count', '123'];
+          const started = Date.now();
+          let text = '';
+          while (Date.now() - started < 60000) {
+            text = await page.locator('body').innerText().catch(() => '');
+            if (errors.length) {
+              await dumpBundleDiagnostics(page, errors);
+              await browser.close();
+              throw new Error(`Browser runtime errors:\n${errors.join('\n')}\n\nBody:\n${text}`);
+            }
+            if (expectedTexts.every((expected) => text.includes(expected))) {
+              await browser.close();
+              process.exit(0);
+            }
+            if (text.includes('Bundling...')) {
+              await page.reload({ waitUntil: 'domcontentloaded' }).catch(() => {});
+            }
+            await page.waitForTimeout(1000);
+          }
+          await browser.close();
+          throw new Error(
+            `Timed out waiting for page text.\nExpected: ${expectedTexts.join(', ')}\nLast body:\n${text}\nRuntime errors:\n${errors.join('\n') || '(none)'}`,
+          );
+          NODE
+        env:
+          FORCE_UTOOPACK: 1

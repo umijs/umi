@@ -6,7 +6,7 @@ import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { deepmerge, semver, winPath } from 'umi/plugin-utils';
 import { TEMPLATES_DIR } from './constants';
 import { resolveProjectDep } from './utils/resolveProjectDep';
-import { isUtooWin, withTmpPath } from './utils/withTmpPath';
+import { withTmpPath } from './utils/withTmpPath';
 
 const ANTD_TEMPLATES_DIR = join(TEMPLATES_DIR, 'antd');
 
@@ -370,7 +370,6 @@ export default (api: IApi) => {
         // 是否启用了 theme algorithm
         enableModernThemeAlgorithm,
         antdConfigSetter,
-        isUtooWin: isUtooWin(api),
         modelPluginCompat,
         lodashPath,
         /**
