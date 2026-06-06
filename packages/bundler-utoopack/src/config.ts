@@ -596,8 +596,35 @@ export function mergeExtraPostcssPlugins(
   }, postcssConfig);
 }
 
-function getUserUtoopackConfig(utoopackConfig: Record<string, any> = {}) {
-  return lodash.omit(utoopackConfig, ['babelLoader', 'root']);
+function getUserUtoopackConfig(
+  utoopackConfig: Record<string, any> = {},
+  opts: {
+    config: Record<string, any>;
+    modularizeImports: Record<string, any>;
+  },
+) {
+  const userUtoopackConfig = lodash.omit(utoopackConfig, [
+    'babelLoader',
+    'root',
+  ]);
+  const packageImports = userUtoopackConfig.optimization?.packageImports || [];
+
+  if (
+    opts.config.antd?.import &&
+    opts.modularizeImports.antd &&
+    Array.isArray(packageImports) &&
+    packageImports.includes('antd')
+  ) {
+    return {
+      ...userUtoopackConfig,
+      optimization: {
+        ...userUtoopackConfig.optimization,
+        packageImports: packageImports.filter((pkg) => pkg !== 'antd'),
+      },
+    };
+  }
+
+  return userUtoopackConfig;
 }
 
 function getDefaultPersistentCaching() {
@@ -662,7 +689,10 @@ export async function getProdUtooPackConfig(
     inlineLimit,
     mdx,
   } = opts.config;
-  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
+  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack, {
+    config: opts.config,
+    modularizeImports,
+  });
 
   utooBundlerOpts = {
     ...utooBundlerOpts,
@@ -852,7 +882,10 @@ export async function getDevUtooPackConfig(
     inlineLimit,
     mdx,
   } = opts.config;
-  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack);
+  const userUtoopackConfig = getUserUtoopackConfig(opts.config.utoopack, {
+    config: opts.config,
+    modularizeImports,
+  });
 
   utooBundlerOpts = {
     ...utooBundlerOpts,

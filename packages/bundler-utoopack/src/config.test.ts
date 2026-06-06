@@ -448,6 +448,65 @@ describe('utoopack extra babel config', () => {
     });
     expect(config.config.styles?.emotion).toBe(true);
   });
+
+  test('removes antd packageImports for legacy antd with modularized imports', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        antd: {
+          import: true,
+        },
+        extraBabelPlugins: [
+          [
+            'babel-plugin-import',
+            {
+              libraryName: 'antd',
+              libraryDirectory: 'es',
+              style: true,
+            },
+          ],
+        ],
+        utoopack: {
+          optimization: {
+            packageImports: ['antd', 'lodash'],
+          },
+        },
+      },
+    } as any);
+
+    expect(config.config.optimization?.packageImports).toEqual(['lodash']);
+  });
+
+  test('keeps antd packageImports for modern antd', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        antd: {
+          import: false,
+        },
+        extraBabelPlugins: [
+          [
+            'babel-plugin-import',
+            {
+              libraryName: 'antd',
+              libraryDirectory: 'es',
+              style: true,
+            },
+          ],
+        ],
+        utoopack: {
+          optimization: {
+            packageImports: ['antd', 'lodash'],
+          },
+        },
+      },
+    } as any);
+
+    expect(config.config.optimization?.packageImports).toEqual([
+      'antd',
+      'lodash',
+    ]);
+  });
 });
 
 describe('utoopack externals config', () => {
