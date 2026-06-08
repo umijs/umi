@@ -1,6 +1,7 @@
 import React from 'react';
 // @ts-ignore
 import { useModel } from 'umi';
+import './postcss-runtime.css';
 
 export default function HomePage() {
   const { todos } = useModel('todo');
@@ -15,6 +16,7 @@ export default function HomePage() {
       </ul>
       <h2>count</h2>
       <div>{total}</div>
+      <div className="utoopack-postcss-runtime">postcss-runtime</div>
     </div>
   );
 }
