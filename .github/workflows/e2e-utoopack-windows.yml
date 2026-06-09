@@ -174,7 +174,7 @@ jobs:
             if (message.type() === 'error') errors.push(message.text());
           });
           await page.goto('http://127.0.0.1:9527/', { waitUntil: 'domcontentloaded' });
-          const expectedTexts = ['todos', 'foo', 'bar', 'count', '123'];
+          const expectedTexts = ['todos', 'foo', 'bar', 'count', '123', 'postcss-runtime'];
           const started = Date.now();
           let text = '';
           while (Date.now() - started < 60000) {
@@ -185,6 +185,15 @@ jobs:
               throw new Error(`Browser runtime errors:\n${errors.join('\n')}\n\nBody:\n${text}`);
             }
             if (expectedTexts.every((expected) => text.includes(expected))) {
+              const postcssColor = await page
+                .locator('.utoopack-postcss-runtime')
+                .evaluate((node) => getComputedStyle(node).color)
+                .catch(() => '');
+              if (postcssColor !== 'rgb(1, 2, 3)') {
+                throw new Error(
+                  `Expected utoopack PostCSS runtime marker color rgb(1, 2, 3), got ${postcssColor || '(empty)'}`,
+                );
+              }
               await browser.close();
               process.exit(0);
             }
