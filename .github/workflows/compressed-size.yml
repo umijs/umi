@@ -2,6 +2,7 @@ name: Compressed Size
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
 on:
   pull_request:
@@ -27,10 +28,10 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
 
-      - name: Use latest LTS Node.js
+      - name: Use Node.js 24
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 24.x
           registry-url: 'https://registry.npmjs.org/'
           cache: 'pnpm'
 

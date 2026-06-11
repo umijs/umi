@@ -2,6 +2,7 @@ name: e2e-mfsu
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
 on:
   schedule:
@@ -29,7 +30,7 @@ jobs:
       matrix:
         mfsu-strategy: [normal, eager]
         os: [ubuntu-latest, windows-2022]
-        node-version: [16.x]
+        node-version: [20.x]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
