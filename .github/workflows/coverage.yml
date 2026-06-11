@@ -2,6 +2,7 @@ name: Coverage
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
 on:
   push:
@@ -30,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x, 22.x, 24.x]
+        node-version: [24.x]
 
     steps:
       - uses: actions/checkout@v3
