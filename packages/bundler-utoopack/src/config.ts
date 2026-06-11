@@ -4,10 +4,22 @@ import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
 import fs from 'fs';
-import { basename, dirname, extname, resolve as pathResolve } from 'path';
+import {
+  basename,
+  dirname,
+  extname,
+  isAbsolute,
+  join,
+  relative,
+  resolve as pathResolve,
+} from 'path';
 import type { IOpts } from './types';
 
 const DEFAULT_STATIC_PATH_PREFIX = 'static/';
+
+const UTOOPACK_OVERLAY_CLIENT_ENTRY = normalizeUtoopackPath(
+  require.resolve('../client/client/client.js'),
+);
 
 function getAssetModuleFilename(staticPathPrefix?: string) {
   const prefix =
@@ -263,6 +275,106 @@ function normalizeUtoopackEntry<T>(entry: T): T {
   return entry;
 }
 
+function getRelativeImportSpecifier(fromFile: string, toFile: string) {
+  const relativePath = normalizeUtoopackPath(
+    relative(dirname(fromFile), toFile),
+  );
+
+  return relativePath.startsWith('.') ? relativePath : `./${relativePath}`;
+}
+
+function getOverlayEntryImport(request: string, cwd: string, fromFile: string) {
+  if (request.startsWith('.') || isAbsolute(request)) {
+    return getRelativeImportSpecifier(
+      fromFile,
+      normalizeUtoopackPath(pathResolve(cwd, request)),
+    );
+  }
+
+  return request;
+}
+
+function getOverlayEntryPath(cwd: string, entryName: string) {
+  const safeEntryName = entryName.replace(/[^a-zA-Z0-9_-]/g, '_');
+  return normalizeUtoopackPath(
+    join(
+      cwd,
+      'node_modules/.cache/umi/utoopack-overlay',
+      `${safeEntryName}.js`,
+    ),
+  );
+}
+
+function writeUtoopackOverlayEntry(opts: {
+  cwd: string;
+  entryName: string;
+  imports: string[];
+}) {
+  const entryPath = getOverlayEntryPath(opts.cwd, opts.entryName);
+  const overlayClientPath = normalizeUtoopackPath(
+    join(dirname(entryPath), 'client.js'),
+  );
+  fs.mkdirSync(dirname(entryPath), { recursive: true });
+  fs.copyFileSync(UTOOPACK_OVERLAY_CLIENT_ENTRY, overlayClientPath);
+  fs.writeFileSync(
+    entryPath,
+    [
+      getRelativeImportSpecifier(entryPath, overlayClientPath),
+      ...opts.imports.map((item) =>
+        getOverlayEntryImport(item, opts.cwd, entryPath),
+      ),
+    ]
+      .map((item) => `import ${JSON.stringify(item)};`)
+      .join('\n') + '\n',
+    'utf-8',
+  );
+  return entryPath;
+}
+
+function prependUtoopackOverlayClient<T>(
+  entry: T,
+  cwd: string,
+  entryName = 'umi',
+): T {
+  if (typeof entry === 'string') {
+    return writeUtoopackOverlayEntry({
+      cwd,
+      entryName,
+      imports: [entry],
+    }) as T;
+  }
+
+  if (Array.isArray(entry)) {
+    return writeUtoopackOverlayEntry({
+      cwd,
+      entryName,
+      imports: entry as string[],
+    }) as T;
+  }
+
+  if (entry && typeof entry === 'object') {
+    if ('import' in entry) {
+      return {
+        ...entry,
+        import: prependUtoopackOverlayClient(
+          (entry as { import: string | string[] }).import,
+          cwd,
+          entryName,
+        ),
+      } as T;
+    }
+
+    return Object.fromEntries(
+      Object.entries(entry).map(([key, value]) => [
+        key,
+        prependUtoopackOverlayClient(value, cwd, key),
+      ]),
+    ) as T;
+  }
+
+  return entry;
+}
+
 function normalizeUtoopackOpts<
   T extends { cwd: string; rootDir: string; entry: any },
 >(opts: T): T {
@@ -275,14 +387,18 @@ function normalizeUtoopackOpts<
 }
 
 function getNormalizedAlias(
-  alias: Record<string, string> | undefined,
+  alias: Record<string, string | false | undefined> | undefined,
   rootDir: string,
 ): Record<string, string> {
   const newAlias = Object.fromEntries(
-    Object.entries(alias || {}).map(([key, value]) => [
-      normalizeUtoopackPath(key),
-      normalizeUtoopackPath(value),
-    ]),
+    Object.entries(alias || {})
+      .filter((entry): entry is [string, string] => {
+        return typeof entry[1] === 'string';
+      })
+      .map(([key, value]) => [
+        normalizeUtoopackPath(key),
+        normalizeUtoopackPath(value),
+      ]),
   );
   const normalizedRootDir = normalizeUtoopackPath(rootDir);
 
@@ -698,7 +814,7 @@ export async function getProdUtooPackConfig(
     ...utooBundlerOpts,
     tracing: false,
     config: lodash.merge(
-      lodash.omit(utooBundlerOpts.config, ['define']),
+      lodash.omit(utooBundlerOpts.config, ['define', 'resolve']),
       {
         output: {
           clean: opts.clean,
@@ -713,6 +829,7 @@ export async function getProdUtooPackConfig(
           concatenateModules: true,
         },
         resolve: {
+          ...(utooBundlerOpts.config.resolve || {}),
           alias: getNormalizedAlias(
             utooBundlerOpts.config.resolve?.alias as Record<string, string>,
             opts.rootDir,
@@ -851,6 +968,10 @@ export async function getDevUtooPackConfig(
     hmr: false,
     analyze: process.env.ANALYZE,
   });
+  webpackConfig = {
+    ...webpackConfig,
+    entry: prependUtoopackOverlayClient(webpackConfig.entry, opts.cwd),
+  };
 
   let utooBundlerOpts = compatOptionsFromWebpack({
     ...lodash.omit(webpackConfig, ['target', 'module', 'externals']),
@@ -898,7 +1019,7 @@ export async function getDevUtooPackConfig(
         }
       : {}),
     config: lodash.merge(
-      lodash.omit(utooBundlerOpts.config, ['define']),
+      lodash.omit(utooBundlerOpts.config, ['define', 'resolve']),
       {
         output: {
           clean: opts.clean === undefined ? true : opts.clean,
@@ -909,6 +1030,7 @@ export async function getDevUtooPackConfig(
             : { copy: ['public'].concat(copy) }),
         },
         resolve: {
+          ...(utooBundlerOpts.config.resolve || {}),
           alias: getNormalizedAlias(
             utooBundlerOpts.config.resolve?.alias as Record<string, string>,
             opts.rootDir,
