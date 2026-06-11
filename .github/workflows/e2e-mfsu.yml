@@ -30,7 +30,7 @@ jobs:
       matrix:
         mfsu-strategy: [normal, eager]
         os: [ubuntu-latest, windows-2022]
-        node-version: [24.x]
+        node-version: [20.x]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
