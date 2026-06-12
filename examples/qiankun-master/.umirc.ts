@@ -14,6 +14,10 @@ export default {
           name: 'slave-mf',
           entry: 'http://127.0.0.1:8000', // your slave app address
         },
+        {
+          name: 'utoopack-slave',
+          entry: 'http://127.0.0.1:7100', // utoopack slave app address
+        },
       ],
     },
     slave: {},
@@ -30,6 +34,10 @@ export default {
     {
       path: '/slave-mf/*',
       microApp: 'slave-mf',
+    },
+    {
+      path: '/utoopack-slave/*',
+      microApp: 'utoopack-slave',
     },
     {
       path: '/animal',

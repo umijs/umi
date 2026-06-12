@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "build": "max build",
-    "dev": "max dev",
-    "preview": "umi preview",
+    "dev": "cross-env PORT=7100 max dev",
+    "preview": "max preview --port 7100",
     "setup": "umi setup",
     "start": "npm run dev"
   },
@@ -12,5 +12,8 @@
     "@umijs/max": "workspace:*",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

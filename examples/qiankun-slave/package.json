@@ -11,8 +11,8 @@
     "preview": "cross-env PORT=5555 max preview --port 5555",
     "setup": "max setup",
     "start": "npm run dev",
-    "start:all-qiankun:dev": "pnpm umi-scripts turbo --filter @example/qiankun-* --filter @example/mf-* dev",
-    "start:all-qiankun:preview": "pnpm umi-scripts turbo --filter @example/qiankun-* --filter @example/mf-* preview",
+    "start:all-qiankun:dev": "pnpm umi-scripts turbo --filter @example/qiankun-* --filter @example/mf-* --filter @example/with-utoopack-qiankun-slave dev",
+    "start:all-qiankun:preview": "pnpm umi-scripts turbo --filter @example/qiankun-* --filter @example/mf-* --filter @example/with-utoopack-qiankun-slave preview",
     "test:ci": "pnpm umi-scripts cypress",
     "test:local": "cypress open"
   },

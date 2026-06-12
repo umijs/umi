@@ -15,6 +15,9 @@ export default function HomePage() {
         <Link to="/nav">
           <button>go-match-slave</button>
         </Link>
+        <Link to="/utoopack-slave/home">
+          <button>go-utoopack-slave</button>
+        </Link>
       </div>
     </div>
   );

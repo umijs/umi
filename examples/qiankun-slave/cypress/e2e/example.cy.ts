@@ -29,6 +29,13 @@ describe('QianKun Plugin', () => {
     cy.contains('remote hooks counter11');
   });
 
+  it('can load utoopack slave', () => {
+    cy.visit('/home');
+    cy.get('a[href*="/utoopack-slave/home"]').click();
+
+    cy.contains('Utoopack with Qiankun Slave');
+  });
+
   describe('manual loaded app', function () {
     it('be loaded', () => {
       cy.visit('/manual-slave/home');
