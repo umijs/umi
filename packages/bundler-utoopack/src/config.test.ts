@@ -20,6 +20,8 @@ jest.mock('@utoo/pack', () => ({
 }));
 
 import { getConfig } from '@umijs/bundler-webpack';
+import fs from 'fs';
+import path from 'path';
 import {
   getDevUtooPackConfig,
   getProdUtooPackConfig,
@@ -67,6 +69,14 @@ const baseOpts = {
 beforeEach(() => {
   mockedGetConfig.mockClear();
   mockedGetConfig.mockResolvedValue(createWebpackConfig());
+});
+
+afterEach(() => {
+  fs.rmSync(path.join(process.cwd(), 'C:'), { recursive: true, force: true });
+  fs.rmSync(path.join(process.cwd(), 'node_modules/.cache/umi'), {
+    recursive: true,
+    force: true,
+  });
 });
 
 describe('utoopack mdx config', () => {
@@ -245,10 +255,102 @@ describe('utoopack alias config', () => {
         },
       }),
     );
-    expect(config.config.entry).toEqual({
-      umi: 'C:/Users/demo/app/src/.umi/umi.ts',
-    });
+    expect(config.config.entry.umi).toEqual(
+      expect.stringContaining('/utoopack-overlay/umi.js'),
+    );
     expect(JSON.stringify(config.config.entry)).not.toContain('\\');
+  });
+
+  test('drops non-string webpack aliases before passing them to utoopack', async () => {
+    mockedGetConfig.mockResolvedValueOnce(
+      createWebpackConfig(undefined, {
+        '@': '/project/src',
+        react: false as any,
+        lodash: undefined as any,
+      }),
+    );
+
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      rootDir: '/project',
+      config: {},
+    } as any);
+
+    expect(config.config.resolve?.alias).toMatchObject({
+      '@': '/project/src',
+      '@/*': '/project/src/*',
+    });
+    expect(config.config.resolve?.alias).not.toHaveProperty('react');
+    expect(config.config.resolve?.alias).not.toHaveProperty('lodash');
+  });
+
+  test('prepends utoopack error overlay client to development entries', async () => {
+    mockedGetConfig.mockImplementationOnce(async (opts) =>
+      createWebpackConfig(undefined, {}, opts.entry),
+    );
+
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      entry: {
+        umi: './src/.umi/umi.ts',
+      },
+      config: {},
+    } as any);
+
+    const overlayEntry = config.config.entry.umi;
+    const overlayEntryContent = fs.readFileSync(overlayEntry, 'utf-8');
+
+    expect(overlayEntry).toEqual(
+      expect.stringContaining('/utoopack-overlay/umi.js'),
+    );
+    expect(overlayEntryContent).toContain('import "./client.js";');
+    expect(overlayEntryContent).toContain('src/.umi/umi.ts');
+  });
+
+  test('uses separate utoopack error overlay wrapper files for multiple development entries', async () => {
+    mockedGetConfig.mockImplementationOnce(async (opts) =>
+      createWebpackConfig(undefined, {}, opts.entry),
+    );
+
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      entry: {
+        foo: './src/foo.ts',
+        bar: './src/bar.ts',
+      },
+      config: {},
+    } as any);
+
+    expect(config.config.entry.foo).toEqual(
+      expect.stringContaining('/utoopack-overlay/foo.js'),
+    );
+    expect(config.config.entry.bar).toEqual(
+      expect.stringContaining('/utoopack-overlay/bar.js'),
+    );
+    expect(fs.readFileSync(config.config.entry.foo, 'utf-8')).toContain(
+      'src/foo.ts',
+    );
+    expect(fs.readFileSync(config.config.entry.bar, 'utf-8')).toContain(
+      'src/bar.ts',
+    );
+  });
+
+  test('does not prepend utoopack error overlay client to production entries', async () => {
+    mockedGetConfig.mockImplementationOnce(async (opts) =>
+      createWebpackConfig(undefined, {}, opts.entry),
+    );
+
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      entry: {
+        umi: './src/.umi/umi.ts',
+      },
+      config: {},
+    } as any);
+
+    expect(config.config.entry).toEqual({
+      umi: './src/.umi/umi.ts',
+    });
   });
 });
 
