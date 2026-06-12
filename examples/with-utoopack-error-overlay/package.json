@@ -1,0 +1,16 @@
+{
+  "name": "@example/with-utoopack-error-overlay",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "fix:error": "node ./scripts/compile-error.mjs fix",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev",
+    "trigger:error": "node ./scripts/compile-error.mjs trigger"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  }
+}
