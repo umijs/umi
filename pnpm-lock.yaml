@@ -2617,9 +2617,6 @@ importers:
       '@umijs/did-you-know':
         specifier: ^1.0.4
         version: link:../../did-you-know
-      '@umijs/es-module-parser':
-        specifier: 0.0.7
-        version: 0.0.7
       '@umijs/history':
         specifier: 5.3.1
         version: 5.3.1
@@ -20239,6 +20236,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-darwin-x64@0.0.7:
@@ -20247,6 +20245,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-linux-arm-gnueabihf@0.0.7:
@@ -20255,6 +20254,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-linux-arm64-gnu@0.0.7:
@@ -20263,6 +20263,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-linux-arm64-musl@0.0.7:
@@ -20271,6 +20272,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-linux-x64-gnu@0.0.7:
@@ -20279,6 +20281,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-linux-x64-musl@0.0.7:
@@ -20287,6 +20290,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-win32-arm64-msvc@0.0.7:
@@ -20295,6 +20299,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser-win32-x64-msvc@0.0.7:
@@ -20303,6 +20308,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@umijs/es-module-parser@0.0.7:
@@ -20318,6 +20324,7 @@ packages:
       '@umijs/es-module-parser-linux-x64-musl': 0.0.7
       '@umijs/es-module-parser-win32-arm64-msvc': 0.0.7
       '@umijs/es-module-parser-win32-x64-msvc': 0.0.7
+    dev: true
 
   /@umijs/fabric@2.14.0:
     resolution: {integrity: sha512-tiqKWYFwK9dgrdC8U1IjdIqeIv6W3NhROJHb07u1D72KWpGoN2U7/gVRtyMq7psBSK4EwHyXL6sFtIGUibs2ng==}

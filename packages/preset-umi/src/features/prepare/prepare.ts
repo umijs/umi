@@ -1,58 +1,20 @@
 import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
-import type { Declaration } from '@umijs/es-module-parser';
-import { aliasUtils, importLazy, isJavaScriptFile, logger } from '@umijs/utils';
+import { aliasUtils, logger } from '@umijs/utils';
 import path from 'path';
 import { addUnWatch } from '../../commands/dev/watch';
 import { IApi, IOnGenerateFiles } from '../../types';
 
-const parser: typeof import('@umijs/es-module-parser') = importLazy(
-  require.resolve('@umijs/es-module-parser'),
-);
-
 export default (api: IApi) => {
-  function updateAppdata(prepareData: {
-    buildResult: BuildResult;
-    fileImports?: Record<string, Declaration[]>;
-  }) {
+  function updateAppdata(prepareData: { buildResult: BuildResult }) {
     const buildResult: BuildResult = {
       ...prepareData.buildResult,
       // we don't need output file in prepare stage
       outputFiles: undefined,
     };
 
-    const nextFileImports =
-      prepareData.fileImports ?? api.appData.prepare?.fileImports;
     api.appData.prepare = {
       buildResult,
-      fileImports: nextFileImports,
     };
-  }
-
-  async function parseProjectImportSpecifiers(br: BuildResult) {
-    const files = (Object.keys(br.metafile!.inputs) || []).filter(
-      isJavaScriptFile,
-    );
-    if (files.length === 0) {
-      return {};
-    }
-    try {
-      const start = Date.now();
-      const fileImports = await parser.parseFiles(
-        files.map((f) => path.join(api.paths.cwd, f)),
-      );
-
-      api.telemetry.record({
-        name: 'parse',
-        payload: { duration: Date.now() - start },
-      });
-      return fileImports;
-    } catch (e) {
-      api.telemetry.record({
-        name: 'parse:error',
-        payload: {},
-      });
-      return undefined;
-    }
   }
 
   api.register({
@@ -88,15 +50,13 @@ export default (api: IApi) => {
         entryPoints,
         watch: watch && {
           async onRebuildSuccess({ result }) {
-            const fileImports = await parseProjectImportSpecifiers(result);
-            updateAppdata({ buildResult: result, fileImports });
+            updateAppdata({ buildResult: result });
 
             await api.applyPlugins({
               key: 'onPrepareBuildSuccess',
               args: {
                 isWatch: true,
                 result,
-                fileImports,
               },
             });
           },
@@ -114,13 +74,11 @@ export default (api: IApi) => {
         });
       }
 
-      const fileImports = await parseProjectImportSpecifiers(buildResult);
-      updateAppdata({ buildResult, fileImports });
+      updateAppdata({ buildResult });
       await api.applyPlugins({
         key: 'onPrepareBuildSuccess',
         args: {
           result: buildResult,
-          fileImports,
         },
       });
     },
