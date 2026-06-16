@@ -3,9 +3,9 @@ export default {
     esbuild: true,
   },
   manifest: {},
-  styles: ['https://unpkg.com/@master/normal.css'],
+  styles: ['https://cdn.jsdelivr.net/npm/@master/normal.css'],
   scripts: [
-    'https://unpkg.com/@master/style',
-    'https://unpkg.com/@master/styles',
+    'https://cdn.jsdelivr.net/npm/@master/style',
+    'https://cdn.jsdelivr.net/npm/@master/styles',
   ],
 };
