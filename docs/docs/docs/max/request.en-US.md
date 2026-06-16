@@ -9,7 +9,7 @@ translated_at: '2024-03-17T08:46:03.932Z'
 `@umijs/max` has built-in plugin solution. It offers a unified network request and error handling solution based on [axios](https://axios-http.com/) and ahooks' `useRequest` from [ahooks](https://ahooks-v2.surge.sh).
 
 ```js
-import { request, useRequest } from 'umi';
+import { request, useRequest } from ''@umijs/max'';
 
 request;
 useRequest;
@@ -44,7 +44,7 @@ Then useRequest can directly consume the `data`, which would be 123, instead of 
 In `src/app.ts`, you can customize the request settings for your project by configuring the request item.
 
 ```ts
-import type { RequestConfig } from 'umi';
+import type { RequestConfig } from ''@umijs/max'';
 
 export const request: RequestConfig = {
   timeout: 1000,
@@ -141,7 +141,7 @@ const request: RequestConfig = {
 ### useRequest
 The plugin has built-in [@ahooksjs/useRequest](https://ahooks-v2.js.org/hooks/async), allowing you to consume data simply and conveniently within components. The example is as follows:
 ```typescript
-import { useRequest } from 'umi';
+import { useRequest } from ''@umijs/max'';
 
 export default function Page() {
   const { data, error, loading } = useRequest(() => {
@@ -190,7 +190,7 @@ request returns the data from your backend by default, if you wish to receive th
 ### RequestConfig
 This is an interface definition that can help you better configure runtime settings.
 ```typescript
-import type { RequestConfig } from 'umi';
+import type { RequestConfig } from ''@umijs/max'';
 
 export const request:RequestConfig = {};
 ```
@@ -296,7 +296,7 @@ async function middleware(ctx, next) {
 
 ```tsx
 // Umi@3
-import { useRequest } from 'umi';
+import { useRequest } from ''@umijs/max'';
 // a: [1,2,3] => a=1&a=2&a=3
 
 // Umi@4

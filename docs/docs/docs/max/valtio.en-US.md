@@ -25,7 +25,7 @@ export default {
 Extremely simple.
 
 ```ts
-import { proxy, useSnapshot } from 'umi';
+import { proxy, useSnapshot } from ''@umijs/max'';
 
 // 1. Define data
 const state = proxy({ count: 0 });
@@ -41,7 +41,7 @@ state.count += 1;
 Naturally supported.
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from ''@umijs/max'';
 
 const state = proxy({ count: 0 });
 state.count;
@@ -51,7 +51,7 @@ state.count += 1;
 ### Data Deduction
 
 ```ts
-import { proxyWithComputed } from 'umi';
+import { proxyWithComputed } from ''@umijs/max'';
 
 const state = proxyWithComputed({
   count: 0,
@@ -65,7 +65,7 @@ const state = proxyWithComputed({
 Two ways to use, can be combined with state or separated.
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from ''@umijs/max'';
 
 // Method one: Combine
 const state = proxy({
@@ -93,7 +93,7 @@ const actions = {
 ### Splitting and Combining Data Structures
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from ''@umijs/max'';
 
 // For example, as follows defined
 // state.foo and state.bar are both proxies, can be split and used
@@ -113,7 +113,7 @@ const state = proxy({ foo, bar });
 If the content of props is unrelated to state, it can be left unhandled; if related, wrap it with context as follows, while synchronizing props to state data.
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from ''@umijs/max'';
 
 // 1. createContext
 const MyContext = createContext();
@@ -127,7 +127,7 @@ useContext(MyContext);
 ### Redux DevTools Support
 
 ```ts
-import { proxy, proxyWithDevtools } from 'umi';
+import { proxy, proxyWithDevtools } from ''@umijs/max'';
 
 const state = proxy({ count: 0 });
 proxyWithDevtools(state, { name: 'count', enabled: true });
@@ -136,7 +136,7 @@ proxyWithDevtools(state, { name: 'count', enabled: true });
 ### Redo & Undo Support
 
 ```ts
-import { proxyWithHistory } from 'umi';
+import { proxyWithHistory } from ''@umijs/max'';
 
 const state = proxyWithHistory({
   count: 0,
@@ -153,7 +153,7 @@ state.history;
 To be implemented.
 
 ```ts
-import { proxyWithPersistent } from 'umi';
+import { proxyWithPersistent } from ''@umijs/max'';
 
 const state = proxyWithPersistent({
   count: 0,
@@ -185,7 +185,7 @@ export function proxyWithPersist<V>(val: V, opts: {
 1) Requires React 16.8 or above, 2) Does not support IE 11, 3) map and set cannot be used directly, need to use the valtio provided proxyMap and proxySet instead.
 
 ```ts
-import { proxy, proxyMap } from 'umi';
+import { proxy, proxyMap } from ''@umijs/max'';
 
 const state = proxy({
   todos: proxyMap<number, Todo>([[1, {id:1,text:'Learn Umi'}]]),
