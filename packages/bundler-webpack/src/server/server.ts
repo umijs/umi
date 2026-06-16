@@ -45,7 +45,10 @@ export async function createServer(opts: IOpts): Promise<any> {
   );
 
   // See https://github.com/umijs/umi/issues/12144
-  if (process.env.UMI_DEV_SERVER_COMPRESS !== 'none') {
+  if (
+    process.env.UMI_DEV_SERVER_COMPRESS !== 'none' &&
+    process.env.DUMI_DEV_SERVER_COMPRESS !== 'none'
+  ) {
     app.use(require('@umijs/bundler-webpack/compiled/compression')());
   }
 
