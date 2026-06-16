@@ -3,7 +3,7 @@ import React from 'react';
 const badges = [
   'Tailwind CSS v4',
   '@umijs/plugins',
-  '@tailwindcss/cli',
+  'bundled loader',
   'tailwindcss: {}',
 ];
 
@@ -16,7 +16,7 @@ const cards = [
   {
     title: 'Tailwind CSS v4 ready',
     description:
-      'Tailwind CSS v4 runs through the plugin with @tailwindcss/cli, so the example no longer needs manual PostCSS wiring.',
+      'Tailwind CSS v4 runs through the plugin-managed loader, so the example only needs the tailwindcss package.',
   },
   {
     title: 'CSS-first authoring',
@@ -41,7 +41,7 @@ export default function HomePage() {
         <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
           This example shows the recommended Umi setup for Tailwind CSS v4:
           enable the Tailwind plugin in config, keep a small tailwind.css entry,
-          and let the plugin drive the v4 CLI integration for you.
+          and let the plugin provide the v4 loader integration for you.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -93,10 +93,8 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="rounded-2xl bg-slate-900/60 px-4 py-3 ring-1 ring-white/10">
-                <p className="text-slate-400">CLI package</p>
-                <p className="mt-1 font-semibold text-white">
-                  @tailwindcss/cli
-                </p>
+                <p className="text-slate-400">Loader</p>
+                <p className="mt-1 font-semibold text-white">plugin bundled</p>
               </div>
               <div className="rounded-2xl bg-slate-900/60 px-4 py-3 ring-1 ring-white/10">
                 <p className="text-slate-400">Tailwind package</p>
