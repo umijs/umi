@@ -13,8 +13,8 @@ Configuring activation. Requires `src/access.ts` to provide permission configura
 ```ts
 export default {
   access: {},
-  // access plugin depends on the initial State so it needs to be enabled at the same time
-  initialState: {},
+  // access plugin depends on the plugin-model so it needs to be enabled at the same time
+  model: {},
 };
 ```
 
