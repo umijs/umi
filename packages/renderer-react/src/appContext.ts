@@ -52,7 +52,7 @@ type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
 // @deprecated  Please use `useLoaderData` instead.
 export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   const routes = useSelectedRoutes();
-  const { serverLoaderData, basename } = useAppData();
+  const { serverLoaderData, basename, pluginManager } = useAppData();
   const [data, setData] = React.useState(() => {
     const ret = {} as Awaited<ReturnType<T>>;
     let has = false;
@@ -78,6 +78,7 @@ export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
                 fetchServerLoader({
                   id: route.route.id,
                   basename,
+                  pluginManager,
                   cb: resolve,
                 });
               }),

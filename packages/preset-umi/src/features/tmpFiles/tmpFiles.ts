@@ -485,6 +485,7 @@ if (process.env.NODE_ENV === 'development') {
         'outerProvider',
         'render',
         'onRouteChange',
+        'modifyServerLoaderRequest',
       ],
     });
 
