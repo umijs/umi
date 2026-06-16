@@ -107,7 +107,7 @@ export async function getMarkup(
       !hasAttr('name', 'viewport') && {
         name: 'viewport',
         content:
-          'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0',
+          'width=device-width, initial-scale=1.0, minimum-scale=1.0',
       },
       !hasAttr('http-equiv', 'X-UA-Compatible') && {
         'http-equiv': 'X-UA-Compatible',
