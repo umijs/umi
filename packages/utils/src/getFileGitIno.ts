@@ -63,11 +63,18 @@ export const getFileCreateInfo = async (
     const info = await promisifySpawn(
       'git',
       // time|name|email|since
-      ['log', '--reverse', '-1000000', "--pretty='%ad|%an|%ae|%ar'", filePath],
+      [
+        'log',
+        '--reverse',
+        '-1000000',
+        '--pretty=%ad|%an|%ae|%ar',
+        '--',
+        filePath,
+      ],
       {
         cwd: gitDirPath,
         onlyOnce: true,
-        shell: true,
+        shell: false,
       },
     );
     if (info.length && info[0]) {
@@ -99,11 +106,11 @@ export const getFileLastModifyInfo = async (
   try {
     const info = await promisifySpawn(
       'git',
-      ['log', '-1', "--pretty='%ad|%an|%ae|%ar'", filePath],
+      ['log', '-1', '--pretty=%ad|%an|%ae|%ar', '--', filePath],
       {
         cwd: gitDirPath,
         onlyOnce: true,
-        shell: true,
+        shell: false,
       },
     );
 
