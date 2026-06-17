@@ -36,11 +36,7 @@ info  - Write tailwind.css
 
 ## Tailwind CSS v4
 
-当项目使用 webpack 或 utoopack，并启用 Tailwind CSS v4 时，插件会使用内置的 `@tailwindcss/webpack` loader 处理项目根目录的 `tailwind.css`，不再启动 Tailwind CLI 子进程。项目只需要安装 Tailwind CSS。
-
-```bash
-npm i tailwindcss
-```
+当项目使用 `utoopack` 或者 `webpack`，并启用 `Tailwind CSS v4` 时，插件会使用内置的 `@tailwindcss/webpack` `loader` 处理项目根目录的 `tailwind.css`，你只需要保证依赖的 `tailwindcss` 版本大于等于 v4 即可。
 
 `tailwind.css` 可以使用 Tailwind CSS v4 的 CSS-first 写法。
 

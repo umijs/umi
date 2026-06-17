@@ -4,7 +4,7 @@ import { version } from '../lerna.json';
 const OG_HOME = 'https://umijs.org/images/og-home.png';
 
 const UMI_DESCRIPTION =
-  'Umi是可扩展的企业级前端应用框架。Umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。然后配以生命周期完善的插件体系，覆盖从源码到构建产物的每个生命周期，支持各种功能扩展和业务需求。';
+  'Umi是可扩展的企业级前端应用框架。Umi 以路由为基础，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。然后配以生命周期完善的插件体系，覆盖从源码到构建产物的每个生命周期，支持各种功能扩展和业务需求。';
 
 export default defineConfig({
   outputPath: '../dist',
@@ -102,7 +102,11 @@ export default defineConfig({
   theme: {
     '@s-sidebar-width': '216px',
   },
-  // ssr: {},
-  ...(process.env.NODE_ENV === 'development' ? {} : { ssr: {} }),
+  utoopack: {
+    pluginRuntimeStrategy: 'childProcesses',
+  },
+  ...(process.env.NODE_ENV === 'development'
+    ? {}
+    : { ssr: { builder: 'utoopack' } }),
   sitemap: { hostname: 'https://umijs.org/' },
 });
