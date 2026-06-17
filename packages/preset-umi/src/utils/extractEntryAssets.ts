@@ -4,6 +4,39 @@ export type EntryAssets = {
   [key: string]: string[];
 };
 
+function getAssetName(asset: any) {
+  return typeof asset === 'string' ? asset : asset?.name;
+}
+
+export function extractEntryPointFilesFromStats(
+  stats: any,
+  entryName = 'umi',
+): string[] {
+  const statsJson = stats?.toJson ? stats.toJson() : stats || {};
+  const entrypoint = statsJson.entrypoints?.[entryName];
+  const files = new Set<string>();
+
+  for (const asset of entrypoint?.assets || []) {
+    const name = getAssetName(asset);
+    if (name) {
+      files.add(name);
+    }
+  }
+
+  for (const chunkId of entrypoint?.chunks || []) {
+    const chunk = (statsJson.chunks || []).find((item: any) => {
+      return item?.id === chunkId || item?.names?.includes?.(chunkId);
+    });
+    for (const file of chunk?.files || []) {
+      if (file) {
+        files.add(file);
+      }
+    }
+  }
+
+  return Array.from(files);
+}
+
 export function extractEntryAssets(entryPointFiles: string[]): EntryAssets {
   const assets: {
     js: string[];

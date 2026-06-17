@@ -41,7 +41,7 @@ test('generateBuildManifestFromStats adds umi.css alias for utoopack css assets'
       readFileSync(join(absOutputPath, 'build-manifest.json'), 'utf-8'),
     );
 
-    expect(manifest.assets['umi.css']).toEqual('/src_pages_c700bf89.css');
+    expect(manifest.assets['umi.css']).toEqual(['/src_pages_c700bf89.css']);
   } finally {
     rmSync(cwd, { recursive: true, force: true });
   }
@@ -67,7 +67,10 @@ test('generateBuildManifestFromStats prefers umi css assets', () => {
       readFileSync(join(absOutputPath, 'build-manifest.json'), 'utf-8'),
     );
 
-    expect(manifest.assets['umi.css']).toEqual('/umi.abc123ef.css');
+    expect(manifest.assets['umi.css']).toEqual([
+      '/umi.abc123ef.css',
+      '/fallback.css',
+    ]);
   } finally {
     rmSync(cwd, { recursive: true, force: true });
   }
