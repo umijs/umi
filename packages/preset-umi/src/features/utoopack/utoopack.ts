@@ -4,6 +4,7 @@ import { IApi, webpack } from '../../types';
 import {
   EntryAssets,
   extractEntryAssets,
+  extractEntryPointFilesFromStats,
 } from '../../utils/extractEntryAssets';
 
 function cleanVersionRange(version?: string) {
@@ -110,17 +111,9 @@ export default (api: IApi) => {
   });
 
   api.onDevCompileDone(({ stats }: { stats: webpack.StatsCompilation }) => {
-    const entryPointFiles = new Set<string>();
-
-    for (const chunk of stats.entrypoints?.['umi']?.chunks || []) {
-      const files =
-        (stats?.chunks || []).find((c) => c?.id === chunk)?.files || [];
-      for (const file of files) {
-        entryPointFiles.add(file);
-      }
-    }
-
-    const entryAssets = extractEntryAssets(Array.from(entryPointFiles));
+    const entryAssets = extractEntryAssets(
+      extractEntryPointFilesFromStats(stats),
+    );
     Object.entries(entryAssets).forEach(([ext, files]) => {
       if (!Array.isArray(assets[ext])) {
         assets[ext] = [];
@@ -130,17 +123,9 @@ export default (api: IApi) => {
   });
 
   api.onBuildComplete(({ stats }: { stats: webpack.StatsCompilation }) => {
-    const entryPointFiles = new Set<string>();
-
-    for (const chunk of stats.entrypoints?.['umi']?.chunks || []) {
-      const files =
-        (stats?.chunks || []).find((c) => c?.id === chunk)?.files || [];
-      for (const file of files) {
-        entryPointFiles.add(file);
-      }
-    }
-
-    const entryAssets = extractEntryAssets(Array.from(entryPointFiles));
+    const entryAssets = extractEntryAssets(
+      extractEntryPointFilesFromStats(stats),
+    );
     Object.entries(entryAssets).forEach(([ext, files]) => {
       if (!Array.isArray(assets[ext])) {
         assets[ext] = [];

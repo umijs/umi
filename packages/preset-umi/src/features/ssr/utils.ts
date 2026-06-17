@@ -126,14 +126,15 @@ function isUtoopackSingleCss(file: string) {
   return /\.single\.css(?:[?#].*)?$/.test(file);
 }
 
-function findClientCssFile(files: string[]) {
+function findClientCssFiles(files: string[]) {
   const cssFiles = files.filter(isCssFile);
 
-  return (
-    cssFiles.find(isUmiCssFile) ||
-    cssFiles.find((file) => !isUtoopackSingleCss(file)) ||
-    cssFiles[0]
-  );
+  return Array.from(
+    new Set([
+      ...cssFiles.filter(isUmiCssFile),
+      ...cssFiles.filter((file) => !isUmiCssFile(file)),
+    ]),
+  ).filter((file) => !isUtoopackSingleCss(file));
 }
 
 function getSourceAssetMap(
@@ -213,9 +214,11 @@ export const generateBuildManifestFromStats = (api: IApi, stats: any) => {
     finalJsonObj.assets['umi.js'] = addPublicPath(publicPath, umiJs);
   }
 
-  const umiCss = findClientCssFile([...entryFiles, ...statsAssets]);
-  if (umiCss) {
-    finalJsonObj.assets['umi.css'] = addPublicPath(publicPath, umiCss);
+  const umiCssFiles = findClientCssFiles([...entryFiles, ...statsAssets]);
+  if (umiCssFiles.length) {
+    finalJsonObj.assets['umi.css'] = umiCssFiles.map((file) =>
+      addPublicPath(publicPath, file),
+    );
   }
 
   writeFileSync(buildFilePath, JSON.stringify(finalJsonObj, null, 2), {

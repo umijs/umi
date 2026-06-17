@@ -3,6 +3,7 @@ import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
+import { generateBuildManifestFromStats } from '../features/ssr/utils';
 import type { IApi, IOnGenerateFiles } from '../types';
 import {
   measureFileSizesBeforeBuild,
@@ -155,6 +156,10 @@ umi build --clean
       });
 
       const stats = await bundler.build(opts);
+
+      if (api.config.ssr && isUtoopack) {
+        generateBuildManifestFromStats(api, stats);
+      }
 
       if (!api.config.vite && !api.config.mako) {
         // Measure files sizes before build
