@@ -61,4 +61,5 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
+      - run: pnpm --filter umi... build
       - run: pnpm docs:build
