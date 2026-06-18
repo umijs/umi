@@ -9,6 +9,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@umijs/plugins": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "umi": "workspace:*"

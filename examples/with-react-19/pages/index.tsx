@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// @ts-ignore
+import { useModel } from 'umi';
 
 // 创建一个子组件来测试 React Compiler 的优化
 function ExpensiveComponent({ count }: { count: number }) {
@@ -9,6 +11,7 @@ function ExpensiveComponent({ count }: { count: number }) {
 }
 
 export default function HomePage() {
+  const { initialState, loading } = useModel('@@initialState');
   const [count, setCount] = useState(0);
   const [name, setName] = useState('Umi');
 
@@ -21,6 +24,9 @@ export default function HomePage() {
   return (
     <div>
       <h1>React: {React.version}</h1>
+      <p>
+        Initial State: {loading ? 'loading' : initialState?.name || 'unknown'}
+      </p>
       <p>Forget (React Compiler) is enabled</p>
       <div>
         <input

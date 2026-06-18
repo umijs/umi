@@ -1464,6 +1464,9 @@ importers:
 
   examples/with-react-19:
     dependencies:
+      '@umijs/plugins':
+        specifier: workspace:*
+        version: link:../../packages/plugins
       react:
         specifier: ^19.0.0
         version: 19.2.0

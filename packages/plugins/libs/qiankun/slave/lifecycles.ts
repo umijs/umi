@@ -146,14 +146,14 @@ export function genUnmount(mountElementId: string) {
   return async (props: any) => {
     const root = __getRoot();
 
-    // support react 18 unmount
+    // support react 18+ unmount
     if (typeof root?.unmount === 'function') {
       root.unmount();
     } else {
       const container = props?.container
         ? props.container.querySelector(`#${mountElementId}`)
         : document.getElementById(mountElementId);
-      if (container) {
+      if (container && typeof ReactDOM.unmountComponentAtNode === 'function') {
         ReactDOM.unmountComponentAtNode(container);
       }
     }

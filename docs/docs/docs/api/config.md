@@ -705,8 +705,8 @@ forget: {
 
 注意：
 
-1、forget 和 mfsu、mako 暂时不兼容，如果开启了 forget，同时 mfsu、mako 有打开时会抛错。
-2、forget 需要 react 19，使用时，请手动安装 react@rc 和 react-dom@rc 到项目依赖。
+1、forget 和 mfsu、mako、utoopack 暂时不兼容，如果开启了 forget，同时 mfsu、mako、utoopack 有打开时会抛错。
+2、forget 需要 React 19，使用时，请手动安装 react@19 和 react-dom@19 到项目依赖。
 
 ## forkTSChecker
 
