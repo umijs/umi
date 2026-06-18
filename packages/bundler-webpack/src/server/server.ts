@@ -11,6 +11,7 @@ import http from 'http';
 import { extname, join } from 'path';
 import { MESSAGE_TYPE } from '../constants';
 import { IConfig } from '../types';
+import { resolvePathWithinRoot } from './utils';
 import { createWebSocketServer } from './ws';
 
 interface IOpts {
@@ -52,7 +53,14 @@ export async function createServer(opts: IOpts): Promise<any> {
   // debug all js file
   app.use((req, res, next) => {
     const file = req.path;
-    const filePath = join(opts.cwd, file);
+    const filePath = resolvePathWithinRoot(opts.cwd, file);
+    if (!filePath) {
+      if (extname(file) === '.js') {
+        res.status(403).end('Forbidden');
+        return;
+      }
+      return next();
+    }
     const ext = extname(filePath);
 
     if (ext === '.js' && existsSync(filePath)) {
