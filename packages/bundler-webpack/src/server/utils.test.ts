@@ -10,6 +10,9 @@ test('resolve path within root', () => {
   expect(resolvePathWithinRoot(root, '/src/../index.js')).toEqual(
     join(root, 'index.js'),
   );
+  expect(resolvePathWithinRoot(root, '/..foo.js')).toEqual(
+    join(root, '..foo.js'),
+  );
 });
 
 test('reject path traversal outside root', () => {
