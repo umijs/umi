@@ -303,8 +303,10 @@ describe('utoopack alias config', () => {
     expect(overlayEntry).toEqual(
       expect.stringContaining('/utoopack-overlay/umi.js'),
     );
-    expect(overlayEntryContent).toContain('import "./client.js";');
+    expect(overlayEntryContent).toContain('void import("./client.js")');
+    expect(overlayEntryContent).toContain('.then(() => import(');
     expect(overlayEntryContent).toContain('src/.umi/umi.ts');
+    expect(overlayEntryContent).not.toContain('import "./client.js";');
   });
 
   test('uses separate utoopack error overlay wrapper files for multiple development entries', async () => {
