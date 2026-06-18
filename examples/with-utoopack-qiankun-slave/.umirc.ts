@@ -3,7 +3,9 @@ export default {
   npmClient: 'pnpm',
   publicPath: '/_inf_static/bug/',
   qiankun: {
-    slave: {},
+    slave: {
+      appName: 'slave',
+    },
   },
   utoopack: {},
 };

@@ -45,4 +45,5 @@ export default {
       component: 'manual-slave',
     },
   ],
+  utoopack: {},
 };
