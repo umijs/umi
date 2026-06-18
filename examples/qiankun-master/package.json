@@ -2,6 +2,7 @@
   "name": "@example/qiankun-master",
   "private": true,
   "scripts": {
+    "build": "max build",
     "dev": "cross-env PORT=8889 max dev",
     "preview": "max preview --port 8889",
     "setup": "max setup",

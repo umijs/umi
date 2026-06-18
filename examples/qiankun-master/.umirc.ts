@@ -4,7 +4,7 @@ export default {
       apps: [
         {
           name: 'slave',
-          entry: 'http://127.0.0.1:5555', // your slave app address
+          entry: 'http://127.0.0.1:5555/@example/with-utoopack-qiankun-slave/', // your slave app address
         },
         {
           name: 'slave-app2',
