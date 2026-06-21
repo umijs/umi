@@ -706,8 +706,8 @@ forget: {
 
 Note:
 
-1. forget is currently incompatible with mfsu and mako. If forget is enabled while mfsu or mako is on, an error will be thrown.
-2. forget requires react 19. When using it, please manually install react@rc and react-dom@rc as project dependencies.
+1. forget is currently incompatible with mfsu, mako, and utoopack. If forget is enabled while mfsu, mako, or utoopack is on, an error will be thrown.
+2. forget requires React 19. When using it, please manually install react@19 and react-dom@19 as project dependencies.
 
 ## forkTSChecker
 
