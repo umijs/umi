@@ -690,23 +690,30 @@ favicons: [
 ]
 ```
 
-## forget
+## reactCompiler
 
-- 类型：`{ ReactCompilerConfig: object }`
+- 类型：`boolean | object`
 - 默认值：`null`
 
-是否开启 React Compiler（React Forget）功能。参考 https://react.dev/learn/react-compiler 。
+是否开启 React Compiler 功能。参考 https://react.dev/learn/react-compiler 。
 
 ```ts
-forget: {
-  ReactCompilerConfig: {},
+reactCompiler: true,
+```
+
+React Compiler 的配置项会直接透传给 `babel-plugin-react-compiler`：
+
+```ts
+reactCompiler: {
+  target: '19',
 },
 ```
 
 注意：
 
-1、forget 和 mfsu、mako、utoopack 暂时不兼容，如果开启了 forget，同时 mfsu、mako、utoopack 有打开时会抛错。
-2、forget 需要 React 19，使用时，请手动安装 react@19 和 react-dom@19 到项目依赖。
+1、reactCompiler 和 mfsu、mako、utoopack 暂时不兼容，如果同时打开会抛错。
+2、reactCompiler 默认面向 React 19，使用时请安装 react@19 和 react-dom@19 到项目依赖。如果需要配合 React 17 或 18 使用，请配置对应的 `target` 并安装 react-compiler-runtime。
+3、旧配置项 `forget` 仍可兼容使用，但已废弃，请迁移到 `reactCompiler`。
 
 ## forkTSChecker
 

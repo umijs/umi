@@ -691,23 +691,30 @@ favicons: [
 ]
 ```
 
-## forget
+## reactCompiler
 
-- Type: `{ ReactCompilerConfig: object }`
+- Type: `boolean | object`
 - Default: `null`
 
-Whether to enable React Compiler (React Forget) functionality. Reference https://react.dev/learn/react-compiler.
+Whether to enable React Compiler. Reference https://react.dev/learn/react-compiler.
 
 ```ts
-forget: {
-  ReactCompilerConfig: {},
+reactCompiler: true,
+```
+
+React Compiler options are passed directly to `babel-plugin-react-compiler`:
+
+```ts
+reactCompiler: {
+  target: '19',
 },
 ```
 
 Note:
 
-1. forget is currently incompatible with mfsu, mako, and utoopack. If forget is enabled while mfsu, mako, or utoopack is on, an error will be thrown.
-2. forget requires React 19. When using it, please manually install react@19 and react-dom@19 as project dependencies.
+1. reactCompiler is currently incompatible with mfsu, mako, and utoopack. If they are enabled together, an error will be thrown.
+2. reactCompiler targets React 19 by default. Please install react@19 and react-dom@19 as project dependencies. To use React 17 or 18, configure the matching `target` and install react-compiler-runtime.
+3. The old `forget` config is still accepted for compatibility, but it is deprecated. Please migrate to `reactCompiler`.
 
 ## forkTSChecker
 

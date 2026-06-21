@@ -27,7 +27,7 @@ export default function HomePage() {
       <p>
         Initial State: {loading ? 'loading' : initialState?.name || 'unknown'}
       </p>
-      <p>Forget (React Compiler) is enabled</p>
+      <p>React Compiler is enabled</p>
       <div>
         <input
           value={name}
@@ -41,7 +41,7 @@ export default function HomePage() {
       <div
         style={{ marginTop: '20px', padding: '10px', background: '#f0f0f0' }}
       >
-        <h3>如何验证 Forget 是否生效：</h3>
+        <h3>如何验证 React Compiler 是否生效：</h3>
         <ol>
           <li>
             <strong>测试方法：</strong>修改 name 输入框，观察控制台
