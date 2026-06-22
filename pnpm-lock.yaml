@@ -1727,6 +1727,31 @@ importers:
         specifier: ^6.1.1
         version: 6.1.1
 
+  examples/with-utoopack-qiankun-master:
+    dependencies:
+      '@umijs/max':
+        specifier: workspace:*
+        version: link:../../packages/max
+      qiankun:
+        specifier: ^2.10.1
+        version: 2.10.1
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      cypress:
+        specifier: ^12.0.0
+        version: 12.6.0
+      start-server-and-test:
+        specifier: ^1.15.2
+        version: 1.15.2
+
   examples/with-utoopack-qiankun-slave:
     dependencies:
       '@umijs/max':

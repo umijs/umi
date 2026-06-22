@@ -1,0 +1,30 @@
+{
+  "name": "@example/with-utoopack-qiankun-master",
+  "private": true,
+  "scripts": {
+    "build": "max build",
+    "build:all-utoopack-qiankun": "pnpm umi-scripts turbo --filter @example/with-utoopack-qiankun-master --filter @example/with-utoopack-qiankun-slave build",
+    "dev": "cross-env PORT=8890 max dev",
+    "e2e:ci": "npm run e2e:ci:preview",
+    "e2e:ci:preview": "npm run build:all-utoopack-qiankun && cross-env PORT=8890 start-test start:all-utoopack-qiankun:preview 8890 test:ci",
+    "e2e:local": "npm run build:all-utoopack-qiankun && cross-env PORT=8890 start-test start:all-utoopack-qiankun:preview 8890 test:local",
+    "preview": "max preview --port 8890",
+    "setup": "max setup",
+    "start": "npm run dev",
+    "start:all-utoopack-qiankun:dev": "pnpm umi-scripts turbo --filter @example/with-utoopack-qiankun-master --filter @example/with-utoopack-qiankun-slave dev",
+    "start:all-utoopack-qiankun:preview": "node scripts/start-preview.js",
+    "test:ci": "pnpm umi-scripts cypress",
+    "test:local": "cypress open"
+  },
+  "dependencies": {
+    "@umijs/max": "workspace:*",
+    "qiankun": "^2.10.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "cypress": "^12.0.0",
+    "start-server-and-test": "^1.15.2"
+  }
+}
