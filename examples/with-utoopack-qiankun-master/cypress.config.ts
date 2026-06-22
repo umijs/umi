@@ -5,6 +5,7 @@ const PORT = process.env.PORT || '8890';
 const isWin = process.platform === 'win32';
 
 export default defineConfig({
+  projectId: 'qikpat',
   e2e: {
     baseUrl: `http://localhost:${PORT}`,
   },
