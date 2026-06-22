@@ -33,6 +33,8 @@
     "preinstall": "npx only-allow pnpm",
     "postinstall": "umi-scripts postinstall",
     "jest": "jest",
+    "lint": "pnpm lint:utoo",
+    "lint:utoo": "utoo-lint",
     "prepare": "husky install",
     "release": "umi-scripts release",
     "setup": "pnpm --filter @umijs/ui run setup",
@@ -54,10 +56,15 @@
     "valtio:release": "umi-scripts releaseValtio"
   },
   "lint-staged": {
-    "*.{jsx,less,md,json}": [
+    "*.{js,jsx}": [
+      "pnpm lint:utoo",
       "prettier --no-error-on-unmatched-pattern --cache --write"
     ],
-    "*.ts?(x)": [
+    "*.{less,md,json}": [
+      "prettier --no-error-on-unmatched-pattern --cache --write"
+    ],
+    "*.{ts,tsx}": [
+      "pnpm lint:utoo",
       "prettier --no-error-on-unmatched-pattern --cache --parser=typescript --write"
     ]
   },
@@ -86,6 +93,7 @@
     "@umijs/plugins": "workspace:*",
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
+    "@utoo/lint": "^0.1.3",
     "@vercel/ncc": "0.33.3",
     "browserslist": "4.28.2",
     "dts-packer": "^0.0.3",
