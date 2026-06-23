@@ -711,7 +711,7 @@ reactCompiler: {
 
 注意：
 
-1、reactCompiler 和 mfsu、mako、utoopack 暂时不兼容，如果同时打开会抛错。
+1、reactCompiler 和 mfsu、mako 暂时不兼容，如果同时打开会抛错；utoopack 会通过 babel-loader 传递 React Compiler 插件配置。
 2、reactCompiler 默认面向 React 19，使用时请安装 react@19 和 react-dom@19 到项目依赖。如果需要配合 React 17 或 18 使用，请配置对应的 `target` 并安装 react-compiler-runtime。
 3、旧配置项 `forget` 仍可兼容使用，但已废弃，请迁移到 `reactCompiler`。
 

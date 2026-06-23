@@ -450,17 +450,17 @@ describe('utoopack extra babel config', () => {
     } as any);
 
     const rules = config.config.module?.rules || {};
-    const rule = rules['**/src/**/*.tsx'] as any;
+    const rule = rules['**/*.tsx'] as any;
     const loader = rule.loaders[0];
 
     expect(Object.keys(rules)).toEqual(
       expect.arrayContaining([
-        '**/src/**/*.js',
-        '**/src/**/*.mjs',
-        '**/src/**/*.cjs',
-        '**/src/**/*.jsx',
-        '**/src/**/*.ts',
-        '**/src/**/*.tsx',
+        '**/*.js',
+        '**/*.mjs',
+        '**/*.cjs',
+        '**/*.jsx',
+        '**/*.ts',
+        '**/*.tsx',
       ]),
     );
     expect(rule.as).toBe('*.js');
@@ -520,6 +520,29 @@ describe('utoopack extra babel config', () => {
     expect(config.config.styles?.emotion).toBe(true);
   });
 
+  test('adds babel-loader rules for reactCompiler without utoopack babelLoader', async () => {
+    const reactCompilerPlugin = [
+      'babel-plugin-react-compiler',
+      { target: '18' },
+    ];
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      beforeBabelPlugins: [reactCompilerPlugin],
+      config: {
+        reactCompiler: {
+          target: '18',
+        },
+        utoopack: {},
+      },
+    } as any);
+
+    const rule = config.config.module?.rules?.['**/*.tsx'] as any;
+    const loader = rule.loaders[0];
+
+    expect(loader.loader).toContain('babel-loader');
+    expect(loader.options.plugins).toEqual([reactCompilerPlugin]);
+  });
+
   test('keeps native babel plugin adapters when babelLoader is enabled', async () => {
     const config = await getDevUtooPackConfig({
       ...baseOpts,
@@ -538,7 +561,7 @@ describe('utoopack extra babel config', () => {
       },
     } as any);
 
-    const rule = config.config.module?.rules?.['**/src/**/*.tsx'] as any;
+    const rule = config.config.module?.rules?.['**/*.tsx'] as any;
     const loader = rule.loaders[0];
 
     expect(loader.options.plugins).toEqual(['babel-plugin-istanbul']);

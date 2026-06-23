@@ -712,7 +712,7 @@ reactCompiler: {
 
 Note:
 
-1. reactCompiler is currently incompatible with mfsu, mako, and utoopack. If they are enabled together, an error will be thrown.
+1. reactCompiler is currently incompatible with mfsu and mako. If they are enabled together, an error will be thrown; utoopack passes the React Compiler plugin config through babel-loader.
 2. reactCompiler targets React 19 by default. Please install react@19 and react-dom@19 as project dependencies. To use React 17 or 18, configure the matching `target` and install react-compiler-runtime.
 3. The old `forget` config is still accepted for compatibility, but it is deprecated. Please migrate to `reactCompiler`.
 
