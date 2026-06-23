@@ -41,6 +41,6 @@ export const actions = {
     const mode = state.mode === 'light' ? 'dark' : 'light';
     state.mode = mode;
     // 是否需要 localstorage 保存上次选择 mode
-    document.querySelector('html').classList.toggle('dark');
+    document.querySelector('html')!.classList.toggle('dark');
   },
 };
