@@ -274,6 +274,7 @@ const getBrowser = (
             fetchServerLoader({
               id,
               basename,
+              pluginManager: opts.pluginManager,
               cb: (data) => {
                 // setServerLoaderData when startTransition because if ssr is enabled,
                 // the component may being hydrated and setLoaderData will break the hydration
@@ -306,6 +307,7 @@ const getBrowser = (
                 fetchServerLoader({
                   id,
                   basename,
+                  pluginManager: opts.pluginManager,
                   cb: (data) => {
                     // setServerLoaderData when startTransition because if ssr is enabled,
                     // the component may being hydrated and setLoaderData will break the hydration
