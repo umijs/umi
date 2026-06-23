@@ -82,6 +82,64 @@ function isSlaveEnable(opts: { userConfig: any }) {
   return !!process.env.INITIAL_QIANKUN_SLAVE_OPTIONS;
 }
 
+function isUtoopackEnable(api: IApi) {
+  return Boolean(
+    api.appData.bundler === 'utoopack' ||
+      api.userConfig.utoopack ||
+      api.config.utoopack ||
+      process.env.FORCE_UTOOPACK,
+  );
+}
+
+function getUtoopackQiankunLifecycleProxyScript(appName: string) {
+  return `(function() {
+  var appName = ${JSON.stringify(appName)};
+  var lifecycleNames = ['bootstrap', 'mount', 'unmount', 'update'];
+  var global = window;
+  var existed = global[appName];
+  if (existed && typeof existed.bootstrap === 'function' && typeof existed.mount === 'function' && typeof existed.unmount === 'function') {
+    return;
+  }
+  var resolveReady;
+  var ready = new Promise(function(resolve) {
+    resolveReady = resolve;
+  });
+  var proxy = {};
+  lifecycleNames.forEach(function(name) {
+    proxy[name] = function() {
+      var context = this;
+      var args = arguments;
+      return ready.then(function(lifecycles) {
+        var lifecycle = lifecycles && lifecycles[name];
+        if (typeof lifecycle !== 'function') {
+          if (name === 'update') {
+            return undefined;
+          }
+          throw new Error('[plugins/qiankun]: lifecycle ' + name + ' is not available for ' + appName + '.');
+        }
+        return lifecycle.apply(context, args);
+      });
+    };
+  });
+  Object.defineProperty(global, appName, {
+    configurable: true,
+    enumerable: true,
+    get: function() {
+      return proxy;
+    },
+    set: function(lifecycles) {
+      Object.defineProperty(global, appName, {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: lifecycles
+      });
+      resolveReady(lifecycles);
+    }
+  });
+})();`;
+}
+
 export default (api: IApi) => {
   api.describe({
     key: 'qiankun-slave',
@@ -183,7 +241,7 @@ export interface IRuntimeConfig {
   api.chainWebpack((config, { ssr }) => {
     // ssr 场景下，通过 cjs 的方式来使用模块，跳过 umd方式的构建
     // utoopack 场景下，通过 window 的方式来挂载 qiankun 运行时方法
-    if (ssr || api.userConfig.utoopack) {
+    if (ssr || isUtoopackEnable(api)) {
       return;
     }
     assert(api.pkg.name, 'You should have name in package.json.');
@@ -206,10 +264,19 @@ export interface IRuntimeConfig {
 
   // umi bundle 添加 entry 标记
   api.modifyHTML(($) => {
+    const appName = api.config.qiankun?.slave?.appName || api.pkg.name;
+    const lifecycleProxyScript =
+      isUtoopackEnable(api) && appName
+        ? `<script>${getUtoopackQiankunLifecycleProxyScript(appName)}</script>`
+        : '';
+
     $('script').each((_: any, el: any) => {
       const scriptEl = $(el);
       const umiEntry = /\/?umi(\.\w+)?\.js$/g;
       if (umiEntry.test(scriptEl.attr('src') ?? '')) {
+        if (lifecycleProxyScript) {
+          scriptEl.before(lifecycleProxyScript);
+        }
         scriptEl.attr('entry', '');
       }
     });
@@ -241,7 +308,7 @@ export const unmount = isServer ? qiankun_noop : qiankun_genUnmount('${
       }');
 export const update = isServer ? qiankun_noop : qiankun_genUpdate();
 
-if (!isServer && ${Boolean(api.userConfig.utoopack)}) {
+if (!isServer && ${isUtoopackEnable(api)}) {
   window['${appName}'] = {
     bootstrap,
     mount,

@@ -1,9 +1,11 @@
 export default {
   routes: [{ path: '/', component: 'index' }],
   npmClient: 'pnpm',
-  publicPath: '/_inf_static/bug/',
+  publicPath: '/@example/with-utoopack-qiankun-slave/',
   qiankun: {
-    slave: {},
+    slave: {
+      appName: 'slave',
+    },
   },
   utoopack: {},
 };

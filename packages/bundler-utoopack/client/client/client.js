@@ -11,6 +11,7 @@ console.log('[utoopack] connecting...');
 let hasCompileErrors = false;
 let shouldReloadOnRecovery = false;
 let overlayIframe = null;
+let isSocketConnected = false;
 
 const enableErrorOverlay =
   typeof process === 'undefined' ||
@@ -145,6 +146,7 @@ function handleSuccess() {
 function handleMessage(payload) {
   switch (payload.action) {
     case ACTIONS.TURBOPACK_CONNECTED:
+      isSocketConnected = true;
       console.log('[utoopack] connected.');
       break;
     case ACTIONS.BUILDING:
@@ -198,6 +200,11 @@ socket.addEventListener('message', ({ data }) => {
 });
 
 socket.addEventListener('close', async () => {
+  if (!isSocketConnected) {
+    console.info('[utoopack] Dev server connection failed.');
+    return;
+  }
+
   console.info('[utoopack] Dev server disconnected. Polling for restart...');
   await waitForSuccessfulPing();
   window.location.reload();
