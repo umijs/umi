@@ -3,6 +3,7 @@ export default {
   routes: [{ path: '/', component: 'index' }],
   npmClient: 'pnpm',
   reactCompiler: true,
+  utoopack: {},
   initialState: {},
   model: {},
   mfsu: false,

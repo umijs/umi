@@ -58,11 +58,6 @@ export default (api: IApi) => {
         `reactCompiler is not compatible with mako, please disable mako first.`,
       );
     }
-    if (api.config.utoopack) {
-      throw new Error(
-        `reactCompiler is not compatible with utoopack, please disable utoopack first.`,
-      );
-    }
   });
 
   api.onCheck(() => {

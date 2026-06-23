@@ -185,6 +185,20 @@ function isSerializableBabelItem(item: any) {
   }
 }
 
+function isReactCompilerEnabled(config: Record<string, any>) {
+  if ('reactCompiler' in config) {
+    return config.reactCompiler !== false;
+  }
+
+  return 'forget' in config;
+}
+
+function shouldAddBabelLoaderRules(config: Record<string, any>) {
+  return (
+    config.utoopack?.babelLoader === true || isReactCompilerEnabled(config)
+  );
+}
+
 function getExtraBabelModuleRules(opts: {
   babelPreset?: any;
   beforeBabelPlugins?: any[];
@@ -193,7 +207,7 @@ function getExtraBabelModuleRules(opts: {
   extraBabelPresets?: any[];
   config: Record<string, any>;
 }) {
-  if (opts.config.utoopack?.babelLoader !== true) {
+  if (!shouldAddBabelLoaderRules(opts.config)) {
     return {};
   }
 
@@ -242,7 +256,7 @@ function getExtraBabelModuleRules(opts: {
     module: {
       rules: Object.fromEntries(
         ['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx'].map((ext) => [
-          `**/src/**/*.${ext}`,
+          `**/*.${ext}`,
           rule,
         ]),
       ),
