@@ -203,6 +203,7 @@ describe('utoopack ssr config', () => {
     expect(rules['*.jpg']).toBeUndefined();
     expect(rules['*.woff']).toBeUndefined();
     expect(config.config.output?.clean).toBe(true);
+    expect(config.config.pluginRuntimeStrategy).toBe('childProcesses');
   });
 });
 

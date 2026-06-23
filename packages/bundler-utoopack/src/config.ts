@@ -923,6 +923,7 @@ export async function getSSRUtooPackConfig(
     target: 'node',
     sourceMaps: false,
     stats: true,
+    pluginRuntimeStrategy: 'childProcesses',
     nodePolyfill: false,
     optimization: {
       ...utooBundlerOpts.config.optimization,
