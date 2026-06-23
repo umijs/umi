@@ -1,15 +1,23 @@
+import { fsExtra, resolve } from '@umijs/utils';
 import assert from 'assert';
 import { fork } from 'child_process';
 import { writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi } from 'umi';
-import { fsExtra, resolve } from 'umi/plugin-utils';
+
+type SchemaUtils = {
+  zod: {
+    object: (shape: Record<string, any>) => any;
+    array: (schema: any) => any;
+    string: () => any;
+  };
+};
 
 export default (api: IApi) => {
   api.describe({
     key: 'run',
     config: {
-      schema({ zod }) {
+      schema({ zod }: SchemaUtils) {
         return zod.object({
           globals: zod.array(zod.string()).optional(),
         });
@@ -21,7 +29,7 @@ export default (api: IApi) => {
     name: 'run',
     description: 'run the script commands, support for ts and zx',
     configResolveMode: 'loose',
-    fn: ({ args }) => {
+    fn: ({ args }: { args: { _: string[] } }) => {
       const globals: string[] = api.config.run?.globals || [];
       const [scriptFilePath, ...restArgs] = args._;
       const absScriptFilePath = join(api.cwd, scriptFilePath);

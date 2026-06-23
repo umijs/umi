@@ -8,6 +8,7 @@
     "strict": true,
     "skipLibCheck": true,
     "target": "es2019",
+    "types": ["node"],
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"]
   },

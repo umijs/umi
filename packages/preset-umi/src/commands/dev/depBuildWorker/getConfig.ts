@@ -1,4 +1,8 @@
-import { Service } from 'umi/dist/service/service';
+type UmiService = new (opts?: any) => {
+  run(opts: { name: string; args?: any }): Promise<any>;
+};
+
+const { Service } = require('umi') as { Service: UmiService };
 
 export async function getDevConfig() {
   const service = new Service({

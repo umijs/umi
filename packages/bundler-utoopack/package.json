@@ -30,9 +30,6 @@
     "sass": "1.54.0",
     "sass-loader": "13.2.0"
   },
-  "devDependencies": {
-    "father": "4.1.5"
-  },
   "publishConfig": {
     "access": "public"
   }
