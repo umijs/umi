@@ -1074,8 +1074,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/max
       qiankun:
-        specifier: ^2.10.1
-        version: 2.10.1
+        specifier: 2.10.17-beta.0
+        version: 2.10.17-beta.0
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -1733,8 +1733,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/max
       qiankun:
-        specifier: ^2.10.1
-        version: 2.10.1
+        specifier: 2.10.17-beta.0
+        version: 2.10.17-beta.0
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -2579,8 +2579,8 @@ importers:
         specifier: ^2.29.4
         version: 2.29.4
       qiankun:
-        specifier: ^2.10.1
-        version: 2.10.1
+        specifier: 2.10.17-beta.0
+        version: 2.10.17-beta.0
       react-intl:
         specifier: 3.12.1
         version: 3.12.1(react@18.3.1)
@@ -31550,8 +31550,8 @@ packages:
       parent-module: 1.0.1
       resolve-from: 4.0.0
 
-  /import-html-entry@1.14.3:
-    resolution: {integrity: sha512-bQOxi0vgebkDjYf510XiRgsRNZR3idBiBXAjJtzOzIO1ukSj+h/lIM3zx7poZiJVMMUuwjiEkYLlvmJNhKw85A==}
+  /import-html-entry@1.17.0:
+    resolution: {integrity: sha512-2SDsRlGlE8bqdnGqsOyiDPEWlzJR0jNW4LWopnZl5QE1Yd0nJ7fykWo2GaKUF7Jq7pR0g3dElhuJHyamTt1gPQ==}
     dependencies:
       '@babel/runtime': 7.23.6
 
@@ -40523,9 +40523,19 @@ packages:
     resolution: {integrity: sha512-EM9u1fW1J/+SUjCNs5Pj+UIL7qoYk+lUWRAJKar3ByFl/Yl6Jwl3ojfNktfQqiSwdMbuER0mqbUwWXSaDiIxIw==}
     dependencies:
       '@babel/runtime': 7.23.6
-      import-html-entry: 1.14.3
-      lodash: 4.17.21
+      import-html-entry: 1.17.0
+      lodash: 4.18.1
       single-spa: 5.9.4
+    dev: true
+
+  /qiankun@2.10.17-beta.0:
+    resolution: {integrity: sha512-IW+5rrm4jZ0sO9836ILhDX8LxoDDyPvw/UHn1J5wPrp/i+RprDiHIC/Z1y9kFOmLxjGvr5S+TKhr1YCdVCtPqg==}
+    dependencies:
+      '@babel/runtime': 7.23.6
+      import-html-entry: 1.17.0
+      lodash: 4.18.1
+      single-spa: 5.9.4
+    dev: false
 
   /qrcode.react@3.1.0(react@18.1.0):
     resolution: {integrity: sha512-oyF+Urr3oAMUG/OiOuONL3HXM+53wvuH3mtIWQrYmsXoAq0DkvZp2RYUWFSMFtbdOpuS++9v+WAkzNVkMlNW6Q==}
