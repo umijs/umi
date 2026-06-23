@@ -2889,9 +2889,6 @@ importers:
       '@umijs/core':
         specifier: workspace:*
         version: link:../core
-      '@umijs/lint':
-        specifier: workspace:*
-        version: link:../lint
       '@umijs/preset-umi':
         specifier: workspace:*
         version: link:../preset-umi
@@ -2913,6 +2910,10 @@ importers:
       prettier-plugin-packagejson:
         specifier: 2.4.3
         version: 2.4.3(prettier@2.8.4)
+    devDependencies:
+      '@umijs/lint':
+        specifier: workspace:*
+        version: link:../lint
 
   packages/utils:
     dependencies:
