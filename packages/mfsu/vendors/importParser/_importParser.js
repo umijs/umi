@@ -185,8 +185,7 @@ parse: function parse(input) {
         vstack.length = vstack.length - n;
         lstack.length = lstack.length - n;
     }
-    _token_stack:
-        var lex = function () {
+    var lex = function () {
             var token;
             token = lexer.lex() || EOF;
             if (typeof token !== 'number') {

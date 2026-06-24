@@ -1,11 +1,10 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "moduleResolution": "nodenext",
     "module": "NodeNext",
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": ["src"],
-  "exclude": ["templates", "src/**/*.test.ts"]
+  "include": ["src"]
 }

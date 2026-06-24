@@ -1,5 +1,5 @@
 // TODO: bundler-vite ?
-import type { IConfig } from '@umijs/bundler-webpack/dist/types';
+import type { IConfig } from '@umijs/bundler-webpack';
 import { chalk } from '@umijs/utils';
 
 export function list(config: IConfig, name?: string) {

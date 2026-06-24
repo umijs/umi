@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "esnext",
+    "moduleResolution": "nodenext",
+    "module": "NodeNext",
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "preserve"

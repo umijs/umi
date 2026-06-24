@@ -3,7 +3,7 @@ import {
   Env,
   JSMinifier,
   Transpiler,
-} from '@umijs/bundler-webpack/dist/types';
+} from '@umijs/bundler-webpack';
 import { chalk, crossSpawn, lodash, logger, resolve } from '@umijs/utils';
 import { join } from 'path';
 import type { IApi } from '../../types';

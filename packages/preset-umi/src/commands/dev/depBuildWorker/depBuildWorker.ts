@@ -1,6 +1,5 @@
-import { getConfig } from '@umijs/bundler-webpack';
+import { Env, getConfig } from '@umijs/bundler-webpack';
 import { MFSU_NAME } from '@umijs/bundler-webpack/dist/constants';
-import { Env } from '@umijs/bundler-webpack/dist/types';
 import { DEFAULT_MF_NAME, MF_DEP_PREFIX } from '@umijs/mfsu';
 import { logger, setNoDeprecation } from '@umijs/utils';
 import { dirname, join, resolve } from 'path';

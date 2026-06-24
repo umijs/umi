@@ -27,6 +27,7 @@
   "dependencies": {
     "@svgr/core": "6.5.1",
     "@umijs/bundler-utils": "workspace:*",
+    "@umijs/bundler-webpack": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@vitejs/plugin-react": "4.0.0",
     "core-js": "3.34.0",

@@ -1,4 +1,4 @@
-import { Env } from '@umijs/bundler-webpack/dist/types';
+import { Env } from '@umijs/bundler-webpack';
 import { fsExtra, logger } from '@umijs/utils';
 import { forEach } from '@umijs/utils/compiled/lodash';
 import { existsSync, writeFileSync } from 'fs';

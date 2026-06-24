@@ -4,10 +4,14 @@ import type {
   BuildResult as ESBuildBuildResult,
   Plugin as ESBuildPlugin,
 } from '@umijs/bundler-utils/compiled/esbuild';
-import type { Express, RequestHandler, webpack } from '@umijs/bundler-webpack';
+import type {
+  Express,
+  IConfig,
+  RequestHandler,
+  webpack,
+} from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { createWebSocketServer } from '@umijs/bundler-webpack/dist/server/ws';
-import type { IConfig } from '@umijs/bundler-webpack/dist/types';
 import type {
   IAdd,
   IEvent,

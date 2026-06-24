@@ -1,4 +1,4 @@
-import { Env } from '@umijs/bundler-webpack/dist/types';
+import { Env } from '@umijs/bundler-webpack';
 import { logger } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
 import path, { basename, dirname, join } from 'path';

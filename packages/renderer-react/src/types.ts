@@ -1,4 +1,4 @@
-import type { IhtmlPageOpts, ServerLoader } from '@umijs/server/dist/types';
+import type { IhtmlPageOpts, ServerLoader } from '@umijs/server';
 import type { RouteMatch, RouteObject } from 'react-router-dom';
 
 declare global {

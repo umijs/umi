@@ -1,6 +1,6 @@
 import * as bundlerWebpack from '@umijs/bundler-webpack';
+import { Env } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
-import { Env } from '@umijs/bundler-webpack/dist/types';
 import { lodash, logger } from '@umijs/utils';
 import { dirname, resolve } from 'path';
 import { IApi } from '../../../types';

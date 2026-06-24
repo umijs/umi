@@ -1,9 +1,8 @@
 import { importLazy, lodash, semver, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join, relative } from 'path';
-import { RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { getMarkupArgs } from '../../commands/dev/getMarkupArgs';
-import { TEMPLATES_DIR } from '../../constants';
+import { RUNTIME_TYPE_FILE_NAME, TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { getModuleExports } from './getModuleExports';
 import { importsToStr } from './importsToStr';
