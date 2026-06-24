@@ -99,7 +99,7 @@ export default (api: IApi) => {
           inputPath,
           '-o',
           generatedPath,
-          api.env === 'development' ? '--watch' : '',
+          api.env === 'development' ? '--watch=always' : '',
         ],
         {
           stdio: 'inherit',
