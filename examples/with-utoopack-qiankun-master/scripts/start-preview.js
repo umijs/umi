@@ -1,7 +1,8 @@
 const { spawn } = require('child_process');
 const path = require('path');
 
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const isWindows = process.platform === 'win32';
+const npm = isWindows ? 'npm.cmd' : 'npm';
 const root = path.resolve(__dirname, '..');
 let shuttingDown = false;
 
@@ -21,6 +22,7 @@ const children = apps.map((app) => {
     cwd: app.cwd,
     stdio: 'inherit',
     env: process.env,
+    shell: isWindows,
   });
 
   child.on('exit', (code, signal) => {
