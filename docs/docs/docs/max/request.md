@@ -61,6 +61,26 @@ export const request: RequestConfig = {
 
 除了 `errorConfig`, `requestInterceptors`, `responseInterceptors` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest` **方法**。
 
+:::warning
+如果你自定义了 axios `adapter`，需要返回符合 AxiosResponse 结构的对象，不能直接返回原生 `fetch Response`。axios 1.x 会在响应阶段处理 `response.headers`，而原生 `Response.headers` 是只读 getter，直接返回可能触发 `Cannot set property headers ... which has only a getter`。
+
+```ts
+adapter: async (config) => {
+  const response = await fetch(config.url!);
+  const data = await response.json();
+
+  return {
+    data,
+    status: response.status,
+    statusText: response.statusText,
+    headers: Object.fromEntries(response.headers.entries()),
+    config,
+    request: response,
+  };
+}
+```
+:::
+
 下面分别介绍 `plugin-request` 的运行时配置项。本节的末尾，我们会给出一个完整的运行时配置示例，并且对它的功能进行一个详细的描述。
 
 #### errorConfig

@@ -62,6 +62,26 @@ export const request: RequestConfig = {
 
 Besides `errorConfig`, `requestInterceptors`, and `responseInterceptors`, other configurations are directly passed through to [axios](https://axios-http.com/docs/req_config)'s request configuration. **The rules configured here apply to all** `request` and `useRequest` **methods**.
 
+:::warning
+If you customize the axios `adapter`, it must return an object that matches the AxiosResponse shape. Do not return a native `fetch Response` directly. axios 1.x normalizes `response.headers` during response handling, while native `Response.headers` is a read-only getter. Returning it directly may trigger `Cannot set property headers ... which has only a getter`.
+
+```ts
+adapter: async (config) => {
+  const response = await fetch(config.url!);
+  const data = await response.json();
+
+  return {
+    data,
+    status: response.status,
+    statusText: response.statusText,
+    headers: Object.fromEntries(response.headers.entries()),
+    config,
+    request: response,
+  };
+}
+```
+:::
+
 The runtime configuration options of `plugin-request` are introduced below. At the end of this section, we will provide a complete runtime configuration example, describing its functionality in detail.
 
 #### errorConfig
