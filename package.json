@@ -35,6 +35,7 @@
     "jest": "jest",
     "prepare": "husky install",
     "release": "umi-scripts release",
+    "release:publish": "umi-scripts releasePublish",
     "setup": "pnpm --filter @umijs/ui run setup",
     "setup:webstorm": "umi-scripts setupWebStorm",
     "sync:mako": "umi-scripts syncMako",
@@ -124,10 +125,10 @@
     "umi-scripts": "workspace:*",
     "zx": "^7.1.1"
   },
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@8.15.9",
   "engines": {
     "node": ">=14",
-    "pnpm": "^8.11.0"
+    "pnpm": "^8.15.9"
   },
   "volta": {
     "node": "20.18.1",
