@@ -15,7 +15,7 @@ export const Contributing = () => {
           <a href="https://github.com/umijs/umi/graphs/contributors">
             <img
               src="https://contrib.rocks/image?repo=umijs/umi"
-              width="1200"
+              width="812"
               alt="Umi contributors"
             />
           </a>
