@@ -869,6 +869,7 @@ export async function getProdUtooPackConfig(
         },
         define,
         nodePolyfill: true,
+        pluginRuntimeStrategy: 'childProcesses',
         mdx: !!mdx,
         externals: getNormalizedExternals(userExternals),
       },
@@ -1081,6 +1082,7 @@ export async function getDevUtooPackConfig(
         // Windows persistent cache restore is currently unstable in utoopack dev.
         persistentCaching: getDefaultPersistentCaching(),
         nodePolyfill: true,
+        pluginRuntimeStrategy: 'childProcesses',
         mdx: !!mdx,
         externals: getNormalizedExternals(userExternals),
         ...(opts.config.clickToComponent
