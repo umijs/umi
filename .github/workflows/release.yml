@@ -47,11 +47,11 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - name: Check package files
-        run: pnpm check:packageFiles
-
       - name: Build packages
         run: pnpm build:release
+
+      - name: Check package files
+        run: pnpm check:packageFiles
 
       - name: Publish packages
         run: pnpm release:publish
