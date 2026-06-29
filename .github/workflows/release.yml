@@ -1,0 +1,57 @@
+name: Release
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '-canary.')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'pnpm'
+
+      - name: Check npm version
+        run: |
+          npm --version
+          node -e "const v = require('child_process').execSync('npm --version').toString().trim().split('.').map(Number); if (v[0] < 11 || (v[0] === 11 && (v[1] < 5 || (v[1] === 5 && v[2] < 1)))) throw new Error('npm 11.5.1 or later is required for trusted publishing')"
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build:release
+
+      - name: Check package files
+        run: pnpm check:packageFiles
+
+      - name: Publish packages
+        run: pnpm release:publish

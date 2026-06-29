@@ -1,12 +1,13 @@
 {
   "name": "@umijs/bundler-vite",
-  "version": "4.6.69",
+  "version": "4.6.70-alpha.5",
   "description": "@umijs/bundler-vite",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-vite#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi"
+    "url": "https://github.com/umijs/umi",
+    "directory": "packages/bundler-vite"
   },
   "license": "MIT",
   "main": "dist/index.js",
