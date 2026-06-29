@@ -44,7 +44,7 @@ Maintainers are community members who have had 10 or more PRs merged in umi or h
 
 Contributors are community members who have had 1 or more PRs merged in umi. If you are a contributor, you can contact me [[sorrycc](https://github.com/sorrycc)] to join the Contributor Group.
 
-<a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://contrib.rocks/image?repo=umijs/umi" alt="Umi contributors" /></a>
 
 ## Community
 

@@ -249,8 +249,8 @@ importers:
         version: 6.4.2(react@18.3.1)
     devDependencies:
       dumi:
-        specifier: 2.4.35
-        version: 2.4.35(@types/node@18.19.39)(@types/react@18.3.3)(prettier@2.8.4)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        specifier: 2.4.38
+        version: 2.4.38(@types/node@18.19.39)(@types/react@18.3.3)(prettier@2.8.4)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
 
   examples/ant-design-pro:
     dependencies:
@@ -27354,8 +27354,8 @@ packages:
     resolution: {integrity: sha512-k2Z3z7/IcHOYASP/nDjocShdzXatmOuhkAwgYw/4KNiq36gpAKjn5MlrPkzdGH70TbcHGLGEul9b/4sYJLoS9A==}
     dev: true
 
-  /dumi@2.4.35(@types/node@18.19.39)(@types/react@18.3.3)(prettier@2.8.4)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-kFkAIJgVgBM8dc3xwpIRttmBt4HcHvfDWVkd4uC/fyvCYnrNhJVDgYtmGUazIoDljJVbbbrIcTiI6oHoVbE53A==}
+  /dumi@2.4.38(@types/node@18.19.39)(@types/react@18.3.3)(prettier@2.8.4)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-szdrYvnQa8Y0wQQJa4LNo+KNqD6ArkBcNFkESWPOmiB0xnWlr8BZ4N8E+yg3/sKW6xVCov55IruUBqQwfrgoxA==}
     hasBin: true
     peerDependencies:
       react: '>=16.8'
