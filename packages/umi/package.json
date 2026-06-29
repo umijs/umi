@@ -6,7 +6,8 @@
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi"
+    "url": "https://github.com/umijs/umi",
+    "directory": "packages/umi"
   },
   "license": "MIT",
   "main": "dist/index.js",

@@ -42,6 +42,7 @@ async function publishPackage(opts: {
   }
 
   const packDir = mkdtempSync(join(tmpdir(), 'umi-release-'));
+  const publishDir = mkdtempSync(join(tmpdir(), 'umi-release-publish-'));
   try {
     await $`cd ${opts.dir} && pnpm pack --pack-destination ${packDir}`;
     const tarballs = readdirSync(packDir).filter((file) =>
@@ -51,21 +52,26 @@ async function publishPackage(opts: {
       throw new Error(`Expected one tarball for ${opts.name}, got ${tarballs}`);
     }
     const tarball = join(packDir, tarballs[0]);
+    await $`tar -xzf ${tarball} --strip-components=1 -C ${publishDir}`;
     if (opts.dryRun) {
-      logger.info(`[dry-run] npm publish ${tarball} --tag ${opts.tag}`);
+      logger.info(
+        `[dry-run] cd ${publishDir} && npm publish --tag ${opts.tag}`,
+      );
       return;
     }
-    await $`npm publish ${tarball} --tag ${opts.tag} --access public --provenance`;
+    await $`cd ${publishDir} && npm publish --tag ${opts.tag} --access public --provenance`;
     logger.info(`+ ${opts.name}`);
   } finally {
     rmSync(packDir, { recursive: true, force: true });
+    rmSync(publishDir, { recursive: true, force: true });
   }
 }
 
 (async () => {
   const version = require(PATHS.LERNA_CONFIG).version;
   const tag = getNpmTag(version);
-  const dryRun = argv['dry-run'] || argv.dryRun;
+  const dryRun =
+    argv['dry-run'] || argv.dryRun || process.argv.includes('--dry-run');
   const pkgs = getPkgs();
   const orderedPkgs = [
     ...pkgs.filter((pkg) => !['umi', 'max'].includes(pkg)),
