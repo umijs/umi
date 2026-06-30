@@ -18,7 +18,7 @@ For simple applications that do not require complex data flows, only some simple
 
 ## How Umi Manages State
 
-As shown in the figure below, Umi has built in [Dva](https://dvajs.com) to provide a set of state management solutions:
+As shown in the figure below, Umi has built in Dva to provide a set of state management solutions:
 
 ![undefined](https://gw.alipayobjects.com/zos/skylark/48f9ff5f-ab11-4896-9fb6-65cdd83340de/2018/png/dcb7073b-fc0c-4e2c-aa39-93ac249d715c.png)
 
@@ -337,7 +337,3 @@ You can use this model to implement loading animations in components.
 Since the underlying layer of dva is based on redux, you can install redux's [development tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=zh-CN) to view the data and change records in the model.
 
 ![reduxdevtool](https://lh3.googleusercontent.com/wfhSnnYEQc3TCXbRTpTloa-XZesgDt0xAogzGoLF1BUCU04aYhdwAjueJYTtDxfRiqjUfC539g=w640-h400-e365)
-
-## References
-
-- [dva official website](https://dvajs.com/)
