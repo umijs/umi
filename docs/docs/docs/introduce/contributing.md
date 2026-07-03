@@ -174,11 +174,13 @@ $ pnpm build:deps --dep webpack-manifest-plugin
 
 ## 发布
 
-只有 Core Maintainer 才能执行发布。
+只有 Core Maintainer 才能执行发布。Umi 已切换到 npm Trusted Publishing/OIDC，本地发布命令只负责 bump version、生成 release commit/tag 并推送，不再直接执行 `npm publish`。
 
 ```bash
 $ pnpm release
 ```
+
+推送后，GitHub Actions 的 Release workflow 会通过 OIDC 获取 npm 发布权限，执行 `pnpm release:publish`，并带上 `--provenance` 将 package 发布到 npm。
 
 ## 通过 dist-tag 回滚
 

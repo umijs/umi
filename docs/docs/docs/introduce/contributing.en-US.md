@@ -175,11 +175,13 @@ $ pnpm build:deps --dep webpack-manifest-plugin
 
 ## Release
 
-Only Core Maintainers can carry out releases.
+Only Core Maintainers can carry out releases. Umi now uses npm Trusted Publishing/OIDC, so the local release command only bumps versions, creates and pushes the release commit/tag, and no longer runs `npm publish` locally.
 
 ```bash
 $ pnpm release
 ```
+
+After the push, the GitHub Actions Release workflow obtains npm publishing permission through OIDC, runs `pnpm release:publish`, and publishes packages to npm with `--provenance`.
 
 ## Rolling Back through dist-tag
 

@@ -25,6 +25,7 @@ Core Maintainers are community members who have contributed significantly to the
 
 * [sorrycc](https://github.com/sorrycc)
 * [xiaohuoni](https://github.com/xiaohuoni)
+* [fireairforce](https://github.com/fireairforce)
 
 ### Maintainers
 
