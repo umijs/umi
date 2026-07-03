@@ -102,9 +102,7 @@ export default defineConfig({
   theme: {
     '@s-sidebar-width': '216px',
   },
-  utoopack: {
-    pluginRuntimeStrategy: 'childProcesses',
-  },
+  utoopack: {},
   ...(process.env.NODE_ENV === 'development'
     ? {}
     : { ssr: { builder: 'utoopack' } }),
