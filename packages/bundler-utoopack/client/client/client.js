@@ -147,10 +147,8 @@ function handleMessage(payload) {
   switch (payload.action) {
     case ACTIONS.TURBOPACK_CONNECTED:
       isSocketConnected = true;
-      console.log('[utoopack] connected.');
       break;
     case ACTIONS.BUILDING:
-      console.log('[utoopack] compiling...');
       break;
     case ACTIONS.SYNC:
     case ACTIONS.BUILT:
