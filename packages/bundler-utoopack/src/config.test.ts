@@ -207,6 +207,15 @@ describe('utoopack persistent cache config', () => {
 
     expect(config.config.persistentCaching).toBe(true);
   });
+
+  test('keeps development persistent caching platform-dependent by default', async () => {
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(config.config.persistentCaching).toBe(process.platform !== 'win32');
+  });
 });
 
 describe('utoopack ssr config', () => {
