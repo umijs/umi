@@ -765,7 +765,11 @@ function getUserUtoopackConfig(
   return userUtoopackConfig;
 }
 
-function getDefaultPersistentCaching() {
+function getDefaultPersistentCaching(env: 'development' | 'production') {
+  if (env === 'production') {
+    return false;
+  }
+
   return process.platform !== 'win32';
 }
 
@@ -868,6 +872,7 @@ export async function getProdUtooPackConfig(
           emotion,
         },
         define,
+        persistentCaching: getDefaultPersistentCaching('production'),
         nodePolyfill: true,
         pluginRuntimeStrategy: 'childProcesses',
         mdx: !!mdx,
@@ -1080,7 +1085,7 @@ export async function getDevUtooPackConfig(
         define,
         stats: true,
         // Windows persistent cache restore is currently unstable in utoopack dev.
-        persistentCaching: getDefaultPersistentCaching(),
+        persistentCaching: getDefaultPersistentCaching('development'),
         nodePolyfill: true,
         pluginRuntimeStrategy: 'childProcesses',
         mdx: !!mdx,

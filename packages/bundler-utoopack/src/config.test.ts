@@ -185,6 +185,39 @@ describe('utoopack mdx config', () => {
   });
 });
 
+describe('utoopack persistent cache config', () => {
+  test('disables persistent caching by default in production', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(config.config.persistentCaching).toBe(false);
+  });
+
+  test('allows user persistent caching override in production', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          persistentCaching: true,
+        },
+      },
+    } as any);
+
+    expect(config.config.persistentCaching).toBe(true);
+  });
+
+  test('keeps development persistent caching platform-dependent by default', async () => {
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(config.config.persistentCaching).toBe(process.platform !== 'win32');
+  });
+});
+
 describe('utoopack ssr config', () => {
   test('uses native handling instead of SSR style or asset loader rules', async () => {
     const config = await getSSRUtooPackConfig({
