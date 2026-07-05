@@ -868,6 +868,7 @@ export async function getProdUtooPackConfig(
           emotion,
         },
         define,
+        persistentCaching: false,
         nodePolyfill: true,
         pluginRuntimeStrategy: 'childProcesses',
         mdx: !!mdx,
