@@ -18,6 +18,14 @@ export { findRootDir } from '@utoo/pack';
 export * from './config';
 export type { IUtoopackUserConfig } from './types';
 
+export function isUtoopackProxyStartupError(error: any, utooServePort: number) {
+  return (
+    error?.code === 'ECONNREFUSED' &&
+    Number(error?.port) === utooServePort &&
+    (!error?.address || error.address === '127.0.0.1')
+  );
+}
+
 function getUtoopackRootDir(
   cwd: string,
   utoopackConfig: Record<string, any> | undefined,
@@ -243,6 +251,25 @@ export async function dev(opts: IDevOpts) {
       },
       skipToNextHandlerFilter: function (proxyRes: any) {
         return proxyRes.statusCode !== 200 && proxyRes.statusCode !== 304;
+      },
+      proxyErrorHandler: function (err: any, res: any, next: any) {
+        if (isUtoopackProxyStartupError(err, utooServePort)) {
+          if (!res.headersSent) {
+            res.writeHead(503, { 'Content-Type': 'text/plain' });
+          }
+          return res.end('Utoopack dev server is starting.');
+        }
+
+        if (err?.code === 'ECONNRESET') {
+          res.setHeader(
+            'X-Timeout-Reason',
+            'express-http-proxy reset the request.',
+          );
+          res.writeHead(504, { 'Content-Type': 'text/plain' });
+          return res.end();
+        }
+
+        return next(err);
       },
     }),
   );
