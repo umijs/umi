@@ -218,6 +218,51 @@ describe('utoopack persistent cache config', () => {
   });
 });
 
+describe('utoopack less loader config', () => {
+  test('uses bundled less-loader path for production styles.less', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        theme: {
+          '@primary-color': '#1677ff',
+        },
+        lessLoader: {
+          additionalData: '@root-entry-name: default;',
+        },
+      },
+    } as any);
+
+    const less = config.config.styles?.less as any;
+
+    expect(less.loader).toBe(
+      require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
+    );
+    expect(less.implementation).toBe(
+      require.resolve('@umijs/bundler-utils/compiled/less'),
+    );
+    expect(less).toMatchObject({
+      modifyVars: {
+        '@primary-color': '#1677ff',
+      },
+      javascriptEnabled: true,
+      additionalData: '@root-entry-name: default;',
+    });
+  });
+
+  test('uses bundled less-loader path for development styles.less', async () => {
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    const less = config.config.styles?.less as any;
+
+    expect(less.loader).toBe(
+      require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
+    );
+  });
+});
+
 describe('utoopack ssr config', () => {
   test('uses native handling instead of SSR style or asset loader rules', async () => {
     const config = await getSSRUtooPackConfig({

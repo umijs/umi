@@ -665,6 +665,16 @@ function getSvgModuleRules(opts: {
   };
 }
 
+function getLessStyleOptions(config: Record<string, any>) {
+  return dropUndefinedValues({
+    loader: require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
+    implementation: require.resolve('@umijs/bundler-utils/compiled/less'),
+    modifyVars: config.theme,
+    javascriptEnabled: true,
+    ...config.lessLoader,
+  });
+}
+
 function appendPostcssPlugin(postcssConfig: any, plugin: [string, any]) {
   const [pluginName, pluginOptions = {}] = plugin;
 
@@ -862,11 +872,7 @@ export async function getProdUtooPackConfig(
           ),
         },
         styles: {
-          less: {
-            modifyVars: opts.config.theme,
-            javascriptEnabled: true,
-            ...opts.config.lessLoader,
-          },
+          less: getLessStyleOptions(opts.config),
           // postcss: normalizedPostcssConfig,
           sass: opts.config.sassLoader ?? undefined,
           emotion,
@@ -1073,11 +1079,7 @@ export async function getDevUtooPackConfig(
           removeUnusedImports: false,
         },
         styles: {
-          less: {
-            modifyVars: opts.config.theme,
-            javascriptEnabled: true,
-            ...opts.config.lessLoader,
-          },
+          less: getLessStyleOptions(opts.config),
           // postcss: normalizedPostcssPlugin,
           sass: opts.config.sassLoader ?? undefined,
           emotion,
