@@ -74,11 +74,9 @@ describe('Basic Test', () => {
   });
 
   it('tailwind css', () => {
-    cy.get('[data-testid="tailwind-header"]').should(
-      'have.css',
-      'color',
-      'rgb(136, 19, 55)',
-    );
+    cy.get('[data-testid="tailwind-header"]')
+      .should('have.css', 'font-weight')
+      .and('eq', '700');
   });
 
   it('display included Icon components', () => {
