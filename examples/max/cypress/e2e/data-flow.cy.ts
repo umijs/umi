@@ -10,13 +10,10 @@ describe('data-flow', function () {
 
   context('dva', () => {
     beforeEach(() => {
-      cy.intercept(/dva.async.js$/).as('chunkLoaded');
       cy.visit('/data-flow/dva');
     });
 
     it('run count model', () => {
-      cy.wait('@chunkLoaded');
-
       cy.contains('count: 0');
 
       cy.get('button').contains('+').click();
@@ -27,13 +24,10 @@ describe('data-flow', function () {
 
   context('use-model', () => {
     beforeEach(() => {
-      cy.intercept(/use-model.async.js$/).as('chunkLoaded');
       cy.visit('/data-flow/use-model');
     });
 
     it('render data from use-model', () => {
-      cy.wait('@chunkLoaded');
-
       cy.get('.ant-layout-content').within(() => {
         cy.get('li').contains('foo');
         cy.get('li').contains('bar');

@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 .tailwindCSSHead {
-  @apply text-rose-900;
+  @apply font-bold text-rose-900;
 }
 
 hr {
