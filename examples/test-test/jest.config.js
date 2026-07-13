@@ -1,7 +1,7 @@
-import { Config, configUmiAlias, createConfig } from 'umi/test';
+const { configUmiAlias, createConfig } = require('umi/test');
 
-export default async () => {
-  return (await configUmiAlias({
+module.exports = async () => {
+  return configUmiAlias({
     ...createConfig({
       target: 'browser',
       jsTransformer: 'esbuild',
@@ -29,5 +29,5 @@ export default async () => {
         lines: 1,
       },
     },
-  })) as Config.InitialOptions;
+  });
 };
