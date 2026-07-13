@@ -2,17 +2,17 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "rootDir": ".",
     "strict": true,
     "paths": {
-      "@/*": ["*"],
+      "@/*": ["./*"],
       "@@/*": ["./.umi/*"],
-      "@fs/*": ["*"]
+      "@fs/*": ["./*"]
     },
     "allowSyntheticDefaultImports": true
   },

@@ -5,6 +5,7 @@
     "module": "commonjs",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "rootDir": ".",
     "strict": true,
     "skipLibCheck": true,
     "target": "es2019",
