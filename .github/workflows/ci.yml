@@ -68,7 +68,7 @@ jobs:
 
       - run: pnpm build
       - run: pnpm run setup
-      - run: pnpm tsgo:check
+      - run: pnpm tsc:check
       - run: pnpm test
       - run: pnpm check:packageFiles
         env:

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "types": ["cypress", "node"]
+  },
+  "include": ["**/*.ts"]
+}
