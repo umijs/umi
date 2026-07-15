@@ -103,6 +103,47 @@ describe('utoopack dev stats config', () => {
   });
 });
 
+describe('utoopack watch config', () => {
+  test('passes user watch options to the top-level dev bundle options', async () => {
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          watch: {
+            pollIntervalMs: 500,
+            ignored: ['dist', '!node_modules/rc-.*'],
+            nodeModulesRegexes: ['rc-.*', '.*cssinjs.*', '@rc-component/.*'],
+          },
+        },
+      },
+    } as any);
+
+    expect(config.watch).toEqual({
+      pollIntervalMs: 500,
+      ignored: ['dist', '!node_modules/rc-.*'],
+      nodeModulesRegexes: ['rc-.*', '.*cssinjs.*', '@rc-component/.*'],
+      enable: true,
+    });
+    expect(config.config).not.toHaveProperty('watch');
+  });
+
+  test('does not pass watch options into the production pack config', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          watch: {
+            nodeModulesRegexes: ['rc-.*'],
+          },
+        },
+      },
+    } as any);
+
+    expect(config.watch).toBeUndefined();
+    expect(config.config).not.toHaveProperty('watch');
+  });
+});
+
 describe('utoopack mdx config', () => {
   test('allows user css output filename override', async () => {
     const prodConfig = await getProdUtooPackConfig({

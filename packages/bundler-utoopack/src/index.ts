@@ -17,7 +17,7 @@ import type { IOpts } from './types';
 import { getBuildBanner, getDevBanner } from './util';
 export { findRootDir } from '@utoo/pack';
 export * from './config';
-export type { IUtoopackUserConfig } from './types';
+export type { IUtoopackUserConfig, IUtoopackWatchConfig } from './types';
 
 export function isUtoopackProxyStartupError(error: any, utooServePort: number) {
   return (
