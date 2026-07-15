@@ -754,6 +754,7 @@ function getUserUtoopackConfig(
   const userUtoopackConfig = lodash.omit(utoopackConfig, [
     'babelLoader',
     'root',
+    'watch',
   ]);
   const packageImports = userUtoopackConfig.optimization?.packageImports || [];
 
@@ -1106,6 +1107,7 @@ export async function getDevUtooPackConfig(
       userUtoopackConfig,
     ),
     watch: {
+      ...opts.config.utoopack?.watch,
       enable: true,
     },
     dev: true,

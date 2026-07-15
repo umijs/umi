@@ -1,9 +1,16 @@
 import type { IOpts as IConfigOpts } from '@umijs/bundler-webpack';
 import type { ConfigComplete } from '@utoo/pack';
 
+export type IUtoopackWatchConfig = {
+  pollIntervalMs?: number;
+  ignored?: string[];
+  nodeModulesRegexes?: string[];
+};
+
 export type IUtoopackUserConfig = ConfigComplete & {
   babelLoader?: boolean;
   root?: string;
+  watch?: IUtoopackWatchConfig;
 };
 
 export type IOpts = {

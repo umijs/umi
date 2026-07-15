@@ -52,6 +52,13 @@ export default (api: IApi) => {
           zod
             .object({
               root: zod.string(),
+              watch: zod
+                .object({
+                  pollIntervalMs: zod.number(),
+                  ignored: zod.array(zod.string()),
+                  nodeModulesRegexes: zod.array(zod.string()),
+                })
+                .partial(),
             })
             .partial(),
         ]);
