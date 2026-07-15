@@ -10,8 +10,8 @@ import {
   extname,
   isAbsolute,
   join,
-  relative,
   resolve as pathResolve,
+  relative,
 } from 'path';
 import type { IOpts } from './types';
 
@@ -1085,7 +1085,7 @@ export async function getDevUtooPackConfig(
           emotion,
         },
         define,
-        stats: true,
+        stats: false,
         // Windows persistent cache restore is currently unstable in utoopack dev.
         persistentCaching: getDefaultPersistentCaching('development'),
         nodePolyfill: true,
