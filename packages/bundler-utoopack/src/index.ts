@@ -2,6 +2,7 @@ import { createHttpsServer, createProxy } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-utils/compiled/http-proxy-middleware';
 import { lodash } from '@umijs/utils';
+import type { DevServerReadyContext } from '@utoo/pack';
 import fs from 'fs';
 import http from 'http';
 import path from 'path';
@@ -24,6 +25,38 @@ export function isUtoopackProxyStartupError(error: any, utooServePort: number) {
     Number(error?.port) === utooServePort &&
     (!error?.address || error.address === '127.0.0.1')
   );
+}
+
+function addStatsCompatibility(stats: any) {
+  stats.hasErrors = () => false;
+  stats.toJson = () => stats;
+  stats.toString = () => {};
+  stats.compilation = {
+    ...stats,
+    assets: (stats.assets || []).reduce(
+      (acc: Record<string, any>, cur: any) =>
+        Object.assign(acc, { [cur.name]: cur }),
+      {} as Record<string, any>,
+    ),
+  };
+  return stats;
+}
+
+export function createDevStatsFromClientPaths(
+  clientPaths: string[] | undefined,
+  entryNames: string[],
+) {
+  const assets = Array.from(new Set(clientPaths ?? [])).map((name) => ({
+    name,
+  }));
+  return addStatsCompatibility({
+    assets,
+    chunks: [],
+    modules: [],
+    entrypoints: Object.fromEntries(
+      entryNames.map((entryName) => [entryName, { assets, chunks: [] }]),
+    ),
+  });
 }
 
 function getUtoopackRootDir(
@@ -334,19 +367,12 @@ export async function dev(opts: IDevOpts) {
       );
     }
 
-    stats.hasErrors = () => false;
-    stats.toJson = () => stats;
-    stats.toString = () => {};
-    stats.compilation = {
-      ...stats,
-      assets: stats.assets.reduce(
-        (acc: Record<string, any>, cur: any) =>
-          Object.assign(acc, { [cur.name]: cur }),
-        {} as Record<string, any>,
-      ),
-    };
-    return stats;
+    return addStatsCompatibility(stats);
   };
+
+  let clientPaths: string[] = [];
+  const shouldReadFullStats =
+    Boolean(process.env.ANALYZE) || Boolean(utooPackConfig.config.stats);
 
   try {
     await Promise.all([
@@ -355,11 +381,16 @@ export async function dev(opts: IDevOpts) {
         port: utooServePort,
         hostname: '127.0.0.1',
         logServerInfo: false,
+        onReady(context: DevServerReadyContext) {
+          clientPaths = context.clientPaths ?? [];
+        },
       }),
     ]);
 
     const time = Date.now() - devStartTime;
-    const stats = createStatsObject();
+    const stats = shouldReadFullStats
+      ? createStatsObject()
+      : createDevStatsFromClientPaths(clientPaths, Object.keys(opts.entry));
     await onDevCompileDone?.({
       stats,
       time,

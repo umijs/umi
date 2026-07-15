@@ -79,6 +79,30 @@ afterEach(() => {
   });
 });
 
+describe('utoopack dev stats config', () => {
+  test('disables full stats by default', async () => {
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    expect(config.config.stats).toBe(false);
+  });
+
+  test('allows users to enable full stats explicitly', async () => {
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          stats: true,
+        },
+      },
+    } as any);
+
+    expect(config.config.stats).toBe(true);
+  });
+});
+
 describe('utoopack mdx config', () => {
   test('allows user css output filename override', async () => {
     const prodConfig = await getProdUtooPackConfig({
