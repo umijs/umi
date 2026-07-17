@@ -179,7 +179,7 @@ Load (or unload) child applications through the `<MicroApp />` component. When t
 Now, if we want to introduce child application `app1` in a certain page of the parent application, we can write the code as follows:
 
 ```tsx
-import { MicroApp } from 'umi';
+import { MicroApp } from ''@umijs/max'';
 
 export default function Page() {
   return <MicroApp name="app1" />;
@@ -191,7 +191,7 @@ When using this method to introduce child applications, the routing of parent an
 If the parent application's route includes a prefix, you can configure the `base` attribute to ensure that the routing of the parent and child applications correspond correctly. For example, when the parent application's route is `/prefix/router-path/some/page`, if we want the child application's route to be `/some/page`, we can modify the code as follows:
 
 ```tsx
-import { MicroApp } from 'umi';
+import { MicroApp } from ''@umijs/max'';
 
 export default function Page() {
   return <MicroApp name="app1" base="/prefix/router-path" />;
@@ -210,7 +210,7 @@ The `<MicroAppWithMemoHistory />` component is a variant of the `<MicroApp />` c
 Now, if we want to introduce child application `app2` inside a certain component of the parent application, with the route of the child application being `/some/page`, we can write the code as follows:
 
 ```tsx
-import { MicroAppWithMemoHistory } from 'umi';
+import { MicroAppWithMemoHistory } from ''@umijs/max'';
 
 export default function Page() {
   return <MicroAppWithMemoHistory name="app2" url="/some/page" />;
@@ -223,7 +223,7 @@ If child applications are introduced **through the routing binding method**, ins
 
 ```tsx
 // In app1
-import { MicroAppLink } from 'umi';
+import { MicroAppLink } from ''@umijs/max'';
 
 export default function Page() {
   return (
@@ -241,7 +241,7 @@ In the above example, after clicking the button, the parent application's routin
 
 ```tsx
 // In app2
-import { MicroAppLink } from 'umi';
+import { MicroAppLink } from ''@umijs/max'';
 
 export default function Page() {
   return (
@@ -259,7 +259,7 @@ You can also jump from the child application to the specified route of the paren
 
 ```tsx
 // In the child application
-import { MicroAppLink } from 'umi';
+import { MicroAppLink } from ''@umijs/max'';
 
 export default function Page() {
   return (
@@ -294,7 +294,7 @@ You can refresh the child application manually like this:
 
 ```tsx
 import { useRef } from 'react';
-import { MicroApp } from 'umi';
+import { MicroApp } from ''@umijs/max'';
 
 export default function Page() {
   const microAppRef = useRef();
@@ -385,7 +385,7 @@ If child applications are introduced through the component method, directly pass
 
 ```tsx
 import { useState } from 'react';
-import { MicroApp } from 'umi';
+import { MicroApp } from ''@umijs/max'';
 
 export default function Page() {
   const [globalState, setGlobalState] = useState<any>({
@@ -407,7 +407,7 @@ export default function Page() {
 The child application will automatically generate a global Model, whose namespace is `@@qiankunStateFromMaster`. Through the `useModel()` method, child applications are allowed to get and consume the data passed by the parent application in any component, as follows:
 
 ```tsx
-import { useModel } from 'umi';
+import { useModel } from ''@umijs/max'';
 
 export default function Page() {
   const masterProps = useModel('@@qiankunStateFromMaster');
@@ -418,7 +418,7 @@ export default function Page() {
 Or you can obtain and consume the data passed by the parent application through the higher-order method `connectMaster()`, as shown below:
 
 ```tsx
-import { connectMaster } from 'umi';
+import { connectMaster } from ''@umijs/max'';
 
 function MyPage(props) {
   return <div>{JSON.stringify(props)}</div>;
