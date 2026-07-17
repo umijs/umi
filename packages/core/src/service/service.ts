@@ -697,6 +697,7 @@ export interface IServicePluginAPI {
 
   onCheck: IEvent<null>;
   onStart: IEvent<null>;
+  onExit: IEvent<null>;
   modifyAppData: IModify<typeof Service.prototype.appData, null>;
   modifyConfig: IModify<
     typeof Service.prototype.config,

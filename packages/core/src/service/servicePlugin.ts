@@ -4,6 +4,7 @@ export default (api: PluginAPI) => {
   [
     'onCheck',
     'onStart',
+    'onExit',
     'modifyAppData',
     'modifyConfig',
     'modifyDefaultConfig',
