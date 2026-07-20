@@ -13,6 +13,7 @@ import type {
 } from '../../compiled/vite';
 import { createServer as createViteServer } from '../../compiled/vite';
 import type { IConfig } from '../types';
+import middlewaresPlugin from './plugins/middlewares';
 import pluginOnHotUpdate from './plugins/onHotUpdate';
 
 interface IOpts {
@@ -36,7 +37,7 @@ interface IOpts {
   onDevCompileDone?: (args: {
     time: number;
     isFirstCompile: boolean;
-    stats: HmrContext['modules'] | DepOptimizationMetadata;
+    stats: HmrContext['modules'] | DepOptimizationMetadata | undefined;
   }) => Promise<void> | void;
   onBeforeMiddleware?: Function;
 }
@@ -61,10 +62,14 @@ export async function createServer(opts: IOpts): Promise<any> {
 
   const vite = await createViteServer({
     ...viteConfig,
-    // use `handleHotUpdate` vite hook to workaround `onDevCompileDone` umi hook
-    ...(typeof onDevCompileDone === 'function'
-      ? {
-          plugins: viteConfig.plugins!.concat([
+    plugins: [
+      ...(viteConfig.plugins || []),
+      ...(opts.afterMiddlewares?.length
+        ? [middlewaresPlugin(opts.afterMiddlewares)]
+        : []),
+      // use `handleHotUpdate` vite hook to workaround `onDevCompileDone` umi hook
+      ...(typeof onDevCompileDone === 'function'
+        ? [
             pluginOnHotUpdate(async (modules) => {
               await onDevCompileDone({
                 time: 0,
@@ -72,9 +77,9 @@ export async function createServer(opts: IOpts): Promise<any> {
                 stats: modules,
               });
             }),
-          ]),
-        }
-      : {}),
+          ]
+        : []),
+    ],
     server: { ...viteConfigServer, middlewareMode: true },
   });
 
@@ -88,28 +93,6 @@ export async function createServer(opts: IOpts): Promise<any> {
   // proxy
   if (userConfig.proxy) {
     createProxy(userConfig.proxy, app);
-  }
-
-  // after middlewares, insert before vite spaFallbackMiddleware
-  // refer: https://github.com/vitejs/vite/blob/2c586165d7bc4b60f8bcf1f3b462b97a72cce58c/packages/vite/src/node/server/index.ts#L508
-  if (opts.afterMiddlewares?.length) {
-    vite.middlewares.stack.some((s, i) => {
-      if ((s.handle as Function).name === 'viteSpaFallbackMiddleware') {
-        const afterStacks: typeof vite.middlewares.stack =
-          opts.afterMiddlewares!.map((m) => ({
-            route: '',
-            // TODO: FIXME
-            // see: https://github.com/umijs/umi/commit/34d4e4e26a20ff5c7393eab5d3db363cca541379#diff-3a996a9e7a2f94fc8f23c6efed1447eed9567e36ed622bd8547a58e5415087f7R164
-            handle: app.use(m.toString().includes(`{ compiler }`) ? m({}) : m),
-          }));
-
-        vite.middlewares.stack.splice(i, 0, ...afterStacks);
-
-        return true;
-      }
-
-      return false;
-    });
   }
 
   // use vite via middleware way
@@ -136,8 +119,7 @@ export async function createServer(opts: IOpts): Promise<any> {
       await onDevCompileDone({
         time: +new Date() - startTms,
         isFirstCompile: true,
-        // @ts-ignore
-        stats: vite._optimizeDepsMetadata,
+        stats: vite.environments.client.depsOptimizer?.metadata,
       });
     }
 
