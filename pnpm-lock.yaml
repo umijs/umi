@@ -2053,8 +2053,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: 1.4.27
-        version: 1.4.27(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
+        specifier: 1.4.28
+        version: 1.4.28(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -5930,7 +5930,6 @@ packages:
       source-map: 0.5.7
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@babel/eslint-parser@7.19.1(@babel/core@7.20.12)(eslint@7.32.0):
     resolution: {integrity: sha512-AqNf2QWt1rtu2/1rLswy6CDP7H9Oh3mMhk177Y67Rg8d7RD9WfOLLv8CGn6tisFvS2htm86yIe1yLF6I1UDaGQ==}
@@ -8162,7 +8161,6 @@ packages:
     dependencies:
       '@babel/core': 7.4.5
       '@babel/helper-plugin-utils': 7.22.5
-    dev: true
 
   /@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.20.12):
     resolution: {integrity: sha512-d8waShlpFDinQ5MtvGU9xDAOzKH47+FFoney2baFIoMr952hKOLp1HR7VszoZvOsV/4+RRszNY7D17ba0te0ig==}
@@ -11034,7 +11032,7 @@ packages:
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.23.0)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.23.6)
+      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.20.12)
     dev: true
 
   /@babel/plugin-transform-typescript@7.22.5(@babel/core@7.20.12):
@@ -21389,8 +21387,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-arm64@1.4.27:
-    resolution: {integrity: sha512-HpsjVFc9wBJcO48YZqxi0/DSz5jez/NsrzmTSwLpRniNLVvw+pUgPRb5dyHeMbfIQ4dJgNDMw/KwLfRzYhgRzA==}
+  /@utoo/pack-darwin-arm64@1.4.28:
+    resolution: {integrity: sha512-xF3n9Llo9RZkSantG+MKh6pLc/+r5WNPVxpnRNjWH3ayZQLZRB4bQC0F8I2t5CiT/JhhTlMaxcmk8+A+8Ip9RQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [darwin]
@@ -21416,8 +21414,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-x64@1.4.27:
-    resolution: {integrity: sha512-E5AIxJzxXmNebmxLU+k8T88Zaa/xRY4c1K/i791bo/72kW+fBSgoE3o5Pt2wLA97pjWFTES9UhSIh2wcJQthkA==}
+  /@utoo/pack-darwin-x64@1.4.28:
+    resolution: {integrity: sha512-BpDONyLYvyK5RrCrQOADJxzhIuNZUbURX2FsiqSOQVCU4GLkO913nb3+VFmNqRhSqAz8p1a8L3GumPGgrDUBCw==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [darwin]
@@ -21443,8 +21441,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-gnu@1.4.27:
-    resolution: {integrity: sha512-Et6/G3jX1KX7HvnRd9QxCviHa9eZTQ9zLtRAAMd2MMt5GHx/2iE6SM99L8qF8RCISXv8rVw+FJpaKSt4y4WCeg==}
+  /@utoo/pack-linux-arm64-gnu@1.4.28:
+    resolution: {integrity: sha512-RIL1aiolnR7zuyVLUcaoucp7Q8WMpYbP94wc+Ok+u1WT8qDRDMCfrkIEGUk/QigPnuv0DMzjWwokWb/41SaQvQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21470,8 +21468,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-musl@1.4.27:
-    resolution: {integrity: sha512-jMQtdFc7Wco6uBn9IW9Y54uiO5YR4Njw/jc5Ndd81eEE7guYv+GubHlJQSoie6Ogi9RP8G1Em0lqmwC4zl13vQ==}
+  /@utoo/pack-linux-arm64-musl@1.4.28:
+    resolution: {integrity: sha512-4ni+qDvr+Y1zNjeIMPY0yd60C5pHaqAQRrv7Lea0Gu+bCJAZThKh4XSVl/rGi42BKKpl9lYVmTFAJBmWKNpZwg==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21497,8 +21495,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-gnu@1.4.27:
-    resolution: {integrity: sha512-TgQQC7LMXRbB0qpFpa/ByKTCkaZZSl6y1qtgNE4WjuYL97Ug1/JrlHTqvvddnPsJCUwdBEbxdb5vAPK7JuQsag==}
+  /@utoo/pack-linux-x64-gnu@1.4.28:
+    resolution: {integrity: sha512-xKPwTKWB+ZaxfibWrUH+RHJhfGIy2fqoU3C67TdpVPOg5dl8kBXPvVCljMp5zhWgFe/IWCGf9tlG5ljFLWv6OQ==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21524,8 +21522,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-musl@1.4.27:
-    resolution: {integrity: sha512-MC9zs3QMNJnquh3ByxS9pkijxbQCbwHfkPJUJR14Bisf8FNpC7HbwTAF5WU4KT6Y3yBMySfq7KagyfjlHwfP9w==}
+  /@utoo/pack-linux-x64-musl@1.4.28:
+    resolution: {integrity: sha512-W94HBXVJw/RVD/d1Tmgm+7DZ2b+DsWCCsn/ibFAdRCsHM6BWscW4F3CS2NFETUF5Ge116x1gdTK2w7fE6J9U5g==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21549,8 +21547,8 @@ packages:
       picocolors: 1.1.1
     dev: true
 
-  /@utoo/pack-shared@1.4.27:
-    resolution: {integrity: sha512-itGbKOJvWNXKEwOG3OfXQL1XHxLsk2QXVOy84VRFWaLcI8bmXSZDQe77sirzn5aGFRDNSHiGTtDOOH4adbP/kg==}
+  /@utoo/pack-shared@1.4.28:
+    resolution: {integrity: sha512-Vu82vsWM4OQcSLbGMO3LnUBaNKYLg9RO6f+KCTk9NxsIq9S/cNVpldCNfST6tW0NJUo743HvqYm2I4zZxwjiqw==}
     engines: {node: '>= 20'}
     dependencies:
       '@babel/code-frame': 7.22.5
@@ -21575,8 +21573,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-win32-x64-msvc@1.4.27:
-    resolution: {integrity: sha512-Z6/hE9xd/cXx2ttIIaZ16BLoKlEVQxvcnHEqUeobBtcZ6Ww846PJ8+fuDmd5xczqvj3iIqWl7YdLZ3G7AWyVpw==}
+  /@utoo/pack-win32-x64-msvc@1.4.28:
+    resolution: {integrity: sha512-PNRy7CBxkQZnbjRK0uHfopN9zozGY1+GSh6BpWhKzCCBwof20Udm305Hq6ZpQNrteHuuxJEQTsT6xgQfEfliog==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [win32]
@@ -21676,8 +21674,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@utoo/pack@1.4.27(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
-    resolution: {integrity: sha512-zSBdpSDZlI6IFxSuH06TsMhn/wg1H0x6V18LsCHzH+JcH2SiAkVlHT+7CX7btc5SO6fPML84Wcl49i3M2cy9FQ==}
+  /@utoo/pack@1.4.28(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
+    resolution: {integrity: sha512-NOerEk//3PvykdejTlV9+Fm7WSRxuAuH4ODYBsAR1+RJccLP1r3D1Dyjfu+mYXR7TrcoVjQVPKx8xo+XkrXskw==}
     engines: {node: '>= 20'}
     peerDependencies:
       less: ^4.0.0
@@ -21695,7 +21693,7 @@ packages:
       '@hono/node-server': 1.19.11(hono@4.12.7)
       '@hono/node-ws': 1.3.0(@hono/node-server@1.19.11)(hono@4.12.7)
       '@swc/helpers': 0.5.15
-      '@utoo/pack-shared': 1.4.27
+      '@utoo/pack-shared': 1.4.28
       domparser-rs: 0.0.7
       find-up: 4.1.0
       get-port: 5.1.1
@@ -21712,13 +21710,13 @@ packages:
       send: 0.17.1
       ws: 8.18.3
     optionalDependencies:
-      '@utoo/pack-darwin-arm64': 1.4.27
-      '@utoo/pack-darwin-x64': 1.4.27
-      '@utoo/pack-linux-arm64-gnu': 1.4.27
-      '@utoo/pack-linux-arm64-musl': 1.4.27
-      '@utoo/pack-linux-x64-gnu': 1.4.27
-      '@utoo/pack-linux-x64-musl': 1.4.27
-      '@utoo/pack-win32-x64-msvc': 1.4.27
+      '@utoo/pack-darwin-arm64': 1.4.28
+      '@utoo/pack-darwin-x64': 1.4.28
+      '@utoo/pack-linux-arm64-gnu': 1.4.28
+      '@utoo/pack-linux-arm64-musl': 1.4.28
+      '@utoo/pack-linux-x64-gnu': 1.4.28
+      '@utoo/pack-linux-x64-musl': 1.4.28
+      '@utoo/pack-win32-x64-msvc': 1.4.28
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -24368,7 +24366,7 @@ packages:
     dependencies:
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-module-imports': 7.22.15
-      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.23.6)
+      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.4.5)
       lodash: 4.17.21
       picomatch: 2.3.1
       styled-components: 6.1.1(react-dom@18.3.1)(react@18.3.1)
