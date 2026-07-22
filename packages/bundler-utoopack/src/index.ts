@@ -247,7 +247,7 @@ export async function dev(opts: IDevOpts) {
   (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
 
   // proxy ws to utoopack server
-  const wsProxy = createProxyMiddleware({
+  const wsProxy = createProxyMiddleware('/turbopack-hmr', {
     target: `http://127.0.0.1:${utooServePort}`,
     ws: true,
     logLevel: 'silent',

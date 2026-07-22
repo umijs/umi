@@ -1768,6 +1768,12 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
 
+  examples/with-utoopack-websocket-proxy:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
   examples/with-valtio:
     dependencies:
       '@umijs/plugins':
