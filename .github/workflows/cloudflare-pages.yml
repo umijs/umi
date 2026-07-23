@@ -1,0 +1,50 @@
+name: Deploy Umi v3 docs to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - 3.x
+  workflow_dispatch:
+
+concurrency:
+  group: cloudflare-pages-umi-v3
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 14 for the legacy build
+        uses: actions/setup-node@v4
+        with:
+          node-version: 14.21.3
+
+      - name: Build documentation
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+        run: |
+          yarn --version
+          yarn install --ignore-engines --frozen-lockfile
+          yarn build
+          yarn docs:build
+
+      - name: Use Node.js 22 for deployment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=umi-v3 --branch=3.x
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
