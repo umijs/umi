@@ -2059,8 +2059,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: 1.4.28
-        version: 1.4.28(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
+        specifier: 1.4.29
+        version: 1.4.29(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -21393,8 +21393,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-arm64@1.4.28:
-    resolution: {integrity: sha512-xF3n9Llo9RZkSantG+MKh6pLc/+r5WNPVxpnRNjWH3ayZQLZRB4bQC0F8I2t5CiT/JhhTlMaxcmk8+A+8Ip9RQ==}
+  /@utoo/pack-darwin-arm64@1.4.29:
+    resolution: {integrity: sha512-M9PVJ5s12srO87cVqCZGxF38jv3sWvccg7/C6tCYkzkpUvY4XUb/h2CH2d5MZvg354J6t5HcQUA5o54SbdDGGw==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [darwin]
@@ -21420,8 +21420,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-x64@1.4.28:
-    resolution: {integrity: sha512-BpDONyLYvyK5RrCrQOADJxzhIuNZUbURX2FsiqSOQVCU4GLkO913nb3+VFmNqRhSqAz8p1a8L3GumPGgrDUBCw==}
+  /@utoo/pack-darwin-x64@1.4.29:
+    resolution: {integrity: sha512-ofccGaUtFYrz9q2jLwPdCt+MhggPlk7pIIZ6HgUFENAfGVrBnkCE4fq460IRytWWfjisCys7LXTgAhoXAD7zwA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [darwin]
@@ -21447,8 +21447,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-gnu@1.4.28:
-    resolution: {integrity: sha512-RIL1aiolnR7zuyVLUcaoucp7Q8WMpYbP94wc+Ok+u1WT8qDRDMCfrkIEGUk/QigPnuv0DMzjWwokWb/41SaQvQ==}
+  /@utoo/pack-linux-arm64-gnu@1.4.29:
+    resolution: {integrity: sha512-CaHnlEhNF85a+GmEVJpBVMzqDjY4TJ2h/1ngMb3uJDiwQhI7KCQ9Qg9Yo41gLGc0D7DgGZTlk9z0C0d1cKhLaw==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21474,8 +21474,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-musl@1.4.28:
-    resolution: {integrity: sha512-4ni+qDvr+Y1zNjeIMPY0yd60C5pHaqAQRrv7Lea0Gu+bCJAZThKh4XSVl/rGi42BKKpl9lYVmTFAJBmWKNpZwg==}
+  /@utoo/pack-linux-arm64-musl@1.4.29:
+    resolution: {integrity: sha512-Cb2u0erGFIev+nnkdPxspPw+Iv71ql2IkNPFU/3JSiyLnPgBWEF9yiP2anGVhhyAI4th5ObDpc3P0NnewvAtBw==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -21501,8 +21501,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-gnu@1.4.28:
-    resolution: {integrity: sha512-xKPwTKWB+ZaxfibWrUH+RHJhfGIy2fqoU3C67TdpVPOg5dl8kBXPvVCljMp5zhWgFe/IWCGf9tlG5ljFLWv6OQ==}
+  /@utoo/pack-linux-x64-gnu@1.4.29:
+    resolution: {integrity: sha512-ROk4ae5bZuEmnyBL5RCueWmLnAuHUy/FnpF14JH69Lysxp9qShh/khEJsy1fLk4lZ0zP7HZiZ2s3V2vDbUKjcQ==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21528,8 +21528,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-musl@1.4.28:
-    resolution: {integrity: sha512-W94HBXVJw/RVD/d1Tmgm+7DZ2b+DsWCCsn/ibFAdRCsHM6BWscW4F3CS2NFETUF5Ge116x1gdTK2w7fE6J9U5g==}
+  /@utoo/pack-linux-x64-musl@1.4.29:
+    resolution: {integrity: sha512-YYuS2u9Rk/j/ZZpbFUT39yjmETyLT7UArxZUkXBWK3dT6C9976IJzCZAlhvhV3BAcUO1mNHoPJ1RanME+536EA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -21553,8 +21553,8 @@ packages:
       picocolors: 1.1.1
     dev: true
 
-  /@utoo/pack-shared@1.4.28:
-    resolution: {integrity: sha512-Vu82vsWM4OQcSLbGMO3LnUBaNKYLg9RO6f+KCTk9NxsIq9S/cNVpldCNfST6tW0NJUo743HvqYm2I4zZxwjiqw==}
+  /@utoo/pack-shared@1.4.29:
+    resolution: {integrity: sha512-8mWfaH/vVmFTaZXRmeh8a7Es15tA0mKsEgrpg04Zwv0M6D12A7CLKd+S6EjXeW431Bv96a1MMi+PSb1LbNCxLA==}
     engines: {node: '>= 20'}
     dependencies:
       '@babel/code-frame': 7.22.5
@@ -21579,8 +21579,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-win32-x64-msvc@1.4.28:
-    resolution: {integrity: sha512-PNRy7CBxkQZnbjRK0uHfopN9zozGY1+GSh6BpWhKzCCBwof20Udm305Hq6ZpQNrteHuuxJEQTsT6xgQfEfliog==}
+  /@utoo/pack-win32-x64-msvc@1.4.29:
+    resolution: {integrity: sha512-hnHimJ2NUASbTVfMtgLh+wWVq3bUGl2BHjEWDrxGynm9qeGH/2C41JiucZtLdp+oqrVv8Tv4SXXYc0npXMifJA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [win32]
@@ -21680,8 +21680,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@utoo/pack@1.4.28(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
-    resolution: {integrity: sha512-NOerEk//3PvykdejTlV9+Fm7WSRxuAuH4ODYBsAR1+RJccLP1r3D1Dyjfu+mYXR7TrcoVjQVPKx8xo+XkrXskw==}
+  /@utoo/pack@1.4.29(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
+    resolution: {integrity: sha512-2zj7yoTFufhja5lfn3UmF/UO8Lm+w1tQQBUbugppCAl+lF2Kz4PQ//1gD791iHaWm+ca0IFkB3zF4tUrrjeNSg==}
     engines: {node: '>= 20'}
     peerDependencies:
       less: ^4.0.0
@@ -21699,7 +21699,7 @@ packages:
       '@hono/node-server': 1.19.11(hono@4.12.7)
       '@hono/node-ws': 1.3.0(@hono/node-server@1.19.11)(hono@4.12.7)
       '@swc/helpers': 0.5.15
-      '@utoo/pack-shared': 1.4.28
+      '@utoo/pack-shared': 1.4.29
       domparser-rs: 0.0.7
       find-up: 4.1.0
       get-port: 5.1.1
@@ -21716,13 +21716,13 @@ packages:
       send: 0.17.1
       ws: 8.18.3
     optionalDependencies:
-      '@utoo/pack-darwin-arm64': 1.4.28
-      '@utoo/pack-darwin-x64': 1.4.28
-      '@utoo/pack-linux-arm64-gnu': 1.4.28
-      '@utoo/pack-linux-arm64-musl': 1.4.28
-      '@utoo/pack-linux-x64-gnu': 1.4.28
-      '@utoo/pack-linux-x64-musl': 1.4.28
-      '@utoo/pack-win32-x64-msvc': 1.4.28
+      '@utoo/pack-darwin-arm64': 1.4.29
+      '@utoo/pack-darwin-x64': 1.4.29
+      '@utoo/pack-linux-arm64-gnu': 1.4.29
+      '@utoo/pack-linux-arm64-musl': 1.4.29
+      '@utoo/pack-linux-x64-gnu': 1.4.29
+      '@utoo/pack-linux-x64-musl': 1.4.29
+      '@utoo/pack-win32-x64-msvc': 1.4.29
     transitivePeerDependencies:
       - bufferutil
       - supports-color
