@@ -50,5 +50,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: npm
           command: pages deploy dist --project-name=umi-v3 --branch=3.x
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
