@@ -20,7 +20,7 @@ jobs:
         os: [ubuntu-latest, macos-13, windows-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Use Node.js ${{ matrix.node_version }}
@@ -29,7 +29,7 @@ jobs:
           node-version: ${{ matrix.node_version }}
       - name: restore lerna
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             node_modules

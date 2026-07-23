@@ -1,6 +1,9 @@
 name: Deploy Umi v3 docs to Cloudflare Pages
 
 on:
+  pull_request:
+    branches:
+      - 3.x
   push:
     branches:
       - 3.x
@@ -42,6 +45,7 @@ jobs:
           node-version: 22
 
       - name: Deploy to Cloudflare Pages
+        if: github.event_name != 'pull_request'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
