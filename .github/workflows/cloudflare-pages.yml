@@ -44,12 +44,22 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install Wrangler outside the workspace
+        if: github.event_name != 'pull_request'
+        run: |
+          npm install \
+            --prefix "$RUNNER_TEMP/wrangler" \
+            --no-save \
+            --no-audit \
+            --no-fund \
+            wrangler@3.90.0
+
       - name: Deploy to Cloudflare Pages
         if: github.event_name != 'pull_request'
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          packageManager: npm
-          command: pages deploy dist --project-name=umi-v3 --branch=3.x
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          "$RUNNER_TEMP/wrangler/node_modules/.bin/wrangler" pages deploy dist \
+            --project-name=umi-v3 \
+            --branch=3.x
