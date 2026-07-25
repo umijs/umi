@@ -50,7 +50,11 @@ module.exports = {
       writeFileSync(
         join(api.cwd, 'tailwind.css'),
         `
-@tailwind base;
+@layer tailwind-base, antd;
+
+@layer tailwind-base {
+  @tailwind base;
+}
 @tailwind components;
 @tailwind utilities;
 `.trimStart(),
