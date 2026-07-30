@@ -1,4 +1,11 @@
+import { logger, semver } from '@umijs/utils';
 import type { IApi } from '../../types';
+
+export const SUPPORTED_NODE_VERSION = '^20.19.0 || >=22.12.0';
+
+export function isNodeVersionSupported(version: string): boolean {
+  return semver.satisfies(version, SUPPORTED_NODE_VERSION);
+}
 
 export default (api: IApi) => {
   api.describe({
@@ -9,6 +16,15 @@ export default (api: IApi) => {
       },
     },
     enableBy: api.EnableBy.config,
+  });
+
+  api.onCheck(() => {
+    if (!isNodeVersionSupported(process.version)) {
+      logger.error(
+        `Node.js ${SUPPORTED_NODE_VERSION} is required when using bundler-vite with Vite 7. Current version: ${process.version}.`,
+      );
+      process.exit(1);
+    }
   });
 
   api.modifyAppData((memo) => {
