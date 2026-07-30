@@ -429,6 +429,14 @@ export default { ${icons.join(', ')} };
       `,
     });
 
+    // 收集 route 配置中带命名空间的图标，提供给 icons 插件的 esbuild 扫描器
+    const routeIcons = Object.values(api.appData.routes || {})
+      .filter(
+        (route: any) =>
+          typeof route.icon === 'string' && route.icon.includes(':'),
+      )
+      .map((route: any) => route.icon);
+
     // 是否启用了 icons 功能
     const isIconsFeatureEnable = api.isPluginEnable('icons');
     // runtime.tsx
@@ -440,6 +448,11 @@ import icons from './icons';
 ${
   isIconsFeatureEnable
     ? `import { Icon, getIconComponent } from '@umijs/max';`
+    : ''
+}
+${
+  isIconsFeatureEnable && routeIcons.length
+    ? routeIcons.map((icon) => `<Icon icon="${icon}" />;`).join('\n')
     : ''
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.6.79",
+  "version": "4.6.83",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -54,7 +54,7 @@
     "@umijs/lint": "workspace:*"
   },
   "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+    "node": ">=14"
   },
   "publishConfig": {
     "access": "public"

@@ -1768,6 +1768,12 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
 
+  examples/with-utoopack-websocket-proxy:
+    dependencies:
+      umi:
+        specifier: workspace:*
+        version: link:../../packages/umi
+
   examples/with-valtio:
     dependencies:
       '@umijs/plugins':
@@ -2053,8 +2059,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: 1.4.27
-        version: 1.4.27(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
+        specifier: 1.4.31
+        version: 1.4.31(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -5948,6 +5954,7 @@ packages:
       source-map: 0.5.7
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@babel/eslint-parser@7.19.1(@babel/core@7.20.12)(eslint@7.32.0):
     resolution: {integrity: sha512-AqNf2QWt1rtu2/1rLswy6CDP7H9Oh3mMhk177Y67Rg8d7RD9WfOLLv8CGn6tisFvS2htm86yIe1yLF6I1UDaGQ==}
@@ -8270,6 +8277,7 @@ packages:
     dependencies:
       '@babel/core': 7.4.5
       '@babel/helper-plugin-utils': 7.22.5
+    dev: true
 
   /@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7):
     resolution: {integrity: sha512-TSu8+mHCoEaaCDEZ0I3+6mvTBYR4PCxQwf2z9/r5Tbztv6NaLR3B9thGTTxX2WGuGHJqRiAbKPeGTJ5XWXVg6A==}
@@ -11160,7 +11168,7 @@ packages:
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-create-class-features-plugin': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.20.12)
+      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.23.6)
     dev: true
 
   /@babel/plugin-transform-typescript@7.22.5(@babel/core@7.20.12):
@@ -21683,7 +21691,7 @@ packages:
       '@jest/types': 27.5.1
       '@umijs/bundler-utils': 4.6.74
       '@umijs/utils': 4.6.74
-      babel-jest: 29.7.0
+      babel-jest: 29.7.0(@babel/core@7.23.6)
       esbuild: 0.21.4
       identity-obj-proxy: 3.0.0
       isomorphic-unfetch: 4.0.2
@@ -21959,8 +21967,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-arm64@1.4.27:
-    resolution: {integrity: sha512-HpsjVFc9wBJcO48YZqxi0/DSz5jez/NsrzmTSwLpRniNLVvw+pUgPRb5dyHeMbfIQ4dJgNDMw/KwLfRzYhgRzA==}
+  /@utoo/pack-darwin-arm64@1.4.31:
+    resolution: {integrity: sha512-A9J4TvqfyPSKml5ck/73O/f0p3ycGAzTADvX6nHQFF0+njzYfRdbnnxz+Nt6L9eKE7n83K/Jkk/6QU1HCfA/5Q==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [darwin]
@@ -21986,8 +21994,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-x64@1.4.27:
-    resolution: {integrity: sha512-E5AIxJzxXmNebmxLU+k8T88Zaa/xRY4c1K/i791bo/72kW+fBSgoE3o5Pt2wLA97pjWFTES9UhSIh2wcJQthkA==}
+  /@utoo/pack-darwin-x64@1.4.31:
+    resolution: {integrity: sha512-DPsMKgDNbpSfjB5/4hht/yQI5v3VWi+VPZUKhKs9eRCSSArtF9qT0oZnEaRmns1GNeZ79+HkgBTP0izEqOdouQ==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [darwin]
@@ -22013,8 +22021,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-gnu@1.4.27:
-    resolution: {integrity: sha512-Et6/G3jX1KX7HvnRd9QxCviHa9eZTQ9zLtRAAMd2MMt5GHx/2iE6SM99L8qF8RCISXv8rVw+FJpaKSt4y4WCeg==}
+  /@utoo/pack-linux-arm64-gnu@1.4.31:
+    resolution: {integrity: sha512-kSCrr1YcDPE1GocbgglIZPnqfmXYQ12sJ8OJBK98kQiYmNQY0lELPHYpKrQKIiz0fAjfLDeFxRyQYo/MjDhUkQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -22040,8 +22048,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-musl@1.4.27:
-    resolution: {integrity: sha512-jMQtdFc7Wco6uBn9IW9Y54uiO5YR4Njw/jc5Ndd81eEE7guYv+GubHlJQSoie6Ogi9RP8G1Em0lqmwC4zl13vQ==}
+  /@utoo/pack-linux-arm64-musl@1.4.31:
+    resolution: {integrity: sha512-Q1vF2eWKlg+6ip/JUBwoK0I0rm0NsBPRjnb1pA9srjvRQRBwZ/twvVoC0jzVvr/iCaYyJVFRWdB4BzSr+NfywA==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -22067,8 +22075,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-gnu@1.4.27:
-    resolution: {integrity: sha512-TgQQC7LMXRbB0qpFpa/ByKTCkaZZSl6y1qtgNE4WjuYL97Ug1/JrlHTqvvddnPsJCUwdBEbxdb5vAPK7JuQsag==}
+  /@utoo/pack-linux-x64-gnu@1.4.31:
+    resolution: {integrity: sha512-8cQhqbPM5YWlNR0rrLUU52QHQo/LYYTmgzHneLrfdYSICrwfZqpTJPx4T3mG2/kH8PHiNWT6KP2DjZytZvAi2A==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -22094,8 +22102,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-musl@1.4.27:
-    resolution: {integrity: sha512-MC9zs3QMNJnquh3ByxS9pkijxbQCbwHfkPJUJR14Bisf8FNpC7HbwTAF5WU4KT6Y3yBMySfq7KagyfjlHwfP9w==}
+  /@utoo/pack-linux-x64-musl@1.4.31:
+    resolution: {integrity: sha512-X4rUCZbuKSrtarrLj2hsYtizjga0qzaFbmRs/0+ynWWNuG3kSjTjatU+7lyPSZIIRYV+lW6IMpVonD+gs0clFQ==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -22119,8 +22127,8 @@ packages:
       picocolors: 1.1.1
     dev: true
 
-  /@utoo/pack-shared@1.4.27:
-    resolution: {integrity: sha512-itGbKOJvWNXKEwOG3OfXQL1XHxLsk2QXVOy84VRFWaLcI8bmXSZDQe77sirzn5aGFRDNSHiGTtDOOH4adbP/kg==}
+  /@utoo/pack-shared@1.4.31:
+    resolution: {integrity: sha512-36uQEWNy9FMCpWHMYYYTaig76ovnJgTTuzaBooYEAj1TQLxz0EniHAI4A1Gatp61RqNmMkmO3B4l6ZL64kC8HA==}
     engines: {node: '>= 20'}
     dependencies:
       '@babel/code-frame': 7.22.5
@@ -22145,8 +22153,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-win32-x64-msvc@1.4.27:
-    resolution: {integrity: sha512-Z6/hE9xd/cXx2ttIIaZ16BLoKlEVQxvcnHEqUeobBtcZ6Ww846PJ8+fuDmd5xczqvj3iIqWl7YdLZ3G7AWyVpw==}
+  /@utoo/pack-win32-x64-msvc@1.4.31:
+    resolution: {integrity: sha512-TlpcJPFEsh1w7ehlMYrxdte6Lnx9UTUdYXNvQHPrfac4f3/F6QMmKHzozUdeCsBYSX/e+GtDK8bXaIGrxcAExg==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [win32]
@@ -22246,8 +22254,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@utoo/pack@1.4.27(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
-    resolution: {integrity: sha512-zSBdpSDZlI6IFxSuH06TsMhn/wg1H0x6V18LsCHzH+JcH2SiAkVlHT+7CX7btc5SO6fPML84Wcl49i3M2cy9FQ==}
+  /@utoo/pack@1.4.31(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
+    resolution: {integrity: sha512-EwtrC6JiN6qCzO9eetg7tEPBN5QP+z/SGxK8g36mdRbjzR6quJ9ibXjkSVPxy8WAfCbry0am2lcq/8cz3x2vmA==}
     engines: {node: '>= 20'}
     peerDependencies:
       less: ^4.0.0
@@ -22265,7 +22273,7 @@ packages:
       '@hono/node-server': 1.19.11(hono@4.12.7)
       '@hono/node-ws': 1.3.0(@hono/node-server@1.19.11)(hono@4.12.7)
       '@swc/helpers': 0.5.15
-      '@utoo/pack-shared': 1.4.27
+      '@utoo/pack-shared': 1.4.31
       domparser-rs: 0.0.7
       find-up: 4.1.0
       get-port: 5.1.1
@@ -22282,13 +22290,13 @@ packages:
       send: 0.17.1
       ws: 8.18.3
     optionalDependencies:
-      '@utoo/pack-darwin-arm64': 1.4.27
-      '@utoo/pack-darwin-x64': 1.4.27
-      '@utoo/pack-linux-arm64-gnu': 1.4.27
-      '@utoo/pack-linux-arm64-musl': 1.4.27
-      '@utoo/pack-linux-x64-gnu': 1.4.27
-      '@utoo/pack-linux-x64-musl': 1.4.27
-      '@utoo/pack-win32-x64-msvc': 1.4.27
+      '@utoo/pack-darwin-arm64': 1.4.31
+      '@utoo/pack-darwin-x64': 1.4.31
+      '@utoo/pack-linux-arm64-gnu': 1.4.31
+      '@utoo/pack-linux-arm64-musl': 1.4.31
+      '@utoo/pack-linux-x64-gnu': 1.4.31
+      '@utoo/pack-linux-x64-musl': 1.4.31
+      '@utoo/pack-win32-x64-msvc': 1.4.31
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -24766,23 +24774,6 @@ packages:
       - debug
     dev: false
 
-  /babel-jest@29.7.0:
-    resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    peerDependencies:
-      '@babel/core': ^7.8.0
-    dependencies:
-      '@jest/transform': 29.7.0
-      '@types/babel__core': 7.20.5
-      babel-plugin-istanbul: 6.1.1
-      babel-preset-jest: 29.6.3
-      chalk: 4.1.2
-      graceful-fs: 4.2.11
-      slash: 3.0.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /babel-jest@29.7.0(@babel/core@7.23.6):
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -25073,7 +25064,7 @@ packages:
     dependencies:
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-module-imports': 7.22.15
-      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.4.5)
+      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.23.6)
       lodash: 4.17.21
       picomatch: 2.3.1
       styled-components: 6.1.1(react-dom@18.3.1)(react@18.3.1)
@@ -25100,25 +25091,6 @@ packages:
       '@babel/helper-module-imports': 7.22.15
     dev: false
 
-  /babel-preset-current-node-syntax@1.0.1:
-    resolution: {integrity: sha512-M7LQ0bxarkxQoN+vz5aJPsLBn77n8QgTFmo8WK0/44auK2xlCXrYcUxHFxgU7qW5Yzw/CjmLRK2uJzaCd7LvqQ==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.4.5)
-      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.23.6)
-      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.20.12)
-      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.22.5)
-      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.4.5)
-      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.20.12)
-      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.4.5)
-      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.20.12)
-      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.4.5)
-      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.4.5)
-      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.4.5)
-      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.20.12)
-    dev: true
-
   /babel-preset-current-node-syntax@1.0.1(@babel/core@7.23.6):
     resolution: {integrity: sha512-M7LQ0bxarkxQoN+vz5aJPsLBn77n8QgTFmo8WK0/44auK2xlCXrYcUxHFxgU7qW5Yzw/CjmLRK2uJzaCd7LvqQ==}
     peerDependencies:
@@ -25137,16 +25109,6 @@ packages:
       '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.23.6)
       '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.23.6)
       '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.23.6)
-
-  /babel-preset-jest@29.6.3:
-    resolution: {integrity: sha512-0B3bhxR6snWXJZtR/RliHTDPRgn1sNHOR0yVtq/IiQFyuOVjFS+wuio/R4gSNkyYmKmJB4wGZv2NZanmKmTnNA==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      babel-plugin-jest-hoist: 29.6.3
-      babel-preset-current-node-syntax: 1.0.1
-    dev: true
 
   /babel-preset-jest@29.6.3(@babel/core@7.23.6):
     resolution: {integrity: sha512-0B3bhxR6snWXJZtR/RliHTDPRgn1sNHOR0yVtq/IiQFyuOVjFS+wuio/R4gSNkyYmKmJB4wGZv2NZanmKmTnNA==}
@@ -41829,7 +41791,6 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
-
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
     dev: true
 
