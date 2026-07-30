@@ -28,7 +28,7 @@ describe('smoke test', () => {
       encoding: 'binary',
     })
       .its('body')
-      .should('eq', 'vite-public-favicon\n');
+      .should('match', /^vite-public-favicon\r?\n$/);
   });
 
   it('passes the original URL to Umi after middlewares', () => {
