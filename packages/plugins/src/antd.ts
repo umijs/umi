@@ -30,6 +30,7 @@ export default (api: IApi) => {
     // 两者都还在维护周期中，允许使用预发布版本. eg. 6.1.0-alpha.0
     { includePrerelease: true },
   );
+  const isV6 = semver.major(antdVersion) === 6;
 
   /** v4 */
   const isLegacy = semver.satisfies(antdVersion, '^4.0.0');
@@ -450,8 +451,10 @@ export const AntdConfigContextSetter = React.createContext<React.Dispatch<React.
     > = [];
 
     if (isModern) {
-      // import reset style
-      imports.push({ source: 'antd/dist/reset.css' });
+      if (!isV6) {
+        // import antd@5 reset style
+        imports.push({ source: 'antd/dist/reset.css' });
+      }
     } else if (!api.config.antd.import || api.appData.vite) {
       // import antd@4 style if antd.import is not configured
       imports.push({
