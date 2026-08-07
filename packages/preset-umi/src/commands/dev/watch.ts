@@ -25,6 +25,17 @@ export function watch(opts: {
   return watcher;
 }
 
+export function createEventFilteredHandler(opts: {
+  events?: ReadonlyArray<string>;
+  onChange: (event: string, path: string) => void;
+}) {
+  return (event: string, path: string) => {
+    if (!opts.events || opts.events.includes(event)) {
+      opts.onChange(event, path);
+    }
+  };
+}
+
 export function createDebouncedHandler(opts: {
   timeout?: number;
   onChange: (opts: {
