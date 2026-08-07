@@ -1,4 +1,5 @@
 import type { IConfigProcessor } from '.';
+// @ts-ignore compiled ESM-only plugin does not ship generated declarations
 import legacyPlugin from '../../../compiled/@vitejs/plugin-legacy';
 import * as lite from '../../../compiled/caniuse-lite';
 import { getBrowserlist } from './css';

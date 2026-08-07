@@ -1,5 +1,10 @@
 import target from './target';
 
+jest.mock('../../../compiled/@vitejs/plugin-legacy', () => ({
+  __esModule: true,
+  default: () => [{ name: 'vite:legacy-config' }],
+}));
+
 test('transform umi targets', () => {
   expect(target({ targets: { chrome: 80, edge: 11 } }, {}).build).toEqual({
     target: ['chrome80', 'edge11'],

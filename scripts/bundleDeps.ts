@@ -25,9 +25,15 @@ export async function buildDep(opts: any) {
     if (opts.pkgName === 'mini-css-extract-plugin') {
       resolvePath = 'mini-css-extract-plugin/dist/index';
     }
-    entry = resolve.sync(resolvePath, {
-      basedir: nodeModulesPath,
-    });
+    try {
+      // Node's resolver supports package exports used by ESM-only dependencies.
+      entry = require.resolve(resolvePath, { paths: [nodeModulesPath] });
+    } catch {
+      // Keep the legacy resolver for packages that expose undeclared subpaths.
+      entry = resolve.sync(resolvePath, {
+        basedir: nodeModulesPath,
+      });
+    }
   } else {
     entry = path.join(opts.base, opts.file);
   }
