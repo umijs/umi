@@ -1,5 +1,6 @@
 import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
 import { getCorejsVersion, importLazy, winPath } from '@umijs/utils';
+import browsersList from 'browserslist';
 import { dirname, join } from 'path';
 import { IApi } from '../../types';
 
@@ -27,6 +28,16 @@ export default (api: IApi) => {
           .map((item: string) => `import '${item}';`)
           .join('\n')
       : `import 'core-js';`;
+    const browsersListConfig = browsersList.loadConfig({ path: api.paths.cwd });
+    const envOpts: any = {
+      useBuiltIns: 'entry',
+      corejs: getCorejsVersion(join(__dirname, '../../../package.json')),
+      modules: false,
+      ignoreBrowserslistConfig: !browsersListConfig,
+    };
+    if (!browsersListConfig) {
+      envOpts.targets = api.config.targets;
+    }
     const { transform } = babelCore;
     const { code } = transform(
       `
@@ -39,15 +50,7 @@ export {};
         presets: [
           [
             require.resolve('@umijs/bundler-utils/compiled/babel/preset-env'),
-            {
-              useBuiltIns: 'entry',
-              corejs: getCorejsVersion(
-                join(__dirname, '../../../package.json'),
-              ),
-              modules: false,
-              targets: api.config.targets,
-              ignoreBrowserslistConfig: true,
-            },
+            envOpts,
           ],
         ],
         plugins: [
@@ -55,7 +58,7 @@ export {};
         ],
         babelrc: false,
         configFile: false,
-        browserslistConfigFile: false,
+        browserslistConfigFile: !!browsersListConfig,
       },
     )!;
 
