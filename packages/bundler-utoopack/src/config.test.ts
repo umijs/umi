@@ -428,6 +428,37 @@ describe('utoopack alias config', () => {
     expect(config.config.resolve?.alias).not.toHaveProperty('lodash');
   });
 
+  test('drops self-referencing wildcard aliases to prevent infinite recursion', async () => {
+    mockedGetConfig.mockResolvedValueOnce(
+      createWebpackConfig(undefined, {
+        '@scope/pkg': '@scope/pkg/pc',
+        '@': '/project/src',
+      }),
+    );
+
+    const config = await getDevUtooPackConfig({
+      ...baseOpts,
+      rootDir: '/project',
+      config: {},
+    } as any);
+
+    // The bare alias should be preserved
+    expect(config.config.resolve?.alias).toHaveProperty(
+      '@scope/pkg',
+      '@scope/pkg/pc',
+    );
+    // The wildcard alias must NOT be generated because the value
+    // `@scope/pkg/pc/*` starts with the key `@scope/pkg/`,
+    // which would cause the resolver to infinitely recurse.
+    expect(config.config.resolve?.alias).not.toHaveProperty('@scope/pkg/*');
+    // Normal aliases should still get wildcard aliases as usual
+    expect(config.config.resolve?.alias).toHaveProperty('@', '/project/src');
+    expect(config.config.resolve?.alias).toHaveProperty(
+      '@/*',
+      '/project/src/*',
+    );
+  });
+
   test('prepends utoopack error overlay client to development entries', async () => {
     mockedGetConfig.mockImplementationOnce(async (opts) =>
       createWebpackConfig(undefined, {}, opts.entry),
