@@ -468,8 +468,25 @@ function getNormalizedAlias(
       // If unresolved or confirmed as a file, preserve the original skip behavior.
       if (!isDirectory) continue;
     }
-    // Add wildcard version for directory aliases
-    newAlias[`${key}/*`] = `${value}/*`;
+
+    // Add wildcard version for directory aliases.
+    //
+    // Self-reference guard: skip when value starts with `key + '/'`.
+    // Without this, the generated wildcard creates an infinite recursion:
+    //
+    //   Given             : key = '@scope/pkg', value = '@scope/pkg/pc'
+    //   Wildcard would be : @scope/pkg/* -> @scope/pkg/pc/*
+    //   Resolver chain    : @scope/pkg/foo
+    //        → (match /*) → @scope/pkg/pc/foo
+    //        → (match /*) → @scope/pkg/pc/pc/foo
+    //        → (match /*) → @scope/pkg/pc/pc/pc/foo → ...
+    //   The resolved output always re-matches the wildcard key.
+    //
+    // This mirrors webpack's AliasPlugin, which checks
+    // `request.startsWith(alias.value)` to prevent self-reference.
+    if (!value.startsWith(key + '/')) {
+      newAlias[`${key}/*`] = `${value}/*`;
+    }
   }
 
   newAlias[`${normalizedRootDir}/*`] = `${normalizedRootDir}/*`;
