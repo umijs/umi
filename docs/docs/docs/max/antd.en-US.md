@@ -155,7 +155,7 @@ For example, to configure antd 5's theme preset algorithm and the maximum number
 
 ```ts
 // app.ts
-import { RuntimeAntdConfig } from 'umi';
+import { RuntimeAntdConfig } from '@umijs/max';
 import { theme } from 'antd';
 
 export const antd: RuntimeAntdConfig = (memo) => {
@@ -183,7 +183,7 @@ Note: This feature depends on `ConfigProvider`, please also enable `configProvid
 
 ```tsx
 import { Layout, Space, Button, version, theme, MappingAlgorithm } from 'antd';
-import { useAntdConfig, useAntdConfigSetter } from 'umi';
+import { useAntdConfig, useAntdConfigSetter } from ''@umijs/max'';
 const { darkAlgorithm, defaultAlgorithm } = theme;
 
 export default function Page() {
