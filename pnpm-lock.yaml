@@ -84,6 +84,9 @@ importers:
       '@umijs/utils':
         specifier: workspace:*
         version: link:packages/utils
+      '@utoo/lint':
+        specifier: 0.2.3
+        version: 0.2.3
       '@vercel/ncc':
         specifier: 0.33.3
         version: 0.33.3
@@ -21375,6 +21378,60 @@ packages:
       react: 18.3.1
     dev: false
 
+  /@utoo/lint-darwin-arm64@0.2.3:
+    resolution: {integrity: sha512-s/UlOf4JGo4ID7U9zybOoJEPoNbTYKYSUV3uMJCRRbQXpwrFFE9F2rFqLqlmPmYC0/H/5yw98cvycrsIX9g02A==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@utoo/lint-darwin-x64@0.2.3:
+    resolution: {integrity: sha512-WqeBW0DIzFtjDm6zH82H1Hy/WCypY+oHJBpnl889fDgTUk6w23WfeaOjL6i9RMO2lrrUaMMliZAmGVie0A4iLg==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@utoo/lint-linux-arm64@0.2.3:
+    resolution: {integrity: sha512-z4AgX0TVwJ3Zi1FSMEJPnTgzXoQeIgsjOCmQ69HT+PMSvfcnZXHVlZeMVGzhebuVrJvtnKI6Fo2qm7/rxqYUZw==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@utoo/lint-linux-x64@0.2.3:
+    resolution: {integrity: sha512-Yf8AyKj4tD4lw4JHsKVBMDJhHqhCVi9h5rYNlefD5AIWVnTbkNRqgC9laVyTYBhNi3k1OG1VZth+OGZYSjsKxg==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@utoo/lint-win32-x64@0.2.3:
+    resolution: {integrity: sha512-ufSA97njbEfDT2dnz6rrtJ3Va3VmclMtGft7ulnqZ3wLf2TCezdIwrp6F4SaccbNlv2MqRgtUTw6wl4Mhs+ZPw==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@utoo/lint@0.2.3:
+    resolution: {integrity: sha512-jA9Re1CoJEIfZpUQOSRGJJDFTA9Xq4YFK986HBb5sWhdssQYUPdrQNWr92i8hHaDAqHNGn5reRttzxilnHypNQ==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    dependencies:
+      jiti: 2.7.0
+    optionalDependencies:
+      '@utoo/lint-darwin-arm64': 0.2.3
+      '@utoo/lint-darwin-x64': 0.2.3
+      '@utoo/lint-linux-arm64': 0.2.3
+      '@utoo/lint-linux-x64': 0.2.3
+      '@utoo/lint-win32-x64': 0.2.3
+    dev: true
+
   /@utoo/pack-darwin-arm64@1.4.22:
     resolution: {integrity: sha512-DJCCx/tekQ0dKxTJhIf5BY7l9uR6cuPqHB8RpulEEPWgvWUX7SpY472QlK7Y4uz8J7HqcvZ2eNRk156y737zyw==}
     engines: {node: '>= 20'}
@@ -33983,7 +34040,6 @@ packages:
   /jiti@2.7.0:
     resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
     hasBin: true
-    dev: false
 
   /jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
