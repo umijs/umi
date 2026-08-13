@@ -100,6 +100,10 @@ Child applications need to export necessary lifecycle hooks for the parent appli
 
 Assuming your child application project is **developed based on Umi** and **the `qiankun` [plugin](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts) is introduced**. If not, you can follow [this tutorial](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8) to configure.
 
+:::warning{title=Utoopack compatibility}
+If the child application is built with utoopack and the parent application uses qiankun 2, upgrade qiankun in the parent application to `2.10.17-beta.0` or later. Earlier versions do not provide `document.currentScript` correctly while executing entry scripts, which prevents the child application from loading. For more details, see the Utoo blog post [When Turbopack Meets qiankun: Adapting Utoopack for Micro Frontends](https://utoo.land/en/docs/blog/utoopack-qiankun).
+:::
+
 Modify the Umi configuration file of the child application and add the following content:
 
 ```ts
