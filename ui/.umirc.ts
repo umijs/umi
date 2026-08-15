@@ -3,6 +3,7 @@ export default {
     '@umijs/plugins/dist/valtio',
     '@umijs/plugins/dist/styled-components',
     '@umijs/plugins/dist/react-query',
+    '@umijs/plugins/dist/qiankun',
   ],
   publicPath: '/__umi_ui/entry/',
   base: '/__umi_ui/entry',
@@ -27,5 +28,8 @@ export default {
       'local:sun',
       'local:moon',
     ],
+  },
+  qiankun: {
+    master: {},
   },
 };
