@@ -54,11 +54,19 @@
     "valtio:release": "umi-scripts releaseValtio"
   },
   "lint-staged": {
-    "*.{jsx,less,md,json}": [
+    "*.{less,md,json}": [
       "prettier --no-error-on-unmatched-pattern --cache --write"
     ],
+    "*.jsx": [
+      "prettier --no-error-on-unmatched-pattern --cache --write",
+      "utoo-lint"
+    ],
     "*.ts?(x)": [
-      "prettier --no-error-on-unmatched-pattern --cache --parser=typescript --write"
+      "prettier --no-error-on-unmatched-pattern --cache --parser=typescript --write",
+      "utoo-lint"
+    ],
+    "*.{js,mjs,cjs}": [
+      "utoo-lint"
     ]
   },
   "devDependencies": {
