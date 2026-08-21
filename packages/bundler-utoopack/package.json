@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utoopack",
-  "version": "4.6.83",
+  "version": "4.7.7",
   "description": "@umijs/bundler-utoopack",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   "dependencies": {
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
-    "@utoo/pack": "1.4.31",
+    "@utoo/pack": "1.5.9",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^2.0.0",
     "cors": "^2.8.5",

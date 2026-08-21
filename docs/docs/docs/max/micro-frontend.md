@@ -99,7 +99,11 @@ export const qiankun = {
 
 假设您的子应用项目**基于 Umi 开发**且**引入了 `qiankun` [插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts)**。如果没有，可以按照[此教程](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8)进行配置。
 
-修改子应用的 Umi 的配置文件，添加如下内容：
+:::warning{title="Utoopack 兼容性"}
+如果子应用使用 utoopack 构建，且主应用使用 qiankun 2，请将主应用的 qiankun 升级至 `2.10.17-beta.0` 或更高版本。更早的版本无法在执行入口脚本时正确提供 `document.currentScript`，会导致子应用加载失败。更多适配原理请参阅 Utoo 官网博客[《当 Turbopack 遇上 qiankun：Utoopack 的微前端适配实践》](https://utoo.land/zh/docs/blog/utoopack-qiankun)。
+:::
+
+修改子应用的 Umi 配置文件，添加如下内容：
 
 ```ts
 // .umirc.ts
@@ -426,7 +430,7 @@ function MyPage(props) {
 export default connectMaster(MyPage);
 ```
 
-子应用也可以在生命周期钩子中能够获取并消费得到的 `props` 属性，根据需求[实现对应的生命周期钩子](#子应用配置生命周期钩子)即可。
+子应用也可以在生命周期钩子中获取并使用传入的 `props` 属性，根据需求[实现对应的生命周期钩子](#子应用配置生命周期钩子)即可。
 
 特别的，当父应用使用 `<MicroApp />` 或 `<MicroAppWithMemoHistory />` 组件的方式引入子应用时，会额外向子应用传递一个 `setLoading()` 方法，允许子应用在合适的时机执行，标记子应用加载为完成状态：
 
@@ -466,7 +470,7 @@ export const qiankun = {
 };
 ```
 
-子应用在生命周期钩子中能够获取并消费得到的 `props` 属性，根据需求[实现对应的生命周期钩子](#子应用配置生命周期钩子)即可。
+子应用可以在生命周期钩子中获取并使用传入的 `props` 属性，根据需求[实现对应的生命周期钩子](#子应用配置生命周期钩子)即可。
 
 ## 自定义子应用
 

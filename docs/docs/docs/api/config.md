@@ -1568,6 +1568,8 @@ $ npm install @babel/runtime --save-dev
 
 通过配置来启用这个能力，目前 utoopack 对框架中大部分功能已经支持。
 
+使用 utoopack 构建 qiankun 子应用时，如果主应用使用 qiankun 2，qiankun 版本需为 `2.10.17-beta.0` 或更高。更早的版本无法在执行入口脚本时正确提供 `document.currentScript`，会导致子应用加载失败。更多适配原理请参阅 Utoo 官网博客[《当 Turbopack 遇上 qiankun：Utoopack 的微前端适配实践》](https://utoo.land/zh/docs/blog/utoopack-qiankun)。
+
 ## verifyCommit
 
 - 类型：`{ scope: string[]; allowEmoji: boolean }`

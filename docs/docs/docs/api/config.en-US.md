@@ -1531,6 +1531,8 @@ Use rust bundler [utoopack](http://github.com/utooland/utoo) to improve the perf
 
 This capability can be enabled through configuration, utoopack currently supports most of the framework's features.
 
+When building a qiankun child application with utoopack, if the parent application uses qiankun 2, the qiankun version must be `2.10.17-beta.0` or later. Earlier versions do not provide `document.currentScript` correctly while executing entry scripts, which prevents the child application from loading. For more details about the integration, see the Utoo blog post [When Turbopack Meets qiankun: Adapting Utoopack for Micro Frontends](https://utoo.land/en/docs/blog/utoopack-qiankun).
+
 ## verifyCommit
 
 - Type: `{ scope: string[]; allowEmoji: boolean }`
