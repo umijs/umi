@@ -21,4 +21,19 @@ describe('smoke test', () => {
     cy.get('h1').contains('About');
     cy.get('[data-testid="hello"]').contains('Hello world about');
   });
+
+  it('serves public files before Umi after middlewares', () => {
+    cy.request({
+      url: '/favicon.ico',
+      encoding: 'binary',
+    })
+      .its('body')
+      .should('match', /^vite-public-favicon\r?\n$/);
+  });
+
+  it('passes the original URL to Umi after middlewares', () => {
+    cy.request('/middleware-order')
+      .its('body')
+      .should('eq', 'middleware-order-ok');
+  });
 });
