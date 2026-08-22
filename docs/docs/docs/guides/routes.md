@@ -428,7 +428,7 @@ export default function Page() {
 
 ## 路由组件参数
 
-Umi 4 使用 [react-router@6](https://reactrouter.com/en/main) 作为路由组件，路由参数的获取使其 hooks。
+Umi 4 使用 [react-router@6](https://reactrouter.com/en/main) 作为路由组件，路由参数的获取使用其 hooks。
 
 ### match 信息
 
