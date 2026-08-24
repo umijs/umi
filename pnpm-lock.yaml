@@ -2062,8 +2062,8 @@ importers:
         specifier: workspace:*
         version: link:../bundler-webpack
       '@utoo/pack':
-        specifier: 1.5.9
-        version: 1.5.9(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
+        specifier: 1.5.11-alpha.0
+        version: 1.5.11-alpha.0(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -5738,13 +5738,6 @@ packages:
       '@babel/highlight': 7.23.4
       chalk: 2.4.2
 
-  /@babel/code-frame@7.24.7:
-    resolution: {integrity: sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/highlight': 7.24.7
-      picocolors: 1.1.1
-
   /@babel/code-frame@7.29.7:
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
     engines: {node: '>=6.9.0'}
@@ -5898,7 +5891,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@ampproject/remapping': 2.2.0
-      '@babel/code-frame': 7.24.7
+      '@babel/code-frame': 7.29.7
       '@babel/generator': 7.24.7
       '@babel/helper-compilation-targets': 7.24.7
       '@babel/helper-module-transforms': 7.24.7(@babel/core@7.24.7)
@@ -5957,7 +5950,6 @@ packages:
       source-map: 0.5.7
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@babel/eslint-parser@7.19.1(@babel/core@7.20.12)(eslint@7.32.0):
     resolution: {integrity: sha512-AqNf2QWt1rtu2/1rLswy6CDP7H9Oh3mMhk177Y67Rg8d7RD9WfOLLv8CGn6tisFvS2htm86yIe1yLF6I1UDaGQ==}
@@ -8280,7 +8272,6 @@ packages:
     dependencies:
       '@babel/core': 7.4.5
       '@babel/helper-plugin-utils': 7.22.5
-    dev: true
 
   /@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7):
     resolution: {integrity: sha512-TSu8+mHCoEaaCDEZ0I3+6mvTBYR4PCxQwf2z9/r5Tbztv6NaLR3B9thGTTxX2WGuGHJqRiAbKPeGTJ5XWXVg6A==}
@@ -11171,7 +11162,7 @@ packages:
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-create-class-features-plugin': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.23.6)
+      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.20.12)
     dev: true
 
   /@babel/plugin-transform-typescript@7.22.5(@babel/core@7.20.12):
@@ -12049,7 +12040,7 @@ packages:
     resolution: {integrity: sha512-jYqfPrU9JTF0PmPy1tLYHW4Mp4KlgxJD9l2nP9fD6yT/ICi554DmrWBAEYpIelzjHf1msDP3PxJIRt/nFNfBig==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/code-frame': 7.24.7
+      '@babel/code-frame': 7.29.7
       '@babel/parser': 7.24.7
       '@babel/types': 7.28.5
 
@@ -12135,7 +12126,7 @@ packages:
     resolution: {integrity: sha512-yb65Ed5S/QAcewNPh0nZczy9JdYXkkAbIsEo+P7BE7yO3txAY30Y/oPa3QkQ5It3xVG2kpKMg9MsdxZaO31uKA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/code-frame': 7.24.7
+      '@babel/code-frame': 7.29.7
       '@babel/generator': 7.24.7
       '@babel/helper-environment-visitor': 7.24.7
       '@babel/helper-function-name': 7.24.7
@@ -14946,7 +14937,7 @@ packages:
     resolution: {integrity: sha512-qyt/mb6rLyd9j1jUts4EQncvS6Yy3PM9HghnNv86QBlV+zdL2inCdK1tuVlL+J+lpiw2BI67qXOrX3UurBqQ1w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.31
       callsites: 3.1.0
       graceful-fs: 4.2.11
 
@@ -14954,7 +14945,7 @@ packages:
     resolution: {integrity: sha512-MHjT95QuipcPrpLM+8JMSzFx6eHp5Bm+4XeFDJlwsvVBjmKNiIAvasGK2fxz2WbGRlnvqehFbh07MMa7n3YJnw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.31
       callsites: 3.1.0
       graceful-fs: 4.2.11
 
@@ -15140,7 +15131,7 @@ packages:
     dependencies:
       '@jridgewell/set-array': 1.2.1
       '@jridgewell/sourcemap-codec': 1.5.5
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.31
 
   /@jridgewell/remapping@2.3.5:
     resolution: {integrity: sha512-LI9u/+laYG4Ds1TDKSJW2YPrIlcVYOwi2fUC6xB43lueCjgxV4lffOCZCtYFiH6TNOX+tQKXx97T4IKHbhyHEQ==}
@@ -21694,7 +21685,7 @@ packages:
       '@jest/types': 27.5.1
       '@umijs/bundler-utils': 4.6.74
       '@umijs/utils': 4.6.74
-      babel-jest: 29.7.0(@babel/core@7.23.6)
+      babel-jest: 29.7.0
       esbuild: 0.21.4
       identity-obj-proxy: 3.0.0
       isomorphic-unfetch: 4.0.2
@@ -22024,8 +22015,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-arm64@1.5.9:
-    resolution: {integrity: sha512-uUiqMYY+aeZVlBDgp2u79NVVmCRLxLazvFJBuFnyloDSPuGCz3fF68QKT9YaV/nA2llSwPgN8u44TDe2tFIIUQ==}
+  /@utoo/pack-darwin-arm64@1.5.11-alpha.0:
+    resolution: {integrity: sha512-OuFqbgvq8hxLZGItW4P1L+Mp5bJYVJWDD0ovniAwsf4nJRb47+hgtu8ANG2a4CyOn88AKAX45j68Qi8aLCM4Bg==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [darwin]
@@ -22051,8 +22042,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-darwin-x64@1.5.9:
-    resolution: {integrity: sha512-c3TAOpqjnLZOUMyEYPYiV/8Mnx7LwMzTUcx9DWLe2CG2yVyDDSihwuwhrkKv/wvV99thWfEzi8ZbSVUCDiQ9Og==}
+  /@utoo/pack-darwin-x64@1.5.11-alpha.0:
+    resolution: {integrity: sha512-d+LsNh4TivoHpvTyAc2y7J7zChc8gGSKb3kUDEeY0kv/dbCDe+9BeusHI8eaCklMK6YPf+Sabw3PMDjm9Ny/4Q==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [darwin]
@@ -22078,8 +22069,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-gnu@1.5.9:
-    resolution: {integrity: sha512-XqVS8Dm9dgbHAcgMWR9pX++xKj/8EQUSrtw8BK+3bD/bGC0WpNUMyeLI1x0PVbtJg6evOS/JqkC9Rx9y51OEpA==}
+  /@utoo/pack-linux-arm64-gnu@1.5.11-alpha.0:
+    resolution: {integrity: sha512-UIDGeoUvxoXHIQH2ao9LWWqXRDVh3MEjLleCedyNua0ejsFuQN5oDHu7qMZaPet2GagIOHTA4dD1XuHy3VOWPA==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -22105,8 +22096,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-arm64-musl@1.5.9:
-    resolution: {integrity: sha512-Cq4ojaWUINlys3QBiipByxg19Uj1RhwE3Jqbc5iOMPFiYwNZZsdDXk8lIMdLw9A+oUxRP/CDlyEKskBLYaBSWw==}
+  /@utoo/pack-linux-arm64-musl@1.5.11-alpha.0:
+    resolution: {integrity: sha512-dH8gVP3Z0lx625YYaxCX8QafSYv7nQgfkGsH3elOGXu86/iPi2V76vxYOkCIiUd+q65azE95V58epPu4Pp54/w==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
@@ -22132,8 +22123,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-gnu@1.5.9:
-    resolution: {integrity: sha512-EU3uNHVOPFbqq1yv7T1m+RdutRDPKJPcAeIh1yGJ21i673wYJV/2oWh/F/GsTCk9xw7OrdrLgWxaoYQgj4gh8w==}
+  /@utoo/pack-linux-x64-gnu@1.5.11-alpha.0:
+    resolution: {integrity: sha512-9SU07DmOtteQ+uC/COwnSF7m6H0Z58U6HyIwpebrqB307Ky6UApUww5njg0W6kzLyIcAft0M8HpGDysLPptXRA==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -22159,8 +22150,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-linux-x64-musl@1.5.9:
-    resolution: {integrity: sha512-ga0Xh4fBheIzhVoCAcE6w2cDQXx3KIrjwVx4orv9csRAEfvHdNDH4D9EiF+QLUoYhr3MwM/DemOYjMASBvcoUA==}
+  /@utoo/pack-linux-x64-musl@1.5.11-alpha.0:
+    resolution: {integrity: sha512-TZG7fn2/7zhS5I3fE6KpLjjH+/K6cDMKGVlX8owYz/X7mbQlwRUshstv8n8Jayz3P9aFTWh6Pq7fdfGGYtm5Eg==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
@@ -22184,8 +22175,8 @@ packages:
       picocolors: 1.1.1
     dev: true
 
-  /@utoo/pack-shared@1.5.9:
-    resolution: {integrity: sha512-b3F7pgr89/SEgooMb0fx+IIqQWUtpQk+t1vazwMj49PL4g5nsQcuE7/aa07ZOrKI25/D3SUy1koxryVP7cM39w==}
+  /@utoo/pack-shared@1.5.11-alpha.0:
+    resolution: {integrity: sha512-w7rEIsnex/TvH4O0EHdZDdxva4SqF5Xtcbw+rve3109Ad5FktkOITNeVFjtl8eWXK04+WbS5JmMsgZobAa/s3Q==}
     engines: {node: '>= 20'}
     dependencies:
       '@babel/code-frame': 7.22.5
@@ -22210,8 +22201,8 @@ packages:
     dev: true
     optional: true
 
-  /@utoo/pack-win32-x64-msvc@1.5.9:
-    resolution: {integrity: sha512-8Oql5xJTesW0vJNFyTWohcVX4m9V1cfn7zw6dDmCNnsAROygaqi9dM2dsvtDUjeBVSxZuRyqeoyTTqdmgMZxXg==}
+  /@utoo/pack-win32-x64-msvc@1.5.11-alpha.0:
+    resolution: {integrity: sha512-GcbLqYT98Zcu7n1Zb226v6/pstk2s82UIxe9thgrfTZou7PoM1KGlVuxKfUzR3birFAeqyVkBvzCYaJ6pBxzoQ==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [win32]
@@ -22311,8 +22302,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@utoo/pack@1.5.9(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
-    resolution: {integrity: sha512-Ci9poEoPmPArQ6rqLpsqQkRnoje5P4y8q7viKlUOYdm9NrBq5kv47fG8EnJjV7UwmxECxlZUzUcSiNJqa81tpA==}
+  /@utoo/pack@1.5.11-alpha.0(less-loader@11.1.0)(less@4.1.3)(postcss@8.4.35)(resolve-url-loader@5.0.0)(sass-loader@13.2.0)(sass@1.54.0):
+    resolution: {integrity: sha512-ff0Q5FMeVTbZqGDjUwGoz0CIjlx9bMSN7MpBJBuPohSqvXqL1REi4udrOemMukhIUamlO8QYcgAeEBYhfIEmUg==}
     engines: {node: '>= 20'}
     peerDependencies:
       less: ^4.0.0
@@ -22329,8 +22320,9 @@ packages:
       '@babel/code-frame': 7.22.5
       '@hono/node-server': 1.19.11(hono@4.12.7)
       '@hono/node-ws': 1.3.0(@hono/node-server@1.19.11)(hono@4.12.7)
+      '@jridgewell/trace-mapping': 0.3.31
       '@swc/helpers': 0.5.15
-      '@utoo/pack-shared': 1.5.9
+      '@utoo/pack-shared': 1.5.11-alpha.0
       browserslist: 4.28.2
       domparser-rs: 0.0.7
       find-up: 4.1.0
@@ -22338,7 +22330,7 @@ packages:
       hono: 4.12.7
       less: 4.1.3
       less-loader: 11.1.0(less@4.1.3)
-      nanoid: 3.3.11
+      nanoid: 3.3.16
       picocolors: 1.1.1
       postcss: 8.4.35
       resolve-url-loader: 5.0.0
@@ -22348,13 +22340,13 @@ packages:
       send: 0.17.1
       ws: 8.18.3
     optionalDependencies:
-      '@utoo/pack-darwin-arm64': 1.5.9
-      '@utoo/pack-darwin-x64': 1.5.9
-      '@utoo/pack-linux-arm64-gnu': 1.5.9
-      '@utoo/pack-linux-arm64-musl': 1.5.9
-      '@utoo/pack-linux-x64-gnu': 1.5.9
-      '@utoo/pack-linux-x64-musl': 1.5.9
-      '@utoo/pack-win32-x64-msvc': 1.5.9
+      '@utoo/pack-darwin-arm64': 1.5.11-alpha.0
+      '@utoo/pack-darwin-x64': 1.5.11-alpha.0
+      '@utoo/pack-linux-arm64-gnu': 1.5.11-alpha.0
+      '@utoo/pack-linux-arm64-musl': 1.5.11-alpha.0
+      '@utoo/pack-linux-x64-gnu': 1.5.11-alpha.0
+      '@utoo/pack-linux-x64-musl': 1.5.11-alpha.0
+      '@utoo/pack-win32-x64-msvc': 1.5.11-alpha.0
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -24832,6 +24824,23 @@ packages:
       - debug
     dev: false
 
+  /babel-jest@29.7.0:
+    resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      '@babel/core': ^7.8.0
+    dependencies:
+      '@jest/transform': 29.7.0
+      '@types/babel__core': 7.20.5
+      babel-plugin-istanbul: 6.1.1
+      babel-preset-jest: 29.6.3
+      chalk: 4.1.2
+      graceful-fs: 4.2.11
+      slash: 3.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /babel-jest@29.7.0(@babel/core@7.23.6):
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -25122,7 +25131,7 @@ packages:
     dependencies:
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-module-imports': 7.22.15
-      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.23.6)
+      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.4.5)
       lodash: 4.17.21
       picomatch: 2.3.1
       styled-components: 6.1.1(react-dom@18.3.1)(react@18.3.1)
@@ -25149,6 +25158,25 @@ packages:
       '@babel/helper-module-imports': 7.22.15
     dev: false
 
+  /babel-preset-current-node-syntax@1.0.1:
+    resolution: {integrity: sha512-M7LQ0bxarkxQoN+vz5aJPsLBn77n8QgTFmo8WK0/44auK2xlCXrYcUxHFxgU7qW5Yzw/CjmLRK2uJzaCd7LvqQ==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.4.5)
+      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.23.6)
+      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.20.12)
+      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.22.5)
+      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.4.5)
+      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.20.12)
+      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.4.5)
+      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.20.12)
+      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.4.5)
+      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.4.5)
+      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.4.5)
+      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.20.12)
+    dev: true
+
   /babel-preset-current-node-syntax@1.0.1(@babel/core@7.23.6):
     resolution: {integrity: sha512-M7LQ0bxarkxQoN+vz5aJPsLBn77n8QgTFmo8WK0/44auK2xlCXrYcUxHFxgU7qW5Yzw/CjmLRK2uJzaCd7LvqQ==}
     peerDependencies:
@@ -25167,6 +25195,16 @@ packages:
       '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.23.6)
       '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.23.6)
       '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.23.6)
+
+  /babel-preset-jest@29.6.3:
+    resolution: {integrity: sha512-0B3bhxR6snWXJZtR/RliHTDPRgn1sNHOR0yVtq/IiQFyuOVjFS+wuio/R4gSNkyYmKmJB4wGZv2NZanmKmTnNA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      babel-plugin-jest-hoist: 29.6.3
+      babel-preset-current-node-syntax: 1.0.1
+    dev: true
 
   /babel-preset-jest@29.6.3(@babel/core@7.23.6):
     resolution: {integrity: sha512-0B3bhxR6snWXJZtR/RliHTDPRgn1sNHOR0yVtq/IiQFyuOVjFS+wuio/R4gSNkyYmKmJB4wGZv2NZanmKmTnNA==}
@@ -53865,7 +53903,7 @@ packages:
     resolution: {integrity: sha512-74Y4LqY74kLE6IFyIjPtkSTWzUZmj8tdHT9Ii/26dvQ6K9Dl2NbEfj0XgU2sHCtKgt5VupqhlO/5aWuqS+IY1w==}
     engines: {node: '>=10.12.0'}
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.31
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 1.9.0
 
