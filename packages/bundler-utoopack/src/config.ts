@@ -21,6 +21,19 @@ const UTOOPACK_OVERLAY_CLIENT_ENTRY = normalizeUtoopackPath(
   require.resolve('../client/client/client.js'),
 );
 
+// Keep Umi's default flexbox normalization consistent across bundlers.
+const UMI_POSTCSS_FLEXBUGS_PLUGIN = normalizeUtoopackPath(
+  require.resolve('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
+);
+
+function getDefaultPostcssConfig() {
+  return {
+    plugins: {
+      [UMI_POSTCSS_FLEXBUGS_PLUGIN]: {},
+    },
+  };
+}
+
 function getAssetModuleFilename(staticPathPrefix?: string) {
   const prefix =
     staticPathPrefix !== undefined
@@ -845,9 +858,6 @@ export async function getProdUtooPackConfig(
     return p === '@emotion' || p === '@emotion/babel-plugin';
   });
   const define = getUtoopackDefine(opts);
-  // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
-  //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
-  //   : undefined;
 
   const {
     publicPath,
@@ -891,7 +901,7 @@ export async function getProdUtooPackConfig(
         },
         styles: {
           less: getLessStyleOptions(opts.config),
-          // postcss: normalizedPostcssConfig,
+          postcss: getDefaultPostcssConfig(),
           sass: opts.config.sassLoader ?? undefined,
           emotion,
         },
@@ -1042,9 +1052,6 @@ export async function getDevUtooPackConfig(
   });
 
   const define = getUtoopackDefine(opts);
-  // const normalizedPostcssConfig = opts.config.extraPostCSSPlugins?.length
-  //   ? mergeExtraPostcssPlugins(undefined, opts.config.extraPostCSSPlugins)
-  //   : undefined;
 
   const {
     publicPath,
@@ -1098,7 +1105,7 @@ export async function getDevUtooPackConfig(
         },
         styles: {
           less: getLessStyleOptions(opts.config),
-          // postcss: normalizedPostcssPlugin,
+          postcss: getDefaultPostcssConfig(),
           sass: opts.config.sassLoader ?? undefined,
           emotion,
         },

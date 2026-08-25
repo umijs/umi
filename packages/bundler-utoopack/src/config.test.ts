@@ -26,6 +26,7 @@ import {
   getDevUtooPackConfig,
   getProdUtooPackConfig,
   getSSRUtooPackConfig,
+  normalizeUtoopackPath,
 } from './config';
 
 class MiniCssExtractPlugin {
@@ -325,6 +326,76 @@ describe('utoopack less loader config', () => {
     expect(less.loader).toBe(
       require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
     );
+  });
+});
+
+describe('utoopack postcss config', () => {
+  const flexbugsPluginPath = normalizeUtoopackPath(
+    require.resolve('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
+  );
+
+  test('uses the same default flexbugs plugin in production and development', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+
+    const expectedPostcssConfig = {
+      plugins: {
+        [flexbugsPluginPath]: {},
+      },
+    };
+
+    expect(prodConfig.config.styles?.postcss).toEqual(expectedPostcssConfig);
+    expect(devConfig.config.styles?.postcss).toEqual(expectedPostcssConfig);
+  });
+
+  test('keeps user utoopack postcss plugins alongside the default plugin', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          styles: {
+            postcss: {
+              plugins: {
+                'custom-postcss-plugin': {
+                  customOption: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    } as any);
+
+    expect(config.config.styles?.postcss).toEqual({
+      plugins: {
+        [flexbugsPluginPath]: {},
+        'custom-postcss-plugin': {
+          customOption: true,
+        },
+      },
+    });
+  });
+
+  test('normalizes a unitless zero flex basis like the webpack pipeline', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+    const plugins = (config.config.styles?.postcss as any).plugins;
+    const pluginPath = Object.keys(plugins)[0];
+    const postcss = require('postcss');
+    const result = await postcss([require(pluginPath)()]).process(
+      '.item { flex: 1 1 0; }',
+      { from: undefined },
+    );
+
+    expect(result.css).toBe('.item { flex: 1 1; }');
   });
 });
 
