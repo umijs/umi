@@ -13,45 +13,11 @@ group:
 
 这不是一次以 bundler 版本为主角的更新。相比 Vite 7 和 webpack 5.x 的基础升级，Umi 4.7 更值得关注的是应用运行时、编译能力、样式链路和日常研发体验的整体演进。
 
-⚛️ React 19、React Compiler 与 Ant Design 6<br /> 🚀 utoopack 进入默认模板<br /> 🎨 Tailwind CSS 4 与更轻的开发链路<br /> 🛡️ 新环境兼容、安全边界与运行时扩展<br />
+🚀 utoopack 进入默认模板<br /> ⚛️ React 19、React Compiler 与 Ant Design 6<br /> 🎨 Tailwind CSS 4 与更轻的开发链路<br /> 🛡️ 新环境兼容、安全边界与运行时扩展<br />
 
-## 一、面向 React 19 的应用基线
+## 一、utoopack 进入默认模板
 
-Umi 4.7 首先把现代 React 应用的关键能力向前推进了一步：完善 React 19 运行时兼容，接入 React Compiler，并让 Ant Design 6 进入官方插件的支持范围。
-
-### React 19 与 Ant Design 6
-
-React 19 的兼容不只是升级依赖版本。数据流插件调整了 model 初始值的写入和订阅通知时机，避免在 render 阶段触发跨组件更新；qiankun 子应用卸载也优先使用新 Root API，不再依赖 React 19 已移除的旧接口。
-
-Ant Design 6 被纳入官方插件的现代版本分支，主题算法、`ConfigProvider`、`App` 和运行时配置可以继续沿用。Umi 也会跳过仅适用于 Ant Design 5 的 reset 样式，并同步修复 layout、locale 与图标收集的版本差异。
-
-### React Compiler：正式、跨构建器的编译能力
-
-[React Compiler](https://react.dev/learn/react-compiler) 会在构建阶段分析组件和 Hook，并自动完成过去常由 `useMemo`、`useCallback` 和 `React.memo` 承担的部分优化。Umi 4.7 提供了与其同名的正式配置入口：
-
-```ts
-export default defineConfig({
-  reactCompiler: true,
-});
-```
-
-配置对象会直接传给 `babel-plugin-react-compiler`。默认目标是 React 19；React 17 或 18 项目需要设置对应的 `target`，并安装 `react-compiler-runtime`。
-
-```ts
-export default defineConfig({
-  reactCompiler: {
-    target: '18',
-  },
-});
-```
-
-React Compiler 可配合 webpack、Vite 和 utoopack 使用，暂时不能与 MFSU、Mako 同时开启。原有的 `forget` 配置仍可兼容，但已经废弃，建议迁移到 `reactCompiler`。
-
-对于已有项目，我们仍建议渐进启用：先确保代码遵循 Rules of React，再通过单元测试、端到端测试和 React DevTools 验证编译结果，而不是启用后立即删除所有手写 memoization。
-
-## 二、utoopack 进入默认模板
-
-构建层真正值得重点介绍的不是 Vite 或 webpack 的版本号，而是 utoopack 从可选实验能力走进了新项目默认模板，并补齐了日常研发与生产构建所需的完整工程链路。
+Umi 4.7 最核心的变更，是 utoopack 从可选实验能力走进新项目默认模板，并补齐日常研发与生产构建所需的完整工程链路。
 
 ### 新的 Rust 构建引擎
 
@@ -83,6 +49,40 @@ Monorepo 项目还可以按规则监听指定的 `node_modules` 包。HMR 日志
 目前收集到的中大型业务项目数据中，utoopack 相比 webpack 的 dev 启动或生产构建可达到约 3×–10× 的性能提升。实际收益取决于项目规模、缓存状态、loader、Babel 配置和依赖结构，不应将这一范围理解为所有项目的固定保证。
 
 utoopack 需要 Node.js 20 或更高版本。高度依赖自定义 webpack 插件或 loader 的项目，建议先在分支和 CI 中完成开发、生产构建与核心页面回归，再决定是否切换。
+
+## 二、面向 React 19 的应用基线
+
+在构建引擎之外，Umi 4.7 也把现代 React 应用的关键能力向前推进了一步：完善 React 19 运行时兼容，接入 React Compiler，并让 Ant Design 6 进入官方插件的支持范围。
+
+### React 19 与 Ant Design 6
+
+React 19 的兼容不只是升级依赖版本。数据流插件调整了 model 初始值的写入和订阅通知时机，避免在 render 阶段触发跨组件更新；qiankun 子应用卸载也优先使用新 Root API，不再依赖 React 19 已移除的旧接口。
+
+Ant Design 6 被纳入官方插件的现代版本分支，主题算法、`ConfigProvider`、`App` 和运行时配置可以继续沿用。Umi 也会跳过仅适用于 Ant Design 5 的 reset 样式，并同步修复 layout、locale 与图标收集的版本差异。
+
+### React Compiler：正式、跨构建器的编译能力
+
+[React Compiler](https://react.dev/learn/react-compiler) 会在构建阶段分析组件和 Hook，并自动完成过去常由 `useMemo`、`useCallback` 和 `React.memo` 承担的部分优化。Umi 4.7 提供了与其同名的正式配置入口：
+
+```ts
+export default defineConfig({
+  reactCompiler: true,
+});
+```
+
+配置对象会直接传给 `babel-plugin-react-compiler`。默认目标是 React 19；React 17 或 18 项目需要设置对应的 `target`，并安装 `react-compiler-runtime`。
+
+```ts
+export default defineConfig({
+  reactCompiler: {
+    target: '18',
+  },
+});
+```
+
+React Compiler 可配合 webpack、Vite 和 utoopack 使用，暂时不能与 MFSU、Mako 同时开启。原有的 `forget` 配置仍可兼容，但已经废弃，建议迁移到 `reactCompiler`。
+
+对于已有项目，我们仍建议渐进启用：先确保代码遵循 Rules of React，再通过单元测试、端到端测试和 React DevTools 验证编译结果，而不是启用后立即删除所有手写 memoization。
 
 ## 三、样式与开发链路继续减负
 

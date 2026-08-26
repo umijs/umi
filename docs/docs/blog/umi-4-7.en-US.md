@@ -13,53 +13,11 @@ Hi everyone, Umi 4.7 is officially available.
 
 This release is not defined by bundler version bumps. Beyond the Vite 7 and webpack 5.x upgrades, Umi 4.7 moves the application runtime, compilation, styling pipeline, and everyday developer experience forward.
 
-⚛️ React 19, React Compiler, and Ant Design 6<br /> 🚀 utoopack in the default templates<br /> 🎨 Tailwind CSS 4 and a leaner development pipeline<br /> 🛡️ Compatibility, security, and runtime extensions<br />
+🚀 utoopack in the default templates<br /> ⚛️ React 19, React Compiler, and Ant Design 6<br /> 🎨 Tailwind CSS 4 and a leaner development pipeline<br /> 🛡️ Compatibility, security, and runtime extensions<br />
 
-## 1. A Modern Baseline for React 19 Applications
+## 1. utoopack Comes to the Default Templates
 
-Umi 4.7 advances the foundations of modern React applications with improved React 19 compatibility, React Compiler integration, and official plugin support for Ant Design 6.
-
-### React 19 and Ant Design 6
-
-React 19 support goes beyond dependency upgrades. The data-flow plugin now writes initial model values and notifies subscribers at safer times, avoiding cross-component updates during render.
-
-qiankun child applications also prefer the new Root API when unmounting, instead of relying on legacy APIs removed by React 19.
-
-Ant Design 6 is now recognized by the modern branch of the official plugin. Theme algorithms, `ConfigProvider`, `App`, and runtime configuration continue to work as expected.
-
-Umi also skips the reset styles that only apply to Ant Design 5 and addresses version-specific differences in layout, locale, and icon collection.
-
-### React Compiler: A First-Class, Cross-Bundler Feature
-
-[React Compiler](https://react.dev/learn/react-compiler) analyzes components and Hooks at build time. It automatically applies some optimizations that previously required `useMemo`, `useCallback`, or `React.memo`.
-
-Umi 4.7 introduces a first-class configuration option with the same name:
-
-```ts
-export default defineConfig({
-  reactCompiler: true,
-});
-```
-
-The configuration object is passed directly to `babel-plugin-react-compiler`. React 19 is the default target. React 17 and 18 projects must set the corresponding `target` and install `react-compiler-runtime`.
-
-```ts
-export default defineConfig({
-  reactCompiler: {
-    target: '18',
-  },
-});
-```
-
-React Compiler works with webpack, Vite, and utoopack. It cannot currently be enabled together with MFSU or Mako.
-
-The legacy `forget` option remains supported for compatibility but is deprecated. We recommend migrating to `reactCompiler`.
-
-For existing projects, enable it gradually. Make sure the code follows the Rules of React, then verify the output with unit tests, end-to-end tests, and React DevTools before removing hand-written memoization.
-
-## 2. utoopack Comes to the Default Templates
-
-The most important build-layer change is not a Vite or webpack version number. It is utoopack moving from an optional experimental feature into the default templates for new projects.
+The centerpiece of Umi 4.7 is utoopack moving from an optional experimental feature into the default templates for new projects.
 
 The integration now covers the engineering workflows required for everyday development and production builds.
 
@@ -101,6 +59,48 @@ Data collected from medium-to-large production projects shows roughly 3×–10×
 Actual results depend on project size, cache state, loaders, Babel configuration, and dependency structure. This range should not be treated as a guaranteed result for every project.
 
 utoopack requires Node.js 20 or later. Projects that rely heavily on custom webpack plugins or loaders should validate development, production builds, and critical pages on a branch and in CI before switching.
+
+## 2. A Modern Baseline for React 19 Applications
+
+Beyond the build engine, Umi 4.7 advances the foundations of modern React applications with improved React 19 compatibility, React Compiler integration, and official plugin support for Ant Design 6.
+
+### React 19 and Ant Design 6
+
+React 19 support goes beyond dependency upgrades. The data-flow plugin now writes initial model values and notifies subscribers at safer times, avoiding cross-component updates during render.
+
+qiankun child applications also prefer the new Root API when unmounting, instead of relying on legacy APIs removed by React 19.
+
+Ant Design 6 is now recognized by the modern branch of the official plugin. Theme algorithms, `ConfigProvider`, `App`, and runtime configuration continue to work as expected.
+
+Umi also skips the reset styles that only apply to Ant Design 5 and addresses version-specific differences in layout, locale, and icon collection.
+
+### React Compiler: A First-Class, Cross-Bundler Feature
+
+[React Compiler](https://react.dev/learn/react-compiler) analyzes components and Hooks at build time. It automatically applies some optimizations that previously required `useMemo`, `useCallback`, or `React.memo`.
+
+Umi 4.7 introduces a first-class configuration option with the same name:
+
+```ts
+export default defineConfig({
+  reactCompiler: true,
+});
+```
+
+The configuration object is passed directly to `babel-plugin-react-compiler`. React 19 is the default target. React 17 and 18 projects must set the corresponding `target` and install `react-compiler-runtime`.
+
+```ts
+export default defineConfig({
+  reactCompiler: {
+    target: '18',
+  },
+});
+```
+
+React Compiler works with webpack, Vite, and utoopack. It cannot currently be enabled together with MFSU or Mako.
+
+The legacy `forget` option remains supported for compatibility but is deprecated. We recommend migrating to `reactCompiler`.
+
+For existing projects, enable it gradually. Make sure the code follows the Rules of React, then verify the output with unit tests, end-to-end tests, and React DevTools before removing hand-written memoization.
 
 ## 3. Leaner Styling and Development Pipelines
 
