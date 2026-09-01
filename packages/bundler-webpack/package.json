@@ -80,13 +80,13 @@
     "terser": "5.16.1",
     "terser-webpack-plugin": "5.3.6",
     "url-loader": "4.1.1",
-    "webpack": "5.105.4",
+    "webpack": "5.110.2",
     "webpack-5-chain": "8.0.2",
     "webpack-bundle-analyzer": "4.7.0",
     "webpack-dev-middleware": "6.0.1",
     "webpack-manifest-plugin": "5.0.0",
     "webpack-sources": "3.2.3",
-    "webpackbar": "5.0.2",
+    "webpackbar": "7.0.0",
     "ws": "8.12.0"
   },
   "publishConfig": {
@@ -186,6 +186,7 @@
       "svgo-loader",
       "url-loader",
       "file-loader",
+      "webpackbar",
       "webpack-bundle-analyzer",
       "webpack-dev-middleware",
       "webpack-manifest-plugin",

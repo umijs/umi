@@ -165,9 +165,6 @@
     "overrides": {
       "@parcel/watcher": "2.1.0",
       "browserslist": "$browserslist"
-    },
-    "patchedDependencies": {
-      "webpack@5.105.4": "patches/webpack@5.105.4.patch"
     }
   },
   "_local": "This flag is used to check if the development in local, Please do not delete."
