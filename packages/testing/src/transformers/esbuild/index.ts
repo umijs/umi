@@ -1,6 +1,6 @@
 import { Transformer } from '@jest/transform';
+import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
 import { createHash } from 'crypto';
-import { Loader, transformSync } from 'esbuild';
 import fs from 'fs';
 import { extname, relative } from 'path';
 import { resolveOptions } from './options';

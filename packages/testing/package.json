@@ -27,7 +27,6 @@
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
     "babel-jest": "^29.7.0",
-    "esbuild": "0.21.4",
     "identity-obj-proxy": "3.0.0",
     "isomorphic-unfetch": "4.0.2"
   },
