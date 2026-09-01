@@ -90,10 +90,13 @@ export const reactQuery: RuntimeReactQueryType = {
       queries: {
         // 🟡 此配置具有的表现往往令人出乎意料，若无特殊需求，请默认关闭
         refetchOnWindowFocus: false,
+        // 🟡 如果是 v4 版本react-query，networkMode 推荐设置为 'always'
+        networkMode: 'always',
       },
     },
   },
 };
 ```
 
-注：绝大多数项目中，**你都应该默认设定 `refetchOnWindowFocus: false`** ，否则将引发出人意料的反复获取数据效果（这在 SWR 中被称为 [`revalidateOnFocus`](https://swr.vercel.app/zh-CN/docs/api#options) ）。
+注：绝大多数项目中，**你都应该默认设定 `refetchOnWindowFocus: false`** ，否则将引发出人意料的反复获取数据效果（这在 SWR 中被称为 [`revalidateOnFocus`](https://swr.vercel.app/zh-CN/docs/api#options) ）。如果没有手动安装 v5 版本的 `@tanstack/react-query` 依赖，那么默认使用的是 v4 版本，**如无特殊需求建议设置 `networkMode: 'always'`** ，否则将引发出人意料的效果，详见[issue](https://github.com/TanStack/query/issues/5679)。
+
