@@ -160,6 +160,7 @@ Object.keys(exported).forEach(function (key) {
           'gzip-size',
           'prettier',
           'copy-webpack-plugin',
+          'webpackbar',
           'zx',
           '@vitejs/plugin-legacy',
           '@vitejs/plugin-vue',
@@ -177,6 +178,12 @@ Object.keys(exported).forEach(function (key) {
           'await detectPolyfills(`Promise.resolve(); Promise.all();`',
           'await (()=>{})(`Promise.resolve(); Promise.all();`',
         );
+      }
+
+      // Some transitive minimizer sources ship debugger statements, which
+      // fail the repository's pre-commit lint after being bundled into webpack.
+      if (opts.file === './bundles/webpack/bundle') {
+        code = code.replace(/^\s*debugger;\s*$/gm, '');
       }
 
       if (
@@ -290,7 +297,12 @@ Object.keys(exported).forEach(function (key) {
         ...{ version },
         ...(author ? { author } : undefined),
         ...(license ? { license } : undefined),
-        ...(types ? { types } : undefined),
+        ...(types
+          ? {
+              types:
+                opts.pkgName === 'webpackbar' ? './dist/index.d.ts' : types,
+            }
+          : undefined),
         ...(typing ? { typing } : undefined),
         ...(typings ? { typings } : undefined),
       });

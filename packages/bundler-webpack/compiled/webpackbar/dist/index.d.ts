@@ -1,6 +1,6 @@
 import Webpack, { Stats } from '../../webpack';
 
-type ReporterContextFunc<T = any> = (context: WebpackBarPlugin, opts: T) => void
+type ReporterContextFunc<T = any> = (context: WebpackBarProgressPlugin, opts: T) => void
 
 interface State {
   start: [number, number] | null
@@ -101,7 +101,7 @@ interface WebpackBarOptions {
   reporters?: ReporterInput[]
 }
 
-declare class WebpackBarPlugin extends Webpack.ProgressPlugin {
+declare class WebpackBar {
     private options;
     private reporters;
     constructor(options?: WebpackBarOptions);
@@ -118,4 +118,10 @@ declare class WebpackBarPlugin extends Webpack.ProgressPlugin {
     updateProgress(percent?: number, message?: string, details?: any[]): void;
 }
 
-export { Reporter, State, WebpackBarPlugin as default };
+declare class WebpackBarProgressPlugin extends Webpack.ProgressPlugin {
+    webpackbar: WebpackBar;
+    constructor(options?: WebpackBarOptions);
+    apply(compiler: any): void;
+}
+
+export { Reporter, State, WebpackBarOptions, WebpackBarProgressPlugin as default };
