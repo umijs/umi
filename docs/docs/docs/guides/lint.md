@@ -4,17 +4,17 @@ toc: content
 ---
 # 编码规范
 
-我们通常会在项目中使用 ESLint、Stylelint 来协助我们把控编码质量，为了实现低成本、高性能、更稳定地接入上述工具，Umi 提供了开箱即用的 Lint 能力，包含以下特性：
+我们通常会在项目中使用 JavaScript/TypeScript Lint 与 Stylelint 来协助我们把控编码质量。为了实现低成本、高性能、更稳定的接入，Umi 提供了开箱即用的 Lint 能力，包含以下特性：
 
-1. **推荐配置**：提供 ESLint 及 Stylelint 推荐配置，可以直接继承使用
-2. **统一的 CLI**：提供 `umi lint` CLI，集成式调用 ESLint 和 Stylelint
+1. **推荐规则**：为 JavaScript、TypeScript 及样式文件提供开箱即用的推荐规则
+2. **统一的 CLI**：提供 `umi lint` CLI，使用 utoo-lint 检查 JavaScript/TypeScript，使用 Stylelint 检查样式
 3. **规则稳定**：始终确保规则的稳定性，不会出现上游配置更新导致存量项目 lint 失败的情况
 
-其中，ESLint 配置具备如下特点：
+其中，JavaScript/TypeScript Lint 具备如下特点：
 
 1. **仅质量相关**：我们从数百条规则中筛选出数十条与编码质量相关的规则进行白名单开启，回归 Lint 本质，且不会与 Prettier 的规则冲突
-2. **性能优先**：部分 TypeScript 的规则实用性低但项目全量编译的成本却很高，我们对这些规则进行禁用以提升性能
-3. **内置常用插件**：包含 react、react-hooks、@typescript/eslint、jest，满足日常所需
+2. **性能优先**：基于原生实现的 utoo-lint 执行，并为 TypeScript 文件应用独立的规则覆盖
+3. **渐进兼容**：仅启用当前 utoo-lint 已支持的 Umi 推荐规则，后续随上游能力逐步补齐
 
 另外，Stylelint 配置还内置 CSS-in-JS 支持，可以检测出 JS 文件中的样式表语法错误。听起来很有吸引力？来看看如何接入吧。
 
@@ -29,30 +29,31 @@ $ npm i @umijs/lint -D
 $ pnpm add @umijs/lint -D
 ```
 
-然后安装 ESLint 及 Stylelint：
+然后安装 Stylelint：
 
 > 目前 `@umijs/lint` 使用的 `stylelint` 版本是 v14  
 
 ```bash
-$ npm i -D eslint "stylelint@^14"
+$ npm i -D "stylelint@^14"
 # or
-$ pnpm add -D eslint "stylelint@^14"
+$ pnpm add -D "stylelint@^14"
 ```
 
 ### 启用配置
 
-在 `.eslintrc.js` 及 `.stylelintrc.js` 里继承 Umi 提供的配置：
+`umi lint` 已内置 JavaScript/TypeScript 推荐规则，无需创建配置文件。如需覆盖规则，可在项目根目录添加 `utlint.config.json`：
+
+```json
+{
+  "rules": {
+    "no-console": "warn"
+  }
+}
+```
+
+样式检查仍需在 `.stylelintrc.js` 中继承 Umi 提供的配置：
 
 ```js
-// .eslintrc.js
-module.exports = {
-  // Umi 项目
-  extends: require.resolve('umi/eslint'),
-
-  // Umi Max 项目
-  extends: require.resolve('@umijs/max/eslint'),
-}
-
 // .stylelintrc.js
 module.exports = {
   // Umi 项目
@@ -63,7 +64,7 @@ module.exports = {
 }
 ```
 
-在配置文件创建完毕后，我们其实已经可以通过 `eslint`、`stylelint` 命令来执行 lint 了，但我们仍然推荐使用 `umi lint` 命令，以获得更便捷的体验。
+如果仍需单独运行 ESLint，可以安装 `eslint` 并继续在 `.eslintrc.js` 中继承 `umi/eslint` 或 `@umijs/max/eslint`。该兼容配置只作用于独立的 `eslint` 命令；`umi lint` 的 JavaScript/TypeScript 检查由 utoo-lint 执行。
 
 ### CLI
 
@@ -78,8 +79,8 @@ $ umi lint [glob] [--fix] [--eslint-only] [--stylelint-only] [--cssinjs]
 ```bash
   [glob]: 可选，指定要 lint 的文件，默认为 `{src,test}/**/*.{js,jsx,ts,tsx,css,less}`
   --quiet: 可选，禁用 `warn` 规则的报告，仅输出 `error`
-  --fix: 可选，自动修复 lint 错误
-  --eslint-only: 可选，仅执行 ESLint
+  --fix: 可选，自动修复 utoo-lint 或 Stylelint 已支持修复的错误
+  --eslint-only: 可选，仅使用 utoo-lint 检查 JavaScript/TypeScript（参数名为兼容保留）
   --stylelint-only: 可选，仅执行 Stylelint
   --cssinjs: 可选，为 Stylelint 启用 CSS-in-JS 支持
 ```
@@ -140,5 +141,6 @@ Husky 用来绑定 Git Hooks、在指定时机（例如 `pre-commit`）执行我
 
 ## 附录
 
-1. Umi 内置的 ESLint 规则列表：https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
-2. Umi 内置的 Stylelint 配置：https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts
+1. Umi 内置的 JavaScript/TypeScript 规则列表：https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
+2. Umi 的 utoo-lint 配置：https://github.com/umijs/umi/blob/master/packages/lint/src/config/utoo/index.ts
+3. Umi 内置的 Stylelint 配置：https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts

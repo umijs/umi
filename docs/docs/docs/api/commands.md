@@ -160,7 +160,7 @@ Details:
 $ umi lint
 Usage: umi lint
 
- 支持只校验 js、ts、tsx、jsx 类型文件： umi lint --eslint-only
+ 使用 utoo-lint 只校验 js、ts、tsx、jsx 类型文件： umi lint --eslint-only
 
  支持只校验 css、less 等样式文件： umi lint --stylelint-only
 
@@ -305,4 +305,3 @@ npx --no-install umi verify-commit $1
 $ umi version
 4.0.0
 ```
-
