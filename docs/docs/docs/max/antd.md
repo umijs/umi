@@ -153,7 +153,7 @@ export default {
 
 ```ts
 // app.ts
-import { RuntimeAntdConfig } from 'umi';
+import { RuntimeAntdConfig } from ''@umijs/max'';
 import { theme } from 'antd';
 
 export const antd: RuntimeAntdConfig = (memo) => {
@@ -181,7 +181,7 @@ export const antd: RuntimeAntdConfig = (memo) => {
 
 ```tsx
 import { Layout, Space, Button, version, theme, MappingAlgorithm } from 'antd';
-import { useAntdConfig, useAntdConfigSetter } from 'umi';
+import { useAntdConfig, useAntdConfigSetter } from ''@umijs/max'';
 const { darkAlgorithm, defaultAlgorithm } = theme;
 
 export default function Page() {

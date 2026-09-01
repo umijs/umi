@@ -38,7 +38,7 @@ To further reduce R&D costs, we have integrated the layout as a Umi plugin. With
 The plugin can be enabled through the `layout` property in the `config/config.ts` configuration file.
 
 ```ts
-import { defineConfig } from 'umi';
+import { defineConfig } from ''@umijs/max'';
 
 export default defineConfig({
   layout: {

@@ -84,7 +84,7 @@ We provide a hook for obtaining permission-related information in components, as
 
 ```js
 import React from 'react';
-import { useAccess } from 'umi';
+import { useAccess } from '@umijs/max';
 
 const PageA = (props) => {
   const { foo } = props;
@@ -128,7 +128,7 @@ A complete example is as follows:
 
 ```js
 import React from 'react';
-import { useAccess, Access } from 'umi';
+import { useAccess, Access } from '@umijs/max';
 
 const PageA = (props) => {
   const { foo } = props;
