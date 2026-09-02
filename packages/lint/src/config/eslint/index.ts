@@ -1,7 +1,4 @@
-import rules, {
-  jest as jestRules,
-  typescript as tsRules,
-} from './rules/recommended';
+import rules, { jestRules, typescript as tsRules } from './rules/recommended';
 import './setup';
 
 module.exports = {

@@ -70,7 +70,7 @@ export default {
 /**
  * config-plugin-jest rules
  */
-export const jest = {
+export const jestRules = {
   'jest/no-conditional-expect': 2,
   'jest/no-deprecated-functions': 2,
   'jest/no-export': 2,
@@ -85,6 +85,9 @@ export const jest = {
   'jest/valid-expect': 2,
   'jest/valid-title': 2,
 };
+
+// Keep the historical named export for deep imports.
+export { jestRules as jest };
 
 /**
  * recommended enabled/disabled rules for typescript umi project
