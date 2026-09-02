@@ -55,9 +55,3 @@ jobs:
 
       - name: Publish packages
         run: pnpm release:publish
-
-      - name: Install TNPM
-        run: npm install --global tnpm@10.6.2 --registry https://registry.antgroup-inc.cn
-
-      - name: Sync packages to TNPM
-        run: pnpm sync:tnpm
