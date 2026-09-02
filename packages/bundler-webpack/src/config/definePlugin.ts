@@ -13,6 +13,8 @@ interface IOpts {
 
 const prefixRE = /^UMI_APP_/;
 const ENV_SHOULD_PASS = ['NODE_ENV', 'HMR', 'SOCKET_SERVER', 'ERROR_OVERLAY'];
+const SSR_MANIFEST =
+  "(typeof process !== 'undefined' && process.env ? process.env.SSR_MANIFEST : undefined)";
 const SOCKET_IGNORE_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost'];
 // 环境变量传递自定义逻辑，默认直接透传
 const CUSTOM_ENV_GETTER: Record<string, (opts: IOpts) => string | undefined> = {
@@ -67,7 +69,9 @@ export function resolveDefine(opts: IOpts) {
 
   return {
     'process.env': env,
-    'process.env.SSR_MANIFEST': 'process.env.SSR_MANIFEST',
+    // Keep SSR's runtime lookup while making browser bundles safe when a
+    // dependency reads the complete `process.env` object.
+    'process.env.SSR_MANIFEST': SSR_MANIFEST,
     ...define,
   };
 }
