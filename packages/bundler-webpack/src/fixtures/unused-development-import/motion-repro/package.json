@@ -1,0 +1,6 @@
+{
+  "name": "motion-repro",
+  "version": "1.0.0",
+  "main": "./index.mjs",
+  "sideEffects": false
+}

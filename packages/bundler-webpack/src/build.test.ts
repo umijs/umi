@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
+import { runInNewContext } from 'vm';
 import { build } from './build';
 import { CSSMinifier, JSMinifier } from './types';
 
@@ -105,6 +106,11 @@ const expects: Record<string, Function> = {
   'runtime-public-path'({ files }: IOpts) {
     expect(files['index.css']).toContain(`background: url(./static/`);
   },
+  'ssr-manifest-browser'({ files }: IOpts) {
+    const context = { process: {} } as Record<string, any>;
+    runInNewContext(files['index.js'], context);
+    expect(context.__manifest).toBe('client');
+  },
   svgo({ files }: IOpts) {
     expect(files['static']).toContain(EXISTS);
     expect(files['index.js']).toContain(`.svg`);
@@ -127,6 +133,14 @@ const expects: Record<string, Function> = {
   },
   theme({ files }: IOpts) {
     expect(files['index.css']).toContain(`color: green;`);
+  },
+  'unused-development-import'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`console.log('run')`);
+  },
+  'wrapped-cjs-default-constructor'({ files }: IOpts) {
+    const context = {} as Record<string, any>;
+    runInNewContext(files['index.js'], context);
+    expect(context.__constructorResult).toBe('base');
   },
 };
 

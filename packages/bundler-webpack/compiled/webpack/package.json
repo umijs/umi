@@ -1,6 +1,6 @@
 {
   "name": "webpack",
-  "version": "5.110.2",
+  "version": "5.110.3",
   "author": "Tobias Koppers @sokra",
   "types": "types.d.ts"
 }
