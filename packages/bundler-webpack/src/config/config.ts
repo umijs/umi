@@ -97,6 +97,12 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   config.mode(opts.env);
   config.stats('none');
 
+  // Webpack 5.109+ may change the execution order of circular dependencies
+  // when concatenating CommonJS modules. Keep ESM concatenation enabled.
+  if (!isDev) {
+    config.optimization.concatenateModules({ commonjs: false });
+  }
+
   // entry
   Object.keys(opts.entry).forEach((key) => {
     const entry = config.entry(key);
