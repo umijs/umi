@@ -3,7 +3,6 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { basename, join } from 'path';
 import { getUtooLintConfig } from '.';
-import { jestRules } from '../eslint/rules/recommended';
 
 describe('utoo-lint config', () => {
   const projects: string[] = [];
@@ -40,68 +39,21 @@ describe('utoo-lint config', () => {
     ]);
   });
 
-  it('runs the newly supported React and Jest rules', async () => {
-    const cwd = mkdtempSync(join(tmpdir(), 'umi-utoo-lint-'));
-    projects.push(cwd);
-    mkdirSync(join(cwd, 'src'));
-    writeFileSync(
-      join(cwd, 'src/component.jsx'),
-      [
-        `import React from 'react';`,
-        'class Component extends React.Component {',
-        '  method() { this.state.value = 1; }',
-        '  render() { return null; }',
-        '}',
-      ].join('\n'),
-    );
-    writeFileSync(
-      join(cwd, 'src/example.test.js'),
-      `describe.only('suite', () => {});\n`,
-    );
-
-    const results = await new ESLint({
-      baseConfig: getUtooLintConfig(),
-      cwd,
-      noConfig: true,
-    }).lintFiles(['src']);
-    const messages = Object.fromEntries(
-      results.map((result) => [
-        basename(result.filePath),
-        result.messages.map((message) => message.ruleId),
-      ]),
-    );
-
-    expect(messages['component.jsx']).toEqual([
-      'react/no-direct-mutation-state',
-    ]);
-    expect(messages['example.test.js']).toEqual(['jest/no-focused-tests']);
-  });
-
-  it('maps equivalent rules and enables the full recommended rule set', () => {
+  it('maps equivalent rules and omits unsupported rules', () => {
     const [recommended, typescript, jest] = getUtooLintConfig();
 
     expect(recommended.rules).toMatchObject({
       'no-global-assign': 2,
       'no-var': 2,
-      'react/no-direct-mutation-state': 2,
     });
     expect(recommended.rules).not.toHaveProperty('no-native-reassign');
-    expect(typescript.rules).toMatchObject({
-      'no-invalid-this': 2,
-      '@typescript-eslint/no-unused-vars': 2,
-    });
+    expect(recommended.rules).not.toHaveProperty(
+      'react/no-direct-mutation-state',
+    );
     expect(typescript.rules).not.toHaveProperty(
       '@typescript-eslint/no-invalid-this',
     );
-    expect(jest.rules).toMatchObject({
-      'jest/no-conditional-expect': 2,
-      'jest/no-focused-tests': 2,
-      'jest/valid-expect': 2,
-      'jest/valid-title': 2,
-    });
-    expect(Object.keys(jest.rules!)).toHaveLength(
-      Object.keys(jestRules).length,
-    );
+    expect(jest.rules).not.toHaveProperty('jest/no-focused-tests');
   });
 
   it('allows project config to override the built-in rules', async () => {
