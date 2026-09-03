@@ -162,7 +162,7 @@ Used to check and correct code to match rules.
 $ umi lint
 Usage: umi lint
 
- Validate js, ts, tsx, and jsx files with utoo-lint only: umi lint --eslint-only
+ Support for validation of js, ts, tsx, jsx type files only: umi lint --eslint-only
 
  Support for validation of css, less and other style files only: umi lint --stylelint-only
 

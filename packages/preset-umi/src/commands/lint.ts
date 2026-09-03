@@ -4,7 +4,7 @@ import { IApi } from '../types';
 export default (api: IApi) => {
   api.registerCommand({
     name: 'lint',
-    description: 'lint source code using utoo-lint and stylelint',
+    description: 'lint source code using eslint and stylelint',
     configResolveMode: 'loose',
     details: `
 umi lint
@@ -12,7 +12,7 @@ umi lint
 # lint for specific files, default is "{src,test}/**/*.{js,jsx,ts,tsx,less}"
 umi lint "**/*.{ts,scss}"
 
-# lint JavaScript/TypeScript only or style files only
+# lint eslint-only or stylelint-only
 umi lint --eslint-only
 umi lint --stylelint-only
 

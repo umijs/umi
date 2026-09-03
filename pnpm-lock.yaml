@@ -2373,9 +2373,6 @@ importers:
       '@umijs/babel-preset-umi':
         specifier: workspace:*
         version: link:../babel-preset-umi
-      '@utoo/lint':
-        specifier: 0.3.4
-        version: 0.3.4
       eslint-plugin-jest:
         specifier: 27.2.3
         version: 27.2.3(@typescript-eslint/eslint-plugin@5.62.0)(@typescript/typescript6@6.0.2)(jest@29.7.0)
@@ -14244,6 +14241,7 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@eslint/js@8.35.0:
     resolution: {integrity: sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==}
@@ -14252,6 +14250,7 @@ packages:
   /@eslint/js@8.57.1:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
 
   /@exodus/schemasafe@1.0.0-rc.9:
     resolution: {integrity: sha512-dGGHpb61hLwifAu7sotuHFDBw6GTdpG8aKC0fsK17EuTzMRvUrH7lEAr6LTJ+sx3AZYed9yZ77rltVDHyg2hRg==}
@@ -21965,6 +21964,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@utoo/lint-darwin-x64@0.3.4:
@@ -21972,6 +21972,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@utoo/lint-linux-arm64@0.3.4:
@@ -21979,6 +21980,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@utoo/lint-linux-x64@0.3.4:
@@ -21986,6 +21988,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@utoo/lint-win32-x64@0.3.4:
@@ -21993,6 +21996,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@utoo/lint@0.3.4:
@@ -22011,6 +22015,7 @@ packages:
       '@utoo/lint-win32-x64': 0.3.4
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@utoo/pack-darwin-arm64@1.4.22:
     resolution: {integrity: sha512-DJCCx/tekQ0dKxTJhIf5BY7l9uR6cuPqHB8RpulEEPWgvWUX7SpY472QlK7Y4uz8J7HqcvZ2eNRk156y737zyw==}
@@ -23146,6 +23151,7 @@ packages:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
       acorn: 8.17.0
+    dev: true
 
   /acorn-jsx@5.3.2(acorn@8.8.2):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -30241,6 +30247,7 @@ packages:
       acorn: 8.17.0
       acorn-jsx: 5.3.2(acorn@8.17.0)
       eslint-visitor-keys: 3.4.3
+    dev: true
 
   /esprima@4.0.1:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
