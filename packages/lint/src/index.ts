@@ -2,6 +2,13 @@ import { EsLinter, StyleLinter } from './linter';
 import type { ILintArgs, ILinterOpts } from './types';
 
 const ES_EXTS = ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'];
+const STYLE_EXTS = [
+  '**/*.less',
+  '**/*.css',
+  '**/*.sass',
+  '**/*.scss',
+  '**/*.styl',
+];
 export type { ILintArgs, ILinterOpts };
 
 export default (opts: ILinterOpts, args: ILintArgs) => {
@@ -21,6 +28,11 @@ export default (opts: ILinterOpts, args: ILintArgs) => {
   if (!args.stylelintOnly) {
     const eslint = new EsLinter(opts);
     const esArgs = { ...args, _: [...args._] };
+
+    for (const suffix of STYLE_EXTS) {
+      esArgs._.unshift('--ignore-pattern', suffix);
+    }
+
     eslint.run(esArgs);
   }
 };

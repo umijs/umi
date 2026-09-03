@@ -6,17 +6,17 @@ translated_at: '2024-03-17T10:29:06.038Z'
 
 # Coding Standards
 
-We often use JavaScript/TypeScript linting and Stylelint to control code quality. Umi provides an out-of-the-box lint workflow with the following features:
+We often use ESLint and Stylelint in projects to help us control coding quality. To achieve low-cost, high-performance, and more stable integration of the above tools, Umi provides out-of-the-box Lint capabilities, including the following features:
 
-1. **Recommended Rules**: Provides ready-to-use rules for JavaScript, TypeScript, and style files
-2. **Unified CLI**: Uses utoo-lint for JavaScript/TypeScript and Stylelint for styles through `umi lint`
+1. **Recommended Configurations**: Provides ESLint and Stylelint recommended configurations that can be directly inherited and used
+2. **Unified CLI**: Provides `umi lint` CLI, integrating calls to ESLint and Stylelint
 3. **Stable Rules**: Always ensures the stability of rules to avoid situations where upstream configuration updates cause lint failures in existing projects
 
-JavaScript/TypeScript linting has the following characteristics:
+The ESLint configuration has the following characteristics:
 
 1. **Quality-Related Only**: We have selected dozens of quality-related rules from hundreds of rules to whitelist, returning to the essence of Lint, without conflict with Prettier's rules
-2. **Performance Priority**: Runs on the native utoo-lint engine and applies a separate rule override to TypeScript files
-3. **Progressive Compatibility**: Enables the Umi recommended rules currently supported by utoo-lint and expands coverage as upstream support lands
+2. **Performance Priority**: Some TypeScript rules are of low practicability but incur high project-wide compilation costs, so we disable these rules to improve performance
+3. **Built-in Common Plugins**: Includes react, react-hooks, @typescript/eslint, jest, meeting daily needs
 
 Additionally, the Stylelint configuration also includes built-in support for CSS-in-JS, allowing for the detection of stylesheet syntax errors in JS files. Sounds attractive? Let's see how to integrate it.
 
@@ -31,31 +31,30 @@ $ npm i @umijs/lint -D
 $ pnpm add @umijs/lint -D
 ```
 
-Then install Stylelint:
+Then install ESLint and Stylelint:
 
 > The current version of `stylelint` used by `@umijs/lint` is v14  
 
 ```bash
-$ npm i -D "stylelint@^14"
+$ npm i -D eslint "stylelint@^14"
 # or
-$ pnpm add -D "stylelint@^14"
+$ pnpm add -D eslint "stylelint@^14"
 ```
 
 ### Enable Configuration
 
-`umi lint` includes the JavaScript/TypeScript recommended rules, so no configuration file is required. To override rules, add `utlint.config.json` to the project root:
-
-```json
-{
-  "rules": {
-    "no-console": "warn"
-  }
-}
-```
-
-Style linting still requires the Umi configuration in `.stylelintrc.js`:
+Inherit the configuration provided by Umi in your `.eslintrc.js` and `.stylelintrc.js`:
 
 ```js
+// .eslintrc.js
+module.exports = {
+  // For Umi projects
+  extends: require.resolve('umi/eslint'),
+
+  // For Umi Max projects
+  extends: require.resolve('@umijs/max/eslint'),
+}
+
 // .stylelintrc.js
 module.exports = {
   // For Umi projects
@@ -66,7 +65,7 @@ module.exports = {
 }
 ```
 
-If you still need to run ESLint directly, install `eslint` and keep extending `umi/eslint` or `@umijs/max/eslint` from `.eslintrc.js`. This compatibility configuration affects the standalone `eslint` command only; `umi lint` uses utoo-lint for JavaScript and TypeScript.
+After the configuration files are created, we can already use the `eslint` and `stylelint` commands to execute lint, but we still recommend using the `umi lint` command for a more convenient experience.
 
 ### CLI
 
@@ -81,8 +80,8 @@ Parameters explanation:
 ```bash
   [glob]: Optional, specify the files to lint, default is `{src,test}/**/*.{js,jsx,ts,tsx,css,less}`
   --quiet: Optional, disable reporting of `warn` rules, only output `error`
-  --fix: Optional, auto-fix errors supported by utoo-lint or Stylelint
-  --eslint-only: Optional, lint JavaScript/TypeScript with utoo-lint only (name retained for compatibility)
+  --fix: Optional, auto-fix lint errors
+  --eslint-only: Optional, execute ESLint only
   --stylelint-only: Optional, execute Stylelint only
   --cssinjs: Optional, enable CSS-in-JS support for Stylelint
 ```
@@ -143,6 +142,5 @@ Refer to the Prettier documentation to configure it with lint-staged: https://pr
 
 ## Appendix
 
-1. JavaScript/TypeScript rules built into Umi: https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
-2. Umi utoo-lint configuration: https://github.com/umijs/umi/blob/master/packages/lint/src/config/utoo/index.ts
-3. Stylelint configuration built into Umi: https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts
+1. ESLint rules built into Umi: https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
+2. Stylelint configuration built into Umi: https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts
