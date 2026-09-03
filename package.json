@@ -94,7 +94,7 @@
     "@umijs/plugins": "workspace:*",
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
-    "@utoo/lint": "0.2.7",
+    "@utoo/lint": "0.3.4",
     "@vercel/ncc": "0.44.1",
     "browserslist": "4.28.2",
     "dts-packer": "^0.0.3",

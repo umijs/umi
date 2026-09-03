@@ -85,8 +85,8 @@ importers:
         specifier: workspace:*
         version: link:packages/utils
       '@utoo/lint':
-        specifier: 0.2.7
-        version: 0.2.7
+        specifier: 0.3.4
+        version: 0.3.4
       '@vercel/ncc':
         specifier: 0.44.1
         version: 0.44.1
@@ -14226,9 +14226,31 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@eslint/eslintrc@2.1.4:
+    resolution: {integrity: sha512-269Z39MS6wVJtsoUl10L60WdkhJVdPG24Q4eZTH3nnF6lpvSShEK3wQjDX9JRWAUPvPh7COouPpU9IrqaZFvtQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      ajv: 6.12.6
+      debug: 4.3.4(supports-color@8.1.1)
+      espree: 9.6.1
+      globals: 13.19.0
+      ignore: 5.2.4
+      import-fresh: 3.3.0
+      js-yaml: 4.1.0
+      minimatch: 3.1.2
+      strip-json-comments: 3.1.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@eslint/js@8.35.0:
     resolution: {integrity: sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  /@eslint/js@8.57.1:
+    resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
 
   /@exodus/schemasafe@1.0.0-rc.9:
     resolution: {integrity: sha512-dGGHpb61hLwifAu7sotuHFDBw6GTdpG8aKC0fsK17EuTzMRvUrH7lEAr6LTJ+sx3AZYed9yZ77rltVDHyg2hRg==}
@@ -21937,58 +21959,62 @@ packages:
       react: 18.3.1
     dev: false
 
-  /@utoo/lint-darwin-arm64@0.2.7:
-    resolution: {integrity: sha512-PvAYD5GiQMSYrN9LTskdpWpTme8bLEQkImFjTs9gDmR9WsQhuRyFiOgXK38Q/R4t90vfSM7Kud4aUuI9iEvZoA==}
+  /@utoo/lint-darwin-arm64@0.3.4:
+    resolution: {integrity: sha512-s4o88c0IJBMNABgTRvz9nanR8xJUJldwZnbgdupIrn1pBeu+im0k9npdsTYrbsMJKYYFbaKpmCOGNReLG12dMw==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /@utoo/lint-darwin-x64@0.2.7:
-    resolution: {integrity: sha512-q838A8hVZsGK4p6b0R4YO1PX5nkqZICZhYafP6DMI/Y0Pn5i2RQ00cmuq46Km7exnMwDUzHsYjZ35mCKeUOUIw==}
+  /@utoo/lint-darwin-x64@0.3.4:
+    resolution: {integrity: sha512-xZ9Xxi1PuffvKkVhRvtZGAP8FM4Phk9O8rRF1Ai4CWZPpH8FKjhsp0O78LB68pjQgPVzjBNmcPGIOlkcIP37qQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /@utoo/lint-linux-arm64@0.2.7:
-    resolution: {integrity: sha512-Qs0E01w0SE3IVawUgq3QPCY3VFBL0fSAw0QJEmj+dNzuBxerjMKOoFYLtb0HyWzTEAodiNWGthO717n2K1/h0A==}
+  /@utoo/lint-linux-arm64@0.3.4:
+    resolution: {integrity: sha512-ATmEjnKyuDAj1Lc3E6YdZGuUmrV6ucCZhPf5UOdffrESNqtj9lOVJAg8tN6/CDf+fWkAt6mudCRi0Ocp71P8vw==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /@utoo/lint-linux-x64@0.2.7:
-    resolution: {integrity: sha512-vjYEylaIP0Ndw+xx7rmS9bDc+pbabMgrxbnIw2Qam4JPwVrI2d2PNZByXkm7Q8oc7e+di4gGb32skSS2ylH4CA==}
+  /@utoo/lint-linux-x64@0.3.4:
+    resolution: {integrity: sha512-2QHT/k8pDK9qRG+r2JRDiZfi3iL61CeS10CptqVZZs38bY2hNfcDp19jA5rTIlOJGeufqhz9djKbntq68nGM3g==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /@utoo/lint-win32-x64@0.2.7:
-    resolution: {integrity: sha512-7RuBwaRdbd55CY83j8A+YfW/tC1HrI8nViwJnr3SP4SAQOVGV4bUnOWlhDf5Pj0B5DZKzBDGPqv7IRnN46Df6A==}
+  /@utoo/lint-win32-x64@0.3.4:
+    resolution: {integrity: sha512-gGpWBwghGYQsGKAKUjZVF2gDxG7A1n5EMuf7x6dc3HEMISCq1X4MhsnNzzrZwBZ3Sud2D/kDbSfIIgqHg7cWkg==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /@utoo/lint@0.2.7:
-    resolution: {integrity: sha512-eL7fEQtd0zsmtmYNHHWqPeLD67u0j3GHQQOVSacKN8chX04rijYJze8FXLvWIsTnYAKzE/qb4DRx6Cthic1t6A==}
-    engines: {node: '>=18.0.0'}
+  /@utoo/lint@0.3.4:
+    resolution: {integrity: sha512-56aj4u+ESKxGFoHUhEKQNjr59s0U5R+qEMkV/MjsI8gz64I9ieDObJ9FLWVAii/8YTNE1fC/h5yjqKKhR4aVOA==}
+    engines: {node: '>=20.0.0'}
     hasBin: true
     dependencies:
+      '@eslint/eslintrc': 2.1.4
+      '@eslint/js': 8.57.1
       jiti: 2.7.0
     optionalDependencies:
-      '@utoo/lint-darwin-arm64': 0.2.7
-      '@utoo/lint-darwin-x64': 0.2.7
-      '@utoo/lint-linux-arm64': 0.2.7
-      '@utoo/lint-linux-x64': 0.2.7
-      '@utoo/lint-win32-x64': 0.2.7
+      '@utoo/lint-darwin-arm64': 0.3.4
+      '@utoo/lint-darwin-x64': 0.3.4
+      '@utoo/lint-linux-arm64': 0.3.4
+      '@utoo/lint-linux-x64': 0.3.4
+      '@utoo/lint-win32-x64': 0.3.4
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@utoo/pack-darwin-arm64@1.4.22:
@@ -23117,6 +23143,14 @@ packages:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
       acorn: 8.11.2
+    dev: true
+
+  /acorn-jsx@5.3.2(acorn@8.17.0):
+    resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
+    peerDependencies:
+      acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
+    dependencies:
+      acorn: 8.17.0
     dev: true
 
   /acorn-jsx@5.3.2(acorn@8.8.2):
@@ -30205,6 +30239,15 @@ packages:
       acorn: 8.8.2
       acorn-jsx: 5.3.2(acorn@8.8.2)
       eslint-visitor-keys: 3.4.1
+
+  /espree@9.6.1:
+    resolution: {integrity: sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      acorn: 8.17.0
+      acorn-jsx: 5.3.2(acorn@8.17.0)
+      eslint-visitor-keys: 3.4.3
+    dev: true
 
   /esprima@4.0.1:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
