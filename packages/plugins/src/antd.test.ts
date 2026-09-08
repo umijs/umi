@@ -43,21 +43,15 @@ afterEach(() => {
 });
 
 test.each(['5.17.0', '6.0.0'])(
-  'antd %s forwards layer and provides ConfigProvider inside StyleProvider',
+  'antd %s forwards layer without enabling ConfigProvider',
   (version) => {
     require('antd/package.json').version = version;
     const { config, content } = generateRuntime({
       styleProvider: { layer: true },
     });
     expect(content).toMatch(/<StyleProvider\s+layer=\{\s*true\s*\}/);
-    expect(config.configProvider).toEqual({});
-    const configProvider =
-      'container = <ConfigProvider {...antdConfig}>{container}</ConfigProvider>';
-    expect(content).toContain(configProvider);
-    // The existing container is wrapped by StyleProvider afterwards.
-    expect(content.indexOf(configProvider)).toBeLessThan(
-      content.indexOf('<StyleProvider'),
-    );
+    expect(config.configProvider).toBeUndefined();
+    expect(content).not.toContain('<ConfigProvider');
   },
 );
 
@@ -72,6 +66,12 @@ test('layer preserves existing ConfigProvider options', () => {
   });
   expect(config.configProvider).toBe(configProvider);
   expect(content).toContain(JSON.stringify(configProvider));
+  expect(content).toContain(
+    'container = <ConfigProvider {...antdConfig}>{container}</ConfigProvider>',
+  );
+  expect(content.indexOf('<ConfigProvider')).toBeLessThan(
+    content.indexOf('<StyleProvider'),
+  );
 });
 
 test('explicit false is forwarded so an outer layer can be overridden', () => {

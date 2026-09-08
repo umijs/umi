@@ -245,8 +245,8 @@ export default (api: IApi) => {
       }
     }
 
-    // 静态主题和 layer 的图标样式需要搭配 ConfigProvider，我们自动开启它
-    if (antd.dark || antd.compact || (isModern && antd.styleProvider?.layer)) {
+    // 如果使用静态主题配置，需要搭配 ConfigProvider ，否则无效，我们自动开启它
+    if (antd.dark || antd.compact) {
       antd.configProvider ??= {};
     }
 
