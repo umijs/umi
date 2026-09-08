@@ -39,8 +39,10 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
     userConfig: opts.config,
     analyze: process.env.ANALYZE,
     babelPreset: opts.babelPreset,
-    beforeBabelPlugins: opts.beforeBabelPlugins,
-    extraBabelPlugins: opts.extraBabelPlugins,
+    extraBabelPlugins: [
+      ...(opts.beforeBabelPlugins || []),
+      ...(opts.extraBabelPlugins || []),
+    ],
     extraBabelPresets: [
       ...(opts.beforeBabelPresets || []),
       ...(opts.extraBabelPresets || []),
