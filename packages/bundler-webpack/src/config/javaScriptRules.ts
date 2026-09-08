@@ -16,6 +16,7 @@ interface IOpts {
   userConfig: IConfig;
   cwd: string;
   env: Env;
+  beforeBabelPlugins: any[];
   extraBabelPlugins: any[];
   extraBabelPresets: any[];
   extraBabelIncludes: Array<string | RegExp>;
@@ -160,6 +161,8 @@ export async function addJavaScriptRules(opts: IOpts) {
             ...(userConfig.extraBabelPresets || []).filter(Boolean),
           ],
           plugins: [
+            // React Compiler must run before Fast Refresh instruments hooks.
+            ...opts.beforeBabelPlugins,
             useFastRefresh && require.resolve('react-refresh/babel'),
             ...opts.extraBabelPlugins,
             ...(userConfig.extraBabelPlugins || []),

@@ -128,8 +128,8 @@ export async function setup(opts: IOpts) {
     entry: opts.entry,
     userConfig: opts.config,
     babelPreset: opts.babelPreset,
+    beforeBabelPlugins: opts.beforeBabelPlugins,
     extraBabelPlugins: [
-      ...(opts.beforeBabelPlugins || []),
       ...(mfsu?.getBabelPlugins() || []),
       ...(opts.extraBabelPlugins || []),
     ],

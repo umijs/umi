@@ -38,6 +38,7 @@ export interface IOpts {
   env: Env;
   entry: Record<string, string>;
   extraBabelPresets?: any[];
+  beforeBabelPlugins?: any[];
   extraBabelPlugins?: any[];
   extraBabelIncludes?: Array<string | RegExp>;
   extraEsbuildLoaderHandler?: any[];
@@ -76,6 +77,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     cwd: opts.cwd,
     env: opts.env,
     babelPreset: opts.babelPreset,
+    beforeBabelPlugins: opts.beforeBabelPlugins || [],
     extraBabelPlugins: opts.extraBabelPlugins || [],
     extraBabelPresets: opts.extraBabelPresets || [],
     extraBabelIncludes: opts.extraBabelIncludes || [],

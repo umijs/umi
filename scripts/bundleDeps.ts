@@ -62,6 +62,23 @@ Object.keys(exported).forEach(function (key) {
       const filesToCopy: string[] = [];
       if (opts.file === './bundles/webpack/bundle') {
         delete opts.webpackExternals['webpack'];
+        // Webpack stringifies these functions into browser code. Keep their
+        // identifiers intact instead of letting ncc rename __webpack_require__.
+        for (const filename of [
+          'HotModuleReplacement.runtime.js',
+          'JavascriptHotModuleReplacement.runtime.js',
+        ]) {
+          const runtimePath = require.resolve(`webpack/lib/hmr/${filename}`, {
+            paths: [nodeModulesPath],
+          });
+          // Match Webpack's require requests, which omit the .js extension.
+          for (const prefix of ['./', '../hmr/']) {
+            opts.webpackExternals[
+              `${prefix}${filename.slice(0, -3)}`
+            ] = `./${filename}`;
+          }
+          filesToCopy.push(runtimePath);
+        }
       }
 
       // babel pre rewrite
