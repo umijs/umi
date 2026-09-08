@@ -130,6 +130,9 @@ function AntdProvider({ children }) {
 {{#styleProvider}}
   container = (
     <StyleProvider
+      {{#styleProvider.layer}}
+      layer={ {{{styleProvider.layer}}} }
+      {{/styleProvider.layer}}
       {{#styleProvider.hashPriority}}
       hashPriority="{{{styleProvider.hashPriority}}}"
       {{/styleProvider.hashPriority}}

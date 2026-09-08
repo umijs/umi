@@ -131,6 +131,8 @@ export default {
 
 配置 `antd` 的 `StyleProvider` 组件，该组件用于兼容低版本浏览器，如 IE11。当你的项目配置了 `legacy` 或者 `targets` 包含 `ie` 时，会自动进行降级处理，不需要手动配置。
 
+使用 antd 5.17.0 及以上版本时，可配置 `styleProvider: { layer: true }`，将组件样式放入 `@layer antd`，降低样式优先级。开启后会自动启用内层 `ConfigProvider`，以处理图标样式。设置 `layer: false` 可显式关闭，未设置时保留 `StyleProvider` 的默认或继承行为。
+
 **注意：**
 
 1. 该配置项仅 antd v5 及以上可用。

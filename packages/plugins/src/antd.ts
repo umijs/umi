@@ -245,8 +245,8 @@ export default (api: IApi) => {
       }
     }
 
-    // 如果使用静态主题配置，需要搭配 ConfigProvider ，否则无效，我们自动开启它
-    if (antd.dark || antd.compact) {
+    // 静态主题和 layer 的图标样式需要搭配 ConfigProvider，我们自动开启它
+    if (antd.dark || antd.compact || (isModern && antd.styleProvider?.layer)) {
       antd.configProvider ??= {};
     }
 
@@ -367,7 +367,11 @@ export default (api: IApi) => {
       context: {
         configProvider,
         appConfig,
-        styleProvider: styleProviderConfig,
+        styleProvider: styleProviderConfig && {
+          ...styleProviderConfig,
+          // Preserve an explicit false instead of omitting it in Mustache.
+          layer: JSON.stringify(styleProviderConfig.layer),
+        },
         // 是否启用了 theme algorithm
         enableModernThemeAlgorithm,
         antdConfigSetter,

@@ -133,6 +133,8 @@ Configure whether `antd`'s `DatePicker`, `TimePicker`, `Calendar` components use
 
 Configure `antd`'s `StyleProvider` component, which is used to support legacy browsers, such as IE11. When your project is configured with `legacy` or `targets` that include `ie`, it will automatically be downgraded, no manual configuration required.
 
+With antd 5.17.0 and above, set `styleProvider: { layer: true }` to place component styles in `@layer antd` and lower their priority. This automatically enables an inner `ConfigProvider` to handle icon styles. Set `layer: false` to explicitly disable it; leaving it unset preserves the default or inherited `StyleProvider` behavior.
+
 **Note:**
 
 1. This configuration is only available for antd v5 and above.
