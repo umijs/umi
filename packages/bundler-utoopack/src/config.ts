@@ -26,8 +26,17 @@ const UMI_POSTCSS_FLEXBUGS_PLUGIN = normalizeUtoopackPath(
   require.resolve('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
 );
 
+// Utoopack resolves `postcss` from the project root by default, which fails
+// when the project does not depend on it directly. Point utoopack at the
+// postcss shipped with @umijs/bundler-utoopack so the default pipeline works
+// out of the box and stays consistent with the webpack bundler.
+const UMI_POSTCSS_IMPLEMENTATION = normalizeUtoopackPath(
+  require.resolve('postcss'),
+);
+
 function getDefaultPostcssConfig() {
   return {
+    implementation: UMI_POSTCSS_IMPLEMENTATION,
     plugins: {
       [UMI_POSTCSS_FLEXBUGS_PLUGIN]: {},
     },
