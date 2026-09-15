@@ -1144,7 +1144,8 @@ export async function getDevUtooPackConfig(
       enable: true,
     },
     dev: true,
-    tracing: false,
+    // Utoopack uses tracing to control compilation progress and HMR logs.
+    tracing: true,
   };
 
   return utooBundlerOpts;
