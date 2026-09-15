@@ -333,6 +333,9 @@ describe('utoopack postcss config', () => {
   const flexbugsPluginPath = normalizeUtoopackPath(
     require.resolve('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
   );
+  const postcssImplementationPath = normalizeUtoopackPath(
+    require.resolve('postcss'),
+  );
 
   test('uses the same default flexbugs plugin in production and development', async () => {
     const prodConfig = await getProdUtooPackConfig({
@@ -345,6 +348,7 @@ describe('utoopack postcss config', () => {
     } as any);
 
     const expectedPostcssConfig = {
+      implementation: postcssImplementationPath,
       plugins: {
         [flexbugsPluginPath]: {},
       },
@@ -373,6 +377,7 @@ describe('utoopack postcss config', () => {
     } as any);
 
     expect(config.config.styles?.postcss).toEqual({
+      implementation: postcssImplementationPath,
       plugins: {
         [flexbugsPluginPath]: {},
         'custom-postcss-plugin': {
@@ -380,6 +385,41 @@ describe('utoopack postcss config', () => {
         },
       },
     });
+  });
+
+  test('allows users to override the postcss implementation', async () => {
+    const customImplementation = '/custom/node_modules/postcss/lib/postcss.js';
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {
+        utoopack: {
+          styles: {
+            postcss: {
+              implementation: customImplementation,
+            },
+          },
+        },
+      },
+    } as any);
+
+    expect(config.config.styles?.postcss).toEqual({
+      implementation: customImplementation,
+      plugins: {
+        [flexbugsPluginPath]: {},
+      },
+    });
+  });
+
+  test('uses the postcss shipped with @umijs/bundler-utoopack by default', async () => {
+    const config = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: {},
+    } as any);
+    const implementation = (config.config.styles?.postcss as any)
+      .implementation;
+
+    expect(implementation).toBe(postcssImplementationPath);
+    expect(typeof require(implementation)).toBe('function');
   });
 
   test('normalizes a unitless zero flex basis like the webpack pipeline', async () => {
