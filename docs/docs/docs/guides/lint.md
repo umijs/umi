@@ -86,6 +86,80 @@ $ umi lint [glob] [--fix] [--eslint-only] [--stylelint-only] [--cssinjs]
 
 通常来说，直接执行 `umi lint` 应该就能满足大部分情况。
 
+## 独立使用 utoo-lint
+
+通过 `umi lint --utlint` 显式选择 [utoo-lint](https://github.com/utooland/utoo-lint)。这个入口仅运行 utoo-lint；不加 `--utlint` 时，`umi lint` 仍按原来的方式运行 ESLint 和 Stylelint。Umi Max 项目使用 `max lint --utlint`。
+
+在项目中安装 `@utoo/lint`（需要 Node.js 20 或更高版本）。独立入口不需要安装 `@umijs/lint`、ESLint 或 Stylelint：
+
+```bash
+$ pnpm add -D @utoo/lint
+```
+
+创建 `utlint.config.ts`，例如：
+
+```ts
+import { defineConfig, globalIgnores } from '@utoo/lint/config';
+
+export default defineConfig(
+  globalIgnores(['**/.umi/**', '**/.umi-production/**', '**/.umi-test/**', 'dist']),
+  {
+    files: ['{src,test}/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
+    rules: {
+      'no-debugger': 'error',
+      'no-constant-condition': 'warn',
+    },
+  },
+);
+```
+
+这是最小配置示例，规则按项目需要选择。已有 ESLint 项目可使用下面的迁移方式生成配置。
+
+```bash
+$ umi lint --utlint
+$ umi lint --utlint --fix src
+$ umi lint --utlint --config utlint.config.json src
+```
+
+除 `--utlint` 外的参数直接传给 utoo-lint，包括文件路径、原生选项和子命令。未指定文件时使用 utoo-lint 自身的配置发现和文件选择逻辑，不使用旧入口的默认 glob。不要与 `--eslint-only`、`--stylelint-only` 或 `--cssinjs` 混用；样式检查可单独运行 `umi lint --stylelint-only`。
+
+### 从 ESLint 迁移
+
+保留现有 ESLint 配置及其依赖，先预览转换结果：
+
+如果配置继承了 `umi/eslint` 或 `@umijs/max/eslint`，请将 Umi / Max 及 `@umijs/lint` 一并升级到包含此入口的版本，以获得迁移时的配置加载适配。
+
+```bash
+$ umi lint --utlint migrate eslint --from .eslintrc.js --print
+```
+
+再生成独立配置：
+
+```bash
+$ umi lint --utlint migrate eslint --from .eslintrc.js --output utlint.config.json
+```
+
+使用 flat config 的项目可将 `--from` 改为 `eslint.config.js`。迁移命令复用 `@utoo/lint` 自带的转换工具，不会修改原 ESLint 配置，也不会默认覆盖已有的输出文件。
+
+检查迁移报告中的不支持规则、规则映射和忽略项，并核对文件范围、忽略目录、规则选项及检查结果。存在不支持的规则时，工具仍会生成配置，但返回退出码 `1`；这时迁移尚未完成，应保留相应的 ESLint 检查，或明确选择替代规则。插件及需要类型信息的规则不能假定等价迁移，详见 [ESLint 迁移指南](https://github.com/utooland/utoo-lint/blob/main/docs/eslint-migration.md)。
+
+验证完成后，将 JavaScript / TypeScript 的检查脚本和 lint-staged 切换到新入口，例如：
+
+```json
+{
+  "scripts": {
+    "lint:js": "umi lint --utlint",
+    "lint:style": "umi lint --stylelint-only"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": "umi lint --utlint",
+    "*.{css,less}": "umi lint --stylelint-only"
+  }
+}
+```
+
+Stylelint 和 Prettier 按需保留各自配置及依赖。确认没有其他工具使用 ESLint 后，再移除其配置和依赖。
+
 ## 与 Git 工作流结合
 
 我们也推荐使用 [lint-staged](https://github.com/okonet/lint-staged#readme) 和 [Husky](https://typicode.github.io/husky/)，将 `umi lint` 与 Git 工作流结合使用，以便在**提交代码时**自动 lint **本次变更**的代码。

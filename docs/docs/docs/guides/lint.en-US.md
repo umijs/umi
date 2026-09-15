@@ -88,6 +88,80 @@ Parameters explanation:
 
 Generally, directly executing `umi lint` should meet most needs.
 
+## Standalone utoo-lint
+
+Use `umi lint --utlint` to explicitly select [utoo-lint](https://github.com/utooland/utoo-lint). This entry point runs only utoo-lint. Without `--utlint`, `umi lint` continues to run ESLint and Stylelint as before. Umi Max projects can use `max lint --utlint`.
+
+Install `@utoo/lint` in your project (Node.js 20 or later is required). This entry point does not require `@umijs/lint`, ESLint, or Stylelint:
+
+```bash
+$ pnpm add -D @utoo/lint
+```
+
+Create `utlint.config.ts`, for example:
+
+```ts
+import { defineConfig, globalIgnores } from '@utoo/lint/config';
+
+export default defineConfig(
+  globalIgnores(['**/.umi/**', '**/.umi-production/**', '**/.umi-test/**', 'dist']),
+  {
+    files: ['{src,test}/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
+    rules: {
+      'no-debugger': 'error',
+      'no-constant-condition': 'warn',
+    },
+  },
+);
+```
+
+This is a minimal example; select rules for your project. Existing ESLint projects can generate a config using the migration steps below.
+
+```bash
+$ umi lint --utlint
+$ umi lint --utlint --fix src
+$ umi lint --utlint --config utlint.config.json src
+```
+
+Arguments other than `--utlint` are forwarded to utoo-lint, including file paths, native options, and subcommands. With no file arguments, utoo-lint handles config discovery and file selection; the legacy entry point's default glob is not injected. Do not combine `--utlint` with `--eslint-only`, `--stylelint-only`, or `--cssinjs`. Run style checks separately with `umi lint --stylelint-only`.
+
+### Migrating from ESLint
+
+Keep your existing ESLint config and its dependencies while previewing the conversion:
+
+If your config extends `umi/eslint` or `@umijs/max/eslint`, update Umi / Max and `@umijs/lint` together to versions containing this entry point and its migration config-loading support.
+
+```bash
+$ umi lint --utlint migrate eslint --from .eslintrc.js --print
+```
+
+Then generate a separate config:
+
+```bash
+$ umi lint --utlint migrate eslint --from .eslintrc.js --output utlint.config.json
+```
+
+For flat config projects, change `--from` to `eslint.config.js`. This uses the migration tool provided by `@utoo/lint`. It leaves the original ESLint config intact and does not overwrite an existing output file by default.
+
+Review unsupported rules, rule mappings, and ignored items in the migration report. Verify file scopes, ignored directories, rule options, and lint results. If unsupported rules remain, the tool still generates a config but exits with code `1`. Keep the corresponding ESLint checks or explicitly choose replacements before completing the migration. Do not assume plugin rules or rules requiring type information migrate equivalently. See the [ESLint migration guide](https://github.com/utooland/utoo-lint/blob/main/docs/eslint-migration.md) for details.
+
+Once verified, update JavaScript / TypeScript scripts and lint-staged, for example:
+
+```json
+{
+  "scripts": {
+    "lint:js": "umi lint --utlint",
+    "lint:style": "umi lint --stylelint-only"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": "umi lint --utlint",
+    "*.{css,less}": "umi lint --stylelint-only"
+  }
+}
+```
+
+Keep Stylelint and Prettier configs and dependencies as needed. Remove ESLint config and dependencies only after confirming no other tools still use them.
+
 ## Integrating with Git Workflow
 
 We also recommend using [lint-staged](https://github.com/okonet/lint-staged#readme) and [Husky](https://typicode.github.io/husky/), integrating `umi lint` with the Git workflow to automatically lint **the current changes** when **committing code**.
