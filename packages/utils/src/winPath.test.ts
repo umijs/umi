@@ -21,3 +21,8 @@ test('not convert extended-length paths', () => {
   const path = '\\\\?\\c:\\aaaa\\bbbb';
   expect(winPath(path)).toEqual(path);
 });
+
+test('Path with single quotes', () => {
+  const path = "C:\\Users\\Use'r\\joe";
+  expect(winPath(path)).toEqual("C:/Users/Use/'r/joe");
+});
