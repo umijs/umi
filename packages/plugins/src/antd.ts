@@ -11,6 +11,10 @@ import { withTmpPath } from './utils/withTmpPath';
 const ANTD_TEMPLATES_DIR = join(TEMPLATES_DIR, 'antd');
 
 export default (api: IApi) => {
+  // Framework-provided fallback for projects without an explicit antd dependency.
+  const frameworkPkgPath = process.env.UMI_PLUGIN_ANTD_ENABLE
+    ? JSON.parse(process.env.UMI_PLUGIN_ANTD_ENABLE).pkgPath
+    : undefined;
   let pkgPath: string;
   let antdVersion = '4.0.0';
   try {
@@ -19,9 +23,14 @@ export default (api: IApi) => {
         pkg: api.pkg,
         cwd: api.cwd,
         dep: 'antd',
-      }) || dirname(require.resolve('antd/package.json'));
+      }) ||
+      frameworkPkgPath ||
+      dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
-  } catch (e) {}
+  } catch (e) {
+    // An explicit framework path must not silently fall back to another version.
+    if (frameworkPkgPath) throw e;
+  }
 
   /** antd V5 or v6, 两者相差不多 */
   const isModern = semver.satisfies(
@@ -195,7 +204,7 @@ export default (api: IApi) => {
     // 只有 antd@4 才需要将 compact 和 dark 传入 less 变量
     if (isLegacy) {
       if (antd.dark || antd.compact) {
-        const { getThemeVariables } = require('antd/dist/theme');
+        const { getThemeVariables } = require(join(pkgPath, 'dist/theme'));
         memo.theme = {
           ...getThemeVariables(antd),
           ...memo.theme,
