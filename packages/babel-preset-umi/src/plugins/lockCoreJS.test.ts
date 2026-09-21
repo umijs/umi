@@ -23,3 +23,14 @@ test('only replace core-js/', () => {
   expect(code).toContain(`import 'a';\nimport 'core-js';`);
   expect(code).toContain('node_modules/core-js/foo');
 });
+
+test('dynamic import', () => {
+  const code = doTransform({
+    code: `import('a');import('core-js');import('core-js/foo');`,
+    opts: {
+      absoluteCoreJS: '/tmp/core-js/',
+    },
+  });
+  expect(code).toContain(`import('a');\nimport('core-js');`);
+  expect(code).toContain('node_modules/core-js/foo');
+});
