@@ -17,7 +17,12 @@ export default {
     testDefine: 'testDefine',
     RoutePathEnum: RoutePathEnum,
   },
-  utoopack: {},
+  utoopack: {
+    devServer: {
+      dynamicHmrChunkLists: true,
+      lazyDynamicImports: true,
+    },
+  },
   crossorigin: {},
   clickToComponent: {},
   antd: {
