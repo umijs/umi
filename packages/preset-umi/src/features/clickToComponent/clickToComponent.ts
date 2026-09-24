@@ -38,26 +38,59 @@ export default (api: IApi) => {
   api.onGenerateFiles({
     name: 'clickToComponent',
     fn: () => {
+      // Normalize CWD to ensure consistency across platforms
+      const CWD = winPath(api.paths.cwd);
+      const EDITOR = api.config.clickToComponent.editor || 'vscode';
+
       api.writeTmpFile({
         path: 'runtime.tsx',
         content: `
 import { ClickToComponent } from 'click-to-react-component';
 import React from 'react';
 
+// Use JSON.stringify to safely inject values as valid JS string literals
+// This prevents Windows backslashes (e.g. C:\\Users) from breaking the string syntax
+const CWD = ${JSON.stringify(CWD)};
+const EDITOR = ${JSON.stringify(EDITOR)};
+
+const normalize = (p = '') => String(p).replace(/\\\\/g, '/');
+
+const isAbsoluteLike = (p) => {
+  // URL / scheme: file://, vscode://, http:// ...
+  if (/^[a-zA-Z][a-zA-Z\\d+.-]*:\\/\\//.test(p)) return true;
+
+  // Unix absolute
+  if (p.startsWith('/')) return true;
+
+  // Windows drive absolute (after normalize => C:/...)
+  if (/^[a-zA-Z]:\\//.test(p)) return true;
+
+  // UNC (after normalize => //server/share)
+  if (p.startsWith('//')) return true;
+
+  return false;
+};
+
 const pathModifier = (path) => {
-  return path.startsWith('${api.paths.cwd}') ? path : '${
-          api.paths.cwd
-        }/' + path;
-}
+  const p = normalize(path);
+
+  if (isAbsoluteLike(p)) return p;
+
+  // avoid double-prefix when upstream already returned cwd-relative normalized path
+  if (p.startsWith(CWD)) return p;
+
+  return (CWD + '/' + p).replace(/\\/+/g, '/');
+};
 
 export function rootContainer(container, opts) {
   return React.createElement(
     (props) => {
       return (
         <>
-          <ClickToComponent editor="${
-            api.config.clickToComponent.editor || 'vscode'
-          }" pathModifier={pathModifier} />
+          <ClickToComponent
+            editor={EDITOR}
+            pathModifier={pathModifier}
+          />
           {props.children}
         </>
       );
@@ -66,7 +99,7 @@ export function rootContainer(container, opts) {
     container,
   );
 }
-    `,
+        `.trimStart(),
       });
     },
   });
