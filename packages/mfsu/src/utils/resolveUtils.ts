@@ -12,6 +12,8 @@ const browserResolver = enhancedResolve.create({
   exportsFields: EXPORTS_FIELDS,
   conditionNames: ['browser', 'import'],
   symlinks: false,
+  // 兼容一下部分库的地址解析，比如qrcode库，package.json里配置了browser的入口地址
+  aliasFields: ["browser"] 
 });
 
 const esmResolver = enhancedResolve.create({
