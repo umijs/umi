@@ -1,5 +1,6 @@
 import type { IOpts as IConfigOpts } from '@umijs/bundler-webpack';
 import { getConfig } from '@umijs/bundler-webpack';
+import type WebpackChainConfig from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
@@ -845,7 +846,21 @@ export async function getProdUtooPackConfig(
       ...(opts.extraBabelPresets || []),
     ],
     extraBabelIncludes: opts.config.extraBabelIncludes,
-    chainWebpack: opts.chainWebpack,
+    chainWebpack: async (config: WebpackChainConfig, ...args: any[]) => {
+      if (opts.config.hash) {
+        // Keep entry names, but avoid embedding module paths in other assets.
+        // Apply defaults before user hooks so explicit templates still win.
+        config.output.chunkFilename('[contenthash].async.js');
+        if (config.plugins.has('mini-css-extract-plugin')) {
+          config
+            .plugin('mini-css-extract-plugin')
+            .tap(([options]) => [
+              { ...options, filename: '[contenthash].css' },
+            ]);
+        }
+      }
+      await opts.chainWebpack?.(config, ...args);
+    },
     modifyWebpackConfig: opts.modifyWebpackConfig,
     staticPathPrefix: opts.staticPathPrefix,
     pkg: opts.pkg,
