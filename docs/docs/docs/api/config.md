@@ -1446,6 +1446,22 @@ export default {
 
 注意：此功能需要通过配置启用。
 
+## devframe
+
+- 类型：`object`
+- 默认值：`undefined`
+
+启用开发环境中的 Devframe 工具面板。先安装 `@umijs/plugins`，再在 `.umirc.ts` 中加载插件并添加配置：
+
+```ts
+export default {
+  plugins: ['@umijs/plugins/dist/devframe'],
+  devframe: {},
+};
+```
+
+运行 `umi dev` 后，可在页面内打开面板，也可访问 `/__devframes/`。面板提供构建状态、路由、插件耗时、配置摘要查询和无障碍检查。首次连接时，按终端提示使用一次性验证码完成认证。此功能仅在开发模式下生效，需要 Node.js 20.19 或更高版本。`devtool` 配置项用于控制 source map，与 Devframe 无关。
+
 ## srcTranspiler
 
 - 类型：`string` 可选的值：`babel`, `swc`, `esbuild`

@@ -1,5 +1,10 @@
 export default {
-  plugins: ['@umijs/plugins/dist/antd', '@umijs/plugins/dist/locale'],
+  plugins: [
+    '@umijs/plugins/dist/antd',
+    '@umijs/plugins/dist/locale',
+    '@umijs/plugins/dist/devframe',
+  ],
+  devframe: {},
   locale: {
     title: true,
     default: 'zh-CN',
