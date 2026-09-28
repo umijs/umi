@@ -342,12 +342,8 @@ function getOverlayEntryPath(cwd: string, entryName: string) {
 }
 
 function createDynamicImportChain(imports: string[]) {
-  return `void ${imports
-    .map((item, index) =>
-      index === 0
-        ? `import(${JSON.stringify(item)})`
-        : `.then(() => import(${JSON.stringify(item)}))`,
-    )
+  return `void ready${imports
+    .map((item) => `.then(() => import(${JSON.stringify(item)}))`)
     .join('')};\n`;
 }
 
@@ -364,12 +360,16 @@ function writeUtoopackOverlayEntry(opts: {
   fs.copyFileSync(UTOOPACK_OVERLAY_CLIENT_ENTRY, overlayClientPath);
   fs.writeFileSync(
     entryPath,
-    createDynamicImportChain([
+    // Keep the status/error client eager even with lazyDynamicImports enabled.
+    // Wait for its initial sync before triggering application compilation.
+    `import { ready } from ${JSON.stringify(
       getRelativeImportSpecifier(entryPath, overlayClientPath),
-      ...opts.imports.map((item) =>
-        getOverlayEntryImport(item, opts.cwd, entryPath),
+    )};\n` +
+      createDynamicImportChain(
+        opts.imports.map((item) =>
+          getOverlayEntryImport(item, opts.cwd, entryPath),
+        ),
       ),
-    ]),
     'utf-8',
   );
   return entryPath;
