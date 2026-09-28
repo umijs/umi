@@ -95,9 +95,6 @@ export default (api: IApi) => {
 
     return {
       ...memo,
-      // Keep mako in userConfig, but disable it in the resolved config so
-      // bundler-specific hooks and checks follow utoopack.
-      mako: false,
       mfsu: false,
       hmrGuardian: false,
       utoopack: {
