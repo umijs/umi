@@ -12,6 +12,56 @@ let hasCompileErrors = false;
 let shouldReloadOnRecovery = false;
 let overlayIframe = null;
 let isSocketConnected = false;
+let compilingIndicator = null;
+let compilingTimer = null;
+
+// The entry wrapper waits for this promise before importing the application.
+let resolveReady;
+export const ready = new Promise((resolve) => {
+  resolveReady = resolve;
+});
+// A failed connection must not block startup. Once connected, wait for sync.
+const connectionTimeout = setTimeout(allowAppStart, 1000);
+
+function allowAppStart() {
+  clearTimeout(connectionTimeout);
+  resolveReady();
+}
+
+function dismissCompilingIndicator() {
+  clearTimeout(compilingTimer);
+  compilingTimer = null;
+  if (compilingIndicator) {
+    compilingIndicator.remove();
+    compilingIndicator = null;
+  }
+}
+
+function showCompilingIndicator() {
+  if (compilingTimer !== null || compilingIndicator) return;
+  compilingTimer = setTimeout(() => {
+    compilingTimer = null;
+    compilingIndicator = document.createElement('div');
+    compilingIndicator.setAttribute('data-utoopack-compiling', '');
+    compilingIndicator.setAttribute('role', 'status');
+    compilingIndicator.setAttribute('aria-live', 'polite');
+    compilingIndicator.textContent = 'Utoopack is compiling...';
+    compilingIndicator.style.cssText = [
+      'position: fixed',
+      'bottom: 16px',
+      'right: 16px',
+      'z-index: 2147483646',
+      'padding: 10px 14px',
+      'border-radius: 6px',
+      'background: #18191a',
+      'color: #f6f7f8',
+      'font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      'box-shadow: 0 2px 8px #0003',
+      'pointer-events: none',
+    ].join(';');
+    (document.body || document.documentElement).appendChild(compilingIndicator);
+  }, 150);
+}
 
 const enableErrorOverlay =
   typeof process === 'undefined' ||
@@ -147,11 +197,14 @@ function handleMessage(payload) {
   switch (payload.action) {
     case ACTIONS.TURBOPACK_CONNECTED:
       isSocketConnected = true;
+      clearTimeout(connectionTimeout);
       break;
     case ACTIONS.BUILDING:
+      showCompilingIndicator();
       break;
     case ACTIONS.SYNC:
     case ACTIONS.BUILT:
+      dismissCompilingIndicator();
       if (payload.errors && payload.errors.length) {
         handleErrors(payload.errors);
       } else {
@@ -160,8 +213,10 @@ function handleMessage(payload) {
       if (payload.warnings && payload.warnings.length) {
         handleWarnings(payload.warnings);
       }
+      if (payload.action === ACTIONS.SYNC) allowAppStart();
       break;
     case ACTIONS.RELOAD:
+      dismissCompilingIndicator();
       window.location.reload();
       break;
     default:
@@ -198,6 +253,8 @@ socket.addEventListener('message', ({ data }) => {
 });
 
 socket.addEventListener('close', async () => {
+  dismissCompilingIndicator();
+  allowAppStart();
   if (!isSocketConnected) {
     console.info('[utoopack] Dev server connection failed.');
     return;
@@ -206,4 +263,9 @@ socket.addEventListener('close', async () => {
   console.info('[utoopack] Dev server disconnected. Polling for restart...');
   await waitForSuccessfulPing();
   window.location.reload();
+});
+
+socket.addEventListener('error', () => {
+  dismissCompilingIndicator();
+  allowAppStart();
 });

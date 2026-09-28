@@ -341,16 +341,6 @@ function getOverlayEntryPath(cwd: string, entryName: string) {
   );
 }
 
-function createDynamicImportChain(imports: string[]) {
-  return `void ${imports
-    .map((item, index) =>
-      index === 0
-        ? `import(${JSON.stringify(item)})`
-        : `.then(() => import(${JSON.stringify(item)}))`,
-    )
-    .join('')};\n`;
-}
-
 function writeUtoopackOverlayEntry(opts: {
   cwd: string;
   entryName: string;
@@ -362,16 +352,20 @@ function writeUtoopackOverlayEntry(opts: {
   );
   fs.mkdirSync(dirname(entryPath), { recursive: true });
   fs.copyFileSync(UTOOPACK_OVERLAY_CLIENT_ENTRY, overlayClientPath);
-  fs.writeFileSync(
-    entryPath,
-    createDynamicImportChain([
-      getRelativeImportSpecifier(entryPath, overlayClientPath),
-      ...opts.imports.map((item) =>
-        getOverlayEntryImport(item, opts.cwd, entryPath),
-      ),
-    ]),
-    'utf-8',
-  );
+  const clientPath = getRelativeImportSpecifier(entryPath, overlayClientPath);
+  const importChain = opts.imports
+    .map((item) => getOverlayEntryImport(item, opts.cwd, entryPath))
+    .map((item) => `.then(() => import(${JSON.stringify(item)}))`)
+    .join('');
+
+  // Keep the status/error client eager and wait for its first sync before
+  // importing the application, even when lazyDynamicImports is enabled.
+  const source = [
+    `import { ready } from ${JSON.stringify(clientPath)};`,
+    `ready${importChain};`,
+    '',
+  ].join('\n');
+  fs.writeFileSync(entryPath, source, 'utf-8');
   return entryPath;
 }
 
