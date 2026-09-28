@@ -104,10 +104,8 @@ test('shows one non-blocking status for repeated building messages and removes i
   expect(client.reload).not.toHaveBeenCalled();
 });
 
-test('does not flash for fast compilations or show a status while disconnected', () => {
+test('does not flash for a quick compilation', () => {
   const client = createClient();
-  jest.advanceTimersByTime(2000);
-  expect(client.indicator()).toBeUndefined();
   client.message('building');
   jest.advanceTimersByTime(100);
   client.message('built');

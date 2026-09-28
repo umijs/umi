@@ -15,18 +15,16 @@ let isSocketConnected = false;
 let compilingIndicator = null;
 let compilingTimer = null;
 
-// Subscribe before the entry wrapper starts any lazy application imports.
-// A broken WebSocket must not prevent the application from starting.
+// The entry wrapper waits for this promise before importing the application.
 let resolveReady;
 export const ready = new Promise((resolve) => {
   resolveReady = resolve;
 });
-// Fall back only if the dev server never confirms the HMR connection.
-// A confirmed connection can take longer than a second to send its first sync.
-const readyTimer = setTimeout(finishConnecting, 1000);
+// A failed connection must not block startup. Once connected, wait for sync.
+const connectionTimeout = setTimeout(allowAppStart, 1000);
 
-function finishConnecting() {
-  clearTimeout(readyTimer);
+function allowAppStart() {
+  clearTimeout(connectionTimeout);
   resolveReady();
 }
 
@@ -199,7 +197,7 @@ function handleMessage(payload) {
   switch (payload.action) {
     case ACTIONS.TURBOPACK_CONNECTED:
       isSocketConnected = true;
-      clearTimeout(readyTimer);
+      clearTimeout(connectionTimeout);
       break;
     case ACTIONS.BUILDING:
       showCompilingIndicator();
@@ -215,7 +213,7 @@ function handleMessage(payload) {
       if (payload.warnings && payload.warnings.length) {
         handleWarnings(payload.warnings);
       }
-      if (payload.action === ACTIONS.SYNC) finishConnecting();
+      if (payload.action === ACTIONS.SYNC) allowAppStart();
       break;
     case ACTIONS.RELOAD:
       dismissCompilingIndicator();
@@ -256,7 +254,7 @@ socket.addEventListener('message', ({ data }) => {
 
 socket.addEventListener('close', async () => {
   dismissCompilingIndicator();
-  finishConnecting();
+  allowAppStart();
   if (!isSocketConnected) {
     console.info('[utoopack] Dev server connection failed.');
     return;
@@ -269,5 +267,5 @@ socket.addEventListener('close', async () => {
 
 socket.addEventListener('error', () => {
   dismissCompilingIndicator();
-  finishConnecting();
+  allowAppStart();
 });

@@ -592,7 +592,7 @@ describe('utoopack alias config', () => {
     expect(overlayEntryContent).toContain(
       'import { ready } from "./client.js";',
     );
-    expect(overlayEntryContent).toContain('void ready.then(() => import(');
+    expect(overlayEntryContent).toMatch(/^ready\.then\(\(\) => import\(/m);
     expect(overlayEntryContent).toContain('src/.umi/umi.ts');
     expect(overlayEntryContent).not.toContain('import("./client.js")');
   });
