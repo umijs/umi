@@ -4,6 +4,7 @@ import { basename, dirname, join, relative } from 'path';
 import { getMarkupArgs } from '../../commands/dev/getMarkupArgs';
 import { RUNTIME_TYPE_FILE_NAME, TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
+import { getAutoImportDts } from './getAutoImportDts';
 import { getModuleExports } from './getModuleExports';
 import { importsToStr } from './importsToStr';
 const routesApi: typeof import('./routes') = importLazy(
@@ -121,6 +122,15 @@ export default (api: IApi) => {
       path: TSCONFIG_FILE_NAME,
       content: JSON.stringify(umiTsConfig, null, 2),
     });
+
+    const autoImportDts = getAutoImportDts(api.appData.umi.importSource);
+    if (autoImportDts) {
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'auto-import.d.ts',
+        content: autoImportDts,
+      });
+    }
 
     // typings.d.ts
     // ref: https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts
