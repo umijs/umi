@@ -26,3 +26,11 @@ test('resolve broadcast-channel no-exports', async () => {
   );
   expect(path).toMatch(/legacy-browser-index.js$/);
 });
+
+test('resolve qrcode like', async () => {
+  const path = await resolveFromContexts(
+    [join(FIXTURE_BASE, 'qrcode-like')],
+    'qrcode',
+  );
+  expect(path).toMatch(/browser.js$/);
+});

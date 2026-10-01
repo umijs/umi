@@ -11,6 +11,8 @@ const browserResolver = enhancedResolve.create({
   extensions: SUPPORTED_EXTS,
   exportsFields: EXPORTS_FIELDS,
   conditionNames: ['browser', 'import'],
+  // `browser` may be a path remap table rather than an entry point; only aliasFields applies it
+  aliasFields: ['browser'],
   symlinks: false,
 });
 
