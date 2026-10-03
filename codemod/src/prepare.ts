@@ -75,6 +75,7 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
 
   return {
     config,
+    configPath: mainConfigFile,
     absAppJSPath,
     pkg,
     pkgPath,
