@@ -1,3 +1,4 @@
+import { lodash } from '@umijs/utils';
 import { copyFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
@@ -25,7 +26,12 @@ export default (api: IApi) => {
   });
 
   api.modifyAppData(async (memo) => {
-    if (api.config.favicons) return memo;
+    if (
+      api.config.favicons &&
+      // 降低 defaultConfig.favicons 的优先级
+      !lodash.isEqual(api.config.favicons, memo.defaultConfig.favicons)
+    )
+      return memo;
     const faviconFiles = getFaviconFiles(api.paths.absSrcPath);
     if (faviconFiles) {
       memo.faviconFiles = faviconFiles;
@@ -60,7 +66,13 @@ export default (api: IApi) => {
 
   api.modifyHTMLFavicon((memo) => {
     // respect favicon config from user, and fallback to auto-detecting files
-    if (!memo.length && api.appData.faviconFiles) {
+    if (
+      (!memo.length ||
+        // 降低 defaultConfig.favicons 的优先级
+        lodash.isEqual(memo, api.appData.defaultConfig.favicons)) &&
+      api.appData.faviconFiles
+    ) {
+      memo = [];
       api.appData.faviconFiles.forEach((e: any) => {
         memo.push(`${api.config.publicPath}${e}`);
       });
