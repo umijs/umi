@@ -76,6 +76,11 @@ export * from '${this.file}';
     // none node natives
     const realFile = await this.getRealFile();
 
+    if (realFile === false) {
+      // A browser field mapping to false represents an ignored, empty module.
+      return 'module.exports = {};';
+    }
+
     if (!realFile) {
       logger.error(
         `Can not resolve dependence : '${chalk.red(
