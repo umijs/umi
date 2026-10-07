@@ -1,6 +1,7 @@
 import enhancedResolve from 'enhanced-resolve';
 
 type Resolver = ReturnType<typeof enhancedResolve.create>;
+type ResolveResult = string | false;
 
 const ORDERED_MAIN_FIELDS = ['browser', 'module', 'main'];
 const SUPPORTED_EXTS = ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'];
@@ -36,16 +37,16 @@ async function resolveWith(
   resolver: Resolver,
   context: string,
   path: string,
-): Promise<string> {
+): Promise<ResolveResult> {
   return new Promise((resolve, reject) => {
-    resolver(context, path, (err: Error, result: string) =>
+    resolver(context, path, (err: Error, result: ResolveResult) =>
       err ? reject(err) : resolve(result),
     );
   });
 }
 
 async function tryResolvers(rs: Resolver[], context: string, path: string) {
-  let result = '';
+  let result: ResolveResult = '';
   let lastError: any = null;
   for (const r of rs) {
     try {
@@ -61,7 +62,7 @@ async function tryResolvers(rs: Resolver[], context: string, path: string) {
   return result;
 }
 
-async function resolve(context: string, path: string): Promise<string> {
+async function resolve(context: string, path: string): Promise<ResolveResult> {
   return await tryResolvers(
     [browserResolver, esmResolver, cjsResolver],
     context,
@@ -72,7 +73,7 @@ async function resolve(context: string, path: string): Promise<string> {
 export async function resolveFromContexts(
   contexts: string[],
   path: string,
-): Promise<string> {
+): Promise<ResolveResult> {
   for (const context of contexts) {
     try {
       return await resolve(context, path);
