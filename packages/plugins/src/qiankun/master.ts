@@ -115,7 +115,6 @@ let options = ${JSON.stringify({
         masterHistoryType: api.config.history?.type || defaultHistoryType,
         base: api.config.base || '/',
         ...api.config.qiankun.master,
-        keepAlive: api.config.qiankun?.keepAlive ?? false,
       })};
 export const getMasterOptions = () => options;
 export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts });

@@ -29,7 +29,6 @@ export type MasterOptions = {
   lifeCycles?: FrameworkLifeCycles<object>;
   masterHistoryType?: HistoryType;
   base?: string;
-  keepAlive?: boolean;
   // 关联路由标记的别名，默认 microApp
   routeBindingAlias?: string;
   // 导出的组件别名，默认 MicroApp
