@@ -141,7 +141,7 @@ export default function Page() {
 
 ```tsx
 // src/components/Username/index.tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default function Page() {
   const { user, loading } = useModel('userModel');
@@ -166,7 +166,7 @@ export default function Page() {
 
 ```tsx
 // src/components/CounterActions/index.tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default function Page() {
   const { add, minus } = useModel('counterModel', (model) => ({
@@ -208,7 +208,7 @@ export async function getInitialState() {
 现在，各种插件和您定义的组件都可以通过 `useModel('@@initialState')` 直接获取到这份全局的初始状态，如下所示：
 
 ```tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default function Page() {
   const { initialState, loading, error, refresh, setInitialState } =
@@ -244,7 +244,7 @@ export default function Page() {
 
 ```tsx
 // src/components/AdminInfo/index.tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default function Page() {
   const { user, fetchUser } = useModel('adminModel', (model) => ({
