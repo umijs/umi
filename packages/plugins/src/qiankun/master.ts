@@ -62,10 +62,9 @@ export default (api: IApi) => {
           /"/g,
           "'",
         );
-        const keepAlive = api.config.qiankun?.keepAlive ?? false;
         route.file = `(async () => {
           const { getMicroAppRouteComponent } = await import('@@/plugin-qiankun-master/getMicroAppRouteComponent');
-          return getMicroAppRouteComponent({ appName: '${appName}', base: '${base}', routePath: '${route.path}', masterHistoryType: '${masterHistoryType}', routeProps: ${normalizedRouteProps}, keepAlive: ${keepAlive} })
+          return getMicroAppRouteComponent({ appName: '${appName}', base: '${base}', routePath: '${route.path}', masterHistoryType: '${masterHistoryType}', routeProps: ${normalizedRouteProps} })
         })()`;
       }
     });
@@ -173,6 +172,7 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
           context: {
             dynamicRoot: false,
             hasModelPlugin: api.isPluginEnable('model'),
+            keepAlive: api.config.qiankun?.keepAlive ?? false,
             // dynamicRoot:
             //   api.config.exportStatic && api.config.exportStatic.dynamicRoot,
           },
