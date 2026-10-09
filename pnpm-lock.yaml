@@ -2595,6 +2595,9 @@ importers:
       qiankun:
         specifier: 2.10.17-beta.0
         version: 2.10.17-beta.0
+      react-activation:
+        specifier: ^0.13.4
+        version: 0.13.4(react@18.3.1)
       react-intl:
         specifier: 3.12.1
         version: 3.12.1(react@18.3.1)
@@ -35371,6 +35374,14 @@ packages:
       verror: 1.10.0
     dev: true
 
+  /jsx-ast-utils@2.4.1:
+    resolution: {integrity: sha512-z1xSldJ6imESSzOjd3NNkieVJKRlKYSOtMG8SFyCj2FIrvSaSuli/WjpBkEzCBoR9bYYYFgqJw61Xhu7Lcgk+w==}
+    engines: {node: '>=4.0'}
+    dependencies:
+      array-includes: 3.1.7
+      object.assign: 4.1.5
+    dev: false
+
   /jsx-ast-utils@3.3.0:
     resolution: {integrity: sha512-XzO9luP6L0xkxwhIJMTJQpZo/eeN60K08jHdexfD569AGxeNug6UketeHXEhROoM8aR7EcUoOQmIhcJQjcuq8Q==}
     engines: {node: '>=4.0'}
@@ -48187,6 +48198,20 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
+  /react-activation@0.13.4(react@18.3.1):
+    resolution: {integrity: sha512-2lSI7vMbUiUvaEgizeBrn/xtyt7jw7nI1dqJNSgHcVbU+34eAlIxxGC6TBiruob6FkV8QFt8ShbkO2dBBT49Lg==}
+    peerDependencies:
+      react: '>=16'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      hoist-non-react-statics: 3.3.2
+      react: 18.3.1
+      react-node-key: 0.4.0(react@18.3.1)
+      szfe-tools: 0.0.0-beta.7
+    dev: false
+
   /react-base16-styling@0.6.0:
     resolution: {integrity: sha512-yvh/7CArceR/jNATXOKDlvTnPKPmGZz7zsenQ3jUwLzHkNUR0CvY3yGYJbWJ/nnxsL8Sgmt5cO3/SILVuPO6TQ==}
     dependencies:
@@ -48683,6 +48708,19 @@ packages:
       prop-types: 15.8.1
       react-tween-state: 0.1.5
     dev: true
+
+  /react-node-key@0.4.0(react@18.3.1):
+    resolution: {integrity: sha512-puiuP2QYEuNBVVvcjpUE8d8/jdAhiXHBHMmjZzQT4+fe276RMYea/tY7JoZoYlrhAX8DORLPvjySjXYJZ1m6/A==}
+    peerDependencies:
+      react: '>=16'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      jsx-ast-utils: 2.4.1
+      react: 18.3.1
+      szfe-tools: 0.0.0-beta.7
+    dev: false
 
   /react-reconciler@0.25.1(react@18.3.1):
     resolution: {integrity: sha512-R5UwsIvRcSs3w8n9k3tBoTtUHdVhu9u84EG7E5M0Jk9F5i6DA1pQzPfUZd6opYWGy56MJOtV3VADzy6DRwYDjw==}
@@ -52358,6 +52396,12 @@ packages:
   /systemjs@6.15.1:
     resolution: {integrity: sha512-Nk8c4lXvMB98MtbmjX7JwJRgJOL8fluecYCfCeYBznwmpOs8Bf15hLM6z4z71EDAhQVrQrI+wt1aLWSXZq+hXA==}
     dev: true
+
+  /szfe-tools@0.0.0-beta.7:
+    resolution: {integrity: sha512-/M7+Tel2G8zapfDYZlz17hf9ViqAi/loZMfM81b5iZMyaWL/t5dajBszEBI2kyIDFzlLT4btBcq+BimFgmAHug==}
+    dependencies:
+      '@babel/runtime': 7.23.6
+    dev: false
 
   /table@6.8.0:
     resolution: {integrity: sha512-s/fitrbVeEyHKFa7mFdkuQMWlH1Wgw/yEXMt5xACT4ZpzWFluehAxRtUUQKPuWhaLAWhFcVx6w3oC8VKaUfPGA==}
