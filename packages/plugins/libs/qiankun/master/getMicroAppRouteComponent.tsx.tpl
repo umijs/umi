@@ -13,7 +13,7 @@ export function getMicroAppRouteComponent(opts: {
   routeProps?: any;
   keepAlive?: boolean;
 }) {
-  const { base, masterHistoryType, appName, routeProps, routePath, routeMode = defaultMicroAppRouteMode, keepAlive = true } = opts;
+  const { base, masterHistoryType, appName, routeProps, routePath, routeMode = defaultMicroAppRouteMode, keepAlive = false } = opts;
   const RouteComponent = () => {
     const match = useMatch(routePath);
     const url = match ? match.pathnameBase : '';

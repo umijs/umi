@@ -55,7 +55,7 @@ export function patchMicroAppRoute(
     keepAlive?: boolean;
   },
 ) {
-  const { base, masterHistoryType, routeBindingAlias, keepAlive = true } =
+  const { base, masterHistoryType, routeBindingAlias, keepAlive = false } =
     masterOptions;
   // 当配置了 routeBindingAlias 时，优先从 routeBindingAlias 里取配置，但同时也兼容使用了默认的 microApp 方式
   const microAppName = route[routeBindingAlias] || route.microApp;

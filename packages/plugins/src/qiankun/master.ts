@@ -62,7 +62,7 @@ export default (api: IApi) => {
           /"/g,
           "'",
         );
-        const keepAlive = api.config.qiankun?.keepAlive ?? true;
+        const keepAlive = api.config.qiankun?.keepAlive ?? false;
         route.file = `(async () => {
           const { getMicroAppRouteComponent } = await import('@@/plugin-qiankun-master/getMicroAppRouteComponent');
           return getMicroAppRouteComponent({ appName: '${appName}', base: '${base}', routePath: '${route.path}', masterHistoryType: '${masterHistoryType}', routeProps: ${normalizedRouteProps}, keepAlive: ${keepAlive} })
@@ -116,7 +116,7 @@ let options = ${JSON.stringify({
         masterHistoryType: api.config.history?.type || defaultHistoryType,
         base: api.config.base || '/',
         ...api.config.qiankun.master,
-        keepAlive: api.config.qiankun?.keepAlive ?? true,
+        keepAlive: api.config.qiankun?.keepAlive ?? false,
       })};
 export const getMasterOptions = () => options;
 export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts });
