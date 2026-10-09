@@ -69,7 +69,11 @@ export function dataflowProvider(container, opts) {
   });
 
   api.addTmpGenerateWatcherPaths(() => {
-    return [join(api.paths.absSrcPath, 'models')];
+    return [
+      join(api.paths.absSrcPath, 'models'),
+      // watch monorepo / external models so namespace changes regenerate tmp files
+      ...(api.config.model?.extraModels || []),
+    ];
   });
 
   api.addRuntimePlugin(() => {

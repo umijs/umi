@@ -1,5 +1,77 @@
+import * as parser from '@umijs/bundler-utils/compiled/babel/parser';
+import traverse from '@umijs/bundler-utils/compiled/babel/traverse';
 import { chalk } from '@umijs/utils';
-import { getNamespace, Model, ModelUtils, transformSync } from './modelUtils';
+import { unlinkSync, writeFileSync } from 'fs';
+import { join } from 'path';
+import {
+  getNamespace,
+  getNamespaceFromExportNode,
+  getNamespaceFromFile,
+  Model,
+  ModelUtils,
+  transformSync,
+} from './modelUtils';
+
+function getNamespaceFromCode(code) {
+  const ast = parser.parse(code, {
+    sourceType: 'module',
+    plugins: ['typescript'],
+  });
+  let namespace;
+  traverse(ast, {
+    ExportDefaultDeclaration(path) {
+      namespace = getNamespaceFromExportNode(path.node.declaration, path);
+    },
+  });
+  return namespace;
+}
+
+test('getNamespaceFromExportNode object model', () => {
+  expect(
+    getNamespaceFromCode(`export default { namespace: 'approvalProcess' };`),
+  ).toEqual('approvalProcess');
+});
+
+test('getNamespaceFromExportNode arrow return object', () => {
+  expect(
+    getNamespaceFromCode(
+      `export default () => ({ namespace: 'approvalProcess' });`,
+    ),
+  ).toEqual('approvalProcess');
+});
+
+test('getNamespaceFromExportNode arrow block return', () => {
+  expect(
+    getNamespaceFromCode(`export default () => {
+  return { namespace: 'approvalProcess' };
+};`),
+  ).toEqual('approvalProcess');
+});
+
+test('getNamespaceFromExportNode ignore unrelated comment/string', () => {
+  expect(
+    getNamespaceFromCode(`// namespace: 'legacy'
+const tip = "namespace: 'noise'";
+export default () => ({ namespace: 'approvalProcess' });`),
+  ).toEqual('approvalProcess');
+});
+
+test('getNamespaceFromExportNode no namespace falls back undefined', () => {
+  expect(getNamespaceFromCode(`export default () => ({ count: 1 });`)).toBe(
+    undefined,
+  );
+});
+
+test('getNamespaceFromFile', () => {
+  const file = join(__dirname, 'fixtures-namespace-tmp.ts');
+  writeFileSync(
+    file,
+    `export default () => ({ namespace: 'fromFile' });`,
+    'utf-8',
+  );
+  expect(getNamespaceFromFile(file)).toEqual('fromFile');
+  unlinkSync(file);
+});
 
 test('getNamespace', () => {
   expect(getNamespace('/a/b/src/models/foo.ts', '/a/b/src')).toEqual('foo');

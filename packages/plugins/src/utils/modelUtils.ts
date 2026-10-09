@@ -52,6 +52,117 @@ export function getNamespace(absFilePath: string, absSrcPath: string) {
   return [...validDirs, normalizedFile].join('.');
 }
 
+function unwrapTSNode(node: t.Node): t.Node {
+  if (
+    t.isTSAsExpression(node) ||
+    t.isTSTypeAssertion(node) ||
+    t.isTSNonNullExpression(node) ||
+    t.isTSSatisfiesExpression(node)
+  ) {
+    return unwrapTSNode(node.expression);
+  }
+  if (t.isParenthesizedExpression(node)) {
+    return unwrapTSNode(node.expression);
+  }
+  return node;
+}
+
+function getNamespaceFromObjectExpression(
+  node: t.ObjectExpression,
+): string | undefined {
+  for (const prop of node.properties) {
+    if (!t.isObjectProperty(prop) || prop.computed) continue;
+    const keyName = t.isIdentifier(prop.key)
+      ? prop.key.name
+      : t.isStringLiteral(prop.key)
+      ? prop.key.value
+      : null;
+    if (keyName === 'namespace' && t.isStringLiteral(prop.value)) {
+      return prop.value.value;
+    }
+  }
+  return undefined;
+}
+
+/**
+ * Extract namespace from the default export AST node.
+ * Supports:
+ * - object model: `export default { namespace: 'foo' }`
+ * - hook/factory return: `export default () => ({ namespace: 'foo' })`
+ * - dva-model-extend: `export default extend(base, { namespace: 'foo' })`
+ */
+export function getNamespaceFromExportNode(
+  node: t.Node,
+  path: Babel.NodePath,
+): string | undefined {
+  let current = getIdentifierDeclaration(unwrapTSNode(node), path);
+  current = unwrapTSNode(current);
+
+  if (t.isObjectExpression(current)) {
+    return getNamespaceFromObjectExpression(current);
+  }
+
+  if (
+    t.isArrowFunctionExpression(current) ||
+    t.isFunctionExpression(current) ||
+    t.isFunctionDeclaration(current)
+  ) {
+    const body = current.body;
+    if (t.isObjectExpression(body)) {
+      return getNamespaceFromObjectExpression(body);
+    }
+    if (t.isBlockStatement(body)) {
+      for (const stmt of body.body) {
+        if (!t.isReturnStatement(stmt) || !stmt.argument) continue;
+        const arg = unwrapTSNode(stmt.argument);
+        if (t.isObjectExpression(arg)) {
+          const ns = getNamespaceFromObjectExpression(arg);
+          if (ns) return ns;
+        }
+      }
+    }
+  }
+
+  // dva-model-extend(model, { namespace })
+  if (t.isCallExpression(current) && current.arguments.length >= 2) {
+    const options = unwrapTSNode(current.arguments[1]);
+    if (t.isObjectExpression(options)) {
+      return getNamespaceFromObjectExpression(options);
+    }
+  }
+
+  return undefined;
+}
+
+export function getNamespaceFromFile(file: string): string | undefined {
+  const content = readFileSync(file, 'utf-8');
+  const loader = (
+    extname(file).slice(1) === 'js' ? 'jsx' : extname(file).slice(1)
+  ) as Loader;
+  const result = transformSync(content, {
+    loader,
+    sourcemap: false,
+    minify: false,
+    sourcefile: file,
+  });
+  const ast = parser.parse(result.code, {
+    sourceType: 'module',
+    sourceFilename: file,
+    plugins: [],
+  });
+
+  let namespace: string | undefined;
+  traverse(ast, {
+    ExportDefaultDeclaration: (
+      path: Babel.NodePath<t.ExportDefaultDeclaration>,
+    ) => {
+      if (namespace) return;
+      namespace = getNamespaceFromExportNode(path.node.declaration, path);
+    },
+  });
+  return namespace;
+}
+
 export class Model {
   file: string;
   namespace: string;
@@ -76,12 +187,7 @@ export class Model {
     this.id = `model_${id}`;
     if (!namespace) {
       try {
-        const content = readFileSync(this.file, 'utf-8');
-        // 使用正则表达式匹配 namespace
-        const namespaceMatch = content.match(/namespace:\s*['"]([^'"]+)['"]/);
-        if (namespaceMatch && namespaceMatch[1]) {
-          namespace = namespaceMatch[1];
-        }
+        namespace = getNamespaceFromFile(this.file);
       } catch (e) {
         // 如果解析失败，继续使用默认的 namespace
       }
