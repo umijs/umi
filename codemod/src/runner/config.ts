@@ -1,8 +1,6 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { lodash } from '@umijs/utils';
-import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
 import { update as appJSUpdate } from '../appJSUpdater';
 import { update } from '../configUpdater';
 import { info } from '../logger';
@@ -123,17 +121,12 @@ export class Runner {
       setKeys['layout.locale'] = false;
     }
 
-    const configFile = join(this.cwd, 'config/config.ts');
-    assert(
-      existsSync(configFile),
-      `Could not find config file at ${configFile}`,
-    );
     const {
       config: { code },
       routesConfig: { filePath: routeFilePath, code: routeCode } = {} as any,
     } = update({
-      code: readFileSync(configFile, 'utf-8'),
-      filePath: configFile,
+      code: readFileSync(this.context.configPath, 'utf-8'),
+      filePath: this.context.configPath,
       updates: {
         del: deleteKeys,
         set: setKeys,
@@ -164,7 +157,7 @@ export class Runner {
         },
       },
     });
-    writeFileSync(configFile, code);
+    writeFileSync(this.context.configPath, code);
     if (routeCode) {
       writeFileSync(routeFilePath, routeCode);
     }
