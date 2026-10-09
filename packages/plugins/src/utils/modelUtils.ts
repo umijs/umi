@@ -53,12 +53,10 @@ export function getNamespace(absFilePath: string, absSrcPath: string) {
 }
 
 function unwrapTSNode(node: t.Node): t.Node {
-  if (
-    t.isTSAsExpression(node) ||
-    t.isTSTypeAssertion(node) ||
-    t.isTSNonNullExpression(node) ||
-    t.isTSSatisfiesExpression(node)
-  ) {
+  if (t.isTSAsExpression(node) || t.isTSTypeAssertion(node)) {
+    return unwrapTSNode(node.expression);
+  }
+  if (t.isTSNonNullExpression(node)) {
     return unwrapTSNode(node.expression);
   }
   if (t.isParenthesizedExpression(node)) {
