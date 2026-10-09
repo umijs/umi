@@ -325,7 +325,7 @@ info  - Write tailwind.css
 
 ### DvaJS Configuration Generator
 
-Enable [Dva](https://dvajs.com/) configuration for the project, after executing the command, `umi` will generate Dva.
+Enable Dva configuration for the project, after executing the command, `umi` will generate Dva.
 
 ```bash
 $umi g dva
