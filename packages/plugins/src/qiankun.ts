@@ -9,6 +9,7 @@ export default (api: IApi) => {
             slave: zod.record(zod.any()),
             master: zod.record(zod.any()),
             externalQiankun: zod.boolean(),
+            keepAlive: zod.boolean(),
           })
           .deepPartial();
       },

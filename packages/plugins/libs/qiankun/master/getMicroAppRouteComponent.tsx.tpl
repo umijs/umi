@@ -2,6 +2,7 @@ import React from 'react';
 import { useMatch } from 'umi';
 import { MicroApp } from './MicroApp';
 import { defaultMicroAppRouteMode, MicroAppRouteMode } from './constants';
+import { KeepAlive } from 'react-activation';
 
 export function getMicroAppRouteComponent(opts: {
   appName: string;
@@ -10,8 +11,9 @@ export function getMicroAppRouteComponent(opts: {
   routeMode: MicroAppRouteMode;
   masterHistoryType: string;
   routeProps?: any;
+  keepAlive?: boolean;
 }) {
-  const { base, masterHistoryType, appName, routeProps, routePath, routeMode = defaultMicroAppRouteMode } = opts;
+  const { base, masterHistoryType, appName, routeProps, routePath, routeMode = defaultMicroAppRouteMode, keepAlive = true } = opts;
   const RouteComponent = () => {
     const match = useMatch(routePath);
     const url = match ? match.pathnameBase : '';
@@ -34,7 +36,7 @@ export function getMicroAppRouteComponent(opts: {
       history: masterHistoryType,
       ...routeProps,
     };
-    return <MicroApp {...componentProps} />;
+    return keepAlive ? <KeepAlive name={'qiankun_' + componentProps.base}><MicroApp {...componentProps} /></KeepAlive> : <MicroApp {...componentProps} />;
   };
 
   return RouteComponent;

@@ -52,9 +52,11 @@ export function patchMicroAppRoute(
     base: string;
     masterHistoryType: string;
     routeBindingAlias: string;
+    keepAlive?: boolean;
   },
 ) {
-  const { base, masterHistoryType, routeBindingAlias } = masterOptions;
+  const { base, masterHistoryType, routeBindingAlias, keepAlive = true } =
+    masterOptions;
   // 当配置了 routeBindingAlias 时，优先从 routeBindingAlias 里取配置，但同时也兼容使用了默认的 microApp 方式
   const microAppName = route[routeBindingAlias] || route.microApp;
   const microAppProps =
@@ -90,6 +92,7 @@ export function patchMicroAppRoute(
       routeMode: route.mode,
       masterHistoryType,
       routeProps,
+      keepAlive,
     };
     route.element = React.createElement(getMicroAppRouteComponent(opts), null);
   } else if (route.redirect) {

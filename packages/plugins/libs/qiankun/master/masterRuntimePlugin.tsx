@@ -50,7 +50,7 @@ function patchMicroAppRouteComponent(routes: any[]) {
 
   const rootRoutes = getRootRoutes(routes);
   if (rootRoutes) {
-    const { routeBindingAlias, base, masterHistoryType } =
+    const { routeBindingAlias, base, masterHistoryType, keepAlive } =
       getMasterOptions() as MasterOptions;
     microAppRuntimeRoutes.reverse().forEach((microAppRoute) => {
       const patchRoute = (route: any) => {
@@ -58,6 +58,7 @@ function patchMicroAppRouteComponent(routes: any[]) {
           base,
           masterHistoryType,
           routeBindingAlias,
+          keepAlive,
         });
         if (route.children?.length) {
           route.children.forEach(patchRoute);
