@@ -355,11 +355,16 @@ function writeUtoopackOverlayEntry(opts: {
   const clientPath = getRelativeImportSpecifier(entryPath, overlayClientPath);
   const importChain = opts.imports
     .map((item) => getOverlayEntryImport(item, opts.cwd, entryPath))
-    .map((item) => `.then(() => import(${JSON.stringify(item)}))`)
+    .map(
+      (item) =>
+        `.then(() => import(${JSON.stringify(
+          item,
+        )}, { with: { turbopackLazyCompilation: "false" } }))`,
+    )
     .join('');
 
-  // Keep the status/error client eager and wait for its first sync before
-  // importing the application, even when lazyDynamicImports is enabled.
+  // Compile application entries eagerly, but wait for the status/error client's
+  // first sync before executing them. Nested dynamic imports remain lazy.
   const source = [
     `import { ready } from ${JSON.stringify(clientPath)};`,
     `ready${importChain};`,

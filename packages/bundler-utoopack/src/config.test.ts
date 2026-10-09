@@ -594,6 +594,9 @@ describe('utoopack alias config', () => {
     );
     expect(overlayEntryContent).toMatch(/^ready\.then\(\(\) => import\(/m);
     expect(overlayEntryContent).toContain('src/.umi/umi.ts');
+    expect(overlayEntryContent).toContain(
+      '{ with: { turbopackLazyCompilation: "false" } }',
+    );
     expect(overlayEntryContent).not.toContain('import("./client.js")');
   });
 
@@ -605,7 +608,7 @@ describe('utoopack alias config', () => {
     const config = await getDevUtooPackConfig({
       ...baseOpts,
       entry: {
-        foo: './src/foo.ts',
+        foo: ['./src/setup.ts', './src/foo.ts'],
         bar: './src/bar.ts',
       },
       config: {},
@@ -617,11 +620,21 @@ describe('utoopack alias config', () => {
     expect(config.config.entry.bar).toEqual(
       expect.stringContaining('/utoopack-overlay/bar.js'),
     );
-    expect(fs.readFileSync(config.config.entry.foo, 'utf-8')).toContain(
-      'src/foo.ts',
+    const fooEntry = fs.readFileSync(config.config.entry.foo, 'utf-8');
+    const barEntry = fs.readFileSync(config.config.entry.bar, 'utf-8');
+    expect(fooEntry).toContain('src/foo.ts');
+    expect(barEntry).toContain('src/bar.ts');
+    expect(fooEntry.indexOf('src/setup.ts')).toBeLessThan(
+      fooEntry.indexOf('src/foo.ts'),
     );
-    expect(fs.readFileSync(config.config.entry.bar, 'utf-8')).toContain(
-      'src/bar.ts',
+    expect(fooEntry.match(/turbopackLazyCompilation: "false"/g)).toHaveLength(
+      2,
+    );
+    expect(barEntry.match(/turbopackLazyCompilation: "false"/g)).toHaveLength(
+      1,
+    );
+    expect(fooEntry).toMatch(
+      /^ready\.then\(\(\) => import\(.+\)\)\.then\(\(\) => import\(/m,
     );
   });
 
