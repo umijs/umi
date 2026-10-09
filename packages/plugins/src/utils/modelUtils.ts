@@ -74,6 +74,18 @@ export class Model {
     }
     this.file = _file;
     this.id = `model_${id}`;
+    if (!namespace) {
+      try {
+        const content = readFileSync(this.file, 'utf-8');
+        // 使用正则表达式匹配 namespace
+        const namespaceMatch = content.match(/namespace:\s*['"]([^'"]+)['"]/);
+        if (namespaceMatch && namespaceMatch[1]) {
+          namespace = namespaceMatch[1];
+        }
+      } catch (e) {
+        // 如果解析失败，继续使用默认的 namespace
+      }
+    }
     this.namespace = namespace || getNamespace(_file, absSrcPath);
     this.exportName = exportName || 'default';
     this.deps = sort ? this.findDeps(sort) : [];
