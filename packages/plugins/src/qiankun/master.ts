@@ -172,6 +172,9 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
             dynamicRoot: false,
             hasModelPlugin: api.isPluginEnable('model'),
             keepAlive: api.config.qiankun?.keepAlive ?? false,
+            reactActivationPath: winPath(
+              dirname(require.resolve('react-activation/package')),
+            ),
             // dynamicRoot:
             //   api.config.exportStatic && api.config.exportStatic.dynamicRoot,
           },

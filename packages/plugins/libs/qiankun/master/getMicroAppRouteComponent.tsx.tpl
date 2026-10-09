@@ -3,7 +3,7 @@ import { useMatch } from 'umi';
 import { MicroApp } from './MicroApp';
 import { defaultMicroAppRouteMode, MicroAppRouteMode } from './constants';
 {{#keepAlive}}
-import { KeepAlive } from 'react-activation';
+import { KeepAlive } from '{{{reactActivationPath}}}';
 {{/keepAlive}}
 
 export function getMicroAppRouteComponent(opts: {
