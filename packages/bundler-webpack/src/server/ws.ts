@@ -7,10 +7,16 @@ import WebSocket from '../../compiled/ws';
 
 export function createWebSocketServer(
   server: HttpServer | HttpsServer | Http2Server | Server,
+  port?: number | undefined,
 ) {
-  const wss = new WebSocket.Server({
-    noServer: true,
-  });
+  let wss: WebSocket.Server;
+  if (port) {
+    wss = new WebSocket.Server({port});
+  } else {
+    wss = new WebSocket.Server({
+      noServer: true,
+    });
+  }
 
   server.on('upgrade', (req, socket, head) => {
     if (req.headers['sec-websocket-protocol'] === 'webpack-hmr') {
