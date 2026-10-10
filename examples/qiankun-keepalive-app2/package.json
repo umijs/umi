@@ -1,0 +1,20 @@
+{
+  "name": "app2",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env PORT=8892 max dev",
+    "preview": "cross-env PORT=8892 max preview --port 8892",
+    "setup": "max setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/max": "workspace:*",
+    "react": "18.3.1",
+    "react-activation": "^0.13.4",
+    "react-dom": "18.3.1",
+    "umi-plugin-keep-alive": "0.0.1-beta.34"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}

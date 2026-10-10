@@ -49,6 +49,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "qiankun": "2.10.17-beta.0",
+    "react-activation": "^0.13.4",
     "react-intl": "3.12.1",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",

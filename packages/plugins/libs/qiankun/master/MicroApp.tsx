@@ -65,10 +65,23 @@ export type Props = {
   // 仅开启 loader 时需要
   wrapperClassName?: string;
   className?: string;
+  // false under keepAlive: skip unmount while cache still holds the container
+  autoUnmount?: boolean;
 } & Record<string, any>;
 
 function unmountMicroApp(microApp: MicroAppType) {
   microApp.mountPromise.then(() => microApp.unmount());
+}
+
+/** Skip unmount only when autoUnmount=false, container still in document, and name unchanged. */
+export function shouldSkipUnmountForKeepAlive(opts: {
+  autoUnmount?: boolean;
+  containerStillInDocument: boolean;
+  microAppReplaced: boolean;
+}): boolean {
+  if (opts.autoUnmount !== false) return false;
+  if (opts.microAppReplaced) return false;
+  return opts.containerStillInDocument;
 }
 
 function useDeepCompare<T>(value: T): T {
@@ -101,6 +114,7 @@ export const MicroApp = forwardRef(
       lifeCycles,
       wrapperClassName,
       className,
+      autoUnmount = true,
       ...propsFromParams
     } = componentProps;
 
@@ -238,13 +252,39 @@ export const MicroApp = forwardRef(
 
       return () => {
         const microApp = microAppRef.current;
-        if (microApp) {
+        if (!microApp) return;
+
+        const doUnmount = () => {
           // 微应用 unmount 是异步的，中间的流转状态不能确定，所有需要一个标志位来确保 unmount 开始之后不会再触发 update
           microApp._unmounting = true;
           unmountMicroApp(microApp);
+        };
+
+        // Default: unmount immediately so name switches without keepAlive leave no residual app.
+        if (autoUnmount !== false) {
+          doUnmount();
+          return;
         }
+
+        // keepAlive: defer; skip while AliveScope holds the container; always unmount after name change.
+        const container = containerRef.current;
+        const previousApp = microApp;
+        queueMicrotask(() => {
+          if (
+            shouldSkipUnmountForKeepAlive({
+              autoUnmount,
+              containerStillInDocument: !!(
+                container && document.body.contains(container)
+              ),
+              microAppReplaced: microAppRef.current !== previousApp,
+            })
+          ) {
+            return;
+          }
+          doUnmount();
+        });
       };
-    }, [name]);
+    }, [name, autoUnmount]);
 
     useEffect(() => {
       const microApp = microAppRef.current;
