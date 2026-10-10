@@ -4,6 +4,8 @@ import { MicroApp } from './MicroApp';
 import { defaultMicroAppRouteMode, MicroAppRouteMode } from './constants';
 {{#keepAlive}}
 import { KeepAlive } from '{{{reactActivationPath}}}';
+// React 18: autoFreeze must stay false or cached micro-app forms lose state.
+KeepAlive.defaultProps = { ...(KeepAlive.defaultProps || {}), autoFreeze: false };
 {{/keepAlive}}
 
 export function getMicroAppRouteComponent(opts: {
@@ -38,7 +40,13 @@ export function getMicroAppRouteComponent(opts: {
       ...routeProps,
     };
 {{#keepAlive}}
-    return <KeepAlive name={'qiankun_' + componentProps.base}><MicroApp {...componentProps} /></KeepAlive>;
+    // Cache key used by master tabs and slave closeKeepAliveTab callbacks.
+    const cacheName = 'qiankun_/' + appName + '/';
+    return (
+      <KeepAlive name={cacheName} cacheKey={cacheName} autoFreeze={false}>
+        <MicroApp {...componentProps} />
+      </KeepAlive>
+    );
 {{/keepAlive}}
 {{^keepAlive}}
     return <MicroApp {...componentProps} />;

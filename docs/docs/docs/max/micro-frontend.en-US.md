@@ -689,6 +689,112 @@ export default function (error: Error) {
 
 Note: `errorBoundary` takes precedence over `defaultErrorBoundary`.
 
+## Micro App Cache keepAlive
+
+When enabled, micro apps bound via routes keep their cache after you navigate away (powered by [`react-activation`](https://github.com/CJY0208/react-activation)), so state can be restored when you come back.
+
+It is off by default. The plugin only wraps micro app routes with `KeepAlive` when enabled; **your app must mount `AliveScope` at the root** to own the cache lifecycle.
+
+Full sample: [`examples/qiankun-keepalive`](https://github.com/umijs/umi/tree/master/examples/qiankun-keepalive) (master + `app1` / `app2`, tab bar, slave route `wrappers`).
+
+### Configuration
+
+```ts
+// master .umirc.ts
+export default {
+  plugins: ['umi-plugin-keep-alive'],
+  qiankun: {
+    keepAlive: true,
+    master: {
+      apps: [
+        {
+          // Must match slave package.json name and route microApp
+          name: 'app1',
+          entry: '//localhost:7001',
+          // Align with the route path prefix; injected as slave history.basename
+          base: '/app1',
+        },
+      ],
+    },
+  },
+  routes: [
+    { path: '/app1/*', microApp: 'app1' },
+  ],
+};
+```
+
+```ts
+// slave package.json
+{ "name": "app1" }
+
+// slave .umirc.ts
+const { name } = require('./package.json');
+const isProd = process.env.NODE_ENV === 'production';
+
+export default {
+  plugins: ['umi-plugin-keep-alive'],
+  qiankun: { slave: {} },
+  // Production assets/routes under /${name}/; in dev the master injects base
+  base: isProd ? `/${name}/` : '/',
+  publicPath: isProd ? `/${name}/` : '/',
+  routes: [
+    // Wrap every page with KeepAlive (umi wrappers become parent routes; use Outlet)
+    { path: '/', component: 'index', wrappers: ['@/keepAlive/index'] },
+    { path: '/about', component: 'about', wrappers: ['@/keepAlive/index'] },
+  ],
+};
+```
+
+### Mount AliveScope
+
+Prefer [`umi-plugin-keep-alive`](https://github.com/alitajs/umi-plugin-keep-alive) (public `0.0.1-beta.34` with `react-activation@^0.13.4`): it mounts `AliveScope` and re-exports `KeepAlive` / `useAliveController` from `umi` / `@umijs/max`.
+
+You can also wrap `AliveScope` in `app.tsx` via `rootContainer`. **Both master and slave need an AliveScope** (plugin or manual).
+
+### Two cache layers
+
+| Layer | Cache name | Role |
+| --- | --- | --- |
+| Master plugin | `` `qiankun_/${appName}/` `` | Caches the whole micro-app tree across app switches |
+| Master tabs | `location.pathname` (e.g. `/app1/about`) | Empty `KeepAlive` only occupies a tab; real micro-app content renders outside |
+| Slave wrappers | Slave `location.pathname` | Caches each page inside the micro app |
+
+The tab bar should list caches **without** the `qiankun_` prefix; `qiankun_*` only holds the micro-app instance. After a slave clears its page caches, it can call `window.closeKeepAliveTab?.('qiankun_/app1/')` so the master drops that micro-app tree.
+
+### Cache cleanup
+
+```ts
+import { useAliveController } from '@umijs/max';
+
+const { dropScope } = useAliveController();
+dropScope('qiankun_/app1/');
+// or: window.closeKeepAliveTab?.('qiankun_/app1/');
+```
+
+### Pitfalls
+
+:::warning{title=Important}
+1. **`package.json` `name` must match `qiankun.master.apps[].name` and route `microApp`** (e.g. `app1` / `app2`). The cache key is `` `qiankun_/${name}/` ``; mismatches break tab close / cleanup.
+2. **Align master `apps[].base` with the route prefix** (e.g. `base: '/app1'` with `path: '/app1/*'`); it is injected as the slave `history.basename`.
+3. **Slave `base` / `publicPath` are env-specific**: production uses `` `/${name}/` ``; development usually uses `'/'` while the master injects the basename.
+4. **React 18 requires `autoFreeze: false`**. With freeze on, restored micro apps often lose input/select state or become non-interactive. Generated micro-app `KeepAlive` already sets `autoFreeze={false}`; also disable it for any other `KeepAlive` you mount:
+
+```ts
+// master/slave app.tsx
+import { KeepAlive } from 'react-activation';
+
+KeepAlive.defaultProps = {
+  ...(KeepAlive.defaultProps || {}),
+  autoFreeze: false,
+};
+```
+
+5. **`KeepAlive` and `AliveScope` must share one `react-activation` instance**. Install `react-activation` in the app (or via `umi-plugin-keep-alive`). If KeepAlive resolves from a different copy than AliveScope, caching silently fails and state is lost on switch.
+6. **Wrap every slave page with `wrappers`**, and render the page with `<Outlet />` inside the wrapper (do not rely on `props.children` only — umi wrappers become `isWrapper` parents, otherwise the page is blank).
+7. **Master tabs**: for micro-app routes, use an empty `KeepAlive` with `name={location.pathname}` for the tab, and render `<Outlet />` (the micro app) **outside** that KeepAlive so paths like `/app1/about` get tabs without blocking master providers.
+8. **`keepAlive` only applies to route-bound `microApp`**. For `<MicroApp />` / `<MicroAppWithMemoHistory />`, wrap `KeepAlive` yourself.
+:::
+
 ## Environment Variables
 
 If you have configuration that cannot be written explicitly in `.umirc.ts` or `src/app.ts`, store it in an environment variable file. For example, define the parent application's `.env` file as follows:
@@ -741,6 +847,15 @@ export default {
 ```
 
 ## API
+
+### QiankunOptions
+
+| Property | Required | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| `master` | No | Parent application configuration | [`MasterOptions`](#masteroptions) | `undefined` |
+| `slave` | No | Child application configuration | [`SlaveOptions`](#slaveoptions) | `undefined` |
+| `keepAlive` | No | Whether to cache route-bound micro apps; see [Micro App Cache keepAlive](#micro-app-cache-keepalive) | `boolean` | `false` |
+| `externalQiankun` | No | Whether to use an external qiankun dependency | `boolean` | `false` |
 
 ### MasterOptions
 

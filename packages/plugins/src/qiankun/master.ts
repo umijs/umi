@@ -172,9 +172,21 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
             dynamicRoot: false,
             hasModelPlugin: api.isPluginEnable('model'),
             keepAlive: api.config.qiankun?.keepAlive ?? false,
-            reactActivationPath: winPath(
-              dirname(require.resolve('react-activation/package')),
-            ),
+            // Resolve react-activation from the app when present so KeepAlive
+            // and AliveScope share one module; otherwise fall back to the
+            // plugin dependency path (pnpm-friendly absolute import).
+            reactActivationPath: (() => {
+              try {
+                require.resolve('react-activation/package', {
+                  paths: [api.cwd],
+                });
+                return 'react-activation';
+              } catch {
+                return winPath(
+                  dirname(require.resolve('react-activation/package')),
+                );
+              }
+            })(),
             // dynamicRoot:
             //   api.config.exportStatic && api.config.exportStatic.dynamicRoot,
           },

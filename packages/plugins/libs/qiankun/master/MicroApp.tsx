@@ -238,11 +238,19 @@ export const MicroApp = forwardRef(
 
       return () => {
         const microApp = microAppRef.current;
-        if (microApp) {
+        const container = containerRef.current;
+        if (!microApp) return;
+        // After KeepAlive deactivates, the container stays in a hidden holder
+        // under document.body — skip qiankun unmount to retain app state.
+        // If the container is gone, this is a real teardown: unmount normally.
+        queueMicrotask(() => {
+          if (container && document.body.contains(container)) {
+            return;
+          }
           // 微应用 unmount 是异步的，中间的流转状态不能确定，所有需要一个标志位来确保 unmount 开始之后不会再触发 update
           microApp._unmounting = true;
           unmountMicroApp(microApp);
-        }
+        });
       };
     }, [name]);
 
