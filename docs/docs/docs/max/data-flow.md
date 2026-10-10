@@ -15,6 +15,7 @@ e.g.
 export default {
   model: {
     extraModels: ['src/models/userModel.ts'],
+    preferSourceNamespace: false,
     sort: (a, b) => a.namespace.localeCompare(b.namespace),
   },
 };
@@ -26,6 +27,38 @@ export default {
 - Default: `[]`
 
 配置 `extraModels` 后，插件会自动将这些 Model 文件添加到数据流管理中。
+
+### preferSourceNamespace
+
+- Type: `boolean`
+- Default: `false`
+
+是否从 Model 源码中解析 `namespace`（同时作用于约定式 Model 与 `extraModels`）。
+
+默认关闭，避免把业务返回值里的 `namespace` 字段误当作注册名。开启后优先使用源码中的 `namespace`，便于 monorepo / 跨包共享 Model 时自定义命名空间。
+
+```ts
+// .umirc.ts
+export default {
+  model: {
+    preferSourceNamespace: true,
+    // extraModels: ['../../packages/shared/src/models/tenant.ts'],
+  },
+};
+
+// model 源码
+export default () => ({
+  namespace: 'businessTenant',
+  user: null,
+});
+
+// 使用
+useModel('businessTenant');
+```
+
+:::warning{title=注意}
+开启后请勿再把 `namespace` 当作普通业务字段返回；它会被解析为 Model 注册名。若仅需个别文件自定义命名空间，也可在路径后追加 `#{"namespace":"xxx"}`，无需打开此开关。
+:::
 
 ### sort
 
@@ -39,7 +72,13 @@ export default {
 ### 创建 Model
 
 数据流管理插件采用约定式目录结构，我们约定可以在 `src/models`, `src/pages/xxxx/models/`目录中，和 `src/pages/xxxx/model.{js,jsx,ts,tsx}` 文件引入 Model 文件。
-Model 文件允许使用 `.(tsx|ts|jsx|js)` 四种后缀格式，**命名空间（namespace）** 生成规则如下。
+Model 文件允许使用 `.(tsx|ts|jsx|js)` 四种后缀格式，**命名空间（namespace）** 优先级如下：
+
+1. 路径 `#meta`：`path/to/model.ts#{"namespace":"xxx"}`
+2. 源码中的 `namespace`：需开启 `preferSourceNamespace`
+3. 路径约定推导（默认）
+
+路径约定规则如下。
 
 | 路径 | 命名空间 | 说明 |
 | :--- |:--- | :--- |

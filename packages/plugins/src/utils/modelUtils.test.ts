@@ -4,9 +4,11 @@ import { chalk } from '@umijs/utils';
 import { unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import {
+  getExtraModelFilePath,
   getNamespace,
   getNamespaceFromExportNode,
   getNamespaceFromFile,
+  getNamespaceFromObjectExpression,
   Model,
   ModelUtils,
   transformSync,
@@ -62,6 +64,35 @@ test('getNamespaceFromExportNode no namespace falls back undefined', () => {
   );
 });
 
+test('getNamespaceFromObjectExpression later property overrides', () => {
+  const ast = parser.parse(
+    `({ namespace: 'shared', namespace: 'final', state: {} })`,
+    { sourceType: 'module' },
+  );
+  // @ts-ignore
+  const obj = ast.program.body[0].expression;
+  expect(getNamespaceFromObjectExpression(obj)).toEqual('final');
+});
+
+test('getNamespaceFromObjectExpression spread after namespace is unresolved', () => {
+  const ast = parser.parse(
+    `({ namespace: 'shared', ...{ namespace: 'a' }, state: {} })`,
+    { sourceType: 'module' },
+  );
+  // @ts-ignore
+  const obj = ast.program.body[0].expression;
+  expect(getNamespaceFromObjectExpression(obj)).toBe(undefined);
+});
+
+test('getNamespaceFromObjectExpression explicit after spread wins', () => {
+  const ast = parser.parse(`({ ...{ namespace: 'a' }, namespace: 'b' })`, {
+    sourceType: 'module',
+  });
+  // @ts-ignore
+  const obj = ast.program.body[0].expression;
+  expect(getNamespaceFromObjectExpression(obj)).toEqual('b');
+});
+
 test('getNamespaceFromFile', () => {
   const file = join(__dirname, 'fixtures-namespace-tmp.ts');
   writeFileSync(
@@ -71,6 +102,56 @@ test('getNamespaceFromFile', () => {
   );
   expect(getNamespaceFromFile(file)).toEqual('fromFile');
   unlinkSync(file);
+});
+
+test('getNamespaceFromFile respects exportName', () => {
+  const file = join(__dirname, 'fixtures-namespace-export-tmp.ts');
+  writeFileSync(
+    file,
+    `export default () => ({ namespace: 'defaultModel' });
+export const selected = () => ({ namespace: 'selectedModel' });`,
+    'utf-8',
+  );
+  expect(getNamespaceFromFile(file, 'default')).toEqual('defaultModel');
+  expect(getNamespaceFromFile(file, 'selected')).toEqual('selectedModel');
+  unlinkSync(file);
+});
+
+test('Model preferSourceNamespace defaults off for conventional models', () => {
+  const file = join(__dirname, 'fixtures-namespace-prefer-tmp.ts');
+  writeFileSync(
+    file,
+    `export default () => ({ namespace: 'businessTenant', user: null });`,
+    'utf-8',
+  );
+  const conventional = new Model(file, join(__dirname), undefined, 1);
+  expect(conventional.namespace).toEqual('fixtures-namespace-prefer-tmp');
+  const enabled = new Model(file, join(__dirname), undefined, 2, {
+    preferSourceNamespace: true,
+  });
+  expect(enabled.namespace).toEqual('businessTenant');
+  unlinkSync(file);
+});
+
+test('getModelsContent encodes namespace safely', () => {
+  const content = ModelUtils.getModelsContent([
+    {
+      id: 'model_1',
+      file: '/tmp/user.ts',
+      namespace: "user's",
+      exportName: 'default',
+      deps: [],
+    } as any,
+  ]);
+  expect(content).toContain(`namespace: "user's"`);
+  expect(content).not.toContain(`namespace: 'user's'`);
+});
+
+test('getExtraModelFilePath strips meta suffix', () => {
+  expect(getExtraModelFilePath('/a/b/foo.ts#{"exportName":"useFoo"}')).toEqual(
+    '/a/b/foo.ts',
+  );
+  expect(getExtraModelFilePath('/a/b/foo.ts')).toEqual('/a/b/foo.ts');
 });
 
 test('getNamespace', () => {

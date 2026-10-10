@@ -16,6 +16,7 @@ e.g.
 export default {
   model: {
     extraModels: ['src/models/userModel.ts'],
+    preferSourceNamespace: false,
     sort: (a, b) => a.namespace.localeCompare(b.namespace),
   },
 };
@@ -27,6 +28,38 @@ export default {
 - Default: `[]`
 
 Configure `extraModels` to automatically add these Model files to the data stream management.
+
+### preferSourceNamespace
+
+- Type: `boolean`
+- Default: `false`
+
+Whether to resolve `namespace` from Model source (applies to both conventional Models and `extraModels`).
+
+It is off by default so a business return field named `namespace` is not mistaken for the registry key. When enabled, the `namespace` declared in source takes precedence, which helps customize namespaces when sharing Models across a monorepo / packages.
+
+```ts
+// .umirc.ts
+export default {
+  model: {
+    preferSourceNamespace: true,
+    // extraModels: ['../../packages/shared/src/models/tenant.ts'],
+  },
+};
+
+// model source
+export default () => ({
+  namespace: 'businessTenant',
+  user: null,
+});
+
+// usage
+useModel('businessTenant');
+```
+
+:::warning{title=Note}
+After enabling this, do not return `namespace` as a normal business field; it will be parsed as the Model registry name. To customize the namespace for a single file only, append `#{"namespace":"xxx"}` to the path instead of turning this option on.
+:::
 
 ### sort
 
@@ -40,7 +73,13 @@ Configure `sort` to sort the Model based on the return value of the `sort` funct
 ### Creating a Model
 
 The data flow management plugin adopts a conventional directory structure. We agree that Model files can be introduced in the `src/models`, `src/pages/xxxx/models/` directories, and in `src/pages/xxxx/model.{js,jsx,ts,tsx}` files.
-Model files can have one of four suffix formats: `.(tsx|ts|jsx|js)`. The **namespace** generation rule is as follows.
+Model files can have one of four suffix formats: `.(tsx|ts|jsx|js)`. The **namespace** priority is as follows:
+
+1. Path `#meta`: `path/to/model.ts#{"namespace":"xxx"}`
+2. `namespace` in source: requires `preferSourceNamespace`
+3. Path convention (default)
+
+Path convention rules:
 
 | Path | Namespace | Description |
 | :--- |:--- | :--- |

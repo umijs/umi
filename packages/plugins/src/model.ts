@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
 import { winPath } from 'umi/plugin-utils';
-import { ModelUtils } from './utils/modelUtils';
+import { getExtraModelFilePath, ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
@@ -13,6 +13,7 @@ export default (api: IApi) => {
         return zod
           .object({
             extraModels: zod.array(zod.string()),
+            preferSourceNamespace: zod.boolean(),
             sort: zod.function().optional(),
           })
           .partial();
@@ -72,7 +73,7 @@ export function dataflowProvider(container, opts) {
     return [
       join(api.paths.absSrcPath, 'models'),
       // watch monorepo / external models so namespace changes regenerate tmp files
-      ...(api.config.model?.extraModels || []),
+      ...(api.config.model?.extraModels || []).map(getExtraModelFilePath),
     ];
   });
 
@@ -94,5 +95,6 @@ async function getAllModels(api: IApi) {
   }).getAllModels({
     sort: {},
     extraModels: [...extraModels, ...(api.config.model.extraModels || [])],
+    preferSourceNamespace: !!api.config.model?.preferSourceNamespace,
   });
 }

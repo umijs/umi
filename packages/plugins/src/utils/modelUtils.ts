@@ -65,10 +65,22 @@ function unwrapTSNode(node: t.Node): t.Node {
   return node;
 }
 
-function getNamespaceFromObjectExpression(
+/**
+ * Resolve namespace from object properties in declaration order.
+ * Later explicit `namespace` overrides earlier ones.
+ * If a spread appears after an explicit namespace, the final value cannot be
+ * determined statically — return undefined so callers fall back to path naming.
+ */
+export function getNamespaceFromObjectExpression(
   node: t.ObjectExpression,
 ): string | undefined {
+  let namespace: string | undefined;
   for (const prop of node.properties) {
+    if (t.isSpreadElement(prop)) {
+      // spread may override a previously seen namespace
+      if (namespace !== undefined) return undefined;
+      continue;
+    }
     if (!t.isObjectProperty(prop) || prop.computed) continue;
     const keyName = t.isIdentifier(prop.key)
       ? prop.key.name
@@ -76,14 +88,14 @@ function getNamespaceFromObjectExpression(
       ? prop.key.value
       : null;
     if (keyName === 'namespace' && t.isStringLiteral(prop.value)) {
-      return prop.value.value;
+      namespace = prop.value.value;
     }
   }
-  return undefined;
+  return namespace;
 }
 
 /**
- * Extract namespace from the default export AST node.
+ * Extract namespace from an export AST node.
  * Supports:
  * - object model: `export default { namespace: 'foo' }`
  * - hook/factory return: `export default () => ({ namespace: 'foo' })`
@@ -114,8 +126,8 @@ export function getNamespaceFromExportNode(
         if (!t.isReturnStatement(stmt) || !stmt.argument) continue;
         const arg = unwrapTSNode(stmt.argument);
         if (t.isObjectExpression(arg)) {
-          const ns = getNamespaceFromObjectExpression(arg);
-          if (ns) return ns;
+          // may be string, or undefined when missing / not statically determinable
+          return getNamespaceFromObjectExpression(arg);
         }
       }
     }
@@ -132,7 +144,10 @@ export function getNamespaceFromExportNode(
   return undefined;
 }
 
-export function getNamespaceFromFile(file: string): string | undefined {
+export function getNamespaceFromFile(
+  file: string,
+  exportName: string = 'default',
+): string | undefined {
   const content = readFileSync(file, 'utf-8');
   const loader = (
     extname(file).slice(1) === 'js' ? 'jsx' : extname(file).slice(1)
@@ -154,11 +169,59 @@ export function getNamespaceFromFile(file: string): string | undefined {
     ExportDefaultDeclaration: (
       path: Babel.NodePath<t.ExportDefaultDeclaration>,
     ) => {
-      if (namespace) return;
+      if (exportName !== 'default' || namespace !== undefined) return;
       namespace = getNamespaceFromExportNode(path.node.declaration, path);
+    },
+    ExportNamedDeclaration: (
+      path: Babel.NodePath<t.ExportNamedDeclaration>,
+    ) => {
+      if (exportName === 'default' || namespace !== undefined) return;
+      const { declaration, specifiers } = path.node;
+      if (declaration) {
+        if (t.isVariableDeclaration(declaration)) {
+          for (const decl of declaration.declarations) {
+            if (
+              t.isIdentifier(decl.id) &&
+              decl.id.name === exportName &&
+              decl.init
+            ) {
+              namespace = getNamespaceFromExportNode(decl.init, path);
+              return;
+            }
+          }
+        }
+        if (
+          t.isFunctionDeclaration(declaration) &&
+          declaration.id?.name === exportName
+        ) {
+          namespace = getNamespaceFromExportNode(declaration, path);
+          return;
+        }
+      }
+      for (const spec of specifiers) {
+        if (
+          t.isExportSpecifier(spec) &&
+          t.isIdentifier(spec.exported) &&
+          spec.exported.name === exportName
+        ) {
+          const binding = path.scope.getBinding(spec.local.name);
+          if (binding?.path.node) {
+            let node: t.Node = binding.path.node;
+            if (t.isVariableDeclarator(node) && node.init) {
+              node = node.init;
+            }
+            namespace = getNamespaceFromExportNode(node, path);
+          }
+          return;
+        }
+      }
     },
   });
   return namespace;
+}
+
+export function getExtraModelFilePath(modelPath: string) {
+  return modelPath.split('#')[0];
 }
 
 export class Model {
@@ -172,6 +235,7 @@ export class Model {
     absSrcPath: string,
     sort: {} | undefined,
     id: number,
+    opts: { preferSourceNamespace?: boolean } = {},
   ) {
     let namespace;
     let exportName;
@@ -183,15 +247,16 @@ export class Model {
     }
     this.file = _file;
     this.id = `model_${id}`;
-    if (!namespace) {
+    this.exportName = exportName || 'default';
+    // Parse namespace from source only when model.preferSourceNamespace is true.
+    if (!namespace && opts.preferSourceNamespace) {
       try {
-        namespace = getNamespaceFromFile(this.file);
+        namespace = getNamespaceFromFile(this.file, this.exportName);
       } catch (e) {
         // 如果解析失败，继续使用默认的 namespace
       }
     }
     this.namespace = namespace || getNamespace(_file, absSrcPath);
-    this.exportName = exportName || 'default';
     this.deps = sort ? this.findDeps(sort) : [];
   }
 
@@ -239,12 +304,17 @@ export class ModelUtils {
     this.opts = opts;
   }
 
-  getAllModels(opts: { sort?: object; extraModels: string[] }) {
+  getAllModels(opts: {
+    sort?: object;
+    extraModels: string[];
+    preferSourceNamespace?: boolean;
+  }) {
     // reset count
     this.count = 1;
-    const models = [
+    const absSrcPath = this.api.paths.absSrcPath;
+    const conventional = [
       ...this.getModels({
-        base: join(this.api.paths.absSrcPath, 'models'),
+        base: join(absSrcPath, 'models'),
         pattern: '**/*.{ts,tsx,js,jsx}',
       }),
       ...this.getModels({
@@ -255,15 +325,17 @@ export class ModelUtils {
         base: join(this.api.paths.absPagesPath),
         pattern: '**/model.{ts,tsx,js,jsx}',
       }),
-      ...opts.extraModels,
     ].map((file: string) => {
-      return new Model(
-        file,
-        this.api.paths.absSrcPath,
-        opts.sort,
-        this.count++,
-      );
+      return new Model(file, absSrcPath, opts.sort, this.count++, {
+        preferSourceNamespace: !!opts.preferSourceNamespace,
+      });
     });
+    const extras = opts.extraModels.map((file: string) => {
+      return new Model(file, absSrcPath, opts.sort, this.count++, {
+        preferSourceNamespace: !!opts.preferSourceNamespace,
+      });
+    });
+    const models = [...conventional, ...extras];
     // check duplicate
     const namespaces = models.map((model) => model.namespace);
     if (new Set(namespaces).size !== namespaces.length) {
@@ -426,7 +498,9 @@ export class ModelUtils {
         imports.push(`import ${model.id} from '${fileWithoutExt}';`);
       }
       modelProps.push(
-        `${model.id}: { namespace: '${model.namespace}', model: ${model.id} },`,
+        `${model.id}: { namespace: ${JSON.stringify(model.namespace)}, model: ${
+          model.id
+        } },`,
       );
     });
     return `
