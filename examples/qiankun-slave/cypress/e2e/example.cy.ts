@@ -45,6 +45,27 @@ describe('QianKun Plugin', () => {
     });
   });
 
+  describe('nested micro apps', () => {
+    it('inherits the parent base for static routes', () => {
+      cy.visit('/nested/slave/home');
+      cy.contains('Slave Home Page');
+    });
+
+    it('inherits the parent base for runtime PREPEND routes', () => {
+      cy.visit('/nested/prefix/count');
+      cy.contains('count:0');
+      cy.get('button').click();
+      cy.contains('count:1');
+    });
+
+    it('inherits the parent base for runtime MATCH routes', () => {
+      cy.visit('/nested/count');
+      cy.contains('count:0');
+      cy.get('button').click();
+      cy.contains('count:1');
+    });
+  });
+
   describe('microApp route first', () => {
     it('not hit indexApp route', () => {
       // contains https://docs.cypress.io/api/commands/contains

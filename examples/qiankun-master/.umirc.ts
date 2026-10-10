@@ -3,6 +3,10 @@ export default {
     master: {
       apps: [
         {
+          name: 'nested-master',
+          entry: 'http://127.0.0.1:8889',
+        },
+        {
           name: 'slave',
           entry: 'http://127.0.0.1:5555', // your slave app address
         },
@@ -23,6 +27,10 @@ export default {
     { path: '/', redirect: '/home' },
     { path: '/home', component: 'index' },
     { path: '/nav', component: 'never' },
+    {
+      path: '/nested/*',
+      microApp: 'nested-master',
+    },
     {
       path: '/slave/*',
       microApp: 'slave',

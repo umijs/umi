@@ -64,7 +64,7 @@ export default (api: IApi) => {
         );
         route.file = `(async () => {
           const { getMicroAppRouteComponent } = await import('@@/plugin-qiankun-master/getMicroAppRouteComponent');
-          return getMicroAppRouteComponent({ appName: '${appName}', base: '${base}', routePath: '${route.path}', masterHistoryType: '${masterHistoryType}', routeProps: ${normalizedRouteProps} })
+          return getMicroAppRouteComponent({ appName: '${appName}', base: '${base}', useAppBasename: true, routePath: '${route.path}', masterHistoryType: '${masterHistoryType}', routeProps: ${normalizedRouteProps} })
         })()`;
       }
     });
@@ -111,13 +111,23 @@ export interface IRuntimeConfig {
     api.writeTmpFile({
       path: 'masterOptions.ts',
       content: `
-let options = ${JSON.stringify({
-        masterHistoryType: api.config.history?.type || defaultHistoryType,
-        base: api.config.base || '/',
-        ...api.config.qiankun.master,
-      })};
-export const getMasterOptions = () => options;
-export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts });
+let state = {
+  options: ${JSON.stringify({
+    masterHistoryType: api.config.history?.type || defaultHistoryType,
+    base: api.config.base || '/',
+    ...api.config.qiankun.master,
+  })},
+  useAppBasename: ${!Object.prototype.hasOwnProperty.call(
+    api.config.qiankun.master,
+    'base',
+  )},
+};
+export const getMasterOptions = () => state.options;
+export const getMasterOptionsState = () => state;
+export const setMasterOptions = (newOpts, useAppBasename = state.useAppBasename) => {
+  state = { options: { ...state.options, ...newOpts }, useAppBasename };
+  return state.options;
+};
       `,
     });
 
