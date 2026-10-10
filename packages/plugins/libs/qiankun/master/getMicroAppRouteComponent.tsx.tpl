@@ -44,7 +44,8 @@ export function getMicroAppRouteComponent(opts: {
     const cacheName = 'qiankun_/' + appName + '/';
     return (
       <KeepAlive name={cacheName} cacheKey={cacheName} autoFreeze={false}>
-        <MicroApp {...componentProps} />
+        {/* Skip qiankun unmount while AliveScope still holds the DOM */}
+        <MicroApp {...componentProps} autoUnmount={false} />
       </KeepAlive>
     );
 {{/keepAlive}}
