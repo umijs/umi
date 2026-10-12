@@ -93,10 +93,11 @@ async function getAvailablePortPair(): Promise<number> {
   return firstPort;
 }
 
-function createBackend(upgrades: string[]) {
+function createBackend(upgrades: string[], body = 'ok', requests?: string[]) {
   const server = trackSockets(
-    http.createServer((_req, res) => {
-      res.end('ok');
+    http.createServer((req, res) => {
+      requests?.push(req.url || '');
+      res.end(body);
     }),
   );
 
@@ -112,19 +113,27 @@ function createBackend(upgrades: string[]) {
   return server;
 }
 
-function request(port: number) {
-  return new Promise<void>((resolve, reject) => {
-    http
-      .get(`http://127.0.0.1:${port}/`, (res) => {
-        res.resume();
-        res.on('end', resolve);
-      })
-      .on('error', reject);
-  });
+function request(port: number, pathname = '/', method = 'GET') {
+  return new Promise<{ statusCode: number | undefined; body: string }>(
+    (resolve, reject) => {
+      const req = http.request(
+        `http://127.0.0.1:${port}${pathname}`,
+        { method },
+        (res) => {
+          let body = '';
+          res.setEncoding('utf8');
+          res.on('data', (chunk) => (body += chunk));
+          res.on('end', () => resolve({ statusCode: res.statusCode, body }));
+        },
+      );
+      req.on('error', reject);
+      req.end();
+    },
+  );
 }
 
 function upgrade(port: number, pathname: string) {
-  return new Promise<void>((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     const socket = net.connect(port, '127.0.0.1');
     const timeout = setTimeout(() => {
       socket.destroy();
@@ -141,10 +150,10 @@ function upgrade(port: number, pathname: string) {
           'Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n\r\n',
       );
     });
-    socket.on('data', () => {
+    socket.on('data', (data) => {
       clearTimeout(timeout);
       socket.destroy();
-      resolve();
+      resolve(data.toString());
     });
     socket.on('error', (error) => {
       clearTimeout(timeout);
@@ -172,7 +181,7 @@ test('routes WebSocket upgrades to the matching proxy only', async () => {
   mockedServe.mockImplementation(async (_config, _cwd, _rootDir, opts) => {
     const server = createBackend(utooUpgrades);
     await listen(server, opts.port);
-    opts.onReady?.({ clientPaths: [] });
+    opts.onReady?.({ port: opts.port, clientPaths: [] });
   });
 
   try {
@@ -208,6 +217,129 @@ test('routes WebSocket upgrades to the matching proxy only', async () => {
   } finally {
     createServerSpy.mockRestore();
     await Promise.all([
+      close(businessServer),
+      ...createdServers.map((server) => close(server)),
+    ]);
+    fs.rmSync(path.join(process.cwd(), 'node_modules/.cache/umi'), {
+      recursive: true,
+      force: true,
+    });
+  }
+});
+
+test('waits for readiness and routes HTTP and HMR to the actual internal port', async () => {
+  const port = await getAvailablePortPair();
+  const occupiedRequests: string[] = [];
+  const occupiedUpgrades: string[] = [];
+  const occupiedServer = createBackend(
+    occupiedUpgrades,
+    'unrelated server',
+    occupiedRequests,
+  );
+  await listen(occupiedServer, port + 1);
+
+  const businessUpgrades: string[] = [];
+  const businessServer = createBackend(businessUpgrades, 'business server');
+  const businessPort = await listen(businessServer);
+  const utooRequests: string[] = [];
+  const utooUpgrades: string[] = [];
+  const createdServers: HttpServer[] = [];
+  const createServer = http.createServer.bind(http);
+  const createServerSpy = jest.spyOn(http, 'createServer').mockImplementation(((
+    ...args: Parameters<CreateServer>
+  ) => {
+    const server = trackSockets(createServer(...args));
+    createdServers.push(server);
+    return server;
+  }) as CreateServer);
+
+  let startUtoo!: () => void;
+  const ready = new Promise<void>((resolve) => {
+    startUtoo = resolve;
+  });
+  let serveStarted!: () => void;
+  const started = new Promise<void>((resolve) => {
+    serveStarted = resolve;
+  });
+  let actualPort: number;
+  mockedServe.mockImplementation(async (_config, _cwd, _rootDir, opts) => {
+    const server = createBackend(utooUpgrades, 'utoo server', utooRequests);
+    actualPort = await listen(server);
+    serveStarted();
+    await ready;
+    opts.onReady?.({ port: actualPort, clientPaths: [] });
+  });
+
+  const devPromise = dev({
+    cwd: process.cwd(),
+    rootDir: process.cwd(),
+    entry: { umi: './src/index.tsx' },
+    config: {
+      publicPath: '/assets/',
+      utoopack: {},
+      proxy: {
+        '/api': { target: `http://127.0.0.1:${businessPort}` },
+        '/ws': { target: `ws://127.0.0.1:${businessPort}`, ws: true },
+      },
+    },
+    host: '127.0.0.1',
+    ip: '127.0.0.1',
+    port,
+  });
+
+  try {
+    await started;
+
+    expect(await request(port, '/assets/umi.js')).toEqual({
+      statusCode: 503,
+      body: 'Utoopack dev server is starting.',
+    });
+    expect(await request(port, '/assets/umi.js', 'HEAD')).toEqual({
+      statusCode: 503,
+      body: '',
+    });
+    expect((await request(port, '/turbopack-hmr')).statusCode).toBe(503);
+    expect(await upgrade(port, '/turbopack-hmr')).toContain(
+      'HTTP/1.1 503 Service Unavailable',
+    );
+    expect(await request(port, '/api/status')).toEqual({
+      statusCode: 200,
+      body: 'business server',
+    });
+    expect(await upgrade(port, '/ws')).toContain(
+      'HTTP/1.1 101 Switching Protocols',
+    );
+    expect(occupiedRequests).toEqual([]);
+    expect(occupiedUpgrades).toEqual([]);
+    expect(utooRequests).toEqual([]);
+    expect(utooUpgrades).toEqual([]);
+
+    startUtoo();
+    await devPromise;
+
+    expect(actualPort!).not.toBe(port + 1);
+    expect(await request(port, '/assets/umi.js?version=1')).toEqual({
+      statusCode: 200,
+      body: 'utoo server',
+    });
+    expect(await request(port, '/assets/umi.js', 'HEAD')).toEqual({
+      statusCode: 200,
+      body: '',
+    });
+    expect(await upgrade(port, '/turbopack-hmr?session=1')).toContain(
+      'HTTP/1.1 101 Switching Protocols',
+    );
+    expect(utooRequests).toEqual(['/umi.js?version=1', '/umi.js']);
+    expect(utooUpgrades).toEqual(['/turbopack-hmr?session=1']);
+    expect(businessUpgrades).toEqual(['/ws']);
+    expect(occupiedRequests).toEqual([]);
+    expect(occupiedUpgrades).toEqual([]);
+  } finally {
+    startUtoo();
+    await devPromise;
+    createServerSpy.mockRestore();
+    await Promise.all([
+      close(occupiedServer),
       close(businessServer),
       ...createdServers.map((server) => close(server)),
     ]);

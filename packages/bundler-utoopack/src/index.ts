@@ -226,7 +226,11 @@ export async function dev(opts: IDevOpts) {
   const cors = require('cors');
   const proxy = require('express-http-proxy');
   const port = opts.port || 8000;
-  const utooServePort = port + 1;
+  const preferredUtooServePort = port + 1;
+  let utooServePort: number | undefined;
+  const getUtooServeTarget = () => `http://127.0.0.1:${utooServePort}`;
+  const respondWhileStarting = (res: express.Response) =>
+    res.status(503).type('text').send('Utoopack dev server is starting.');
 
   // CORS support
   app.use(
@@ -248,11 +252,18 @@ export async function dev(opts: IDevOpts) {
 
   // proxy ws to utoopack server
   const wsProxy = createProxyMiddleware('/turbopack-hmr', {
-    target: `http://127.0.0.1:${utooServePort}`,
-    ws: true,
+    router: getUtooServeTarget,
+    // Handle upgrades explicitly so the readiness check cannot be bypassed by
+    // http-proxy-middleware's automatic upgrade listener.
+    ws: false,
     logLevel: 'silent',
   });
-  app.use('/turbopack-hmr', wsProxy);
+  app.use('/turbopack-hmr', (req, res, next) => {
+    if (utooServePort === undefined) {
+      return respondWhileStarting(res);
+    }
+    return wsProxy(req, res, next);
+  });
 
   if (opts.config.proxy) {
     createProxy(opts.config.proxy, app);
@@ -264,8 +275,19 @@ export async function dev(opts: IDevOpts) {
     return p.startsWith('/') ? p : '/' + p;
   })();
 
+  app.use((req, res, next) => {
+    if (
+      utooServePort === undefined &&
+      (req.method === 'GET' || req.method === 'HEAD')
+    ) {
+      return respondWhileStarting(res);
+    }
+    return next();
+  });
+
   app.use(
-    proxy(`http://127.0.0.1:${utooServePort}`, {
+    proxy(getUtooServeTarget, {
+      memoizeHost: false,
       proxyReqPathResolver: function (req: any) {
         if (publicPathPrefix && req.url.startsWith(publicPathPrefix)) {
           const stripped = req.url.slice(publicPathPrefix.length - 1);
@@ -286,7 +308,10 @@ export async function dev(opts: IDevOpts) {
         return proxyRes.statusCode !== 200 && proxyRes.statusCode !== 304;
       },
       proxyErrorHandler: function (err: any, res: any, next: any) {
-        if (isUtoopackProxyStartupError(err, utooServePort)) {
+        if (
+          utooServePort !== undefined &&
+          isUtoopackProxyStartupError(err, utooServePort)
+        ) {
           if (!res.headersSent) {
             res.writeHead(503, { 'Content-Type': 'text/plain' });
           }
@@ -350,7 +375,18 @@ export async function dev(opts: IDevOpts) {
   // prevent first websocket auto disconnected
   // ref https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
   if (wsProxy.upgrade) {
-    server.on('upgrade', wsProxy.upgrade);
+    const upgrade = wsProxy.upgrade;
+    const handleUpgrade: typeof upgrade = (req, socket, head) => {
+      if (!req.url?.startsWith('/turbopack-hmr')) return;
+      if (utooServePort === undefined) {
+        socket.end(
+          'HTTP/1.1 503 Service Unavailable\r\n' + 'Connection: close\r\n\r\n',
+        );
+        return;
+      }
+      upgrade(req, socket, head);
+    };
+    server.on('upgrade', handleUpgrade);
   }
 
   const createStatsObject = () => {
@@ -378,10 +414,11 @@ export async function dev(opts: IDevOpts) {
     await Promise.all([
       serverReady,
       utooPackServe(utooPackConfig, normalizedCwd, rootDir, {
-        port: utooServePort,
+        port: preferredUtooServePort,
         hostname: '127.0.0.1',
         logServerInfo: false,
         onReady(context: DevServerReadyContext) {
+          utooServePort = context.port;
           clientPaths = context.clientPaths ?? [];
         },
       }),
