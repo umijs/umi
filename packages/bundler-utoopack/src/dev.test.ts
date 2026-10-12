@@ -27,6 +27,7 @@ import { serve } from '@utoo/pack';
 import fs from 'fs';
 import http from 'http';
 import net from 'net';
+import os from 'os';
 import path from 'path';
 import { dev } from './index';
 
@@ -35,6 +36,15 @@ type CreateServer = typeof import('http')['createServer'];
 type HttpServer = ReturnType<CreateServer>;
 type Socket = import('net').Socket;
 const serverSockets = new WeakMap<HttpServer, Set<Socket>>();
+let cwd: string;
+
+beforeEach(() => {
+  cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'umi-utoo-dev-'));
+});
+
+afterEach(() => {
+  fs.rmSync(cwd, { recursive: true, force: true });
+});
 
 function trackSockets(server: HttpServer) {
   if (serverSockets.has(server)) return server;
@@ -186,8 +196,8 @@ test('routes WebSocket upgrades to the matching proxy only', async () => {
 
   try {
     await dev({
-      cwd: process.cwd(),
-      rootDir: process.cwd(),
+      cwd,
+      rootDir: cwd,
       entry: {
         umi: './src/index.tsx',
       },
@@ -220,10 +230,6 @@ test('routes WebSocket upgrades to the matching proxy only', async () => {
       close(businessServer),
       ...createdServers.map((server) => close(server)),
     ]);
-    fs.rmSync(path.join(process.cwd(), 'node_modules/.cache/umi'), {
-      recursive: true,
-      force: true,
-    });
   }
 });
 
@@ -271,8 +277,8 @@ test('waits for readiness and routes HTTP and HMR to the actual internal port', 
   });
 
   const devPromise = dev({
-    cwd: process.cwd(),
-    rootDir: process.cwd(),
+    cwd,
+    rootDir: cwd,
     entry: { umi: './src/index.tsx' },
     config: {
       publicPath: '/assets/',
@@ -343,9 +349,5 @@ test('waits for readiness and routes HTTP and HMR to the actual internal port', 
       close(businessServer),
       ...createdServers.map((server) => close(server)),
     ]);
-    fs.rmSync(path.join(process.cwd(), 'node_modules/.cache/umi'), {
-      recursive: true,
-      force: true,
-    });
   }
 });
