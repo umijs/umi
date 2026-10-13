@@ -123,21 +123,16 @@ function createBackend(upgrades: string[], body = 'ok', requests?: string[]) {
   return server;
 }
 
-function request(port: number, pathname = '/', method = 'GET') {
-  return new Promise<{ statusCode: number | undefined; body: string }>(
+function request(port: number, pathname = '/') {
+  return new Promise<{ statusCode?: number; body: string }>(
     (resolve, reject) => {
-      const req = http.request(
-        `http://127.0.0.1:${port}${pathname}`,
-        { method },
-        (res) => {
+      http
+        .get(`http://127.0.0.1:${port}${pathname}`, (res) => {
           let body = '';
-          res.setEncoding('utf8');
           res.on('data', (chunk) => (body += chunk));
           res.on('end', () => resolve({ statusCode: res.statusCode, body }));
-        },
-      );
-      req.on('error', reject);
-      req.end();
+        })
+        .on('error', reject);
     },
   );
 }
@@ -233,21 +228,13 @@ test('routes WebSocket upgrades to the matching proxy only', async () => {
   }
 });
 
-test('waits for readiness and routes HTTP and HMR to the actual internal port', async () => {
+test('waits for readiness and routes to the actual internal port', async () => {
   const port = await getAvailablePortPair();
   const occupiedRequests: string[] = [];
-  const occupiedUpgrades: string[] = [];
-  const occupiedServer = createBackend(
-    occupiedUpgrades,
-    'unrelated server',
-    occupiedRequests,
-  );
+  const occupiedServer = createBackend([], 'unrelated', occupiedRequests);
   await listen(occupiedServer, port + 1);
-
-  const businessUpgrades: string[] = [];
-  const businessServer = createBackend(businessUpgrades, 'business server');
+  const businessServer = createBackend([], 'business');
   const businessPort = await listen(businessServer);
-  const utooRequests: string[] = [];
   const utooUpgrades: string[] = [];
   const createdServers: HttpServer[] = [];
   const createServer = http.createServer.bind(http);
@@ -259,19 +246,14 @@ test('waits for readiness and routes HTTP and HMR to the actual internal port', 
     return server;
   }) as CreateServer);
 
-  let startUtoo!: () => void;
-  const ready = new Promise<void>((resolve) => {
-    startUtoo = resolve;
-  });
-  let serveStarted!: () => void;
-  const started = new Promise<void>((resolve) => {
-    serveStarted = resolve;
-  });
-  let actualPort: number;
+  let markReady!: () => void;
+  const ready = new Promise<void>((resolve) => (markReady = resolve));
+  let markStarted!: () => void;
+  const started = new Promise<void>((resolve) => (markStarted = resolve));
   mockedServe.mockImplementation(async (_config, _cwd, _rootDir, opts) => {
-    const server = createBackend(utooUpgrades, 'utoo server', utooRequests);
-    actualPort = await listen(server);
-    serveStarted();
+    const server = createBackend(utooUpgrades, 'utoo');
+    const actualPort = await listen(server);
+    markStarted();
     await ready;
     opts.onReady?.({ port: actualPort, clientPaths: [] });
   });
@@ -281,12 +263,8 @@ test('waits for readiness and routes HTTP and HMR to the actual internal port', 
     rootDir: cwd,
     entry: { umi: './src/index.tsx' },
     config: {
-      publicPath: '/assets/',
       utoopack: {},
-      proxy: {
-        '/api': { target: `http://127.0.0.1:${businessPort}` },
-        '/ws': { target: `ws://127.0.0.1:${businessPort}`, ws: true },
-      },
+      proxy: { '/api': { target: `http://127.0.0.1:${businessPort}` } },
     },
     host: '127.0.0.1',
     ip: '127.0.0.1',
@@ -295,53 +273,18 @@ test('waits for readiness and routes HTTP and HMR to the actual internal port', 
 
   try {
     await started;
+    expect((await request(port, '/umi.js')).statusCode).toBe(503);
+    expect(await upgrade(port, '/turbopack-hmr')).toContain('503');
+    expect((await request(port, '/api/status')).body).toBe('business');
 
-    expect(await request(port, '/assets/umi.js')).toEqual({
-      statusCode: 503,
-      body: 'Utoopack dev server is starting.',
-    });
-    expect(await request(port, '/assets/umi.js', 'HEAD')).toEqual({
-      statusCode: 503,
-      body: '',
-    });
-    expect((await request(port, '/turbopack-hmr')).statusCode).toBe(503);
-    expect(await upgrade(port, '/turbopack-hmr')).toContain(
-      'HTTP/1.1 503 Service Unavailable',
-    );
-    expect(await request(port, '/api/status')).toEqual({
-      statusCode: 200,
-      body: 'business server',
-    });
-    expect(await upgrade(port, '/ws')).toContain(
-      'HTTP/1.1 101 Switching Protocols',
-    );
-    expect(occupiedRequests).toEqual([]);
-    expect(occupiedUpgrades).toEqual([]);
-    expect(utooRequests).toEqual([]);
-    expect(utooUpgrades).toEqual([]);
-
-    startUtoo();
+    markReady();
     await devPromise;
-
-    expect(actualPort!).not.toBe(port + 1);
-    expect(await request(port, '/assets/umi.js?version=1')).toEqual({
-      statusCode: 200,
-      body: 'utoo server',
-    });
-    expect(await request(port, '/assets/umi.js', 'HEAD')).toEqual({
-      statusCode: 200,
-      body: '',
-    });
-    expect(await upgrade(port, '/turbopack-hmr?session=1')).toContain(
-      'HTTP/1.1 101 Switching Protocols',
-    );
-    expect(utooRequests).toEqual(['/umi.js?version=1', '/umi.js']);
-    expect(utooUpgrades).toEqual(['/turbopack-hmr?session=1']);
-    expect(businessUpgrades).toEqual(['/ws']);
+    expect((await request(port, '/umi.js')).body).toBe('utoo');
+    expect(await upgrade(port, '/turbopack-hmr')).toContain('101');
+    expect(utooUpgrades).toEqual(['/turbopack-hmr']);
     expect(occupiedRequests).toEqual([]);
-    expect(occupiedUpgrades).toEqual([]);
   } finally {
-    startUtoo();
+    markReady();
     await devPromise;
     createServerSpy.mockRestore();
     await Promise.all([

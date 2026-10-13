@@ -226,7 +226,7 @@ export async function dev(opts: IDevOpts) {
   const cors = require('cors');
   const proxy = require('express-http-proxy');
   const port = opts.port || 8000;
-  const preferredUtooServePort = port + 1;
+  // actual port is reported by utoopack's onReady, which may differ from port + 1
   let utooServePort: number | undefined;
   const getUtooServeTarget = () => `http://127.0.0.1:${utooServePort}`;
   const respondWhileStarting = (res: express.Response) =>
@@ -253,17 +253,15 @@ export async function dev(opts: IDevOpts) {
   // proxy ws to utoopack server
   const wsProxy = createProxyMiddleware('/turbopack-hmr', {
     router: getUtooServeTarget,
-    // Handle upgrades explicitly so the readiness check cannot be bypassed by
-    // http-proxy-middleware's automatic upgrade listener.
+    // upgrades are handled by server.on('upgrade') below
     ws: false,
     logLevel: 'silent',
   });
-  app.use('/turbopack-hmr', (req, res, next) => {
-    if (utooServePort === undefined) {
-      return respondWhileStarting(res);
-    }
-    return wsProxy(req, res, next);
-  });
+  app.use('/turbopack-hmr', (req, res, next) =>
+    utooServePort === undefined
+      ? respondWhileStarting(res)
+      : wsProxy(req, res, next),
+  );
 
   if (opts.config.proxy) {
     createProxy(opts.config.proxy, app);
@@ -275,15 +273,11 @@ export async function dev(opts: IDevOpts) {
     return p.startsWith('/') ? p : '/' + p;
   })();
 
-  app.use((req, res, next) => {
-    if (
-      utooServePort === undefined &&
-      (req.method === 'GET' || req.method === 'HEAD')
-    ) {
-      return respondWhileStarting(res);
-    }
-    return next();
-  });
+  app.use((req, res, next) =>
+    utooServePort === undefined && ['GET', 'HEAD'].includes(req.method)
+      ? respondWhileStarting(res)
+      : next(),
+  );
 
   app.use(
     proxy(getUtooServeTarget, {
@@ -308,10 +302,7 @@ export async function dev(opts: IDevOpts) {
         return proxyRes.statusCode !== 200 && proxyRes.statusCode !== 304;
       },
       proxyErrorHandler: function (err: any, res: any, next: any) {
-        if (
-          utooServePort !== undefined &&
-          isUtoopackProxyStartupError(err, utooServePort)
-        ) {
+        if (isUtoopackProxyStartupError(err, utooServePort!)) {
           if (!res.headersSent) {
             res.writeHead(503, { 'Content-Type': 'text/plain' });
           }
@@ -379,10 +370,7 @@ export async function dev(opts: IDevOpts) {
     const handleUpgrade: typeof upgrade = (req, socket, head) => {
       if (!req.url?.startsWith('/turbopack-hmr')) return;
       if (utooServePort === undefined) {
-        socket.end(
-          'HTTP/1.1 503 Service Unavailable\r\n' + 'Connection: close\r\n\r\n',
-        );
-        return;
+        return socket.end('HTTP/1.1 503 Service Unavailable\r\n\r\n');
       }
       upgrade(req, socket, head);
     };
@@ -414,7 +402,7 @@ export async function dev(opts: IDevOpts) {
     await Promise.all([
       serverReady,
       utooPackServe(utooPackConfig, normalizedCwd, rootDir, {
-        port: preferredUtooServePort,
+        port: port + 1,
         hostname: '127.0.0.1',
         logServerInfo: false,
         onReady(context: DevServerReadyContext) {
