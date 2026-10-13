@@ -1,5 +1,5 @@
 {
-  "name": "app2",
+  "name": "@example/qiankun-keepalive-app2",
   "private": true,
   "scripts": {
     "dev": "cross-env PORT=8892 max dev",
