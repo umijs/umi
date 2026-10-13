@@ -1,10 +1,9 @@
-import { logger, portfinder } from '@umijs/utils';
+import { portfinder } from '@umijs/utils';
 import { ChildProcess as ChildProcessCtor, fork } from 'child_process';
 import { dev } from './dev';
 import start from './fork';
 
 jest.mock('@umijs/utils', () => ({
-  logger: { error: jest.fn() },
   portfinder: { getPort: jest.fn() },
 }));
 jest.mock('child_process', () => ({
@@ -74,17 +73,35 @@ test('signals the latest child after restarts', () => {
   expect(process.exit).toHaveBeenCalledWith(1);
 });
 
-test('exits when the restart port stays occupied', () => {
+test('preserves restart fallback when the preferred port stays occupied', () => {
   jest.useFakeTimers();
+  try {
+    jest.mocked(portfinder.getPort).mockImplementation((_opts, cb) => {
+      cb!(null!, 8001);
+    });
+    const child = start({ scriptPath: 'dev.js' });
+    restart(child, 8000);
+    child.emit('exit', 0, null);
+    jest.runAllTimers();
+
+    expect(portfinder.getPort).toHaveBeenCalledTimes(21);
+    expect(process.exit).not.toHaveBeenCalled();
+    expect(process.env.PORT).toBe('8000');
+    expect(children).toHaveLength(2);
+  } finally {
+    jest.useRealTimers();
+  }
+});
+
+test('preserves restart fallback when the port lookup fails', () => {
   jest.mocked(portfinder.getPort).mockImplementation((_opts, cb) => {
-    cb!(null!, 8001);
+    cb!(new Error('lookup failed'), 0);
   });
   const child = start({ scriptPath: 'dev.js' });
   restart(child, 8000);
   child.emit('exit', 0, null);
-  jest.runAllTimers();
-  jest.useRealTimers();
-  expect(logger.error).toHaveBeenCalledWith(new Error('Port 8000 is occupied'));
-  expect(process.exit).toHaveBeenCalledWith(1);
-  expect(children).toHaveLength(1);
+
+  expect(process.exit).not.toHaveBeenCalled();
+  expect(process.env.PORT).toBe('8000');
+  expect(children).toHaveLength(2);
 });

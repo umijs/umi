@@ -1,4 +1,4 @@
-import { logger, portfinder } from '@umijs/utils';
+import { portfinder } from '@umijs/utils';
 import type { ChildProcess } from 'child_process';
 import { fork } from 'child_process';
 
@@ -47,11 +47,7 @@ export default function start({ scriptPath, onChild }: IOpts) {
       // wait for the old server to release its port before starting a new one
       child.once('exit', () => {
         if (!payload?.port) return start({ scriptPath, onChild });
-        utilPortValid(payload.port, 20, (err?: Error) => {
-          if (err) {
-            logger.error(err);
-            return process.exit(1);
-          }
+        utilPortValid(payload.port, 20, () => {
           process.env.PORT = payload.port;
           start({ scriptPath, onChild });
         });
