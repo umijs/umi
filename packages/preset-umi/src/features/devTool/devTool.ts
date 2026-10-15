@@ -81,6 +81,11 @@ export default (api: IApi) => {
           }
         }
 
+        // Devframe serves its own module script and UI while Umi is compiling.
+        if (path === '/__devframes' || path.startsWith('/__devframes/')) {
+          return next();
+        }
+
         if (
           req.headers.accept?.includes('text/html') ||
           req.headers.accept === '*/*'
