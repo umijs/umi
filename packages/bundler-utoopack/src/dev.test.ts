@@ -185,8 +185,9 @@ test('routes WebSocket upgrades to the matching proxy only', async () => {
 
   mockedServe.mockImplementation(async (_config, _cwd, _rootDir, opts) => {
     const server = createBackend(utooUpgrades);
-    await listen(server, opts.port);
-    opts.onReady?.({ port: opts.port, clientPaths: [] });
+    // Report the bound port directly instead of racing to reclaim a probed port.
+    const actualPort = await listen(server);
+    opts.onReady?.({ port: actualPort, clientPaths: [] });
   });
 
   try {

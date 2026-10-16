@@ -1,24 +1,23 @@
-import type { ChildProcess } from 'child_process';
-import fork from './fork';
+import { logger } from '@umijs/utils';
+import { createDevProcess } from './fork';
 
 export function dev() {
-  let child: ChildProcess;
-  fork({
+  const devProcess = createDevProcess({
     scriptPath: require.resolve('../../bin/forkedDev'),
-    // keep a reference to the latest child across restarts
-    onChild: (c) => (child = c),
   });
   // ref:
   // http://nodejs.cn/api/process/signal_events.html
   // https://lisk.io/blog/development/why-we-stopped-using-npm-start-child-processes
-  process.on('SIGINT', () => {
-    child.kill('SIGINT');
-    // ref:
-    // https://github.com/umijs/umi/issues/6009
-    process.exit(0);
-  });
-  process.on('SIGTERM', () => {
-    child.kill('SIGTERM');
-    process.exit(1);
-  });
+  let exiting = false;
+  function onSignal(signal: NodeJS.Signals, exitCode: number) {
+    if (exiting) return;
+    exiting = true;
+    void devProcess
+      .stop(signal)
+      .catch((error) => logger.error(error))
+      .then(() => process.exit(exitCode));
+  }
+  // Preserve the existing signal exit codes (see umi/issues/6009).
+  process.on('SIGINT', () => onSignal('SIGINT', 0));
+  process.on('SIGTERM', () => onSignal('SIGTERM', 1));
 }
