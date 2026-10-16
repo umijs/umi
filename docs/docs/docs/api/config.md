@@ -1570,6 +1570,32 @@ $ npm install @babel/runtime --save-dev
 
 使用 utoopack 构建 qiankun 子应用时，如果主应用使用 qiankun 2，qiankun 版本需为 `2.10.17-beta.0` 或更高。更早的版本无法在执行入口脚本时正确提供 `document.currentScript`，会导致子应用加载失败。更多适配原理请参阅 Utoo 官网博客[《当 Turbopack 遇上 qiankun：Utoopack 的微前端适配实践》](https://utoo.land/zh/docs/blog/utoopack-qiankun)。
 
+### 生产构建文件名
+
+启用 `hash: true` 时，utoopack 的生产构建默认使用以下命名：
+
+- JS 入口：`[name].[contenthash:8].js`，例如 `umi.12345678.js`，沿用 Umi 的入口规则。
+- 其他 JS chunk：`[contenthash].async.js`。
+- 提取的 CSS：`[contenthash].css`。
+
+`[contenthash]` 使用完整的 16 位十六进制内容哈希。JS chunk 和 CSS 文件名不再包含模块路径，避免深层目录导致资源 URL 过长。开发构建、未开启 `hash` 的构建以及 SSR 构建保留原有命名规则。
+
+这是生产构建默认文件名的变化。如果部署脚本或插件依赖原来的文件名前缀，可以通过 `utoopack.output` 显式恢复：
+
+```ts
+export default {
+  hash: true,
+  utoopack: {
+    output: {
+      chunkFilename: '[name].[contenthash:8].async.js',
+      cssFilename: '[name].[contenthash:8].css',
+    },
+  },
+};
+```
+
+`chainWebpack`、`modifyWebpackConfig` 和 `utoopack.output` 中的显式配置仍可覆盖默认命名。
+
 ### utoopack.reactCompiler
 
 - 类型：`boolean | { compilationMode?: 'infer' | 'annotation' | 'all'; target?: '18' | '19' }`
