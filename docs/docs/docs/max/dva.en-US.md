@@ -75,7 +75,7 @@ Component example is as follows:
 
 ```javascript
 import React, { Component } from 'react';
-import { connect } from 'umi';
+import { connect } from ''@umijs/max'';
 
 @connect(({ user }) => ({
   user,
@@ -98,7 +98,7 @@ The connect method also adds `dispatch` to `this.props`, and you can call it to 
 
 ```javascript
 import React, { Component } from 'react';
-import { connect } from 'umi';
+import { connect } from ''@umijs/max'';
 
 @connect(({ user }) => ({
   user,
@@ -148,7 +148,7 @@ A model can define the following parts:
 
 ```jsx
 import React, { Component } from 'react';
-import { connect } from 'umi';
+import { connect } from ''@umijs/max'';
 
 const mapModelToProps = allModels => {
   return {
