@@ -15,6 +15,8 @@ const browserResolver = enhancedResolve.create({
   // `browser` may be a path remap table rather than an entry point; only aliasFields applies it
   aliasFields: ['browser'],
   symlinks: false,
+  // 兼容一下部分库的地址解析，比如qrcode库，package.json里配置了browser的入口地址
+  aliasFields: ["browser"] 
 });
 
 const esmResolver = enhancedResolve.create({
