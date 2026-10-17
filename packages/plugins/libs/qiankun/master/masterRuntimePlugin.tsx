@@ -5,7 +5,11 @@ import { getPluginManager } from '@@/core/plugin';
 import { prefetchApps } from 'qiankun';
 import { ApplyPluginsType } from 'umi';
 import { insertRoute, noop, patchMicroAppRoute } from './common';
-import { getMasterOptions, setMasterOptions } from './masterOptions';
+import {
+  getMasterOptions,
+  getMasterOptionsState,
+  setMasterOptions,
+} from './masterOptions';
 import { deepFilterLeafRoutes } from './routeUtils';
 import { MasterOptions, MicroAppRoute } from './types';
 
@@ -50,12 +54,14 @@ function patchMicroAppRouteComponent(routes: any[]) {
 
   const rootRoutes = getRootRoutes(routes);
   if (rootRoutes) {
+    const { options, useAppBasename } = getMasterOptionsState();
     const { routeBindingAlias, base, masterHistoryType } =
-      getMasterOptions() as MasterOptions;
+      options as MasterOptions;
     microAppRuntimeRoutes.reverse().forEach((microAppRoute) => {
       const patchRoute = (route: any) => {
         patchMicroAppRoute(route, {
           base,
+          useAppBasename,
           masterHistoryType,
           routeBindingAlias,
         });
@@ -107,7 +113,13 @@ export async function render(oldRender: typeof noop) {
   }
 
   // 更新 master options
-  setMasterOptions(masterOptions);
+  // Capture explicit base before merging in the generated default.
+  setMasterOptions(
+    masterOptions,
+    Object.prototype.hasOwnProperty.call(runtimeOptions, 'base')
+      ? false
+      : undefined,
+  );
 
   const { apps = [], routes, ...options } = masterOptions;
   microAppRuntimeRoutes = routes;
