@@ -1,4 +1,6 @@
 export default {
+  // Keep lifecycle exports synchronous when this fixture loads itself as a slave.
+  mfsu: false,
   qiankun: {
     master: {
       apps: [
