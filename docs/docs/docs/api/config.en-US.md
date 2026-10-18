@@ -1409,6 +1409,22 @@ For more configuration options, see [Stagewise Configuration](https://kmi.corp.k
 
 Note: This feature needs to be enabled through configuration.
 
+## devframe
+
+- Type: `object`
+- Default: `undefined`
+
+Enable the Devframe tools panel during development. Install `@umijs/plugins`, then load the plugin and add its configuration in `.umirc.ts`:
+
+```ts
+export default {
+  plugins: ['@umijs/plugins/dist/devframe'],
+  devframe: {},
+};
+```
+
+After running `umi dev`, open the panel from the page or visit `/__devframes/`. The panel provides queries for build status, routes, plugin timings, and a config summary, plus accessibility checks. On first connection, follow the terminal prompt to authenticate with a one-time code. This feature only runs in development and requires Node.js 20.19 or later. The `devtool` option controls source maps and is unrelated to Devframe.
+
 ## srcTranspiler
 
 - Type: `string` optional values: `babel`, `swc`, `esbuild`
