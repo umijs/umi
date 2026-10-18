@@ -1,147 +1,13 @@
-import { logger, portfinder } from '@umijs/utils';
-import type { ChildProcess } from 'child_process';
+import { portfinder } from '@umijs/utils';
 import { fork } from 'child_process';
 
 const usedPorts: number[] = [];
 
 interface IOpts {
   scriptPath: string;
-  onChild?: (child: ChildProcess) => void;
 }
 
-export default function start(opts: IOpts) {
-  return createDevProcess(opts).child;
-}
-
-export function createDevProcess({ scriptPath, onChild }: IOpts) {
-  let stopping = false;
-  let restarting = false;
-  let stopPromise: Promise<void> | undefined;
-  let cancelPortWait: (() => void) | undefined;
-  const exits = new WeakMap<ChildProcess, Promise<void>>();
-  let child = forkChild();
-
-  function forkChild() {
-    const worker = fork(scriptPath, process.argv.slice(2), {
-      execArgv: getExecArgv(),
-    });
-    onChild?.(worker);
-    worker.on('message', (data: any) => {
-      const { type, payload } = data || {};
-      if (type === 'RESTART' && worker === child && !stopping && !restarting) {
-        restarting = true;
-        void restart(worker, payload?.port).catch((error) => {
-          logger.error(error);
-        });
-      }
-      process.send?.(data);
-    });
-    return worker;
-  }
-
-  function terminate(worker: ChildProcess, signal: NodeJS.Signals) {
-    let exit = exits.get(worker);
-    if (!exit) {
-      exit = terminateChild(worker, signal);
-      exits.set(worker, exit);
-    }
-    return exit;
-  }
-
-  async function restart(worker: ChildProcess, port?: number) {
-    try {
-      await terminate(worker, 'SIGTERM');
-      if (stopping) return;
-      if (port) {
-        await waitForPort(port);
-        if (stopping) return;
-        process.env.PORT = String(port);
-      }
-      child = forkChild();
-    } finally {
-      restarting = false;
-    }
-  }
-
-  function waitForPort(port: number) {
-    return new Promise<void>((resolve) => {
-      let finished = false;
-      let timer: NodeJS.Timeout | undefined;
-      const finish = () => {
-        if (finished) return;
-        finished = true;
-        clearTimeout(timer);
-        cancelPortWait = undefined;
-        resolve();
-      };
-      cancelPortWait = finish;
-      const check = (totalTry: number) => {
-        portfinder.getPort({ port }, (err, findPort) => {
-          if (finished) return;
-          // Preserve the existing fallback when probing fails or times out.
-          if (err || findPort === port || totalTry === 0) {
-            finish();
-          } else {
-            timer = setTimeout(() => check(totalTry - 1), 100);
-          }
-        });
-      };
-      check(20);
-    });
-  }
-
-  return {
-    get child() {
-      return child;
-    },
-    stop(signal: NodeJS.Signals = 'SIGTERM') {
-      if (!stopPromise) {
-        stopping = true;
-        cancelPortWait?.();
-        stopPromise = terminate(child, signal);
-      }
-      return stopPromise;
-    },
-  };
-}
-
-function terminateChild(child: ChildProcess, signal: NodeJS.Signals) {
-  if (child.exitCode !== null || child.signalCode !== null) {
-    return Promise.resolve();
-  }
-  return new Promise<void>((resolve, reject) => {
-    const cleanup = () => {
-      clearTimeout(timer);
-      child.removeListener('exit', onExit);
-      child.removeListener('error', onError);
-    };
-    const onExit = () => {
-      cleanup();
-      resolve();
-    };
-    const onError = (error: unknown) => {
-      cleanup();
-      reject(error);
-    };
-    // Register before signalling: kill() only confirms delivery, not exit.
-    child.once('exit', onExit);
-    child.once('error', onError);
-    const timer = setTimeout(() => {
-      try {
-        child.kill('SIGKILL');
-      } catch (error) {
-        onError(error);
-      }
-    }, 5000);
-    try {
-      child.kill(signal);
-    } catch (error) {
-      onError(error);
-    }
-  });
-}
-
-function getExecArgv() {
+export default function start({ scriptPath }: IOpts) {
   const execArgv = process.execArgv.slice(0);
   const inspectArgvIndex = execArgv.findIndex((argv) =>
     argv.includes('--inspect-brk'),
@@ -168,5 +34,42 @@ function getExecArgv() {
     );
   }
 
-  return execArgv;
+  const child = fork(scriptPath, process.argv.slice(2), { execArgv });
+
+  child.on('message', (data: any) => {
+    const { type, payload } = data || {};
+    if (type === 'RESTART') {
+      child.kill();
+      if (payload?.port) {
+        utilPortValid(payload.port, 20, () => {
+          process.env.PORT = payload.port;
+          start({ scriptPath });
+        });
+      } else {
+        start({ scriptPath });
+      }
+    }
+    process.send?.(data);
+  });
+
+  return child;
+}
+
+function utilPortValid(port: number, totalTry: number, callback: Function) {
+  portfinder.getPort({ startPort: port }, (err, findPort) => {
+    if (err) callback(err);
+    else {
+      if (findPort === port) {
+        callback();
+      } else {
+        if (totalTry > 0) {
+          setTimeout(() => {
+            utilPortValid(port, totalTry - 1, callback);
+          }, 100);
+        } else {
+          callback(new Error(`Port ${port} is occupied`));
+        }
+      }
+    }
+  });
 }
