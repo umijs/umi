@@ -1,5 +1,5 @@
-import { fork } from 'child_process';
 import { portfinder } from '@umijs/utils';
+import { fork } from 'child_process';
 
 const usedPorts: number[] = [];
 

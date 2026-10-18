@@ -21,6 +21,7 @@ jest.mock('@utoo/pack', () => ({
 
 import { getConfig } from '@umijs/bundler-webpack';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 import {
   getDevUtooPackConfig,
@@ -60,24 +61,22 @@ function createWebpackConfig(
 }
 
 const baseOpts = {
-  cwd: process.cwd(),
-  rootDir: process.cwd(),
+  cwd: '',
+  rootDir: '',
   entry: {
     index: './src/index.tsx',
   },
 };
 
 beforeEach(() => {
+  baseOpts.cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'umi-utoo-config-'));
+  baseOpts.rootDir = baseOpts.cwd;
   mockedGetConfig.mockClear();
   mockedGetConfig.mockResolvedValue(createWebpackConfig());
 });
 
 afterEach(() => {
-  fs.rmSync(path.join(process.cwd(), 'C:'), { recursive: true, force: true });
-  fs.rmSync(path.join(process.cwd(), 'node_modules/.cache/umi'), {
-    recursive: true,
-    force: true,
-  });
+  fs.rmSync(baseOpts.cwd, { recursive: true, force: true });
 });
 
 describe('utoopack dev stats config', () => {
@@ -487,26 +486,29 @@ describe('utoopack alias config', () => {
   });
 
   test('normalizes Windows cwd, rootDir and entry paths before passing them to utoopack', async () => {
+    const normalizedCwd = baseOpts.cwd.replace(/\\/g, '/');
+    const windowsCwd = normalizedCwd.replace(/\//g, '\\');
+    const normalizedEntry = `${normalizedCwd}/src/.umi/umi.ts`;
     mockedGetConfig.mockImplementationOnce(async (opts) =>
       createWebpackConfig(undefined, {}, opts.entry),
     );
 
     const config = await getDevUtooPackConfig({
       ...baseOpts,
-      cwd: String.raw`C:\Users\demo\app`,
-      rootDir: String.raw`C:\Users\demo\app`,
+      cwd: windowsCwd,
+      rootDir: windowsCwd,
       entry: {
-        umi: 'C:\\Users\\demo\\app\\src\\.umi\\umi.ts',
+        umi: normalizedEntry.replace(/\//g, '\\'),
       },
       config: {},
     } as any);
 
     expect(mockedGetConfig).toHaveBeenCalledWith(
       expect.objectContaining({
-        cwd: 'C:/Users/demo/app',
-        rootDir: 'C:/Users/demo/app',
+        cwd: normalizedCwd,
+        rootDir: normalizedCwd,
         entry: {
-          umi: 'C:/Users/demo/app/src/.umi/umi.ts',
+          umi: normalizedEntry,
         },
       }),
     );
