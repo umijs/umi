@@ -1,4 +1,4 @@
 {
-  "version": "4.7.25",
+  "version": "4.7.26",
   "workspaces": ["packages/*"]
 }
