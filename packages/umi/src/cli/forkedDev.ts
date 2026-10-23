@@ -26,6 +26,9 @@ setNoDeprecation();
     process.once('SIGQUIT', () => onSignal('SIGQUIT'));
     // kill(15) default
     process.once('SIGTERM', () => onSignal('SIGTERM'));
+    // parent exited without forwarding a signal (e.g. terminal closed on Windows)
+    // ref: https://github.com/umijs/umi/issues/13465
+    process.once('disconnect', () => onSignal('SIGTERM'));
     function onSignal(signal: string) {
       if (closed) return;
       closed = true;
