@@ -2,9 +2,10 @@ import { createHttpsServer, createProxy } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-utils/compiled/http-proxy-middleware';
 import { lodash } from '@umijs/utils';
-import type { DevServerReadyContext } from '@utoo/pack';
+import type { DevServerHandle, DevServerReadyContext } from '@utoo/pack';
 import fs from 'fs';
 import http from 'http';
+import type { Socket } from 'net';
 import path from 'path';
 import {
   getDevUtooPackConfig,
@@ -355,6 +356,12 @@ export async function dev(opts: IDevOpts) {
     server = http.createServer(app);
   }
 
+  const sockets = new Set<Socket>();
+  server.on('connection', (socket) => {
+    sockets.add(socket);
+    socket.once('close', () => sockets.delete(socket));
+  });
+
   const serverReady = new Promise<void>((resolve, reject) => {
     server.once('error', reject);
     server.listen(port, () => {
@@ -398,19 +405,79 @@ export async function dev(opts: IDevOpts) {
   const shouldReadFullStats =
     Boolean(process.env.ANALYZE) || Boolean(utooPackConfig.config.stats);
 
+  const servePromise: Promise<DevServerHandle> = Promise.resolve().then(() =>
+    utooPackServe(utooPackConfig, normalizedCwd, rootDir, {
+      port: port + 1,
+      hostname: '127.0.0.1',
+      logServerInfo: false,
+      returnHandle: true,
+      // Umi owns shutdown when it registers the returned close callback.
+      ...(opts.onDevServerReady ? { handleSignals: false } : {}),
+      onReady(context: DevServerReadyContext) {
+        utooServePort = context.port;
+        clientPaths = context.clientPaths ?? [];
+      },
+    }),
+  );
+
+  // handleSignals also controls utoo's error listeners; retain those when Umi
+  // takes over signals, and remove only the listeners owned by this instance.
+  const exception = (error: unknown) => console.error(error);
+  const rejectionHandled = () => {};
+  let closePromise: Promise<void> | undefined;
+  const close = () => {
+    closePromise ||= (async () => {
+      process.off('uncaughtException', exception);
+      process.off('unhandledRejection', exception);
+      process.off('rejectionHandled', rejectionHandled);
+      const results = await Promise.allSettled([
+        (async () => {
+          // A listen error can win the startup race before utoo is ready.
+          await serverReady.catch(() => {});
+          await new Promise<void>((resolve, reject) => {
+            server.close((error) => {
+              if (
+                error &&
+                (error as NodeJS.ErrnoException).code !==
+                  'ERR_SERVER_NOT_RUNNING'
+              ) {
+                reject(error);
+              } else {
+                resolve();
+              }
+            });
+            // server.close alone leaves upgraded and older keepalive sockets.
+            sockets.forEach((socket) => socket.destroy());
+          });
+        })(),
+        (async () => {
+          // Wait for late startup success so its handle cannot escape cleanup.
+          const handle = await servePromise.catch(() => undefined);
+          await handle?.close();
+        })(),
+      ]);
+      const errors = results.flatMap((result) =>
+        result.status === 'rejected' ? [result.reason] : [],
+      );
+      if (errors.length === 1) throw errors[0];
+      if (errors.length > 1) {
+        throw new AggregateError(
+          errors,
+          'Failed to close the Utoopack dev server',
+        );
+      }
+    })();
+    return closePromise;
+  };
+
   try {
-    await Promise.all([
-      serverReady,
-      utooPackServe(utooPackConfig, normalizedCwd, rootDir, {
-        port: port + 1,
-        hostname: '127.0.0.1',
-        logServerInfo: false,
-        onReady(context: DevServerReadyContext) {
-          utooServePort = context.port;
-          clientPaths = context.clientPaths ?? [];
-        },
-      }),
-    ]);
+    await Promise.all([serverReady, servePromise]);
+    if (opts.onDevServerReady) {
+      process.on('uncaughtException', exception);
+      process.on('unhandledRejection', exception);
+      process.on('rejectionHandled', rejectionHandled);
+    }
+    opts.onDevServerReady?.({ close });
 
     const time = Date.now() - devStartTime;
     const stats = shouldReadFullStats
@@ -434,6 +501,11 @@ export async function dev(opts: IDevOpts) {
 
     return stats;
   } catch (e: any) {
+    try {
+      await close();
+    } catch (closeError: any) {
+      console.error(closeError.message);
+    }
     console.error(e.message);
   }
 }
