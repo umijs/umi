@@ -12,7 +12,6 @@ setNoDeprecation();
 
 (async () => {
   let closed = false;
-  let startupFailed = false;
   try {
     const args = yParser(process.argv.slice(2));
     const service = new Service();
@@ -24,12 +23,9 @@ setNoDeprecation();
       SIGTERM: () => onSignal('SIGTERM'),
     };
 
-    // kill(2) Ctrl-C
-    process.on('SIGINT', signalHandlers.SIGINT);
-    // kill(3) Ctrl-\
-    process.on('SIGQUIT', signalHandlers.SIGQUIT);
-    // kill(15) default
-    process.on('SIGTERM', signalHandlers.SIGTERM);
+    for (const signal of ['SIGINT', 'SIGQUIT', 'SIGTERM']) {
+      process.on(signal, signalHandlers[signal]);
+    }
     process.on('message', (data: any) => {
       if (data?.type === 'SHUTDOWN') {
         shutdown(data.payload?.signal || 'SIGTERM');
@@ -53,20 +49,15 @@ setNoDeprecation();
       try {
         // Let startup finish registering hooks and creating resources first.
         await startup.catch(() => {});
-        const cleanup: Promise<unknown>[] = [];
         // IPC must also run existing signal cleanup. A real signal has already
         // invoked these listeners, so do not dispatch them again in that case.
-        if (!receivedSignal) {
-          for (const listener of process.rawListeners(signal)) {
-            if (listener === signalHandlers[signal]) continue;
-            try {
-              // Raw listeners retain the wrapper that removes `once` handlers.
-              cleanup.push(Promise.resolve(listener.call(process, signal)));
-            } catch (error) {
-              cleanup.push(Promise.reject(error));
-            }
-          }
-        }
+        const cleanup = receivedSignal
+          ? []
+          : process
+              .rawListeners(signal)
+              .filter((listener) => listener !== signalHandlers[signal])
+              // Raw listeners retain `once` wrappers; async captures throws.
+              .map(async (listener) => listener.call(process, signal));
         cleanup.push(
           Promise.resolve().then(() =>
             service.applyPlugins({
@@ -77,17 +68,13 @@ setNoDeprecation();
             }),
           ),
         );
-        const results = await Promise.allSettled(cleanup);
-        let cleanupFailed = false;
-        for (const result of results) {
+        for (const result of await Promise.allSettled(cleanup)) {
           if (result.status === 'rejected') {
-            cleanupFailed = true;
+            process.exitCode = 1;
             logger.fatal(result.reason);
           }
         }
-        process.exit(
-          startupFailed || cleanupFailed ? 1 : process.exitCode || 0,
-        );
+        process.exit(process.exitCode || 0);
       } catch (e: any) {
         logger.fatal(e);
         process.exit(1);
@@ -104,7 +91,7 @@ setNoDeprecation();
     if (process.connected === false) shutdown('SIGTERM');
     await startup;
   } catch (e: any) {
-    startupFailed = true;
+    process.exitCode = 1;
     logger.fatal(e);
     printHelp.exit();
     if (!closed) process.exit(1);

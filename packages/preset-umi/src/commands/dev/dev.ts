@@ -51,16 +51,12 @@ export default (api: IApi) => {
     // Close the server even if a later plugin's exit hook fails.
     stage: -Infinity,
     async fn() {
-      const results = await Promise.allSettled([
-        Promise.resolve().then(() => unwatch()),
-        Promise.resolve().then(() => closeDevServer?.()),
-      ]);
-      for (const result of results) {
-        if (result.status === 'rejected') {
-          // Keep running the remaining exit hooks when resource cleanup fails.
-          logger.fatal(result.reason);
-          process.exitCode = 1;
-        }
+      try {
+        await closeDevServer?.();
+      } catch (error) {
+        // Keep running the remaining exit hooks when resource cleanup fails.
+        logger.fatal(error);
+        process.exitCode = 1;
       }
     },
   });
