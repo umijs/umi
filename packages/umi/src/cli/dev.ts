@@ -9,7 +9,9 @@ export function dev() {
   const onSignal = (signal: NodeJS.Signals, exitCode: number) => {
     if (exiting) return;
     exiting = true;
-    devProcess.stop(signal).then(() => process.exit(exitCode));
+    devProcess
+      .stop(signal)
+      .then(() => process.exit(devProcess.child.exitCode || exitCode));
   };
   // ref:
   // http://nodejs.cn/api/process/signal_events.html

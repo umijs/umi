@@ -33,6 +33,8 @@ beforeEach(() => {
   jest.spyOn(process, 'exit').mockImplementation(() => undefined as never);
   jest.mocked(fork).mockImplementation(() => {
     const child = new ChildProcessCtor();
+    Object.defineProperty(child, 'connected', { value: true });
+    child.send = jest.fn(() => true);
     jest.spyOn(child, 'kill').mockReturnValue(true);
     children.push(child);
     return child;
@@ -60,7 +62,8 @@ test('waits for the old worker to exit before restarting', async () => {
   restart(child, 8004);
   restart(child, 8004);
   await flush();
-  expect(child.kill).toHaveBeenCalledTimes(1);
+  expect(child.send).toHaveBeenCalledTimes(1);
+  expect(child.kill).not.toHaveBeenCalled();
   expect(children).toHaveLength(1);
 
   exit(child);
@@ -80,7 +83,11 @@ test('stops the latest worker and exits after it exits', async () => {
   await flush();
 
   process.emit('SIGTERM');
-  expect(children[1].kill).toHaveBeenCalledWith('SIGTERM');
+  expect(children[1].send).toHaveBeenCalledWith(
+    { type: 'SHUTDOWN', payload: { signal: 'SIGTERM' } },
+    expect.any(Function),
+  );
+  expect(children[1].kill).not.toHaveBeenCalled();
   expect(process.exit).not.toHaveBeenCalled();
   exit(children[1]);
   await flush();
@@ -94,6 +101,7 @@ test('does not restart once shutdown has started', async () => {
   exit(children[0]);
   await flush();
   expect(children).toHaveLength(1);
+  expect(children[0].send).toHaveBeenCalledTimes(1);
   expect(process.exit).toHaveBeenCalledWith(0);
 });
 

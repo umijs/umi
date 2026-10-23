@@ -45,6 +45,22 @@ export default (api: IApi) => {
     },
   });
 
+  let closeDevServer: (() => Promise<void>) | undefined;
+  api.register({
+    key: 'onExit',
+    // Close the server even if a later plugin's exit hook fails.
+    stage: -Infinity,
+    async fn() {
+      try {
+        await closeDevServer?.();
+      } catch (error) {
+        // Keep running the remaining exit hooks when resource cleanup fails.
+        logger.fatal(error);
+        process.exitCode = 1;
+      }
+    },
+  });
+
   api.registerCommand({
     name: 'dev',
     description: 'dev server for development',
@@ -401,6 +417,11 @@ PORT=8888 umi dev
         port: api.appData.port,
         host: api.appData.host,
         ip: api.appData.ip,
+        ...(isUtoopack && {
+          onDevServerReady(server: { close: () => Promise<void> }) {
+            closeDevServer = () => server.close();
+          },
+        }),
         ...(enableVite
           ? { modifyViteConfig }
           : { babelPreset, chainWebpack, modifyWebpackConfig }),

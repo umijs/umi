@@ -3,6 +3,7 @@ import type { ChildProcess } from 'child_process';
 import { fork } from 'child_process';
 
 const usedPorts: number[] = [];
+const terminations = new WeakMap<ChildProcess, Promise<void>>();
 
 interface IOpts {
   scriptPath: string;
@@ -57,15 +58,38 @@ function terminate(child: ChildProcess, signal: NodeJS.Signals = 'SIGTERM') {
   if (child.exitCode !== null || child.signalCode !== null) {
     return Promise.resolve();
   }
-  return new Promise<void>((resolve) => {
+  const pending = terminations.get(child);
+  if (pending) return pending;
+
+  const termination = new Promise<void>((resolve) => {
+    let exited = false;
+    const kill = () => {
+      if (!exited) child.kill(signal);
+    };
     // force kill if the worker does not exit in time
     const timer = setTimeout(() => child.kill('SIGKILL'), 5000);
     child.once('exit', () => {
+      exited = true;
       clearTimeout(timer);
       resolve();
     });
-    child.kill(signal);
+
+    // Sending a signal forcefully terminates the worker on Windows. Use IPC so
+    // the worker can await its onExit hooks before it exits.
+    if (child.connected) {
+      try {
+        child.send({ type: 'SHUTDOWN', payload: { signal } }, (err) => {
+          if (err) kill();
+        });
+      } catch {
+        kill();
+      }
+    } else {
+      kill();
+    }
   });
+  terminations.set(child, termination);
+  return termination;
 }
 
 function getExecArgv() {

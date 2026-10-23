@@ -981,6 +981,7 @@ export type IDevOpts = {
   afterMiddlewares?: any[];
   beforeMiddlewares?: any[];
   onDevCompileDone?: Function;
+  onDevServerReady?: (server: { close: () => Promise<void> }) => void;
   onProgress?: Function;
   onMFSUProgress?: Function;
   port?: number;

@@ -188,6 +188,7 @@ test('routes WebSocket upgrades to the matching proxy only', async () => {
     // Report the bound port directly instead of racing to reclaim a probed port.
     const actualPort = await listen(server);
     opts.onReady?.({ port: actualPort, clientPaths: [] });
+    return { close: () => close(server) };
   });
 
   try {
@@ -257,6 +258,7 @@ test('waits for readiness and routes to the actual internal port', async () => {
     markStarted();
     await ready;
     opts.onReady?.({ port: actualPort, clientPaths: [] });
+    return { close: () => close(server) };
   });
 
   const devPromise = dev({
