@@ -125,6 +125,34 @@ $ umi lint --utlint --config utlint.config.json src
 
 Arguments other than `--utlint` are forwarded to utoo-lint, including file paths, native options, and subcommands. With no file arguments, utoo-lint handles config discovery and file selection; the legacy entry point's default glob is not injected. Do not combine `--utlint` with `--eslint-only`, `--stylelint-only`, or `--cssinjs`. Run style checks separately with `umi lint --stylelint-only`.
 
+### Reusing Umi shared rules
+
+To reuse Umi's recommended rules, also install `@umijs/lint` (the standalone entry point itself still does not require it):
+
+```bash
+$ pnpm add -D @umijs/lint
+```
+
+Import the shared preset in `utlint.config.ts`, keeping ignores and rule overrides in your project config:
+
+```ts
+import { defineConfig, globalIgnores } from '@utoo/lint/config';
+import umi from '@umijs/lint/dist/config/utlint';
+
+export default defineConfig(
+  globalIgnores(['**/.umi/**', '**/.umi-production/**', '**/.umi-test/**', 'dist']),
+  {
+    extends: [umi],
+    files: ['{src,test}/**/*.{js,jsx,ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    },
+  },
+);
+```
+
+The preset includes natively supported recommended rules scoped to base JavaScript, TypeScript, and Jest files. It loads no ESLint plugins or parsers. Diagnostics and automatic fixes are not guaranteed to match ESLint exactly; run style checks separately. Keep project-specific ignores and rule overrides in your project config.
+
 ### Migrating from ESLint
 
 Keep your existing ESLint config and its dependencies while previewing the conversion:

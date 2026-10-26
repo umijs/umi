@@ -123,6 +123,34 @@ $ umi lint --utlint --config utlint.config.json src
 
 除 `--utlint` 外的参数直接传给 utoo-lint，包括文件路径、原生选项和子命令。未指定文件时使用 utoo-lint 自身的配置发现和文件选择逻辑，不使用旧入口的默认 glob。不要与 `--eslint-only`、`--stylelint-only` 或 `--cssinjs` 混用；样式检查可单独运行 `umi lint --stylelint-only`。
 
+### 复用 Umi 共享规则
+
+如需复用 Umi 推荐规则，额外安装 `@umijs/lint`（独立入口本身仍不需要它）：
+
+```bash
+$ pnpm add -D @umijs/lint
+```
+
+在 `utlint.config.ts` 中引入共享预设，并在项目配置中指定忽略项和规则覆盖：
+
+```ts
+import { defineConfig, globalIgnores } from '@utoo/lint/config';
+import umi from '@umijs/lint/dist/config/utlint';
+
+export default defineConfig(
+  globalIgnores(['**/.umi/**', '**/.umi-production/**', '**/.umi-test/**', 'dist']),
+  {
+    extends: [umi],
+    files: ['{src,test}/**/*.{js,jsx,ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    },
+  },
+);
+```
+
+该预设包含基础 JavaScript、TypeScript 和 Jest 文件范围内原生支持的推荐规则，不加载 ESLint 插件或 parser。诊断和自动修复结果不保证与 ESLint 完全一致；样式检查仍需单独运行。项目特有的忽略项和覆盖规则应保留在项目配置中。
+
 ### 从 ESLint 迁移
 
 保留现有 ESLint 配置及其依赖，先预览转换结果：
