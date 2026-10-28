@@ -1540,24 +1540,37 @@ theme: { '@primary-color': '#1DA57A' }
 
 ## transformRuntime
 
-- 类型：`{ absoluteRuntime: string, version: string }`
+- 类型：`{ absoluteRuntime?: boolean | string, version?: string, useESModules?: boolean | 'auto' }`
 - 默认值：`{}`
 
 配置 transform-runtime 插件的部分功能。
 
-比如，如果你想用最新的 @babel/runtime 版本。可先配置如下：
+Umi 内置 `@babel/runtime` 8，并保留 Babel 7 编译链及原有的 Node.js 支持范围。使用默认配置的项目无需修改业务源码或添加此配置。对于 runtime 8 中已移除或行为存在兼容差异的部分 helper，Umi 会内联 Babel 7 的实现，保持原有编译行为，包括需要降级的 async/await 和 generator。内联旧 helper 可能增加部分构建产物的体积。
+
+如果需要使用项目中安装的 runtime，可以先安装所需版本：
+
+```bash
+$ npm install @babel/runtime@8 --save-dev
+```
+
+再将解析位置指向项目，并使用实际安装的版本：
 
 ```js
 transformRuntime: {
   absoluteRuntime: process.cwd(),
+  version: require('@babel/runtime/package.json').version,
 }
 ```
 
-再安装 @babel/runtime 到项目中：
+已有配置如果只设置了 `absoluteRuntime`，也无需补充 `version`：Umi 会识别该位置实际安装的 runtime 版本。
 
-```bash
-$ npm install @babel/runtime --save-dev
-```
+项目也可以继续安装 `@babel/runtime@7` 并使用相同配置。`version` 用于控制生成代码所需的 helper 版本，不会安装或切换依赖版本，应与实际解析到的 runtime 保持一致。
+
+runtime 8 通过包的 `exports` 自动选择 ESM 或 CommonJS helper；已有的 `useESModules` 配置仍可保留。
+
+已有的 `corejs: 2` 或 `corejs: 3` 配置继续使用对应的 `@babel/runtime-corejs2@7` 或 `@babel/runtime-corejs3@7`。本次 `@babel/runtime` 8 适配不包含 `@babel/runtime-corejs3@8` 的 polyfill 迁移。
+
+Umi 的升级不会强制替换第三方库自己的 runtime 7 依赖，runtime 7 和 8 可以同时存在。不要通过全局 `overrides`、`resolutions` 或别名强制把所有 runtime 统一成 8：第三方库的预编译代码可能仍依赖 runtime 7 的旧入口。自定义 Babel 插件或直接导入 runtime 内部路径的代码，需要单独验证其兼容性。
 
 ## utoopack <Badge>4.6.0+</Badge>
 
