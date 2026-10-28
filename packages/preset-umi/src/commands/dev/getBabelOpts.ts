@@ -10,7 +10,9 @@ export async function getBabelOpts(opts: { api: IApi }) {
   const babelPresetOpts = await opts.api.applyPlugins({
     key: 'modifyBabelPresetOpts',
     initialValue: {
-      presetEnv: {},
+      presetEnv: {
+        targets: opts.api.userConfig.targets || {},
+      },
       presetReact: {
         runtime: shouldUseAutomaticRuntime ? 'automatic' : 'classic',
         // importSource cannot be set when runtime is classic
