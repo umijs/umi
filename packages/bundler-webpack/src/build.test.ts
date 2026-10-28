@@ -106,6 +106,11 @@ const expects: Record<string, Function> = {
   'runtime-public-path'({ files }: IOpts) {
     expect(files['index.css']).toContain(`background: url(./static/`);
   },
+  async 'runtime-8'({ files }: IOpts) {
+    const context = {} as Record<string, any>;
+    runInNewContext(files['index.js'], context);
+    expect(await context.__runtime8Result).toEqual([2, 3]);
+  },
   'ssr-manifest-browser'({ files }: IOpts) {
     const context = { process: {} } as Record<string, any>;
     runInNewContext(files['index.js'], context);
@@ -177,7 +182,7 @@ for (const fixture of readdirSync(fixtures)) {
       }
       return memo;
     }, {});
-    expects[fixture]({
+    await expects[fixture]({
       files,
     });
   });

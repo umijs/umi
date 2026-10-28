@@ -1503,24 +1503,37 @@ Configure global page title, currently only supports static Title.
 
 ## transformRuntime
 
-- Type: `{ absoluteRuntime: string, version: string }`
+- Type: `{ absoluteRuntime?: boolean | string, version?: string, useESModules?: boolean | 'auto' }`
 - Default: `{}`
 
 Configure transform-runtime plugin.
 
-For example, if you want to use the latest @babel/runtime version. You can first configure it as follows:
+Umi includes `@babel/runtime` 8 while retaining its Babel 7 compiler and existing Node.js support range. Projects using the default configuration do not need to change their application source or add this configuration. For helpers removed from runtime 8 or whose behavior has compatibility differences, Umi inlines their Babel 7 implementations to preserve existing compilation behavior, including async/await and generators that need to be downleveled. Inlining older helpers may increase the size of some build outputs.
+
+To use a runtime installed in your project, first install the required version:
+
+```bash
+$ npm install @babel/runtime@8 --save-dev
+```
+
+Then resolve it from your project and specify the version actually installed:
 
 ```js
 transformRuntime: {
   absoluteRuntime: process.cwd(),
+  version: require('@babel/runtime/package.json').version,
 }
 ```
 
-Then install @babel/runtime to the project:
+Existing configurations that only set `absoluteRuntime` do not need to add `version`: Umi detects the runtime version installed at that location.
 
-```bash
-$ npm install @babel/runtime --save-dev
-```
+You can also keep `@babel/runtime@7` in your project and use the same configuration. The `version` option controls which runtime helpers the generated code can use; it does not install or switch dependency versions and should match the runtime being resolved.
+
+runtime 8 automatically selects ESM or CommonJS helpers through its package `exports`. Existing `useESModules` settings can be kept.
+
+Existing `corejs: 2` and `corejs: 3` configurations continue to use `@babel/runtime-corejs2@7` and `@babel/runtime-corejs3@7`, respectively. This `@babel/runtime` 8 integration does not include the polyfill migration to `@babel/runtime-corejs3@8`.
+
+Upgrading Umi does not force third-party libraries to replace their runtime 7 dependencies. runtime 7 and 8 can coexist. Avoid global `overrides`, `resolutions`, or aliases that force every runtime dependency to version 8: precompiled third-party code may still depend on older runtime 7 entry points. Custom Babel plugins and code importing internal runtime paths need separate compatibility verification.
 
 ## utoopack <Badge>4.6.0+</Badge>
 

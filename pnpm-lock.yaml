@@ -1958,8 +1958,8 @@ importers:
   packages/babel-preset-umi:
     dependencies:
       '@babel/runtime':
-        specifier: 7.23.6
-        version: 7.23.6
+        specifier: 8.0.7
+        version: 8.0.7
       '@bloomberg/record-tuple-polyfill':
         specifier: 0.0.4
         version: 0.0.4
@@ -2079,6 +2079,18 @@ importers:
       '@babel/register':
         specifier: 7.22.15
         version: 7.22.15(@babel/core@7.23.6)
+      '@babel/runtime':
+        specifier: 8.0.7
+        version: 8.0.7
+      '@babel/runtime-corejs2':
+        specifier: 7.23.6
+        version: 7.23.6
+      '@babel/runtime-corejs3':
+        specifier: 7.23.6
+        version: 7.23.6
+      '@babel/runtime-v7':
+        specifier: npm:@babel/runtime@7.23.6
+        version: /@babel/runtime@7.23.6
       '@babel/template':
         specifier: 7.22.15
         version: 7.22.15
@@ -2893,8 +2905,8 @@ importers:
   packages/renderer-react:
     dependencies:
       '@babel/runtime':
-        specifier: 7.23.6
-        version: 7.23.6
+        specifier: 8.0.7
+        version: 8.0.7
       '@loadable/component':
         specifier: 5.15.2
         version: 5.15.2(react@18.3.1)
@@ -2921,8 +2933,8 @@ importers:
   packages/renderer-vue:
     dependencies:
       '@babel/runtime':
-        specifier: 7.23.6
-        version: 7.23.6
+        specifier: 8.0.7
+        version: 8.0.7
 
   packages/server:
     dependencies:
@@ -2979,8 +2991,8 @@ importers:
   packages/umi:
     dependencies:
       '@babel/runtime':
-        specifier: 7.23.6
-        version: 7.23.6
+        specifier: 8.0.7
+        version: 8.0.7
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
@@ -12041,6 +12053,22 @@ packages:
   /@babel/regjsgen@0.8.0:
     resolution: {integrity: sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==}
 
+  /@babel/runtime-corejs2@7.23.6:
+    resolution: {integrity: sha512-k8QKC2DmBqkwJDOLa4biAZjoCGPQIaAoA1HvHtZ+gR2E9AauudikJOB34h4ETEavN5UG21X0KPdM3IvBRxM0CA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      core-js: 2.6.12
+      regenerator-runtime: 0.14.1
+    dev: true
+
+  /@babel/runtime-corejs3@7.23.6:
+    resolution: {integrity: sha512-Djs/ZTAnpyj0nyg7p1J6oiE/tZ9G2stqAFlLGZynrW+F3k2w2jGK2mLOBxzYIOcZYA89+c3d3wXKpYLcpwcU6w==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      core-js-pure: 3.51.0
+      regenerator-runtime: 0.14.1
+    dev: true
+
   /@babel/runtime@7.18.3:
     resolution: {integrity: sha512-38Y8f7YUhce/K7RMwTp7m0uCumpv9hZkitCbBClqQIow1qSbCvGkcegKOXpEWCQLfWmevgRiWokZ1GkpfhbZug==}
     engines: {node: '>=6.9.0'}
@@ -12087,6 +12115,9 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.11
     dev: true
+
+  /@babel/runtime@8.0.7:
+    resolution: {integrity: sha512-k0hagDDq/6w4v+0Sp4wFvIz/yswH5O7Va6aRTnD7N62Tnborp4X+YB+H3XUcWVSR4aE47WPEXiIIZchBs0GmYg==}
 
   /@babel/template@7.20.7:
     resolution: {integrity: sha512-8SegXApWe6VoNw0r9JHpSteLKTpTiLZ4rMlGIm9JQ18KiCtyQiAMEazujAHrUS5flrcqYZa75ukev3P6QmUwUw==}
@@ -27312,6 +27343,11 @@ packages:
   /core-js-pure@3.29.0:
     resolution: {integrity: sha512-v94gUjN5UTe1n0yN/opTihJ8QBWD2O8i19RfTZR7foONPWArnjB96QA/wk5ozu1mm6ja3udQCzOzwQXTxi3xOQ==}
     requiresBuild: true
+
+  /core-js-pure@3.51.0:
+    resolution: {integrity: sha512-NE4SFDJ+qzQeqHG2vVSNwopzS6zZNPYJ5kinIqs+OofTqGzOmICgT89E/yvS9XY7rwb3eU1utWXTJ9nVFqv74A==}
+    requiresBuild: true
+    dev: true
 
   /core-js@1.2.7:
     resolution: {integrity: sha512-ZiPp9pZlgxpWRu0M+YWbm6+aQ84XEfH1JRXvfOc/fILWI0VKhLC2LX13X1NYq4fULzLMq7Hfh43CSo2/aIaUPA==}
