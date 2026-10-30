@@ -30,6 +30,8 @@ import { addNodePolyfill } from './nodePolyfill';
 import { addProgressPlugin } from './progressPlugin';
 import { addSpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
 import addSSRPlugin from './ssrPlugin';
+import { resolveStaticPathPrefix } from './staticPathPrefix';
+export { resolveStaticPathPrefix, DEFAULT_STATIC_PATH_PREFIX } from './staticPathPrefix';
 import { addSVGRules } from './svgRules';
 
 export interface IOpts {
@@ -84,8 +86,10 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       targets: userConfig.targets,
     }),
     useHash,
-    staticPathPrefix:
-      opts.staticPathPrefix !== undefined ? opts.staticPathPrefix : 'static/',
+    staticPathPrefix: resolveStaticPathPrefix({
+      staticPathPrefix: opts.staticPathPrefix,
+      userConfig,
+    }),
     port: opts.port,
     host: opts.host,
   };

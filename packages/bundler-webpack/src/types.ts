@@ -97,6 +97,7 @@ export interface IConfig {
   srcTranspiler?: `${Transpiler}`;
   srcTranspilerOptions?: ISrcTranspilerOpts;
   styleLoader?: { [key: string]: any };
+  staticPathPrefix?: string;
   svgr?: { [key: string]: any };
   svgo?: { [key: string]: any } | false;
   targets?: { [key: string]: any };

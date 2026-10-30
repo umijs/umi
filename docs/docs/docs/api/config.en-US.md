@@ -1409,6 +1409,21 @@ For more configuration options, see [Stagewise Configuration](https://kmi.corp.k
 
 Note: This feature needs to be enabled through configuration.
 
+## staticPathPrefix
+
+- Type: `string`
+- Default: `static/`
+
+Configure the output directory prefix for static assets (images, fonts, etc.), mapped to webpack's `output.assetModuleFilename`.
+
+Assets are written under `dist/static/` by default. Set it to an empty string when the deploy target requires a flat `dist/` layout (for example some render-based deploys):
+
+```ts
+export default {
+  staticPathPrefix: '',
+};
+```
+
 ## srcTranspiler
 
 - Type: `string` optional values: `babel`, `swc`, `esbuild`
