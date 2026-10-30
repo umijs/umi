@@ -11,7 +11,7 @@ interface IOpts {
 }
 
 export async function addSVGRules(opts: IOpts) {
-  const { config, userConfig } = opts;
+  const { config, userConfig, staticPathPrefix } = opts;
   const { svgr, svgo = {} } = userConfig;
   if (svgr) {
     const svgrRule = config.module.rule('svgr');
@@ -44,6 +44,9 @@ export async function addSVGRules(opts: IOpts) {
       .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'))
       .options({
         limit: userConfig.inlineLimit,
+        // file-loader ignores output.assetModuleFilename; keep SVG emits
+        // under the same configurable staticPathPrefix as other assets.
+        name: `${staticPathPrefix}[name].[hash:8].[ext]`,
         fallback: require.resolve(
           '@umijs/bundler-webpack/compiled/file-loader',
         ),
