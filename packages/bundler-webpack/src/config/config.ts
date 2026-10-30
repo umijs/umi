@@ -31,8 +31,11 @@ import { addProgressPlugin } from './progressPlugin';
 import { addSpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
 import addSSRPlugin from './ssrPlugin';
 import { resolveStaticPathPrefix } from './staticPathPrefix';
-export { resolveStaticPathPrefix, DEFAULT_STATIC_PATH_PREFIX } from './staticPathPrefix';
 import { addSVGRules } from './svgRules';
+export {
+  DEFAULT_STATIC_PATH_PREFIX,
+  resolveStaticPathPrefix,
+} from './staticPathPrefix';
 
 export interface IOpts {
   cwd: string;
@@ -187,7 +190,18 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addJavaScriptRules(applyOpts);
   await addCSSRules(applyOpts);
   await addAssetRules(applyOpts);
-  await addSVGRules(applyOpts);
+  // SVGR url-loader/file-loader ignores assetModuleFilename. Only pass the
+  // prefix when it was explicitly configured (including ''), so omitting the
+  // option keeps historical flat `[contenthash].[ext]` SVG emits.
+  const hasExplicitStaticPathPrefix =
+    opts.staticPathPrefix !== undefined ||
+    userConfig.staticPathPrefix !== undefined;
+  await addSVGRules({
+    ...applyOpts,
+    staticPathPrefix: hasExplicitStaticPathPrefix
+      ? applyOpts.staticPathPrefix
+      : undefined,
+  });
 
   // plugins
   // mini-css-extract-plugin

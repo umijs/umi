@@ -7,13 +7,31 @@ interface IOpts {
   cwd: string;
   env: Env;
   browsers: any;
-  staticPathPrefix: string;
+  /**
+   * When set (including ''), override file-loader `name` so SVGR URL fallbacks
+   * honor staticPathPrefix. When omitted/undefined, keep file-loader's default
+   * `[contenthash].[ext]` at the output root (pre-configurable-prefix behavior).
+   */
+  staticPathPrefix?: string;
 }
 
 export async function addSVGRules(opts: IOpts) {
   const { config, userConfig, staticPathPrefix } = opts;
   const { svgr, svgo = {} } = userConfig;
   if (svgr) {
+    // file-loader ignores output.assetModuleFilename; only pass `name` when
+    // staticPathPrefix was explicitly configured (including '').
+    const urlLoaderOptions: {
+      limit: IConfig['inlineLimit'];
+      name?: string;
+      fallback: string;
+    } = {
+      limit: userConfig.inlineLimit,
+      fallback: require.resolve('@umijs/bundler-webpack/compiled/file-loader'),
+    };
+    if (staticPathPrefix !== undefined) {
+      urlLoaderOptions.name = `${staticPathPrefix}[name].[hash:8].[ext]`;
+    }
     const svgrRule = config.module.rule('svgr');
     svgrRule
       .test(/\.svg$/)
@@ -42,15 +60,7 @@ export async function addSVGRules(opts: IOpts) {
       .end()
       .use('url-loader')
       .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'))
-      .options({
-        limit: userConfig.inlineLimit,
-        // file-loader ignores output.assetModuleFilename; keep SVG emits
-        // under the same configurable staticPathPrefix as other assets.
-        name: `${staticPathPrefix}[name].[hash:8].[ext]`,
-        fallback: require.resolve(
-          '@umijs/bundler-webpack/compiled/file-loader',
-        ),
-      })
+      .options(urlLoaderOptions)
       .end();
   }
   if (svgo !== false) {
