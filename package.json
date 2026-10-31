@@ -103,6 +103,7 @@
     "git-repo-info": "^2.1.1",
     "husky": "^8.0.3",
     "jest": "^29.4.3",
+    "jest-environment-jsdom": "^29.4.3",
     "jest-playwright-preset": "^3.0.1",
     "lerna": "^6.5.1",
     "lint-staged": "^13.1.2",

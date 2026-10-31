@@ -19,9 +19,10 @@ const Context = React.createContext<{ dispatcher: Dispatcher }>(null);
 class Dispatcher {
   callbacks: Record<Namespaces, Set<Function>> = {};
   data: Record<Namespaces, unknown> = {};
-  update = (namespace: Namespaces) => {
-    if (this.callbacks[namespace]) {
-      this.callbacks[namespace].forEach((cb) => {
+  update = (namespace: Namespaces, callback?: Function) => {
+    const callbacks = callback ? [callback] : this.callbacks[namespace];
+    if (callbacks) {
+      callbacks.forEach((cb) => {
         try {
           const data = this.data[namespace];
           cb(data);
@@ -63,11 +64,9 @@ function Executor(props: ExecutorProps) {
 
   // React 16.13 后 update 函数用 useEffect 包裹
   useEffect(() => {
-    if (initialLoad.current) {
-      updateRef.current(data);
-    } else {
-      initialLoad.current = true;
-    }
+    initialLoad.current = true;
+    // 初始化写入也需要在提交后通知共享运行时中的已有订阅者。
+    updateRef.current(data);
   });
 
   return null;
@@ -172,7 +171,8 @@ export function useModel<N extends Namespaces, S>(
 
     dispatcher.callbacks[namespace] ||= new Set() as any; // rawModels 是 umi 动态生成的文件，导致前面 callback[namespace] 的类型无法推导出来，所以用 as any 来忽略掉
     dispatcher.callbacks[namespace].add(handler);
-    dispatcher.update(namespace);
+    // Catch up this subscriber without notifying existing subscribers again.
+    dispatcher.update(namespace, handler);
 
     return () => {
       dispatcher.callbacks[namespace].delete(handler);
