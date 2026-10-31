@@ -1,5 +1,5 @@
 import type { IOpts as IConfigOpts } from '@umijs/bundler-webpack';
-import { getConfig } from '@umijs/bundler-webpack';
+import { getConfig, resolveStaticPathPrefix } from '@umijs/bundler-webpack';
 import { lodash } from '@umijs/utils';
 import type { BundleOptions, WebpackConfig } from '@utoo/pack';
 import { compatOptionsFromWebpack } from '@utoo/pack';
@@ -886,7 +886,12 @@ export async function getProdUtooPackConfig(
         output: {
           clean: opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
-          assetModuleFilename: getAssetModuleFilename(opts.staticPathPrefix),
+          assetModuleFilename: getAssetModuleFilename(
+            resolveStaticPathPrefix({
+              staticPathPrefix: opts.staticPathPrefix,
+              userConfig: opts.config,
+            }),
+          ),
           ...(opts.disableCopy
             ? { copy: [] }
             : { copy: ['public'].concat(copy) }),
@@ -1088,7 +1093,12 @@ export async function getDevUtooPackConfig(
         output: {
           clean: opts.clean === undefined ? true : opts.clean,
           publicPath: runtimePublicPath ? 'runtime' : publicPath || '/',
-          assetModuleFilename: getAssetModuleFilename(opts.staticPathPrefix),
+          assetModuleFilename: getAssetModuleFilename(
+            resolveStaticPathPrefix({
+              staticPathPrefix: opts.staticPathPrefix,
+              userConfig: opts.config,
+            }),
+          ),
           ...(opts.disableCopy
             ? { copy: [] }
             : { copy: ['public'].concat(copy) }),

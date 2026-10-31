@@ -42,6 +42,7 @@ const config = {
   purgeCSS: {},
   sassLoader: {},
   srcTranspiler: 'esbuild',
+  staticPathPrefix: 'assets/',
   styleLoader: {},
   svgr: {},
   svgo: {},

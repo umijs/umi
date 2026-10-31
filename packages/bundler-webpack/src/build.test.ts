@@ -124,6 +124,32 @@ const expects: Record<string, Function> = {
     expect(files['index.js']).toContain(`.svg`);
     expect(files['index.js']).toContain(`antd_svg`);
   },
+  // When staticPathPrefix is omitted, SVGR url-loader/file-loader keeps the
+  // historical flat `[contenthash].svg` emit (not forced under static/).
+  'svgr-fallback-default'({ files }: IOpts) {
+    const rootSvgs = Object.keys(files).filter((f) =>
+      /^[a-f0-9]+\.svg$/.test(f),
+    );
+    expect(rootSvgs).toHaveLength(1);
+    expect(files['static']).toBeUndefined();
+    expect(files['index.js']).toContain(`.svg`);
+  },
+  // Explicit prefix (including non-default) is honored for SVGR fallbacks.
+  'svgr-fallback-prefix'({ files }: IOpts) {
+    expect(files['assets']).toContain(EXISTS);
+    expect(Object.keys(files).filter((f) => f.endsWith('.svg'))).toEqual([]);
+    expect(files['index.js']).toContain(`assets/`);
+    expect(files['index.js']).toContain(`.svg`);
+  },
+  // Explicit empty string keeps emits at dist root with [name].[hash:8].[ext].
+  'svgr-fallback-empty'({ files }: IOpts) {
+    const named = Object.keys(files).filter((f) =>
+      /^icon\.[a-f0-9]{8}\.svg$/.test(f),
+    );
+    expect(named).toHaveLength(1);
+    expect(files['static']).toBeUndefined();
+    expect(files['index.js']).toContain(`.svg`);
+  },
   targets({ files }: IOpts) {
     expect(files['index.js']).toContain(`var foo = 'foo';`);
   },

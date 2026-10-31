@@ -7,6 +7,19 @@ jest.mock('@umijs/bundler-webpack', () => ({
       alias: {},
     },
   })),
+  resolveStaticPathPrefix: ({
+    staticPathPrefix,
+    userConfig,
+  }: {
+    staticPathPrefix?: string;
+    userConfig?: { staticPathPrefix?: string };
+  }) => {
+    if (staticPathPrefix !== undefined) return staticPathPrefix;
+    if (userConfig?.staticPathPrefix !== undefined) {
+      return userConfig.staticPathPrefix;
+    }
+    return 'static/';
+  },
 }));
 
 jest.mock('@utoo/pack', () => ({

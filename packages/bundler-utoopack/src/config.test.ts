@@ -5,6 +5,19 @@ jest.mock('@umijs/bundler-webpack', () => ({
       alias: {},
     },
   })),
+  resolveStaticPathPrefix: ({
+    staticPathPrefix,
+    userConfig,
+  }: {
+    staticPathPrefix?: string;
+    userConfig?: { staticPathPrefix?: string };
+  }) => {
+    if (staticPathPrefix !== undefined) return staticPathPrefix;
+    if (userConfig?.staticPathPrefix !== undefined) {
+      return userConfig.staticPathPrefix;
+    }
+    return 'static/';
+  },
 }));
 
 jest.mock('@utoo/pack', () => ({
@@ -218,6 +231,24 @@ describe('utoopack mdx config', () => {
     );
     expect(devConfig.config.output?.assetModuleFilename).toBe(
       'mf-dep/[name].[contenthash:8]',
+    );
+  });
+
+  test('uses userConfig.staticPathPrefix when opts.staticPathPrefix is unset', async () => {
+    const prodConfig = await getProdUtooPackConfig({
+      ...baseOpts,
+      config: { staticPathPrefix: '' },
+    } as any);
+    const devConfig = await getDevUtooPackConfig({
+      ...baseOpts,
+      config: { staticPathPrefix: 'assets/' },
+    } as any);
+
+    expect(prodConfig.config.output?.assetModuleFilename).toBe(
+      '[name].[contenthash:8]',
+    );
+    expect(devConfig.config.output?.assetModuleFilename).toBe(
+      'assets/[name].[contenthash:8]',
     );
   });
 

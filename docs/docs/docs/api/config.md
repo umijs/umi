@@ -1446,6 +1446,21 @@ export default {
 
 注意：此功能需要通过配置启用。
 
+## staticPathPrefix
+
+- 类型：`string`
+- 默认值：`static/`
+
+配置静态资源（如图片、字体等）的输出目录前缀，对应 webpack 的 `output.assetModuleFilename`。
+
+默认输出到 `dist/static/`。若部署环境要求产物平铺在 `dist/` 下（例如部分 render 部署场景），可设为空字符串：
+
+```ts
+export default {
+  staticPathPrefix: '',
+};
+```
+
 ## srcTranspiler
 
 - 类型：`string` 可选的值：`babel`, `swc`, `esbuild`

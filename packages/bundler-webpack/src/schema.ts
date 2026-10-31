@@ -171,6 +171,7 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
           swc: zod.record(zod.string(), zod.any()),
         })
         .deepPartial(),
+    staticPathPrefix: ({ zod }) => zod.string(),
     styleLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
     stylusLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
     svgo: ({ zod }) =>
