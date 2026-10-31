@@ -64,11 +64,9 @@ function Executor(props: ExecutorProps) {
 
   // React 16.13 后 update 函数用 useEffect 包裹
   useEffect(() => {
-    if (initialLoad.current) {
-      updateRef.current(data);
-    } else {
-      initialLoad.current = true;
-    }
+    initialLoad.current = true;
+    // 初始化写入也需要在提交后通知共享运行时中的已有订阅者。
+    updateRef.current(data);
   });
 
   return null;
