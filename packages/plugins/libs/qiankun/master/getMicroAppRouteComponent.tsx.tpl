@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMatch } from 'umi';
+import { useAppData, useMatch } from 'umi';
 import { MicroApp } from './MicroApp';
 import { defaultMicroAppRouteMode, MicroAppRouteMode } from './constants';
 {{#keepAlive}}
@@ -20,8 +20,9 @@ export function getMicroAppRouteComponent(opts: {
   const RouteComponent = () => {
     const match = useMatch(routePath);
     const url = match ? match.pathnameBase : '';
-    // 默认取静态配置的 base
-    let umiConfigBase = base === '/' ? '' : trimEndSlash(base);
+    // 嵌套微应用优先使用当前应用的运行时 basename，静态 base 作为回退。
+    const runtimeBase = useAppData().basename ?? base;
+    let umiConfigBase = runtimeBase === '/' ? '' : trimEndSlash(runtimeBase);
     // 匹配模式下，routePath 不会作为 prefix
     const prefix = routeMode === MicroAppRouteMode.MATCH ? '' : trimEndSlash(url);
 
