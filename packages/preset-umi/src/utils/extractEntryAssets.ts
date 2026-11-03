@@ -4,6 +4,18 @@ export type EntryAssets = {
   [key: string]: string[];
 };
 
+const UMI_ASSETS_REG = {
+  js: /(?:^|[/\\])umi(\.[^/\\]+)?\.js$/,
+  css: /(?:^|[/\\])umi(\.[^/\\]+)?\.css$/,
+};
+
+function isUmiEntryFile(file: string) {
+  return (
+    !file.includes('.hot-update') &&
+    (UMI_ASSETS_REG.js.test(file) || UMI_ASSETS_REG.css.test(file))
+  );
+}
+
 function getAssetName(asset: any) {
   return typeof asset === 'string' ? asset : asset?.name;
 }
@@ -37,7 +49,60 @@ export function extractEntryPointFilesFromStats(
   return Array.from(files);
 }
 
-export function extractEntryAssets(entryPointFiles: string[]): EntryAssets {
+export function getUmiEntryFilesFromStats(stats: any): string[] {
+  const realStats = stats.stats ? stats.stats[0] : stats;
+  const compilation = realStats.compilation;
+  const entrypoints = compilation?.entrypoints;
+  let files: string[];
+
+  if (typeof entrypoints?.get === 'function') {
+    const entrypoint = entrypoints.get('umi');
+    const entryChunk = entrypoint?.getEntrypointChunk?.();
+    if (entryChunk?.files) {
+      return Array.from<string>(entryChunk.files).filter(isUmiEntryFile);
+    }
+    files = entrypoint?.getFiles?.() || [];
+  } else {
+    const statsJson = entrypoints
+      ? compilation
+      : realStats.entrypoints
+      ? realStats
+      : realStats.toJson?.({ all: false, entrypoints: true, chunks: true });
+    if (statsJson?.entrypoints) {
+      const entrypoint = statsJson.entrypoints.umi;
+      if (!entrypoint) return [];
+      const entryChunk = (statsJson.chunks || []).find((chunk: any) => {
+        return (
+          (chunk.id === 'umi' || chunk.names?.includes('umi')) &&
+          entrypoint.chunks?.some(
+            (id: any) => id === chunk.id || chunk.names?.includes(id),
+          )
+        );
+      });
+      if (entryChunk?.files) {
+        return Array.from<string>(entryChunk.files).filter(isUmiEntryFile);
+      }
+      files = extractEntryPointFilesFromStats(statsJson);
+    } else {
+      files = Object.keys(compilation?.assets || {});
+    }
+  }
+
+  // Older stats may omit entry chunk metadata. Preserve flat entry names and
+  // only infer a nested entry when there is a single candidate per extension.
+  return Object.values(UMI_ASSETS_REG).flatMap((regexp) => {
+    const candidates = files.filter(
+      (file) => isUmiEntryFile(file) && regexp.test(file),
+    );
+    const flat = candidates.filter((file) => !/[/\\]/.test(file));
+    return flat.length ? flat : candidates.length === 1 ? candidates : [];
+  });
+}
+
+export function extractEntryAssets(
+  entryPointFiles: string[],
+  umiEntryFiles = entryPointFiles.filter(isUmiEntryFile),
+): EntryAssets {
   const assets: {
     js: string[];
     css: string[];
@@ -53,10 +118,7 @@ export function extractEntryAssets(entryPointFiles: string[]): EntryAssets {
   const entryPointPublicPathMap: Record<string, boolean> = {};
   const extensionRegexp = /\.(css|js|mjs)(\?|$)/;
 
-  const UMI_ASSETS_REG = {
-    js: /(?:^|[/\\])umi(\.[^/\\]+)?\.js$/,
-    css: /(?:^|[/\\])umi(\.[^/\\]+)?\.css$/,
-  };
+  const umiEntryFileSet = new Set(umiEntryFiles);
 
   entryPointFiles.forEach((entryPointPublicPath) => {
     const extMatch = extensionRegexp.exec(entryPointPublicPath);
@@ -76,10 +138,7 @@ export function extractEntryAssets(entryPointFiles: string[]): EntryAssets {
     }
 
     // umi html 默认会注入 不做处理
-    if (
-      UMI_ASSETS_REG.js.test(entryPointPublicPath) ||
-      UMI_ASSETS_REG.css.test(entryPointPublicPath)
-    ) {
+    if (umiEntryFileSet.has(entryPointPublicPath)) {
       return;
     }
 

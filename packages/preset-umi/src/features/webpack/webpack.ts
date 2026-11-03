@@ -6,6 +6,7 @@ import { IApi } from '../../types';
 import {
   EntryAssets,
   extractEntryAssets,
+  getUmiEntryFilesFromStats,
 } from '../../utils/extractEntryAssets';
 
 export default (api: IApi) => {
@@ -30,7 +31,10 @@ export default (api: IApi) => {
           const entryPointFiles = compilation.entrypoints
             .get('umi')!
             .getFiles();
-          let entryAssets = extractEntryAssets(entryPointFiles);
+          let entryAssets = extractEntryAssets(
+            entryPointFiles,
+            getUmiEntryFilesFromStats({ compilation }),
+          );
           Object.entries(entryAssets).forEach(([ext, files]) => {
             if (!Array.isArray(assets[ext])) {
               assets[ext] = [];
