@@ -79,38 +79,43 @@ test.each(['', 'assets/', 'assets/js/', 'assets\\js\\'])(
   },
 );
 
-test('uses Utoopack entrypoint files without classifying lazy assets as entries', () => {
-  const stats = {
-    entrypoints: {
-      umi: {
-        assets: [{ name: 'entry_runtime.js' }, 'assets/umi.js'],
-        chunks: ['assets/umi.js', 'assets/umi.css', '_project.css'],
+test.each([false, true])(
+  'uses Utoopack/Mako entrypoint files without lazy assets (compilation=%s)',
+  (inCompilation) => {
+    const stats = {
+      entrypoints: {
+        umi: {
+          assets: [{ name: 'entry_runtime.js' }, 'assets/umi.js'],
+          chunks: ['assets/umi.js', 'assets/umi.css', '_project.css'],
+        },
       },
-    },
-    chunks: [
-      { id: 'assets/umi.js', entry: false, files: ['assets/umi.js'] },
-      { id: 'assets/umi.css', entry: false, files: ['assets/umi.css'] },
-      { id: '_project.css', entry: false, files: ['_project.css'] },
-      { id: 'lazy/umi.js', entry: false, files: ['lazy/umi.js'] },
-    ],
-    compilation: {
-      assets: {
-        'assets/umi.js': {},
-        'assets/umi.css': {},
-        'entry_runtime.js': {},
-        '_project.css': {},
-        'lazy/umi.js': {},
+      chunks: [
+        { id: 'assets/umi.js', entry: false, files: ['assets/umi.js'] },
+        { id: 'assets/umi.css', entry: false, files: ['assets/umi.css'] },
+        { id: '_project.css', entry: false, files: ['_project.css'] },
+        { id: 'lazy/umi.js', entry: false, files: ['lazy/umi.js'] },
+      ],
+      compilation: {
+        assets: {
+          'assets/umi.js': {},
+          'assets/umi.css': {},
+          'entry_runtime.js': {},
+          '_project.css': {},
+          'lazy/umi.js': {},
+        },
       },
-    },
-  };
-  const files = extractEntryPointFilesFromStats(stats);
-  const entryFiles = getUmiEntryFilesFromStats(stats);
-  expect(entryFiles).toEqual(['assets/umi.js', 'assets/umi.css']);
-  expect(extractEntryAssets(files, entryFiles)).toEqual({
-    js: ['entry_runtime.js'],
-    css: ['_project.css'],
-  });
-});
+    };
+    const files = extractEntryPointFilesFromStats(stats);
+    const entryFiles = getUmiEntryFilesFromStats(
+      inCompilation ? { compilation: stats } : stats,
+    );
+    expect(entryFiles).toEqual(['assets/umi.js', 'assets/umi.css']);
+    expect(extractEntryAssets(files, entryFiles)).toEqual({
+      js: ['entry_runtime.js'],
+      css: ['_project.css'],
+    });
+  },
+);
 
 test('excludes only the exact main files and keeps dependencies named umi', () => {
   expect(
@@ -128,27 +133,6 @@ test('excludes only the exact main files and keeps dependencies named umi', () =
     js: ['vendor/umi.js', 'assets/umi.mjs'],
     css: ['vendor/umi.css'],
   });
-});
-
-test('reads named entry chunks from JSON stats with numeric chunk IDs', () => {
-  const stats = {
-    toJson: () => ({
-      entrypoints: { umi: { chunks: [1, 2] } },
-      chunks: [
-        { id: 1, names: ['runtime'], entry: true, files: ['runtime.js'] },
-        {
-          id: 2,
-          names: ['umi'],
-          entry: false,
-          files: ['assets/umi.js', 'assets/umi.css', 'assets/umi.js.map'],
-        },
-      ],
-    }),
-  };
-  expect(getUmiEntryFilesFromStats(stats)).toEqual([
-    'assets/umi.js',
-    'assets/umi.css',
-  ]);
 });
 
 test('does not infer ambiguous nested files when entry metadata is unavailable', () => {

@@ -63,29 +63,10 @@ export function getUmiEntryFilesFromStats(stats: any): string[] {
     }
     files = entrypoint?.getFiles?.() || [];
   } else {
-    const statsJson = entrypoints
-      ? compilation
-      : realStats.entrypoints
-      ? realStats
-      : realStats.toJson?.({ all: false, entrypoints: true, chunks: true });
-    if (statsJson?.entrypoints) {
-      const entrypoint = statsJson.entrypoints.umi;
-      if (!entrypoint) return [];
-      const entryChunk = (statsJson.chunks || []).find((chunk: any) => {
-        return (
-          (chunk.id === 'umi' || chunk.names?.includes('umi')) &&
-          entrypoint.chunks?.some(
-            (id: any) => id === chunk.id || chunk.names?.includes(id),
-          )
-        );
-      });
-      if (entryChunk?.files) {
-        return Array.from<string>(entryChunk.files).filter(isUmiEntryFile);
-      }
-      files = extractEntryPointFilesFromStats(statsJson);
-    } else {
-      files = Object.keys(compilation?.assets || {});
-    }
+    const statsJson = entrypoints ? compilation : realStats;
+    files = statsJson.entrypoints
+      ? extractEntryPointFilesFromStats(statsJson)
+      : Object.keys(compilation?.assets || {});
   }
 
   // Older stats may omit entry chunk metadata. Preserve flat entry names and

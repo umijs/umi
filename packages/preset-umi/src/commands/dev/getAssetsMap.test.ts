@@ -44,55 +44,37 @@ test.each([false, true])(
   },
 );
 
-test.each([false, true])(
-  'uses the umi entry chunk with separate runtime and vendor chunks (JSON=%s)',
-  (json) => {
-    const files = ['assets/umi.12345678.js', 'assets/umi.12345678.css'];
-    const unrelated = [
-      'vendor/umi.js',
-      'lazy/umi.async.js',
-      'copied/umi.css',
-      'assets/umi.12345678.js.map',
-    ];
-    const assets = Object.fromEntries(
-      [...files, ...unrelated].map((name) => [name, {}]),
-    );
-    const stats = json
-      ? {
-          compilation: {
-            assets,
-            entrypoints: {
-              umi: { chunks: ['runtime', 'vendors', 'umi'] },
-            },
-            chunks: [
-              { id: 'runtime', entry: true, files: ['runtime.js'] },
-              { id: 'vendors', files: ['vendor/umi.js'] },
-              { id: 'umi', entry: false, files },
-            ],
+test('uses the Webpack entry chunk with separate runtime and vendor chunks', () => {
+  const files = ['assets/umi.12345678.js', 'assets/umi.12345678.css'];
+  const unrelated = [
+    'vendor/umi.js',
+    'lazy/umi.async.js',
+    'copied/umi.css',
+    'assets/umi.12345678.js.map',
+  ];
+  const stats = {
+    compilation: {
+      assets: Object.fromEntries(
+        [...files, ...unrelated].map((name) => [name, {}]),
+      ),
+      entrypoints: new Map([
+        [
+          'umi',
+          {
+            getEntrypointChunk: () => ({ files: new Set(files) }),
+            getFiles: () => ['runtime.js', 'vendor/umi.js', ...files],
           },
-        }
-      : {
-          compilation: {
-            assets,
-            entrypoints: new Map([
-              [
-                'umi',
-                {
-                  getEntrypointChunk: () => ({ files: new Set(files) }),
-                  getFiles: () => ['runtime.js', 'vendor/umi.js', ...files],
-                },
-              ],
-            ]),
-          },
-        };
-    expect(
-      getAssetsMap({ stats, publicPath: 'https://cdn.example.com/' }),
-    ).toEqual({
-      'umi.js': [`https://cdn.example.com/${files[0]}`],
-      'umi.css': [`https://cdn.example.com/${files[1]}`],
-    });
-  },
-);
+        ],
+      ]),
+    },
+  };
+  expect(
+    getAssetsMap({ stats, publicPath: 'https://cdn.example.com/' }),
+  ).toEqual({
+    'umi.js': [`https://cdn.example.com/${files[0]}`],
+    'umi.css': [`https://cdn.example.com/${files[1]}`],
+  });
+});
 
 test('preserves legacy flat entries when unrelated nested assets follow them', () => {
   const stats = {
