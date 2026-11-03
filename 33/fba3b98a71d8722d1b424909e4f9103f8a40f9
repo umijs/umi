@@ -1,0 +1,41 @@
+packages/preset-umi/src/utils/extractEntryAssets.test.ts
+  s_04dd6189db0a6d::t_c3d900b5637228 4,81-166
+packages/preset-umi/src/features/mako/mako.ts
+  s_04dd6189db0a6d::t_024d5dc9d31aaa 6,75-78
+packages/preset-umi/src/commands/dev/dev.ts
+  s_04dd6189db0a6d::t_f1aab88ea5942b 64-65,441
+packages/preset-umi/src/features/utoopack/utoopack.ts
+  s_04dd6189db0a6d::t_024d5dc9d31aaa 8,124,137
+packages/preset-umi/src/utils/extractEntryAssets.ts
+  s_04dd6189db0a6d::t_024d5dc9d31aaa 7-18,52-105,121,141
+packages/preset-umi/src/commands/dev/createRouteMiddleware.ts
+  s_04dd6189db0a6d::t_f1aab88ea5942b 8-13,16-19,30-34,50-51
+  s_04dd6189db0a6d::t_9729d75bd3d913 14
+  s_04dd6189db0a6d::t_8a60d7e10be458 15
+packages/preset-umi/src/commands/dev/getAssetsMap.ts
+  s_04dd6189db0a6d::t_024d5dc9d31aaa 1,8-10
+packages/preset-umi/src/features/webpack/webpack.ts
+  s_04dd6189db0a6d::t_024d5dc9d31aaa 9,34-37
+packages/preset-umi/src/commands/dev/createRouteMiddleware.test.ts
+  s_04dd6189db0a6d::t_9729d75bd3d913 16,19-21,74,128-130
+  s_04dd6189db0a6d::t_f1aab88ea5942b 1-15,17-18,22-73,75-127,131-141
+packages/preset-umi/src/commands/dev/getAssetsMap.test.ts
+  s_04dd6189db0a6d::t_37e97ff5e05ed3 88-90
+  s_04dd6189db0a6d::t_c3d900b5637228 46-87,91-124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "33fba3b98a71d8722d1b424909e4f9103f8a40f9",
+  "prompts": {},
+  "sessions": {
+    "s_04dd6189db0a6d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19f49-5b9d-7c80-9084-b56486a853c5",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
