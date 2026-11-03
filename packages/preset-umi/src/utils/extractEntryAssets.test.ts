@@ -43,3 +43,37 @@ test('extractEntryPointFilesFromStats includes chunk files', () => {
     }),
   ).toEqual(['umi.js', 'umi.css']);
 });
+
+test.each(['', 'assets/', 'assets/js/', 'assets\\js\\'])(
+  'classifies entry assets under %s without changing chunk paths',
+  (prefix) => {
+    const vendor = `${prefix}vendor.js`;
+    const module = `${prefix}umi.mjs`;
+    const css = `${prefix}vendor.css`;
+    expect(
+      extractEntryAssets([
+        `${prefix}umi.js`,
+        `${prefix}umi.12345678.js`,
+        `${prefix}umi.css`,
+        `${prefix}umi.12345678.css`,
+        vendor,
+        vendor,
+        module,
+        css,
+        `${prefix}umi.12345678.hot-update.js`,
+        `${prefix}vendor.hot-update.js`,
+        `${prefix}image.png`,
+        `${prefix}umi-dir/vendor.js`,
+        `${prefix}umi.js/vendor.js`,
+      ]),
+    ).toEqual({
+      js: [
+        vendor,
+        module,
+        `${prefix}umi-dir/vendor.js`,
+        `${prefix}umi.js/vendor.js`,
+      ],
+      css: [css],
+    });
+  },
+);

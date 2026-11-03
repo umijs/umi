@@ -54,8 +54,8 @@ export function extractEntryAssets(entryPointFiles: string[]): EntryAssets {
   const extensionRegexp = /\.(css|js|mjs)(\?|$)/;
 
   const UMI_ASSETS_REG = {
-    js: /^umi(\..+)?\.js$/,
-    css: /^umi(\..+)?\.css$/,
+    js: /(?:^|[/\\])umi(\.[^/\\]+)?\.js$/,
+    css: /(?:^|[/\\])umi(\.[^/\\]+)?\.css$/,
   };
 
   entryPointFiles.forEach((entryPointPublicPath) => {
