@@ -1,0 +1,19 @@
+packages/bundler-utoopack/package.json
+  s_04dd6189db0a6d::t_a038c59ea0762d 25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "6ea52f9fcd52fe3d9bab78b26304bb0ea971097f",
+  "prompts": {},
+  "sessions": {
+    "s_04dd6189db0a6d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19f49-5b9d-7c80-9084-b56486a853c5",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
