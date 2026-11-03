@@ -1,0 +1,24 @@
+packages/preset-umi/src/utils/extractEntryAssets.ts
+  s_04dd6189db0a6d::t_bd30a659c8b986 66-69
+packages/preset-umi/src/utils/extractEntryAssets.test.ts
+  s_04dd6189db0a6d::t_fdb9403395ec40 82-84,117-118
+  s_04dd6189db0a6d::t_117045e1ae1557 85-90,92-105,107-116
+packages/preset-umi/src/commands/dev/getAssetsMap.test.ts
+  s_04dd6189db0a6d::t_fdb9403395ec40 47-65,67-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "8a3535a8af332e83e39aa190376f70d61a85299d",
+  "prompts": {},
+  "sessions": {
+    "s_04dd6189db0a6d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19f49-5b9d-7c80-9084-b56486a853c5",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
