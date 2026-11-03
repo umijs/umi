@@ -1,0 +1,62 @@
+lerna.json
+  h_dc953829499615 2
+packages/ast/package.json
+  h_dc953829499615 3
+packages/babel-preset-umi/package.json
+  h_dc953829499615 3
+packages/bundler-esbuild/package.json
+  h_dc953829499615 3
+packages/bundler-utils/package.json
+  h_dc953829499615 3
+packages/bundler-utoopack/package.json
+  h_dc953829499615 3
+packages/bundler-vite/package.json
+  h_dc953829499615 3
+packages/bundler-webpack/package.json
+  h_dc953829499615 3
+packages/core/package.json
+  h_dc953829499615 3
+packages/create-umi/package.json
+  h_dc953829499615 3
+packages/lint/package.json
+  h_dc953829499615 3
+packages/max/package.json
+  h_dc953829499615 3
+packages/mfsu/package.json
+  h_dc953829499615 3
+packages/plugin-docs/package.json
+  h_dc953829499615 3
+packages/plugin-run/package.json
+  h_dc953829499615 3
+packages/plugins/package.json
+  h_dc953829499615 3
+packages/preset-umi/package.json
+  h_dc953829499615 3
+packages/preset-vue/package.json
+  h_dc953829499615 3
+packages/renderer-react/package.json
+  h_dc953829499615 3
+packages/renderer-vue/package.json
+  h_dc953829499615 3
+packages/server/package.json
+  h_dc953829499615 3
+packages/testing/package.json
+  h_dc953829499615 3
+packages/umi/package.json
+  h_dc953829499615 3
+packages/utils/package.json
+  h_dc953829499615 3
+packages/zod2ts/package.json
+  h_dc953829499615 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e70d5d1f7d83ee6bfe42893855ca4755d5b65066",
+  "prompts": {},
+  "humans": {
+    "h_dc953829499615": {
+      "author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
