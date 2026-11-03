@@ -5,6 +5,7 @@ import {
   EntryAssets,
   extractEntryAssets,
   extractEntryPointFilesFromStats,
+  getUmiEntryFilesFromStats,
 } from '../../utils/extractEntryAssets';
 
 function cleanVersionRange(version?: string) {
@@ -120,6 +121,7 @@ export default (api: IApi) => {
   api.onDevCompileDone(({ stats }: { stats: webpack.StatsCompilation }) => {
     const entryAssets = extractEntryAssets(
       extractEntryPointFilesFromStats(stats),
+      getUmiEntryFilesFromStats(stats),
     );
     Object.entries(entryAssets).forEach(([ext, files]) => {
       if (!Array.isArray(assets[ext])) {
@@ -132,6 +134,7 @@ export default (api: IApi) => {
   api.onBuildComplete(({ stats }: { stats: webpack.StatsCompilation }) => {
     const entryAssets = extractEntryAssets(
       extractEntryPointFilesFromStats(stats),
+      getUmiEntryFilesFromStats(stats),
     );
     Object.entries(entryAssets).forEach(([ext, files]) => {
       if (!Array.isArray(assets[ext])) {

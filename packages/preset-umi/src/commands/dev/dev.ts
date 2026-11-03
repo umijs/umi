@@ -61,6 +61,8 @@ export default (api: IApi) => {
     },
   });
 
+  const routeMiddleware = createRouteMiddleware({ api });
+
   api.registerCommand({
     name: 'dev',
     description: 'dev server for development',
@@ -436,7 +438,7 @@ PORT=8888 umi dev
         afterMiddlewares: enableVite
           ? [middlewares.concat(faviconMiddleware)]
           : middlewares.concat([
-              ...(api.config.mpa ? [] : [createRouteMiddleware({ api })]),
+              ...(api.config.mpa ? [] : [routeMiddleware]),
               // 放置 favicon 在 webpack middleware 之后，兼容 public 目录下有 favicon.ico 的场景
               // ref: https://github.com/umijs/umi/issues/8024
               faviconMiddleware,
