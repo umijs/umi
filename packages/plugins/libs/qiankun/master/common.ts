@@ -50,11 +50,13 @@ export function patchMicroAppRoute(
   route: MicroAppRoute,
   masterOptions: {
     base: string;
+    baseOverride?: string;
     masterHistoryType: string;
     routeBindingAlias: string;
   },
 ) {
-  const { base, masterHistoryType, routeBindingAlias } = masterOptions;
+  const { base, baseOverride, masterHistoryType, routeBindingAlias } =
+    masterOptions;
   // 当配置了 routeBindingAlias 时，优先从 routeBindingAlias 里取配置，但同时也兼容使用了默认的 microApp 方式
   const microAppName = route[routeBindingAlias] || route.microApp;
   const microAppProps =
@@ -86,6 +88,7 @@ export function patchMicroAppRoute(
     const opts = {
       appName: microAppName,
       base,
+      baseOverride,
       routePath: route.path,
       routeMode: route.mode,
       masterHistoryType,

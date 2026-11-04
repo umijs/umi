@@ -5,11 +5,16 @@ import { getPluginManager } from '@@/core/plugin';
 import { prefetchApps } from 'qiankun';
 import { ApplyPluginsType } from 'umi';
 import { insertRoute, noop, patchMicroAppRoute } from './common';
-import { getMasterOptions, setMasterOptions } from './masterOptions';
+import {
+  configuredMasterBase,
+  getMasterOptions,
+  setMasterOptions,
+} from './masterOptions';
 import { deepFilterLeafRoutes } from './routeUtils';
 import { MasterOptions, MicroAppRoute } from './types';
 
 let microAppRuntimeRoutes: MicroAppRoute[];
+let microAppRuntimeBase: string | undefined;
 
 async function getMasterRuntime() {
   const config = await getPluginManager().applyPlugins({
@@ -56,6 +61,7 @@ function patchMicroAppRouteComponent(routes: any[]) {
       const patchRoute = (route: any) => {
         patchMicroAppRoute(route, {
           base,
+          baseOverride: microAppRuntimeBase,
           masterHistoryType,
           routeBindingAlias,
         });
@@ -111,6 +117,7 @@ export async function render(oldRender: typeof noop) {
 
   const { apps = [], routes, ...options } = masterOptions;
   microAppRuntimeRoutes = routes;
+  microAppRuntimeBase = runtimeOptions.base ?? configuredMasterBase;
 
   // 主应用相关的配置注册完毕后即可开启渲染
   const renderData = oldRender();

@@ -116,6 +116,9 @@ let options = ${JSON.stringify({
         base: api.config.base || '/',
         ...api.config.qiankun.master,
       })};
+export const configuredMasterBase = ${JSON.stringify(
+        api.config.qiankun.master?.base,
+      )};
 export const getMasterOptions = () => options;
 export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts });
       `,
