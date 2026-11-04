@@ -11,6 +11,8 @@ function renderMicroApp(
   basename?: string,
   base = '/static/',
   routeMode = 'prepend',
+  baseOverride?: string,
+  routeProps?: { base: string },
 ) {
   const template = readFileSync(
     join(
@@ -43,18 +45,37 @@ function renderMicroApp(
     (name) => imports[name],
     exports,
   );
-  const Component = exports.getMicroAppRouteComponent({
-    appName: 'nested',
+  const route = {
+    microApp: 'nested',
+    path: '/child/*',
+    mode: routeMode,
+    microAppProps: routeProps,
+    element: undefined,
+  };
+  const common = { exports: {} as any };
+  const commonSource = readFileSync(
+    join(__dirname, '../../libs/qiankun/master/common.ts'),
+    'utf8',
+  );
+  const compiled = ts.transpileModule(commonSource, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true },
+  });
+  new Function('require', 'exports', compiled.outputText)(
+    (name) =>
+      name === './getMicroAppRouteComponent' ? exports : imports[name],
+    common.exports,
+  );
+  common.exports.patchMicroAppRoute(route, {
     base,
-    routePath: '/child/*',
-    routeMode,
+    baseOverride,
+    routeBindingAlias: 'microApp',
     masterHistoryType: 'browser',
   });
   return renderToStaticMarkup(
     React.createElement(
       AppContext.Provider,
       { value: { basename } },
-      React.createElement(Component),
+      route.element,
     ),
   );
 }
@@ -79,4 +100,21 @@ test('match mode inherits the runtime base without appending the route', () => {
   expect(renderMicroApp('/shell/parent/', '/static/', 'match')).toBe(
     '<span>/shell/parent</span>',
   );
+});
+
+test('match mode honors an explicit master base over the runtime basename', () => {
+  expect(
+    renderMicroApp('/shell/', '/shell/', 'match', '/shell/workspace/'),
+  ).toBe('<span>/shell/workspace</span>');
+  expect(renderMicroApp('/shell/', '/shell/', 'match', '')).toBe(
+    '<span></span>',
+  );
+});
+
+test('route props can override the explicit master base', () => {
+  expect(
+    renderMicroApp('/shell/', '/shell/', 'match', '/shell/workspace/', {
+      base: '/custom',
+    }),
+  ).toBe('<span>/custom</span>');
 });

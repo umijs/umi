@@ -11,17 +11,19 @@ KeepAlive.defaultProps = { ...(KeepAlive.defaultProps || {}), autoFreeze: false 
 export function getMicroAppRouteComponent(opts: {
   appName: string;
   base: string;
+  baseOverride?: string;
   routePath: string;
   routeMode: MicroAppRouteMode;
   masterHistoryType: string;
   routeProps?: any;
 }) {
-  const { base, masterHistoryType, appName, routeProps, routePath, routeMode = defaultMicroAppRouteMode } = opts;
+  const { base, baseOverride, masterHistoryType, appName, routeProps, routePath, routeMode = defaultMicroAppRouteMode } = opts;
   const RouteComponent = () => {
     const match = useMatch(routePath);
     const url = match ? match.pathnameBase : '';
-    // 嵌套微应用优先使用当前应用的运行时 basename，静态 base 作为回退。
-    const runtimeBase = useAppData().basename ?? base;
+    const { basename } = useAppData();
+    // 显式 master base 优先，否则继承当前应用的运行时 basename。
+    const runtimeBase = baseOverride ?? basename ?? base;
     let umiConfigBase = runtimeBase === '/' ? '' : trimEndSlash(runtimeBase);
     // 匹配模式下，routePath 不会作为 prefix
     const prefix = routeMode === MicroAppRouteMode.MATCH ? '' : trimEndSlash(url);
