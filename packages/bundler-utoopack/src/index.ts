@@ -2,7 +2,11 @@ import { createHttpsServer, createProxy } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-utils/compiled/http-proxy-middleware';
 import { lodash } from '@umijs/utils';
-import type { DevServerHandle, DevServerReadyContext } from '@utoo/pack';
+import type {
+  DevServerClientBuildContext,
+  DevServerHandle,
+  DevServerReadyContext,
+} from '@utoo/pack';
 import fs from 'fs';
 import http from 'http';
 import type { Socket } from 'net';
@@ -401,9 +405,36 @@ export async function dev(opts: IDevOpts) {
     return addStatsCompatibility(stats);
   };
 
-  let clientPaths: string[] = [];
+  let clientPaths: string[] | undefined;
+  let stats: any;
+  let hasPublishedClientBuild = false;
+  let canPublishClientBuild = false;
+  let clientBuildQueue = Promise.resolve();
   const shouldReadFullStats =
     Boolean(process.env.ANALYZE) || Boolean(utooPackConfig.config.stats);
+
+  const publishClientBuild = (paths: string[] | undefined) => {
+    const pathsSnapshot = [...(paths ?? [])];
+    const task = clientBuildQueue.then(async () => {
+      const isFirstCompile = !hasPublishedClientBuild;
+      stats = shouldReadFullStats
+        ? createStatsObject()
+        : createDevStatsFromClientPaths(pathsSnapshot, Object.keys(opts.entry));
+      hasPublishedClientBuild = true;
+      await onDevCompileDone?.({
+        stats,
+        // The pack callback does not expose rebuild duration.
+        time: isFirstCompile ? Date.now() - devStartTime : 0,
+        isFirstCompile,
+      });
+    });
+    // Report failures to the caller without preventing subsequent updates.
+    clientBuildQueue = task.then(
+      () => {},
+      () => {},
+    );
+    return task;
+  };
 
   const servePromise: Promise<DevServerHandle> = Promise.resolve().then(() =>
     utooPackServe(utooPackConfig, normalizedCwd, rootDir, {
@@ -413,9 +444,18 @@ export async function dev(opts: IDevOpts) {
       returnHandle: true,
       // Umi owns shutdown when it registers the returned close callback.
       ...(opts.onDevServerReady ? { handleSignals: false } : {}),
+      onClientBuild(context: DevServerClientBuildContext) {
+        clientPaths = context.clientPaths;
+        // Pack awaits its initial callback before listening and calling onReady.
+        // Delay Umi's initial hooks until the server can handle their requests.
+        if (canPublishClientBuild) {
+          return publishClientBuild(clientPaths);
+        }
+      },
       onReady(context: DevServerReadyContext) {
         utooServePort = context.port;
-        clientPaths = context.clientPaths ?? [];
+        // Older pack versions only report the initial output through onReady.
+        clientPaths ??= context.clientPaths ?? [];
       },
     }),
   );
@@ -471,15 +511,10 @@ export async function dev(opts: IDevOpts) {
     }
     opts.onDevServerReady?.({ close });
 
+    const initialClientBuild = publishClientBuild(clientPaths);
+    canPublishClientBuild = true;
+    await initialClientBuild;
     const time = Date.now() - devStartTime;
-    const stats = shouldReadFullStats
-      ? createStatsObject()
-      : createDevStatsFromClientPaths(clientPaths, Object.keys(opts.entry));
-    await onDevCompileDone?.({
-      stats,
-      time,
-      isFirstCompile: true,
-    });
     console.log(
       getDevBanner({
         protocol,

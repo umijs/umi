@@ -447,10 +447,11 @@ PORT=8888 umi dev
           debouncedPrintMemoryUsage;
           // debouncedPrintMemoryUsage();
           api.appData.bundleStatus.done = true;
-          api.applyPlugins({
+          const hooks = api.applyPlugins({
             key: 'onDevCompileDone',
             args: opts,
           });
+          if (isUtoopack) return hooks;
         },
         onProgress(opts: any) {
           api.appData.bundleStatus.progresses = opts.progresses;
