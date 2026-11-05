@@ -75,7 +75,7 @@ export default (api: IApi) => {
   });
 
   // html 处理逻辑
-  const assets: EntryAssets = {
+  let assets: EntryAssets = {
     // Will contain all js and mjs files
     js: [],
     // Will contain all css files
@@ -118,19 +118,14 @@ export default (api: IApi) => {
     }
   });
 
-  api.onDevCompileDone(({ stats }: { stats: webpack.StatsCompilation }) => {
-    const entryAssets = extractEntryAssets(
+  const updateAssets = ({ stats }: { stats: webpack.StatsCompilation }) => {
+    assets = extractEntryAssets(
       extractEntryPointFilesFromStats(stats),
       getUmiEntryFilesFromStats(stats),
     );
-    Object.entries(entryAssets).forEach(([ext, files]) => {
-      if (!Array.isArray(assets[ext])) {
-        assets[ext] = [];
-      }
-      assets[ext].push(...files);
-    });
-  });
+  };
 
+  api.onDevCompileDone(updateAssets);
   api.onBuildComplete(({ stats }: { stats: webpack.StatsCompilation }) => {
     const entryAssets = extractEntryAssets(
       extractEntryPointFilesFromStats(stats),
