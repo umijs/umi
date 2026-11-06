@@ -31,7 +31,10 @@ module.exports = {
   pluginProposalRecordAndTuple: () =>
     require('@babel/plugin-proposal-record-and-tuple'),
 
-  pluginTransformRuntime: () => require('@babel/plugin-transform-runtime'),
+  pluginTransformRuntime: () => ({
+    __esModule: true,
+    default: require('./transformRuntime'),
+  }),
 
   // preset
   presetEnv: () => require('@babel/preset-env'),
