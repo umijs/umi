@@ -30,6 +30,7 @@ export enum ServiceStage {
   onCheck,
   onStart,
   runCommand,
+  onExit,
 }
 
 export enum ConfigChangeType {
