@@ -68,7 +68,7 @@ export class Plugin {
     this.apply = () => {
       register.register({
         implementor: esbuild,
-        exts: ['.ts', '.mjs'],
+        exts: ['.js', '.ts', '.mjs'],
       });
       register.clearFiles();
       let ret;
