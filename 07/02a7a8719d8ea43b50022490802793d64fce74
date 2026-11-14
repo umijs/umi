@@ -1,0 +1,28 @@
+packages/ast/src/removeConfigByName/removeConfigByName.test.ts
+  s_f3bfe0c35e9388::t_ac09878d792d08 62-71
+packages/ast/src/utils/getConfigObject.ts
+  s_f3bfe0c35e9388::t_5879e0e30d4349 4-10,15
+  s_f3bfe0c35e9388::t_c9a7164907bcb4 47,83
+  s_f3bfe0c35e9388::t_db6d913caea024 11-13
+  s_f3bfe0c35e9388::t_e178a832589c58 1,14,16-46,48-68,73-79
+packages/ast/src/setConfigByName/setConfigByName.test.ts
+  s_f3bfe0c35e9388::t_c9a7164907bcb4 144-145
+  s_f3bfe0c35e9388::t_ac09878d792d08 115-128,136-143,156
+  s_f3bfe0c35e9388::t_db6d913caea024 129-135,146-155
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0702a7a8719d8ea43b50022490802793d64fce74",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
