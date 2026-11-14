@@ -59,3 +59,13 @@ test('rejects an unsupported export without removing unrelated declarations', ()
   );
   expect(generate(ast)).toBe(before);
 });
+
+test('removes only the top-level key through a typed local config variable', () => {
+  const input =
+    "const config = { routes: [{ title: 'Home' }], title: 'App' } satisfies UmiConfig; export default (defineConfig(config) as UmiConfig);";
+  const expected =
+    "const config = { routes: [{ title: 'Home' }] } satisfies UmiConfig; export default (defineConfig(config) as UmiConfig);";
+  expect(generate(removeConfigByName(parse(input), 'title'))).toBe(
+    generate(parse(expected)),
+  );
+});

@@ -112,6 +112,48 @@ test('rejects an unsupported export without changing other objects', () => {
   expect(generate(ast)).toBe(code(config));
 });
 
+test.each([
+  ['a local constant', 'const config = $object; export default config;'],
+  [
+    'a typed local constant passed to defineConfig',
+    'const config = $object satisfies UmiConfig; export default defineConfig(config);',
+  ],
+  [
+    'a local constant initialized with defineConfig',
+    'const config = defineConfig($object); export default config;',
+  ],
+  ['an as assertion', 'export default ($object as UmiConfig);'],
+  ['a satisfies expression', 'export default ($object satisfies UmiConfig);'],
+])('updates the config through %s', (_label, template) => {
+  const config = (title: string) =>
+    template.replace(
+      '$object',
+      `{ routes: [{ title: 'Home' }], title: ${title} }`,
+    );
+  expect(
+    generate(setConfigByName(parse(config("'Old'")), 'title', 'New')),
+  ).toBe(code(config('"New"')));
+});
+
+test.each([
+  "import config from './config'; export default config;",
+  "let config = { title: 'Old' }; config = makeConfig(); export default config;",
+  "const config = { title: 'Old' }; mutate(config); export default config;",
+  "const config = makeConfig({ title: 'Old' }); export default config;",
+  "const config = { title: 'Old' }; const alias = config; export default alias;",
+  "const { config } = { config: { title: 'Old' }, title: 'Other' }; export default config;",
+  "export default config; const config = { title: 'Old' };",
+])(
+  'does not edit a config with an indirect or mutable source: %s',
+  (config) => {
+    const ast = parse(config);
+    expect(() => setConfigByName(ast, 'title', 'New')).toThrow(
+      "Can't modify config file",
+    );
+    expect(generate(ast)).toBe(code(config));
+  },
+);
+
 test('set config in export default defineConfig', () => {
   const ast = parse(`const c= {dav:{}}; export default defineConfig({...c})`);
   const generateCode = generate(setConfigByName(ast, 'tailwindcss', '{}')!);
