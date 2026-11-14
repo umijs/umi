@@ -1,0 +1,38 @@
+packages/ast/src/setConfigByName/setConfigByName.ts
+  s_f3bfe0c35e9388::t_d408ed153b0fbe 3
+  s_f3bfe0c35e9388::t_79508074d25b7e 6
+  s_f3bfe0c35e9388::t_c9e118539c3422 16-23,28,31,33-35
+  s_f3bfe0c35e9388::t_629cca943672b2 24-27,29-30,32
+packages/ast/src/removeConfigByName/removeConfigByName.ts
+  s_f3bfe0c35e9388::t_ce7eb476443e46 1-2,5-8
+packages/ast/src/setConfigByName/setConfigByName.test.ts
+  s_f3bfe0c35e9388::t_4393d737feb8ac 81-87
+  s_f3bfe0c35e9388::t_b8690965c336f0 88,91,95-105,108-114
+  s_f3bfe0c35e9388::t_8cb4ac660ba363 66-80
+  s_f3bfe0c35e9388::t_d9fee78dc3b6d3 89-90,92-94,106-107
+packages/ast/src/utils/getConfigObject.ts
+  s_f3bfe0c35e9388::t_79508074d25b7e 1-22
+  s_f3bfe0c35e9388::t_ce7eb476443e46 23-33
+packages/ast/src/removeConfigByName/removeConfigByName.test.ts
+  s_f3bfe0c35e9388::t_02d8f471c08234 18-20,22,26
+  s_f3bfe0c35e9388::t_b8690965c336f0 29-30,34-39,43-52
+  s_f3bfe0c35e9388::t_e23bba1e45b47d 4,16-17,21,27
+  s_f3bfe0c35e9388::t_d9fee78dc3b6d3 23-25,31-33,40-42
+  s_f3bfe0c35e9388::t_f0734bfdeb37a8 28,53-61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "caffca76668800778f8a193513bd1b950cf103a2",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
