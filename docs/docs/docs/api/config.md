@@ -101,8 +101,6 @@ export default defineConfig({
 
 通过指定 [`ANALYZE`](../guides/env-variables#analyze) 环境变量分析产物构成时，analyzer 插件的具体配置项，见 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin)
 
-注意：该配置项仅在 webpack bundler 下生效，utoopack bundler 下会被忽略（utoopack 暂不提供分析参数配置面）。
-
 使用 Vite 模式时，除了可以自定义 [rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer) 的配置， `excludeAssets`、`generateStatsFile`、`openAnalyzer`、`reportFilename`、`reportTitle` 这些选项会自动转换适配。
 
 ## base

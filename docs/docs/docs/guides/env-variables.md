@@ -116,14 +116,6 @@ $ ANALYZE=1 umi build
 
 可以通过 `ANALYZE_PORT` 环境变量自定义端口或 [`analyze`](../api/config#analyze) 选项自定义配置。
 
-使用 utoopack bundler 时：
-
-* build 完成后自动启动 UI server 并挂起进程，分析报告写入项目 `.utoo/analyze` 目录（`ANALYZE_PORT` 语义与 webpack bundler 一致）
-* 成本预期：utoopack 下会触发一次额外完整编译会话（持久化缓存默认关闭时耗时接近一次 build）
-* 交互终端下进程驻留至 Ctrl-C 退出；非交互终端自动跳过 UI server 与挂起、报告照常落盘，CI/脚本环境建议移除 `ANALYZE`
-* 报告含完整模块路径与依赖结构数据，建议将 `.utoo` 加入项目 `.gitignore`、勿随静态托管目录发布
-* 内部逃生口 `UTOOPACK` 为内部调试用途，勿在不受信环境预置或经项目 `.env` 注入
-
 ### BABEL_POLYFILL
 
 默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
