@@ -104,7 +104,7 @@ beforeEach(() => {
   mockedFindRootDir.mockClear();
   mockedUtooPackAnalyze.mockReset();
   mockedUtooPackAnalyze.mockResolvedValue({
-    outputPath: `${normalizedCwd}/.utoo/analyze`,
+    outputPath: `${normalizedCwd}/.turbopack/analyze`,
     entries: ['must-not-leak-through-the-bridge'],
   });
   mockedUtooPackServe.mockClear();
@@ -132,17 +132,17 @@ describe('analyze', () => {
     const result = await analyze(opts);
 
     expect(mockedUtooPackAnalyze).toHaveBeenCalledTimes(1);
-    expect(mockedUtooPackAnalyze.mock.calls[0]).toHaveLength(3);
     expect(mockedUtooPackAnalyze).toHaveBeenCalledWith(
       expectedConfig,
       normalizedCwd,
       expectedRootDir,
+      { outputPath: '.turbopack/analyze' },
     );
     expect(mockedGetConfig).toHaveBeenCalledWith(
       expect.objectContaining({ rootDir: expectedRootDir }),
     );
     expect(result).toEqual({
-      outputPath: `${normalizedCwd}/.utoo/analyze`,
+      outputPath: `${normalizedCwd}/.turbopack/analyze`,
     });
   });
 

@@ -24,7 +24,7 @@ const mockUtooBundler = {
 // require(process.env.UTOOPACK), which tests point at this virtual module.
 jest.mock('mock-utoopack-bundler', () => mockUtooBundler, { virtual: true });
 
-const REPORT_OUTPUT_PATH = '/mock/project/.utoo/analyze';
+const REPORT_OUTPUT_PATH = '/mock/project/.turbopack/analyze';
 const ENV_KEYS = ['ANALYZE', 'ANALYZE_PORT', 'UTOOPACK'];
 const savedEnv: Record<string, string | undefined> = {};
 let originalStdoutIsTTY: boolean | undefined;
