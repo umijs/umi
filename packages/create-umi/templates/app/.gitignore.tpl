@@ -8,4 +8,3 @@
 /dist
 .swc
 .turbopack
-/.utoo
