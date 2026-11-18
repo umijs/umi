@@ -290,6 +290,22 @@ export function normalizeUtoopackPath(path: string) {
   return path.replace(/\\/g, '/');
 }
 
+export function getUtoopackRootDir(
+  cwd: string,
+  utoopackConfig: Record<string, any> | undefined,
+  findRootDir: (cwd: string) => string,
+) {
+  const normalizedCwd = normalizeUtoopackPath(cwd);
+
+  if (typeof utoopackConfig?.root === 'string') {
+    return normalizeUtoopackPath(
+      pathResolve(normalizedCwd, utoopackConfig.root),
+    );
+  }
+
+  return normalizeUtoopackPath(findRootDir(normalizedCwd));
+}
+
 function normalizeUtoopackEntry<T>(entry: T): T {
   if (typeof entry === 'string') {
     return normalizeUtoopackPath(entry) as T;

@@ -1,4 +1,8 @@
-import { checkVersion } from '@umijs/utils';
+import type {
+  IUtoopackAnalyzeResult,
+  IUtoopackAnalyzeServer,
+} from '@umijs/bundler-utoopack';
+import { checkVersion, logger } from '@umijs/utils';
 import { dirname, join } from 'path';
 import { IApi, webpack } from '../../types';
 import {
@@ -41,6 +45,59 @@ export function getPackVersionFromBundler(bundlerEntry: string) {
   }
 
   return undefined;
+}
+
+export async function runBundleAnalyze(
+  bundler: {
+    analyze(opts: Record<string, any>): Promise<IUtoopackAnalyzeResult>;
+    serveAnalyzeReport(
+      reportPath: string,
+      port?: number,
+    ): Promise<IUtoopackAnalyzeServer>;
+  },
+  opts: Record<string, any>,
+  logger: typeof import('@umijs/utils').logger,
+  wait: () => Promise<never> = () => new Promise<never>(() => {}),
+): Promise<void> {
+  if (typeof bundler.analyze !== 'function') {
+    logger.error(
+      'Utoopack analyze requires @umijs/bundler-utoopack with analyze support, please align @umijs/preset-umi and @umijs/bundler-utoopack versions',
+    );
+    process.exit(1);
+    return; // only reachable with a mocked process.exit (tests)
+  }
+
+  let server: IUtoopackAnalyzeServer | undefined;
+  let outputPath: string | undefined;
+  try {
+    logger.event('Bundle analyzing...');
+    ({ outputPath } = await bundler.analyze(opts));
+    logger.event(`Analyzer report written to ${outputPath}`);
+    if (!process.stdout.isTTY) {
+      logger.ready(
+        `Non-interactive terminal detected, skipping Analyzer UI server. Open ${outputPath}/index.html in a browser.`,
+      );
+      return;
+    }
+    const port = Number(process.env.ANALYZE_PORT) || 8888;
+    server = await bundler.serveAnalyzeReport(outputPath, port);
+    logger.ready(`Bundle Analyzer available at ${server.url}`);
+    await wait();
+  } catch (e) {
+    const err = e instanceof Error ? e : new Error(String(e));
+    if (outputPath) {
+      logger.error(
+        `Analyzer report written to ${outputPath} (open ${outputPath}/index.html directly)`,
+      );
+      logger.error(
+        `Analyzer UI server failed: ${err.message}. A previous Analyzer process may still be running (Ctrl-C it in its terminal), or set ANALYZE_PORT to use another port.`,
+      );
+    } else {
+      logger.error(err);
+    }
+    await server?.close().catch(() => {});
+    process.exit(1);
+  }
 }
 
 export default (api: IApi) => {
@@ -137,6 +194,12 @@ export default (api: IApi) => {
       }
       assets[ext].push(...files);
     });
+  });
+
+  api.onBuildHtmlComplete((args) => {
+    if (!process.env.ANALYZE) return;
+    const bundler = require(process.env.UTOOPACK!);
+    return runBundleAnalyze(bundler, args, logger);
   });
 
   api.addHTMLStyles(() => {

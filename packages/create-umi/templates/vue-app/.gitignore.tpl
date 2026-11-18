@@ -12,3 +12,4 @@
 /.mfsu
 .swc
 .turbopack
+/.utoo

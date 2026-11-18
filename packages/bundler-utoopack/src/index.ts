@@ -15,12 +15,19 @@ import {
   getDevUtooPackConfig,
   getProdUtooPackConfig,
   getSSRUtooPackConfig,
+  getUtoopackRootDir,
   IDevOpts,
   normalizeUtoopackPath,
 } from './config';
 import type { IOpts } from './types';
 import { getBuildBanner, getDevBanner } from './util';
 export { findRootDir } from '@utoo/pack';
+export { analyze, serveAnalyzeReport } from './analyze';
+export type {
+  IUtoopackAnalyzeOpts,
+  IUtoopackAnalyzeResult,
+  IUtoopackAnalyzeServer,
+} from './analyze';
 export * from './config';
 export type { IUtoopackUserConfig, IUtoopackWatchConfig } from './types';
 
@@ -62,22 +69,6 @@ export function createDevStatsFromClientPaths(
       entryNames.map((entryName) => [entryName, { assets, chunks: [] }]),
     ),
   });
-}
-
-function getUtoopackRootDir(
-  cwd: string,
-  utoopackConfig: Record<string, any> | undefined,
-  findRootDir: (cwd: string) => string,
-) {
-  const normalizedCwd = normalizeUtoopackPath(cwd);
-
-  if (typeof utoopackConfig?.root === 'string') {
-    return normalizeUtoopackPath(
-      path.resolve(normalizedCwd, utoopackConfig.root),
-    );
-  }
-
-  return normalizeUtoopackPath(findRootDir(normalizedCwd));
 }
 
 export async function build(opts: IOpts) {
