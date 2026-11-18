@@ -18,7 +18,8 @@
   "scripts": {
     "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "umi-scripts father dev"
+    "dev": "umi-scripts father dev",
+    "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
     "@umijs/utils": "workspace:*",
@@ -49,6 +50,10 @@
     "@babel/preset-react": "7.23.3",
     "@babel/preset-typescript": "7.23.3",
     "@babel/register": "7.22.15",
+    "@babel/runtime": "8.0.7",
+    "@babel/runtime-corejs2": "7.23.6",
+    "@babel/runtime-corejs3": "7.23.6",
+    "@babel/runtime-v7": "npm:@babel/runtime@7.23.6",
     "@babel/template": "7.22.15",
     "@babel/traverse": "7.23.6",
     "@babel/types": "7.23.6",

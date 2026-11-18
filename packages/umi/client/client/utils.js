@@ -1,4 +1,4 @@
-import _typeof from "@babel/runtime/helpers/esm/typeof";
+import _typeof from "@babel/runtime/helpers/typeof";
 export function assert(value, message) {
   if (!value) throw new Error(message);
 }
