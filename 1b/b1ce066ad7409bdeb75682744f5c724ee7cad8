@@ -1,0 +1,37 @@
+packages/preset-umi/src/features/utoopack/utoopack.test.ts
+  s_430ac4440b2a57::t_9e52e0675ebdca 257-271
+packages/umi/src/cli/analyzeExport.ts
+  s_430ac4440b2a57::t_58c25d27e5c2cc 49-55
+  s_430ac4440b2a57::t_cf31e4df079465 6-8,36-37,48,56-79,81-84
+  s_430ac4440b2a57::t_91328555f5e7b9 38-47,80,85-86
+packages/preset-umi/src/features/utoopack/utoopack.ts
+  s_430ac4440b2a57::t_66e45e237f3f7d 63-66,93
+  s_430ac4440b2a57::t_cf31e4df079465 60-61,77
+packages/preset-umi/src/commands/build.ts
+  s_430ac4440b2a57::t_cf31e4df079465 34-36,41-46,170
+packages/umi/src/cli/cli.ts
+  s_430ac4440b2a57::t_58c25d27e5c2cc 49-54
+  s_430ac4440b2a57::t_cf31e4df079465 36,55-63
+packages/umi/src/cli/analyzeBuildWorker.ts
+  s_430ac4440b2a57::t_cf31e4df079465 1-16
+docs/docs/docs/api/commands.en-US.md
+  s_430ac4440b2a57::t_cf31e4df079465 64-71
+docs/docs/docs/api/commands.md
+  s_430ac4440b2a57::t_cf31e4df079465 62-69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1bb1ce066ad7409bdeb75682744f5c724ee7cad8",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
