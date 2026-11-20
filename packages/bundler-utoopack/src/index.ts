@@ -3,6 +3,7 @@ import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-utils/compiled/http-proxy-middleware';
 import { lodash } from '@umijs/utils';
 import type {
+  BundleOptions,
   DevServerClientBuildContext,
   DevServerHandle,
   DevServerReadyContext,
@@ -71,6 +72,56 @@ export function createDevStatsFromClientPaths(
   });
 }
 
+let analyzeBuildQueue: Promise<void> | undefined;
+
+function buildWithPack(
+  packBuild: typeof import('@utoo/pack').build,
+  getConfig: () => Promise<BundleOptions>,
+  cwd: string,
+  rootDir: string,
+  errorMessage: string,
+  skipLegacyAnalyzer?: boolean,
+): Promise<BundleOptions> {
+  const run = async () => {
+    const config = await getConfig();
+    const analyze = skipLegacyAnalyzer && process.env.ANALYZE;
+    if (analyze) delete process.env.ANALYZE;
+    try {
+      // Pack also uses ANALYZE to enable stats.json, which Umi reads below.
+      await packBuild(
+        analyze
+          ? { ...config, config: { ...config.config, stats: true } }
+          : config,
+        cwd,
+        rootDir,
+      );
+    } catch (e: any) {
+      console.error(e.message);
+      const err = new Error(errorMessage);
+      // @ts-ignore
+      err.stack = null;
+      throw err;
+    } finally {
+      if (analyze) process.env.ANALYZE = analyze;
+    }
+    return config;
+  };
+
+  if (!analyzeBuildQueue && !process.env.ANALYZE) return run();
+
+  // Keep overlapping Pack builds out of config hooks while ANALYZE is hidden.
+  const result = (analyzeBuildQueue ?? Promise.resolve()).then(run);
+  const finished = result.then(
+    () => {},
+    () => {},
+  );
+  analyzeBuildQueue = finished;
+  void finished.then(() => {
+    if (analyzeBuildQueue === finished) analyzeBuildQueue = undefined;
+  });
+  return result;
+}
+
 export async function build(opts: IOpts) {
   const { cwd, onBuildComplete } = opts;
   const normalizedCwd = normalizeUtoopackPath(cwd);
@@ -83,21 +134,14 @@ export async function build(opts: IOpts) {
   );
 
   // 添加一个 checkConfig 对于 utoopack 不支持的配置警告一下
-  const utooPackConfig = await getProdUtooPackConfig({
-    ...opts,
-    cwd: normalizedCwd,
+  const utooPackConfig = await buildWithPack(
+    utooPackBuild,
+    () => getProdUtooPackConfig({ ...opts, cwd: normalizedCwd, rootDir }),
+    normalizedCwd,
     rootDir,
-  });
-
-  try {
-    await utooPackBuild(utooPackConfig, normalizedCwd, rootDir);
-  } catch (e: any) {
-    console.error(e.message);
-    const err = new Error('Build with utoopack failed.');
-    // @ts-ignore
-    err.stack = null;
-    throw err;
-  }
+    'Build with utoopack failed.',
+    opts.skipLegacyAnalyzer,
+  );
 
   const statsPath = path.join(
     utooPackConfig.config.output?.path || 'dist',
@@ -154,21 +198,14 @@ export async function buildSSR(
     opts.config.utoopack,
     findRootDir,
   );
-  const utooPackConfig = await getSSRUtooPackConfig({
-    ...opts,
-    cwd: normalizedCwd,
+  const utooPackConfig = await buildWithPack(
+    utooPackBuild,
+    () => getSSRUtooPackConfig({ ...opts, cwd: normalizedCwd, rootDir }),
+    normalizedCwd,
     rootDir,
-  });
-
-  try {
-    await utooPackBuild(utooPackConfig, normalizedCwd, rootDir);
-  } catch (e: any) {
-    console.error(e.message);
-    const err = new Error('Build SSR with utoopack failed.');
-    // @ts-ignore
-    err.stack = null;
-    throw err;
-  }
+    'Build SSR with utoopack failed.',
+    opts.skipLegacyAnalyzer,
+  );
 
   const statsPath = path.join(
     utooPackConfig.config.output?.path || 'server',

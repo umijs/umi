@@ -183,7 +183,7 @@ test('onBuildHtmlComplete when ANALYZE is falsy should return without invoking a
   expect(logger.event).not.toHaveBeenCalled();
 });
 
-test('onBuildHtmlComplete when ANALYZE is truthy should run the full analyze chain and hang', async () => {
+test('onBuildHtmlComplete resolves after starting the Analyzer UI server', async () => {
   setStdoutIsTTY(true);
   process.env.ANALYZE = '1';
   process.env.ANALYZE_PORT = '9999';
@@ -199,13 +199,7 @@ test('onBuildHtmlComplete when ANALYZE is truthy should run the full analyze cha
     htmlFiles: [{ path: 'index.html' }],
   };
 
-  // Without an injected wait the handler promise stays pending (the real
-  // run hangs until Ctrl-C).
-  const handlerPromise = handler(args);
-  const timeout = new Promise((resolve) =>
-    setTimeout(() => resolve('timeout'), 50),
-  );
-  expect(await Promise.race([handlerPromise, timeout])).toBe('timeout');
+  await handler(args);
 
   expect(mockUtooBundler.analyze).toHaveBeenCalledTimes(1);
   expect(mockUtooBundler.analyze).toHaveBeenCalledWith(args);
@@ -225,24 +219,28 @@ test('onBuildHtmlComplete when ANALYZE is truthy should run the full analyze cha
   expect(logger.ready).toHaveBeenCalledWith(
     `Bundle Analyzer available at ${serverHandle.url}`,
   );
+  expect(serverHandle.close).not.toHaveBeenCalled();
+});
 
-  // Injecting a resolvable wait drives the same chain to completion, and an
-  // invalid ANALYZE_PORT falls back to the default port 8888.
-  mockUtooBundler.analyze.mockClear();
-  mockUtooBundler.serveAnalyzeReport.mockClear();
-  process.env.ANALYZE_PORT = 'abc';
-  const wait = jest.fn(async () => undefined as never);
+test.each([
+  ['abc', 8888],
+  ['', 8888],
+  ['0', 0],
+])('runBundleAnalyze maps ANALYZE_PORT=%j to port %i', async (value, port) => {
+  setStdoutIsTTY(true);
+  process.env.ANALYZE_PORT = value;
+  mockAnalyzeOk();
+
   await runBundleAnalyze(
     mockUtooBundler,
     { cwd: '/mock/project' },
     createTestLogger(),
-    wait,
   );
+
   expect(mockUtooBundler.serveAnalyzeReport).toHaveBeenCalledWith(
     REPORT_OUTPUT_PATH,
-    8888,
+    port,
   );
-  expect(wait).toHaveBeenCalledTimes(1);
 });
 
 test('runBundleAnalyze when analyze rejects should log error and exit 1', async () => {
@@ -296,7 +294,7 @@ test('runBundleAnalyze when serve succeeds but a later step throws should close 
     exitSpy.mock.invocationCallOrder[0],
   );
   expect(testLogger.error).toHaveBeenCalledWith(
-    `Analyzer report written to ${REPORT_OUTPUT_PATH} (open ${REPORT_OUTPUT_PATH}/index.html directly)`,
+    `Analyzer report written to ${REPORT_OUTPUT_PATH}. Serve the directory with a static HTTP server and open its URL in a browser.`,
   );
   expect(testLogger.error).toHaveBeenCalledWith(
     'Analyzer UI server failed: logger ready blew up. A previous Analyzer process may still be running (Ctrl-C it in its terminal), or set ANALYZE_PORT to use another port.',
@@ -304,29 +302,22 @@ test('runBundleAnalyze when serve succeeds but a later step throws should close 
   expect(exitSpy).toHaveBeenCalledWith(1);
 });
 
-test('runBundleAnalyze with non-tty stdout should skip serve and hang-free return', async () => {
+test('runBundleAnalyze with non-tty stdout prints HTTP serving instructions without starting a server', async () => {
   setStdoutIsTTY(false);
   const exitSpy = mockExit();
   const testLogger = createTestLogger();
   mockAnalyzeOk();
-  const wait = jest.fn(async () => undefined as never);
 
-  await runBundleAnalyze(
-    mockUtooBundler,
-    { cwd: '/mock/project' },
-    testLogger,
-    wait,
-  );
+  await runBundleAnalyze(mockUtooBundler, { cwd: '/mock/project' }, testLogger);
 
   expect(mockUtooBundler.analyze).toHaveBeenCalledTimes(1);
   expect(testLogger.event).toHaveBeenCalledWith(
     `Analyzer report written to ${REPORT_OUTPUT_PATH}`,
   );
   expect(testLogger.ready).toHaveBeenCalledWith(
-    `Non-interactive terminal detected, skipping Analyzer UI server. Open ${REPORT_OUTPUT_PATH}/index.html in a browser.`,
+    `Non-interactive terminal detected, skipping Analyzer UI server. Serve ${REPORT_OUTPUT_PATH} with a static HTTP server and open its URL in a browser.`,
   );
   expect(mockUtooBundler.serveAnalyzeReport).not.toHaveBeenCalled();
-  expect(wait).not.toHaveBeenCalled();
   expect(exitSpy).not.toHaveBeenCalled();
 });
 
@@ -344,7 +335,7 @@ test('runBundleAnalyze when serve rejects should print report path and port hint
   await runBundleAnalyze(mockUtooBundler, { cwd: '/mock/project' }, testLogger);
 
   expect(testLogger.error).toHaveBeenCalledWith(
-    `Analyzer report written to ${REPORT_OUTPUT_PATH} (open ${REPORT_OUTPUT_PATH}/index.html directly)`,
+    `Analyzer report written to ${REPORT_OUTPUT_PATH}. Serve the directory with a static HTTP server and open its URL in a browser.`,
   );
   expect(testLogger.error).toHaveBeenCalledWith(
     'Analyzer UI server failed: listen EADDRINUSE 0.0.0.0:8888. A previous Analyzer process may still be running (Ctrl-C it in its terminal), or set ANALYZE_PORT to use another port.',

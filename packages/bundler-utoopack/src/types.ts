@@ -29,4 +29,6 @@ export type IOpts = {
   clean?: boolean;
   watch?: boolean;
   disableCopy?: boolean;
+  /** The caller handles the analyzer report after Pack finishes. */
+  skipLegacyAnalyzer?: boolean;
 } & Pick<IConfigOpts, 'cache' | 'pkg' | 'staticPathPrefix'>;

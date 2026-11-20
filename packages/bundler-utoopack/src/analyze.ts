@@ -8,7 +8,10 @@ import type { IOpts } from './types';
 // rootDir is omitted on purpose: the bridge always computes it, mirroring
 // build(), and ignores whatever the caller passes.
 export interface IUtoopackAnalyzeOpts
-  extends Omit<IOpts, 'onBuildComplete' | 'watch' | 'cache' | 'rootDir'> {}
+  extends Omit<
+    IOpts,
+    'onBuildComplete' | 'watch' | 'cache' | 'rootDir' | 'skipLegacyAnalyzer'
+  > {}
 
 export interface IUtoopackAnalyzeResult {
   /** Absolute path of the generated report directory */
@@ -47,12 +50,9 @@ export async function analyze(
   });
   // The 4th analyzeOptions parameter pins the report dir to `.turbopack/analyze`;
   // the runtime resolves it against the normalized cwd.
-  const result = await utooPackAnalyze(
-    utooPackConfig,
-    normalizedCwd,
-    rootDir,
-    { outputPath: REPORT_OUTPUT_DIR },
-  );
+  const result = await utooPackAnalyze(utooPackConfig, normalizedCwd, rootDir, {
+    outputPath: REPORT_OUTPUT_DIR,
+  });
   return { outputPath: result.outputPath };
 }
 

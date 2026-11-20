@@ -116,6 +116,7 @@ umi build --clean
         } as IServicePluginAPI['config'],
         cwd: api.cwd,
         entry,
+        ...(isUtoopack ? { skipLegacyAnalyzer: true } : {}),
         ...(api.config.vite
           ? { modifyViteConfig }
           : { babelPreset, chainWebpack, modifyWebpackConfig }),

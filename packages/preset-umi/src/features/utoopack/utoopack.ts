@@ -57,7 +57,6 @@ export async function runBundleAnalyze(
   },
   opts: Record<string, any>,
   logger: typeof import('@umijs/utils').logger,
-  wait: () => Promise<never> = () => new Promise<never>(() => {}),
 ): Promise<void> {
   if (typeof bundler.analyze !== 'function') {
     logger.error(
@@ -75,19 +74,22 @@ export async function runBundleAnalyze(
     logger.event(`Analyzer report written to ${outputPath}`);
     if (!process.stdout.isTTY) {
       logger.ready(
-        `Non-interactive terminal detected, skipping Analyzer UI server. Open ${outputPath}/index.html in a browser.`,
+        `Non-interactive terminal detected, skipping Analyzer UI server. Serve ${outputPath} with a static HTTP server and open its URL in a browser.`,
       );
       return;
     }
-    const port = Number(process.env.ANALYZE_PORT) || 8888;
-    server = await bundler.serveAnalyzeReport(outputPath, port);
+    const port = process.env.ANALYZE_PORT?.trim();
+    const parsedPort = port ? Number(port) : NaN;
+    server = await bundler.serveAnalyzeReport(
+      outputPath,
+      Number.isNaN(parsedPort) ? 8888 : parsedPort,
+    );
     logger.ready(`Bundle Analyzer available at ${server.url}`);
-    await wait();
   } catch (e) {
     const err = e instanceof Error ? e : new Error(String(e));
     if (outputPath) {
       logger.error(
-        `Analyzer report written to ${outputPath} (open ${outputPath}/index.html directly)`,
+        `Analyzer report written to ${outputPath}. Serve the directory with a static HTTP server and open its URL in a browser.`,
       );
       logger.error(
         `Analyzer UI server failed: ${err.message}. A previous Analyzer process may still be running (Ctrl-C it in its terminal), or set ANALYZE_PORT to use another port.`,

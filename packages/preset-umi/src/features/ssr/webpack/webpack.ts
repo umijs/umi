@@ -58,6 +58,15 @@ export const build = async (api: IApi, opts: any) => {
     // remove useless progress plugin
     memo.plugins.delete('progress-plugin');
 
+    if (
+      process.env.ANALYZE &&
+      api.appData.bundler === 'utoopack' &&
+      api.env === Env.production
+    ) {
+      // The Utoopack build serves its own analyzer after generating HTML.
+      memo.plugins.delete('webpack-bundle-analyzer');
+    }
+
     // do not minify
     memo.optimization.minimize(false);
 
