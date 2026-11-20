@@ -119,7 +119,12 @@ export default (api: IApi) => {
           .object({
             extraRoutePaths: zod.union([
               zod.function(),
-              zod.array(zod.string()),
+              zod.array(
+                zod.union([
+                  zod.string(),
+                  zod.object({ path: zod.string(), prerender: zod.boolean() }),
+                ]),
+              ),
             ]),
             ignorePreRenderError: zod.boolean().default(false),
           })
