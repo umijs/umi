@@ -1,0 +1,23 @@
+packages/renderer-react/src/routes.tsx
+  s_f3bfe0c35e9388::t_8bd99205a8cc0c 1,65-74
+packages/renderer-react/src/routes.test.ts
+  s_f3bfe0c35e9388::t_24910ee5e46369 1-4,9,25-30,36-61,66-87,93-100
+  s_f3bfe0c35e9388::t_a4017e5ddb8e21 5-8,31-35,62-65,88-92
+  s_f3bfe0c35e9388::t_5b4c00a6a35016 101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "5f89a820739e4b74bf68301495ffc48cc4e00574",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
