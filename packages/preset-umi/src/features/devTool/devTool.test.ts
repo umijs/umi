@@ -6,6 +6,9 @@ import devTool from './devTool';
 const cwd = resolve('test-project');
 const routeFile = resolve(cwd, 'src/pages/index.tsx');
 const helperFile = resolve(cwd, 'src/helper.ts');
+const workspaceFile = resolve(cwd, '../workspace-shared/index.ts');
+const otherWorkspaceFile = resolve(cwd, '../workspace-utils/index.ts');
+const hoistedFile = resolve(cwd, '../node_modules/shared/index.js');
 
 function createApi(ui: boolean) {
   const config = {
@@ -55,9 +58,17 @@ function createApi(ui: boolean) {
           metafile: {
             inputs: {
               [routeFile]: {
-                imports: [{ path: helperFile, original: 'fixture import' }],
+                imports: [
+                  { path: helperFile, original: 'fixture import' },
+                  { path: workspaceFile },
+                  { path: otherWorkspaceFile },
+                  { path: hoistedFile },
+                ],
               },
               [helperFile]: { imports: [] },
+              [workspaceFile]: { imports: [] },
+              [otherWorkspaceFile]: { imports: [] },
+              [hoistedFile]: { imports: [] },
             },
             outputs: { 'dist/index.js': { entryPoint: routeFile } },
           },
@@ -148,8 +159,18 @@ test('projects the display data used by explicitly enabled Umi UI', async () => 
       buildResult: {
         metafile: {
           inputs: {
-            'src/pages/index.tsx': { imports: [{ path: 'src/helper.ts' }] },
+            'src/pages/index.tsx': {
+              imports: [
+                { path: 'src/helper.ts' },
+                { path: 'external:1/index.ts' },
+                { path: 'external:2/index.ts' },
+                { path: 'node_modules/external:3/index.js' },
+              ],
+            },
             'src/helper.ts': { imports: [] },
+            'external:1/index.ts': { imports: [] },
+            'external:2/index.ts': { imports: [] },
+            'node_modules/external:3/index.js': { imports: [] },
           },
         },
       },
@@ -173,6 +194,8 @@ test('projects the display data used by explicitly enabled Umi UI', async () => 
   const serialized = JSON.stringify(result);
   expect(serialized).not.toContain('fixture');
   expect(serialized).not.toContain(cwd);
+  expect(serialized).not.toContain('workspace-shared');
+  expect(serialized).not.toContain('workspace-utils');
 });
 
 test('continues to report bundle status and respond to readiness checks', async () => {

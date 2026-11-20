@@ -1,5 +1,5 @@
 import type { Metafile } from '@umijs/bundler-utils/compiled/esbuild';
-import { isAbsolute, relative, resolve, sep } from 'path';
+import { basename, isAbsolute, relative, resolve, sep } from 'path';
 import type { IApi, IRoute, IUIModule } from '../../types';
 
 export function getDiagnosticConfig(config: Record<string, unknown>) {
@@ -120,17 +120,39 @@ function projectPath(cwd: string, file?: string) {
 function getImportGraph(cwd: string, metafile?: Metafile) {
   if (!metafile) return;
 
-  const inputs = Object.entries(metafile.inputs).flatMap(([file, input]) => {
-    const path = projectPath(cwd, file);
-    if (!path) return [];
+  const externalPaths = new Map<string, string>();
+  const getImportPath = (file: string) => {
+    const localPath = projectPath(cwd, file);
+    if (localPath) return localPath;
 
-    const imports = input.imports.flatMap((entry) => {
-      const path = projectPath(cwd, entry.path);
-      return path ? [{ path }] : [];
-    });
-    return [[path, { imports }] as const];
-  });
-  return { inputs: Object.fromEntries(inputs) };
+    const absolutePath = resolve(cwd, file);
+    const existingPath = externalPaths.get(absolutePath);
+    if (existingPath) return existingPath;
+
+    // Keep workspace and hoisted dependencies in the graph without exposing
+    // their directories. Use the same label for each node and its references.
+    const prefix = absolutePath.split(sep).includes('node_modules')
+      ? 'node_modules/'
+      : '';
+    const name = basename(absolutePath);
+    const label = /^[\w.@-]+$/.test(name) ? name : 'module';
+    const path = `${prefix}external:${externalPaths.size + 1}/${label}`;
+    externalPaths.set(absolutePath, path);
+    return path;
+  };
+
+  return {
+    inputs: Object.fromEntries(
+      Object.entries(metafile.inputs).map(([file, input]) => [
+        getImportPath(file),
+        {
+          imports: input.imports.map(({ path }) => ({
+            path: getImportPath(path),
+          })),
+        },
+      ]),
+    ),
+  };
 }
 
 function isDiagnosticWebUrl(url: unknown): url is string {
