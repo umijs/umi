@@ -1,0 +1,51 @@
+ui/hooks/useAppData.ts
+  s_0bf045cfd627aa::t_7290f207424cbb 9,20-23,27-34
+ui/components/plugin/PluginList.tsx
+  s_0bf045cfd627aa::t_ebad85e316416f 2,9
+ui/pages/plugins.tsx
+  s_0bf045cfd627aa::t_ebad85e316416f 9
+ui/pages/config.tsx
+  s_0bf045cfd627aa::t_ebad85e316416f 48
+ui/components/imports/ViewChart.tsx
+  s_0bf045cfd627aa::t_ebad85e316416f 2,10,95-98,108
+ui/utils/getOverviewNumber.ts
+  s_0bf045cfd627aa::t_ebad85e316416f 5-6
+packages/preset-umi/src/features/devTool/devTool.test.ts
+  s_0bf045cfd627aa::t_a701f5b2b8adaf 17-20,107-121,126-127,142-145,161,168,182-187
+  s_0bf045cfd627aa::t_7a380ff4c50a33 1-16,21-74,76-106,122-125,128-141,146-160,169-181,188
+  s_0bf045cfd627aa::t_d7555410627290 75,162-167
+ui/components/routes/routeDrawer.tsx
+  s_0bf045cfd627aa::t_7290f207424cbb 2,47,54,57
+packages/preset-umi/src/features/devTool/devTool.ts
+  s_0bf045cfd627aa::t_7464f9dc8e8447 6,33,36
+ui/utils/realizeRoutes.ts
+  s_0bf045cfd627aa::t_ebad85e316416f 1,11
+ui/pages/imports.tsx
+  s_0bf045cfd627aa::t_ebad85e316416f 29
+packages/preset-umi/src/features/devTool/diagnostics.ts
+  s_0bf045cfd627aa::t_7a380ff4c50a33 24,138
+  s_0bf045cfd627aa::t_7464f9dc8e8447 1-4,7-23,25,32-41,46-61,65-76,83-88,90-95,97-109,116-135,139-140,142-144,149
+  s_0bf045cfd627aa::t_d8e363bfabc197 5-6,28,31,77-82
+  s_0bf045cfd627aa::t_d7555410627290 26-27,62-64,89,96,136-137,141,145-148
+  s_0bf045cfd627aa::t_a701f5b2b8adaf 29-30,42-45,110-115
+ui/components/imports/ViewList.tsx
+  s_0bf045cfd627aa::t_ebad85e316416f 1,8
+ui/pages/routes.tsx
+  s_0bf045cfd627aa::t_ebad85e316416f 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1a0eba298ddcbdfcdfc9c3fb90effbd69c2b865b",
+  "prompts": {},
+  "sessions": {
+    "s_0bf045cfd627aa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6ee-56bf-7ec1-8523-af56b71874c8",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
