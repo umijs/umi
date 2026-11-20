@@ -1,0 +1,21 @@
+docs/docs/docs/guides/env-variables.en-US.md
+  s_430ac4440b2a57::t_c6d98b90a74e53 108
+docs/docs/docs/guides/env-variables.md
+  s_430ac4440b2a57::t_6208522be04a0f 107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "9085f2a35d769eb3f5299be069f83d061e29f65e",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
