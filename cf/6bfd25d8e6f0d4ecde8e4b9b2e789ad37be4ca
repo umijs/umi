@@ -1,0 +1,27 @@
+docs/docs/docs/guides/env-variables.en-US.md
+  s_430ac4440b2a57::t_36204998b41999 108,110,113-125,128-132
+docs/docs/docs/api/config.en-US.md
+  s_430ac4440b2a57::t_36204998b41999 104,108-109,1551
+  s_430ac4440b2a57::t_3dc1d48564eeca 1552
+docs/docs/docs/api/config.md
+  s_430ac4440b2a57::t_36204998b41999 102,106-107,1588
+  s_430ac4440b2a57::t_4a86221f163640 1589
+docs/docs/docs/guides/env-variables.md
+  s_430ac4440b2a57::t_36204998b41999 107,109,112-124,127-131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "cf6bfd25d8e6f0d4ecde8e4b9b2e789ad37be4ca",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
