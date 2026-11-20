@@ -2,7 +2,7 @@ import type {
   IUtoopackAnalyzeResult,
   IUtoopackAnalyzeServer,
 } from '@umijs/bundler-utoopack';
-import { checkVersion, logger } from '@umijs/utils';
+import { checkVersion } from '@umijs/utils';
 import { dirname, join } from 'path';
 import { IApi, webpack } from '../../types';
 import {
@@ -196,12 +196,6 @@ export default (api: IApi) => {
       }
       assets[ext].push(...files);
     });
-  });
-
-  api.onBuildHtmlComplete((args) => {
-    if (!process.env.ANALYZE) return;
-    const bundler = require(process.env.UTOOPACK!);
-    return runBundleAnalyze(bundler, args, logger);
   });
 
   api.addHTMLStyles(() => {

@@ -1,5 +1,8 @@
-import { logger } from '@umijs/utils';
+import { logger, rimraf } from '@umijs/utils';
+import buildCommand from '../../commands/build';
 import utoopack, { runBundleAnalyze } from './utoopack';
+
+type IApi = import('../../types').IApi;
 
 jest.mock('@umijs/utils', () => {
   const originalModule = jest.requireActual('@umijs/utils');
@@ -20,12 +23,8 @@ const mockUtooBundler = {
   serveAnalyzeReport: jest.fn(),
 };
 
-// For jest.requireActual flow, the feature loads its bundler via
-// require(process.env.UTOOPACK), which tests point at this virtual module.
-jest.mock('mock-utoopack-bundler', () => mockUtooBundler, { virtual: true });
-
 const REPORT_OUTPUT_PATH = '/mock/project/.turbopack/analyze';
-const ENV_KEYS = ['ANALYZE', 'ANALYZE_PORT', 'UTOOPACK'];
+const ENV_KEYS = ['ANALYZE', 'ANALYZE_PORT'];
 const savedEnv: Record<string, string | undefined> = {};
 let originalStdoutIsTTY: boolean | undefined;
 
@@ -71,7 +70,6 @@ function createApi() {
     onStart: jest.fn(),
     onDevCompileDone: jest.fn(),
     onBuildComplete: jest.fn(),
-    onBuildHtmlComplete: jest.fn(),
     addHTMLStyles: jest.fn(),
     addHTMLHeadScripts: jest.fn(),
     config: { publicPath: '/static/' },
@@ -106,7 +104,7 @@ function mockAnalyzeOk(serverUrl = 'http://127.0.0.1:8888') {
 
 test('onDevCompileDone replaces obsolete HTML assets with the current entry assets', () => {
   const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
+  utoopack(api as unknown as IApi);
   const compile = api.onDevCompileDone.mock.calls[0][0];
   const getStyles = api.addHTMLStyles.mock.calls[0][0];
   const getScripts = api.addHTMLHeadScripts.mock.calls[0][0];
@@ -146,7 +144,7 @@ test('onDevCompileDone replaces obsolete HTML assets with the current entry asse
 
 test('onBuildComplete retains assets from earlier production compilations', () => {
   const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
+  utoopack(api as unknown as IApi);
   const build = api.onBuildComplete.mock.calls[0][0];
   const getStyles = api.addHTMLStyles.mock.calls[0][0];
   const getScripts = api.addHTMLHeadScripts.mock.calls[0][0];
@@ -168,38 +166,72 @@ test('onBuildComplete retains assets from earlier production compilations', () =
   ]);
 });
 
-test('onBuildHtmlComplete when ANALYZE is falsy should return without invoking any analyze call', async () => {
-  const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
-  const handler = api.onBuildHtmlComplete.mock.calls[0][0];
+test.each([
+  ['utoopack', '1', true],
+  ['utoopack', '0', true],
+  ['utoopack', '', false],
+  ['webpack', '1', false],
+])(
+  '%s build with ANALYZE=%j uses the expected compiler path',
+  async (bundlerName, analyze, analyzeOnly) => {
+    setStdoutIsTTY(false);
+    process.env.ANALYZE = analyze;
+    mockAnalyzeOk();
+    jest.spyOn(rimraf, 'sync').mockImplementation(() => {});
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    const bundler = {
+      ...mockUtooBundler,
+      build: jest.fn().mockResolvedValue({ toJson: () => ({}) }),
+    };
+    const entry = { umi: '/mock/project/.umi-production/umi.ts' };
+    const api = {
+      registerCommand: jest.fn(),
+      applyPlugins: jest.fn(async ({ key, initialValue }: any) => {
+        if (key === 'modifyUniBundler') return bundler;
+        if (key === 'modifyUniBundlerOpts') return { ...initialValue, entry };
+        return initialValue;
+      }),
+      appData: {
+        bundler: bundlerName,
+        react: { version: '18.0.0' },
+        umi: { version: '4.0.0' },
+      },
+      config: { mpa: true },
+      userConfig: {},
+      cwd: '/mock/project',
+      paths: { absTmpPath: '/mock/project/.umi-production' },
+    };
 
-  process.env.ANALYZE = '';
-  process.env.UTOOPACK = 'mock-utoopack-bundler';
+    buildCommand(api as unknown as IApi);
+    await api.registerCommand.mock.calls[0][0].fn();
 
-  await handler({ cwd: '/mock/project', htmlFiles: [] });
+    expect(api.applyPlugins).toHaveBeenCalledWith(
+      expect.objectContaining({
+        key: 'onBeforeCompiler',
+        args: expect.objectContaining({ analyzeOnly }),
+      }),
+    );
+    expect(bundler.analyze).toHaveBeenCalledTimes(Number(analyzeOnly));
+    expect(bundler.build).toHaveBeenCalledTimes(Number(!analyzeOnly));
+    const compile = analyzeOnly ? bundler.analyze : bundler.build;
+    expect(compile).toHaveBeenCalledWith(expect.objectContaining({ entry }));
+    const hooks = api.applyPlugins.mock.calls.map(([args]) => args.key);
+    expect(hooks.includes('onBuildHtmlComplete')).toBe(!analyzeOnly);
+  },
+);
 
-  expect(mockUtooBundler.analyze).not.toHaveBeenCalled();
-  expect(mockUtooBundler.serveAnalyzeReport).not.toHaveBeenCalled();
-  expect(logger.event).not.toHaveBeenCalled();
-});
-
-test('onBuildHtmlComplete resolves after starting the Analyzer UI server', async () => {
+test('runBundleAnalyze resolves after starting the Analyzer UI server', async () => {
   setStdoutIsTTY(true);
   process.env.ANALYZE = '1';
   process.env.ANALYZE_PORT = '9999';
-  process.env.UTOOPACK = 'mock-utoopack-bundler';
   const serverHandle = mockAnalyzeOk('http://127.0.0.1:9999');
 
-  const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
-  const handler = api.onBuildHtmlComplete.mock.calls[0][0];
   const args = {
     cwd: '/mock/project',
     entry: { index: './src/index.ts' },
-    htmlFiles: [{ path: 'index.html' }],
   };
 
-  await handler(args);
+  await runBundleAnalyze(mockUtooBundler, args, logger);
 
   expect(mockUtooBundler.analyze).toHaveBeenCalledTimes(1);
   expect(mockUtooBundler.analyze).toHaveBeenCalledWith(args);

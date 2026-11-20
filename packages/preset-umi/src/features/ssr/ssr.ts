@@ -192,7 +192,9 @@ export type {
     });
   });
 
-  api.onBeforeCompiler(async ({ opts }) => {
+  api.onBeforeCompiler(async ({ opts, analyzeOnly }) => {
+    if (analyzeOnly) return;
+
     const { builder = 'webpack' } = api.config.ssr;
 
     if (builder === 'esbuild') {

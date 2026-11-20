@@ -202,7 +202,11 @@ export type IApi = PluginAPI &
         webpack: typeof webpack;
       }
     >;
-    onBeforeCompiler: IEvent<{ compiler: 'vite' | 'webpack'; opts: any }>;
+    onBeforeCompiler: IEvent<{
+      analyzeOnly?: boolean;
+      compiler: 'vite' | 'webpack';
+      opts: any;
+    }>;
     onBeforeMiddleware: IEvent<{
       app: Express;
     }>;

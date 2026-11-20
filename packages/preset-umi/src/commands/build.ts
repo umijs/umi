@@ -4,6 +4,7 @@ import { chalk, fsExtra, logger, rimraf, semver } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { generateBuildManifestFromStats } from '../features/ssr/utils';
+import { runBundleAnalyze } from '../features/utoopack/utoopack';
 import type { IApi, IOnGenerateFiles } from '../types';
 import {
   measureFileSizesBeforeBuild,
@@ -33,6 +34,7 @@ umi build --clean
 `,
     fn: async function () {
       const isUtoopack = api.appData.bundler === 'utoopack';
+      const analyzeOnly = isUtoopack && Boolean(process.env.ANALYZE);
       if (!isUtoopack) {
         logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
       }
@@ -116,7 +118,6 @@ umi build --clean
         } as IServicePluginAPI['config'],
         cwd: api.cwd,
         entry,
-        ...(isUtoopack ? { skipLegacyAnalyzer: true } : {}),
         ...(api.config.vite
           ? { modifyViteConfig }
           : { babelPreset, chainWebpack, modifyWebpackConfig }),
@@ -137,7 +138,7 @@ umi build --clean
 
       await api.applyPlugins({
         key: 'onBeforeCompiler',
-        args: { compiler: api.appData.bundler, opts },
+        args: { compiler: api.appData.bundler, opts, analyzeOnly },
       });
 
       opts = await api.applyPlugins({
@@ -155,6 +156,10 @@ umi build --clean
           opts,
         },
       });
+
+      if (analyzeOnly) {
+        return runBundleAnalyze(bundler, opts, logger);
+      }
 
       const stats = await bundler.build(opts);
 

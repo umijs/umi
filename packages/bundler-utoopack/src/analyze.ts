@@ -8,10 +8,7 @@ import type { IOpts } from './types';
 // rootDir is omitted on purpose: the bridge always computes it, mirroring
 // build(), and ignores whatever the caller passes.
 export interface IUtoopackAnalyzeOpts
-  extends Omit<
-    IOpts,
-    'onBuildComplete' | 'watch' | 'cache' | 'rootDir' | 'skipLegacyAnalyzer'
-  > {}
+  extends Omit<IOpts, 'onBuildComplete' | 'watch' | 'cache' | 'rootDir'> {}
 
 export interface IUtoopackAnalyzeResult {
   /** Absolute path of the generated report directory */
