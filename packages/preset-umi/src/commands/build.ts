@@ -31,10 +31,19 @@ COMPRESS=none umi build
 
 # clean and build
 umi build --clean
+
+# analyze and export the Utoopack bundle graph
+ANALYZE=1 umi build --export > bundle-analysis.jsonl
 `,
     fn: async function () {
       const isUtoopack = api.appData.bundler === 'utoopack';
       const analyzeOnly = isUtoopack && Boolean(process.env.ANALYZE);
+      const exportReport = api.args?.export === true;
+      if (exportReport && !analyzeOnly) {
+        throw new Error(
+          'umi build --export requires Utoopack and ANALYZE to be set.',
+        );
+      }
       if (!isUtoopack) {
         logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
       }
@@ -158,7 +167,7 @@ umi build --clean
       });
 
       if (analyzeOnly) {
-        return runBundleAnalyze(bundler, opts, logger);
+        return runBundleAnalyze(bundler, opts, logger, exportReport);
       }
 
       const stats = await bundler.build(opts);

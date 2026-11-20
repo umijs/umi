@@ -57,11 +57,13 @@ export async function runBundleAnalyze(
   },
   opts: Record<string, any>,
   logger: typeof import('@umijs/utils').logger,
-): Promise<void> {
+  exportReport = false,
+): Promise<string | void> {
   if (typeof bundler.analyze !== 'function') {
-    logger.error(
-      'Utoopack analyze requires @umijs/bundler-utoopack with analyze support, please align @umijs/preset-umi and @umijs/bundler-utoopack versions',
-    );
+    const message =
+      'Utoopack analyze requires @umijs/bundler-utoopack with analyze support, please align @umijs/preset-umi and @umijs/bundler-utoopack versions';
+    if (exportReport) throw new Error(message);
+    logger.error(message);
     process.exit(1);
     return; // only reachable with a mocked process.exit (tests)
   }
@@ -72,6 +74,7 @@ export async function runBundleAnalyze(
     logger.event('Bundle analyzing...');
     ({ outputPath } = await bundler.analyze(opts));
     logger.event(`Analyzer report written to ${outputPath}`);
+    if (exportReport) return outputPath;
     if (!process.stdout.isTTY) {
       logger.ready(
         `Non-interactive terminal detected, skipping Analyzer UI server. Serve ${outputPath} with a static HTTP server and open its URL in a browser.`,
@@ -87,6 +90,7 @@ export async function runBundleAnalyze(
     logger.ready(`Bundle Analyzer available at ${server.url}`);
   } catch (e) {
     const err = e instanceof Error ? e : new Error(String(e));
+    if (exportReport) throw err;
     if (outputPath) {
       logger.error(
         `Analyzer report written to ${outputPath}. Serve the directory with a static HTTP server and open its URL in a browser.`,

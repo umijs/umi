@@ -28,16 +28,12 @@ export async function run(opts?: IOpts) {
     return;
   }
 
-  checkLocal();
-  setNodeTitle(FRAMEWORK_NAME);
-  setNoDeprecation();
-
   const args = yParser(argv, {
     alias: {
       version: ['v'],
       help: ['h'],
     },
-    boolean: ['version'],
+    boolean: argv[0] === 'build' ? ['version', 'export'] : ['version'],
   });
   const command = args._[0];
   const FEATURE_COMMANDS = ['mfsu', 'setup', 'deadcode'];
@@ -50,6 +46,21 @@ export async function run(opts?: IOpts) {
     process.env[`${FRAMEWORK_NAME}_PRESETS`.toUpperCase()] =
       opts.presets.join(',');
   }
+  if (
+    command === 'build' &&
+    args.export === true &&
+    !args.help &&
+    !args.version
+  ) {
+    const exporter: typeof import('./analyzeExport') = require('./analyzeExport');
+    await exporter.analyzeBuildExport(args);
+    return;
+  }
+
+  checkLocal();
+  setNodeTitle(FRAMEWORK_NAME);
+  setNoDeprecation();
+
   if (command === DEV_COMMAND) {
     dev();
   } else {
