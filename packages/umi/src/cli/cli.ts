@@ -20,11 +20,19 @@ catchUnhandledRejection();
 
 export async function run(opts?: IOpts) {
   checkNodeVersion(MIN_NODE_VERSION);
+  const argv = process.argv.slice(2);
+  // Export saved reports before loading the application or printing CLI logs.
+  if (argv[0] === 'analyze' && argv[1] === 'export') {
+    const exporter: typeof import('./analyzeExport') = require('./analyzeExport');
+    await exporter.analyzeExport(argv.slice(2));
+    return;
+  }
+
   checkLocal();
   setNodeTitle(FRAMEWORK_NAME);
   setNoDeprecation();
 
-  const args = yParser(process.argv.slice(2), {
+  const args = yParser(argv, {
     alias: {
       version: ['v'],
       help: ['h'],

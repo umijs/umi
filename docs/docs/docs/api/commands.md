@@ -41,6 +41,16 @@ Visit https://umijs.org/ to learn more about Umi.
 
 > 为方便查找，以下命令通过字母排序。
 
+## analyze export
+
+将已有的 Utoopack 分析报告导出为 JSONL，可用于脚本分析。报告可以通过 [`ANALYZE=1 umi build`](../guides/env-variables#analyze) 生成。
+
+```bash
+umi analyze export > bundle-analysis.jsonl
+```
+
+命令默认读取 `.turbopack/analyze` 并将 JSONL 写到标准输出。可用 `--report <目录>` 指定其他报告目录。
+
 ## build
 
 构建项目，适用于生产环境的部署。

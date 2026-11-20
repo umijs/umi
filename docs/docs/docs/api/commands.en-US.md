@@ -43,6 +43,16 @@ Visit https://umijs.org/ to learn more about Umi.
 
 > For ease of lookup, the commands below are sorted alphabetically.
 
+## analyze export
+
+Export an existing Utoopack report as JSONL for use in scripts. Generate a report with [`ANALYZE=1 umi build`](../guides/env-variables#analyze).
+
+```bash
+umi analyze export > bundle-analysis.jsonl
+```
+
+The command reads `.turbopack/analyze` by default and writes JSONL to stdout. Pass `--report <directory>` to read a different report directory.
+
 ## build
 
 Build the project for deployment in a production environment.
