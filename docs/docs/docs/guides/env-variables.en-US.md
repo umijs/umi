@@ -105,7 +105,7 @@ Note:
 
 ### ANALYZE
 
-Set `ANALYZE` to any non-empty value, including `0`, to enable bundle analysis. Analysis is off by default.
+Used to analyze the bundle composition, turned off by default.
 
 #### Webpack and Vite
 

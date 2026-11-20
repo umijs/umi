@@ -104,7 +104,7 @@ MY_TOKEN="xxxxx"
 
 ### ANALYZE
 
-设置非空的 `ANALYZE` 可以开启 bundle 分析，`ANALYZE=0` 也会开启。默认关闭。
+用于分析 bundle 构成，默认关闭。
 
 #### Webpack 和 Vite
 
