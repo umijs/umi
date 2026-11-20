@@ -1,0 +1,21 @@
+packages/preset-umi/src/commands/preview.test.ts
+  s_f3bfe0c35e9388::t_54e3e49237ccb5 1-67
+packages/preset-umi/src/commands/preview.ts
+  s_f3bfe0c35e9388::t_51c67a0ab17482 63-74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "4e31fa096092252c5ca1502cd650086439bc2490",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
