@@ -1,0 +1,21 @@
+docs/docs/docs/api/commands.en-US.md
+  s_430ac4440b2a57::t_0504d8ee7bb1ea 70
+docs/docs/docs/api/commands.md
+  s_430ac4440b2a57::t_0504d8ee7bb1ea 62,68
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "2cada6c4788f19d577254a2f28ebcab88d17e8a1",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
