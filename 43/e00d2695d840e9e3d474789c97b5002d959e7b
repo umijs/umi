@@ -1,0 +1,21 @@
+packages/bundler-utoopack/package.json
+  s_430ac4440b2a57::t_f2c3ff886a45c1 25
+pnpm-lock.yaml
+  s_430ac4440b2a57::t_84339da2b9f528 2149-2150,22314-22315,22341-22342,22368-22369,22395-22396,22422-22423,22449-22450,22474-22475,22500-22501,22601-22602,22621,22638-22644
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "43e00d2695d840e9e3d474789c97b5002d959e7b",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
