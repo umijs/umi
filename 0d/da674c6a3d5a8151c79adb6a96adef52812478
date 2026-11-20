@@ -1,0 +1,43 @@
+packages/preset-umi/src/commands/build.ts
+  s_430ac4440b2a57::t_73e100b90501e7 119
+packages/bundler-utoopack/src/index.test.ts
+  s_430ac4440b2a57::t_d3b0888330efce 1
+  s_430ac4440b2a57::t_cbcabf127d4d58 34-39,65-66,109,132,135,149-150
+  s_430ac4440b2a57::t_6c762ba9150942 13
+  s_430ac4440b2a57::t_47cc2a40fb4bcb 2-5,7-8,14-33,40-54,62-64,67-75,86,94,105-108,110-119,123-131,133-134,136-148,151-153
+  s_430ac4440b2a57::t_6ccd641759fbeb 55-61
+  s_430ac4440b2a57::t_1e92fa14349e28 76-85,87-93,95-104,120-122
+  s_430ac4440b2a57::t_fc7fdb7f801634 154
+packages/bundler-utoopack/src/analyze.ts
+  s_430ac4440b2a57::t_ab84c938abda55 53-55
+  s_430ac4440b2a57::t_52243442c6831d 11-14
+packages/preset-umi/src/features/utoopack/utoopack.ts
+  s_430ac4440b2a57::t_4bf51ecb1226b7 77,81-86,92
+packages/bundler-utoopack/src/types.ts
+  s_430ac4440b2a57::t_7c6ac5fde79de1 33
+  s_430ac4440b2a57::t_6ccd641759fbeb 32
+packages/bundler-utoopack/src/index.ts
+  s_430ac4440b2a57::t_e614dff35bf7bb 6,75-82,84-86,88-91,95-124,137-140,142,144,201-204,206,208
+  s_430ac4440b2a57::t_7c6ac5fde79de1 83,87,92-94,143,207
+packages/preset-umi/src/features/utoopack/utoopack.test.ts
+  s_430ac4440b2a57::t_4bf51ecb1226b7 186,202,222-232,239,242,297,305,311,318,338
+packages/preset-umi/src/features/ssr/webpack/webpack.ts
+  s_430ac4440b2a57::t_c78817b9b9c6a5 66-69
+  s_430ac4440b2a57::t_73e100b90501e7 61-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0dda674c6a3d5a8151c79adb6a96adef52812478",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
