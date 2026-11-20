@@ -67,7 +67,7 @@ In a Utoopack project, generate a bundle analysis report and export it as JSONL 
 ANALYZE=1 umi build --export > bundle-analysis.jsonl
 ```
 
-The command skips the regular build and report server. Analysis logs go to stderr and JSONL goes to stdout.
+Umi saves the report to `.turbopack/analyze`, skips the regular build, and leaves the report server off. Analysis logs go to stderr and JSONL goes to stdout. Use [`umi analyze export`](#analyze-export) to export the saved report again.
 
 ## config
 

@@ -59,13 +59,13 @@ umi analyze export > bundle-analysis.jsonl
 $ umi build
 ```
 
-在 Utoopack 项目中，可以一次生成分析报告并导出 JSONL：
+在 Utoopack 项目中，可以用一条命令生成分析报告并导出 JSONL。
 
 ```bash
 ANALYZE=1 umi build --export > bundle-analysis.jsonl
 ```
 
-该命令跳过普通构建和报告服务。分析日志写到标准错误，JSONL 写到标准输出。
+报告保存到 `.turbopack/analyze`。该命令跳过普通构建和报告服务，日志写到标准错误，JSONL 写到标准输出。可以用 [`umi analyze export`](#analyze-export) 再次导出已有报告。
 
 ## config
 
