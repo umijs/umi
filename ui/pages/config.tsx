@@ -45,7 +45,7 @@ export default function Page() {
         <ReactJson
           theme={JSONTheme[mode]}
           style={{ backgroundColor: 'transparent' }}
-          src={data[viewType]}
+          src={data[viewType] ?? {}}
           iconStyle="square"
           onEdit={false}
           onAdd={false}

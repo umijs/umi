@@ -1,12 +1,12 @@
 import { innerPluginList } from '@/contants';
-import type { IAppData } from '@/hooks/useAppData';
+import type { IPlugin } from '@/hooks/useAppData';
 import { getRegisterTime } from '@/utils/getPluginRegisterTime';
 import { Input, List, Popover, Switch, Tag } from 'antd';
 import { FC, useMemo, useState } from 'react';
 import { Icon, styled } from 'umi';
 
 interface IProps {
-  plugins: IAppData['plugins'];
+  plugins: Record<string, IPlugin>;
 }
 
 const SwitchContainer = styled.div`
@@ -75,10 +75,6 @@ const ListContainer = styled.div`
       &-name {
         margin-right: 1rem;
       }
-    }
-
-    &-path {
-      margin-top: 0.5rem;
     }
   }
 `;
@@ -175,9 +171,6 @@ export const PluginList: FC<IProps> = ({ plugins }) => {
                     </Tag>
                   ) : null}
                 </div>
-                {item.path ? (
-                  <div className="item-content-path">{item.path}</div>
-                ) : null}
               </div>
             </List.Item>
           )}

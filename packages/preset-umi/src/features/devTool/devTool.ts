@@ -3,6 +3,7 @@ import { cheerio } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
+import { getDiagnosticAppData, getDiagnosticConfig } from './diagnostics';
 
 const devToolAppDist = join(__dirname, '../../../devToolAppDist');
 const assetsDir = join(__dirname, '../../../assets');
@@ -29,10 +30,10 @@ export default (api: IApi) => {
         if (path.startsWith('/__umi/api/')) {
           const shortPath = path.replace('/__umi/api/', '');
           if (shortPath === 'config') {
-            return res.json(api.config);
+            return res.json(getDiagnosticConfig(api.config));
           }
           if (shortPath === 'app-data') {
-            return res.json(api.appData);
+            return res.json(getDiagnosticAppData(api));
           }
           if (shortPath === 'bundle-status') {
             const isMFSUEnable = api.config.mfsu !== false;

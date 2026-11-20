@@ -1,13 +1,13 @@
 import { modeColorMap } from '@/contants';
+import type { IImportGraph } from '@/hooks/useAppData';
 import { state as globalState } from '@/models/global';
 import type { Edge, Item } from '@antv/g6';
 import G6 from '@antv/g6';
-import type { Metafile } from '@umijs/bundler-utils/compiled/esbuild';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { useSnapshot } from 'umi';
 
 interface IProps {
-  metaFile: Metafile;
+  metaFile: IImportGraph;
 }
 
 const ACTIVE_COLOR = '#117cf3';
@@ -92,7 +92,10 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
         filesMap[file] = id;
         return [nodes, filesMap];
       },
-      [[], {}] as [{ id: string; path: string }[], Record<string, string>],
+      [[], Object.create(null)] as [
+        { id: string; path: string }[],
+        Record<string, string>,
+      ],
     );
 
     // 获取 edges
@@ -102,7 +105,7 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
       const id = filesMap[file];
 
       const edges = imports
-        .filter((ipt) => ipt.original)
+        .filter(({ path }) => filesMap[path] !== undefined)
         .map(({ path }) => {
           const pId = filesMap[path];
           return {

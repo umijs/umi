@@ -10,7 +10,7 @@ export default function Page() {
   const { data } = useAppData();
   if (!data) return <div>Loading...</div>;
 
-  const routes = data.routes;
+  const routes = data.routes ?? {};
   const info = routes[routeId];
   const handleClickNode = (routeId: string) => {
     if (routeId === FAKE_ID) {

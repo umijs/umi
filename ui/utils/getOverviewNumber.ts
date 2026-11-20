@@ -2,15 +2,8 @@ import { innerPluginList } from '@/contants';
 import { IAppData } from '@/hooks/useAppData';
 
 export const getOverviewNumber = (data: IAppData) => {
-  const {
-    routes,
-    prepare: {
-      buildResult: { metafile },
-    },
-    plugins,
-  } = data;
-
-  const inputs = metafile!.inputs;
+  const { routes = {}, plugins = {} } = data;
+  const inputs = data.prepare?.buildResult.metafile?.inputs ?? {};
 
   // plugins
   const pluginKeys = Object.keys(plugins);
