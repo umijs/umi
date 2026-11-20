@@ -1,5 +1,8 @@
-import { logger } from '@umijs/utils';
+import { logger, rimraf } from '@umijs/utils';
+import buildCommand from '../../commands/build';
 import utoopack, { runBundleAnalyze } from './utoopack';
+
+type IApi = import('../../types').IApi;
 
 jest.mock('@umijs/utils', () => {
   const originalModule = jest.requireActual('@umijs/utils');
@@ -20,12 +23,8 @@ const mockUtooBundler = {
   serveAnalyzeReport: jest.fn(),
 };
 
-// For jest.requireActual flow, the feature loads its bundler via
-// require(process.env.UTOOPACK), which tests point at this virtual module.
-jest.mock('mock-utoopack-bundler', () => mockUtooBundler, { virtual: true });
-
 const REPORT_OUTPUT_PATH = '/mock/project/.turbopack/analyze';
-const ENV_KEYS = ['ANALYZE', 'ANALYZE_PORT', 'UTOOPACK'];
+const ENV_KEYS = ['ANALYZE', 'ANALYZE_PORT'];
 const savedEnv: Record<string, string | undefined> = {};
 let originalStdoutIsTTY: boolean | undefined;
 
@@ -71,7 +70,6 @@ function createApi() {
     onStart: jest.fn(),
     onDevCompileDone: jest.fn(),
     onBuildComplete: jest.fn(),
-    onBuildHtmlComplete: jest.fn(),
     addHTMLStyles: jest.fn(),
     addHTMLHeadScripts: jest.fn(),
     config: { publicPath: '/static/' },
@@ -106,7 +104,7 @@ function mockAnalyzeOk(serverUrl = 'http://127.0.0.1:8888') {
 
 test('onDevCompileDone replaces obsolete HTML assets with the current entry assets', () => {
   const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
+  utoopack(api as unknown as IApi);
   const compile = api.onDevCompileDone.mock.calls[0][0];
   const getStyles = api.addHTMLStyles.mock.calls[0][0];
   const getScripts = api.addHTMLHeadScripts.mock.calls[0][0];
@@ -146,7 +144,7 @@ test('onDevCompileDone replaces obsolete HTML assets with the current entry asse
 
 test('onBuildComplete retains assets from earlier production compilations', () => {
   const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
+  utoopack(api as unknown as IApi);
   const build = api.onBuildComplete.mock.calls[0][0];
   const getStyles = api.addHTMLStyles.mock.calls[0][0];
   const getScripts = api.addHTMLHeadScripts.mock.calls[0][0];
@@ -168,44 +166,72 @@ test('onBuildComplete retains assets from earlier production compilations', () =
   ]);
 });
 
-test('onBuildHtmlComplete when ANALYZE is falsy should return without invoking any analyze call', async () => {
-  const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
-  const handler = api.onBuildHtmlComplete.mock.calls[0][0];
+test.each([
+  ['utoopack', '1', true],
+  ['utoopack', '0', true],
+  ['utoopack', '', false],
+  ['webpack', '1', false],
+])(
+  '%s build with ANALYZE=%j uses the expected compiler path',
+  async (bundlerName, analyze, analyzeOnly) => {
+    setStdoutIsTTY(false);
+    process.env.ANALYZE = analyze;
+    mockAnalyzeOk();
+    jest.spyOn(rimraf, 'sync').mockImplementation(() => {});
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    const bundler = {
+      ...mockUtooBundler,
+      build: jest.fn().mockResolvedValue({ toJson: () => ({}) }),
+    };
+    const entry = { umi: '/mock/project/.umi-production/umi.ts' };
+    const api = {
+      registerCommand: jest.fn(),
+      applyPlugins: jest.fn(async ({ key, initialValue }: any) => {
+        if (key === 'modifyUniBundler') return bundler;
+        if (key === 'modifyUniBundlerOpts') return { ...initialValue, entry };
+        return initialValue;
+      }),
+      appData: {
+        bundler: bundlerName,
+        react: { version: '18.0.0' },
+        umi: { version: '4.0.0' },
+      },
+      config: { mpa: true },
+      userConfig: {},
+      cwd: '/mock/project',
+      paths: { absTmpPath: '/mock/project/.umi-production' },
+    };
 
-  process.env.ANALYZE = '';
-  process.env.UTOOPACK = 'mock-utoopack-bundler';
+    buildCommand(api as unknown as IApi);
+    await api.registerCommand.mock.calls[0][0].fn();
 
-  await handler({ cwd: '/mock/project', htmlFiles: [] });
+    expect(api.applyPlugins).toHaveBeenCalledWith(
+      expect.objectContaining({
+        key: 'onBeforeCompiler',
+        args: expect.objectContaining({ analyzeOnly }),
+      }),
+    );
+    expect(bundler.analyze).toHaveBeenCalledTimes(Number(analyzeOnly));
+    expect(bundler.build).toHaveBeenCalledTimes(Number(!analyzeOnly));
+    const compile = analyzeOnly ? bundler.analyze : bundler.build;
+    expect(compile).toHaveBeenCalledWith(expect.objectContaining({ entry }));
+    const hooks = api.applyPlugins.mock.calls.map(([args]) => args.key);
+    expect(hooks.includes('onBuildHtmlComplete')).toBe(!analyzeOnly);
+  },
+);
 
-  expect(mockUtooBundler.analyze).not.toHaveBeenCalled();
-  expect(mockUtooBundler.serveAnalyzeReport).not.toHaveBeenCalled();
-  expect(logger.event).not.toHaveBeenCalled();
-});
-
-test('onBuildHtmlComplete when ANALYZE is truthy should run the full analyze chain and hang', async () => {
+test('runBundleAnalyze resolves after starting the Analyzer UI server', async () => {
   setStdoutIsTTY(true);
   process.env.ANALYZE = '1';
   process.env.ANALYZE_PORT = '9999';
-  process.env.UTOOPACK = 'mock-utoopack-bundler';
   const serverHandle = mockAnalyzeOk('http://127.0.0.1:9999');
 
-  const api = createApi();
-  utoopack(api as unknown as import('../../types').IApi);
-  const handler = api.onBuildHtmlComplete.mock.calls[0][0];
   const args = {
     cwd: '/mock/project',
     entry: { index: './src/index.ts' },
-    htmlFiles: [{ path: 'index.html' }],
   };
 
-  // Without an injected wait the handler promise stays pending (the real
-  // run hangs until Ctrl-C).
-  const handlerPromise = handler(args);
-  const timeout = new Promise((resolve) =>
-    setTimeout(() => resolve('timeout'), 50),
-  );
-  expect(await Promise.race([handlerPromise, timeout])).toBe('timeout');
+  await runBundleAnalyze(mockUtooBundler, args, logger);
 
   expect(mockUtooBundler.analyze).toHaveBeenCalledTimes(1);
   expect(mockUtooBundler.analyze).toHaveBeenCalledWith(args);
@@ -225,24 +251,28 @@ test('onBuildHtmlComplete when ANALYZE is truthy should run the full analyze cha
   expect(logger.ready).toHaveBeenCalledWith(
     `Bundle Analyzer available at ${serverHandle.url}`,
   );
+  expect(serverHandle.close).not.toHaveBeenCalled();
+});
 
-  // Injecting a resolvable wait drives the same chain to completion, and an
-  // invalid ANALYZE_PORT falls back to the default port 8888.
-  mockUtooBundler.analyze.mockClear();
-  mockUtooBundler.serveAnalyzeReport.mockClear();
-  process.env.ANALYZE_PORT = 'abc';
-  const wait = jest.fn(async () => undefined as never);
+test.each([
+  ['abc', 8888],
+  ['', 8888],
+  ['0', 0],
+])('runBundleAnalyze maps ANALYZE_PORT=%j to port %i', async (value, port) => {
+  setStdoutIsTTY(true);
+  process.env.ANALYZE_PORT = value;
+  mockAnalyzeOk();
+
   await runBundleAnalyze(
     mockUtooBundler,
     { cwd: '/mock/project' },
     createTestLogger(),
-    wait,
   );
+
   expect(mockUtooBundler.serveAnalyzeReport).toHaveBeenCalledWith(
     REPORT_OUTPUT_PATH,
-    8888,
+    port,
   );
-  expect(wait).toHaveBeenCalledTimes(1);
 });
 
 test('runBundleAnalyze when analyze rejects should log error and exit 1', async () => {
@@ -296,7 +326,7 @@ test('runBundleAnalyze when serve succeeds but a later step throws should close 
     exitSpy.mock.invocationCallOrder[0],
   );
   expect(testLogger.error).toHaveBeenCalledWith(
-    `Analyzer report written to ${REPORT_OUTPUT_PATH} (open ${REPORT_OUTPUT_PATH}/index.html directly)`,
+    `Analyzer report written to ${REPORT_OUTPUT_PATH}. Serve the directory with a static HTTP server and open its URL in a browser.`,
   );
   expect(testLogger.error).toHaveBeenCalledWith(
     'Analyzer UI server failed: logger ready blew up. A previous Analyzer process may still be running (Ctrl-C it in its terminal), or set ANALYZE_PORT to use another port.',
@@ -304,29 +334,22 @@ test('runBundleAnalyze when serve succeeds but a later step throws should close 
   expect(exitSpy).toHaveBeenCalledWith(1);
 });
 
-test('runBundleAnalyze with non-tty stdout should skip serve and hang-free return', async () => {
+test('runBundleAnalyze with non-tty stdout prints HTTP serving instructions without starting a server', async () => {
   setStdoutIsTTY(false);
   const exitSpy = mockExit();
   const testLogger = createTestLogger();
   mockAnalyzeOk();
-  const wait = jest.fn(async () => undefined as never);
 
-  await runBundleAnalyze(
-    mockUtooBundler,
-    { cwd: '/mock/project' },
-    testLogger,
-    wait,
-  );
+  await runBundleAnalyze(mockUtooBundler, { cwd: '/mock/project' }, testLogger);
 
   expect(mockUtooBundler.analyze).toHaveBeenCalledTimes(1);
   expect(testLogger.event).toHaveBeenCalledWith(
     `Analyzer report written to ${REPORT_OUTPUT_PATH}`,
   );
   expect(testLogger.ready).toHaveBeenCalledWith(
-    `Non-interactive terminal detected, skipping Analyzer UI server. Open ${REPORT_OUTPUT_PATH}/index.html in a browser.`,
+    `Non-interactive terminal detected, skipping Analyzer UI server. Serve ${REPORT_OUTPUT_PATH} with a static HTTP server and open its URL in a browser.`,
   );
   expect(mockUtooBundler.serveAnalyzeReport).not.toHaveBeenCalled();
-  expect(wait).not.toHaveBeenCalled();
   expect(exitSpy).not.toHaveBeenCalled();
 });
 
@@ -344,7 +367,7 @@ test('runBundleAnalyze when serve rejects should print report path and port hint
   await runBundleAnalyze(mockUtooBundler, { cwd: '/mock/project' }, testLogger);
 
   expect(testLogger.error).toHaveBeenCalledWith(
-    `Analyzer report written to ${REPORT_OUTPUT_PATH} (open ${REPORT_OUTPUT_PATH}/index.html directly)`,
+    `Analyzer report written to ${REPORT_OUTPUT_PATH}. Serve the directory with a static HTTP server and open its URL in a browser.`,
   );
   expect(testLogger.error).toHaveBeenCalledWith(
     'Analyzer UI server failed: listen EADDRINUSE 0.0.0.0:8888. A previous Analyzer process may still be running (Ctrl-C it in its terminal), or set ANALYZE_PORT to use another port.',

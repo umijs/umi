@@ -174,7 +174,9 @@ export default (api: IApi) => {
   api.addTmpGenerateWatcherPaths(() => [api.paths.absApiRoutesPath]);
 
   // 编译时，将打包好的临时文件根据用户指定的目标平台进行打包
-  api.onBeforeCompiler(async () => {
+  api.onBeforeCompiler(async ({ analyzeOnly }) => {
+    if (analyzeOnly) return;
+
     // 当有新的 API 路由或是原有的路由被删除时，必须重启服务，因为 appData 内的 apiRoutes 没有更新
     if (api.env === 'development') {
       watch({

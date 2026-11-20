@@ -47,12 +47,9 @@ export async function analyze(
   });
   // The 4th analyzeOptions parameter pins the report dir to `.turbopack/analyze`;
   // the runtime resolves it against the normalized cwd.
-  const result = await utooPackAnalyze(
-    utooPackConfig,
-    normalizedCwd,
-    rootDir,
-    { outputPath: REPORT_OUTPUT_DIR },
-  );
+  const result = await utooPackAnalyze(utooPackConfig, normalizedCwd, rootDir, {
+    outputPath: REPORT_OUTPUT_DIR,
+  });
   return { outputPath: result.outputPath };
 }
 
