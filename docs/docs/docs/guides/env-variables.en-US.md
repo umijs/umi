@@ -129,6 +129,14 @@ Umi uses the production configuration to generate a client bundle report in the 
 
 In an interactive terminal, the report is available at `http://127.0.0.1:8888` by default. Set `ANALYZE_PORT` to choose a port, or set it to `0` to use an available port automatically. In a non-interactive environment such as CI, Umi only writes the report. Serve the report directory with a static HTTP server and open its URL in a browser.
 
+For use in scripts, generate the report and export JSONL in a single command.
+
+```bash
+ANALYZE=1 umi build --export > bundle-analysis.jsonl
+```
+
+Umi writes JSONL to stdout and analysis logs to stderr. See the [build command reference](../api/commands#build).
+
 To see the overall module size for an entry, select **All file types**, clear **Initial modules only**, and read **All Entry Modules**. This total includes both synchronous and asynchronous modules. Compressed sizes are estimates.
 
 ### BABEL_POLYFILL
