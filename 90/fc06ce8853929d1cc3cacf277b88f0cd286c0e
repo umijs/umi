@@ -1,0 +1,22 @@
+packages/renderer-react/src/browser.clientLoader.test.ts
+  s_f3bfe0c35e9388::t_af8d234bd7a73f 1-52
+packages/renderer-react/src/browser.tsx
+  s_f3bfe0c35e9388::t_5c81e1265ed2a3 307-308,326
+  s_f3bfe0c35e9388::t_a9cef23ec68c9a 6,239,324-325,327-329
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "90fc06ce8853929d1cc3cacf277b88f0cd286c0e",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": null
+    }
+  }
+}
