@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import { cheerio } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, realpathSync } from 'fs';
+import { isAbsolute, join, relative, sep } from 'path';
 import { IApi } from '../../types';
 import { getDiagnosticAppData, getDiagnosticConfig } from './diagnostics';
 
@@ -75,11 +75,14 @@ export default (api: IApi) => {
         // static
         if (!process.env.DEVTOOL_LOCAL && path.startsWith('/__umi/')) {
           const shortPath = path.replace('/__umi/', '');
-          if (shortPath !== '' && existsSync(join(devToolAppDist, shortPath))) {
-            return res.sendFile(join(devToolAppDist, shortPath));
-          } else {
-            return res.sendFile(join(devToolAppDist, 'index.html'));
+          const file = resolveDevToolFile(devToolAppDist, shortPath);
+          if (file === null) {
+            return res.status(403).end();
           }
+          if (!file) {
+            return res.status(404).end();
+          }
+          return res.sendFile(file.path, { root: file.root });
         }
 
         if (
@@ -104,3 +107,48 @@ export default (api: IApi) => {
     ];
   });
 };
+
+function isOutsideRoot(relativePath: string) {
+  return (
+    relativePath === '..' ||
+    relativePath.startsWith(`..${sep}`) ||
+    isAbsolute(relativePath)
+  );
+}
+
+function realpathIfPresent(file: string) {
+  try {
+    return realpathSync(file);
+  } catch (err) {
+    const { code } = err as NodeJS.ErrnoException;
+    if (code !== 'ENOENT' && code !== 'ENOTDIR') {
+      throw err;
+    }
+  }
+}
+
+export function resolveDevToolFile(root: string, file: string) {
+  const requestedPath = relative(root, join(root, file || 'index.html'));
+  if (isOutsideRoot(requestedPath)) {
+    return null;
+  }
+
+  const realRoot = realpathIfPresent(root);
+  if (!realRoot) {
+    return;
+  }
+  const realFile =
+    realpathIfPresent(join(realRoot, requestedPath)) ??
+    realpathIfPresent(join(realRoot, 'index.html'));
+  if (!realFile) {
+    return;
+  }
+
+  // Serve the validated canonical path instead of following the request path
+  // again after validating it.
+  const realRelativePath = relative(realRoot, realFile);
+  if (isOutsideRoot(realRelativePath)) {
+    return null;
+  }
+  return { path: realRelativePath || '.', root: realRoot };
+}
