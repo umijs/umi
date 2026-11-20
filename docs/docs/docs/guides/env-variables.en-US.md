@@ -105,17 +105,31 @@ Note:
 
 ### ANALYZE
 
-Used to analyze the bundle composition, turned off by default.
+Set `ANALYZE` to any non-empty value, including `0`, to enable bundle analysis. Analysis is off by default.
 
-For example:
+#### Webpack and Vite
 
 ```bash
-$ ANALYZE=1 umi dev
-# or
-$ ANALYZE=1 umi build
+# Webpack development
+ANALYZE=1 umi dev
+
+# Webpack or Vite build
+ANALYZE=1 umi build
 ```
 
-You can customize the port with the `ANALYZE_PORT` environment variable or customize the configuration with the [`analyze`](../api/config#analyze) option.
+Use `ANALYZE_PORT` to set the webpack analyzer port. Use the [`analyze`](../api/config#analyze) option to configure the webpack or Vite analyzer.
+
+#### Utoopack
+
+```bash
+ANALYZE=1 umi build
+```
+
+Umi uses the production configuration to generate a client bundle report in the project's `.turbopack/analyze` directory. This mode skips the regular build and preserves any existing `dist` output.
+
+In an interactive terminal, the report is available at `http://127.0.0.1:8888` by default. Set `ANALYZE_PORT` to choose a port, or set it to `0` to use an available port automatically. In a non-interactive environment such as CI, Umi only writes the report. Serve the report directory with a static HTTP server and open its URL in a browser.
+
+To see the overall module size for an entry, select **All file types**, clear **Initial modules only**, and read **All Entry Modules**. This total includes both synchronous and asynchronous modules. Compressed sizes are estimates.
 
 ### BABEL_POLYFILL
 

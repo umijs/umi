@@ -101,9 +101,11 @@ For more configurations, please consult [autoprefixer's options](https://github.
 - Type: `object`
 - Default value: `{}`
 
-Specific configuration options for the analyzer plugin when analyzing product composition through the [`ANALYZE`](../guides/env-variables#analyze) environment variable. See [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin)
+Configures the webpack or Vite bundle analyzer. For webpack options, see [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin).
 
 When using Vite mode, in addition to customizing the configuration of [rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer), `excludeAssets`, `generateStatsFile`, `openAnalyzer`, `reportFilename`, `reportTitle` options will automatically adapt.
+
+For Utoopack's native analyzer, see the [`ANALYZE` environment variable](../guides/env-variables#analyze).
 
 ## base
 
@@ -1545,6 +1547,8 @@ $ npm install @babel/runtime --save-dev
 Use rust bundler [utoopack](http://github.com/utooland/utoo) to improve the performance of build.
 
 This capability can be enabled through configuration, utoopack currently supports most of the framework's features.
+
+To analyze a Utoopack client bundle, see the [`ANALYZE` environment variable](../guides/env-variables#analyze).
 
 When building a qiankun child application with utoopack, if the parent application uses qiankun 2, the qiankun version must be `2.10.17-beta.0` or later. Earlier versions do not provide `document.currentScript` correctly while executing entry scripts, which prevents the child application from loading. For more details about the integration, see the Utoo blog post [When Turbopack Meets qiankun: Adapting Utoopack for Micro Frontends](https://utoo.land/en/docs/blog/utoopack-qiankun).
 
