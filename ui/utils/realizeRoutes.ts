@@ -1,4 +1,4 @@
-import { IAppData, IRoute } from '@/hooks/useAppData';
+import { IRoute } from '@/hooks/useAppData';
 
 type PartialIRoute = Partial<IRoute>;
 export interface IIRoute extends PartialIRoute {
@@ -8,7 +8,7 @@ export interface IIRoute extends PartialIRoute {
 export const FAKE_ID = '__FAKE_LAYOUT__';
 
 // 通过对象引用建立route间关系
-export const realizeRoutes = (routes: IAppData['routes']): IIRoute[] => {
+export const realizeRoutes = (routes: Record<string, IRoute>): IIRoute[] => {
   const ids = Object.keys(routes);
   const relations: IIRoute[] = [];
   // 临时储存关系

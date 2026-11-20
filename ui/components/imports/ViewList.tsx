@@ -1,11 +1,11 @@
-import type { Metafile } from '@umijs/bundler-utils/compiled/esbuild';
+import type { IImportGraph } from '@/hooks/useAppData';
 import { Empty, Input, List, Switch } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { FC, useMemo, useState } from 'react';
 import { Icon, styled } from 'umi';
 
 interface IProps {
-  metaFile: Metafile;
+  metaFile: IImportGraph;
 }
 
 const SwitchContainer = styled.div`

@@ -26,7 +26,7 @@ export default function Page() {
 
   if (!data) return <div>Loading...</div>;
 
-  const { metafile } = data.prepare.buildResult;
+  const metafile = data.prepare?.buildResult.metafile;
 
   const renderContent = () => {
     if (!metafile) {

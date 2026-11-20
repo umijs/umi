@@ -6,7 +6,7 @@ export default function Page() {
   if (!data) return <div>Loading...</div>;
   return (
     <div>
-      <PluginList plugins={data.plugins} />
+      <PluginList plugins={data.plugins ?? {}} />
     </div>
   );
 }
