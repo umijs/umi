@@ -99,9 +99,11 @@ export default defineConfig({
 - 类型：`object`
 - 默认值：`{}`
 
-通过指定 [`ANALYZE`](../guides/env-variables#analyze) 环境变量分析产物构成时，analyzer 插件的具体配置项，见 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin)
+用于配置 Webpack 或 Vite 的 bundle 分析器。Webpack 的可用选项见 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin)。
 
 使用 Vite 模式时，除了可以自定义 [rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer) 的配置， `excludeAssets`、`generateStatsFile`、`openAnalyzer`、`reportFilename`、`reportTitle` 这些选项会自动转换适配。
+
+Utoopack 的原生分析器用法见 [`ANALYZE` 环境变量](../guides/env-variables#analyze)。
 
 ## base
 
@@ -1582,6 +1584,8 @@ $ npm install @babel/runtime --save-dev
 使用 Rust Bundler [utoopack](http://github.com/utooland/utoo) 用于提升构建性能。
 
 通过配置来启用这个能力，目前 utoopack 对框架中大部分功能已经支持。
+
+要分析 Utoopack 的客户端 bundle，请参阅 [`ANALYZE` 环境变量](../guides/env-variables#analyze)。
 
 使用 utoopack 构建 qiankun 子应用时，如果主应用使用 qiankun 2，qiankun 版本需为 `2.10.17-beta.0` 或更高。更早的版本无法在执行入口脚本时正确提供 `document.currentScript`，会导致子应用加载失败。更多适配原理请参阅 Utoo 官网博客[《当 Turbopack 遇上 qiankun：Utoopack 的微前端适配实践》](https://utoo.land/zh/docs/blog/utoopack-qiankun)。
 

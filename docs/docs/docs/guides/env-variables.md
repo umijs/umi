@@ -106,15 +106,37 @@ MY_TOKEN="xxxxx"
 
 用于分析 bundle 构成，默认关闭。
 
-比如：
+#### Webpack 和 Vite
 
 ```bash
-$ ANALYZE=1 umi dev
-# 或者
-$ ANALYZE=1 umi build
+# Webpack 开发
+ANALYZE=1 umi dev
+
+# Webpack 或 Vite 构建
+ANALYZE=1 umi build
 ```
 
-可以通过 `ANALYZE_PORT` 环境变量自定义端口或 [`analyze`](../api/config#analyze) 选项自定义配置。
+Webpack 可以通过 `ANALYZE_PORT` 设置分析器端口。Webpack 和 Vite 均可通过 [`analyze`](../api/config#analyze) 配置分析器。
+
+#### Utoopack
+
+```bash
+ANALYZE=1 umi build
+```
+
+Umi 使用生产配置生成客户端分析报告，保存到项目的 `.turbopack/analyze` 目录。这个模式会跳过普通构建，保留已有的 `dist`。
+
+在交互式终端中，默认通过 `http://127.0.0.1:8888` 查看报告。可以通过 `ANALYZE_PORT` 指定端口，设为 `0` 时会自动选择一个可用端口。在 CI 等非交互环境中，Umi 只生成报告。用静态 HTTP 服务托管报告目录，然后在浏览器中打开服务地址。
+
+如果要用脚本处理分析结果，可以在生成报告时一并导出 JSONL。
+
+```bash
+ANALYZE=1 umi build --export > bundle-analysis.jsonl
+```
+
+Umi 将 JSONL 写到标准输出，将分析日志写到标准错误。参见 [build 命令](../api/commands#build)。
+
+查看入口的整体模块体积时，选择 **All file types**，取消勾选 **Initial modules only**，然后查看 **All Entry Modules**。这里包含同步和异步模块，压缩大小是估算值。
 
 ### BABEL_POLYFILL
 
