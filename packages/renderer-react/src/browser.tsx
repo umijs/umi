@@ -265,7 +265,6 @@ const getBrowser = (
           }
 
           const clientLoader = opts.routes[id]?.clientLoader;
-          const hasClientLoader = !!clientLoader;
           const hasServerLoader = opts.routes[id]?.hasServerLoader;
           const initialData = window.__UMI_LOADER_DATA__;
           const hasServerLoaderData =
@@ -274,7 +273,9 @@ const getBrowser = (
             (source === 'preload' && Boolean(initialData));
 
           const shouldLoadServer =
-            hasServerLoader && !hasClientLoader && !hasServerLoaderData;
+            hasServerLoader &&
+            !hasServerLoaderData &&
+            (source !== 'preload' || !clientLoader);
           const shouldLoadClient =
             clientLoader &&
             !clientLoaderData[id] &&
@@ -285,8 +286,11 @@ const getBrowser = (
           const request = Symbol();
           const url = window.location.href;
           latestServerLoads.current.set(id, request);
-          const loadServerData = () => {
-            return fetchServerLoader({
+          // A route can read server data even when its client loader runs
+          // independently. If the client loader also requests it, reuse it.
+          let serverLoad: ReturnType<typeof fetchServerLoader> | undefined;
+          const loadServerData = () =>
+            (serverLoad ??= fetchServerLoader({
               id,
               url,
               basename,
@@ -302,8 +306,7 @@ const getBrowser = (
                 if (React.startTransition) React.startTransition(update);
                 else update();
               },
-            });
-          };
+            }));
           if (shouldLoadServer) {
             void loadServerData();
           }

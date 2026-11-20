@@ -8,6 +8,10 @@ import { useClientLoaderData, useServerLoaderData } from './appContext';
 import { renderClient } from './browser';
 import type { ClientLoader } from './types';
 
+const independentLoader: ClientLoader = async () => ({
+  title: 'Independent client data',
+});
+
 test.each([
   {
     name: 'SSR data',
@@ -16,15 +20,23 @@ test.each([
   },
   { name: 'CSR fallback', serverData: undefined, clientLoader: undefined },
   {
+    name: 'CSR fallback with independent loaders',
+    serverData: undefined,
+    clientLoader: independentLoader,
+    clientTitle: 'Independent client data',
+    homeClientLoader: independentLoader,
+  },
+  {
     name: 'SSR data, via a client loader',
     serverData: { home: { title: 'Initial home' } },
     clientLoader: (async ({ serverLoader }) => ({
       title: `${(await serverLoader()).title} via client loader`,
     })) satisfies ClientLoader,
+    clientTitle: 'Quarterly report via client loader',
   },
 ])(
   'loads server data on navigation after $name',
-  async ({ serverData, clientLoader }) => {
+  async ({ serverData, clientLoader, clientTitle, homeClientLoader }) => {
     const globals = globalThis as typeof globalThis & {
       IS_REACT_ACT_ENVIRONMENT?: boolean;
     };
@@ -50,26 +62,31 @@ test.each([
       const { searchParams } = new URL(input, window.location.origin);
       const route = searchParams.get('route')!;
       const url = new URL(searchParams.get('url')!);
+      const quarter = url.searchParams.get('quarter');
       requests.push(`${route}:${url.pathname}${url.search}`);
       return {
-        json: async () => ({
-          title:
-            route === 'home'
-              ? 'Fetched home'
-              : url.searchParams.get('quarter') === '3'
-              ? 'Previous report'
-              : 'Quarterly report',
-        }),
+        json: async () => {
+          if (quarter === '3') await delayed;
+          return {
+            title:
+              route === 'home'
+                ? 'Fetched home'
+                : quarter === '3'
+                ? 'Previous report'
+                : 'Quarterly report',
+          };
+        },
       } as Response;
     });
 
     function Home() {
       const { data } = useServerLoaderData<() => { title: string }>();
-      return React.createElement(
-        Link,
-        { to: '/report?quarter=4' },
-        data?.title,
-      );
+      const clientData = useClientLoaderData().data;
+      const linkProps = {
+        to: '/report?quarter=4',
+        'data-client-title': clientData?.title,
+      };
+      return React.createElement(Link, linkProps, data?.title);
     }
 
     function Report() {
@@ -85,7 +102,12 @@ test.each([
     const Browser = renderClient({
       history,
       routes: {
-        home: { id: 'home', path: '/', hasServerLoader: true },
+        home: {
+          id: 'home',
+          path: '/',
+          hasServerLoader: true,
+          clientLoader: homeClientLoader,
+        },
         report: {
           id: 'report',
           path: '/report',
@@ -107,6 +129,9 @@ test.each([
       expect(container.textContent).toBe(
         serverData ? 'Initial home' : 'Fetched home',
       );
+      expect(container.querySelector('a')?.dataset.clientTitle).toBe(
+        homeClientLoader ? clientTitle : undefined,
+      );
       expect(requests).toEqual(serverData ? [] : ['home:/']);
 
       await React.act(async () => {
@@ -116,23 +141,23 @@ test.each([
             new MouseEvent('click', { bubbles: true, cancelable: true }),
           );
       });
-      expect(container.textContent).toBe(
-        clientLoader
-          ? 'Quarterly report via client loader'
-          : 'Quarterly report',
+      expect(container.textContent).toBe(clientTitle ?? 'Quarterly report');
+      expect(container.querySelector('h1')?.dataset.serverTitle).toBe(
+        'Quarterly report',
       );
       expect(requests).toEqual([
         ...(serverData ? [] : ['home:/']),
         'report:/report?quarter=4',
       ]);
 
-      if (reportLoader) {
+      if (clientLoader && !homeClientLoader) {
         await React.act(async () => history.push('/report?quarter=3'));
         await React.act(async () => history.push('/report?quarter=2'));
         await React.act(async () => resumeDelayed());
-        expect(requests.slice(-2)).toEqual([
-          'report:/report?quarter=2',
+        expect(requests).toEqual([
+          'report:/report?quarter=4',
           'report:/report?quarter=3',
+          'report:/report?quarter=2',
         ]);
         expect(container.querySelector('h1')?.dataset.serverTitle).toBe(
           'Quarterly report',
