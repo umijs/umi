@@ -119,44 +119,39 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       return;
     }
 
-    const loaderData: Record<string, any> = {};
-    // let metadata: Record<string, any> = {};
-    await Promise.all(
+    const routeResults = await Promise.all(
       matches
         .filter((id: string) => routes[id].hasServerLoader)
-        .map(
-          (id: string) =>
-            new Promise<void>(async (resolve) => {
-              loaderData[id] = await executeLoader({
+        .map(async (id: string) => {
+          const data = await executeLoader({
+            routeKey: id,
+            routesWithServerLoader,
+            serverLoaderArgs,
+          });
+          const metadata = routes[id].hasMetadataLoader
+            ? await executeMetadataLoader({
                 routeKey: id,
                 routesWithServerLoader,
                 serverLoaderArgs,
-              });
-              // 如果有metadataLoader，执行metadataLoader
-              // metadataLoader在serverLoader返回之后执行这样metadataLoader可以使用serverLoader的返回值
-              // 如果有多层嵌套路由和合并多层返回的metadata但最里层的优先级最高
-              if (routes[id].hasMetadataLoader) {
-                const metadataLoaderData = await executeMetadataLoader({
-                  routesWithServerLoader,
-                  routeKey: id,
-                  serverLoaderArgs,
-                  serverLoaderData: loaderData[id],
-                });
-                metadataLoaderData &&
-                  Object.entries(metadataLoaderData).forEach(([k, v]) => {
-                    if (Array.isArray(v)) {
-                      opts.htmlPageOpts[k] = (
-                        opts.htmlPageOpts[k] || []
-                      ).concat(v);
-                    } else {
-                      opts.htmlPageOpts[k] = v;
-                    }
-                  });
-              }
-              resolve();
-            }),
-        ),
+                serverLoaderData: data,
+              })
+            : undefined;
+          return { id, data, metadata };
+        }),
     );
+
+    const loaderData: Record<string, any> = {};
+    const htmlPageOpts = { ...opts.htmlPageOpts };
+    // Promise.all preserves match order, so child metadata takes precedence.
+    for (const { id, data, metadata } of routeResults) {
+      loaderData[id] = data;
+      if (!metadata) continue;
+      for (const [key, value] of Object.entries(metadata)) {
+        htmlPageOpts[key] = Array.isArray(value)
+          ? (htmlPageOpts[key] || []).concat(value)
+          : value;
+      }
+    }
 
     const manifest =
       typeof opts.manifest === 'function'
@@ -169,7 +164,7 @@ function createJSXGenerator(opts: CreateRequestHandlerOptions) {
       location: url,
       manifest,
       loaderData,
-      htmlPageOpts: opts.htmlPageOpts,
+      htmlPageOpts,
       __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:
         opts.__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
       mountElementId: opts.mountElementId,
