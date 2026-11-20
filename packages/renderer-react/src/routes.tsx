@@ -1,3 +1,4 @@
+import { createPath, parsePath } from 'history';
 // @ts-ignore
 import React from 'react';
 import {
@@ -61,8 +62,16 @@ function NavigateWithParams(props: { to: string }) {
   const routeProps = useRouteProps();
   const location = useLocation();
   if (routeProps?.keepQuery) {
-    const queryAndHash = location.search + location.hash;
-    to += queryAndHash;
+    const target = parsePath(to);
+    // Keep the original encoding, duplicate keys, and query order.
+    const search = [target.search?.slice(1), location.search.slice(1)]
+      .filter(Boolean)
+      .join('&');
+    to = createPath({
+      pathname: target.pathname ?? '',
+      search,
+      hash: target.hash ?? location.hash,
+    });
   }
   const propsWithParams = {
     ...props,
