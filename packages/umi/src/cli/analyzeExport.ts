@@ -1,16 +1,43 @@
-import { writeAnalyzeReportJsonl } from '@umijs/bundler-utoopack/dist/analyzeReport';
+import {
+  analyzeReportJsonl,
+  writeAnalyzeReportJsonl,
+} from '@umijs/bundler-utoopack/dist/analyzeReport';
 import { logger } from '@umijs/utils';
 import { fork } from 'child_process';
 import { once } from 'events';
+import { mkdtemp, rename, rm, writeFile } from 'fs/promises';
 import { constants } from 'os';
+import { dirname, join, resolve } from 'path';
+import { getCwd } from '../service/cwd';
 
-export async function analyzeBuildExport(args: Record<string, unknown>) {
+export async function analyzeBuildExport(
+  args: Record<string, unknown>,
+  outputFile?: string,
+) {
   try {
     const reportPath = await captureAnalyzeReport(args);
-    if (reportPath) await writeAnalyzeReportJsonl(reportPath, process.stdout);
+    if (!reportPath) return;
+    if (outputFile) {
+      await writeReportFile(reportPath, resolve(getCwd(), outputFile));
+    } else {
+      await writeAnalyzeReportJsonl(reportPath, process.stdout);
+    }
   } catch (error) {
     logger.error(error instanceof Error ? error.message : String(error));
     process.exitCode = 1;
+  }
+}
+
+async function writeReportFile(reportPath: string, destination: string) {
+  const temporaryDirectory = await mkdtemp(
+    join(dirname(destination), '.umi-analyze-'),
+  );
+  try {
+    const temporaryFile = join(temporaryDirectory, 'report.jsonl');
+    await writeFile(temporaryFile, analyzeReportJsonl(reportPath));
+    await rename(temporaryFile, destination);
+  } finally {
+    await rm(temporaryDirectory, { recursive: true, force: true });
   }
 }
 

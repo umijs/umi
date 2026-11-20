@@ -34,6 +34,9 @@ umi build --clean
 
 # analyze and export the Utoopack bundle graph
 ANALYZE=1 umi build --export > bundle-analysis.jsonl
+
+# write JSONL relative to the Umi project directory
+ANALYZE=1 umi build --export bundle-analysis.jsonl
 `,
     fn: async function () {
       const isUtoopack = api.appData.bundler === 'utoopack';
