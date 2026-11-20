@@ -1,0 +1,22 @@
+packages/preset-umi/src/features/mpa/mpa.ts
+  s_f3bfe0c35e9388::t_3573f14a59ee2d 56-59,62-63
+packages/preset-umi/src/features/mpa/mpa.test.ts
+  s_f3bfe0c35e9388::t_dbecd16094e1af 1-12,41,50,64,69,87
+  s_f3bfe0c35e9388::t_cece8d94bbb9fd 13-40,42-49,51-63,65-68,70-86,88-89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "64d699ec985abd1b5349e25f87ecaf0ccf43bbb8",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
