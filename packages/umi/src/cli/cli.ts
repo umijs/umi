@@ -27,7 +27,22 @@ export async function run(opts?: IOpts) {
       version: ['v'],
       help: ['h'],
     },
-    boolean: argv[0] === 'build' ? ['version', 'export'] : ['version'],
+    boolean: ['version'],
+    ...(argv[0] === 'build'
+      ? {
+          string: ['export'],
+          coerce: {
+            export(value: string | boolean | (string | boolean)[]) {
+              const target = Array.isArray(value)
+                ? value[value.length - 1]
+                : value;
+              if (target === 'false') return false;
+              if (target === '' || target === 'true') return true;
+              return target;
+            },
+          },
+        }
+      : {}),
   });
   const command = args._[0];
   const FEATURE_COMMANDS = ['mfsu', 'setup', 'deadcode'];
@@ -42,12 +57,15 @@ export async function run(opts?: IOpts) {
   }
   if (
     command === 'build' &&
-    args.export === true &&
+    (args.export === true || typeof args.export === 'string') &&
     !args.help &&
     !args.version
   ) {
     const exporter: typeof import('./analyzeExport') = require('./analyzeExport');
-    await exporter.analyzeBuildExport(args);
+    await exporter.analyzeBuildExport(
+      { ...args, export: true },
+      typeof args.export === 'string' ? args.export : undefined,
+    );
     return;
   }
 
