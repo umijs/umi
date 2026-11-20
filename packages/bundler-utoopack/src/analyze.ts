@@ -1,4 +1,3 @@
-import { ANALYZE_REPORT_DIR } from './analyzeReport';
 import {
   getProdUtooPackConfig,
   getUtoopackRootDir,
@@ -20,6 +19,10 @@ export interface IUtoopackAnalyzeServer {
   url: string;
   close(): Promise<void>;
 }
+
+// Report directory per upstream review: `.turbopack` instead of the
+// runtime's default `.utoo`, relative to cwd.
+const REPORT_OUTPUT_DIR = '.turbopack/analyze';
 
 const REINSTALL_HINT =
   'Utoopack analyze requires @utoo/pack >= 1.6.0, please reinstall @umijs/bundler-utoopack';
@@ -45,7 +48,7 @@ export async function analyze(
   // The 4th analyzeOptions parameter pins the report dir to `.turbopack/analyze`;
   // the runtime resolves it against the normalized cwd.
   const result = await utooPackAnalyze(utooPackConfig, normalizedCwd, rootDir, {
-    outputPath: ANALYZE_REPORT_DIR,
+    outputPath: REPORT_OUTPUT_DIR,
   });
   return { outputPath: result.outputPath };
 }

@@ -1,8 +1,6 @@
 import { once } from 'events';
 import type { Writable } from 'stream';
 
-export const ANALYZE_REPORT_DIR = '.turbopack/analyze';
-
 export async function writeAnalyzeReportJsonl(
   reportPath: string,
   output: Writable,
