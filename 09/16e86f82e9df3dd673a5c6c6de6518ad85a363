@@ -1,0 +1,25 @@
+docs/docs/docs/api/commands.md
+  s_430ac4440b2a57::t_447b0498cb396d 60
+docs/docs/docs/api/commands.en-US.md
+  s_430ac4440b2a57::t_447b0498cb396d 62
+packages/umi/src/cli/analyzeExport.ts
+  s_430ac4440b2a57::t_447b0498cb396d 17,20-21
+packages/preset-umi/src/commands/build.ts
+  s_430ac4440b2a57::t_447b0498cb396d 38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0916e86f82e9df3dd673a5c6c6de6518ad85a363",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
