@@ -254,6 +254,21 @@ test('runBundleAnalyze resolves after starting the Analyzer UI server', async ()
   expect(serverHandle.close).not.toHaveBeenCalled();
 });
 
+test('runBundleAnalyze returns the report without serving it for export', async () => {
+  setStdoutIsTTY(true);
+  mockAnalyzeOk();
+
+  const outputPath = await runBundleAnalyze(
+    mockUtooBundler,
+    { cwd: '/mock/project' },
+    createTestLogger(),
+    true,
+  );
+
+  expect(outputPath).toBe(REPORT_OUTPUT_PATH);
+  expect(mockUtooBundler.serveAnalyzeReport).not.toHaveBeenCalled();
+});
+
 test.each([
   ['abc', 8888],
   ['', 8888],

@@ -51,6 +51,14 @@ Build the project for deployment in a production environment.
 $ umi build
 ```
 
+In a Utoopack project, generate a bundle analysis report and export it as JSONL in one command.
+
+```bash
+ANALYZE=1 umi build --export > bundle-analysis.jsonl
+```
+
+Umi saves the report to `.turbopack/analyze`, skips the regular build, and leaves the report server off. Analysis logs go to stderr and JSONL goes to stdout.
+
 ## config
 
 Quickly view and modify configuration via the command line.
