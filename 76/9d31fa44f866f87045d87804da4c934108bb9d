@@ -1,0 +1,21 @@
+packages/core/src/route/routesConvention.test.ts
+  s_f3bfe0c35e9388::t_9d3ec7649769f3 6-16
+packages/core/src/route/routesConvention.ts
+  s_f3bfe0c35e9388::t_6e0643c93dddab 101-102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "769d31fa44f866f87045d87804da4c934108bb9d",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
