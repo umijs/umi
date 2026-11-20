@@ -1,0 +1,31 @@
+packages/umi/src/cli/cli.ts
+  s_430ac4440b2a57::t_b74d12aef03ac4 36-38
+  s_430ac4440b2a57::t_02dc7195298350 30-35,39-45,60,65-68
+docs/docs/docs/api/commands.en-US.md
+  s_430ac4440b2a57::t_02dc7195298350 62-67
+packages/umi/src/cli/analyzeExport.ts
+  s_430ac4440b2a57::t_02dc7195298350 1-4,8,10-11,13-16,19-24,31-40
+  s_430ac4440b2a57::t_4dc9564173ab08 41-43
+packages/bundler-utoopack/src/analyzeReport.ts
+  s_430ac4440b2a57::t_02dc7195298350 4-11,16-17
+packages/preset-umi/src/commands/build.ts
+  s_430ac4440b2a57::t_02dc7195298350 37-39
+docs/docs/docs/api/commands.md
+  s_430ac4440b2a57::t_02dc7195298350 60-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "6137291cf50ebd764631fb3f89080c2408e6f7f0",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
