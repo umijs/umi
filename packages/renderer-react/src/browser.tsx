@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useRef,
   useState,
 } from 'react';
 // compatible with < react@18 in @umijs/preset-umi/src/features/react
@@ -238,9 +239,13 @@ const getBrowser = (
     const [serverLoaderData, setServerLoaderData] = useState<ILoaderData>(
       window.__UMI_LOADER_DATA__ || {},
     );
+    const latestServerLoads = useRef(new Map<string, symbol>());
 
     const handleRouteChange = useCallback(
-      (id: string, isFirst?: boolean) => {
+      (
+        id: string,
+        source: 'initial' | 'navigation' | 'preload' = 'preload',
+      ) => {
         // Patched routes has to id
         const matchedRouteIds = (
           matchRoutes(clientRoutes, id, basename)?.map(
@@ -262,60 +267,50 @@ const getBrowser = (
           const clientLoader = opts.routes[id]?.clientLoader;
           const hasClientLoader = !!clientLoader;
           const hasServerLoader = opts.routes[id]?.hasServerLoader;
-          // server loader
-          // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
+          const initialData = window.__UMI_LOADER_DATA__;
+          const hasServerLoaderData =
+            (source === 'initial' &&
+              Object.prototype.hasOwnProperty.call(initialData ?? {}, id)) ||
+            (source === 'preload' && Boolean(initialData));
 
-          if (
-            !isFirst &&
-            hasServerLoader &&
-            !hasClientLoader &&
-            !window.__UMI_LOADER_DATA__
-          ) {
-            fetchServerLoader({
+          const shouldLoadServer =
+            hasServerLoader && !hasClientLoader && !hasServerLoaderData;
+          const shouldLoadClient =
+            clientLoader &&
+            !clientLoaderData[id] &&
+            (clientLoader.hydrate || !hasServerLoader || !hasServerLoaderData);
+          if (!shouldLoadServer && !shouldLoadClient) return;
+
+          // The client loader can call serverLoader after an await.
+          const request = Symbol();
+          const url = window.location.href;
+          latestServerLoads.current.set(id, request);
+          const loadServerData = () => {
+            return fetchServerLoader({
               id,
+              url,
               basename,
               pluginManager: opts.pluginManager,
               cb: (data) => {
-                // setServerLoaderData when startTransition because if ssr is enabled,
-                // the component may being hydrated and setLoaderData will break the hydration
-                React.startTransition(() => {
-                  setServerLoaderData((d) => ({ ...d, [id]: data }));
-                });
+                const update = () =>
+                  setServerLoaderData((current) =>
+                    latestServerLoads.current.get(id) === request
+                      ? { ...current, [id]: data }
+                      : current,
+                  );
+                // Keep updates from interrupting React 18 hydration.
+                if (React.startTransition) React.startTransition(update);
+                else update();
               },
             });
+          };
+          if (shouldLoadServer) {
+            void loadServerData();
           }
-          // client loader
-          // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
-          const hasClientLoaderDataInRoute = !!clientLoaderData[id];
-
-          // Check if hydration is needed or there's no server loader for the current route
-          const shouldHydrateOrNoServerLoader =
-            (hasClientLoader && clientLoader.hydrate) || !hasServerLoader;
-
-          // Check if server loader data is missing in the global window object
-          const isServerLoaderDataMissing =
-            hasServerLoader && !window.__UMI_LOADER_DATA__;
-
-          if (
-            hasClientLoader &&
-            !hasClientLoaderDataInRoute &&
-            (shouldHydrateOrNoServerLoader || isServerLoaderDataMissing)
-          ) {
+          if (clientLoader && shouldLoadClient) {
             // ...
             clientLoader({
-              serverLoader: () =>
-                fetchServerLoader({
-                  id,
-                  basename,
-                  pluginManager: opts.pluginManager,
-                  cb: (data) => {
-                    // setServerLoaderData when startTransition because if ssr is enabled,
-                    // the component may being hydrated and setLoaderData will break the hydration
-                    React.startTransition(() => {
-                      setServerLoaderData((d) => ({ ...d, [id]: data }));
-                    });
-                  },
-                }),
+              serverLoader: loadServerData,
             }).then((data: any) => {
               setClientLoaderData((d: any) => ({ ...d, [id]: data }));
             });
@@ -326,9 +321,9 @@ const getBrowser = (
     );
 
     useEffect(() => {
-      handleRouteChange(window.location.pathname, true);
+      handleRouteChange(opts.history.location.pathname, 'initial');
       return opts.history.listen((e) => {
-        handleRouteChange(e.location.pathname);
+        handleRouteChange(e.location.pathname, 'navigation');
       });
     }, []);
 
