@@ -1,0 +1,22 @@
+packages/server/src/ssr.test.ts
+  s_f3bfe0c35e9388::t_6ee8da3534be93 1-57,63-77,80-102
+  s_f3bfe0c35e9388::t_4d3aeb8faf17f3 58-62,78-79
+packages/server/src/ssr.ts
+  s_f3bfe0c35e9388::t_48edad6350e768 122,125-132,136-140,143-155,167
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c9d9d220b2f84eb0622173ae3ea94512824489aa",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
