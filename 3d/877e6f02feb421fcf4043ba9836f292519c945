@@ -1,0 +1,23 @@
+packages/renderer-react/src/browser.tsx
+  s_f3bfe0c35e9388::t_04f31bbf3f4419 276-278,289-293,309
+packages/renderer-react/src/browser.serverLoader.test.ts
+  s_f3bfe0c35e9388::t_355eaf17504cd2 11-14,22-28,35,39,84,105-110,132-134,145-146,153
+  s_f3bfe0c35e9388::t_7feb4c5bdb7768 65,68-78,85-89,157-158,160
+  s_f3bfe0c35e9388::t_abc46a0127da94 144
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3d877e6f02feb421fcf4043ba9836f292519c945",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
