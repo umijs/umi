@@ -8,17 +8,17 @@ import { once } from 'events';
 import { mkdtemp, rename, rm, writeFile } from 'fs/promises';
 import { constants } from 'os';
 import { dirname, join, resolve } from 'path';
-import { getCwd } from '../service/cwd';
 
 export async function analyzeBuildExport(
   args: Record<string, unknown>,
   outputFile?: string,
 ) {
   try {
+    const destination = outputFile && resolve(outputFile);
     const reportPath = await captureAnalyzeReport(args);
     if (!reportPath) return;
-    if (outputFile) {
-      await writeReportFile(reportPath, resolve(getCwd(), outputFile));
+    if (destination) {
+      await writeReportFile(reportPath, destination);
     } else {
       await writeAnalyzeReportJsonl(reportPath, process.stdout);
     }

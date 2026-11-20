@@ -57,7 +57,7 @@ ANALYZE=1 umi build --export > bundle-analysis.jsonl
 
 报告保存到 `.turbopack/analyze`。该命令跳过普通构建和报告服务，日志写到标准错误，JSONL 写到标准输出。
 
-也可以在 `--export` 后指定文件名，由 Umi 直接写入文件。相对路径以 Umi 项目目录为准，设置了 `APP_ROOT` 时以该目录为准。
+也可以在 `--export` 后指定文件名，由 Umi 直接写入文件。相对路径以执行命令时的终端目录为准，与 `>` 重定向一致。
 
 ```bash
 ANALYZE=1 umi build --export bundle-analysis.jsonl

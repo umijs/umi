@@ -35,7 +35,7 @@ umi build --clean
 # analyze and export the Utoopack bundle graph
 ANALYZE=1 umi build --export > bundle-analysis.jsonl
 
-# write JSONL relative to the Umi project directory
+# write JSONL relative to the current working directory
 ANALYZE=1 umi build --export bundle-analysis.jsonl
 `,
     fn: async function () {

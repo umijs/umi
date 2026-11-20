@@ -59,7 +59,7 @@ ANALYZE=1 umi build --export > bundle-analysis.jsonl
 
 Umi saves the report to `.turbopack/analyze`, skips the regular build, and leaves the report server off. Analysis logs go to stderr and JSONL goes to stdout.
 
-Pass a filename to `--export` to write JSONL directly to a file. Umi resolves relative paths from the project directory, using `APP_ROOT` when set.
+Pass a filename to `--export` to write JSONL directly to a file. Relative paths resolve from the current working directory, just like shell redirection with `>`.
 
 ```bash
 ANALYZE=1 umi build --export bundle-analysis.jsonl
