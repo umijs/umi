@@ -1,0 +1,23 @@
+packages/preset-umi/src/features/exportStatic/exportStatic.test.ts
+  s_f3bfe0c35e9388::t_8565c806756d21 22-26,29-30,38-41,51-60,64-69
+  s_f3bfe0c35e9388::t_2ac1dc78b0597f 1-21,27-28,31-36,43-50,61-63
+  s_f3bfe0c35e9388::t_394edc11aac0b9 37,42
+packages/preset-umi/src/features/exportStatic/exportStatic.ts
+  s_f3bfe0c35e9388::t_394edc11aac0b9 122-127
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "917b154ea898c0865001e9aaeb42d162a5513e07",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
