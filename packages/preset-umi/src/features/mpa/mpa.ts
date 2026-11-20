@@ -53,11 +53,14 @@ export default (api: IApi) => {
     (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
       const layout = entry.layout || api.config.mpa.layout;
       const layoutImport = layout ? `import Layout from '${layout}';` : '';
-      const layoutJSX = layout ? `<Layout><App /></Layout>` : `<App />`;
+      const app = 'React.createElement(App)';
+      const element = layout
+        ? `React.createElement(Layout, null, ${app})`
+        : app;
       const rootElement = `document.getElementById('${entry.mountElementId}')`;
       const renderer = isGTEReact18
-        ? `ReactDOM.createRoot(${rootElement}).render(${layoutJSX});`
-        : `ReactDOM.render(${layoutJSX}, ${rootElement});`;
+        ? `ReactDOM.createRoot(${rootElement}).render(${element});`
+        : `ReactDOM.render(${element}, ${rootElement});`;
       const reactDOMSource = isGTEReact18 ? 'react-dom/client' : 'react-dom';
       api.writeTmpFile({
         path: entry.tmpFilePath,
