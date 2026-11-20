@@ -1,0 +1,25 @@
+packages/preset-umi/src/features/devTool/devTool.ts
+  s_0bf045cfd627aa::t_f0d6138e0630be 3-4,109-153
+  s_0bf045cfd627aa::t_dc40f823e66155 77-79,81,83-84
+  s_0bf045cfd627aa::t_4dbb20ba29ee24 82
+packages/preset-umi/src/features/devTool/staticFile.test.ts
+  s_0bf045cfd627aa::t_f0d6138e0630be 11
+  s_0bf045cfd627aa::t_4dbb20ba29ee24 1-8,44-52
+  s_0bf045cfd627aa::t_dc40f823e66155 9-10,12-43,53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c6ae353f154b138e92a345bc20844a647de2fa1b",
+  "prompts": {},
+  "sessions": {
+    "s_0bf045cfd627aa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6ee-56bf-7ec1-8523-af56b71874c8",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
