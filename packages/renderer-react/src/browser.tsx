@@ -236,6 +236,7 @@ const getBrowser = (
    */
   const Browser = () => {
     const [clientLoaderData, setClientLoaderData] = useState<ILoaderData>({});
+    const latestClientLoads = useRef(new Map<string, symbol>());
     const [serverLoaderData, setServerLoaderData] = useState<ILoaderData>(
       window.__UMI_LOADER_DATA__ || {},
     );
@@ -312,10 +313,17 @@ const getBrowser = (
           }
           if (clientLoader && shouldLoadClient) {
             // ...
+            const clientRequest = Symbol();
+            latestClientLoads.current.set(id, clientRequest);
             clientLoader({
               serverLoader: loadServerData,
             }).then((data: any) => {
-              setClientLoaderData((d: any) => ({ ...d, [id]: data }));
+              // A newer navigation can match the same route ID.
+              setClientLoaderData((current) =>
+                latestClientLoads.current.get(id) === clientRequest
+                  ? { ...current, [id]: data }
+                  : current,
+              );
             });
           }
         });
