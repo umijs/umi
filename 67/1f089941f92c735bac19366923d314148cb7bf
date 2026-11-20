@@ -1,0 +1,22 @@
+packages/preset-umi/src/features/devTool/diagnostics.ts
+  s_0bf045cfd627aa::t_2c31180788ad88 2,123-147,153-155
+  s_0bf045cfd627aa::t_6ea9eaec227899 148-152
+packages/preset-umi/src/features/devTool/devTool.test.ts
+  s_0bf045cfd627aa::t_2c31180788ad88 9-11,61-66,69-71,162-169,171-173,197-198
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "671f089941f92c735bac19366923d314148cb7bf",
+  "prompts": {},
+  "sessions": {
+    "s_0bf045cfd627aa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6ee-56bf-7ec1-8523-af56b71874c8",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
