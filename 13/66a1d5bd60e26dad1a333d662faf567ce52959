@@ -1,0 +1,47 @@
+packages/bundler-utoopack/src/index.ts
+  s_430ac4440b2a57::t_92d462b1f94cd6 86-88,90-100,157-159,161-171
+packages/preset-umi/src/commands/build.ts
+  s_430ac4440b2a57::t_14864f752d11d4 7,37,141,160-162
+  s_cb59dff99b8982::t_5fe7a57fdb4427 163
+packages/preset-umi/src/types.ts
+  s_430ac4440b2a57::t_14864f752d11d4 205,207-209
+  s_430ac4440b2a57::t_cdf884752d2d83 206
+packages/preset-umi/src/features/apiRoute/apiRoute.ts
+  s_430ac4440b2a57::t_14864f752d11d4 177-179
+packages/preset-umi/src/features/utoopack/utoopack.test.ts
+  s_430ac4440b2a57::t_25d7822f94a92c 107,147
+  s_430ac4440b2a57::t_cdf884752d2d83 174-206,208-221
+  s_430ac4440b2a57::t_b8b54eed77fc68 1-2,27,169-173,207,223,234
+  s_430ac4440b2a57::t_fe45b3914bf5c5 5
+  s_cb59dff99b8982::t_7fd4553a0396a4 6,222
+packages/preset-umi/src/features/ssr/ssr.ts
+  s_430ac4440b2a57::t_14864f752d11d4 195-197
+packages/bundler-utoopack/src/analyze.ts
+  s_430ac4440b2a57::t_fe45b3914bf5c5 11
+packages/preset-umi/src/features/utoopack/utoopack.ts
+  s_430ac4440b2a57::t_cdf884752d2d83 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1366a1d5bd60e26dad1a333d662faf567ce52959",
+  "prompts": {},
+  "sessions": {
+    "s_430ac4440b2a57": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f6eb-fc2d-77f1-a119-993958c7da8b",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    },
+    "s_cb59dff99b8982": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a13420-6ef4-7043-9bac-fee25862981d",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
