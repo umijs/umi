@@ -183,59 +183,91 @@ test.each([
   },
 );
 
-test('publishes fallback server data after all matching loaders complete', async () => {
-  window.history.replaceState(null, '', '/child');
-  const pending = new Map<string, (data: Record<string, string>) => void>();
-  globals.fetch = jest.fn(async (input: string) => {
-    const id = new URL(input, window.location.origin).searchParams.get(
-      'route',
-    )!;
-    const data = new Promise<Record<string, string>>((resolve) => {
-      pending.set(id, resolve);
+test.each(['initial render', 'navigation'])(
+  'publishes complete fallback server data during %s',
+  async (entry) => {
+    const navigating = entry === 'navigation';
+    window.history.replaceState(null, '', navigating ? '/' : '/child');
+    const history = createBrowserHistory();
+    type ResolveData = (data: Record<string, string>) => void;
+    const pending = new Map<string, ResolveData[]>();
+    globals.fetch = jest.fn(async (input: string) => {
+      const id = new URL(input, window.location.origin).searchParams.get(
+        'route',
+      )!;
+      const data = new Promise<Record<string, string>>((resolve) => {
+        pending.set(id, [...(pending.get(id) ?? []), resolve]);
+      });
+      return { json: () => data } as Response;
     });
-    return { json: () => data } as Response;
-  });
 
-  function Child() {
-    const { data } =
-      useServerLoaderData<() => { parent: string; child: string }>();
-    return React.createElement(
-      'div',
-      {},
-      data ? JSON.stringify(data) : 'Loading',
-    );
-  }
+    function Parent() {
+      const { data } = useServerLoaderData<() => { parent: string }>();
+      return React.createElement(
+        'div',
+        { 'data-parent': data?.parent },
+        React.createElement(Outlet),
+      );
+    }
 
-  const Browser = renderClient({
-    history: createBrowserHistory(),
-    routes: {
-      parent: { id: 'parent', path: '/', hasServerLoader: true },
-      child: {
-        id: 'child',
-        parentId: 'parent',
-        path: 'child',
-        hasServerLoader: true,
+    function Child() {
+      const { data } =
+        useServerLoaderData<() => { parent: string; child: string }>();
+      return React.createElement(
+        'div',
+        {},
+        data ? JSON.stringify(data) : 'Loading',
+      );
+    }
+
+    const Browser = renderClient({
+      history,
+      routes: {
+        parent: { id: 'parent', path: '/', hasServerLoader: true },
+        child: {
+          id: 'child',
+          parentId: 'parent',
+          path: 'child',
+          hasServerLoader: true,
+        },
       },
-    },
-    routeComponents: { parent: Outlet, child: Child },
-    pluginManager: { applyPlugins: ({ initialValue }: any) => initialValue },
-    components: true,
-    __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {},
-  })!;
-  await React.act(async () => root.render(React.createElement(Browser)));
-  expect([...pending.keys()]).toEqual(['parent', 'child']);
-  expect(container.textContent).toBe('Loading');
+      routeComponents: { parent: navigating ? Parent : Outlet, child: Child },
+      pluginManager: { applyPlugins: ({ initialValue }: any) => initialValue },
+      components: true,
+      __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {},
+    })!;
+    await React.act(async () => root.render(React.createElement(Browser)));
+    if (navigating) {
+      await React.act(async () => {
+        pending
+          .get('parent')!
+          .forEach((resolve) => resolve({ parent: 'Cached' }));
+      });
+      expect(container.firstElementChild?.getAttribute('data-parent')).toBe(
+        'Cached',
+      );
+      pending.clear();
+      await React.act(async () => history.push('/child'));
+    }
+    expect([...pending.keys()]).toEqual(['parent', 'child']);
+    const beforeResponse = container.textContent;
 
-  await React.act(async () => pending.get('child')!({ child: 'report' }));
-  const afterChild = container.textContent;
-  await React.act(async () => pending.get('parent')!({ parent: 'user' }));
+    await React.act(async () => {
+      pending.get('child')!.forEach((resolve) => resolve({ child: 'report' }));
+    });
+    const afterChild = container.textContent;
+    await React.act(async () => {
+      pending.get('parent')!.forEach((resolve) => resolve({ parent: 'user' }));
+    });
 
-  expect(afterChild).toBe('Loading');
-  expect(JSON.parse(container.textContent!)).toEqual({
-    parent: 'user',
-    child: 'report',
-  });
-});
+    expect(beforeResponse).toBe('Loading');
+    expect(afterChild).toBe('Loading');
+    expect(JSON.parse(container.textContent!)).toEqual({
+      parent: 'user',
+      child: 'report',
+    });
+  },
+);
 
 test.each([
   {

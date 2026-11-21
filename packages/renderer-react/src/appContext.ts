@@ -52,19 +52,30 @@ type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
 export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   const routes = useSelectedRoutes();
   const { serverLoaderData } = useAppData();
+  const isCsrFallback =
+    typeof window !== 'undefined' && !window.__UMI_LOADER_DATA__;
   const data = React.useMemo(() => {
     const merged = {} as Awaited<ReturnType<T>>;
     let hasData = false;
     for (const route of routes) {
+      const { id, hasServerLoader } = route.route;
+      if (
+        isCsrFallback &&
+        hasServerLoader &&
+        !Object.prototype.hasOwnProperty.call(serverLoaderData, id)
+      ) {
+        // Cached ancestor data alone is not a complete fallback result.
+        return undefined;
+      }
       // Merge parent and child loader data in route order.
-      const routeData = serverLoaderData[route.route.id];
+      const routeData = serverLoaderData[id];
       if (routeData) {
         Object.assign(merged, routeData);
         hasData = true;
       }
     }
     return hasData ? merged : undefined;
-  }, [routes, serverLoaderData]);
+  }, [isCsrFallback, routes, serverLoaderData]);
   return { data };
 }
 
