@@ -1,0 +1,30 @@
+packages/renderer-react/src/browser.serverLoader.test.ts
+  s_f3bfe0c35e9388::t_b017912a1325ba 47,147
+  s_f3bfe0c35e9388::t_b0f2f2dc900382 11-36,144-146,148-173,176-177,179-181,225-237,316-317,319-321
+  s_f3bfe0c35e9388::t_d54b42f51b64d4 190-192,200-206,273-275,284-290
+  s_f3bfe0c35e9388::t_3bceb78d8cf3a2 240-268,318,322-324
+  s_f3bfe0c35e9388::t_f85c642c08ad24 6,79,182-184,186-189,193-199,207-224,238-239,270-272,276-283,291-315
+packages/renderer-react/src/appContext.ts
+  s_f3bfe0c35e9388::t_3a7a931b5e3161 78,86
+packages/renderer-react/src/browser.tsx
+  s_f3bfe0c35e9388::t_03a4166a17cccd 244,258-259,267,273-280,298,319,325,328,330,336,352,357,359
+  s_f3bfe0c35e9388::t_2a2e4d70a61fd5 282-287,314-315
+  s_f3bfe0c35e9388::t_391fc7d08783a8 260,266,268,281,288-297,326-327,329,335,337-350,353-356,358,365-366
+  s_f3bfe0c35e9388::t_053b32eabdde22 261-265,269-272
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0a3c3710630631d9cdba0000a0a1075f0cb7c644",
+  "prompts": {},
+  "sessions": {
+    "s_f3bfe0c35e9388": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b11-f104-7253-848f-9de948d2b970",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
