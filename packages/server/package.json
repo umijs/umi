@@ -1,6 +1,6 @@
 {
   "name": "@umijs/server",
-  "version": "4.7.35",
+  "version": "4.7.36",
   "description": "@umijs/server",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/server#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -18,7 +18,8 @@
   "scripts": {
     "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "umi-scripts father dev"
+    "dev": "umi-scripts father dev",
+    "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
     "@umijs/bundler-utils": "workspace:*",
