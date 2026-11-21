@@ -3,6 +3,17 @@ import { getConventionRoutes } from './routesConvention';
 
 const fixtures = join(__dirname, '../../fixtures/route');
 
+test('preserves index as part of a page name', () => {
+  expect(
+    getConventionRoutes({
+      base: join(fixtures, 'convention-index-suffix/pages'),
+    }),
+  ).toMatchObject({
+    'search-index': { path: 'search-index', absPath: '/search-index' },
+    'archive.index': { path: 'archive', absPath: '/archive' },
+  });
+});
+
 test('normal', () => {
   expect(
     getConventionRoutes({

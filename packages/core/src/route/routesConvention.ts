@@ -98,12 +98,8 @@ function createRoutePath(routeId: string): string {
   // index/index -> 'index'
   // a-index/index -> 'a-index/index'
   path = /(^|\/)index\/index$/.test(path) ? path.replace(/\/index$/, '') : path;
-  // /(?<!:)\/?\bindex$/
-  // e/index true
-  // index true
-  // e/:index false
-  // e/index -> e  index -> ''  e/:index -> e/:index
-  path = /\b\/?(?<!:)index$/.test(path) ? path.replace(/\/?index$/, '') : path;
+  // Strip a trailing index segment while preserving names like search-index.
+  path = path.replace(/(^|\/)index$/, '');
   path = /\b\/?README$/.test(path) ? path.replace(/\/?README$/, '') : path;
 
   return path;
