@@ -3,10 +3,36 @@
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useClientLoaderData, useServerLoaderData } from './appContext';
 import { renderClient } from './browser';
 import type { ClientLoader } from './types';
+
+const globals = globalThis as typeof globalThis & {
+  IS_REACT_ACT_ENVIRONMENT?: boolean;
+};
+const previousActEnvironment = globals.IS_REACT_ACT_ENVIRONMENT;
+const previousFetch = globals.fetch;
+let container: HTMLDivElement;
+let root: ReturnType<typeof createRoot>;
+
+beforeEach(() => {
+  globals.IS_REACT_ACT_ENVIRONMENT = true;
+  window.history.replaceState(null, '', '/');
+  window.__UMI_LOADER_DATA__ = undefined;
+  container = document.createElement('div');
+  document.body.appendChild(container);
+  root = createRoot(container);
+});
+
+afterEach(async () => {
+  await React.act(async () => root.unmount());
+  container.remove();
+  globals.fetch = previousFetch;
+  globals.IS_REACT_ACT_ENVIRONMENT = previousActEnvironment;
+  window.__UMI_LOADER_DATA__ = undefined;
+  window.history.replaceState(null, '', '/');
+});
 
 const independentLoader: ClientLoader = async () => ({
   title: 'Independent client data',
@@ -18,6 +44,7 @@ test.each([
     serverData: { home: { title: 'Initial home' } },
     clientLoader: undefined,
   },
+  { name: 'empty SSR data', serverData: {}, clientLoader: undefined },
   { name: 'CSR fallback', serverData: undefined, clientLoader: undefined },
   {
     name: 'CSR fallback with independent loaders',
@@ -37,13 +64,6 @@ test.each([
 ])(
   'loads server data on navigation after $name',
   async ({ serverData, clientLoader, clientTitle, homeClientLoader }) => {
-    const globals = globalThis as typeof globalThis & {
-      IS_REACT_ACT_ENVIRONMENT?: boolean;
-    };
-    const previousActEnvironment = globals.IS_REACT_ACT_ENVIRONMENT;
-    const previousFetch = globals.fetch;
-    globals.IS_REACT_ACT_ENVIRONMENT = true;
-    window.history.replaceState(null, '', '/');
     window.__UMI_LOADER_DATA__ = serverData;
     const history = createBrowserHistory();
     let resumeDelayed!: () => void;
@@ -56,6 +76,7 @@ test.each([
         if (history.location.search === '?quarter=3') await delayed;
         return clientLoader(args);
       });
+    if (reportLoader && serverData) reportLoader.hydrate = true;
 
     const requests: string[] = [];
     globals.fetch = jest.fn(async (input: string) => {
@@ -120,56 +141,218 @@ test.each([
       components: true,
       __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {},
     })!;
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    const root = createRoot(container);
 
-    try {
-      await React.act(async () => root.render(React.createElement(Browser)));
-      expect(container.textContent).toBe(
-        serverData ? 'Initial home' : 'Fetched home',
-      );
-      expect(container.querySelector('a')?.dataset.clientTitle).toBe(
-        homeClientLoader ? clientTitle : undefined,
-      );
-      expect(requests).toEqual(serverData ? [] : ['home:/']);
+    await React.act(async () => root.render(React.createElement(Browser)));
+    expect(container.textContent).toBe(
+      serverData ? serverData.home?.title ?? '' : 'Fetched home',
+    );
+    expect(container.querySelector('a')?.dataset.clientTitle).toBe(
+      homeClientLoader ? clientTitle : undefined,
+    );
+    expect(requests).toEqual(serverData ? [] : ['home:/']);
 
-      await React.act(async () => {
-        container
-          .querySelector('a')!
-          .dispatchEvent(
-            new MouseEvent('click', { bubbles: true, cancelable: true }),
-          );
-      });
-      expect(container.textContent).toBe(clientTitle ?? 'Quarterly report');
+    await React.act(async () => {
+      container
+        .querySelector('a')!
+        .dispatchEvent(
+          new MouseEvent('click', { bubbles: true, cancelable: true }),
+        );
+    });
+    expect(container.textContent).toBe(clientTitle ?? 'Quarterly report');
+    expect(container.querySelector('h1')?.dataset.serverTitle).toBe(
+      'Quarterly report',
+    );
+    expect(requests).toEqual([
+      ...(serverData ? [] : ['home:/']),
+      'report:/report?quarter=4',
+    ]);
+
+    if (clientLoader && !homeClientLoader) {
+      await React.act(async () => history.push('/report?quarter=3'));
+      await React.act(async () => history.push('/report?quarter=2'));
+      await React.act(async () => resumeDelayed());
+      expect(requests).toEqual([
+        'report:/report?quarter=4',
+        'report:/report?quarter=2',
+        'report:/report?quarter=3',
+      ]);
       expect(container.querySelector('h1')?.dataset.serverTitle).toBe(
         'Quarterly report',
       );
-      expect(requests).toEqual([
-        ...(serverData ? [] : ['home:/']),
-        'report:/report?quarter=4',
-      ]);
-
-      if (clientLoader && !homeClientLoader) {
-        await React.act(async () => history.push('/report?quarter=3'));
-        await React.act(async () => history.push('/report?quarter=2'));
-        await React.act(async () => resumeDelayed());
-        expect(requests).toEqual([
-          'report:/report?quarter=4',
-          'report:/report?quarter=3',
-          'report:/report?quarter=2',
-        ]);
-        expect(container.querySelector('h1')?.dataset.serverTitle).toBe(
-          'Quarterly report',
-        );
-      }
-    } finally {
-      await React.act(async () => root.unmount());
-      container.remove();
-      globals.fetch = previousFetch;
-      globals.IS_REACT_ACT_ENVIRONMENT = previousActEnvironment;
-      window.__UMI_LOADER_DATA__ = undefined;
-      window.history.replaceState(null, '', '/');
     }
+  },
+);
+
+test.each(['initial render', 'navigation'])(
+  'publishes complete fallback server data during %s',
+  async (entry) => {
+    const navigating = entry === 'navigation';
+    window.history.replaceState(null, '', navigating ? '/' : '/child');
+    const history = createBrowserHistory();
+    type ResolveData = (data: Record<string, string>) => void;
+    const pending = new Map<string, ResolveData[]>();
+    globals.fetch = jest.fn(async (input: string) => {
+      const id = new URL(input, window.location.origin).searchParams.get(
+        'route',
+      )!;
+      const data = new Promise<Record<string, string>>((resolve) => {
+        pending.set(id, [...(pending.get(id) ?? []), resolve]);
+      });
+      return { json: () => data } as Response;
+    });
+
+    function Parent() {
+      const { data } = useServerLoaderData<() => { parent: string }>();
+      return React.createElement(
+        'div',
+        { 'data-parent': data?.parent },
+        React.createElement(Outlet),
+      );
+    }
+
+    function Child() {
+      const { data } =
+        useServerLoaderData<() => { parent: string; child: string }>();
+      return React.createElement(
+        'div',
+        {},
+        data ? JSON.stringify(data) : 'Loading',
+      );
+    }
+
+    const Browser = renderClient({
+      history,
+      routes: {
+        parent: { id: 'parent', path: '/', hasServerLoader: true },
+        child: {
+          id: 'child',
+          parentId: 'parent',
+          path: 'child',
+          hasServerLoader: true,
+        },
+      },
+      routeComponents: { parent: navigating ? Parent : Outlet, child: Child },
+      pluginManager: { applyPlugins: ({ initialValue }: any) => initialValue },
+      components: true,
+      __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {},
+    })!;
+    await React.act(async () => root.render(React.createElement(Browser)));
+    if (navigating) {
+      await React.act(async () => {
+        pending
+          .get('parent')!
+          .forEach((resolve) => resolve({ parent: 'Cached' }));
+      });
+      expect(container.firstElementChild?.getAttribute('data-parent')).toBe(
+        'Cached',
+      );
+      pending.clear();
+      await React.act(async () => history.push('/child'));
+    }
+    expect([...pending.keys()]).toEqual(['parent', 'child']);
+    const beforeResponse = container.textContent;
+
+    await React.act(async () => {
+      pending.get('child')!.forEach((resolve) => resolve({ child: 'report' }));
+    });
+    const afterChild = container.textContent;
+    await React.act(async () => {
+      pending.get('parent')!.forEach((resolve) => resolve({ parent: 'user' }));
+    });
+
+    expect(beforeResponse).toBe('Loading');
+    expect(afterChild).toBe('Loading');
+    expect(JSON.parse(container.textContent!)).toEqual({
+      parent: 'user',
+      child: 'report',
+    });
+  },
+);
+
+test.each([
+  {
+    name: 'SSR navigation with hydration enabled',
+    ssr: true,
+    hydrate: true,
+    before: [],
+    after: ['zh'],
+  },
+  {
+    name: 'SSR navigation with hydration disabled',
+    ssr: true,
+    hydrate: false,
+    before: [],
+    after: [],
+  },
+  {
+    name: 'CSR fallback',
+    ssr: false,
+    hydrate: false,
+    before: ['en'],
+    after: ['en', 'zh'],
+  },
+])(
+  'preserves dual loader requests during $name',
+  async ({ ssr, hydrate, before, after }) => {
+    if (ssr) {
+      window.__UMI_LOADER_DATA__ = { home: { title: 'SSR home' } };
+    } else {
+      window.history.replaceState(null, '', '/report');
+    }
+
+    const locales: string[] = [];
+    globals.fetch = jest.fn(async (input: string) => {
+      locales.push(
+        new URL(input, window.location.origin).searchParams.get('locale')!,
+      );
+      return { json: async () => ({ title: 'Report' }) } as Response;
+    });
+    const history = createBrowserHistory();
+    let resumePreparation!: () => void;
+    const preparation = new Promise<void>((resolve) => {
+      resumePreparation = resolve;
+    });
+    let locale = 'en';
+    const clientLoader = jest.fn(
+      async ({ serverLoader }: Parameters<ClientLoader>[0]) => {
+        await preparation;
+        locale = 'zh';
+        await serverLoader();
+      },
+    ) as jest.MockedFunction<ClientLoader>;
+    clientLoader.hydrate = hydrate;
+
+    const Browser = renderClient({
+      history,
+      routes: {
+        home: { id: 'home', path: '/', hasServerLoader: true },
+        report: {
+          id: 'report',
+          path: '/report',
+          hasServerLoader: true,
+          clientLoader,
+        },
+      },
+      routeComponents: { home: () => 'Home', report: () => 'Report' },
+      pluginManager: {
+        applyPlugins: ({ key, initialValue }: any) => {
+          if (key !== 'modifyServerLoaderRequest') return initialValue;
+          const url = new URL(initialValue.url, window.location.origin);
+          url.searchParams.set('locale', locale);
+          return { ...initialValue, url: url.href };
+        },
+      },
+      components: true,
+      __INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {},
+    })!;
+
+    await React.act(async () => root.render(React.createElement(Browser)));
+    if (ssr) await React.act(async () => history.push('/report'));
+    const requestsBeforePreparation = [...locales];
+    await React.act(async () => resumePreparation());
+
+    expect(requestsBeforePreparation).toEqual(before);
+    expect(clientLoader).toHaveBeenCalledTimes(hydrate || !ssr ? 1 : 0);
+    expect(locales).toEqual(after);
   },
 );
