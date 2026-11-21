@@ -1,6 +1,5 @@
 import React from 'react';
 import { matchRoutes, useLocation } from 'react-router-dom';
-import { fetchServerLoader } from './dataFetcher';
 import { useRouteData } from './routeContext';
 import {
   IClientRoute,
@@ -32,13 +31,13 @@ export function useAppData() {
 }
 
 export function useSelectedRoutes() {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const { clientRoutes } = useAppData();
   // use `useLocation` get location without `basename`, not need `basename` param
-  const routes = matchRoutes(clientRoutes, location.pathname) as
-    | ISelectedRoutes[]
-    | undefined;
-  return routes || [];
+  return React.useMemo(
+    () => (matchRoutes(clientRoutes, pathname) || []) as ISelectedRoutes[],
+    [clientRoutes, pathname],
+  );
 }
 
 export function useRouteProps<T extends Record<string, any> = any>() {
@@ -52,51 +51,21 @@ type ServerLoaderFunc = (...args: any[]) => Promise<any> | any;
 // @deprecated  Please use `useLoaderData` instead.
 export function useServerLoaderData<T extends ServerLoaderFunc = any>() {
   const routes = useSelectedRoutes();
-  const { serverLoaderData, basename, pluginManager } = useAppData();
-  const [data, setData] = React.useState(() => {
-    const ret = {} as Awaited<ReturnType<T>>;
-    let has = false;
-    routes.forEach((route) => {
-      // 多级路由嵌套时，需要合并多级路由 serverLoader 的数据
+  const { serverLoaderData } = useAppData();
+  const data = React.useMemo(() => {
+    const merged = {} as Awaited<ReturnType<T>>;
+    let hasData = false;
+    for (const route of routes) {
+      // Merge parent and child loader data in route order.
       const routeData = serverLoaderData[route.route.id];
       if (routeData) {
-        Object.assign(ret, routeData);
-        has = true;
+        Object.assign(merged, routeData);
+        hasData = true;
       }
-    });
-    return has ? ret : undefined;
-  });
-  React.useEffect(() => {
-    if (!window.__UMI_LOADER_DATA__) {
-      // 支持 ssr 降级，客户端兜底加载 serverLoader 数据
-      Promise.all(
-        routes
-          .filter((route) => route.route.hasServerLoader)
-          .map(
-            (route) =>
-              new Promise((resolve) => {
-                fetchServerLoader({
-                  id: route.route.id,
-                  basename,
-                  pluginManager,
-                  cb: resolve,
-                });
-              }),
-          ),
-      ).then((datas) => {
-        if (datas.length) {
-          const res = {} as Awaited<ReturnType<T>>;
-          datas.forEach((data) => {
-            Object.assign(res, data);
-          });
-          setData(res);
-        }
-      });
     }
-  }, []);
-  return {
-    data,
-  };
+    return hasData ? merged : undefined;
+  }, [routes, serverLoaderData]);
+  return { data };
 }
 
 // @deprecated  Please use `useLoaderData` instead.

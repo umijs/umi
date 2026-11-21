@@ -5,11 +5,13 @@ export interface IServerLoaderRequest {
 
 export function fetchServerLoader({
   id,
+  url,
   basename,
   cb,
   pluginManager,
 }: {
   id: string;
+  url: string;
   basename?: string;
   cb: (data: any) => void;
   // Runtime plugin manager for the modifyServerLoaderRequest hook.
@@ -18,7 +20,7 @@ export function fetchServerLoader({
 }) {
   const query = new URLSearchParams({
     route: id,
-    url: window.location.href,
+    url,
   }).toString();
   // 在有basename的情况下__serverLoader的请求路径需要加上basename
   // FIXME: 先临时解自定义 serverLoader 请求路径的问题，后续改造 serverLoader 时再提取成类似 runtimeServerLoader 的配置项
@@ -42,9 +44,12 @@ export function fetchServerLoader({
     });
   }
 
-  fetch(req.url, req.options)
+  return fetch(req.url, req.options)
     .then((d) => d.json())
-    .then(cb)
+    .then((data) => {
+      cb(data);
+      return data;
+    })
     .catch(console.error);
 }
 
