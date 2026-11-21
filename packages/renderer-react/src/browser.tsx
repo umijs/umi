@@ -241,6 +241,7 @@ const getBrowser = (
       window.__UMI_LOADER_DATA__ || {},
     );
     const latestServerLoads = useRef(new Map<string, symbol>());
+    const activeFallbackRoutes = useRef<Set<string> | undefined>(undefined);
 
     const handleRouteChange = useCallback(
       (
@@ -254,6 +255,47 @@ const getBrowser = (
             (route) => route.route.id,
           ) || []
         ).filter(Boolean);
+        const initialData = window.__UMI_LOADER_DATA__;
+        const fallbackRoutes =
+          !initialData && source !== 'preload'
+            ? new Set(
+                matchedRouteIds.filter(
+                  (id) => opts.routes[id]?.hasServerLoader,
+                ),
+              )
+            : undefined;
+        if (source !== 'preload') activeFallbackRoutes.current = fallbackRoutes;
+        const fallbackData = new Map<string, any>();
+        const publishServerData = (
+          data: ILoaderData,
+          isCurrent: () => boolean,
+        ) => {
+          const update = () =>
+            setServerLoaderData((current) =>
+              isCurrent() ? { ...current, ...data } : current,
+            );
+          // Keep updates from interrupting React 18 hydration.
+          if (React.startTransition) React.startTransition(update);
+          else update();
+        };
+        const collectFallbackData = (id: string, data: any) => {
+          if (
+            !fallbackRoutes?.has(id) ||
+            activeFallbackRoutes.current !== fallbackRoutes
+          ) {
+            return;
+          }
+          fallbackData.set(id, data);
+          // Keep partial results private until all matched loaders succeed.
+          if (fallbackData.size === fallbackRoutes.size) {
+            fallbackRoutes.clear();
+            publishServerData(
+              Object.fromEntries(fallbackData),
+              () => activeFallbackRoutes.current === fallbackRoutes,
+            );
+          }
+        };
+
         matchedRouteIds.forEach((id) => {
           // preload lazy component
           // window.__umi_route_prefetch__ is available when routePrefetch and manifest config is enabled
@@ -267,56 +309,61 @@ const getBrowser = (
 
           const clientLoader = opts.routes[id]?.clientLoader;
           const hasServerLoader = opts.routes[id]?.hasServerLoader;
-          const initialData = window.__UMI_LOADER_DATA__;
-          const hasServerLoaderData =
-            (source === 'initial' &&
-              Object.prototype.hasOwnProperty.call(initialData ?? {}, id)) ||
-            (source === 'preload' && Boolean(initialData));
-
           const shouldLoadServer =
             hasServerLoader &&
-            !hasServerLoaderData &&
-            (source !== 'preload' || !clientLoader);
+            (fallbackRoutes ||
+              (!clientLoader && (source === 'navigation' || !initialData)));
           const shouldLoadClient =
             clientLoader &&
             !clientLoaderData[id] &&
-            (clientLoader.hydrate || !hasServerLoader || !hasServerLoaderData);
+            (clientLoader.hydrate || !hasServerLoader || !initialData);
           if (!shouldLoadServer && !shouldLoadClient) return;
 
           // The client loader can call serverLoader after an await.
           const request = Symbol();
           const url = window.location.href;
-          latestServerLoads.current.set(id, request);
-          // A route can read server data even when its client loader runs
-          // independently. If the client loader also requests it, reuse it.
-          let serverLoad: ReturnType<typeof fetchServerLoader> | undefined;
-          const loadServerData = () =>
-            (serverLoad ??= fetchServerLoader({
+          // A preload must not publish part of an in-flight CSR fallback.
+          const canPublish =
+            source !== 'preload' || !activeFallbackRoutes.current?.has(id);
+          if (canPublish) latestServerLoads.current.set(id, request);
+          const fetchData = (cb: (data: any) => void) =>
+            fetchServerLoader({
               id,
               url,
               basename,
               pluginManager: opts.pluginManager,
-              cb: (data) => {
-                const update = () =>
-                  setServerLoaderData((current) =>
-                    latestServerLoads.current.get(id) === request
-                      ? { ...current, [id]: data }
-                      : current,
-                  );
-                // Keep updates from interrupting React 18 hydration.
-                if (React.startTransition) React.startTransition(update);
-                else update();
-              },
-            }));
+              cb,
+            });
+          const publishRouteData = (data: any) => {
+            if (!canPublish) return;
+            if (fallbackRoutes?.has(id)) {
+              collectFallbackData(id, data);
+            } else {
+              publishServerData(
+                { [id]: data },
+                () =>
+                  latestServerLoads.current.get(id) === request &&
+                  (!fallbackRoutes ||
+                    activeFallbackRoutes.current === fallbackRoutes),
+              );
+            }
+          };
           if (shouldLoadServer) {
-            void loadServerData();
+            if (fallbackRoutes) {
+              void fetchData((data) => {
+                // An explicit request may supply the data first.
+                if (!fallbackData.has(id)) collectFallbackData(id, data);
+              });
+            } else {
+              void fetchData(publishRouteData);
+            }
           }
           if (clientLoader && shouldLoadClient) {
-            // ...
             const clientRequest = Symbol();
             latestClientLoads.current.set(id, clientRequest);
             clientLoader({
-              serverLoader: loadServerData,
+              // Preserve the timing of client-loader request preparation.
+              serverLoader: () => fetchData(publishRouteData),
             }).then((data: any) => {
               // A newer navigation can match the same route ID.
               setClientLoaderData((current) =>
