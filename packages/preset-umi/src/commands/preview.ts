@@ -60,16 +60,18 @@ umi preview --port [port]
       }
 
       // mock
-      app.use(
-        createMockMiddleware({
-          context: {
-            mockData: getMockData({
-              cwd: api.cwd,
-              mockConfig: api.config.mock || {},
-            }),
-          },
-        }),
-      );
+      if (api.config.mock !== false) {
+        app.use(
+          createMockMiddleware({
+            context: {
+              mockData: getMockData({
+                cwd: api.cwd,
+                mockConfig: api.config.mock || {},
+              }),
+            },
+          }),
+        );
+      }
 
       app.use(
         api.config.base,
