@@ -75,7 +75,9 @@ export function useClientLoaderData() {
   return { data: appData.clientLoaderData[route.route.id] };
 }
 
-export function useLoaderData<T extends ServerLoaderFunc = any>() {
+export function useLoaderData<T extends ServerLoaderFunc = any>(): {
+  data: Awaited<ReturnType<T>>;
+} {
   const serverLoaderData = useServerLoaderData();
   const clientLoaderData = useClientLoaderData();
   return {
@@ -83,5 +85,5 @@ export function useLoaderData<T extends ServerLoaderFunc = any>() {
       ...serverLoaderData.data,
       ...clientLoaderData.data,
     },
-  } as Awaited<ReturnType<T>>;
+  };
 }
