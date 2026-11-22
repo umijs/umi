@@ -52,14 +52,14 @@ export const LinkWithPrefetch = React.forwardRef(
     const ref = useForwardedRef(forwardedRef);
     // prefetch intent
     const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
-      if (prefetch !== 'intent') return;
+      if (prefetch !== 'intent' || !to) return;
       const eventTarget = (e.target || {}) as HTMLElement & {
         preloadTimeout?: NodeJS.Timeout | null;
       };
       if (eventTarget.preloadTimeout) return;
       eventTarget.preloadTimeout = setTimeout(() => {
         eventTarget.preloadTimeout = null;
-        appData.preloadRoute?.(to!);
+        appData.preloadRoute?.(to);
       }, props.prefetchTimeout || defaultPrefetchTimeout);
     };
     const handleMouseLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -75,8 +75,8 @@ export const LinkWithPrefetch = React.forwardRef(
 
     // prefetch render
     useLayoutEffect(() => {
-      if (prefetch === 'render' && !hasRenderFetched.current) {
-        appData.preloadRoute?.(to!);
+      if (prefetch === 'render' && to && !hasRenderFetched.current) {
+        appData.preloadRoute?.(to);
         hasRenderFetched.current = true;
       }
     }, [prefetch, to]);
@@ -85,17 +85,17 @@ export const LinkWithPrefetch = React.forwardRef(
     useIntersectionObserver(
       ref as React.RefObject<HTMLAnchorElement>,
       (entry) => {
-        if (entry?.isIntersecting) {
-          appData.preloadRoute?.(to!);
+        if (entry?.isIntersecting && to) {
+          appData.preloadRoute?.(to);
         }
       },
       { rootMargin: '100px' },
-      { disabled: prefetch !== 'viewport' },
+      { disabled: prefetch !== 'viewport' || !to },
     );
 
     // compatible with old code
     // which to might be undefined
-    if (!to) return null;
+    if (!props.to) return null;
 
     return (
       <Link
