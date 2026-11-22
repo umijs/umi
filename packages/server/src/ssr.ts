@@ -665,7 +665,7 @@ async function executeMetadataLoader(params: IExecMetaLoaderOpts) {
   if (!mod.serverLoader || typeof mod.serverLoader !== 'function') {
     return;
   }
-  const loaderDatas = (mod.metadataLoader satisfies MetadataLoader)(
+  const loaderDatas = await (mod.metadataLoader satisfies MetadataLoader)(
     serverLoaderData,
   );
 
