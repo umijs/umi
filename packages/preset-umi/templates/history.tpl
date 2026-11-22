@@ -56,6 +56,7 @@ export function setHistory(h: UmiHistory) {
 // https://github.com/remix-run/history/blob/dev/docs/api-reference.md#to
 function patchTo(to: any, h: History) {
   if (typeof to === 'string') {
+    if (!to || to.startsWith('?') || to.startsWith('#')) return to;
     return `${stripLastSlash(basename)}${to}`;
   } else if (typeof to === 'object') {
 
