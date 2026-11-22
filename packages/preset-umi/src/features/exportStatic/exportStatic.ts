@@ -32,9 +32,9 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
       // skip layout
       !route.isLayout &&
       // skip dynamic route for win, because `:` is not allowed in file name
-      (!IS_WIN || !route.path.includes('/:')) &&
+      (!IS_WIN || !route.absPath.includes('/:')) &&
       // skip `*` route, because `*` is not working for most site serve services
-      (!route.path.includes('*') ||
+      (!route.absPath.includes('*') ||
         // except `404.html`
         is404)
     ) {
