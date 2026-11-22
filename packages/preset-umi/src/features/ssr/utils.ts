@@ -1,6 +1,12 @@
 import { fsExtra, winPath } from '@umijs/utils';
-import { forEach } from '@umijs/utils/compiled/lodash';
-import { existsSync, readdirSync, statSync, writeFileSync } from 'fs';
+import { forEach, groupBy } from '@umijs/utils/compiled/lodash';
+import {
+  existsSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from 'fs';
 import { basename, extname, join, relative } from 'path';
 import { IApi } from '../../types';
 /** esbuild plugin for resolving umi imports */
@@ -155,19 +161,34 @@ function getSourceAssetMap(
     })
     .filter(Boolean) as { file: string; name: string; size: number }[];
 
-  return walkSourceAssets(api.cwd, api.cwd).reduce((memo, absPath) => {
-    const stat = statSync(absPath);
-    const matched = outputAssets.find((asset) => {
-      return asset.name === basename(absPath) && asset.size === stat.size;
-    });
-    if (matched) {
-      memo[winPath(relative(api.cwd, absPath))] = addPublicPath(
-        publicPath,
-        matched.file,
-      );
+  const assetsByName = groupBy(outputAssets, (asset) => asset.name);
+  const sourcesByName = groupBy(walkSourceAssets(api.cwd, api.cwd), (file) =>
+    basename(file),
+  );
+  const mapping: Record<string, string> = {};
+  for (const [name, sources] of Object.entries(sourcesByName)) {
+    const assets = assetsByName[name];
+    if (!assets) continue;
+    for (const source of sources) {
+      const size = statSync(source).size;
+      let contents: Buffer | undefined;
+      const matched = assets.find((asset) => {
+        if (asset.size !== size) return false;
+        if (sources.length === 1 && assets.length === 1) return true;
+        contents ??= readFileSync(source);
+        return contents.equals(
+          readFileSync(join(api.paths.absOutputPath, asset.file)),
+        );
+      });
+      if (matched) {
+        mapping[winPath(relative(api.cwd, source))] = addPublicPath(
+          publicPath,
+          matched.file,
+        );
+      }
     }
-    return memo;
-  }, {} as Record<string, string>);
+  }
+  return mapping;
 }
 
 export const generateBuildManifestFromStats = (api: IApi, stats: any) => {
