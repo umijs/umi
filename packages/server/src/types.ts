@@ -67,7 +67,7 @@ export interface IMetadata {
 export interface IhtmlPageOpts extends IMetadata {
   headScripts?: (Record<string, string> | string)[];
   links?: Record<string, string>[];
-  styles?: string[];
+  styles?: IOpts['styles'];
   favicons?: string[];
   scripts?: (Record<string, string> | string)[];
   [key: string]: any;

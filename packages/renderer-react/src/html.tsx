@@ -92,10 +92,9 @@ function normalizeScripts(script: IScript, extraProps = {}) {
   }
 }
 
-function generatorStyle(style: string) {
-  return isUrl(style)
-    ? { type: 'link', href: style }
-    : { type: 'style', content: style };
+function normalizeStyle(style: string | Record<string, string>) {
+  if (typeof style !== 'string') return style;
+  return isUrl(style) ? { src: style } : { content: style };
 }
 
 const HydrateMetadata = (
@@ -126,13 +125,15 @@ const HydrateMetadata = (
       {htmlPageOpts?.links?.map((link: Record<string, string>, key: number) => {
         return <link key={key} {...link} />;
       })}
-      {htmlPageOpts?.styles?.map((style: string, key: number) => {
-        const { type, href, content } = generatorStyle(style);
-        if (type === 'link') {
-          return <link key={key} rel="stylesheet" href={href} />;
-        } else if (type === 'style') {
-          return <style key={key}>{content}</style>;
-        }
+      {htmlPageOpts?.styles?.map((style, key) => {
+        const { src, content, ...attrs } = normalizeStyle(style);
+        return src ? (
+          <link key={key} {...attrs} rel="stylesheet" href={src} />
+        ) : (
+          <style key={key} {...attrs}>
+            {content}
+          </style>
+        );
       })}
       {htmlPageOpts?.headScripts?.map((script: IScript, key: number) => {
         const { content, ...rest } = normalizeScripts(script);

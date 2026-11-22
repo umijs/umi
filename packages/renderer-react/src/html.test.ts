@@ -1,4 +1,6 @@
-import { getClientCssPaths } from './html';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { getClientCssPaths, Html } from './html';
 
 test('getClientCssPaths returns umi.css when available', () => {
   expect(
@@ -34,4 +36,25 @@ test('getClientCssPaths keeps multiple client css assets', () => {
       },
     }),
   ).toEqual(['/a.css', '/b.css']);
+});
+
+test('renders configured stylesheet objects alongside string styles', () => {
+  const html = renderToStaticMarkup(
+    React.createElement(Html, {
+      htmlPageOpts: {
+        styles: [
+          { src: '/print.css', media: 'print' },
+          { content: 'p { color: green; }', media: 'screen' },
+          '/base.css',
+          'body { margin: 0; }',
+        ],
+      },
+    }),
+  );
+  const head = html.split('</head>')[0];
+  expect(head).toMatch(/<link[^>]*href="\/print\.css"[^>]*>/);
+  expect(head).toContain('media="print"');
+  expect(head).toContain('<style media="screen">p { color: green; }</style>');
+  expect(head).toContain('href="/base.css"');
+  expect(head).toContain('<style>body { margin: 0; }</style>');
 });
