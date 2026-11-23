@@ -1,0 +1,13 @@
+{
+  "name": "@example/export-static",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  }
+}
