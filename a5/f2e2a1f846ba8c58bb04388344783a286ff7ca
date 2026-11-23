@@ -1,0 +1,67 @@
+packages/umi/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/plugin-run/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/create-umi/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/bundler-esbuild/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/bundler-webpack/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/preset-umi/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+lerna.json
+  s_3e49faf96ff93a::t_5c7b7862242926 2
+packages/plugins/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/lint/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/mfsu/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/server/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/renderer-vue/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/babel-preset-umi/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/zod2ts/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/bundler-utoopack/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/plugin-docs/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/max/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/renderer-react/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/testing/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/utils/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/bundler-utils/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/bundler-vite/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/core/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/preset-vue/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+packages/ast/package.json
+  s_3e49faf96ff93a::t_5c7b7862242926 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a5f2e2a1f846ba8c58bb04388344783a286ff7ca",
+  "prompts": {},
+  "sessions": {
+    "s_3e49faf96ff93a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a2063d-e5f7-7531-92d1-a02514f31168",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
