@@ -1,13 +1,20 @@
 import { fsExtra, winPath } from '@umijs/utils';
 import { forEach, groupBy } from '@umijs/utils/compiled/lodash';
+import { createHash } from 'crypto';
 import {
+  closeSync,
+  constants,
   existsSync,
+  fstatSync,
+  lstatSync,
+  openSync,
   readdirSync,
-  readFileSync,
-  statSync,
+  readSync,
+  realpathSync,
+  type Stats,
   writeFileSync,
 } from 'fs';
-import { basename, extname, join, relative } from 'path';
+import { basename, extname, isAbsolute, join, relative, sep } from 'path';
 import { IApi } from '../../types';
 /** esbuild plugin for resolving umi imports */
 export function esbuildUmiPlugin(api: IApi) {
@@ -95,7 +102,7 @@ function getOriginalAssetName(file: string) {
   return `${basename(file, ext).replace(/\.[a-f0-9]{8,}$/i, '')}${ext}`;
 }
 
-function walkSourceAssets(dir: string, cwd: string, ret: string[] = []) {
+function walkSourceAssets(dir: string, ret: string[] = []) {
   if (!existsSync(dir)) return ret;
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const absPath = join(dir, entry.name);
@@ -112,7 +119,7 @@ function walkSourceAssets(dir: string, cwd: string, ret: string[] = []) {
       ) {
         continue;
       }
-      walkSourceAssets(absPath, cwd, ret);
+      walkSourceAssets(absPath, ret);
     } else if (assetExts.has(extname(entry.name))) {
       ret.push(absPath);
     }
@@ -143,45 +150,133 @@ function findClientCssFiles(files: string[]) {
   ).filter((file) => !isUtoopackSingleCss(file));
 }
 
+interface AssetFile {
+  path: string;
+  stat: Stats;
+}
+
+function isWithinAssetRoot(root: string, file: string) {
+  const fromRoot = relative(root, file);
+  return (
+    !isAbsolute(fromRoot) &&
+    fromRoot !== '..' &&
+    !fromRoot.startsWith(`..${sep}`)
+  );
+}
+
+function getRegularAssetFile(
+  root: string,
+  file: string,
+): AssetFile | undefined {
+  if (!isWithinAssetRoot(root, file)) return;
+  try {
+    const path = realpathSync(file);
+    if (!isWithinAssetRoot(root, path)) return;
+    const stat = lstatSync(path);
+    if (stat.isFile()) return { path, stat };
+  } catch {
+    // Missing or inaccessible paths cannot participate in asset matching.
+  }
+}
+
+function hashAssetFile(
+  { path, stat }: AssetFile,
+  buffer: Buffer,
+): string | null {
+  try {
+    const fd = openSync(
+      path,
+      constants.O_RDONLY |
+        (constants.O_NOFOLLOW ?? 0) |
+        (constants.O_NONBLOCK ?? 0),
+    );
+    try {
+      // Check the opened file in case the path changed after resolution.
+      const opened = fstatSync(fd);
+      if (
+        !opened.isFile() ||
+        opened.dev !== stat.dev ||
+        opened.ino !== stat.ino ||
+        opened.size !== stat.size
+      ) {
+        return null;
+      }
+
+      const hash = createHash('sha256');
+      let remaining = opened.size;
+      while (remaining > 0) {
+        const bytesRead = readSync(
+          fd,
+          buffer,
+          0,
+          Math.min(remaining, buffer.length),
+          null,
+        );
+        if (!bytesRead) return null;
+        hash.update(buffer.subarray(0, bytesRead));
+        remaining -= bytesRead;
+      }
+      return hash.digest('hex');
+    } finally {
+      closeSync(fd);
+    }
+  } catch {
+    return null;
+  }
+}
+
 function getSourceAssetMap(
   api: IApi,
   statsAssets: string[],
   publicPath: string,
 ) {
-  const outputAssets = statsAssets
-    .filter((file) => assetExts.has(extname(file)))
-    .map((file) => {
-      const absPath = join(api.paths.absOutputPath, file);
-      if (!existsSync(absPath)) return null;
-      return {
-        file,
-        name: getOriginalAssetName(file),
-        size: statSync(absPath).size,
-      };
-    })
-    .filter(Boolean) as { file: string; name: string; size: number }[];
+  let outputRoot: string;
+  let sourceRoot: string;
+  try {
+    outputRoot = realpathSync(api.paths.absOutputPath);
+    sourceRoot = realpathSync(api.cwd);
+  } catch {
+    return {};
+  }
+
+  const outputAssets = statsAssets.flatMap((file) => {
+    if (!assetExts.has(extname(file))) return [];
+    const asset = getRegularAssetFile(outputRoot, join(outputRoot, file));
+    return asset ? [{ ...asset, file, name: getOriginalAssetName(file) }] : [];
+  });
+  if (!outputAssets.length) return {};
 
   const assetsByName = groupBy(outputAssets, (asset) => asset.name);
-  const sourcesByName = groupBy(walkSourceAssets(api.cwd, api.cwd), (file) =>
+  const sourcesByName = groupBy(walkSourceAssets(sourceRoot), (file) =>
     basename(file),
   );
+  const hashes = new Map<string, string | null>();
+  const buffer = Buffer.alloc(64 * 1024);
+
+  function getHash(file: AssetFile) {
+    let hash = hashes.get(file.path);
+    if (hash === undefined) {
+      hash = hashAssetFile(file, buffer);
+      hashes.set(file.path, hash);
+    }
+    return hash;
+  }
+
   const mapping: Record<string, string> = {};
   for (const [name, sources] of Object.entries(sourcesByName)) {
     const assets = assetsByName[name];
     if (!assets) continue;
-    for (const source of sources) {
-      const size = statSync(source).size;
-      let contents: Buffer | undefined;
+    for (const file of sources) {
+      const source = getRegularAssetFile(sourceRoot, file);
+      if (!source) continue;
       const matched = assets.find((asset) => {
-        if (asset.size !== size) return false;
+        if (asset.stat.size !== source.stat.size) return false;
         if (sources.length === 1 && assets.length === 1) return true;
-        contents ??= readFileSync(source);
-        return contents.equals(
-          readFileSync(join(api.paths.absOutputPath, asset.file)),
-        );
+        const hash = getHash(source);
+        return hash !== null && hash === getHash(asset);
       });
       if (matched) {
-        mapping[winPath(relative(api.cwd, source))] = addPublicPath(
+        mapping[winPath(relative(sourceRoot, file))] = addPublicPath(
           publicPath,
           matched.file,
         );

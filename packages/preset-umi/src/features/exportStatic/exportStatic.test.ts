@@ -83,3 +83,14 @@ test('exports index routes without a path and skips descendants of splats', asyn
     '404.html',
   ]);
 });
+
+test('skips plugin splat routes with missing or stale resolved paths', async () => {
+  const { generate, appData } = setup([], {
+    fallback: { id: 'fallback', path: '*' },
+    docs: { id: 'docs', path: '*', absPath: '/docs' },
+  });
+
+  await generate();
+
+  expect(appData.exportHtmlData).toEqual([]);
+});
