@@ -26,29 +26,30 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
   const map = new Map<string, IExportHtmlItem>();
 
   Object.values(routes).forEach((route) => {
-    const is404 = route.absPath === '/*';
+    const { absPath, path } = route;
+    if (route.isLayout || !absPath) return;
+
+    const is404 = absPath === '/*';
 
     if (
-      // skip layout
-      !route.isLayout &&
       // skip dynamic route for win, because `:` is not allowed in file name
-      (!IS_WIN || !route.path.includes('/:')) &&
-      // skip `*` route, because `*` is not working for most site serve services
-      (!route.path.includes('*') ||
-        // except `404.html`
-        is404)
+      (IS_WIN && (absPath.includes('/:') || path?.includes('/:'))) ||
+      // Check both inherited splats and explicit paths changed by route plugins.
+      (!is404 && (absPath.includes('*') || path?.includes('*')))
     ) {
-      const file = is404 ? '404.html' : join('.', route.absPath, 'index.html');
-
-      map.set(file, {
-        route: {
-          path: is404 ? '/404' : route.absPath,
-          redirect: route.redirect,
-        },
-        prerender: route.prerender !== false,
-        file,
-      });
+      return;
     }
+
+    const file = is404 ? '404.html' : join('.', absPath, 'index.html');
+
+    map.set(file, {
+      route: {
+        path: is404 ? '/404' : absPath,
+        redirect: route.redirect,
+      },
+      prerender: route.prerender !== false,
+      file,
+    });
   });
 
   return Array.from(map.values());

@@ -1,11 +1,11 @@
-import { Config, EnableBy } from '@umijs/core';
+import { Config, EnableBy, getConfigRoutes } from '@umijs/core';
 import { join } from 'path';
 import type { IApi } from '../../types';
 import exportStatic from './exportStatic';
 
-function setup(extraRoutePaths: unknown) {
+function setup(extraRoutePaths: unknown, routes = {}) {
   const config = { exportStatic: { extraRoutePaths } };
-  const appData = { routes: {}, exportHtmlData: [] };
+  const appData = { routes, exportHtmlData: [] };
   const api = {
     EnableBy,
     config,
@@ -67,3 +67,30 @@ test.each([{ prerender: false }, { path: '/news/1', prerender: 'false' }])(
     expect(setup([route]).validate).toThrow('Invalid value for exportStatic');
   },
 );
+
+test('exports index routes without a path and skips descendants of splats', async () => {
+  const routes = getConfigRoutes({
+    routes: [
+      { path: '/docs', routes: [{ index: true, component: 'intro' }] },
+      { path: '/files/*', routes: [{ path: 'edit', component: 'editor' }] },
+      { path: '*', component: 'not-found' },
+    ],
+  });
+  const { generate, appData } = setup([], routes);
+  await generate();
+  expect(appData.exportHtmlData.map(({ file }) => file)).toEqual([
+    join('docs', 'index.html'),
+    '404.html',
+  ]);
+});
+
+test('skips plugin splat routes with missing or stale resolved paths', async () => {
+  const { generate, appData } = setup([], {
+    fallback: { id: 'fallback', path: '*' },
+    docs: { id: 'docs', path: '*', absPath: '/docs' },
+  });
+
+  await generate();
+
+  expect(appData.exportHtmlData).toEqual([]);
+});

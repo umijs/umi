@@ -1,4 +1,4 @@
-import { createHashHistory, createMemoryHistory, createBrowserHistory } from '{{{ historyPath }}}';
+import { createHashHistory, createMemoryHistory, createBrowserHistory, type History } from '{{{ historyPath }}}';
 import type { UmiHistory } from './historyIntelli';
 
 let history: UmiHistory;
@@ -13,7 +13,7 @@ export function createHistory(opts: any) {
       initialEntries: opts.initialEntries ?? [opts.basename || '/'],
     });
   } else {
-    h = createBrowserHistory();
+    h = createLocalBrowserHistory();
   }
   if (opts.basename) {
     basename = opts.basename;
@@ -56,6 +56,7 @@ export function setHistory(h: UmiHistory) {
 // https://github.com/remix-run/history/blob/dev/docs/api-reference.md#to
 function patchTo(to: any, h: History) {
   if (typeof to === 'string') {
+    if (isPathless(to)) return to;
     return `${stripLastSlash(basename)}${to}`;
   } else if (typeof to === 'object') {
 
@@ -68,6 +69,35 @@ function patchTo(to: any, h: History) {
   } else {
     throw new Error(`Unexpected to: ${to}`);
   }
+}
+
+function createLocalBrowserHistory() {
+  const h = createBrowserHistory();
+  const { push, replace } = h;
+  h.push = (to, state) =>
+    push(keepBrowserPathLocal(to, h.location.pathname), state);
+  h.replace = (to, state) =>
+    replace(keepBrowserPathLocal(to, h.location.pathname), state);
+  return h;
+}
+
+function keepBrowserPathLocal(
+  to: Parameters<History['push']>[0],
+  pathname: string,
+) {
+  if (!pathname.startsWith('//')) return to;
+
+  // A leading dot segment keeps the URL on this origin while preserving the pathname.
+  if (typeof to === 'string') {
+    return isPathless(to) ? `/.${pathname}${to}` : to;
+  }
+  return to.pathname === undefined || to.pathname === pathname
+    ? { ...to, pathname: `/.${pathname}` }
+    : to;
+}
+
+function isPathless(to: string) {
+  return !to || to.startsWith('?') || to.startsWith('#');
 }
 
 function stripLastSlash(path) {

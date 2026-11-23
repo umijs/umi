@@ -16,7 +16,7 @@ test('renders nested metadata in route order and keeps it local to the page', as
     title,
     metas: [{ name: 'section', content: title }],
   }));
-  const childMetadataLoader = jest.fn((title: string) => {
+  const childMetadataLoader = jest.fn(async (title: string) => {
     finishChildMetadata();
     return { title, metas: [{ name: 'chapter', content: title }] };
   });
@@ -99,4 +99,7 @@ test('renders nested metadata in route order and keeps it local to the page', as
   const aboutHtml = await render('/about');
   expect(aboutHtml).toContain('<title>Default title</title>');
   expect(aboutHtml).not.toContain('name="chapter"');
+
+  childMetadataLoader.mockRejectedValueOnce(new Error('metadata unavailable'));
+  await expect(render('/docs/install')).rejects.toThrow('metadata unavailable');
 });

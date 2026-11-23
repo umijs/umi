@@ -54,6 +54,14 @@ export function getClientCssPaths(manifest: any): string[] {
   });
 }
 
+function serializeInlineScriptValue(value: unknown) {
+  // JSON string escaping alone does not protect the HTML script boundary.
+  return (JSON.stringify(value) ?? 'undefined')
+    .replace(/</g, '\\u003c')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
 const GlobalDataScript = (
   props: Omit<IHtmlProps, '__INTERNAL_DO_NOT_USE_OR_YOU_WILL_BE_FIRED'>,
 ) => {
@@ -63,11 +71,11 @@ const GlobalDataScript = (
     <script
       suppressHydrationWarning
       dangerouslySetInnerHTML={{
-        __html: `window.__UMI_LOADER_DATA__ = ${JSON.stringify(
+        __html: `window.__UMI_LOADER_DATA__ = ${serializeInlineScriptValue(
           loaderData || {},
-        )}; window.__UMI_METADATA_LOADER_DATA__ = ${JSON.stringify(
+        )}; window.__UMI_METADATA_LOADER_DATA__ = ${serializeInlineScriptValue(
           htmlPageOpts || {},
-        )}; window.__UMI_BUILD_ClIENT_CSS__ = ${JSON.stringify(
+        )}; window.__UMI_BUILD_ClIENT_CSS__ = ${serializeInlineScriptValue(
           clientCssPaths.length <= 1 ? clientCssPaths[0] || '' : clientCssPaths,
         )}`,
       }}
@@ -92,10 +100,55 @@ function normalizeScripts(script: IScript, extraProps = {}) {
   }
 }
 
-function generatorStyle(style: string) {
-  return isUrl(style)
-    ? { type: 'link', href: style }
-    : { type: 'style', content: style };
+function normalizeStyle(style: string | Record<string, string>) {
+  if (typeof style !== 'string') return style;
+  return isUrl(style) ? { src: style } : { content: style };
+}
+
+const styleAttributes = new Map([
+  ['blocking', 'blocking'],
+  ['class', 'className'],
+  ['classname', 'className'],
+  ['dir', 'dir'],
+  ['id', 'id'],
+  ['lang', 'lang'],
+  ['media', 'media'],
+  ['nonce', 'nonce'],
+  ['title', 'title'],
+  ['type', 'type'],
+]);
+
+const stylesheetLinkAttributes = new Map([
+  ['crossorigin', 'crossOrigin'],
+  ['disabled', 'disabled'],
+  ['fetchpriority', 'fetchpriority'],
+  ['hreflang', 'hrefLang'],
+  ['integrity', 'integrity'],
+  ['referrerpolicy', 'referrerPolicy'],
+]);
+
+function getStylesheetAttributes(
+  attrs: Record<string, string>,
+  linked: boolean,
+) {
+  return Object.fromEntries(
+    Object.entries(attrs).flatMap(([key, value]) => {
+      const name = key.toLowerCase();
+      const attr =
+        styleAttributes.get(name) ??
+        (linked ? stylesheetLinkAttributes.get(name) : undefined) ??
+        (/^(?:aria|data)-[a-z0-9_.:-]+$/.test(name) ? name : undefined);
+      return attr ? [[attr, value]] : [];
+    }),
+  );
+}
+
+function escapeStyleText(css: string) {
+  // Escape the tag name as CSS so the HTML parser keeps reading style text.
+  return css.replace(/<\/(s)(tyle)/gi, (_, first, rest) => {
+    const escaped = first === 's' ? '\\73 ' : '\\53 ';
+    return `</${escaped}${rest}`;
+  });
 }
 
 const HydrateMetadata = (
@@ -126,13 +179,22 @@ const HydrateMetadata = (
       {htmlPageOpts?.links?.map((link: Record<string, string>, key: number) => {
         return <link key={key} {...link} />;
       })}
-      {htmlPageOpts?.styles?.map((style: string, key: number) => {
-        const { type, href, content } = generatorStyle(style);
-        if (type === 'link') {
-          return <link key={key} rel="stylesheet" href={href} />;
-        } else if (type === 'style') {
-          return <style key={key}>{content}</style>;
-        }
+      {htmlPageOpts?.styles?.map((style, key) => {
+        const { src, content, ...attrs } = normalizeStyle(style);
+        const linked = typeof src === 'string' && !!src;
+        const stylesheetAttrs = getStylesheetAttributes(attrs, linked);
+        return linked ? (
+          <link key={key} {...stylesheetAttrs} rel="stylesheet" href={src} />
+        ) : (
+          <style
+            key={key}
+            {...stylesheetAttrs}
+            dangerouslySetInnerHTML={{
+              __html:
+                typeof content === 'string' ? escapeStyleText(content) : '',
+            }}
+          />
+        );
       })}
       {htmlPageOpts?.headScripts?.map((script: IScript, key: number) => {
         const { content, ...rest } = normalizeScripts(script);
