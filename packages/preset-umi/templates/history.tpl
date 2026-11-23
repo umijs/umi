@@ -8,7 +8,10 @@ export function createHistory(opts: any) {
   if (opts.type === 'hash') {
     h = createHashHistory();
   } else if (opts.type === 'memory') {
-    h = createMemoryHistory(opts);
+    h = createMemoryHistory({
+      ...opts,
+      initialEntries: opts.initialEntries ?? [opts.basename || '/'],
+    });
   } else {
     h = createBrowserHistory();
   }
