@@ -1,0 +1,55 @@
+packages/preset-umi/src/features/exportStatic/exportStatic.ts
+  s_3e49faf96ff93a::t_fb77e9f2ce17cc 29-32,36-38,40,42-52
+packages/preset-umi/src/features/ssr/utils.test.ts
+  s_3e49faf96ff93a::t_47e0c572e9ef6f 148-149,154-155,163,165
+  s_3e49faf96ff93a::t_51d09056fea32d 7,90-92,96-99,103-104,119,140-142,144-146,150-153,156-157,166-179
+  s_3e49faf96ff93a::t_615d461eef15f5 6,120-139,143,147,158,164,180-181
+  s_3e49faf96ff93a::t_2df12af705aaad 159-162
+packages/renderer-react/src/link.tsx
+  s_3e49faf96ff93a::t_e097bfa8c79005 1,25-29,137-145,149-151,160-162
+  s_3e49faf96ff93a::t_75cb1fb551bd56 3-8,61-62,113,123-127,133-136,152-157,163-167
+  s_3e49faf96ff93a::t_46a2166da03b1a 128-132,146-148,158-159
+  s_3e49faf96ff93a::t_588b2fadee03a3 168
+packages/preset-umi/src/features/tmpFiles/history.test.ts
+  s_3e49faf96ff93a::t_f652936bc979d1 1-2,10-15,18-19,21-23,27-28,33,50,55,57,59,70,83
+  s_3e49faf96ff93a::t_5aad376e7970fc 3,5,51-54,56,58,72,76
+  s_3e49faf96ff93a::t_95cabdce56d666 7,16-17,20,60-69,71,77-82,84-94
+  s_3e49faf96ff93a::t_46a2166da03b1a 73-75
+packages/preset-umi/src/features/exportStatic/exportStatic.test.ts
+  s_3e49faf96ff93a::t_fb77e9f2ce17cc 86-96
+packages/renderer-react/src/html.test.ts
+  s_3e49faf96ff93a::t_7653da2378e60d 42,47-59,67-69,73,77-82,86-108
+  s_3e49faf96ff93a::t_f3a34eef588b67 70-72,83-85
+packages/renderer-react/src/link.test.ts
+  s_3e49faf96ff93a::t_46a2166da03b1a 6-11,54-56,62-71,73-75
+  s_3e49faf96ff93a::t_b5d981d84f17f5 15-19,47
+  s_3e49faf96ff93a::t_f8a1afc99669db 21-46,48-52,58-61,72,76-87,89-95
+packages/preset-umi/templates/history.tpl
+  s_3e49faf96ff93a::t_739573481b9c16 1,16,59,74-76,81-83,88-101
+  s_3e49faf96ff93a::t_46a2166da03b1a 77-80,84-87
+  s_3e49faf96ff93a::t_a548ca5d5ba520 102
+packages/preset-umi/src/features/ssr/utils.ts
+  s_3e49faf96ff93a::t_9b630a9e99fb28 194
+  s_3e49faf96ff93a::t_e54b0747a072f6 3,5-6,8-10,12-14,17,105,122,153-157,172-173,175-181,186-193,195-227,242-247,253-264,269-271,273,275-276,279
+  s_3e49faf96ff93a::t_35baf045fc608d 167-170,182-185
+  s_3e49faf96ff93a::t_23f31063bf786f 158-166,171,174,233-241,250
+packages/renderer-react/src/html.tsx
+  s_3e49faf96ff93a::t_98faea8b80454d 57-64,74,76,78,108-129,134-153,184-187,189-192,195-196
+  s_3e49faf96ff93a::t_f3a34eef588b67 130-133,193-194
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e5078fa822e704cce19c2a0aacaa6cb910024869",
+  "prompts": {},
+  "sessions": {
+    "s_3e49faf96ff93a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a2063d-e5f7-7531-92d1-a02514f31168",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
