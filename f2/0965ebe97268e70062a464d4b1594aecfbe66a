@@ -1,0 +1,22 @@
+packages/mfsu/src/mfsu/middlewares.test.ts
+  s_29f7ef5cd8889b::t_f8138157efa2aa 3,59-70
+  s_29f7ef5cd8889b::t_6d9eaa09808dc6 1-2,4-33,37-39,41-43,45-58,71-78
+  s_29f7ef5cd8889b::t_0347a701ad7ec6 40,44
+  s_29f7ef5cd8889b::t_2ede5bc14d663f 34-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f20965ebe97268e70062a464d4b1594aecfbe66a",
+  "prompts": {},
+  "sessions": {
+    "s_29f7ef5cd8889b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a210a6-8713-73c1-a4b2-7cfc69e9a9fa",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
