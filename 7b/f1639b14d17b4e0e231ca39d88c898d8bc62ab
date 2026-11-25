@@ -1,0 +1,33 @@
+packages/mfsu/src/mfsu/assetPath.ts
+  s_29f7ef5cd8889b::t_d37851da608704 40
+  s_29f7ef5cd8889b::t_bc54417c593af4 9-13,16-18,20,28,30-33,41,43
+  s_29f7ef5cd8889b::t_7f688aaba613cb 19,29
+  s_29f7ef5cd8889b::t_e0bccd561163ca 1-8,14-15,21-27,34-39,42,44-45
+packages/mfsu/src/mfsu/mfsu.ts
+  s_29f7ef5cd8889b::t_d37851da608704 11,308
+  s_29f7ef5cd8889b::t_42caf2d472160d 327-330
+  s_29f7ef5cd8889b::t_7f688aaba613cb 360
+  s_29f7ef5cd8889b::t_e0bccd561163ca 10,322-323,326,331-332,336-344,346,355,357,359,376
+  s_29f7ef5cd8889b::t_bc54417c593af4 41,309,324-325,335,345,356,358,361-375
+packages/mfsu/src/mfsu/assetPath.test.ts
+  s_29f7ef5cd8889b::t_f7b410db4eca51 27,48-53
+  s_29f7ef5cd8889b::t_bc54417c593af4 37-38
+  s_29f7ef5cd8889b::t_926d6247ccfbc1 1-26,28-36,39-42,46-47,54-62
+  s_29f7ef5cd8889b::t_42caf2d472160d 43-45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7bf1639b14d17b4e0e231ca39d88c898d8bc62ab",
+  "prompts": {},
+  "sessions": {
+    "s_29f7ef5cd8889b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a210a6-8713-73c1-a4b2-7cfc69e9a9fa",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
