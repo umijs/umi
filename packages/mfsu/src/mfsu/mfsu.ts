@@ -7,8 +7,8 @@ import type {
 import express from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { existsSync, readFileSync } from 'fs';
-import { extname, join } from 'path';
+import { readFileSync, statSync } from 'fs';
+import { extname, join, relative, resolve, sep } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
 import isAbsoluteUrl from '../../compiled/is-absolute-url';
@@ -38,6 +38,7 @@ import {
   BuildDepPlugin,
   IBuildDepPluginOpts,
 } from '../webpackPlugins/buildDepPlugin';
+import { isMissingAsset, resolveAssetPath } from './assetPath';
 import { StrategyCompileTime } from './strategyCompileTime';
 import { StaticAnalyzeStrategy } from './strategyStaticAnalyze';
 
@@ -304,6 +305,8 @@ promise new Promise(resolve => {
   }
 
   getMiddlewares() {
+    const output = resolve(this.opts.tmpBase!);
+    const serveChunk = express.static(output, { index: false });
     return [
       (req: Request, res: Response, next: NextFunction) => {
         const publicPath = this.publicPath;
@@ -316,32 +319,32 @@ promise new Promise(resolve => {
           req.path.startsWith(`${relativePublicPath}${MF_STATIC_PREFIX}`);
         if (isMF) {
           this.depBuilder.onBuildComplete(() => {
-            if (!req.path.includes(REMOTE_FILE)) {
-              res.setHeader('cache-control', 'max-age=31536000,immutable');
-            }
-            res.setHeader(
-              'content-type',
-              lookup(extname(req.path)) || 'text/plain',
-            );
-            const relativePath = req.path.replace(
-              new RegExp(`^${relativePublicPath}`),
-              '/',
-            );
-
-            const realFilePath = join(this.opts.tmpBase!, relativePath);
-
-            if (!existsSync(realFilePath)) {
-              logger.error(`MFSU dist file: ${realFilePath} not found`);
-              if (this.lastBuildError) {
-                logger.error(`MFSU latest build error: `, this.lastBuildError);
+            try {
+              const asset = req.path.slice(relativePublicPath.length);
+              const target = resolveAssetPath(output, asset);
+              if (!target || !statSync(target.file).isFile()) {
+                if (this.lastBuildError) {
+                  logger.error(
+                    'MFSU latest build error: ',
+                    this.lastBuildError,
+                  );
+                }
+                return res.status(404).end();
               }
 
-              res.status(404);
-              return res.end();
+              const content = readFileSync(target.file);
+              if (!req.path.includes(REMOTE_FILE)) {
+                res.setHeader('cache-control', 'max-age=31536000,immutable');
+              }
+              res.setHeader(
+                'content-type',
+                lookup(extname(req.path)) || 'text/plain',
+              );
+              res.send(content);
+            } catch (err) {
+              if (isMissingAsset(err)) return res.status(404).end();
+              next(err);
             }
-
-            const content = readFileSync(realFilePath);
-            res.send(content);
           });
         } else {
           next();
@@ -349,7 +352,28 @@ promise new Promise(resolve => {
       },
       // 兜底依赖构建时, 代码中有指定 chunk 名的情况
       // TODO: should respect to publicPath
-      express.static(this.opts.tmpBase!),
+      (req: Request, res: Response, next: NextFunction) => {
+        if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+        const asset = req.path.slice(1);
+        // Validate directory indexes as files before handing them to Express.
+        const name = req.path.endsWith('/') ? asset + 'index.html' : asset;
+        const target = resolveAssetPath(output, name, 'ignore');
+        if (!target) return next();
+
+        // Serve the verified filename, including for aliases. Express uses
+        // originalUrl for redirects; downstream middleware expects url intact.
+        const original = req.url;
+        const filename = relative(target.root, target.file);
+        req.url = '/' + filename.split(sep).map(encodeURIComponent).join('/');
+        try {
+          return serveChunk(req, res, (err?: unknown) => {
+            req.url = original;
+            next(err);
+          });
+        } finally {
+          req.url = original;
+        }
+      },
     ];
   }
 
