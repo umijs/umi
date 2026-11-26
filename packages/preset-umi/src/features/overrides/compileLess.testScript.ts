@@ -14,7 +14,7 @@ const run = async () => {
     barbar: join(filePath, '../node_modules/bar'),
   };
   const content = fs.readFileSync(filePath, 'utf-8');
-  const result = await compileLess({
+  const { css: result } = await compileLess({
     lessContent: content,
     filePath,
     modifyVars,

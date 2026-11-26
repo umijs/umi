@@ -25,5 +25,5 @@ export async function compileLess(opts: {
     javascriptEnabled: true,
     modifyVars,
   });
-  return result.css;
+  return result;
 }
