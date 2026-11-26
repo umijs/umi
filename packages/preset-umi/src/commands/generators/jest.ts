@@ -43,11 +43,10 @@ export default (api: IApi) => {
         // we use `jest.config.ts` so jest needs ts and ts-node
         typescript: '^5',
         'ts-node': '^10',
-        'cross-env': '^7',
+        // The generated config uses the browser target with or without RTL.
+        'jest-environment-jsdom': jestMajorVersion,
       };
       const reactTestingDeps = {
-        // `jest-environment-jsdom` is no longer included in jest >= 28
-        'jest-environment-jsdom': jestMajorVersion,
         // RTL
         '@testing-library/jest-dom': '^5',
         '@testing-library/react': '^14',
@@ -60,10 +59,7 @@ export default (api: IApi) => {
           }
         : basicDeps;
       h.addDevDeps(packageToInstall);
-      h.addScript(
-        'test',
-        'cross-env TS_NODE_TRANSPILE_ONLY=yes jest --passWithNoTests',
-      );
+      h.addScript('test', 'jest --passWithNoTests');
 
       const setupImports = res.willUseTLR
         ? [
