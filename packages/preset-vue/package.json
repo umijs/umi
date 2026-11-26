@@ -34,7 +34,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "6.0.8",
     "umi": "workspace:*",
-    "vite": "7.3.6"
+    "vite": "7.3.8"
   },
   "publishConfig": {
     "access": "public"
