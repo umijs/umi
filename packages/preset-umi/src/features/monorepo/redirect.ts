@@ -1,4 +1,11 @@
-import { chalk, isLocalDev, isMonorepo, logger, resolve } from '@umijs/utils';
+import {
+  chalk,
+  isLocalDev,
+  isMonorepo,
+  logger,
+  resolve,
+  winPath,
+} from '@umijs/utils';
 import { pkgUp } from '@umijs/utils/compiled/pkg-up';
 import assert from 'assert';
 import { existsSync, statSync } from 'fs';
@@ -34,7 +41,9 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  let workspaceAliases: Record<string, string> = {};
   api.modifyConfig(async (memo) => {
+    workspaceAliases = {};
     const config: IConfigs = memo.monorepoRedirect || {};
     const {
       exclude = [],
@@ -83,6 +92,7 @@ export default (api: IApi) => {
       });
       return obj;
     }, {});
+    workspaceAliases = alias;
     // collect peer deps
     const peerDepsAliasMap: Record<string, string> = {};
     if (peerDeps) {
@@ -133,6 +143,17 @@ export default (api: IApi) => {
     };
 
     return memo;
+  });
+
+  api.modifyTSConfig((config) => {
+    for (const [name, source] of Object.entries(workspaceAliases)) {
+      if (api.config.alias[name] !== source) continue;
+      const paths = (config.compilerOptions.paths ??= {});
+      const dir = winPath(source);
+      paths[name] ??= [dir];
+      paths[`${name}/*`] ??= [`${dir}/*`];
+    }
+    return config;
   });
 };
 
