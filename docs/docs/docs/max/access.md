@@ -11,8 +11,8 @@ toc: content
 ```ts
 export default {
   access: {},
-  // access 插件依赖 initial State 所以需要同时开启
-  initialState: {},
+  // access 插件依赖 plugin-model 所以需要同时开启
+  model: {},
 };
 ```
 
