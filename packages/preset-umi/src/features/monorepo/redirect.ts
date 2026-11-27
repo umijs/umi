@@ -1,4 +1,11 @@
-import { chalk, isLocalDev, isMonorepo, logger, resolve } from '@umijs/utils';
+import {
+  chalk,
+  isLocalDev,
+  isMonorepo,
+  logger,
+  resolve,
+  winPath,
+} from '@umijs/utils';
 import { pkgUp } from '@umijs/utils/compiled/pkg-up';
 import assert from 'assert';
 import { existsSync, statSync } from 'fs';
@@ -11,6 +18,7 @@ interface IConfigs {
   srcDir?: string[];
   exclude?: RegExp[];
   peerDeps?: boolean;
+  sourceTypes?: boolean;
   useRootProject?: boolean;
 }
 
@@ -26,6 +34,7 @@ export default (api: IApi) => {
               srcDir: zod.array(zod.string()),
               exclude: zod.array(zod.instanceof(RegExp)),
               peerDeps: zod.boolean(),
+              sourceTypes: zod.boolean(),
             })
             .deepPartial(),
         ]);
@@ -34,7 +43,9 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  let workspaceAliases: Record<string, string> = {};
   api.modifyConfig(async (memo) => {
+    workspaceAliases = {};
     const config: IConfigs = memo.monorepoRedirect || {};
     const {
       exclude = [],
@@ -83,6 +94,7 @@ export default (api: IApi) => {
       });
       return obj;
     }, {});
+    if (config.sourceTypes) workspaceAliases = alias;
     // collect peer deps
     const peerDepsAliasMap: Record<string, string> = {};
     if (peerDeps) {
@@ -133,6 +145,17 @@ export default (api: IApi) => {
     };
 
     return memo;
+  });
+
+  api.modifyTSConfig((config) => {
+    for (const [name, source] of Object.entries(workspaceAliases)) {
+      if (api.config.alias[name] !== source) continue;
+      const paths = (config.compilerOptions.paths ??= {});
+      const dir = winPath(source);
+      paths[name] ??= [dir];
+      paths[`${name}/*`] ??= [`${dir}/*`];
+    }
+    return config;
   });
 };
 

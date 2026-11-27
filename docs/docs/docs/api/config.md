@@ -1099,7 +1099,7 @@ mountElementId: 'container'
 
 ## monorepoRedirect
 
-- 类型：`{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean, useRootProject?: boolean }`
+- 类型：`{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean, sourceTypes?: boolean, useRootProject?: boolean }`
 - 默认值：`false`
 
 在 monorepo 中使用 Umi 时，你可能需要引入其他子包的组件、工具方法等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
@@ -1138,6 +1138,8 @@ monorepoRedirect: { peerDeps: true }
 ```
 
 经过重定向，依赖全局唯一，便可以在开发时保持和在 npm 上安装包后的体验一致。
+
+默认情况下，TypeScript 继续使用各子包发布的类型声明。要在子包重新构建前使用 TypeScript 源码中的新导出，可设置 `monorepoRedirect: { sourceTypes: true }`。如果项目指定了 `compilerOptions.rootDir`，该目录需同时包含应用和这些子包的源码。
 
 useRootProject: 当你的项目不在 monorepo 子文件夹里，而在 monorepo 根的话，你可以开启这个选项，以使 monorepoRedirect 生效。
 
