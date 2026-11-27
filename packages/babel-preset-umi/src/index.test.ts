@@ -118,6 +118,65 @@ test('plugin-transform-runtime', () => {
   expect(code).toContain(`classCallCheck`);
 });
 
+test.each([false, true])(
+  'runtime 8 executes legacy browser output with useESModules=%s',
+  async (useESModules) => {
+    const code = doTransform({
+      code: `
+        export async function run() {
+          class Counter {
+            #value = 1;
+            increment() { return ++this.#value; }
+          }
+          async function* values() {
+            yield await Promise.resolve(new Counter().increment());
+          }
+          const result = [];
+          for await (const value of values()) result.push(value);
+          return result;
+        }
+      `,
+      opts: {
+        presetEnv: { targets: { ie: '11' }, modules: 'commonjs' },
+        pluginTransformRuntime: { useESModules },
+      },
+    });
+    const exports: { run?: () => Promise<number[]> } = {};
+    new Function('exports', 'require', code)(exports, require);
+
+    expect(await exports.run!()).toEqual([2]);
+    expect(code).toContain('@babel/runtime/helpers/');
+    expect(code).not.toMatch(/@babel\/runtime\/(?:regenerator|helpers\/esm\/)/);
+    expect(code).not.toMatch(/@babel\/runtime\/helpers\/regeneratorRuntime/);
+  },
+);
+
+test('runtime 8 preserves private fields, destructuring and decorators', () => {
+  const code = doTransform({
+    code: `
+      function decorate(Target) {
+        Target.decorated = true;
+        return Target;
+      }
+      @decorate
+      class Counter {
+        #value = 1;
+        increment() { return ++this.#value; }
+      }
+      const [first, ...rest] = new Set([new Counter().increment(), 3, 4]);
+      export const result = [Counter.decorated, first, rest];
+    `,
+    opts: {
+      presetEnv: { targets: { ie: '11' }, modules: 'commonjs' },
+      pluginTransformRuntime: {},
+    },
+  });
+  const exports: { result?: unknown } = {};
+  new Function('exports', 'require', code)(exports, require);
+
+  expect(exports.result).toEqual([true, 2, [3, 4]]);
+});
+
 test('typescript with namespace', () => {
   expect(
     doTransform({
