@@ -15,11 +15,11 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.onStart(() => {
-    if (api.appData.npmClient === 'pnpm') {
-      api.logger.warn('Phantom dependencies check is not needed in pnpm.');
-    }
-  });
+//   api.onStart(() => {
+//     if (api.appData.npmClient === 'pnpm') {
+//       api.logger.warn('Phantom dependencies check is not needed in pnpm.');
+//     }
+//   });
 
   api.onPrepareBuildSuccess(({ result }) => {
     const files = Object.keys(result.metafile!.inputs);
