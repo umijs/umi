@@ -133,12 +133,21 @@ export default (api: IApi) => {
       .map(({ antdLocale }) => antdLocale)
       .filter((locale) => locale);
 
+    const [defaultLang, subtag = '', region = ''] =
+      defaultLocale.split(baseSeparator);
+    const defaultScript = /^[A-Z][a-z]{3}$/.test(subtag) ? subtag : '';
+    const defaultCountry = defaultScript ? region : subtag;
+
     let MomentLocales = momentLocales;
     let DefaultMomentLocale = '';
     // set moment default accounding to locale.default
     if (!MomentLocales.length && api.config.locale?.default) {
-      const [lang, country = ''] = defaultLocale.split(baseSeparator);
-      const { momentLocale } = getMomentLocale(lang, country, resolveKey);
+      const { momentLocale } = getMomentLocale(
+        defaultLang,
+        defaultCountry,
+        resolveKey,
+        defaultScript,
+      );
       if (momentLocale) {
         MomentLocales = [momentLocale];
         DefaultMomentLocale = momentLocale;
@@ -148,11 +157,10 @@ export default (api: IApi) => {
     let DefaultAntdLocales: string[] = [];
     // set antd default locale
     if (!antdLocales.length && antd) {
-      const [lang, country = ''] = defaultLocale.split(baseSeparator);
       DefaultAntdLocales = lodash.uniq(
         await addAntdLocales({
-          lang,
-          country,
+          lang: defaultLang,
+          country: defaultCountry,
         }),
       );
     }

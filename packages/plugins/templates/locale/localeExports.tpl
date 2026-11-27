@@ -50,10 +50,10 @@ export const LANG_CHANGE_EVENT = Symbol('LANG_CHANGE');
 
 {{#LocaleList}}
 {{#antdLocale}}
-import {{lang}}{{country}}{{index}} from '{{{locale}}}';
+import {{lang}}{{script}}{{country}}{{index}} from '{{{locale}}}';
 {{/antdLocale}}
 {{#paths}}
-import lang_{{lang}}{{country}}{{index}} from "{{{path}}}";
+import lang_{{lang}}{{script}}{{country}}{{index}} from "{{{path}}}";
 {{/paths}}
 {{/LocaleList}}
 
@@ -80,12 +80,12 @@ export const localeInfo: {[key: string]: any} = {
   {{#LocaleList}}
   '{{name}}': {
     messages: {
-      {{#paths}}...flattenMessages(lang_{{lang}}{{country}}{{index}}),{{/paths}}
+      {{#paths}}...flattenMessages(lang_{{lang}}{{script}}{{country}}{{index}}),{{/paths}}
     },
     locale: '{{locale}}',
     {{#Antd}}antd: {
       {{#antdLocale}}
-      ...{{lang}}{{country}}{{index}},
+      ...{{lang}}{{script}}{{country}}{{index}},
       {{/antdLocale}}
     },{{/Antd}}
     momentLocale: '{{momentLocale}}',

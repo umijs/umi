@@ -26,27 +26,24 @@ export const getMomentLocale = (
   lang: string,
   country: string,
   resolveKey: string,
+  script = '',
 ): { momentLocale: string } => {
   const momentLocation = require
     .resolve(`${resolveKey}/locale/zh-cn`)
     .replace(/zh\-cn\.js$/, '');
 
-  if (
-    existsSync(
-      join(momentLocation, `${lang}-${country?.toLocaleLowerCase?.()}.js`),
-    )
-  ) {
-    const momentLocale = `${lang}-${country?.toLocaleLowerCase?.()}`;
-    return {
-      momentLocale,
-    };
-  }
-  if (existsSync(join(momentLocation, `${lang}.js`))) {
-    return {
-      momentLocale: lang,
-    };
-  }
-  return { momentLocale: '' };
+  const names = [
+    [lang, script, country].filter(Boolean).join('-'),
+    [lang, script].filter(Boolean).join('-'),
+    [lang, country].filter(Boolean).join('-'),
+    lang,
+  ].map((name) => name.toLowerCase());
+  return {
+    momentLocale:
+      lodash
+        .uniq(names)
+        .find((name) => existsSync(join(momentLocation, `${name}.js`))) || '',
+  };
 };
 
 export const getAntdLocale = (lang: string, country: string): string =>
@@ -56,6 +53,8 @@ export interface IGetLocaleFileListResult {
   lang: string;
   country: string;
   name: string;
+  locale: string;
+  script: string;
   paths: string[];
   antdLocale: string[];
   momentLocale: string;
@@ -87,9 +86,15 @@ export const getLocaleList = async (
     addAntdLocales,
     resolveKey = 'moment',
   } = opts;
-  const localeFileMath = new RegExp(
-    `^([a-z]{2})${separator}?([A-Z]{2})?\.(js|json|ts)$`,
-  );
+  const sep = lodash.escapeRegExp(separator);
+  const filePattern = (delimiter: string) =>
+    new RegExp(
+      `^([a-z]{2,3}?)(?:${delimiter}([A-Z][a-z]{3}))?(?:${delimiter}([A-Z]{2}|\\d{3}))?\\.(?:js|json|ts)$`,
+    );
+
+  // An explicit separator may itself be a language character (enxUS with "x").
+  const separated = filePattern(sep);
+  const optionalSeparator = filePattern(`(?:${sep})?`);
 
   const localeFiles = glob
     .sync('*.{ts,js,json}', {
@@ -103,24 +108,21 @@ export const getLocaleList = async (
         })
         .map((name) => winPath(join(absPagesPath, name))),
     )
-    .filter((p) => localeFileMath.test(basename(p)) && existsSync(p))
-    .map((fullName) => {
-      const fileName = basename(fullName);
-      const fileInfo = localeFileMath
-        .exec(fileName)
-        ?.slice(1, 3)
-        ?.filter(Boolean);
-      return {
-        name: (fileInfo || []).join(separator),
-        path: fullName,
-      };
+    .flatMap((path) => {
+      const filename = basename(path);
+      const match =
+        separated.exec(filename) ?? optionalSeparator.exec(filename);
+      if (!match || !existsSync(path)) return [];
+      const [, lang, script = '', country = ''] = match;
+      const name = [lang, script, country].filter(Boolean).join(separator);
+      return [{ lang, script, country, name, path }];
     });
 
   const groups = lodash.groupBy(localeFiles, 'name');
 
   const promises = Object.keys(groups).map(async (name) => {
-    const [lang, country = ''] = name.split(separator);
-    const { momentLocale } = getMomentLocale(lang, country, resolveKey);
+    const { lang, script, country } = groups[name][0];
+    const { momentLocale } = getMomentLocale(lang, country, resolveKey, script);
     const antdLocale = lodash
       .uniq(await addAntdLocales({ lang, country }))
       .filter((localePath) => modulesHasLocale(localePath));
@@ -130,7 +132,8 @@ export const getLocaleList = async (
       name,
       // react-intl Function.supportedLocalesOf
       // Uncaught RangeError: Incorrect locale information provided
-      locale: name.split(separator).join('-'),
+      locale: [lang, script, country].filter(Boolean).join('-'),
+      script,
       country,
       antdLocale,
       paths: groups[name].map((item) => winPath(item.path)),
