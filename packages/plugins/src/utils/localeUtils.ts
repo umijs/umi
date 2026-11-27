@@ -86,10 +86,15 @@ export const getLocaleList = async (
     addAntdLocales,
     resolveKey = 'moment',
   } = opts;
-  const sep = `(?:${lodash.escapeRegExp(separator)})?`;
-  const localeFilePattern = new RegExp(
-    `^([a-z]{2,3})(?:${sep}([A-Z][a-z]{3}))?(?:${sep}([A-Z]{2}|\\d{3}))?\\.(?:js|json|ts)$`,
-  );
+  const sep = lodash.escapeRegExp(separator);
+  const filePattern = (delimiter: string) =>
+    new RegExp(
+      `^([a-z]{2,3}?)(?:${delimiter}([A-Z][a-z]{3}))?(?:${delimiter}([A-Z]{2}|\\d{3}))?\\.(?:js|json|ts)$`,
+    );
+
+  // An explicit separator may itself be a language character (enxUS with "x").
+  const separated = filePattern(sep);
+  const optionalSeparator = filePattern(`(?:${sep})?`);
 
   const localeFiles = glob
     .sync('*.{ts,js,json}', {
@@ -104,7 +109,9 @@ export const getLocaleList = async (
         .map((name) => winPath(join(absPagesPath, name))),
     )
     .flatMap((path) => {
-      const match = localeFilePattern.exec(basename(path));
+      const filename = basename(path);
+      const match =
+        separated.exec(filename) ?? optionalSeparator.exec(filename);
       if (!match || !existsSync(path)) return [];
       const [, lang, script = '', country = ''] = match;
       const name = [lang, script, country].filter(Boolean).join(separator);

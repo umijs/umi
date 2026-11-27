@@ -3,7 +3,7 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { getLocaleList } from './localeUtils';
 
-test.each(['-', '_'])(
+test.each(['-', '_', 'x', '.'])(
   'discovers language, script and region bundles with %s',
   async (separator) => {
     const root = mkdtempSync(join(tmpdir(), 'umi-locales-'));
@@ -28,6 +28,7 @@ test.each(['-', '_'])(
         );
       }
       writeFileSync(join(local, 'fil.ts'), 'export default {};');
+      writeFileSync(join(local, 'enUS.ts'), 'export default {};');
       const addAntdLocales = jest.fn(async () => []);
       const list = await getLocaleList({
         localeFolder: 'locales',
@@ -38,6 +39,9 @@ test.each(['-', '_'])(
         resolveKey: 'moment',
       });
       expect(list.map((item) => item.locale).sort()).toEqual(names.sort());
+      const english = list.find((item) => item.name === `en${separator}US`);
+      expect(english?.locale).toBe('en-US');
+      expect(english?.paths).toHaveLength(2);
       expect(list.find((item) => item.name === 'fil')?.paths).toHaveLength(2);
       expect(
         list.find((item) => item.name === ['zh', 'Hant', 'TW'].join(separator)),
