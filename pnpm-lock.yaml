@@ -2198,7 +2198,7 @@ importers:
         version: link:../utils
       '@vitejs/plugin-react':
         specifier: 5.2.0
-        version: 5.2.0(vite@7.3.6)
+        version: 5.2.0(vite@7.3.8)
       core-js:
         specifier: 3.34.0
         version: 3.34.0
@@ -2218,15 +2218,15 @@ importers:
         specifier: 5.49.0
         version: 5.49.0
       vite:
-        specifier: 7.3.6
-        version: 7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
+        specifier: 7.3.8
+        version: 7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
     devDependencies:
       '@types/caniuse-lite':
         specifier: 1.0.5
         version: 1.0.5
       '@vitejs/plugin-legacy':
         specifier: 7.2.1
-        version: 7.2.1(terser@5.49.0)(vite@7.3.6)
+        version: 7.2.1(terser@5.49.0)(vite@7.3.8)
       caniuse-lite:
         specifier: 1.0.30001792
         version: 1.0.30001792
@@ -2859,8 +2859,8 @@ importers:
         specifier: 2.0.2
         version: 2.0.2
       vite:
-        specifier: 7.3.6
-        version: 7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
+        specifier: 7.3.8
+        version: 7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
 
   packages/preset-vue:
     dependencies:
@@ -2869,7 +2869,7 @@ importers:
         version: link:../renderer-vue
       '@vitejs/plugin-vue-jsx':
         specifier: 5.1.6
-        version: 5.1.6(vite@7.3.6)(vue@3.2.45)
+        version: 5.1.6(vite@7.3.8)(vue@3.2.45)
       '@vue/babel-plugin-jsx':
         specifier: 1.1.1
         version: 1.1.1
@@ -2885,13 +2885,13 @@ importers:
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: 6.0.8
-        version: 6.0.8(vite@7.3.6)(vue@3.2.45)
+        version: 6.0.8(vite@7.3.8)(vue@3.2.45)
       umi:
         specifier: workspace:*
         version: link:../umi
       vite:
-        specifier: 7.3.6
-        version: 7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
+        specifier: 7.3.8
+        version: 7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
 
   packages/renderer-react:
     dependencies:
@@ -2984,12 +2984,12 @@ importers:
       '@babel/runtime':
         specifier: 7.23.6
         version: 7.23.6
-      '@umijs/bundler-utoopack':
-        specifier: workspace:*
-        version: link:../bundler-utoopack
       '@umijs/bundler-utils':
         specifier: workspace:*
         version: link:../bundler-utils
+      '@umijs/bundler-utoopack':
+        specifier: workspace:*
+        version: link:../bundler-utoopack
       '@umijs/bundler-webpack':
         specifier: workspace:*
         version: link:../bundler-webpack
@@ -22766,7 +22766,7 @@ packages:
     hasBin: true
     dev: true
 
-  /@vitejs/plugin-legacy@7.2.1(terser@5.49.0)(vite@7.3.6):
+  /@vitejs/plugin-legacy@7.2.1(terser@5.49.0)(vite@7.3.8):
     resolution: {integrity: sha512-CaXb/y0mlfu7jQRELEJJc2/5w2bX2m1JraARgFnvSB2yfvnCNJVWWlqAo6WjnKoepOwKx8gs0ugJThPLKCOXIg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
@@ -22786,7 +22786,7 @@ packages:
       regenerator-runtime: 0.14.1
       systemjs: 6.15.1
       terser: 5.49.0
-      vite: 7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
+      vite: 7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -22821,7 +22821,7 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-react@5.2.0(vite@7.3.6):
+  /@vitejs/plugin-react@5.2.0(vite@7.3.8):
     resolution: {integrity: sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
@@ -22833,12 +22833,12 @@ packages:
       '@rolldown/pluginutils': 1.0.0-rc.3
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
+      vite: 7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@vitejs/plugin-vue-jsx@5.1.6(vite@7.3.6)(vue@3.2.45):
+  /@vitejs/plugin-vue-jsx@5.1.6(vite@7.3.8)(vue@3.2.45):
     resolution: {integrity: sha512-YXvi4as2clxt6DFw5+a0tTA97ntiQXm/raR8ofNj3aNwwdlVGTiG2gp7EvfZW17P50acL/9bP0ccF4XnqNmlgA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
@@ -22850,13 +22850,13 @@ packages:
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
       '@rolldown/pluginutils': 1.0.1
       '@vue/babel-plugin-jsx': 2.0.1(@babel/core@7.29.7)
-      vite: 7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
+      vite: 7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
       vue: 3.2.45
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@vitejs/plugin-vue@6.0.8(vite@7.3.6)(vue@3.2.45):
+  /@vitejs/plugin-vue@6.0.8(vite@7.3.8)(vue@3.2.45):
     resolution: {integrity: sha512-0ZjgOg7oO6farnNGup7yvoM/YXZV84OZxHAwtflItNa/6zzQyVb5LNxyea3FEKEX2XlagIKzrlH7wwxkKgtiew==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
@@ -22864,7 +22864,7 @@ packages:
       vue: ^3.2.25
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
+      vite: 7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1)
       vue: 3.2.45
     dev: true
 
@@ -54818,8 +54818,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vite@7.3.6(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1):
-    resolution: {integrity: sha512-4XP60spRGjSZFf1qYH+dJIkK2znL3zQfl9KkOV9MkkRR/3Dls0dxaBsQPTloEc5BLXWPL9vsOxopxyKoMmDueg==}
+  /vite@7.3.8(@types/node@20.19.43)(less@4.1.3)(terser@5.49.0)(tsx@4.23.1):
+    resolution: {integrity: sha512-3tTi78MAKhVk9h+YZVXMQ8POmneJuE97QUPAWtJghHzhH7BAyiqQOC2KZh1DWOsu/USB2cRXhznPByaabvYXfw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
