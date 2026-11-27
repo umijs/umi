@@ -10,42 +10,38 @@ Automated testing is an effective means to ensure quality, and Umi 4 provides sc
 
 ## Configuration
 
-Quickly configure Jest using Umi 4's micro-generator [reference](./generator#jest-configurator), and if you need to modify the Jest related configuration, you can do so in `jest.config.ts`.
+Quickly configure Jest using Umi 4's micro-generator [reference](./generator#jest-configurator), and if you need to modify the Jest related configuration, you can do so in `jest.config.cjs`.
 
 Umi project
 
-```ts
-import { Config, configUmiAlias, createConfig } from 'umi/test';
+```js
+const { configUmiAlias, createConfig } = require('umi/test');
 
-export default async () => {
-  return (await configUmiAlias({
-    ...createConfig({
-      target: 'browser',
-      jsTransformer: 'esbuild',
-      jsTransformerOpts: { jsx: 'automatic' },
-    }),
-    // Override the default Jest configuration of Umi, such as
-    // displayName: "Umi jest",
-  })) as Config.InitialOptions;
-};
+module.exports = () => configUmiAlias({
+  ...createConfig({
+    target: 'browser',
+    jsTransformer: 'esbuild',
+    jsTransformerOpts: { jsx: 'automatic' },
+  }),
+  // Override the default Jest configuration of Umi, such as
+  // displayName: "Umi jest",
+});
 ```
 
 @umijs/max project
 
-```ts
-import { Config, configUmiAlias, createConfig } from '@umijs/max/test';
+```js
+const { configUmiAlias, createConfig } = require('@umijs/max/test');
 
-export default async () => {
-  return (await configUmiAlias({
-    ...createConfig({
-      target: 'browser',
-      jsTransformer: 'esbuild',
-      jsTransformerOpts: { jsx: 'automatic' },
-    }),
-    // Override the default Jest configuration of Umi, such as
-    // displayName: "Umi jest",
-  })) as Config.InitialOptions;
-};
+module.exports = () => configUmiAlias({
+  ...createConfig({
+    target: 'browser',
+    jsTransformer: 'esbuild',
+    jsTransformerOpts: { jsx: 'automatic' },
+  }),
+  // Override the default Jest configuration of Umi, such as
+  // displayName: "Umi jest",
+});
 ```
 
 After configuration, you can start writing unit tests.

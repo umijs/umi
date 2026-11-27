@@ -304,7 +304,7 @@ info  - Write .prettierignore
 $umi g jest
 ✔ Will you use @testing-library/react for UI testing?! … yes
 info  - Write package.json
-info  - Write jest.config.ts
+info  - Write jest.config.cjs
 ```
 
 ### Tailwind CSS 配置生成器
