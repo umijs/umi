@@ -181,7 +181,7 @@ Now, you want to use a global Model in a certain component. Taking the user info
 
 ```tsx
 // src/components/Username/index.tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default function Page() {
   const { user, loading } = useModel('userModel');
@@ -206,7 +206,7 @@ The `useModel()` method can accept an optional second parameter. When a componen
 
 ```tsx
 // src/components/CounterActions/index.tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default function Page() {
   const { add, minus } = useModel('counterModel', (model) => ({
@@ -248,7 +248,7 @@ export async function getInitialState() {
 Now, various plugins and your defined components can directly access this global initial state through `useModel('@@initialState')` as shown below:
 
 ```tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default function Page() {
   const { initialState, loading, error, refresh, setInitialState } =
@@ -284,7 +284,7 @@ For specific usage, please refer to the [micro-frontend's parent-child communica
 
 ```tsx
 // src/components/AdminInfo/index.tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default () => {
   const { user, fetchUser } = useModel('adminModel', (model) => ({
