@@ -1,0 +1,67 @@
+packages/plugin-docs/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/plugin-run/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/plugins/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/ast/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/max/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/babel-preset-umi/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/utils/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/core/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/server/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/renderer-vue/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/preset-umi/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/bundler-vite/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/bundler-utoopack/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/testing/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/lint/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+lerna.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 2
+packages/bundler-webpack/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/mfsu/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/umi/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/zod2ts/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/bundler-utils/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/bundler-esbuild/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/preset-vue/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/renderer-react/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+packages/create-umi/package.json
+  s_29f7ef5cd8889b::t_be1b963edd37af 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c692c5d2becb8c0cd95c2356af15a82b2188621d",
+  "prompts": {},
+  "sessions": {
+    "s_29f7ef5cd8889b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a210a6-8713-73c1-a4b2-7cfc69e9a9fa",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "fireairforce <1344492820@qq.com>"
+    }
+  }
+}
