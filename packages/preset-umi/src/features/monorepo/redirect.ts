@@ -18,6 +18,7 @@ interface IConfigs {
   srcDir?: string[];
   exclude?: RegExp[];
   peerDeps?: boolean;
+  sourceTypes?: boolean;
   useRootProject?: boolean;
 }
 
@@ -33,6 +34,7 @@ export default (api: IApi) => {
               srcDir: zod.array(zod.string()),
               exclude: zod.array(zod.instanceof(RegExp)),
               peerDeps: zod.boolean(),
+              sourceTypes: zod.boolean(),
             })
             .deepPartial(),
         ]);
@@ -92,7 +94,7 @@ export default (api: IApi) => {
       });
       return obj;
     }, {});
-    workspaceAliases = alias;
+    if (config.sourceTypes) workspaceAliases = alias;
     // collect peer deps
     const peerDepsAliasMap: Record<string, string> = {};
     if (peerDeps) {

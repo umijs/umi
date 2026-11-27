@@ -1092,7 +1092,7 @@ mountElementId: 'container'
 
 ## monorepoRedirect
 
-- Type: `{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean, useRootProject?: boolean }`
+- Type: `{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean, sourceTypes?: boolean, useRootProject?: boolean }`
 - Default: `false`
 
 When using Umi in a monorepo, you might need to import components, utility functions, etc. from other sub-packages. By enabling this option, you can redirect these sub-package imports to their source code location (default is the `src` folder). This can also solve the issue of sub-package changes not hot-reloading in `MFSU` scenarios.
@@ -1131,6 +1131,8 @@ monorepoRedirect: { peerDeps: true }
 ```
 
 After redirection, dependencies become globally unique, maintaining consistency with the experience after installing packages from npm.
+
+By default, TypeScript uses each workspace package’s published declarations. Set `monorepoRedirect: { sourceTypes: true }` to use new exports from TypeScript sources before rebuilding the packages. If you set `compilerOptions.rootDir`, it must include both the app and the redirected sources.
 
 useRootProject: When your project is not in a monorepo subfolder but at the monorepo root, you can enable this option to make monorepoRedirect effective.
 
