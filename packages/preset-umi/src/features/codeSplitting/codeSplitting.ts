@@ -121,14 +121,13 @@ export default (api: IApi) => {
             chunks: 'async',
           },
           shared: {
-            name(_module: any, chunks: any) {
+            name(_module: any, chunks: { name?: string | null }[]) {
+              // Let webpack identify the group when its lazy imports have no name.
+              const names = chunks.map((chunk) => chunk.name);
+              if (names.some((name) => !name)) return;
               const cryptoName = crypto
                 .createHash('sha1')
-                .update(
-                  chunks.reduce((acc: any, chunk: any) => {
-                    return acc + chunk.name;
-                  }, ''),
-                )
+                .update(names.join(''))
                 .digest('base64')
                 // replace `+=/` that may be escaped in the url
                 // https://github.com/umijs/umi/issues/9845
