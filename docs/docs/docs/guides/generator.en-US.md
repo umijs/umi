@@ -306,7 +306,7 @@ Generate [jest](https://jestjs.io/) configuration for the project, after executi
 $umi g jest
 ✔ Will you use @testing-library/react for UI testing?! … yes
 info  - Write package.json
-info  - Write jest.config.ts
+info  - Write jest.config.cjs
 ```
 
 ### Tailwind CSS Configuration Generator

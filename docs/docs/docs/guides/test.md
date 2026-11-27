@@ -8,43 +8,39 @@ toc: content
 
 ## 配置
 
-使用 Umi 4 的微生成器快速地配置好 Jest [参考](./generator#jest-配置生成器)，如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
+使用 Umi 4 的微生成器快速地配置好 Jest [参考](./generator#jest-配置生成器)，如果你需要修改 jest 相关的配置，可以在 `jest.config.cjs` 修改。
 
 
 umi 项目
 
-```ts
-import { Config, configUmiAlias, createConfig } from 'umi/test';
+```js
+const { configUmiAlias, createConfig } = require('umi/test');
 
-export default async () => {
-  return (await configUmiAlias({
-    ...createConfig({
-      target: 'browser',
-      jsTransformer: 'esbuild',
-      jsTransformerOpts: { jsx: 'automatic' },
-    }),
-    // 覆盖 umi 的默认 jest 配置, 如
-    // displayName: "Umi jest",
-  })) as Config.InitialOptions;
-};
+module.exports = () => configUmiAlias({
+  ...createConfig({
+    target: 'browser',
+    jsTransformer: 'esbuild',
+    jsTransformerOpts: { jsx: 'automatic' },
+  }),
+  // 覆盖 umi 的默认 jest 配置, 如
+  // displayName: "Umi jest",
+});
 ```
 
 @umijs/max 项目
 
-```ts
-import { Config, configUmiAlias, createConfig } from '@umijs/max/test';
+```js
+const { configUmiAlias, createConfig } = require('@umijs/max/test');
 
-export default async () => {
-  return (await configUmiAlias({
-    ...createConfig({
-      target: 'browser',
-      jsTransformer: 'esbuild',
-      jsTransformerOpts: { jsx: 'automatic' },
-    }),
-    // 覆盖 umi 的默认 jest 配置, 如
-    // displayName: "Umi jest",
-  })) as Config.InitialOptions;
-};
+module.exports = () => configUmiAlias({
+  ...createConfig({
+    target: 'browser',
+    jsTransformer: 'esbuild',
+    jsTransformerOpts: { jsx: 'automatic' },
+  }),
+  // 覆盖 umi 的默认 jest 配置, 如
+  // displayName: "Umi jest",
+});
 ```
 
 配置完后，就可以开始编写单元测试了。

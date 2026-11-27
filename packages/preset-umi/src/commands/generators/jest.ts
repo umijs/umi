@@ -15,14 +15,12 @@ export default (api: IApi) => {
     name: 'Enable Jest',
     description: 'Setup Jest Configuration',
     type: GeneratorType.enable,
-    checkEnable: () => {
-      return (
-        !existsSync(join(api.paths.cwd, 'jest.config.ts')) &&
-        !existsSync(join(api.paths.cwd, 'jest.config.js'))
-      );
-    },
+    checkEnable: () =>
+      ['js', 'ts', 'cjs'].every(
+        (ext) => !existsSync(join(api.paths.cwd, `jest.config.${ext}`)),
+      ),
     disabledDescription:
-      'jest has already enabled. You can remove jest.config.{ts,js}, then run this again to re-setup.',
+      'Jest configuration already exists. Remove the existing config to run this generator again.',
     fn: async () => {
       const h = new GeneratorHelper(api);
 
@@ -40,9 +38,6 @@ export default (api: IApi) => {
       const basicDeps = {
         jest: jestMajorVersion,
         '@types/jest': jestMajorVersion,
-        // we use `jest.config.ts` so jest needs ts and ts-node
-        typescript: '^5',
-        'ts-node': '^10',
         // The generated config uses the browser target with or without RTL.
         'jest-environment-jsdom': jestMajorVersion,
       };
@@ -85,7 +80,7 @@ export default (api: IApi) => {
             '!.umi-production/**',
             '!.umirc.{js,ts}',
             '!.umirc.*.{js,ts}',
-            '!jest.config.{js,ts}',
+            '!jest.config.{js,ts,cjs}',
             '!coverage/**',
             '!dist/**',
             '!config/**',
@@ -93,37 +88,26 @@ export default (api: IApi) => {
           ];
 
       writeFileSync(
-        join(api.cwd, 'jest.config.ts'),
+        join(api.cwd, 'jest.config.cjs'),
         `
-import { Config, configUmiAlias, createConfig } from '${importSource}/test';
+const { configUmiAlias, createConfig } = require('${importSource}/test');
 
-export default async () => {
-  try{
-    return (await configUmiAlias({
-      ...createConfig({
-        target: 'browser',
-        jsTransformer: 'esbuild',
-        // config opts for esbuild , it will pass to esbuild directly
-        jsTransformerOpts: { jsx: 'automatic' },
-      }),
-
-      ${
-        res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''
-      }
-      collectCoverageFrom: [
-${collectCoverageFrom.map((v) => `        '${v}'`).join(',\n')}
-      ],
-      // if you require some es-module npm package, please uncomment below line and insert your package name
-      // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
-    })) as Config.InitialOptions;
-  } catch (e) {
-    console.log(e);
-    throw e;
-  }
-};
+module.exports = () => configUmiAlias({
+  ...createConfig({
+    target: 'browser',
+    jsTransformer: 'esbuild',
+    jsTransformerOpts: { jsx: 'automatic' },
+  }),
+  ${res.willUseTLR ? "setupFilesAfterEnv: ['<rootDir>/jest-setup.ts']," : ''}
+  collectCoverageFrom: [
+${collectCoverageFrom.map((v) => `    '${v}'`).join(',\n')}
+  ],
+  // Uncomment to transform an ES module dependency:
+  // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)'],
+});
 `.trimStart(),
       );
-      logger.info('Write jest.config.ts');
+      logger.info('Write jest.config.cjs');
 
       h.installDeps();
     },
