@@ -8,7 +8,7 @@ import {
   writeFileSync,
 } from 'fs';
 import { tmpdir } from 'os';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import redirect from './redirect';
 
 test.each([
@@ -106,15 +106,17 @@ test.each([
       });
       expect(config.compilerOptions.paths['@/*']).toEqual(['./src/*']);
       writeFileSync(join(cwd, 'tsconfig.json'), JSON.stringify(config));
+      const tsc = join(
+        dirname(require.resolve('@typescript/native/package.json')),
+        'bin/tsc',
+      );
       const result = spawnSync(
         process.execPath,
-        [
-          require.resolve('typescript/bin/tsc'),
-          '--noEmit',
-          '--pretty',
-          'false',
-        ],
-        { cwd, encoding: 'utf8' },
+        [tsc, '--noEmit', '--pretty', 'false'],
+        {
+          cwd,
+          encoding: 'utf8',
+        },
       );
       expect(result.stdout + result.stderr).toBe('');
       expect(result.status).toBe(0);
