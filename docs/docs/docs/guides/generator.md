@@ -323,7 +323,7 @@ info  - Write tailwind.css
 
 ### DvaJS 配置生成器
 
-为项目开启 [Dva](https://dvajs.com/) 配置，命令执行后，`umi` 会生成 Dva 。
+为项目开启 Dva 配置，命令执行后，`umi` 会生成 Dva 。
 
 ```bash
 $umi g dva
